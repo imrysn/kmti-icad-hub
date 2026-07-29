@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -20,18 +21,19 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const TABS = [
-    { id: 'keyway', label: 'Keyway' }
+    { id: 'keyway', label: t('2d.keyway.tab') }
   ];
   const [activeTab, setActiveTab] = useState('keyway');
 
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-keyway');
 
   const keywaySteps = [
-    "Review the Parallel Keyway table for shafts and hubs. Ensure you apply the correct dimensions and tolerances based on the shaft diameter to maintain KEMCO engineering standards."
+    t('2d.keyway.description')
   ];
 
-  const currentTitle = "KEYWAY STANDARDS SIZE AND TOLERANCE";
+  const currentTitle = t('2d.keyway.title');
   const currentTabSteps = [
     currentTitle,
     keywaySteps[0]
@@ -91,7 +93,7 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Keyway Standards Size and Tolerance"
+                  text={currentTitle}
                   isActive={isSpeaking && currentIndex === 0}
                   currentCharIndex={currentCharIndex}
                 />
@@ -113,10 +115,10 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

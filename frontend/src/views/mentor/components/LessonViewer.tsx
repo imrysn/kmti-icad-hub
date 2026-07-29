@@ -90,6 +90,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   isEmployeeSide = false
 }) => {
   const { t } = useTranslation();
+  const activeLessonTitle = is2DDrawingCourse
+    ? t(`lesson.title.${activeLessonId}`)
+    : getActiveLessonTitle(lessons, activeLessonId);
   const { requestConfirmation } = useUI();
   useAuth();
   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
@@ -423,12 +426,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
           <div className="lesson-header-banner">
             <p className="lesson-indicator">
-              {t('lesson.indicator')
-                .replace('{current}', String(currentLessonIndex + 1))
-                .replace('{total}', String(allLessonIdsLength))}
+              Lesson {currentLessonIndex + 1} of {allLessonIdsLength}
             </p>
             <h2 className="lesson-banner-title">
-              {getActiveLessonTitle(lessons, activeLessonId)}
+              {activeLessonTitle}
             </h2>
             <div className="lesson-banner-divider"></div>
           </div>

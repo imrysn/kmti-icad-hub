@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from '../context/LanguageContext';
 
 interface KaraokeLessonTextProps {
     text: string;
@@ -16,5 +17,6 @@ export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({
     style,
     as: Tag = 'p'
 }) => {
-    return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: text || "" }} />;
+    const { translateContent } = useTranslation();
+    return <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: translateContent(text || "") }} />;
 };

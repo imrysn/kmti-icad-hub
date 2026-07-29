@@ -1,5 +1,6 @@
-import { useEffect,useRef,useState } from 'react';
+import { useCallback,useEffect,useRef,useState } from 'react';
 import { useTTSContext } from '../context/TTSContext';
+import { useTranslation } from '../context/LanguageContext';
 
 /**
  * useLessonCore - Shared logic for all lesson components.
@@ -10,7 +11,20 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // TTS integration using global shared context
-  const { speak, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex, registerText } = useTTSContext();
+  const { speak: speakRaw, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex, registerText: registerTextRaw } = useTTSContext();
+  const { language, translateContent } = useTranslation();
+  const translateSteps = useCallback(
+    (steps: string[]) => steps.map(translateContent),
+    [translateContent]
+  );
+  const speak = useCallback(
+    (steps: string[], startIndex: number) => speakRaw(translateSteps(steps), startIndex),
+    [speakRaw, translateSteps]
+  );
+  const registerText = useCallback(
+    (steps: string[]) => registerTextRaw(translateSteps(steps)),
+    [registerTextRaw, translateSteps]
+  );
 
   const defaultTextJSON = defaultText ? JSON.stringify(defaultText) : '';
 
@@ -19,6 +33,34 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
       registerText(JSON.parse(defaultTextJSON));
     }
   }, [subLessonId, defaultTextJSON, registerText]);
+
+  useEffect(() => {
+    const lessonContainer = containerRef.current;
+    if (!lessonContainer) return;
+
+    const localizeTextNodes = () => {
+      const walker = document.createTreeWalker(lessonContainer, NodeFilter.SHOW_TEXT);
+      const nodes: Text[] = [];
+      let node = walker.nextNode();
+      while (node) {
+        nodes.push(node as Text);
+        node = walker.nextNode();
+      }
+      nodes.forEach((textNode) => {
+        // Step identifiers are structural labels, not lesson copy.  Keeping them
+        // untouched prevents a text-only translation match from expanding a
+        // compact marker such as "a" inside its fixed-size badge.
+        if (textNode.parentElement?.closest('.step-number')) return;
+        const translated = translateContent(textNode.nodeValue || '');
+        if (translated !== textNode.nodeValue) textNode.nodeValue = translated;
+      });
+    };
+
+    localizeTextNodes();
+    const observer = new MutationObserver(localizeTextNodes);
+    observer.observe(lessonContainer, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [language, translateContent]);
 
   useEffect(() => {
     const handleScroll = () => {

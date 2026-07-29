@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -25,13 +26,14 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: 'template', label: 'Drawing Template' },
-    { id: 'views', label: 'Orthograohic View / Delete' },
-    { id: 'scale', label: 'Scale' },
-    { id: 'hidden', label: 'Hidden Line' },
-    { id: 'tangent', label: 'Tangent Line' },
-    { id: 'precision', label: 'High Precision' }
+    { id: 'template', label: t('2d.drawing_template') },
+    { id: 'views', label: t('2d.orthograohic_view_delete') },
+    { id: 'scale', label: t('2d.orthographic.scale') },
+    { id: 'hidden', label: t('2d.hidden_line') },
+    { id: 'tangent', label: t('2d.tangent_line') },
+    { id: 'precision', label: t('2d.high_precision') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -77,37 +79,37 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
     '2d-orthographic-template': {
-      title: 'Inserting Drawing Template',
+      title: t('2d.inserting_drawing_template'),
       steps: [""]
     },
     '2d-orthographic-views': {
-      title: 'Creating Orthographic View / Delete Views',
+      title: t('2d.creating_orthographic_view_delete_views'),
       steps: [""]
     },
     '2d-orthographic-scale': {
-      title: 'SCALE',
+      title: t('2d.orthographic.scale'),
       steps: [
-        "Set the scale of selected view. When changing the scale, take note to always use the Projection Properties.",
-        "Do not change the scale on the toolbar because the dimensions and scales will not update according to the set scale.",
-        "When changing the scale of a standard view, other standard views also change the scale. Cross section view and detail view need to change the scale separately."
+        t('2d.orthographic.scale.description'),
+        t('2d.orthographic.scale.toolbar_note'),
+        t('2d.orthographic.scale.standard_note')
       ]
     },
     '2d-orthographic-hidden': {
-      title: 'HIDDEN LINE',
+      title: t('2d.hidden_line_1'),
       steps: [
-        "The hidden line is not automatically shown when orthographic view was inserted. It can be shown through the Projection Properties."
+        t('2d.orthographic.hidden.description')
       ]
     },
     '2d-orthographic-tangent': {
-      title: 'TANGENT LINE',
+      title: t('2d.tangent_line_1'),
       steps: [
-        "Shows and hides lines from fillets of a view. The tangent lines from chamfers are shown automatically during insertion of orthographic view."
+        t('2d.orthographic.tangent.description')
       ]
     },
     '2d-orthographic-precision': {
-      title: 'HIGH PRECISION',
+      title: t('2d.high_precision_1'),
       steps: [
-        "Used for better projection of small components or parts on a part or assembly. When High precision is unchecked, some lines in the detail drawing are broken and some lines are missing. This is commonly used on assembly drawings but can also be used for parts, if necessary."
+        t('2d.orthographic.precision.description')
       ]
     }
   };
@@ -123,7 +125,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -167,7 +169,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Inserting Drawing Template"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -185,7 +187,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Creating Orthographic View / Delete Views"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -203,7 +205,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Scale"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -216,7 +218,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                       currentCharIndex={currentCharIndex}
                     />
                     <div className={`instruction-box ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "1rem" }}>
-                      <p className="p-flush"><strong className="red-text">Note:</strong></p>
+                      <p className="p-flush"><strong className="red-text">{t('2d.note')}</strong></p>
                       <KaraokeLessonText
                         as="div"
                         className="p-flush"
@@ -227,7 +229,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     </div>
                     <img src={scalingImg} alt="Scaling and Projection Properties" className="software-screenshot screenshot-wide mt-4" />
                     <div className={`instruction-box ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
-                      <p className="p-flush"><strong className="red-text">Note:</strong></p>
+                      <p className="p-flush"><strong className="red-text">{t('2d.note')}</strong></p>
                       <KaraokeLessonText
                         as="div"
                         className="p-flush"
@@ -247,7 +249,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Hidden Line"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -271,7 +273,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Tangent Line"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -295,7 +297,7 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="High Precision"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
                     />
@@ -316,10 +318,10 @@ const OrthographicViewLesson: React.FC<OrthographicViewLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

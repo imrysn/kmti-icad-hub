@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -33,10 +34,11 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: '1', label: 'Line Properties' },
-    { id: '2', label: 'Changing Color' },
-    { id: '3', label: 'Additional Lines' }
+    { id: '1', label: t('2d.line_properties') },
+    { id: '2', label: t('2d.line.changing_color') },
+    { id: '3', label: t('2d.line.additional_lines') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -82,29 +84,81 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-line-props-1': {
-      title: 'LINE PROPERTIES',
+      title: t('2d.line_properties'),
       subtitle: '',
       steps: []
     },
     '2d-line-props-2': {
-      title: 'CHANGING LINE PROPERTIES',
+      title: t('2d.line.changing_properties'),
       subtitle: '',
       steps: [
         ""
       ]
     },
     '2d-line-props-3': {
-      title: 'ADDITIONAL LINES',
+      title: t('2d.line.additional_lines'),
       subtitle: '',
       steps: [
         "",
-        "Spline is used to replace lines when a partial section is done on the drawing.",
-        "Automatically shown for the holes from machine tools. Aside from that, if additional center lines is necessary, It can be put manually."
+        t('2d.line.spline.description'),
+        t('2d.line.center_line.description')
       ]
     }
   };
 
   const currentLesson = LESSON_DATA[`2d-line-props-${activeTab}`] || LESSON_DATA['2d-line-props-1'];
+  const linePropertyHeaders = language === 'ja'
+    ? ['用途', '線種', '線の太さ', '太さ', '色']
+    : ['Application', 'Line Type', 'Line Weight', 'Thickness', 'Color'];
+  const linePropertyRows = language === 'ja'
+    ? [
+        ['実線', '連続線', '太線', '0.4mm', '白（1）'],
+        ['隠線', '破線', '細線', '0.1mm', '緑（3）'],
+        ['中心線', '一点鎖線', '細線', '0.1mm', 'シアン（7）'],
+        ['想像線', '二点鎖線', '細線', '0.1mm', '緑（3）'],
+        ['矢印／機械の流れ', '連続線', '太線', '0.4mm', '白（1）'],
+        ['溶接ハッチング', '連続線', '中線', '0.2mm', 'ピンク（6）'],
+        ['けがき線', '連続線', '太線', '0.4mm', '白（1）'],
+        ['床レベル', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['スプライン／切断線', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['追加情報／表', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['詳細ビュー表示', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['文字', '-', '細線', '0.15mm', '黄（4）'],
+        ['加工記号', '-', '細線', '0.1mm', '赤（2）'],
+        ['改訂前データ／寸法', '連続線', '細線', '0.1mm', '赤（2）'],
+        ['切断部（ハッチング）', '連続線', '細線', '0.1mm', '赤（2）'],
+        ['改訂雲', '連続線', '細線', '0.1mm', '赤（2）'],
+        ['配管参照図', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['配管端部参照線', '連続線', '細線', '0.1mm', '緑（3）'],
+        ['尺度線', '連続線', '中線', '0.2mm', '肌色（15）'],
+        ['表面処理／条件', '一点鎖線', '中線', '0.2mm', '肌色（15）'],
+        ['溶接外観なしの表面', '一点鎖線', '中線', '0.2mm', '肌色（15）'],
+        ['同一レベル', '一点鎖線', '細線', '0.1mm', 'シアン（7）']
+      ]
+    : [
+        ['Actual line', 'Continuous line', 'Thick', '0.4mm', 'White (1)'],
+        ['Hidden Line', 'Broken Line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Center Line', 'Single Dot Line', 'Thin', '0.1mm', 'Cyan (7)'],
+        ['Phantom Line', 'Double Dot Line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Arrow / Machine Flow', 'Continuous line', 'Thick', '0.4mm', 'White (1)'],
+        ['Welding Hatch', 'Continuous line', 'Middle', '0.2mm', 'Pink (6)'],
+        ['Scribe Line', 'Continuous line', 'Thick', '0.4mm', 'White (1)'],
+        ['Floor Level', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Spline / Cutting Line', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Additional Information / Table', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Detail View Indicator', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Text / Letter', '-', 'Thin', '0.15mm', 'Yellow (4)'],
+        ['Machining Symbol', '-', 'Thin', '0.1mm', 'Red (2)'],
+        ['Revised Old Data / Dimension', 'Continuous line', 'Thin', '0.1mm', 'Red (2)'],
+        ['Cutted part (Hatch)', 'Continuous line', 'Thin', '0.1mm', 'Red (2)'],
+        ['Revision Cloud', 'Continuous line', 'Thin', '0.1mm', 'Red (2)'],
+        ['Pipe Reference Drawing', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Pipe End Reference Line', 'Continuous line', 'Thin', '0.1mm', 'Green (3)'],
+        ['Scale Line', 'Continuous line', 'Middle', '0.2mm', 'SkinColor (15)'],
+        ['Surface Treatment / Condition', 'Single Dot Line', 'Middle', '0.2mm', 'SkinColor (15)'],
+        ['Surface Without Welding Appearance', 'Single Dot Line', 'Middle', '0.2mm', 'SkinColor (15)'],
+        ['Same Level', 'Single Dot Line', 'Thin', '0.1mm', 'Cyan (7)']
+      ];
 
   const currentTabSteps = [
     currentLesson.title,
@@ -116,7 +170,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -164,7 +218,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Line Properties"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -176,36 +230,17 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Application</th>
-                          <th>Line Type</th>
-                          <th>Line Weight</th>
-                          <th>Thickness</th>
-                          <th>Color</th>
+                          {linePropertyHeaders.map(header => <th key={header}>{header}</th>)}
                         </tr>
                       </thead>
                       <tbody>
-                        <tr><td>Actual line</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                        <tr><td>Hidden Line</td><td>Broken Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Center Line</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
-                        <tr><td>Phantom Line</td><td>Double Dot Line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Arrow / Machine Flow</td><td>Continuous line</td><td>Thick</td><td>0.4mm</td><td>White (1)</td></tr>
-                        <tr><td>Welding Hatch</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>Pink (6)</td></tr>
-                        <tr><td>Scribe Line</td><td>Continuous line</td><td className="highlight-cell-yellow">Thick</td><td className="highlight-cell-yellow">0.4mm</td><td className="highlight-cell-yellow">White (1)</td></tr>
-                        <tr><td>Floor Level</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Spline / Cutting Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Additional Information / Table</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Detail View Indicator</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Text / Letter</td><td>-</td><td>Thin</td><td>0.15mm</td><td>Yellow (4)</td></tr>
-                        <tr><td>Machining Symbol</td><td>-</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                        <tr><td>Revised Old Data / Dimension</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                        <tr><td>Cutted part (Hatch)</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                        <tr><td>Revision Cloud</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Red (2)</td></tr>
-                        <tr><td>Pipe Reference Drawing</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Pipe End Reference Line</td><td>Continuous line</td><td>Thin</td><td>0.1mm</td><td>Green (3)</td></tr>
-                        <tr><td>Scale Line</td><td>Continuous line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                        <tr><td>Surface Treatment / Condition</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                        <tr><td>Surface Without Welding Appearance</td><td>Single Dot Line</td><td>Middle</td><td>0.2mm</td><td>SkinColor (15)</td></tr>
-                        <tr><td>Same Level</td><td>Single Dot Line</td><td>Thin</td><td>0.1mm</td><td>Cyan (7)</td></tr>
+                        {linePropertyRows.map((row, rowIndex) => (
+                          <tr key={row[0]}>
+                            {row.map((cell, cellIndex) => (
+                              <td key={`${row[0]}-${cellIndex}`} className={rowIndex === 6 && cellIndex >= 2 ? 'highlight-cell-yellow' : undefined}>{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -219,7 +254,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Changing line properties (Changing Color)"
+                      text={t('2d.line.changing_properties_color')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -243,7 +278,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Additional Lines"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -253,7 +288,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Spline"
+                      text={t('2d.line.spline')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -280,7 +315,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Center Line"
+                        text={t('2d.line.center_line')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -295,9 +330,13 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                     <img src={lineProp4Img} alt="Line Property Verification" className="software-screenshot screenshot-wide" style={{ marginBottom: "-5rem" }} />
 
                     <div className="instruction-box mt-4">
-                      <p style={{ margin: 0, lineHeight: 1.5 }}>
-                        <strong>NOTE:</strong> Be careful when which line will be picked first because the center line is always base on L1. The standard properties for centerline are already applied if this command is used.
-                      </p>
+                      <KaraokeLessonText
+                        as="p"
+                        text={t('2d.line.center_line.note')}
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                        style={{ margin: 0, lineHeight: 1.5 }}
+                      />
                     </div>
 
                     <div className="step-header" style={{ marginTop: '2rem', marginLeft: "3rem" }}>
@@ -305,7 +344,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Piping Center Line"
+                        text={t('2d.line.piping_center_line')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -317,7 +356,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Change the representation of parts hierarchically"
+                        text={t('2d.line.change_representation')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -325,7 +364,7 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
                     <KaraokeLessonText
                       className="p-flush mb-4 mt-4"
-                      text="This is use to change the Line properties of certain parts depends on the detail. This is very useful during detailing of assembly but can also use in parts detail"
+                      text={t('2d.line.change_representation.description')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -339,10 +378,10 @@ const LinePropertiesLesson: React.FC<LinePropertiesLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -28,11 +29,12 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const TABS = [
-    { id: '1', label: 'Bill of Material' },
-    { id: '2', label: 'Assembly Drawing' },
-    { id: '3', label: 'Additional Info' },
-    { id: '4', label: 'BOM after inserting' }
+    { id: '1', label: t('2d.bom.tab_material') },
+    { id: '2', label: t('2d.bom.tab_assembly') },
+    { id: '3', label: t('2d.bom.tab_additional') },
+    { id: '4', label: t('2d.bom.tab_after_insert') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -162,9 +164,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                   <div className="instruction-step" style={{ marginTop: "-2rem" }}>
                     <div className="step-header">
                       <span className="step-number">16</span>
-                      <span className="step-label">Bill Of Material (BOM)</span>
+                      <span className="step-label">{t('2d.bom.title')}</span>
                     </div>
-                    <p className="p-flush">displays part informations particularly material, part specifications and weights. Located at upper right portion of the template.</p>
+                    <p className="p-flush">{t('2d.bom.description')}</p>
                   </div>
 
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2" style={{ marginTop: "1rem" }}>
@@ -173,7 +175,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Part drawing"
+                        text={t('2d.bom.part_drawing')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -185,9 +187,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <div style={{ marginTop: "2rem" }}>
                         <img src={bomPartDrawingCImg} alt="Excel BOM Generation" className="software-screenshot screenshot-wide" />
                         <div className="instruction-box mt-6">
-                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
-                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>2. Rearrange the sequence of part specification in decreasing order. Make sure to select the entire row (including the data on column A).</p>
-                          <p className="p-flush">3. For parts detail, use letters for part balloon.</p>
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.part_step_1')}</p>
+                          <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.part_step_2')}</p>
+                          <p className="p-flush">{t('2d.bom.part_step_3')}</p>
                         </div>
                       </div>
 
@@ -219,7 +221,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                                 fontWeight: "bold",
                                 textTransform: "uppercase"
                               }}>
-                                For Single Part
+                                {t('2d.bom.single_part')}
                               </span>
                             </div>
                           </div>
@@ -239,9 +241,9 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
                             zIndex: 5
                           }}>
-                            <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
+                            <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">{t('2d.note')}</strong></p>
                             <p className="p-flush" style={{ fontSize: "0.85rem", lineHeight: "1.4", color: "#e2e8f0" }}>
-                              Material weight and finish weight must be in 2 decimal places, but for some special cases, 3 decimal places is acceptable.
+                              {t('2d.bom.weight_note')}
                             </p>
                           </div>
                         </div>
@@ -260,30 +262,30 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Assembly drawing"
+                        text={t('2d.bom.assembly_drawing')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
                       <div className="p-flush" style={{ marginBottom: "1rem" }}>
-                        BOM of assembly drawing divides into three groups.
+                        {t('2d.bom.assembly_groups')}
                         <div style={{ paddingLeft: "1rem", marginTop: "0.5rem" }}>
-                          1. Fabricated and Machine Parts<br />
-                          2. Mechanical / Purchase parts<br />
-                          3. Hardwares
+                          {t('2d.bom.group_1')}<br />
+                          {t('2d.bom.group_2')}<br />
+                          {t('2d.bom.group_3')}
                         </div>
                       </div>
                       <img src={bomAssemblyDrawingImg} alt="Assembly BOM Excel" className="software-screenshot screenshot-wide" />
                       <div className="instruction-box mt-6">
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>1. Excel will appear.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>2. Rearrange the excel data from;</p>
-                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>a. Drawing number of parts arranging successively</p>
-                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>b. Purchased parts</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.part_step_1')}</p>
+                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}>{t('2d.bom.assembly_step_2')}</p>
+                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>{t('2d.bom.assembly_step_2a')}</p>
+                        <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.25rem" }}>{t('2d.bom.assembly_step_2b')}</p>
                         <p className="p-flush" style={{ paddingLeft: "1.5rem", marginBottom: "0.5rem" }}>c. Hardware (HS,BS,CS,SS,SP,HN,FW,SW)</p>
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>3. Click "delete abbreviation" button to delete hardware codes.</p>
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>4. Click "sum the parts" button to combine quantity of same parts.</p>
-                        <p className="p-flush">5. Purchase parts must indicate the maker in English.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.assembly_step_3')}</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.assembly_step_4')}</p>
+                        <p className="p-flush">{t('2d.bom.assembly_step_5')}</p>
                       </div>
                     </div>
                   </div>
@@ -293,15 +295,15 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="BOM Grouping and Abbreviation Rules"
+                        text={t('2d.bom.grouping_rules')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                     <div className="step-description">
                       <div className="instruction-box">
-                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>6. Hardwares arrange in decreasing order.</p>
-                        <p className="p-flush">7. In terms of assembly detail, use number for parts balloon. Also, there must be a gap of 20 numbers in between the three groups.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.5rem" }}>{t('2d.bom.assembly_step_6')}</p>
+                        <p className="p-flush">{t('2d.bom.assembly_step_7')}</p>
                       </div>
                       <img src={bomAssemblyDrawing2Img} alt="Standard Assembly BOM Grouping" className="software-screenshot screenshot-wide mt-4" />
                     </div>
@@ -317,7 +319,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Additional Information"
+                        text={t('2d.bom.tab_additional')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -325,8 +327,8 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                     <div className="step-description">
                       <img src={bomAdditionalInfoImg} alt="Additional Information Excel" className="software-screenshot screenshot-wide" />
                       <div className="instruction-box mt-4">
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Note:</strong></p>
-                        <p className="p-flush">Columns with green color can not be changed.</p>
+                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">{t('2d.note')}</strong></p>
+                        <p className="p-flush">{t('2d.bom.green_columns')}</p>
                       </div>
                     </div>
                   </div>
@@ -340,7 +342,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Bill of Material after inserting on ICAD data"
+                        text={t('2d.bom.after_insert_heading')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -356,7 +358,7 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Edit Attribute"
+                        text={t('2d.bom.edit_attribute')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -372,10 +374,10 @@ const BillOfMaterialLesson: React.FC<BillOfMaterialLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

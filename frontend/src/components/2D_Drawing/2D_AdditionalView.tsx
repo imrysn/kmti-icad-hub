@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -25,11 +26,12 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: 'cross-section', label: 'Additional View' },
-    { id: 'partial-detail', label: 'Partial Section & Detail' },
-    { id: 'isometric', label: 'Isometric & Cross Sectional' },
-    { id: 'trim', label: 'Trim View' }
+    { id: 'cross-section', label: t('2d.additional.title') },
+    { id: 'partial-detail', label: t('2d.additional.partial_detail') },
+    { id: 'isometric', label: t('2d.additional.isometric_section') },
+    { id: 'trim', label: t('2d.additional.trim_view') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -75,31 +77,31 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-additional-view-cross-section': {
-      title: 'ADDITIONAL VIEW',
-      subtitle: 'Creating cross-sections and adjusting viewing depth in 2D drawings.',
+      title: t('2d.additional.title'),
+      subtitle: t('2d.additional.cross_section_subtitle'),
       steps: [
         "There are some instances that the cross sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate uneccessary parts."
       ]
     },
     '2d-additional-view-partial-detail': {
-      title: 'ADDITIONAL VIEW',
-      subtitle: 'Configuring partial sectional views and magnified detail drawings.',
+      title: t('2d.additional.title'),
+      subtitle: t('2d.additional.partial_detail_subtitle'),
       steps: [
         "Use to make a cross-section of a part partially",
         "Use to detail a view on a bigger scale from a different view."
       ]
     },
     '2d-additional-view-isometric': {
-      title: 'ADDITIONAL VIEW',
-      subtitle: 'Adding 3D isometric representation views and depth boundaries.',
+      title: t('2d.additional.title'),
+      subtitle: t('2d.additional.isometric_subtitle'),
       steps: [
         "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
         "There are some instances that the cross-sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate the unnecessary parts."
       ]
     },
     '2d-additional-view-trim': {
-      title: 'ADDITIONAL VIEW',
-      subtitle: 'Trimming unwanted detail parts out of specific view bounds.',
+      title: t('2d.additional.title'),
+      subtitle: t('2d.additional.trim_subtitle'),
       steps: [
         "Another way to eliminate parts that are not needed on a certain view. This can not be applied on Detail Drawing."
       ]
@@ -118,7 +120,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -157,7 +159,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
               <div className="instruction-step" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">20</span>
-                  <span className="step-label">Additional View</span>
+                  <span className="step-label">{t('2d.additional.title')}</span>
                 </div>
               </div>
 
@@ -168,7 +170,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Cross Section View"
+                        text={t('2d.additional.cross_section')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -192,7 +194,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Partial Section"
+                        text={t('2d.additional.partial_section')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -214,7 +216,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Detail Drawing"
+                        text={t('2d.additional.detail_drawing')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />

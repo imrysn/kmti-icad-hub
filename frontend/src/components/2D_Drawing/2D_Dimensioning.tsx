@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -37,12 +38,13 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: '1', label: 'Adding Dimensions' },
-    { id: '2', label: 'Editing Dimensions' },
-    { id: '3', label: 'Part Note' },
-    { id: '4', label: 'Change Position' },
-    { id: '5', label: 'Breakviews' }
+    { id: '1', label: t('2d.dimensioning.adding') },
+    { id: '2', label: t('2d.dimensioning.editing') },
+    { id: '3', label: t('2d.part_note') },
+    { id: '4', label: t('2d.change_position') },
+    { id: '5', label: t('2d.dimensioning.breakviews') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -88,48 +90,62 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-dimensioning-1': {
-      title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
+      title: t('2d.dimensioning.title'),
+      subtitle: t('2d.applying_technical_dimensions_and_tolera'),
       steps: [
-        "Put all the dimensions, symbols, and notes required in the drawing.",
-        "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
-        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
+        t('2d.put_all_the_dimensions_symbols_and_notes'),
+        t('2d.this_is_the_basic_command_for_adding_dim'),
+        t('2d.use_this_for_continuous_linear_dimension')
       ]
     },
     '2d-dimensioning-2': {
-      title: 'DIMENSIONING',
-      subtitle: 'Applying technical dimensions and tolerances to 2D drawings using standard commands.',
+      title: t('2d.dimensioning.title'),
+      subtitle: t('2d.applying_technical_dimensions_and_tolera'),
       steps: [
-        "To add symbols like the diameter mark, select the edit characters command, click the dimension, and choose the symbol from the Mark dropdown.",
-        "If fitting tolerance is required, use the convert tool to display the appropriate JIC standard values.",
-        "These marks are generated automatically if your 3D model features were created correctly, so manual input is usually unnecessary.",
-        "Grinded materials like S45C-D and SS400-D have specific tolerance levels (like h9 or h7) and surface roughness requirements based on the grinding process."
+        t('2d.to_add_symbols_like_the_diameter_mark_se'),
+        t('2d.if_fitting_tolerance_is_required_use_the'),
+        t('2d.these_marks_are_generated_automatically_'),
+        t('2d.grinded_materials_like_s45c_d_and_ss400_')
       ]
     },
     '2d-dimensioning-3': {
-      title: 'PART NOTE',
-      subtitle: 'Guidelines for adding technical notes and material specifications.',
+      title: t('2d.part_note'),
+      subtitle: t('2d.guidelines_for_adding_technical_notes_an'),
       steps: [
-        "Use this tool for automatic hole detailing and quantity callouts. Select the command and click the features to place the leader notes."
+        t('2d.use_this_tool_for_automatic_hole_detaili')
       ]
     },
     '2d-dimensioning-4': {
-      title: 'CHANGE POSITION',
-      subtitle: 'Adjusting dimension placement for clarity and alignment.',
+      title: t('2d.change_position'),
+      subtitle: t('2d.adjusting_dimension_placement_for_clarit'),
       steps: [
-        "Ensure dimensions have enough space between them. Use the change position command, click the dimension, and pick its new location."
+        t('2d.ensure_dimensions_have_enough_space_betw')
       ]
     },
     '2d-dimensioning-5': {
-      title: 'DIMENSION FOR BREAKVIEWS',
-      subtitle: 'Technical guide for dimensioning components using break views.',
+      title: t('2d.dimension_for_breakviews'),
+      subtitle: t('2d.technical_guide_for_dimensioning_compone'),
       steps: [
-        "There are parts that are too long for the template, which, if scaled too high to fit, become too small for the details, and when used with a larger template, seem unnecessary for minimal details. This is applicable for shafts, covers and other parts that are long."
+        t('2d.there_are_parts_that_are_too_long_for_th')
       ]
     }
   };
 
   const currentLesson = LESSON_DATA[`2d-dimensioning-${activeTab}`] || LESSON_DATA['2d-dimensioning-1'];
+  const polishedMaterialHeaders = language === 'ja'
+    ? ['コード', '詳細', '公差等級 JIC B 0401', '表面粗さの範囲']
+    : ['Code', 'Details', 'Tolerance Level JIC B 0401', 'Surface Roughness Range'];
+  const polishedMaterialRows = language === 'ja'
+    ? [
+        ['S45C-D', '研削された S45C 材です。これらの直径寸法は、図面に基づく加工で保証されます。', 'h9', '3.2a 超／12.5S 超'],
+        ['S45C-CG', '研削された S45C 材です。これらの直径寸法は、センタレス研削盤による加工で保証されます。', 'h7', '3.2a 超／12.5S 超'],
+        ['SS400-D', '研削された SS400 材です。これらの直径寸法は、図面に基づく加工で保証されます。', 'h9', '3.2a 超／12.5S 超']
+      ]
+    : [
+        ['S45C-D', 'S45C materials which are grinded. These diameter dimensions are assured by processing of drawing', 'h9', 'over 3.2a / over 12.5S'],
+        ['S45C-CG', 'S45C materials which are grinded. These diameter dimensions are assured by processing of centerless grinding machine', 'h7', 'over 3.2a / over 12.5S'],
+        ['SS400-D', 'SS400 materials which are grinded. These diameter dimensions are assured by processing of drawing', 'h9', 'over 3.2a / over 12.5S']
+      ];
 
   const currentTabSteps = [
     currentLesson.title,
@@ -141,7 +157,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -185,7 +201,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Dimensioning"
+                        text={t('2d.dimensioning.title')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -207,7 +223,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Adding dimensions"
+                        text={t('2d.dimensioning.adding')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -218,7 +234,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Standard Dimension"
+                        text={t('2d.dimensioning.standard')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -241,7 +257,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Series Dimension"
+                        text={t('2d.dimensioning.series')}
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -267,7 +283,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Editing Dimension"
+                        text={t('2d.dimensioning.editing')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -277,7 +293,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Edit Dimension Characters"
+                        text={t('2d.dimensioning.edit_characters')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -298,7 +314,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Tolerance"
+                        text={t('2d.dimensioning.tolerance')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -319,7 +335,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Chamfer / Radius"
+                        text={t('2d.dimensioning.chamfer_radius')}
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -341,7 +357,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Polished Material"
+                        text={t('2d.dimensioning.polished_material')}
                         isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
                       />
@@ -359,31 +375,13 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                         <table className="lesson-table">
                           <thead>
                             <tr>
-                              <th>Code</th>
-                              <th>Details</th>
-                              <th>Tolerance Level JIC B 0401</th>
-                              <th>Surface Roughness Range</th>
+                              {polishedMaterialHeaders.map(header => <th key={header}>{header}</th>)}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>S45C-D</td>
-                              <td>S45C materials which are grinded. These diameter dimensions are assured by processing of drawing</td>
-                              <td>h9</td>
-                              <td>over 3.2a / over 12.5S</td>
-                            </tr>
-                            <tr>
-                              <td>S45C-CG</td>
-                              <td>S45C materials which are grinded. These diameter dimensions are assured by processing of centerless grinding machine</td>
-                              <td>h7</td>
-                              <td>over 3.2a / over 12.5S</td>
-                            </tr>
-                            <tr>
-                              <td>SS400-D</td>
-                              <td>SS400 materials which are grinded. These diameter dimensions are assured by processing of drawing</td>
-                              <td>h9</td>
-                              <td>over 3.2a / over 12.5S</td>
-                            </tr>
+                            {polishedMaterialRows.map(row => (
+                              <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -401,7 +399,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Part Note"
+                        text={t('2d.part_note')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -427,7 +425,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Change Position"
+                        text={t('2d.change_position')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -441,9 +439,13 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       />
                       <img src={changePosition1Img} alt="Change Position Overview" className="software-screenshot screenshot-wide mt-4" />
                       <div className="instruction-box mt-4">
-                        <p style={{ margin: 0, lineHeight: 1.5 }}>
-                          <strong>Note:</strong> Either of these commands can be use to align dimensions.
-                        </p>
+                        <KaraokeLessonText
+                          as="p"
+                          text={t('2d.dimensioning.alignment_note')}
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                          style={{ margin: 0, lineHeight: 1.5 }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -458,7 +460,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Dimension for Breakviews"
+                        text={t('2d.dimension_for_breakviews')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -481,10 +483,10 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

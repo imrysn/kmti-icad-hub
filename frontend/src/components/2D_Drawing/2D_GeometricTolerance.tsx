@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -22,9 +23,10 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const TABS = [
-    { id: '1', label: 'Tolerance Frames' },
-    { id: '2', label: 'Datum References' }
+    { id: '1', label: t('2d.geo.tolerance_frames') },
+    { id: '2', label: t('2d.geo.datum_references') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -70,17 +72,15 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-geometric-tol-1': {
-      title: 'GEOMETRIC TOLERANCE',
-      subtitle: 'System for defining engineering tolerances and accuracy.',
+      title: t('2d.geo.title'), subtitle: t('2d.geo.subtitle'),
       steps: [
-        "A system for defining allowable engineering tolerances. It tells what degree of accuracy and precision that needs to be applied on the part."
+        t('2d.geo.description')
       ]
     },
     '2d-geometric-tol-2': {
-      title: 'DATUM',
-      subtitle: 'Establishing reference points, lines, or surfaces.',
+      title: t('2d.geo.datum'), subtitle: t('2d.geo.datum_subtitle'),
       steps: [
-        "A datum is a reference point, line, or surface used as a target for measurements on a part."
+        t('2d.geo.datum_description')
       ]
     }
   };
@@ -141,7 +141,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Geometric Tolerance"
+                      text={t('2d.geo.title')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -166,7 +166,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Datum"
+                      text={t('2d.geo.datum')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -188,10 +188,10 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

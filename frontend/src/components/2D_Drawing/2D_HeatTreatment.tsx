@@ -2,6 +2,7 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -11,14 +12,56 @@ interface HeatTreatmentLessonProps {
   onPrevLesson?: () => void;
 }
 
+type JapaneseMaterialGroup = {
+  material: string;
+  processes: Array<[string, string]>;
+};
+
+const japaneseMaterialGroups: JapaneseMaterialGroup[] = [
+  { material: 'S35C, S45C', processes: [
+    ['素材調質施工 硬度HS35〜40', 'Rev11'], ['荒削後調質施工 硬度HS35〜40', 'Rev11'], ['ズブ焼入レ施工 硬度HS55〜60（無心焼入れ、心部焼入れ）', 'Rev1,2'], ['高周波焼入レ施工 硬度HS60〜65', 'Rev3'], ['イソナイト施工 硬度HV500 UP', ''], ['イオンナイト施工 硬度HV400 UP', ''], ['パルソナイト施工 硬度HV400 UP', 'Rev6'], ['歯（上下両面）レーザー焼入レ施工 硬度HRC50up', '']
+  ]},
+  { material: 'S50C, S55C', processes: [
+    ['素材調質施工 硬度HS35〜40', 'Rev11'], ['荒削後調質施工 硬度HS35〜40', 'Rev11'], ['ズブ焼入レ施工 硬度HS60〜70（無心焼入れ、心部焼入れ）', 'Rev10'], ['高周波焼入レ施工 硬度HS70〜75', 'Rev10'], ['イソナイト施工 硬度HV500 UP', '']
+  ]},
+  { material: 'SCM435', processes: [
+    ['素材調質施工 硬度HS42〜48', 'Rev11'], ['荒削後調質施工 硬度HS42〜48', 'Rev11'], ['イソナイト施工 硬度HV800 UP', 'Rev9'], ['パルソナイト施工 硬度HV500 UP', 'Rev9'], ['イオンナイト施工 硬度HV700 UP', '']
+  ]},
+  { material: 'SCM440', processes: [
+    ['素材調質施工 硬度HS42〜48', 'Rev11'], ['荒削後調質施工 硬度HS42〜48', 'Rev11'], ['高周波焼入レ施工 硬度HS70〜75', 'Rev9'], ['イソナイト施工 硬度HV600 UP', 'Rev9'], ['イオンナイト施工 硬度HV700 UP', ''], ['（高周波焼入れの代替として歯車に適用）', 'Rev8'], ['イオンナイト施工 硬度HV550〜650・処理時間40h・窒化層深さ0.5mm以上', ''], ['パルソナイト施工 硬度HV500 UP', 'Rev9']
+  ]},
+  { material: 'SKD11', processes: [
+    ['ズブ焼入レ施工 硬度HS80〜83（無心焼入れ、心部焼入れ）', 'Rev2'], ['真空焼入レ施工 硬度HS80〜83', 'Rev2'], ['真空焼入レ施工 硬度HS78±2（SW刃物用）', 'Rev9']
+  ]},
+  { material: 'SKH51', processes: [['ズブ焼入レ施工 硬度HS80〜83', '']] },
+  { material: 'SNC631', processes: [
+    ['素材調質施工 硬度HS38〜44', 'Rev11'], ['荒削後調質施工 硬度HS38〜44', 'Rev11'], ['高周波焼入レ施工 硬度HS68〜75', ''], ['イソナイト施工 硬度HV600 UP', '']
+  ]},
+  { material: 'SNCM439', processes: [
+    ['素材調質施工 硬度HS44〜50', 'Rev11'], ['荒削後調質施工 硬度HS44〜50', 'Rev11'], ['イソナイト施工 硬度HV600 UP', '']
+  ]},
+  { material: 'SNCM447', processes: [
+    ['素材調質施工 硬度HS44〜50', 'Rev11'], ['荒削後調質施工 硬度HS44〜50', 'Rev11'], ['イソナイト施工 硬度HV700 UP', ''], ['高周波焼入レ施工 硬度HS70〜85', '']
+  ]},
+  { material: 'FCD500', processes: [['イソナイト施工 硬度HV600 UP', '']] },
+  { material: 'SS400', processes: [['イソナイト施工 硬度HV400 UP', ''], ['パルソナイト施工 硬度HV300 UP', 'Rev6']] },
+  { material: 'STKM16A', processes: [['素材調質施工 硬度HS35〜40', ''], ['高周波焼入レ施工 硬度HS60〜65', ''], ['イソナイト施工 硬度HV500 UP', '']] },
+  { material: 'SUJ2', processes: [['素材調質施工 硬度HS35〜45', ''], ['ズブ焼入レ施工 硬度HS75〜80（無心焼入れ、心部焼入れ）', 'Rev9'], ['高周波焼入レ施工 硬度HS75〜80', 'Rev2,4']] },
+  { material: 'SUS304', processes: [['イオンナイト施工 硬度HV1000 UP', 'Rev6']] },
+  { material: '歯切り用材料', processes: [['素材調質施工 硬度HS35〜38', ''], ['荒削後調質施工 硬度HS35〜38', 'Rev11']] },
+  { material: '材料指定なしの熱処理', processes: [['焼鈍施工', ''], ['荒削後焼鈍施工', ''], ['焼鈍後ショットブラスト施工', ''], ['硫黄窒化施工 硬度HV500 UP', ''], ['リン酸マンガン皮膜処理施工', ''], ['焼戻し温度600℃以上', '']] }
+];
+
 const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
   onNextLesson,
   onPrevLesson,
   nextLabel
 }) => {
+  const { language } = useTranslation();
+  const isJapanese = language === 'ja';
   const TABS = [
-    { id: '1', label: 'Material' },
-    { id: '2', label: 'Heat Treatment Process' }
+    { id: '1', label: isJapanese ? '材料' : 'Material' },
+    { id: '2', label: isJapanese ? '熱処理工程' : 'Heat Treatment Process' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -116,6 +159,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
           white-space: normal !important;
           word-break: break-word !important;
         }
+        .heat-process-source.is-japanese { display: none; }
       `}</style>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
@@ -140,18 +184,43 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
               {activeTab === '1' && (
                 <div className="instruction-step">
                   <div className={`lesson-table-container ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
-                    <table className="lesson-table">
+                    {isJapanese ? (
+                      <table className="lesson-table heat-material-table">
+                        <colgroup>
+                          <col style={{ width: "20%" }} />
+                          <col style={{ width: "65%" }} />
+                          <col style={{ width: "15%" }} />
+                        </colgroup>
+                        <thead>
+                          <tr><th>材料</th><th>熱処理内容（KEM.方式）</th><th>REV</th></tr>
+                        </thead>
+                        <tbody>
+                          {japaneseMaterialGroups.flatMap(group =>
+                            group.processes.map(([process, revision], index) => (
+                              <tr key={`${group.material}-${process}`}>
+                                {index === 0 && <td rowSpan={group.processes.length}>{group.material}</td>}
+                                <td>{process}</td>
+                                <td>{revision}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    ) : (
+                    <table className="lesson-table heat-material-table">
                       <colgroup>
-                        <col style={{ width: "18%" }} />
-                        <col style={{ width: "36%" }} />
-                        <col style={{ width: "36%" }} />
-                        <col style={{ width: "10%" }} />
+                        <>
+                          <col style={{ width: "18%" }} />
+                          <col style={{ width: "36%" }} />
+                          <col style={{ width: "36%" }} />
+                          <col style={{ width: "10%" }} />
+                        </>
                       </colgroup>
                       <thead>
                         <tr>
-                          <th>Material</th>
+                          <th>{isJapanese ? '材料' : 'Material'}</th>
                           <th>English (JIS)</th>
-                          <th>Japanese (KEM. Style)</th>
+                          <th>{isJapanese ? '熱処理内容（KEM.方式）' : 'Japanese (KEM. Style)'}</th>
                           <th>Rev</th>
                         </tr>
                       </thead>
@@ -306,7 +375,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
                         {/* Gear Cutting */}
                         <tr>
-                          <td rowSpan={2}>Material for Gear Cutting</td>
+                          <td rowSpan={2}>{isJapanese ? '歯切り用材料' : 'Material for Gear Cutting'}</td>
                           <td>Thermal refining to 35~38 HS</td>
                           <td>素材調質施工 硬度HS35〜38</td><td></td>
                         </tr>
@@ -314,7 +383,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
                         {/* Without Specific Material */}
                         <tr>
-                          <td rowSpan={6}>Heat treatment without specific material</td>
+                          <td rowSpan={6}>{isJapanese ? '材料指定なしの熱処理' : 'Heat treatment without specific material'}</td>
                           <td>Annealing</td>
                           <td>焼鈍施工</td><td></td>
                         </tr>
@@ -325,17 +394,25 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         <tr><td>Normalizing</td><td>焼戻し温度 600℃以上のこと</td><td></td></tr>
                       </tbody>
                     </table>
+                    )}
                   </div>
 
                   <div className="mt-8">
-                    {[
+                    {(isJapanese ? [
+                      { rev: "Rev2", text: "硬度表記について" },
+                      { rev: "Rev3", text: "KEM 方式は従来どおりです。英語表記は JIS に従います。" },
+                      { rev: "Rev6", text: "パルソナイト処理は 480℃、イオン窒化処理は 580℃で行うため、反りが発生しにくい処理です。処理時間を短縮して反りを防ぐため、HV400 および HV300 を設定します。" },
+                      { rev: "Rev9", text: "従来、SW ブレードの硬度は HS78±2 で、実測値は 78 または 79 です。性能上の問題報告がないため、この硬度基準を維持します。" },
+                      { rev: "Rev10", text: "S50C・S55C の全体焼入れおよび高周波焼入れの硬度基準を変更しました。" },
+                      { rev: "Rev11", text: "各材料の調質硬度を記載します。JIS 規格に従います。" }
+                    ] : [
                       { rev: "Rev2", text: "Expression of hardness" },
                       { rev: "Rev3", text: "KEM Style is the same as usual. Follow JIS for English words" },
                       { rev: "Rev6", text: "It's hard to make warp because parsonite hardening process treatment is done by 480°C. Ion nitriding treatment is done by 580°C. We set HV400 and HV300 to cut treatment time to avoid a warp." },
                       { rev: "Rev9", text: "Traditionally, the blade of SW is HS78±2, and results of checking hardness is 78 or 79. Also, there is no report about performance, so we keep this hardness standard." },
                       { rev: "Rev10", text: "We have changed hardness standards of through hardening for S50C and S55C and induction hardening." },
                       { rev: "Rev11", text: "Describe thermal refining hardness for each material. It follows the standard of JIS." }
-                    ].map((item, idx) => (
+                    ]).map((item, idx) => (
                       <div key={idx} className="flex-row" style={{ marginBottom: "0.25rem", alignItems: "flex-start" }}>
                         <span className="red-text font-bold">{item.rev}:</span>
                         <span style={{ lineHeight: "1.5" }}>{item.text}</span>
@@ -347,7 +424,33 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
 
               {activeTab === '2' && (
                 <div className="flex-col">
-                  <div className={`lesson-table-container ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+                  {isJapanese && (
+                    <div className={`lesson-table-container ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
+                      <table className="lesson-table">
+                        <thead>
+                          <tr>
+                            {['処理種類', '図面表記', '適用材料', '適用硬度', '用途', '特徴'].map((header) => <th key={header}>{header}</th>)}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            ['全体焼入れ', '全体焼入れ・硬度 HS-', 'S45C／SKD11／SKH51 ほか', 'HS55〜83', '切削工具／ローラー／スペーサー', '耐摩耗性・耐疲労性に優れ、工程が比較的簡単です。高精度が必要な場合は研磨・バフ・研削を追加します。'],
+                            ['真空焼入れ', '真空焼入れ・硬度 HS-', 'SKD11', 'HS80〜83', 'ローラー／プラグヘッド', '耐摩耗性・耐疲労性に優れ、変形と酸化を抑えられます。'],
+                            ['調質', '調質・硬度 HS-', 'S45C／STKM16A／SNC631／SNCM447／SUJ2 ほか', 'HS35〜44', '軸／ローラー／ギヤ／カラー', '材料組織を安定させ、焼入れ後の変形を低減します。'],
+                            ['焼なまし', '焼なまし', 'SS400／SC420 ほか', '—', '溶接構造物／鍛造材', '材料応力を除去します。ショットブラストを併用するとスラグ除去に有効です。'],
+                            ['高周波焼入れ', '高周波焼入れ・硬度 HS-', 'S45C／STKM16A／SNC631／SNCM447／SUJ2 ほか', 'HS60〜80', 'ローラー軸／ギヤ／軸／カラー／ピン', '必要部位のみを短時間で硬化できます。事前に調質を行い、硬化範囲を明確にします。'],
+                            ['QPQ処理', 'QPQ処理', 'SS400／S45C ほか', '—', '軸／シリンダーヘッドカバー', '耐食性と装飾性を高めます。'],
+                            ['PLU-1A処理', 'PLU-1A処理', '—', '—', '—', 'イソナイト処理との併用はできません。'],
+                            ['イソナイト処理', 'イソナイト処理・硬度 HV-', 'SS400／SC410／S45C／STKM16A／SNC631／SNCM447／SCM430／SACM645 ほか', 'HV400〜900以上', 'ローラー軸／ローラー／ギヤ／軸／カラー／ピン', '耐摩耗・耐疲労・耐焼付き・耐熱・耐食性に優れ、変形が少ない処理です。事前に650℃調質を行います。'],
+                            ['イオナイト処理', 'イオナイト処理・硬度 HV-', 'S45C／SCM440／SACM645／SUS304 ほか', 'HV400〜1000以上', 'ローラー／軸／ロケーター／カム／ベアリングスリーブ', '耐摩耗・耐疲労・耐焼付き・耐熱・耐食性に優れます。事前に650℃調質を行います。']
+                          ].map((row) => (
+                            <tr key={row[0]}>{row.map((cell, index) => <td key={index}>{cell}</td>)}</tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  <div className={`lesson-table-container heat-process-source ${isJapanese ? 'is-japanese' : ''} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <table className="lesson-table">
                       <colgroup>
                         <col style={{ width: "14%" }} />

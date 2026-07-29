@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -24,11 +25,12 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: 'line-properties', label: 'Selectable / Unselectable Line' },
-    { id: 'command-menu', label: 'Command Menu' },
-    { id: 'active-view', label: 'Active View' },
-    { id: 'component', label: 'Highlighted / Unhighlighted ' }
+    { id: 'line-properties', label: t('2d.selectable_unselectable_line') },
+    { id: 'command-menu', label: t('2d.command_menu') },
+    { id: 'active-view', label: t('2d.active_view') },
+    { id: 'component', label: t('2d.highlighted_unhighlighted') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -74,28 +76,28 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
     '2d-command-menu-line-properties': {
-      title: 'Selectable and Unselectable Line Properties',
+      title: t('2d.selectable_and_unselectable_line_propert'),
       steps: [
-        "All line type, line weight, and color are selectable when system is started.",
-        "Click on the entities to select and unselect line properties. Entities highlighted in blue are selectable."
+        t('2d.all_line_type_line_weight_and_color_are_'),
+        t('2d.click_on_the_entities_to_select_and_unse')
       ]
     },
     '2d-command-menu-command-menu': {
-      title: 'COMMAND MENU',
+      title: t('2d.command_menu_1'),
       steps: [
-        "During 2D detailing, command menu is more effective to use rather than icon menu."
+        t('2d.during_2d_detailing_command_menu_is_more')
       ]
     },
     '2d-command-menu-active-view': {
-      title: 'ACTIVE VIEW',
+      title: t('2d.active_view_1'),
       steps: [
-        "Each viewing has its own local view. Highlighted one is activated. It means, all changes performed in that activated view is valid. Unactivated view cannot select any line, so that no command will be performed.",
+        t('2d.each_viewing_has_its_own_local_view_high'),
       ]
     },
     '2d-command-menu-component': {
-      title: 'Component highlighted / unhighlighted',
+      title: t('2d.component_highlighted_unhighlighted'),
       steps: [
-        "The process of removing the chamfer is per orthographic view."
+        t('2d.the_process_of_removing_the_chamfer_is_p')
       ]
     }
   };
@@ -111,7 +113,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -156,7 +158,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Selectable and Unselectable Line Properties"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -192,7 +194,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Command Menu"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -219,7 +221,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Active View"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -246,7 +248,7 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Component highlighted / unhighlighted"
+                      text={currentLesson.title}
                       isActive={isSpeaking && currentIndex === 0}
                       currentCharIndex={currentCharIndex}
                     />
@@ -271,10 +273,10 @@ const CommandMenuLesson: React.FC<CommandMenuLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

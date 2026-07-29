@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -46,13 +47,14 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
   onPrevLesson,
   nextLabel,
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: '1', label: 'PCD / Tapered / Standard' },
-    { id: '2', label: 'Oil Groove' },
-    { id: '3', label: 'Shaft & Key' },
-    { id: '4', label: 'Collar' },
-    { id: '6', label: 'Scale' },
-    { id: '7', label: 'Relief Process' }
+    { id: '1', label: t('2d.pcd_tapered_standard') },
+    { id: '2', label: t('2d.oil_groove') },
+    { id: '3', label: t('2d.shaft_and_key') },
+    { id: '4', label: t('2d.standard.collar') },
+    { id: '6', label: t('2d.scaling_rules') },
+    { id: '7', label: t('2d.relief_process') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -98,27 +100,27 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-standard-part-1': {
-      title: 'PCD / TAPERED / STANDARD',
-      subtitle: 'Pitch Center Diameter, Rc Tapered Threads, and Standard Parts.',
+      title: t('2d.pcd_tapered_standard'),
+      subtitle: t('2d.pitch_center_diameter_rc_tapered_threads'),
       steps: [
-        "is no longer used for KEMCO drawing to avoid misreading of dimension during fabrication.",
-        "Based on the drawing, we must apply it on 2D detailing",
-        "Boxed portion of the template is the only data need to be input, other than that no detail will be change."
+        t('2d.is_no_longer_used_for_kemco_drawing_to_a'),
+        t('2d.based_on_the_drawing_we_must_apply_it_on'),
+        t('2d.boxed_portion_of_the_template_is_the_onl')
       ]
     },
     '2d-standard-part-2': {
-      title: 'OIL GROOVE',
-      subtitle: 'Lubrication groove detailing and oil holes.',
+      title: t('2d.oil_groove'),
+      subtitle: t('2d.lubrication_groove_detailing_and_oil_hol'),
       steps: [
-        "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
+        t('2d.is_a_groove_in_the_surface_of_a_machine_')
       ]
     },
     '2d-standard-part-3': {
-      title: 'SHAFT AND KEY',
-      subtitle: 'Tolerances and processing of shaft keyways.',
+      title: t('2d.shaft_and_key'),
+      subtitle: t('2d.tolerances_and_processing_of_shaft_keywa'),
       steps: [
-        "The shape after cutting must be free from burrs. Use flat bar material. The tolerance of the width groove must be f plus zero point three over plus zero point two.",
-        "As much as possible, follow the way of detailing in this reference. Do not position the key groove below."
+        t('2d.the_shape_after_cutting_must_be_free_fro'),
+        t('2d.as_much_as_possible_follow_the_way_of_de')
       ]
     },
     '2d-standard-part-4': {
@@ -161,7 +163,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -206,7 +208,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="(PCD) Pitch Center Diameter"
+                        text={t('2d.standard.pcd')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -229,7 +231,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Tapered Threads (Rc)"
+                        text={t('2d.standard.tapered_threads')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -251,7 +253,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Standard Parts"
+                        text={t('2d.standard.parts')}
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -278,7 +280,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Oil Groove"
+                        text={currentLesson.title}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -291,7 +293,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         currentCharIndex={currentCharIndex}
                       />
                       <p className="font-semibold text-red-400 mt-2" style={{ color: 'red', fontWeight: "600", margin: "0.5rem 0" }}>
-                        ※ There are two (2) kinds of oil groove
+                        {t('2d.standard.oil_groove_types')}
                       </p>
                     </div>
                   </div>
@@ -303,7 +305,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="For Flat Surface"
+                        text={t('2d.standard.flat_surface')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -324,15 +326,15 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Follow the standard detail of KEMCO for flat surface <strong style={{ color: 'red' }}>(Figure 1)</strong>.</span>
+                            <span>{t('2d.standard.flat_surface_detail')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Depth of grease line should be <strong>1.5mm</strong></span>
+                            <span>{t('2d.standard.grease_depth')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>In case of drill hole and tap hole, the diameter of the hole must be <strong>smaller than width of groove</strong>.</span>
+                            <span>{t('2d.standard.groove_hole_diameter')}</span>
                           </li>
                         </ul>
                       </div>
@@ -346,7 +348,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="For Circular Portion"
+                        text={t('2d.standard.circular_portion')}
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -367,7 +369,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Follow the standard detail of KEMCO for circular portion <strong style={{ color: 'red' }}>(Figure 2)</strong>.</span>
+                            <span>{t('2d.standard.circular_detail')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
@@ -375,11 +377,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Depth of grease line should be <strong>1.5mm</strong></span>
+                            <span>{t('2d.standard.grease_depth')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>In case of drill hole and tap hole, the diameter of the hole must be <strong>smaller than width of groove</strong>.</span>
+                            <span>{t('2d.standard.groove_hole_diameter')}</span>
                           </li>
                         </ul>
                       </div>
@@ -397,7 +399,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Shaft and Key Plate"
+                        text={t('2d.standard.shaft_key_plate')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -405,7 +407,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
                     <div className="step-description">
                       <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600" }}>
-                        ※ Dimension of Shaft and Key Plate
+                        {t('2d.standard.shaft_key_dimensions')}
                       </p>
 
                       <div className="mb-4">
@@ -413,19 +415,19 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
-                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>Note:</p>
+                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>{t('2d.note')}</p>
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>The shape after cutting must be free from burrs</span>
+                            <span>{t('2d.standard.no_burrs')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Use flat bar material</span>
+                            <span>{t('2d.standard.flat_bar')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>The tolerance of the width groove must be <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>f <span style={{ display: "inline-block", verticalAlign: "middle", fontSize: "0.6em", lineHeight: "1.2", marginLeft: "0.1rem" }}><div style={{ textAlign: "left" }}>+0.3</div><div style={{ textAlign: "left" }}>+0.2</div></span></span></span>
+                            <span>{t('2d.standard.keyway_tolerance')} <span style={{ fontSize: "1.2em", fontWeight: "bold" }}>f <span style={{ display: "inline-block", verticalAlign: "middle", fontSize: "0.6em", lineHeight: "1.2", marginLeft: "0.1rem" }}><div style={{ textAlign: "left" }}>+0.3</div><div style={{ textAlign: "left" }}>+0.2</div></span></span></span>
                           </li>
                         </ul>
                       </div>
@@ -447,7 +449,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>As much as possible, follow the way of detailing in this reference.<br />Do not position the key groove below.</span>
+                            <span>{t('2d.standard.keyway_reference')}</span>
                           </li>
                         </ul>
                       </div>
@@ -465,7 +467,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Collar"
+                        text={t('2d.standard.collar')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -489,7 +491,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3" style={{ marginTop: "2rem" }}>
                     <div className="step-description">
                       <p className="font-semibold mb-4" style={{ color: 'red', fontWeight: "600", fontStyle: "italic", marginTop: "-2rem", fontSize: "1.3rem", marginLeft: "1.5rem" }}>
-                        Example 3.
+                        {t('2d.standard.example_3')}
                       </p>
 
                       <div className="mb-4">
@@ -500,11 +502,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Can used to hold urethane rubber and serve as stopper.</span>
+                            <span>{t('2d.standard.collar_urethane')}</span>
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>To avoid over press of the material during tightening that causes<br />the urethane to distort.</span>
+                            <span>{t('2d.standard.collar_tightening')}</span>
                           </li>
                         </ul>
                       </div>
@@ -526,7 +528,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>As much as possible, follow the way of detailing in this reference.</span>
+                            <span>{t('2d.standard.follow_reference')}</span>
                           </li>
                         </ul>
                       </div>
@@ -543,7 +545,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Scale"
+                        text={t('2d.orthographic.scale')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -557,15 +559,15 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Follow the standard scale given by KEMCO.</span>
+                            <span>{t('2d.standard.follow_scale')}</span>
                           </li>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>On parts drawing, standard scale must be always used.</span>
+                            <span>{t('2d.on_parts_drawing_standard_scale_must_be_')}</span>
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>On assembly drawing, standard scale should be used, but non-standard<br />scale can be used as a second option.</span>
+                            <span>{t('2d.on_assembly_drawing_standard_scale_shoul')}</span>
                           </li>
                         </ul>
                       </div>
@@ -582,7 +584,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Relief process"
+                        text={t('2d.relief_process')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -596,7 +598,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       />
 
                       <p className="font-semibold mb-4" style={{ color: 'red', marginTop: "1rem" }}>
-                        In 2D
+                        {t('2d.standard.in_2d')}
                       </p>
 
                       <div className="mb-4">
@@ -607,11 +609,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0, flex: 1 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Relief process detail should be <strong style={{ color: 'red' }}>used on shaft parts</strong> with three (3) triangle and surface grinding process.</span>
+                            <span>{t('2d.standard.relief_shaft')}</span>
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Relief process should be <strong style={{ color: 'red' }}>shown on 2D detailing</strong>.</span>
+                            <span>{t('2d.standard.relief_2d')}</span>
                           </li>
                         </ul>
                         <img
@@ -622,15 +624,15 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
-                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>Note:</p>
+                        <p style={{ color: "red", fontWeight: "bold", marginBottom: "0.5rem" }}>{t('2d.note')}</p>
                         <ul className="space-y-2 text-sm" style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
                           <li style={{ marginBottom: "0.5rem", display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>All corners of the shaft cannot be straight by using grinding or any machining equipment.</span>
+                            <span>{t('2d.standard.relief_corners')}</span>
                           </li>
                           <li style={{ display: "flex", alignItems: "flex-start" }}>
                             <span style={{ marginRight: "0.5rem" }}>●</span>
-                            <span>Sliding portion needs to be supplied with oil.</span>
+                            <span>{t('2d.standard.relief_oil')}</span>
                           </li>
                         </ul>
                       </div>
@@ -674,10 +676,10 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

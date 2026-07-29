@@ -3,6 +3,7 @@ import React,{ useEffect } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -22,16 +23,16 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-welding-symbol');
 
-  const currentTitle = "WELDING SYMBOL / NOTES";
-  const currentSubtitle = "Procedures for applying welding symbols, hatches, and standard notes.";
+  const currentTitle = t('2d.weld.title');
+  const currentSubtitle = t('2d.weld.subtitle');
 
   const currentTabSteps = [
     currentTitle,
     currentSubtitle,
-    "Welding Symbol. Add welding symbols, hatches, and standard notes according to KEMCO standards.",
-    "Welding notes. Review the notes for surface preparation and post-welding processes."
+    t('2d.weld.symbol_intro'), t('2d.weld.notes_intro')
   ];
   const tabsList = [{ id: 'default' }];
   const activeTab = 'default';
@@ -76,7 +77,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Welding Symbol"
+                  text={t('2d.weld.symbol')}
                   isActive={isSpeaking && currentIndex === 2}
                   currentCharIndex={currentCharIndex}
                 />
@@ -86,15 +87,13 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                   <img src={weldingSymbolMainImg} alt="Welding Symbol Menu" className="software-screenshot screenshot-wide" />
                   <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <div style={{ flex: 1, minWidth: '300px', border: '1px solid red', padding: '1rem', backgroundColor: 'var(--bg-card, #fff)', color: 'var(--text-primary, #333)', fontSize: '0.95rem', borderRadius: '4px' }}>
-                      <p style={{ marginBottom: '1rem' }}>※ Before indicating the welding symbol on the drawing, welding hatches shall be put up first as representation of welding on actual fabrication.</p>
-                      <p style={{ marginBottom: '1rem' }}>※ Select and put all the required details for welding on the dialog box, then click OK. Place it together with welding hatch.</p>
+                      <p style={{ marginBottom: '1rem' }}>{t('2d.weld.instruction_1')}</p>
+                      <p style={{ marginBottom: '1rem' }}>{t('2d.weld.instruction_2')}</p>
                       <div style={{ color: 'red', fontStyle: 'italic' }}>
-                        <p style={{ fontWeight: 'bold', fontStyle: 'normal', marginBottom: '0.25rem' }}>Notes:</p>
+                        <p style={{ fontWeight: 'bold', fontStyle: 'normal', marginBottom: '0.25rem' }}>{t('2d.notes')}</p>
                         <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                          <li>Arrow line acts as a welding torch on the actual job.</li>
-                          <li>The leg length of the welding is 60% of plate thickness (thinner side) unless specified.</li>
-                          <li>Welding hatches is not necessarily applicable in all parts; there are some instances that the detail is too small, so it is no need to put hatches anymore.</li>
-                          <li>Welding hatch in hidden area is not necessary.</li>
+                          <li>{t('2d.weld.note_1')}</li><li>{t('2d.weld.note_2')}</li>
+                          <li>{t('2d.weld.note_3')}</li><li>{t('2d.weld.note_4')}</li>
                         </ol>
                       </div>
                     </div>
@@ -111,30 +110,26 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                 <div className="flex-col gap-4">
                   <div className="step-header">
                     <span className="step-number">14</span>
-                    <span className="step-label">Notes</span>
+                    <span className="step-label">{t('2d.notes')}</span>
                   </div>
-                  <p className="p-flush">Notes are always located in the upper left corner of the template.</p>
+                  <p className="p-flush">{t('2d.weld.note_location')}</p>
                   <div className="step-header" style={{ marginLeft: "3rem" }}>
                     <span className="step-number">a</span>
-                    <span className="step-label">Standard Notes</span>
+                    <span className="step-label">{t('2d.weld.standard_notes')}</span>
                   </div>
                   <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <img src={standardNotesImg} alt="Standard Notes Placement" className="software-screenshot screenshot-medium" style={{ flex: 1, minWidth: '300px' }} />
                     <div style={{ flex: 1, minWidth: '300px', border: '1px solid red', padding: '1rem', backgroundColor: 'var(--bg-card, #fff)', color: 'var(--text-primary, #333)', fontSize: '0.95rem', borderRadius: '8px' }}>
                       <div style={{ color: 'red' }}>
-                        <p style={{ marginBottom: '0.5rem' }}>Standard notes:</p>
+                        <p style={{ marginBottom: '0.5rem' }}>{t('2d.weld.standard_notes')}:</p>
                         <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', color: 'var(--text-primary, #fff' }}>
-                          <li>Tap, drill hole shall be chamfered finish.</li>
-                          <li>Corner without any instruction shall be slightly chamfer.</li>
-                          <li>When completed, burrs and dust must not exist.</li>
+                          <li>{t('2d.weld.standard_1')}</li><li>{t('2d.weld.standard_2')}</li><li>{t('2d.weld.standard_3')}</li>
                         </ol>
 
-                        <p style={{ fontWeight: 'bold', marginTop: '1rem', marginBottom: '0.5rem' }}>Notes:</p>
+                        <p style={{ fontWeight: 'bold', marginTop: '1rem', marginBottom: '0.5rem' }}>{t('2d.notes')}</p>
                         <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', fontStyle: 'italic' }}>
-                          <li>These three standard notes automatically appear from the beginning while selecting the template.</li>
-                          <li>First line can be eliminated if tapping hole and drill hole are not present on the drawing.</li>
-                          <li>Text properties are not allowed to change.</li>
-                          <li>It is place under the special notes.</li>
+                          <li>{t('2d.weld.standard_note_1')}</li><li>{t('2d.weld.standard_note_2')}</li>
+                          <li>{t('2d.weld.standard_note_3')}</li><li>{t('2d.weld.standard_note_4')}</li>
                         </ol>
                       </div>
                     </div>
@@ -146,10 +141,10 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

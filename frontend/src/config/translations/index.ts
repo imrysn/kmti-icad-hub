@@ -1,3 +1,5 @@
+import { en_2d_common } from './en/2d/common';
+import { ja_2d_common } from './ja/2d/common';
 import { en_3d_annotation } from './en/3d/annotation';
 import { ja_3d_annotation } from './ja/3d/annotation';
 import { en_3d_fairing } from './en/3d/fairing';
@@ -80,6 +82,7 @@ export const enTranslations: Record<string, string> = {
   ...en_3d_purchaseparts,
   ...en_3d_standard,
 
+  ...en_2d_common,
   ...en_common,
   ...en_components_diagnostics,
   ...en_components_login,
@@ -117,6 +120,7 @@ export const jaTranslations: Record<string, string> = {
   ...ja_3d_purchaseparts,
   ...ja_3d_standard,
 
+  ...ja_2d_common,
   ...ja_common,
   ...ja_components_diagnostics,
   ...ja_components_login,

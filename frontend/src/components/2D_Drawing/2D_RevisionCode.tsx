@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -24,8 +25,9 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: 'revision-code', label: 'Revision Code' }
+    { id: 'revision-code', label: t('2d.revision_code') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -70,20 +72,20 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
   };
 
   const revisionSteps = [
-    "Revision will occur if the finished drawing is already approved yet discrepancy notice during fabrication.",
-    "Use the 'create delta' command to mark changes. Enter the delta character and place it near the modified feature. Remember: local view must be activated.",
-    "Update the revision history block to provide a clear record of what was changed, by whom, and when."
+    t('2d.revision_will_occur_if_the_finished_draw'),
+    t('2d.use_the_create_delta_command_to_mark_cha'),
+    t('2d.update_the_revision_history_block_to_pro')
   ];
 
   const currentTabSteps = [
-    "REVISION CODE",
+    t('2d.revision_code'),
     ...revisionSteps
   ];
   const tabsList = TABS.map(t => ({ id: t.id }));
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -121,7 +123,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
             <div className="instruction-step" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
                 <span className="step-number">23</span>
-                <span className="step-label">Revision Code and History</span>
+                <span className="step-label">{t('2d.revision_code')}</span>
               </div>
             </div>
 
@@ -133,7 +135,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Revision"
+                        text={t('2d.revision_code')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -156,7 +158,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Revise Detail"
+                        text={t('2d.revision.revise_detail')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -200,7 +202,7 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Revision Code"
+                        text={t('2d.revision_code')}
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -222,10 +224,10 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -21,9 +22,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const TABS = [
-    { id: 'external', label: 'External Shaft Standards' },
-    { id: 'internal', label: 'Internal Housing Standards' }
+    { id: 'external', label: t('2d.ring.external_tab') },
+    { id: 'internal', label: t('2d.ring.internal_tab') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -69,15 +71,15 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-retaining-ring-external': {
-      title: 'RETAINING RING SIZE AND TOLERANCE',
-      subtitle: 'Dimensional specifications and assembly standards for External C-Type Retaining Rings.',
+      title: t('2d.ring.title'),
+      subtitle: t('2d.ring.external_subtitle'),
       steps: [
 
       ]
     },
     '2d-retaining-ring-internal': {
-      title: 'RETAINING RING SIZE AND TOLERANCE',
-      subtitle: 'Dimensional specifications and assembly standards for Internal C-Type Retaining Rings.',
+      title: t('2d.ring.title'),
+      subtitle: t('2d.ring.internal_subtitle'),
       steps: [
 
       ]
@@ -139,7 +141,7 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="retaining Rings-C Type-External"
+                      text={t('2d.ring.external_heading')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -165,7 +167,7 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                      text="Retaining Rings-C Type-Internal"
+                      text={t('2d.ring.internal_heading')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -188,10 +190,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -21,18 +22,13 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore('2d-balloon');
   const [activeTab] = useState<string>('1');
   const currentTabSteps = [
-    "BALLOON",
-    "Part drawing. A balloon will be placed where the part image is clearly shown.",
-    "Balloons should not overlap with other lines or dimensions.",
-    "If the details on the BOM are properly linked, part balloons are automatically displayed.",
-    "If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box.",
-    "Text should not change using edit characters.",
-    "Assembly drawing",
-    "Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together.",
-    "Select the setup for Add Balloon. Click L1 of the part needed, then click P2 to place it beside the balloon where it will be attached."
+    t('2d.balloon.title'), t('2d.balloon.part_intro'), t('2d.balloon.note_1'),
+    t('2d.balloon.note_2'), t('2d.balloon.note_3'), t('2d.balloon.note_4'),
+    t('2d.balloon.assembly'), t('2d.balloon.edit'), t('2d.balloon.placement')
   ];
   const tabsList = [{ id: '1' }];
 
@@ -62,7 +58,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
   );
 
   const TABS = [
-    { id: '1', label: 'Balloon' }
+    { id: '1', label: t('2d.balloon.title') }
   ];
 
   return (
@@ -96,7 +92,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Balloon"
+                        text={t('2d.balloon.title')}
                         isActive={isSpeaking && currentIndex === 0}
                         currentCharIndex={currentCharIndex}
                       />
@@ -110,7 +106,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Part drawing"
+                        text={t('2d.bom.part_drawing')}
                         isActive={isSpeaking && currentIndex === 1}
                         currentCharIndex={currentCharIndex}
                       />
@@ -122,35 +118,35 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                         <KaraokeLessonText
                           className="p-flush"
                           style={{ marginBottom: "0.5rem" }}
-                          text="A balloon will be placed where the part image is clearly shown."
+                          text={t('2d.balloon.part_intro')}
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
                         />
-                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">Notes:</strong></p>
+                        <p className="p-flush" style={{ marginBottom: "0.25rem" }}><strong className="red-text">{t('2d.notes')}</strong></p>
                         <KaraokeLessonText
                           className="p-flush"
                           style={{ marginBottom: "0.25rem" }}
-                          text="1. Balloons should not overlap with other lines or dimensions."
+                          text={t('2d.balloon.note_1')}
                           isActive={isSpeaking && currentIndex === 2}
                           currentCharIndex={currentCharIndex}
                         />
                         <KaraokeLessonText
                           className="p-flush"
                           style={{ marginBottom: "0.25rem" }}
-                          text="2. If the details on the BOM are properly linked, part balloons are automatically displayed."
+                          text={t('2d.balloon.note_2')}
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                         <KaraokeLessonText
                           className="p-flush"
                           style={{ marginBottom: "0.25rem" }}
-                          text="3. If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box."
+                          text={t('2d.balloon.note_3')}
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
                         />
                         <KaraokeLessonText
                           className="p-flush"
-                          text="4. Text should not change using edit characters."
+                          text={t('2d.balloon.note_4')}
                           isActive={isSpeaking && currentIndex === 5}
                           currentCharIndex={currentCharIndex}
                         />
@@ -166,7 +162,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Assembly drawing"
+                        text={t('2d.balloon.assembly')}
                         isActive={isSpeaking && currentIndex === 6}
                         currentCharIndex={currentCharIndex}
                       />
@@ -177,7 +173,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                       <div className={`instruction-box mt-6 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                         <KaraokeLessonText
                           className="p-flush"
-                          text="Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together."
+                          text={t('2d.balloon.edit')}
                           isActive={isSpeaking && currentIndex === 7}
                           currentCharIndex={currentCharIndex}
                         />
@@ -186,7 +182,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                       <div className={`instruction-box mt-4 ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
                         <KaraokeLessonText
                           className="p-flush"
-                          text="Select the setup for Add Balloon. Click L-1 of the part needed, then click P-2 to place it beside the balloon where it will be attached."
+                          text={t('2d.balloon.placement')}
                           isActive={isSpeaking && currentIndex === 8}
                           currentCharIndex={currentCharIndex}
                         />
@@ -203,10 +199,10 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

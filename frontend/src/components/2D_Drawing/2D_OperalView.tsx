@@ -3,6 +3,7 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -27,9 +28,10 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t, language, translateContent } = useTranslation();
   const TABS = [
-    { id: 'move-view', label: 'Isometric / Orthographic View' },
-    { id: 'alignment-delete', label: 'Delete View' }
+    { id: 'move-view', label: t('2d.isometric_orthographic_view') },
+    { id: 'alignment-delete', label: t('2d.delete_view') }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -75,16 +77,16 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
     '2d-operal-view-move-view': {
-      title: 'OPERATE VIEW',
-      subtitle: 'Repositioning isometric and orthographic views on your drawing template.',
+      title: t('2d.operate_view'),
+      subtitle: t('2d.repositioning_isometric_and_orthographic'),
       steps: [
         "Move View: Use this command to reposition technical views on the template. For Isometric views, position them freely without overlapping. For Orthographic views, moving one will move all aligned views simultaneously.",
         "Alignment Standard: Position isometric views carefully—not too far or overlapping. Ensure all projected views remain parallel and aligned to maintain professional drafting standards."
       ]
     },
     '2d-operal-view-alignment-delete': {
-      title: 'OPERATE VIEW',
-      subtitle: 'Aligning projected views and deleting unnecessary views.',
+      title: t('2d.operate_view'),
+      subtitle: t('2d.aligning_projected_views_and_deleting_un'),
       steps: [
         "View Alignment: If views are not aligned, use the create-three-view tool to adjust. Aligning lines will appear as guides to help you restore proper projection integrity.",
         "Delete View: Select any unnecessary views, click GO, and confirm in the dialog box to remove them from your drawing template."
@@ -104,7 +106,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 
   useEffect(() => {
     registerText(currentTabSteps, 0);
-  }, [activeTab, registerText]);
+  }, [activeTab, language, registerText]);
 
   useTTSAutoplay(
     isSpeaking,
@@ -143,7 +145,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
               <div className="instruction-step" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
                   <span className="step-number">21</span>
-                  <span className="step-label">Operate View</span>
+                  <span className="step-label">{t('2d.operate_view')}</span>
                 </div>
               </div>
 
@@ -155,7 +157,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Move View"
+                        text={t('2d.operate.move_view')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -216,7 +218,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="View Alignment"
+                        text={t('2d.operate.view_alignment')}
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />
@@ -238,7 +240,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Delete View"
+                        text={t('2d.delete_view')}
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -270,10 +272,10 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel ? translateContent(nextLabel) : t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>
