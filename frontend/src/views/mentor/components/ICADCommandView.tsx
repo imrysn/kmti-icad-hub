@@ -26,6 +26,8 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
     const [commandsPage, setCommandsPage] = useState<string | null>(null);
     const [guidePage, setGuidePage] = useState<string | null>(null);
     const [menuSetupPage, setMenuSetupPage] = useState<string | null>(null);
+    const [isExitHovered, setIsExitHovered] = useState(false);
+
 
     useEffect(() => {
         const handleReset = () => {
@@ -77,10 +79,9 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                             fontSize: '12.8px',
                             padding: '8px 16px',
                             letterSpacing: '0.5px',
-                            border: '1px solid #FCA5A5',
                             borderRadius: '4px',
+                            backgroundColor: 'rgba(127, 29, 29, 0.35)',
                             color: '#FCA5A5',
-                            backgroundColor: 'transparent',
                             boxSizing: 'border-box',
                             lineHeight: '1.6',
                             fontWeight: 300
@@ -126,17 +127,21 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     <button
                         className="exit-course-btn"
                         onClick={handleExitCourse}
+                        onMouseEnter={() => setIsExitHovered(true)}
+                        onMouseLeave={() => setIsExitHovered(false)}
                         style={{
                             fontSize: '12.8px',
-                            padding: '8px 16px',
-                            letterSpacing: '0.5px',
-                            border: '1px solid #FCA5A5',
-                            borderRadius: '4px',
-                            color: '#FCA5A5',
-                            backgroundColor: 'transparent',
+                            padding: '10px 16px 6px',
+                            letterSpacing: '0.3px',
+                            borderRadius: '6px',
+                            border: '1px solid #7c1818d2',
+                            backgroundColor: 'rgb(248, 81, 73)',
+                            color: isExitHovered ? '#ffffff' : '#FCA5A5',
                             boxSizing: 'border-box',
                             lineHeight: '1.6',
-                            fontWeight: 300
+                            fontWeight: 700,
+                            transition: 'color 0.15s ease',
+                            textAlign: 'center'
                         }}
                     >
                         EXIT COURSE
@@ -171,6 +176,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     flexShrink: 0,
                 }}>
 
+
                     {/* Exit button */}
                     <button
                         className="exit-course-btn"
@@ -179,9 +185,9 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                             fontSize: '12.8px',
                             padding: '8px 16px',
                             letterSpacing: '0.5px',
-                            border: '1px solid #FCA5A5',
+
                             borderRadius: '4px',
-                            color: '#FCA5A5',
+
                             backgroundColor: 'transparent',
                             boxSizing: 'border-box',
                             lineHeight: '1.6',
