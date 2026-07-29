@@ -23,6 +23,16 @@ const SPOTLIGHTS: SpotlightConfig[] = [
     { label: "Help", startTime: 12.9, endTime: 15.7, pxX: 390, pxY: 34, pxW: 242, pxH: 230, dropdownImage: Help_Dropdown }
 ];
 
+const DROPDOWN_WIDTHS: Record<string, string> = {
+    File: "42%",
+    View: "17%",
+    Information: "17%",
+    Settings: "20%",
+    Tools: "17%",
+    Window: "22%",
+    Help: "17%"
+};
+
 function Menu_Bar_Japanese_Tutorial() {
     const [videoError, setVideoError] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -62,11 +72,11 @@ function Menu_Bar_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1022) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1042) * 100 : 0;
 
     // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
     const smallBoxW = (90 / 1920) * 100;
-    const smallBoxH = (26 / 1022) * 100;
+    const smallBoxH = (26 / 1042) * 100;
     const spotW = smallBoxW;
     const spotH = smallBoxH;
 
@@ -90,7 +100,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 position: "relative",
                 width: "80%",
                 maxWidth: "1000px",
-                aspectRatio: "1920 / 1022",
+                aspectRatio: "1920 / 1042",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -107,7 +117,7 @@ function Menu_Bar_Japanese_Tutorial() {
                     height: "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: "1920 / 1022",
+                    aspectRatio: "1920 / 1042",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -140,71 +150,13 @@ function Menu_Bar_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight Dimming Overlay with Cutout Mask */}
+                {/* Spotlight cutout: a single element whose box-shadow spread fills the
+                    entire container with the dim color. Because there is only one element
+                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
+                    shared edge between separately-composited backdrop-filter layers, so no
+                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
                 {activeSpotlight && (
                     <>
-                        {/* Top band: full width, above the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: 0,
-                                width: "100%",
-                                height: `${spotY}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Bottom band: full width, below the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY + spotH}%`,
-                                width: "100%",
-                                height: `${100 - (spotY + spotH)}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Left band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY}%`,
-                                width: `${spotX}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Right band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX + spotW}%`,
-                                top: `${spotY}%`,
-                                width: `${100 - (spotX + spotW)}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-
-                        {/* Spotlight border box — follows each spotlight's position in sequence, but stays a fixed small size */}
                         <div
                             style={{
                                 position: "absolute",
@@ -215,9 +167,9 @@ function Menu_Bar_Japanese_Tutorial() {
                                 pointerEvents: "none",
                                 boxSizing: "border-box",
                                 border: "2.5px solid #ff1493",
-                                boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
                                 borderRadius: "2px",
                                 zIndex: 10,
+                                boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 10px #ff1493, 0 0 4px #ff1493",
                                 transition: "all 0.25s ease-out"
                             }}
                         >
@@ -263,7 +215,7 @@ function Menu_Bar_Japanese_Tutorial() {
                                     left: `${spotX}%`,
                                     top: `${spotY + spotH}%`,
                                     marginTop: "6px",
-                                    width: activeSpotlight.label === "File" ? "400px" : "200px",
+                                    width: DROPDOWN_WIDTHS[activeSpotlight.label] ?? "20%",
                                     height: "auto",
                                     objectFit: "contain",
                                     border: "1.5px solid #ff1493",

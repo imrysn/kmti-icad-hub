@@ -61,16 +61,30 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    padding: '0.75rem 1.5rem',
+                    padding: '0.54rem 1.2rem',
                     borderBottom: '1px solid var(--border-color)',
-                    background: 'var(--bg-surface)',
+                    background: '#000000 var(--bg-surface)',
                     flexShrink: 0,
                 }}>
+
+
 
                     {/* Exit button */}
                     <button
                         className="exit-course-btn"
                         onClick={handleExitCourse}
+                        style={{
+                            fontSize: '12.8px',
+                            padding: '8px 16px',
+                            letterSpacing: '0.5px',
+                            border: '1px solid #FCA5A5',
+                            borderRadius: '4px',
+                            color: '#FCA5A5',
+                            backgroundColor: 'transparent',
+                            boxSizing: 'border-box',
+                            lineHeight: '1.6',
+                            fontWeight: 300
+                        }}
                     >
                         EXIT COURSE
                     </button>
@@ -100,9 +114,9 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    padding: '0.75rem 1.5rem',
+                    padding: '0.54rem 1.2rem',
                     borderBottom: '1px solid var(--border-color)',
-                    background: 'var(--bg-surface)',
+                    background: '#000000 var(--bg-surface)',
                     flexShrink: 0,
                 }}>
 
@@ -112,6 +126,18 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     <button
                         className="exit-course-btn"
                         onClick={handleExitCourse}
+                        style={{
+                            fontSize: '12.8px',
+                            padding: '8px 16px',
+                            letterSpacing: '0.5px',
+                            border: '1px solid #FCA5A5',
+                            borderRadius: '4px',
+                            color: '#FCA5A5',
+                            backgroundColor: 'transparent',
+                            boxSizing: 'border-box',
+                            lineHeight: '1.6',
+                            fontWeight: 300
+                        }}
                     >
                         EXIT COURSE
                     </button>
@@ -139,9 +165,9 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    padding: '0.75rem 1.5rem',
+                    padding: '0.54rem 1.2rem',
                     borderBottom: '1px solid var(--border-color)',
-                    background: 'var(--bg-surface)',
+                    background: '#000000 var(--bg-surface)',
                     flexShrink: 0,
                 }}>
 
@@ -149,6 +175,18 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     <button
                         className="exit-course-btn"
                         onClick={handleExitCourse}
+                        style={{
+                            fontSize: '12.8px',
+                            padding: '8px 16px',
+                            letterSpacing: '0.5px',
+                            border: '1px solid #FCA5A5',
+                            borderRadius: '4px',
+                            color: '#FCA5A5',
+                            backgroundColor: 'transparent',
+                            boxSizing: 'border-box',
+                            lineHeight: '1.6',
+                            fontWeight: 300
+                        }}
                     >
                         EXIT COURSE
                     </button>

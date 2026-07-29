@@ -123,7 +123,14 @@ function Command_Menu_Japanese_Tutorial() {
     };
 
     const handlePrevStep = () => {
-        const currentIdx = CHIPS_NAV.findIndex(chip => Math.abs(chip.startTime - currentTime) < 1.5 || currentTime >= chip.startTime);
+        // Find the current chip: the last one whose startTime has already passed.
+        let currentIdx = -1;
+        for (let i = CHIPS_NAV.length - 1; i >= 0; i--) {
+            if (currentTime >= CHIPS_NAV[i].startTime) {
+                currentIdx = i;
+                break;
+            }
+        }
         if (currentIdx > 0) {
             jumpToTime(CHIPS_NAV[currentIdx - 1].startTime);
         } else {
@@ -214,103 +221,48 @@ function Command_Menu_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight Dimming Overlay with Cutout Mask */}
+                {/* Spotlight cutout: a single element whose box-shadow spread fills the
+                    entire container with the dim color. Because there is only one element
+                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
+                    shared edge between separately-composited backdrop-filter layers, so no
+                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
                 {activeSpotlight && (
-                    <>
-                        {/* Top band: full width, above the box */}
+                    <div
+                        style={{
+                            position: "absolute",
+                            left: `${spotX}%`,
+                            top: `${spotY}%`,
+                            width: `${spotW}%`,
+                            height: `${spotH}%`,
+                            pointerEvents: "none",
+                            boxSizing: "border-box",
+                            border: "2.5px solid #ff1493",
+                            borderRadius: "2px",
+                            zIndex: 10,
+                            boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 10px #ff1493, 0 0 4px #ff1493",
+                            transition: activeSpotlight.isTransitioning ? "height 0.05s linear" : "none"
+                        }}
+                    >
                         <div
                             style={{
                                 position: "absolute",
-                                left: 0,
+                                left: "calc(100% + 8px)",
                                 top: 0,
-                                width: "100%",
-                                height: `${spotY}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Bottom band: full width, below the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY + spotH}%`,
-                                width: "100%",
-                                height: `${100 - (spotY + spotH)}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Left band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY}%`,
-                                width: `${spotX}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Right band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX + spotW}%`,
-                                top: `${spotY}%`,
-                                width: `${100 - (spotX + spotW)}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                zIndex: 8
-                            }}
-                        />
-
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX}%`,
-                                top: `${spotY}%`,
-                                width: `${spotW}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                boxSizing: "border-box",
-                                border: "2.5px solid #ff1493",
-                                boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
-                                borderRadius: "2px",
-                                zIndex: 10,
-                                transition: activeSpotlight.isTransitioning ? "height 0.05s linear" : "none"
+                                backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                color: "#ff1493",
+                                border: "1.5px solid #ff1493",
+                                padding: "4px 10px",
+                                borderRadius: "6px",
+                                fontSize: "12px",
+                                fontWeight: "bold",
+                                whiteSpace: "nowrap",
+                                boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
+                                backdropFilter: "blur(4px)"
                             }}
                         >
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: "calc(100% + 8px)",
-                                    top: 0,
-                                    backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                    color: "#ff1493",
-                                    border: "1.5px solid #ff1493",
-                                    padding: "4px 10px",
-                                    borderRadius: "6px",
-                                    fontSize: "12px",
-                                    fontWeight: "bold",
-                                    whiteSpace: "nowrap",
-                                    boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
-                                    backdropFilter: "blur(4px)"
-                                }}
-                            >
-                                {activeSpotlight.label}
-                            </div>
+                            {activeSpotlight.label}
                         </div>
-                    </>
+                    </div>
                 )}
 
                 {/* Custom Floating Pill Video Controls Bar */}
