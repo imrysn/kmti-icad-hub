@@ -1,5 +1,5 @@
 import React from "react";
-import statusbar from "../../../../../assets/Solidworks/Introduction/Solidwork_Statusbar.png";
+import statusbar from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Statusbar.png";
 
 const StatusBarContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

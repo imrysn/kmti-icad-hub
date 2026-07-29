@@ -1,5 +1,5 @@
 import React from "react";
-import mainInterface from "../../../../../assets/Solidworks/Introduction/SW_UI_Main.png";
+import mainInterface from "../../../../../assets/Solidworks/3D_Fv/SW_UI_Main.png";
 
 const SolidworksInterfaceContent: React.FC = () => (
     <div style={{

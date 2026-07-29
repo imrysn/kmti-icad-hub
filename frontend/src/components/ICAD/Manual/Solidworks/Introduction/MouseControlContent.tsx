@@ -1,7 +1,7 @@
 import React from "react";
-import mouseLeft from "../../../../../assets/Solidworks/Introduction/Solidwork_Left.png";
-import mouseRight from "../../../../../assets/Solidworks/Introduction/Solidwork_Right.png";
-import mouseScroll from "../../../../../assets/Solidworks/Introduction/Solidwork_Scroll.png";
+import mouseLeft from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Left.png";
+import mouseRight from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Right.png";
+import mouseScroll from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Scroll.png";
 
 const MouseControlContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

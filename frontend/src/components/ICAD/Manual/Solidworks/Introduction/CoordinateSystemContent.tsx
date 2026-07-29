@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import coordinate1 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate1.png";
-import coordinate2 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate2.png";
-import coordinate3 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate3.png";
-import coordinate4 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate4.png";
-import coordinate5 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate5.png";
-import coordinate6 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate6.png";
-import coordinate7 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate7.png";
-import coordinate8 from "../../../../../assets/Solidworks/Introduction/Solidwork_Coordinate8.png";
+import coordinate1 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate1.png";
+import coordinate2 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate2.png";
+import coordinate3 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate3.png";
+import coordinate4 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate4.png";
+import coordinate5 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate5.png";
+import coordinate6 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate6.png";
+import coordinate7 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate7.png";
+import coordinate8 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Coordinate8.png";
 
 const coordinateImages = [
     { src: coordinate1, alt: "Front view", label: "Front" },
