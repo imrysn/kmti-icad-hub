@@ -38,9 +38,9 @@ function Tree_View_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 24) / 1032) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 24) / 1042) * 100 : 0;
     const spotW = activeSpotlight ? (activeSpotlight.pxW / 1920) * 100 : 0;
-    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1032) * 100 : 0;
+    const spotH = activeSpotlight ? (activeSpotlight.pxH / 1042) * 100 : 0;
 
     const videoContainerMarkup = (
         <div
@@ -61,7 +61,7 @@ function Tree_View_Japanese_Tutorial() {
                 position: "relative",
                 width: "80%",
                 maxWidth: "1000px",
-                aspectRatio: "1920 / 1032",
+                aspectRatio: "1920 / 1042",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -78,7 +78,7 @@ function Tree_View_Japanese_Tutorial() {
                     height: "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: isFullscreen ? undefined : "1920 / 1032",
+                    aspectRatio: isFullscreen ? undefined : "1920 / 1042",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",

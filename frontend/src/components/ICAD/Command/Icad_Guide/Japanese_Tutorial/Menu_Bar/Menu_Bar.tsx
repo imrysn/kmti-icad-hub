@@ -72,11 +72,11 @@ function Menu_Bar_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1022) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1042) * 100 : 0;
 
     // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
     const smallBoxW = (90 / 1920) * 100;
-    const smallBoxH = (26 / 1022) * 100;
+    const smallBoxH = (26 / 1042) * 100;
     const spotW = smallBoxW;
     const spotH = smallBoxH;
 
@@ -100,7 +100,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 position: "relative",
                 width: "80%",
                 maxWidth: "1000px",
-                aspectRatio: "1920 / 1022",
+                aspectRatio: "1920 / 1042",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -117,7 +117,7 @@ function Menu_Bar_Japanese_Tutorial() {
                     height: "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: "1920 / 1022",
+                    aspectRatio: "1920 / 1042",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
