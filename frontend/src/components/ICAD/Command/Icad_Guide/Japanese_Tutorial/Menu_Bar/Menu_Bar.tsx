@@ -23,6 +23,16 @@ const SPOTLIGHTS: SpotlightConfig[] = [
     { label: "Help", startTime: 12.9, endTime: 15.7, pxX: 390, pxY: 34, pxW: 242, pxH: 230, dropdownImage: Help_Dropdown }
 ];
 
+const DROPDOWN_WIDTHS: Record<string, string> = {
+    File: "42%",
+    View: "17%",
+    Information: "17%",
+    Settings: "20%",
+    Tools: "17%",
+    Window: "22%",
+    Help: "17%"
+};
+
 function Menu_Bar_Japanese_Tutorial() {
     const [videoError, setVideoError] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -263,7 +273,7 @@ function Menu_Bar_Japanese_Tutorial() {
                                     left: `${spotX}%`,
                                     top: `${spotY + spotH}%`,
                                     marginTop: "6px",
-                                    width: activeSpotlight.label === "File" ? "400px" : "200px",
+                                    width: DROPDOWN_WIDTHS[activeSpotlight.label] ?? "20%",
                                     height: "auto",
                                     objectFit: "contain",
                                     border: "1.5px solid #ff1493",
