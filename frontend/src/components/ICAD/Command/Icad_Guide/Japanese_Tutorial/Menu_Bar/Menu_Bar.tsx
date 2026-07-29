@@ -150,71 +150,13 @@ function Menu_Bar_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight Dimming Overlay with Cutout Mask */}
+                {/* Spotlight cutout: a single element whose box-shadow spread fills the
+                    entire container with the dim color. Because there is only one element
+                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
+                    shared edge between separately-composited backdrop-filter layers, so no
+                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
                 {activeSpotlight && (
                     <>
-                        {/* Top band: full width, above the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: 0,
-                                width: "100%",
-                                height: `${spotY}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Bottom band: full width, below the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY + spotH}%`,
-                                width: "100%",
-                                height: `${100 - (spotY + spotH)}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Left band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY}%`,
-                                width: `${spotX}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Right band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX + spotW}%`,
-                                top: `${spotY}%`,
-                                width: `${100 - (spotX + spotW)}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-
-                        {/* Spotlight border box — follows each spotlight's position in sequence, but stays a fixed small size */}
                         <div
                             style={{
                                 position: "absolute",
@@ -225,9 +167,9 @@ function Menu_Bar_Japanese_Tutorial() {
                                 pointerEvents: "none",
                                 boxSizing: "border-box",
                                 border: "2.5px solid #ff1493",
-                                boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
                                 borderRadius: "2px",
                                 zIndex: 10,
+                                boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 10px #ff1493, 0 0 4px #ff1493",
                                 transition: "all 0.25s ease-out"
                             }}
                         >
