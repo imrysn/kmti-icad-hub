@@ -64,12 +64,18 @@ const CreatingAssemblyContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={assem1Img} alt="Assembly Origin Alignment" className="software-screenshot screenshot-wide" />
+                    <img src={partOriginImg} alt="Part Origin Alignment" className="software-screenshot screenshot-wide" />
                 </div>
-                <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-                    <p className="p-flush red-text">※ Inserted part/s will be added to FeatureManager Design Tree.</p>
-                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>※ Fixed part will be indicated as <strong>(f)</strong>.</p>
-                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>※ First part to be inserted will be automatically fixed <strong>(f)</strong>.</p>
+                
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginTop: '2rem' }}>
+                    <div style={{ flex: '0 0 auto', maxWidth: '800px' }}>
+                        <img src={assem1Img} alt="Assembly Feature Tree" className="software-screenshot" style={{ width: '100%', objectFit: 'contain' }} />
+                    </div>
+                    <div className="instruction-box" style={{ flex: '1 1 300px', margin: 0 }}>
+                        <p className="p-flush red-text">※ Inserted part/s will be added to FeatureManager Design Tree.</p>
+                        <p className="p-flush red-text" style={{ marginTop: '1rem' }}>※ Fixed part will be indicated as <strong>(f)</strong>.</p>
+                        <p className="p-flush red-text" style={{ marginTop: '1rem' }}>※ First part to be inserted will be automatically fixed <strong>(f)</strong>.</p>
+                    </div>
                 </div>
             </div>
         </div>
