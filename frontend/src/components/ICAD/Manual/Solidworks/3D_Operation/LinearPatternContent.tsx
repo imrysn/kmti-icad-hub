@@ -13,7 +13,7 @@ const LinearPatternContent: React.FC = () => (
                 <span className="step-label">
                     In <strong>Assembly</strong> tab, click <strong>Linear Component</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={linearComponentImg} alt="Linear Component" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={linearComponentImg} alt="Linear Component" style={{ height: '65px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>

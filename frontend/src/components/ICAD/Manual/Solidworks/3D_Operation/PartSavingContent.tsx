@@ -11,7 +11,7 @@ const PartSavingContent: React.FC = () => (
                 <span className="step-label">
                     In <strong>Menu Bar </strong>, click <strong>Save</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={csImg} alt="Save icon" style={{ height: '35px', verticalAlign: 'middle' }} />
+                        <img src={csImg} alt="Save icon" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or <strong>Ctrl + S</strong>   to save file.
                 </span>

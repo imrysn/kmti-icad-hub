@@ -87,8 +87,8 @@ const CreatingAssemblyContent: React.FC = () => (
                 <span className="step-label">Insert another part.</span>
             </div>
             <div className="step-description">
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>
+                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0'    , lineHeight: '2.2' }}>
+                    
                         In <strong>Assembly</strong> tab, click <strong>Insert Component</strong>{' '}
                         <span className="image-wrapper-flush">
                             <img src={insertImg} alt="Insert Component Icon" style={{ height: '43px', verticalAlign: 'middle' }} />
@@ -97,14 +97,14 @@ const CreatingAssemblyContent: React.FC = () => (
                         <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
                             <img src={insertComponentImg} alt="Insert Component Menu" className="software-screenshot screenshot-wide" />
                         </div>
-                    </li>
-                    <li>
+                    <div></div>
+                    
                         <strong>Browse</strong> the part to be inserted, click <strong>Open</strong>.
                         <br />
                         <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
                             <img src={openImg} alt="Open Dialog" className="software-screenshot screenshot-wide" />
                         </div>
-                    </li>
+                    
                 </ol>
             </div>
         </div>

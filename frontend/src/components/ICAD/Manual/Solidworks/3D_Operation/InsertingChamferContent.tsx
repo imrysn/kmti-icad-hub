@@ -30,7 +30,7 @@ const InsertingChamferContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     Click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={chamferImg} alt="Chamfer icon" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={chamferImg} alt="Chamfer icon" style={{ height: '30px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
             </div>
@@ -61,7 +61,7 @@ const InsertingChamferContent: React.FC = () => (
                     <p className="p-flush red-text">
                         ※ Selected edges and faces will be added to <strong>Selected Entities</strong>.
                         <span className="image-wrapper-flush" style={{ marginLeft: '0.5rem' }}>
-                            <img src={edgeImg} alt="Selected edges" style={{ height: '28px', verticalAlign: 'middle' }} />
+                            <img src={edgeImg} alt="Selected edges" style={{ height: '35px', verticalAlign: 'middle' }} />
                         </span>
                     </p>
                 </div>

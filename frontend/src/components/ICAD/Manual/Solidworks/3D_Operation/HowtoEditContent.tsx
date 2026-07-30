@@ -27,38 +27,37 @@ export const HowToEditSketchContent: React.FC = () => (
         {/* Method 1 */}
         <div style={{ gap: '1rem', marginBottom: '2rem'  }}>
             <div style={{ flexShrink: 0 ,}}>
-                <span className="step-number">1</span>
             </div>
             <div style={{ flex: 1, lineHeight:'4' }}>
-                <div style={{ marginBottom: '1rem' , display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                      <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>1.</div>
+                <div style={{ marginBottom: '1rem' , display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <span>   Click the feature to be edited.</span>
                     <img src={bossExtrude1Img} alt="Boss-Extrude1" style={{ height: '35px', marginLeft: '0.5rem', verticalAlign: 'middle' }} />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>2.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem', flexWrap: 'wrap' }}>
+                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginRight:'6px', marginTop: '0rem' }}></div>
                         <span>This will appear, click <strong>Edit Sketch</strong></span>
                         <img src={editSketch1Img} alt="Edit Sketch icon" style={{ height: '30px' }} />
                         <span>icon.</span>
                     </div>
-                    <img src={editSketch2Img} alt="Edit Sketch selection" style={{ marginTop: '0.5rem', maxWidth: '300px', display: 'block' }} className="software-screenshot" />
+                    <img src={editSketch2Img} alt="Edit Sketch selection" style={{ marginTop: '0.5rem', maxWidth: '300px', marginLeft:'30px' , display: 'block' }} className="software-screenshot" />
                 </div>
 
-                <div style={{ marginBottom: '1rem' , display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                      <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>3.</div>
+                <div style={{ marginBottom: '1rem' , display: 'flex', color: 'var(--text-muted)', alignItems: 'flex-start', gap: '1rem' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginLeft:'1px' , marginTop: '0rem' }}></div>
                     <span>Sketch of the selected feature will show. <strong>Double-click</strong> the dimension needs to be edited.</span>
                 </div>
 
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>4.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', color: 'var(--text-muted)', alignItems: 'center', gap: '0.5rem' }}>
+                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginRight:'10px' , marginTop: '0rem' }}></div>
                     <span>Input the required dimension, Click</span>
                     <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>5.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem' }}>
+                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginRight:'11px' , marginTop: '0rem' }}></div>
                         <span>Exit sketch</span>
                         <img src={exitSketchImg} alt="Exit sketch icon" style={{ height: '33px' }} />
                     </div>
@@ -70,29 +69,29 @@ export const HowToEditSketchContent: React.FC = () => (
         {/* Method 2 */}
         <div style={{ gap: '1rem', marginBottom: '3rem' }}>
             <div style={{ flexShrink: 0 }}>
-                <span className="step-number">2</span>
+            
             </div>
             <div style={{ flex: 1, lineHeight: '3.5' }}>
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>1.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem'}}>
+                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <span> Another option is to <strong>double click</strong> the part. Dimensions will automatically show. <strong>Double-click</strong> and edit the dimension.</span>
                 </div>
 
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>2.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <span> Click</span>
                     <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>3.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                         <span> Click <strong>Rebuild</strong></span>
                         <img src={rebuildImg} alt="Rebuild icon" style={{ height: '37px' }} />
                         <span>or press "Ctrl + b"</span>
                     </div>
-                    <div style={{ marginLeft: '1.25rem' }}>(It will update the 3D Model)</div>
-                    <img src={modelImg} alt="Updated 3D Model" style={{ marginTop: '0.5rem', maxWidth: '600px', display: 'block' }} className="software-screenshot" />
+                    <div style={{ marginLeft: '1.25rem', color: 'var(--text-muted)'}}>(It will update the 3D Model)</div>
+                    <img src={modelImg} alt="Updated 3D Model" style={{ marginTop: '1rem', maxWidth: '900px', marginLeft:'100px',display: 'block' }} className="software-screenshot" />
                 </div>
             </div>
         </div>
@@ -104,34 +103,34 @@ export const HowToEditFeatureContent: React.FC = () => (
         {/* Method 1 */}
         <div style={{ gap: '1rem', marginBottom: '2rem' }}>
             <div style={{ flexShrink: 0 }}>
-                <span className="step-number">1</span>
+                
             </div>
             <div style={{ flex: 1, lineHeight: '4' }}>
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>1.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', color: 'var(--text-muted)', alignItems: 'center', gap: '0.5rem' }}>
+                     <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <span> Click or right click the feature to be edited.</span>
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>2.</div>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem', flexWrap: 'wrap' }}>
+                         <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                         <span>Click <strong>Edit Feature</strong></span>
-                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '37px' }} />
+                        <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '50px' }} />
                         <span>icon.</span>
                     </div>
                     <img src={editFeature1Img} alt="Edit Feature selection" style={{ marginTop: '0.5rem', maxWidth: '300px', display: 'block' }} className="software-screenshot" />
                 </div>
 
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>3.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginLeft:'0.25px',marginTop: '0rem' }}></div>
                     <div>
                         <span>The <strong>Boss-Extrude Property Manager</strong> will appear, edit the depth/thickness.</span>
                         <img src={bossExtrudePropertyManagerImg} alt="Boss-Extrude Property Manager" style={{ marginTop: '0.5rem', maxWidth: '400px', display: 'block' }} className="software-screenshot" />
                     </div>
                 </div>
 
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>4.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span>Click</span>
                         <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
@@ -143,11 +142,10 @@ export const HowToEditFeatureContent: React.FC = () => (
         {/* Method 2 */}
         <div style={{ gap: '1rem', marginBottom: '3rem' }}>
             <div style={{ flexShrink: 0 }}>
-                <span className="step-number">2</span>
             </div>
             <div style={{ flex: 1, lineHeight: '4' }}>
-                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>1.</div>
+                <div style={{ marginBottom: '1rem', display: 'flex', color: 'var(--text-muted)', alignItems: 'flex-start', gap: '1rem' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <div>
                         <span>Another option is to <strong>double click</strong> the part. </span>
                         <div style={{ marginBottom: '1rem' , lineHeight:'0' }}>
@@ -158,22 +156,22 @@ export const HowToEditFeatureContent: React.FC = () => (
                 </div>
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>2.</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem' }}>
                         <span>Click</span>
                         <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />
                     </div>
                 </div>
 
                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}>3.</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                     <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem', flexWrap: 'wrap' }}>
                             <span>Click <strong>Rebuild</strong></span>
                             <img src={rebuildImg} alt="Rebuild icon" style={{ height: '37px' }} />
                             <span>or press "Ctrl + b"</span>
                         </div>
-                        <div style={{ marginTop: '0.5rem' }}>(It will update the 3D Model)</div>
+                        <div style={{ marginTop: '0.5rem' , color: 'var(--text-muted)' }}>(It will update the 3D Model)</div>
                     </div>
                 </div>
             </div>
@@ -184,17 +182,17 @@ export const HowToEditFeatureContent: React.FC = () => (
 export const HowToEditMatingsContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
         <div style={{ lineHeight: '2.2' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}>1.</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                 <div>
                     <span>Click or right click the mate to be edited.</span>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}>2.</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                 <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span>This will appear, click <strong>Edit Feature</strong></span>
                         <img src={editFeatureImg} alt="Edit Feature icon" style={{ height: '40px' }} />
                         <span>icon.</span>
@@ -203,23 +201,23 @@ export const HowToEditMatingsContent: React.FC = () => (
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}>3.</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                 <div>
                     <span><strong>Mating Property Manager</strong> will appear. Right click for selection or click the face/plane previously selected to unselect them.</span>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}>4.</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                 <div>
                     <span>Select new face/plane.</span>
                     <img src={newMatingImg} alt="New Mating selection" style={{ marginTop: '0.5rem', maxWidth: '400px', display: 'block' }} className="software-screenshot" />
                 </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}>5.</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', color: 'var(--text-muted)', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', minWidth: '15px', marginTop: '0rem' }}></div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span>Click</span>
                     <img src={checkImg} alt="Check icon" style={{ height: '30px' }} />

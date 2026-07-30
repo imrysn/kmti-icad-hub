@@ -55,7 +55,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                                 </div>
 
                                 {/* Summary Information Section */}
-                                <div className="instruction-box" style={{ marginTop: '2.5rem' }}>
+                                <div className="instruction-box" style={{ marginTop: '0rem' }}>
                                     <h5 style={{ color: 'var(--text-normal)', marginBottom: '1rem', fontSize: '1.05rem' }}>
                                         Summary Information
                                     </h5>
@@ -80,7 +80,7 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
 
                         {/* Step 2 */}
                         <div className="instruction-step">
-                            <div className="step-header">
+                            <div className="step-header" style={{ marginTop: '1rem' }}>
                                 <span className="step-number">2</span>
                                 <span className="step-label">Edit the Properties.</span>
                             </div>

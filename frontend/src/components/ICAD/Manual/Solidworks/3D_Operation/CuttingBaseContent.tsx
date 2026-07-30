@@ -9,25 +9,36 @@ import checkImg from "../../../../../assets/Solidworks/3D_Operation/3D_Check.png
 const CuttingBaseContent: React.FC = () => (
     <>
         <div className="instruction-step">
+            
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <div style={{ flex: '1 1 400px' }}>
-                    <ol style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                        <li>
+                <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">1</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click <strong>Spacebar</strong> then select <strong>Front</strong>.
-                        </li>
-                        <li>
+                        </span>
+                    </div>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">2</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             In <strong>Sketch</strong> tab, select <strong>Sketch</strong>{' '}
                             <span className="image-wrapper-flush">
-                                <img src={sImg} alt="Sketch Tab" style={{ height: '38px', verticalAlign: 'middle' }} />
+                                <img src={sImg} alt="Sketch Tab" style={{ height: '50px', verticalAlign: 'middle' }} />
                             </span>
-                        </li>
-                        <li>
+                        </span>
+                    </div>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">3</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click the <strong>front face</strong>.
-                        </li>
-                        <li>
-                            Draw the sketch to be cut. <span style={{ fontWeight: 'normal' }}></span>
-                        </li>
-                    </ol>
+                        </span>
+                    </div>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">4</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
+                            Draw the sketch to be cut.
+                        </span>
+                    </div>
 
                     <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                         <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
@@ -45,24 +56,31 @@ const CuttingBaseContent: React.FC = () => (
 
         <div className="instruction-step">
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <div style={{ flex: '1 1 400px' }}>
-                    <ol start={5} style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                        <li>
+                <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">5</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>{' '}
                             <span className="image-wrapper-flush">
-                                <img src={cutImg} alt="Extruded Cut" style={{ height: '38px', verticalAlign: 'middle' }} />
+                                <img src={cutImg} alt="Extruded Cut" style={{ height: '50px', verticalAlign: 'middle' }} />
                             </span>
-                        </li>
-                        <li>
+                        </span>
+                    </div>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">6</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             <strong>Cut-Extrude</strong> property manager will come up. In <strong>End Condition</strong>, select <strong>Through All</strong>.
-                        </li>
-                        <li>
+                        </span>
+                    </div>
+                    <div className="step-header" style={{ marginBottom: 0 }}>
+                        <span className="step-number">7</span>
+                        <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click{' '}
                             <span className="image-wrapper-flush">
                                 <img src={checkImg} alt="Check button" style={{ height: '28px', verticalAlign: 'middle' }} />
                             </span>
-                        </li>
-                    </ol>
+                        </span>
+                    </div>
                 </div>
 
                 <div style={{ flex: '0 0 auto', display: 'flex', gap: '1.5rem', alignItems: 'center' }}>

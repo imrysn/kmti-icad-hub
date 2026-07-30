@@ -26,7 +26,7 @@ const SheetMetalContent: React.FC = () => (
                 <span className="step-label">
                     In <strong>Sketch</strong> tab, click <strong>Line (L)</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={lImg} alt="Line icon" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={lImg} alt="Line icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
@@ -57,7 +57,7 @@ const SheetMetalContent: React.FC = () => (
                 <span className="step-label">
                     In <strong>Sheet Metal</strong> tab, click <strong>Base Flange / Tab</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={tabImg} alt="Base Flange Tab" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={tabImg} alt="Base Flange Tab" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
@@ -101,15 +101,15 @@ const SheetMetalContent: React.FC = () => (
                 <span className="step-label">Edit Properties</span>
             </div>
             <div className="step-description">
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
-                    <li>
-                        Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
-                    </li>
-                    <li>
-                        Input Wt/Pc Evaluated Value to Mat'l Wt Value.
-                    </li>
-                    <li>Click OK.</li>
+                <ol style={{ paddingLeft: '.80rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                  <span>  While the Summary Information is open, double click the part then the dimensions will appear.</span>
+                    <div></div>
+                       <span> Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
+                    </span> 
+                <div></div>
+                       <span>  Input Wt/Pc Evaluated Value to Mat'l Wt Value.</span> 
+                    
+                   <span>  Click OK.</span> 
                 </ol>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={summaryImg} alt="Summary Properties" className="software-screenshot screenshot-wide" />

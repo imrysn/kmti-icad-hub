@@ -21,7 +21,7 @@ const SketchingBaseContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In the <strong>Sketch</strong> tab, click <strong>Corner Rectangle</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={cornerImg} alt="Corner Rectangle" style={{ height: '30px', verticalAlign: 'middle' }} />
+                        <img src={cornerImg} alt="Corner Rectangle" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     {' '} &gt; Draw a sketch then check{' '}
                     <span className="image-wrapper-flush">
@@ -75,7 +75,7 @@ const SketchingBaseContent: React.FC = () => (
                             <li>
                                 In <strong>Sketch</strong> tab, click <strong>Smart Dimension</strong>{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '38px', verticalAlign: 'middle' }} />
+                                    <img src={smartImg} alt="Smart Dimension" style={{ height: '45px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                             <li>Select line(s) to be dimensioned.</li>

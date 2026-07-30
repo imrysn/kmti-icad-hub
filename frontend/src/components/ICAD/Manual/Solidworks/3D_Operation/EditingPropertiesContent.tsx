@@ -12,7 +12,7 @@ const EditingPropertiesContent: React.FC = () => (
                 <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
 
                     <span className="image-wrapper-flush">
-                        <img src={fileImg} alt="File Properties" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={fileImg} alt="File Properties" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
 
@@ -30,10 +30,10 @@ const EditingPropertiesContent: React.FC = () => (
                     <p className="p-flush red-text">※ Link the dimension to the properties, so it will update whenever the 3D part is modified.</p>
                 </div>
 
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
-                    <li>Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</li>
-                    <li>On the Mat'l Wt Value, Type 0.08.</li>
+                <ol style={{ paddingLeft: '.80rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                   <span> While the Summary Information is open, double click the part then the dimensions will appear.</span>
+                   <div><span> Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</span></div>
+                   <span> On the Mat'l Wt Value, Type 0.08.</span>
                 </ol>
             </div>
         </div>
