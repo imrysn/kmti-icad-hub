@@ -6,7 +6,6 @@ import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
 import Icad_Commands from '../../../components/ICAD/Command/Icad_Commands/Icad_Commands';
 import Icad_Guide from '../../../components/ICAD/Command/Icad_Guide/Icad_Guide';
 import Icad_Menu_Setup from '../../../components/ICAD/Command/Icad_Menu_Setup/menuSetup';
-import { useUI } from '../../../context/UIContext';
 
 
 
@@ -21,12 +20,21 @@ const SIDEBAR_LESSONS = [
     { id: 'icad_menu_setup', label: 'iCAD Menu Setup' },
 ];
 
+// Shared "top bar" wrapper style
+const topBarStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0.54rem 1.2rem',
+    borderBottom: '1px solid var(--border-color)',
+    background: 'var(--bg-surface)',
+    flexShrink: 0,
+};
+
 export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
-    const { requestConfirmation } = useUI();
     const [commandsPage, setCommandsPage] = useState<string | null>(null);
     const [guidePage, setGuidePage] = useState<string | null>(null);
     const [menuSetupPage, setMenuSetupPage] = useState<string | null>(null);
-    const [isExitHovered, setIsExitHovered] = useState(false);
 
 
     useEffect(() => {
@@ -39,66 +47,18 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
         return () => window.removeEventListener('resetCourseView', handleReset);
     }, []);
 
-
-
-    const handleExitCourse = async () => {
-        const confirmed = await requestConfirmation({
-            title: 'SUSPEND LEARNING SESSION',
-            message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
-            confirmText: 'Suspend Session',
-            type: 'info'
-        });
-        if (confirmed) {
-            setSelectedCourse(null);
-        }
-    };
-
     // ── Full-page Commands view (LessonViewer-like layout) ──────────────────
     if (commandsPage === 'icad_commands') {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
 
-                {/* Top bar */}
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    padding: '0.54rem 1.2rem',
-                    borderBottom: '1px solid var(--border-color)',
-                    background: '#000000 var(--bg-surface)',
-                    flexShrink: 0,
-                }}>
 
-
-
-                    {/* Exit button */}
-                    <button
-                        className="exit-course-btn"
-                        onClick={handleExitCourse}
-                        style={{
-                            fontSize: '12.8px',
-                            padding: '8px 16px',
-                            letterSpacing: '0.5px',
-                            borderRadius: '4px',
-                            backgroundColor: 'rgba(127, 29, 29, 0.35)',
-                            color: '#FCA5A5',
-                            boxSizing: 'border-box',
-                            lineHeight: '1.6',
-                            fontWeight: 300
-                        }}
-                    >
-                        EXIT COURSE
-                    </button>
-                </div>
-
-                {/* Content — centered */}
+                {/* Content — full bleed so Icad_Commands IDE layout fills the space */}
                 <div style={{
                     flex: 1,
-                    overflowY: 'auto',
+                    overflow: 'auto',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2rem',
+                    flexDirection: 'column',
                 }}>
                     <Icad_Commands />
                 </div>
@@ -109,44 +69,6 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
     if (guidePage === 'icad_guide') {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
-
-                {/* Top bar */}
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    padding: '0.54rem 1.2rem',
-                    borderBottom: '1px solid var(--border-color)',
-                    background: '#000000 var(--bg-surface)',
-                    flexShrink: 0,
-                }}>
-
-
-
-                    {/* Exit button */}
-                    <button
-                        className="exit-course-btn"
-                        onClick={handleExitCourse}
-                        onMouseEnter={() => setIsExitHovered(true)}
-                        onMouseLeave={() => setIsExitHovered(false)}
-                        style={{
-                            fontSize: '12.8px',
-                            padding: '10px 16px 6px',
-                            letterSpacing: '0.3px',
-                            borderRadius: '6px',
-                            border: '1px solid #7c1818d2',
-                            backgroundColor: 'rgb(248, 81, 73)',
-                            color: isExitHovered ? '#ffffff' : '#FCA5A5',
-                            boxSizing: 'border-box',
-                            lineHeight: '1.6',
-                            fontWeight: 700,
-                            transition: 'color 0.15s ease',
-                            textAlign: 'center'
-                        }}
-                    >
-                        EXIT COURSE
-                    </button>
-                </div>
 
                 {/* Content — full bleed so Icad_Guide IDE layout fills the space */}
                 <div style={{
@@ -165,47 +87,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--bg-dark)', overflow: 'hidden' }}>
 
-                {/* Top bar */}
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    padding: '0.54rem 1.2rem',
-                    borderBottom: '1px solid var(--border-color)',
-                    background: '#000000 var(--bg-surface)',
-                    flexShrink: 0,
-                }}>
-
-
-                    {/* Exit button */}
-                    <button
-                        className="exit-course-btn"
-                        onClick={handleExitCourse}
-                        style={{
-                            fontSize: '12.8px',
-                            padding: '8px 16px',
-                            letterSpacing: '0.5px',
-
-                            borderRadius: '4px',
-
-                            backgroundColor: 'transparent',
-                            boxSizing: 'border-box',
-                            lineHeight: '1.6',
-                            fontWeight: 300
-                        }}
-                    >
-                        EXIT COURSE
-                    </button>
-                </div>
-
-                {/* Content — centered */}
+                {/* Content — full bleed so Icad_Menu_Setup  fills the space */}
                 <div style={{
                     flex: 1,
-                    overflowY: 'auto',
+                    overflow: 'auto',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2rem',
+                    flexDirection: 'column',
                 }}>
                     <Icad_Menu_Setup />
                 </div>

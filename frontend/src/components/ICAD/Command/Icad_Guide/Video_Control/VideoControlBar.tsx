@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import {
     Play,
     Pause,
+    Square,
     ChevronLeft,
     ChevronRight,
     Maximize,
     Minimize,
-    GripVertical,
-    Volume2,
-    VolumeX
+    GripHorizontal
 } from "lucide-react";
 
 interface VideoControlBarProps {
@@ -18,6 +17,8 @@ interface VideoControlBarProps {
     onToggleFullscreen?: () => void;
     onPrevStep?: () => void;
     onNextStep?: () => void;
+    canGoPrev?: boolean;   // false disables the Previous Step button (e.g. already at first spotlight)
+    canGoNext?: boolean;   // false disables the Next Step button (e.g. already at last spotlight)
 }
 
 const SPEED_OPTIONS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -28,7 +29,9 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
     isFullscreen: isExternalFullscreen,
     onToggleFullscreen,
     onPrevStep,
-    onNextStep
+    onNextStep,
+    canGoPrev = true,
+    canGoNext = true
 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
@@ -200,10 +203,10 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                 togglePlay();
             } else if (e.key === "ArrowLeft") {
                 e.preventDefault();
-                if (onPrevStep) onPrevStep();
+                if (onPrevStep && canGoPrev) onPrevStep();
             } else if (e.key === "ArrowRight") {
                 e.preventDefault();
-                if (onNextStep) onNextStep();
+                if (onNextStep && canGoNext) onNextStep();
             } else if (e.key === "f" || e.key === "F") {
                 e.preventDefault();
                 toggleFullscreen();
@@ -215,7 +218,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [onPrevStep, onNextStep, isFullscreen, isPlaying]);
+    }, [onPrevStep, onNextStep, isFullscreen, isPlaying, canGoPrev, canGoNext]);
 
     const togglePlay = () => {
         if (!videoRef.current) return;
@@ -224,6 +227,15 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
         } else {
             videoRef.current.pause();
         }
+    };
+
+    // Stop — like VideoTutorialViewer's handleStop: pause and reset to 0,
+    // instead of just pausing at the current position.
+    const handleStop = () => {
+        if (!videoRef.current) return;
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+        setCurrentTime(0);
     };
 
     const toggleMute = () => {
@@ -395,9 +407,9 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                     display: "flex",
                     alignItems: "center",
                     gap: "6px",
-                    backgroundColor: "rgba(18, 18, 26, 0.92)",
+                    backgroundColor: "#141419F2",
                     backdropFilter: "blur(12px)",
-                    padding: "5px 8px 5px 12px",
+                    padding: "8px 16px",
                     borderRadius: "32px",
                     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)",
                     userSelect: "none",
@@ -421,7 +433,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                         touchAction: "none"
                     }}
                 >
-                    <GripVertical size={16} color="#ffffff" strokeWidth={2} />
+                    <GripHorizontal size={11} color="#636262cb" strokeWidth={2} />
                 </div>
 
                 {/* Play/Pause Pill Button */}
@@ -434,43 +446,74 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                         display: "flex",
                         alignItems: "center",
                         gap: "7px",
-                        backgroundColor: "rgba(255, 255, 255, 0.14)",
-                        color: "#ffffff",
+                        backgroundColor: "rgba(255, 255, 255, 0.16)",
+                        color: "#FFFFFF",
                         border: "none",
                         borderRadius: "20px",
-                        padding: "7px 16px",
-                        fontSize: "13px",
+                        padding: "6px 14px",
+                        fontSize: "12.8px",
                         fontWeight: "600",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
-                        fontFamily: "var(--font-main)"
+                        fontFamily: "Inter, system-ui, -apple-system, sans-serif"
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.14)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.26)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.16)")}
                 >
                     {isPlaying ? (
                         <>
-                            <Pause size={15} color="#ffffff" fill="#ffffff" strokeWidth={2} />
+                            <Pause size={15} color="#ffffff" strokeWidth={2.2} />
                             <span>Pause</span>
                         </>
                     ) : (
                         <>
-                            <Play size={15} color="#ffffff" fill="#ffffff" strokeWidth={2} />
+                            <Play size={15} color="#ffffff" strokeWidth={2.2} />
                             <span>Play</span>
                         </>
                     )}
                 </button>
 
-                {/* Previous Step Button */}
+                {/* Stop Button*/}
+                {isPlaying && (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleStop();
+                        }}
+                        title="Stop"
+                        style={{
+                            width: "36px",
+                            height: "36px",
+                            padding: "6px 12px",
+                            borderRadius: "50%",
+                            backgroundColor: "rgba(255, 255, 255, 0.12)",
+                            color: "#ffffff",
+                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                    >
+                        <Square size={14} color="#ffffff" strokeWidth={2.2} />
+                    </button>
+                )}
+
+                {/* Previous Step Button — disabled once canGoPrev is false */}
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        if (onPrevStep) onPrevStep();
+                        if (canGoPrev && onPrevStep) onPrevStep();
                     }}
-                    title="Previous Spotlight (Left Arrow)"
+                    disabled={!canGoPrev}
+                    title={canGoPrev ? "Previous Spotlight (Left Arrow)" : "Already at the first step"}
                     style={{
                         width: "36px",
                         height: "36px",
+                        padding: "6px 12px",
                         borderRadius: "50%",
                         backgroundColor: "rgba(255, 255, 255, 0.12)",
                         color: "#ffffff",
@@ -478,25 +521,32 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        cursor: "pointer",
+                        cursor: canGoPrev ? "pointer" : "not-allowed",
+                        opacity: canGoPrev ? 1 : 0.35,
                         transition: "all 0.2s ease"
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                    onMouseEnter={(e) => {
+                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)";
+                    }}
+                    onMouseLeave={(e) => {
+                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                    }}
                 >
                     <ChevronLeft size={18} color="#ffffff" strokeWidth={2.2} />
                 </button>
 
-                {/* Next Step Button */}
+                {/* Next Step Button — disabled once canGoNext is false */}
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        if (onNextStep) onNextStep();
+                        if (canGoNext && onNextStep) onNextStep();
                     }}
-                    title="Next Spotlight (Right Arrow)"
+                    disabled={!canGoNext}
+                    title={canGoNext ? "Next Spotlight (Right Arrow)" : "Already at the last step"}
                     style={{
                         width: "36px",
                         height: "36px",
+                        padding: "6px 12px",
                         borderRadius: "50%",
                         backgroundColor: "rgba(255, 255, 255, 0.12)",
                         color: "#ffffff",
@@ -504,11 +554,16 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        cursor: "pointer",
+                        cursor: canGoNext ? "pointer" : "not-allowed",
+                        opacity: canGoNext ? 1 : 0.35,
                         transition: "all 0.2s ease"
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                    onMouseEnter={(e) => {
+                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)";
+                    }}
+                    onMouseLeave={(e) => {
+                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                    }}
                 >
                     <ChevronRight size={18} color="#ffffff" strokeWidth={2.2} />
                 </button>
@@ -523,6 +578,7 @@ export const VideoControlBar: React.FC<VideoControlBarProps> = ({
                     style={{
                         width: "36px",
                         height: "36px",
+                        padding: "0px 20px",
                         borderRadius: "50%",
                         backgroundColor: "rgba(255, 255, 255, 0.15)",
                         color: "#ffffff",

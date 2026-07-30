@@ -72,7 +72,7 @@ function Menu_Bar_Japanese_Tutorial() {
     };
 
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
-    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 30 + 9 + 8) / 1042) * 100 : 0;
+    const spotY = activeSpotlight ? ((activeSpotlight.pxY - 27 + 7 + 15) / 1042) * 100 : 0;
 
     // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
     const smallBoxW = (90 / 1920) * 100;
@@ -238,6 +238,8 @@ function Menu_Bar_Japanese_Tutorial() {
                     onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
+                    canGoPrev={activeSpotlightIndex > 0}
+                    canGoNext={activeSpotlightIndex === -1 || activeSpotlightIndex < SPOTLIGHTS.length - 1}
                 />
             </div>
         </div>
