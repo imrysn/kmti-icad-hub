@@ -16,7 +16,6 @@ interface AngleBarDimensionsLessonProps {
 }
 
 const reminderSteps = [
-    "Angle Bar Dimensions",
     "Unequal Leg",
     "Equal Leg"
 ];
@@ -90,17 +89,6 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
                     Equal Leg
                 </button>
             </div>
-
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Angle Bar Dimensions"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
 
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">

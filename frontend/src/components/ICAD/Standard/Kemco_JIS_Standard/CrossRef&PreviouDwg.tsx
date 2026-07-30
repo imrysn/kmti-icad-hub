@@ -15,8 +15,7 @@ interface CrossRefPreviousDwgProps {
 }
 
 const reminderSteps = [
-    "Cross Ref. No. & Previous Dwg. No.",
-    "Please review the Cross Ref. No. & Previous Dwg. No. reference.",
+    "Please review the Cross Ref. No. & Previous Dwg. No. reference",
 ];
 
 const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
@@ -71,17 +70,6 @@ const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Cross Ref. No. & Previous Dwg. No."
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -95,7 +83,7 @@ const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the Cross Ref. No. & Previous Dwg. No. reference."
+                                text="Please review the Cross Ref. No. & Previous Dwg. No. reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
