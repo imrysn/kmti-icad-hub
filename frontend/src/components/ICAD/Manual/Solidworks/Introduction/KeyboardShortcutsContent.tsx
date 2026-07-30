@@ -1,6 +1,6 @@
 import React from "react";
-import keyboardCommon from "../../../../../assets/Solidworks/Introduction/SolidworkKeyboard1.png";
-import keyboardSolidworks from "../../../../../assets/Solidworks/Introduction/Solidwork_Keyboard2.png";
+import keyboardCommon from "../../../../../assets/Solidworks/3D_Fv/SolidworkKeyboard1.png";
+import keyboardSolidworks from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Keyboard2.png";
 
 // Suppress unused variable warnings — images reserved for future use or reference
 void keyboardCommon;

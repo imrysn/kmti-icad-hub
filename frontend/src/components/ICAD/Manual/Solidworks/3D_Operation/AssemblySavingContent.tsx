@@ -7,7 +7,7 @@ const AssemblySavingContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Menu Bar</strong>, click <strong>Save</strong>{' '}
@@ -21,7 +21,7 @@ const AssemblySavingContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">When this <strong>Dialog box</strong> appears, edit <strong>File Name</strong>. Then click <strong>Save</strong>.</span>
             </div>

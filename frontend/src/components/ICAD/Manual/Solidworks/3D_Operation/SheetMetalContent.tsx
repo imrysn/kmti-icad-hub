@@ -13,7 +13,7 @@ const SheetMetalContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">3D Part Modeling.</span>
             </div>
@@ -21,43 +21,43 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">
                     In <strong>Sketch</strong> tab, click <strong>Line (L)</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={lImg} alt="Line icon" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={lImg} alt="Line icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={l1Img} alt="Line sketch" className="software-screenshot screenshot-wide" />
+                    <img src={l1Img} alt="Line sketch" style={{width: '900px',height:'150px'}}className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Add sketch relation & dimensions.</span>
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={l2Img} alt="Sketch relation and dimension" className="software-screenshot screenshot-wide" />
+                    <img src={l2Img} alt="Sketch relation and dimension" style={{width: '900px',height:'150px'}}className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     In <strong>Sheet Metal</strong> tab, click <strong>Base Flange / Tab</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={tabImg} alt="Base Flange Tab" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={tabImg} alt="Base Flange Tab" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
             </div>
@@ -65,7 +65,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">Base Flange property manager and preview of sheet metal part will appear. Edit the properties.</span>
             </div>
@@ -78,7 +78,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">
                     Click{' '}
@@ -89,27 +89,27 @@ const SheetMetalContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={oImg} alt="Completed sheet metal part" className="software-screenshot screenshot-wide" />
+                    <img src={oImg} alt="Completed sheet metal part"style={{width: '900px',height:'230px'}} className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>
 
         {/* Step 7 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">7</span>
                 <span className="step-label">Edit Properties</span>
             </div>
             <div className="step-description">
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
-                    <li>
-                        Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
-                    </li>
-                    <li>
-                        Input Wt/Pc Evaluated Value to Mat'l Wt Value.
-                    </li>
-                    <li>Click OK.</li>
+                <ol style={{ paddingLeft: '.80rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                  <span>  While the Summary Information is open, double click the part then the dimensions will appear.</span>
+                    <div></div>
+                       <span> Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
+                    </span> 
+                <div></div>
+                       <span>  Input Wt/Pc Evaluated Value to Mat'l Wt Value.</span> 
+                    
+                   <span>  Click OK.</span> 
                 </ol>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={summaryImg} alt="Summary Properties" className="software-screenshot screenshot-wide" />
@@ -119,7 +119,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 8 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">8</span>
                 <span className="step-label">Save part</span>
             </div>

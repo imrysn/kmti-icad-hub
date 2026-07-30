@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../../hooks/useLessonCore";
 import "../../../../../styles/3D_Modeling/CourseLesson.css";
@@ -22,6 +22,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
     nextLabel,
 }) => {
     const { scrollProgress, containerRef } = useLessonCore("sw-2d-inserting-balloons");
+    const [activeTab, setActiveTab] = useState<'insert' | 'edit'>('insert');
 
     return (
         <div className="course-lesson-container" ref={containerRef}>
@@ -29,11 +30,28 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
+            <div className="lesson-tabs">
+                <button
+                    className={`tab-button ${activeTab === 'insert' ? 'active' : ''}`}
+                    onClick={() => { setActiveTab('insert'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                >
+                    Insert Balloons
+                </button>
+                <button
+                    className={`tab-button ${activeTab === 'edit' ? 'active' : ''}`}
+                    onClick={() => { setActiveTab('edit'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                >
+                    Edit Balloon
+                </button>
+            </div>
+
             <div className="lesson-grid single-card">
                 <div className="lesson-card fade-in">
-
-                    {/* Header */}
-                    <div className="card-header">
+                    
+                    {activeTab === 'insert' && (
+                        <>
+                            {/* Header */}
+                            <div className="card-header">
                         <h4 className="section-title">Inserting Balloons</h4>
                     </div>
 
@@ -112,10 +130,14 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                             </div>
                         </div>
                     </div>
+                        </>
+                    )}
                     
-                    {/* Edit Balloon Leader Section */}
-                    <div className="card-header" style={{ marginTop: '3rem' }}>
-                        <h4 className="section-title" style={{ fontSize: '1.1rem' }}>Edit Balloon Leader</h4>
+                    {activeTab === 'edit' && (
+                        <>
+                            {/* Edit Balloon Leader Section */}
+                            <div className="card-header" style={{ marginTop: '3rem' }}>
+                                <h4 className="section-title" style={{ fontSize: '1.1rem' }}>Edit Balloon Leader</h4>
                     </div>
 
                     <div className="fade-in" style={{ marginTop: '0.5rem' }}>
@@ -155,10 +177,12 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
 
                     {/* Additional Note */}
                     <div className="instruction-box" style={{ marginTop: '2rem' }}>
-                        <p className="p-flush red-text" style={{ textAlign: 'center', width: '100%', fontWeight: 500 }}>
+                        <p className="p-flush red-text" style={{ textAlign: 'justify', width: '100%', fontWeight: 500 }}>
                             ※ Leader can be changed depending on the need of the balloon.
                         </p>
                     </div>
+                        </>
+                    )}
 
                     {/* Lesson Navigation */}
                     <div className="lesson-navigation" style={{ marginTop: "3rem" }}>

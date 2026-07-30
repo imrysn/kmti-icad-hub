@@ -24,7 +24,7 @@ const CenterMarkContent: React.FC = () => {
                     <span className="step-label">Select hole/slot hole.</span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                    <div className="image-wrapper" style={{ marginTop: '0.2rem', }}>
                         <img src={centerMark1Img} alt="Select hole" className="software-screenshot screenshot-wide" />
                     </div>
                 </div>

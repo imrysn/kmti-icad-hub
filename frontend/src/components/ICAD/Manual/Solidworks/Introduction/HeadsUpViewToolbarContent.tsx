@@ -1,5 +1,5 @@
 import React from "react";
-import toolbar from "../../../../../assets/Solidworks/Introduction/Solidwork_Toolbar.png";
+import toolbar from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Toolbar.png";
 
 const HeadsUpViewToolbarContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

@@ -31,8 +31,6 @@ interface GeneralStandardSteelLessonProps {
 }
 
 const reminderSteps = [
-  "General Standard Steel Material Table",
-  "REMINDER:",
   "Please review the General Standard Steel Material Table.",
   "Ensure standard steel materials are selected according to this table.",
 ];
@@ -155,33 +153,8 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <KaraokeLessonText
-          as="h3"
-          className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-          data-reading-index="0"
-          text={
-            subLessonId === 'general-standard-steel-flat' ? "Flat Bar Reference Table" :
-            subLessonId === 'general-standard-steel-round' ? "Round Bar" :
-            "General Standard Steel Material Table"
-          }
-          isActive={isSpeaking && currentIndex === 0}
-          currentCharIndex={currentCharIndex}
-        />
-        {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
-          <KaraokeLessonText
-            className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-            data-reading-index="1"
-            text="REMINDER:"
-            isActive={isSpeaking && currentIndex === 1}
-            currentCharIndex={currentCharIndex}
-            style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}
-          />
-        )}
-      </section>
-
       <div className="lesson-grid single-card" style={{ marginTop: "0.5rem" }}>
-        <div className="lesson-card tab-content fade-in" style={{ paddingTop: "1.5rem", gap: "0.5rem" }}>
+        <div className="lesson-card tab-content fade-in" style={{ paddingTop: "1.5rem", gap: "0rem" }}>
 
           {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
             <>
@@ -196,7 +169,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Please review the General Standard Steel Material Table."
+                    text="Please review the General Standard Steel Material Table"
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -214,7 +187,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Ensure standard steel materials are selected according to this table."
+                    text="Ensure standard steel materials are selected according to this table"
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -239,7 +212,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "450px",
+                    height: "675px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -265,17 +238,26 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
+                      justifyContent: "center",
+                      gap: "1rem",
                       width: "100%",
                       marginTop: "1rem"
                     }}
                   >
                     <button
-                      className="nav-button"
                       onClick={handleGalleryPrev}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Previous image"
                     >
-                      <ChevronLeft size={16} /> Previous Image
+                      <ChevronLeft size={22} />
                     </button>
 
                     <div style={{ textAlign: "center" }}>
@@ -288,11 +270,19 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     </div>
 
                     <button
-                      className="nav-button"
                       onClick={handleGalleryNext}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Next image"
                     >
-                      Next Image <ChevronRight size={16} />
+                      <ChevronRight size={22} />
                     </button>
                   </div>
                 )}
@@ -320,7 +310,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                 <div
                   style={{
                     width: "200%",
-                    height: "1100px",
+                    height: "1500px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -346,17 +336,26 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
+                      justifyContent: "center",
+                      gap: "1rem",
                       width: "100%",
                       marginTop: "1rem"
                     }}
                   >
                     <button
-                      className="nav-button"
                       onClick={handleGalleryPrev}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Previous image"
                     >
-                      <ChevronLeft size={16} /> Previous Image
+                      <ChevronLeft size={22} />
                     </button>
 
                     <div style={{ textAlign: "center" }}>
@@ -369,11 +368,19 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     </div>
 
                     <button
-                      className="nav-button"
                       onClick={handleGalleryNext}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Next image"
                     >
-                      Next Image <ChevronRight size={16} />
+                      <ChevronRight size={22} />
                     </button>
                   </div>
                 )}
@@ -401,7 +408,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "850px",
+                    height: "1000px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -427,17 +434,26 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
+                      justifyContent: "center",
+                      gap: "1rem",
                       width: "100%",
                       marginTop: "1rem"
                     }}
                   >
                     <button
-                      className="nav-button"
                       onClick={handleGalleryPrev}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Previous image"
                     >
-                      <ChevronLeft size={16} /> Previous Image
+                      <ChevronLeft size={22} />
                     </button>
 
                     <div style={{ textAlign: "center" }}>
@@ -450,11 +466,19 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                     </div>
 
                     <button
-                      className="nav-button"
                       onClick={handleGalleryNext}
-                      style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--accent)",
+                        padding: "0.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      aria-label="Next image"
                     >
-                      Next Image <ChevronRight size={16} />
+                      <ChevronRight size={22} />
                     </button>
                   </div>
                 )}

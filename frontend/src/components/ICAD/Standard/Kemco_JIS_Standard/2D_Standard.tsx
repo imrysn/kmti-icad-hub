@@ -49,11 +49,9 @@ const galleryImages = [
 ];
 
 const reminderSteps = [
-  "2D STANDARD",
-  "REMINDER:",
   "Use the main views. (Front View, Top View, Right Side View)",
-  "Follow the standard dimensioning order: start with the top, left, and bottom views. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create detailed/section views.",
-  "Ensure all dimensions and critical details are applied to the 2D detailing of parts and assemblies (example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)."
+  "Follow the standard dimensioning order: start with the top, left, and bottom views. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create detailed/section views",
+  "Ensure all dimensions and critical details are applied to the 2D detailing of parts and assemblies (example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)"
 ];
 
 const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
@@ -149,23 +147,6 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
       {(!subLessonId || subLessonId === '2d-main' || subLessonId === '2d') && (
         <>
-          <section className="lesson-intro">
-            <KaraokeLessonText
-              as="h3"
-              className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-              data-reading-index="0"
-              text="2D STANDARD"
-              isActive={isSpeaking && currentIndex === 0}
-              currentCharIndex={currentCharIndex}
-            />
-            <KaraokeLessonText
-              className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-              data-reading-index="1"
-              text="REMINDER:"
-              isActive={isSpeaking && currentIndex === 1}
-              currentCharIndex={currentCharIndex}
-            />
-          </section>
 
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
@@ -210,7 +191,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>.'
+                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>'
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
@@ -239,7 +220,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text='Ensure all <span class="red-text">dimensions</span> and <span class="red-text">critical details</span> are applied to the 2D detailing of parts and assemblies <span class="red-text">(example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)</span>.'
+                        text='Ensure all <span class="red-text">dimensions</span> and <span class="red-text">critical details</span> are applied to the 2D detailing of parts and assemblies <span class="red-text">(example: chamfers, radius, machining symbols, welding symbols or notes, special notes, BOM and Isometric)</span>'
                         isActive={isSpeaking && currentIndex === 4}
                         currentCharIndex={currentCharIndex}
                       />
@@ -276,10 +257,6 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
       {subLessonId === '2d-gallery' && (
         <>
-          <section className="lesson-intro">
-            <h3 className="section-title">Reference Standard Gallery</h3>
-          </section>
-
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
               <div
@@ -325,17 +302,26 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
+                    gap: "1rem",
                     width: "100%",
                     marginTop: "1.5rem"
                   }}
                 >
                   <button
-                    className="nav-button"
                     onClick={handleGalleryPrev}
-                    style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "var(--accent)",
+                      padding: "0.25rem",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    aria-label="Previous image"
                   >
-                    <ChevronLeft size={16} /> Previous Image
+                    <ChevronLeft size={22} />
                   </button>
 
                   <div style={{ textAlign: "center" }}>
@@ -348,11 +334,19 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                   </div>
 
                   <button
-                    className="nav-button"
                     onClick={handleGalleryNext}
-                    style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "var(--accent)",
+                      padding: "0.25rem",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    aria-label="Next image"
                   >
-                    Next Image <ChevronRight size={16} />
+                    <ChevronRight size={22} />
                   </button>
                 </div>
               </div>

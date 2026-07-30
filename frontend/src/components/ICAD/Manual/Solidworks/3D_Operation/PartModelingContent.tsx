@@ -17,7 +17,7 @@ const PartModelingContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">Open a SolidWorks window.</span>
             </div>
@@ -25,7 +25,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">Create New File.</span>
             </div>
@@ -33,7 +33,7 @@ const PartModelingContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>Menu Bar</strong>, click <strong>New</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={controlImg} alt="New icon" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={controlImg} alt="New icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or <strong>CTRL + N</strong> key.
                 </p>
@@ -42,7 +42,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Select New Part Document.</span>
             </div>
@@ -58,7 +58,7 @@ const PartModelingContent: React.FC = () => (
                             <li>
                                 Select <strong>K&amp;M PART</strong>{' '}
                                 <span className="image-wrapper-flush">
-                                    <img src={partImg} alt="K&M PART icon" style={{ height: '38px', verticalAlign: 'middle' }} />
+                                    <img src={partImg} alt="K&M PART icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                                 </span>
                             </li>
                             <li style={{ marginTop: '0.5rem' }}>Click <strong>OK</strong> or Double click <strong>K&amp;M PART</strong>.</li>
@@ -91,7 +91,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">Set the Material.</span>
             </div>
@@ -129,7 +129,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}} >
                 <span className="step-number">5</span>
                 <span className="step-label">Show the Origin.</span>
             </div>
@@ -137,16 +137,16 @@ const PartModelingContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>View</strong> tab, select{' '}
                     <span className="image-wrapper-flush">
-                        <img src={originImg} alt="Origins" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={originImg} alt="Origins" style={{ height: '35px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or in <strong>Heads-up View</strong>, click <strong>Hide/Show Items</strong>{' '}
                     <span className="image-wrapper-flush" style={{ position: 'relative', display: 'inline-block' }}>
-                        <img src={thenImg} alt="Hide/Show Items and Origin" style={{ height: '28px', verticalAlign: 'middle' }} />
-                        <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.9em', pointerEvents: 'none' }}>then</span>
+                        <img src={thenImg} alt="Hide/Show Items and Origin" style={{ height: '40px', verticalAlign: 'middle' }} />
+                        <span style={{ position: 'absolute', left: '50%', top: '80%', transform: 'translate(-50%, -50%)', fontSize: '1.2em', pointerEvents: 'auto' }}>then</span>
                     </span>
                 </p>
 
-                <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                <div className="image-wrapper" style={{ marginTop: '1.5rem'}}>
                     <img
                         src={appearImg}
                         alt="Origin will appear in the graphics area"
@@ -158,7 +158,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">Select plane to be used.</span>
             </div>
@@ -166,18 +166,18 @@ const PartModelingContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     In <strong>FeatureManager Design tree</strong>, click <strong>Front Plane</strong> then this will appear{' '}
                     <span className="image-wrapper-flush">
-                        <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     , click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={f2Img} alt="Click" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={f2Img} alt="Click" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
 
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                     or in <strong>Sketch tab</strong>, click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={sImg} alt="Sketch tab click" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={sImg} alt="Sketch tab click" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}&gt; Select plane
                 </p>

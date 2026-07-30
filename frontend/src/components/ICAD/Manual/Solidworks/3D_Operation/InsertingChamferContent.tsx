@@ -9,7 +9,7 @@ const InsertingChamferContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">Click <strong>Spacebar</strong> then select <strong>Isometric</strong>.</span>
             </div>
@@ -22,7 +22,7 @@ const InsertingChamferContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">In <strong>Features</strong> tab, under <strong>Fillet</strong>,</span>
             </div>
@@ -30,7 +30,7 @@ const InsertingChamferContent: React.FC = () => (
                 <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                     Click{' '}
                     <span className="image-wrapper-flush">
-                        <img src={chamferImg} alt="Chamfer icon" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={chamferImg} alt="Chamfer icon" style={{ height: '30px', verticalAlign: 'middle' }} />
                     </span>
                 </p>
             </div>
@@ -38,7 +38,7 @@ const InsertingChamferContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Change <strong>Distance</strong> to <strong>5 mm</strong>.</span>
             </div>
@@ -51,7 +51,7 @@ const InsertingChamferContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">Select edges to be Chamfered.</span>
             </div>
@@ -61,7 +61,7 @@ const InsertingChamferContent: React.FC = () => (
                     <p className="p-flush red-text">
                         ※ Selected edges and faces will be added to <strong>Selected Entities</strong>.
                         <span className="image-wrapper-flush" style={{ marginLeft: '0.5rem' }}>
-                            <img src={edgeImg} alt="Selected edges" style={{ height: '28px', verticalAlign: 'middle' }} />
+                            <img src={edgeImg} alt="Selected edges" style={{ height: '35px', verticalAlign: 'middle' }} />
                         </span>
                     </p>
                 </div>
@@ -70,7 +70,7 @@ const InsertingChamferContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">
                     Click{' '}

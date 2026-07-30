@@ -7,12 +7,12 @@ const EditingPropertiesContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"   style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
 
                     <span className="image-wrapper-flush">
-                        <img src={fileImg} alt="File Properties" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={fileImg} alt="File Properties" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                 </span>
 
@@ -21,7 +21,7 @@ const EditingPropertiesContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"   style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">The Dialog box will appear. Edit File / Part Properties (It is linked to 2D Balloon & BOM).</span>
             </div>
@@ -30,17 +30,17 @@ const EditingPropertiesContent: React.FC = () => (
                     <p className="p-flush red-text">※ Link the dimension to the properties, so it will update whenever the 3D part is modified.</p>
                 </div>
 
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>While the Summary Information is open, double click the part then the dimensions will appear.</li>
-                    <li>Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</li>
-                    <li>On the Mat'l Wt Value, Type 0.08.</li>
+                <ol style={{ paddingLeft: '.80rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                   <span> While the Summary Information is open, double click the part then the dimensions will appear.</span>
+                   <div><span> Click on the red line area, type PL4.5, type "x", click 32, type "x", click 75.</span></div>
+                   <span> On the Mat'l Wt Value, Type 0.08.</span>
                 </ol>
             </div>
         </div>
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Click <strong>OK</strong>.</span>
             </div>
@@ -49,18 +49,18 @@ const EditingPropertiesContent: React.FC = () => (
                     <img src={custom1Img} alt="Dialog box ok" className="software-screenshot screenshot-wide" />
                 </div>
 
-                <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'var(--bg-surface)' }}>
+                <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem' }}>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>MAT'L</strong> - Type of material used on part.
+                        <strong style={{ color: 'red' }}>MAT'L</strong> - Type of material used on part.
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>Wt/Pc</strong> - Finished weight of part (automatically updates)
+                        <strong style={{ color: 'red' }}>Wt/Pc</strong> - Finished weight of part (automatically updates)
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong>Description</strong> - Part name or Material Specification (encoded / linked)
+                        <strong style={{ color: 'red' }}>Description</strong> - Part name or Material Specification (encoded / linked)
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                        <strong>Mat'l Wt</strong> - Material weight (manually encoded)
+                        <strong style={{ color: 'red' }}>Mat'l Wt</strong> - Material weight (manually encoded)
                     </p>
                 </div>
             </div>

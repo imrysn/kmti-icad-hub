@@ -17,7 +17,7 @@ const CreatingAssemblyContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">1</span>
                 <span className="step-label">Follow the procedure.</span>
             </div>
@@ -39,7 +39,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">2</span>
                 <span className="step-label">Insert Component</span>
             </div>
@@ -56,7 +56,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     To fix the <strong>part origin</strong>, point the cursor on the <strong>assembly origin</strong> and click.
@@ -64,25 +64,31 @@ const CreatingAssemblyContent: React.FC = () => (
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                    <img src={assem1Img} alt="Assembly Origin Alignment" className="software-screenshot screenshot-wide" />
+                    <img src={partOriginImg} alt="Part Origin Alignment" className="software-screenshot screenshot-wide" />
                 </div>
-                <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-                    <p className="p-flush red-text">※ Inserted part/s will be added to FeatureManager Design Tree.</p>
-                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>※ Fixed part will be indicated as <strong>(f)</strong>.</p>
-                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>※ First part to be inserted will be automatically fixed <strong>(f)</strong>.</p>
+                
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginTop: '2rem' }}>
+                    <div style={{ flex: '0 0 auto', maxWidth: '800px' }}>
+                        <img src={assem1Img} alt="Assembly Feature Tree" className="software-screenshot" style={{ width: '100%', objectFit: 'contain' }} />
+                    </div>
+                    <div className="instruction-box" style={{ flex: '1 1 300px', margin: 0 }}>
+                        <p className="p-flush red-text">※ Inserted part/s will be added to FeatureManager Design Tree.</p>
+                        <p className="p-flush red-text" style={{ marginTop: '1rem' }}>※ Fixed part will be indicated as <strong>(f)</strong>.</p>
+                        <p className="p-flush red-text" style={{ marginTop: '1rem' }}>※ First part to be inserted will be automatically fixed <strong>(f)</strong>.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">Insert another part.</span>
             </div>
             <div className="step-description">
-                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>
+                <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0'    , lineHeight: '2.2' }}>
+                    
                         In <strong>Assembly</strong> tab, click <strong>Insert Component</strong>{' '}
                         <span className="image-wrapper-flush">
                             <img src={insertImg} alt="Insert Component Icon" style={{ height: '43px', verticalAlign: 'middle' }} />
@@ -91,21 +97,21 @@ const CreatingAssemblyContent: React.FC = () => (
                         <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
                             <img src={insertComponentImg} alt="Insert Component Menu" className="software-screenshot screenshot-wide" />
                         </div>
-                    </li>
-                    <li>
+                    <div></div>
+                    
                         <strong>Browse</strong> the part to be inserted, click <strong>Open</strong>.
                         <br />
                         <div className="image-wrapper" style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
                             <img src={openImg} alt="Open Dialog" className="software-screenshot screenshot-wide" />
                         </div>
-                    </li>
+                    
                 </ol>
             </div>
         </div>
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">Drag the part and click beside the first part.</span>
             </div>
@@ -122,7 +128,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">Mate the parts.</span>
             </div>

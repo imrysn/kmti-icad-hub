@@ -10,12 +10,12 @@ const AddingHolesContent: React.FC = () => (
     <>
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Features</strong> tab, click <strong>Hole Wizard</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={holeImg} alt="Hole Wizard" style={{ height: '38px', verticalAlign: 'middle' }} />
+                        <img src={holeImg} alt="Hole Wizard" style={{ height: '55px', verticalAlign: 'middle' }} />
                     </span>
                     .
                 </span>
@@ -24,12 +24,12 @@ const AddingHolesContent: React.FC = () => (
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
-                        <img src={typeImg} alt="Type Tab" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={typeImg} alt="Type Tab" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}select <strong>Hole Type</strong>, <strong>Hole Specifications</strong>, and <strong>End Condition</strong> of feature.
                 </span>
@@ -43,32 +43,35 @@ const AddingHolesContent: React.FC = () => (
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     In{' '}
                     <span className="image-wrapper-flush">
-                        <img src={posImg} alt="Positions Tab" style={{ height: '28px', verticalAlign: 'middle' }} />
+                        <img src={posImg} alt="Positions Tab" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}set the position of holes.
                 </span>
             </div>
             <div className="step-description">
                 <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                    <li>Select face / plane for holes.</li>
-                    <li>Place the hole.
+                    
+                   
+                    <span>Select face / plane for holes.</span>
+                    <div>
+                <span>  Place the hole.</span></div>
                         <div className="image-wrapper" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                             <img src={pos1Img} alt="Place the hole" className="software-screenshot screenshot-wide" />
                         </div>
-                    </li>
-                    <li>Insert dimension / relation in holes.</li>
+                    
+                    Insert dimension / relation in holes.
                 </ol>
             </div>
         </div>
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     Click{' '}

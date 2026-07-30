@@ -15,8 +15,7 @@ interface JISScaleProps {
 }
 
 const reminderSteps = [
-    "JIS Scale",
-    "Please review the JIS Scale reference.",
+    "Please review the JIS Scale reference",
 ];
 
 const JISScale: React.FC<JISScaleProps> = ({
@@ -71,17 +70,6 @@ const JISScale: React.FC<JISScaleProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="JIS Scale"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -95,21 +83,37 @@ const JISScale: React.FC<JISScaleProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the JIS Scale reference."
+                                text="Please review the JIS Scale reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* ── JIS Scale Image ── */}
-                    <div className="step-description" style={{ marginTop: "1rem" }}>
-                        <img
-                            src={jisScaleImg}
-                            alt="JIS Scale"
-                            className="software-screenshot"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                        />
+                    {/* ── JIS Scale Table ── */}
+                    <div className="step-description lesson-table-container" style={{ marginTop: "1rem", width: "100%", maxWidth: "900px", margin: "1rem auto 0 auto" }}>
+                        <table className="lesson-table" style={{ width: "100%" }}>
+                            <thead>
+                                <tr>
+                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', width: "30%", textAlign: "center" }}>TYPE</th>
+                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>SCALE JIS Z 8314</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    { type: "CURRENT MEASURE", values: "1:1" },
+                                    { type: "Upsize (1)", values: "2:1、 5:1、 10:1、 20:1、 50:1" },
+                                    { type: "Upsize (2)", values: "√2:1\u00A0\u00A02.5:√2:1\u00A0\u00A0100:1" },
+                                    { type: "Down Size (1)", values: "1:2、 (1:3)、 (1:4)、 1:5、 1:10、 1:20、 1:50" },
+                                    { type: "Down Size (2)", values: "1:√2\u00A0\u00A01:2.5\u00A0\u00A01:2√2\u00A0\u00A01:3\u00A0\u00A01:4\u00A0\u00A01:5√2\u00A0\u00A01:25\u00A0\u00A01:250" },
+                                ].map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        <td style={{ textAlign: "center" }}>{row.type}</td>
+                                        <td style={{ textAlign: "left", letterSpacing: "1px" }}>{row.values}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
 
                     {/* Page Navigation */}

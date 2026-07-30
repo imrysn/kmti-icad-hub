@@ -1,7 +1,7 @@
 import React from "react";
-import partMode from "../../../../../assets/Solidworks/Introduction/Solidwork_Part.png";
-import assemblyMode from "../../../../../assets/Solidworks/Introduction/Solidwork_Assembly.png";
-import drawingMode from "../../../../../assets/Solidworks/Introduction/Solidwork_Drawing.png";
+import partMode from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Part.png";
+import assemblyMode from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Assembly.png";
+import drawingMode from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Drawing.png";
 
 const CommandManagerContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

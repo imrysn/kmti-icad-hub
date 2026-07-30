@@ -611,6 +611,34 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, []);
 
     const goToNextLesson = useCallback(() => {
+        if (activeLessonId === 'sw-status-bar') {
+            // Cross-module: Introduction → 3D Operation (3D Part Modeling)
+            const sw3dCourse: Course = {
+                id: 'mock-sw-3d',
+                title: '3D Operation',
+                description: 'Master 3D modeling operations and assemblies in SOLIDWORKS.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw3dCourse);
+            setActiveLessonId('sw-part-modeling');
+            setExpandedIds(new Set(['sw-part-modeling-main']));
+            return;
+        }
+
+        if (activeLessonId === 'sw-how-to-edit-matings') {
+            // Cross-module: 3D Operation → 2D Operation (Insert Components in the Part)
+            const sw2dCourse: Course = {
+                id: 'mock-sw-2d',
+                title: '2D Operation',
+                description: 'Create detailed 2D manufacturing drawings from your 3D models.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw2dCourse);
+            setActiveLessonId('sw-2d-operation-page1');
+            setExpandedIds(new Set());
+            return;
+        }
+
         if (activeLessonId === 'annotation') {
             // Fix #12: demoted to debug-level logging
             console.debug('Annotation quiz completed. Routing to Practical Assessment.');
@@ -662,6 +690,34 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
 
     const goToPrevLesson = useCallback(() => {
+        if (activeLessonId === 'sw-part-modeling') {
+            // Cross-module: 3D Operation → Introduction (Status Bar)
+            const swIntroCourse: Course = {
+                id: 'mock-sw-intro',
+                title: 'SolidWorks Introduction',
+                description: 'Learn the fundamentals of the SOLIDWORKS interface.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(swIntroCourse);
+            setActiveLessonId('sw-status-bar');
+            setExpandedIds(new Set(['sw-status-bar-main']));
+            return;
+        }
+
+        if (activeLessonId === 'sw-2d-operation-page1') {
+            // Cross-module: 2D Operation → 3D Operation (How to Edit Matings)
+            const sw3dCourse: Course = {
+                id: 'mock-sw-3d',
+                title: '3D Operation',
+                description: 'Master 3D modeling operations and assemblies in SOLIDWORKS.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw3dCourse);
+            setActiveLessonId('sw-how-to-edit-matings');
+            setExpandedIds(new Set(['sw-how-to-edit-matings-main']));
+            return;
+        }
+
         if (currentLessonIndex > 0) {
             const prevId = allLessonIds[currentLessonIndex - 1];
             setActiveLessonId(prevId);

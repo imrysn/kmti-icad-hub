@@ -6,12 +6,12 @@ const PartSavingContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Menu Bar </strong>, click <strong>Save</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={csImg} alt="Save icon" style={{ height: '35px', verticalAlign: 'middle' }} />
+                        <img src={csImg} alt="Save icon" style={{ height: '45px', verticalAlign: 'middle' }} />
                     </span>
                     {' '}or <strong>Ctrl + S</strong>   to save file.
                 </span>
@@ -20,7 +20,7 @@ const PartSavingContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">When this <strong>Dialog box</strong> appears, edit <strong>File Name</strong>. Click <strong>Save</strong>.</span>
             </div>

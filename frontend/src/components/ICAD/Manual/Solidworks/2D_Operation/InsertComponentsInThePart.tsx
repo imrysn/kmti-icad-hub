@@ -47,7 +47,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             <span className="step-label">Create New File</span>
                         </div>
                         <div className="step-description">
-                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                            <div className="image-wrapper" style={{ marginTop: '1rem' }}>
                                 <img
                                     src={createImg}
                                     alt="Create New File"
@@ -65,15 +65,15 @@ const Page1Lesson: React.FC<Page1Props> = ({
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                <li>
+                                
                                     Click <strong>A2 - JFE</strong>{'                '}
                                     <span className="image-wrapper-flush">
                                         <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                                     </span>
-                                </li>
-                                <li>
+                                
+                                <div></div>
                                     Click <strong>OK</strong> or Double click <strong>A2 - JFE</strong>.
-                                </li>
+                                
                             </ol>
 
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -127,10 +127,10 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
                                 <div className="step-description">
-                                    <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
+                                    <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                                         <p className="p-flush red-text">※ Hold the part/assy file from the folder then drag to the dwg sheet.</p>
                                     </div>
-                                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                    <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
                                         <img src={dragImg} alt="Drag and Drop" className="software-screenshot screenshot-wide" />
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                 </div>
                                 <div className="step-description">
                                     <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
-                                        Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '35px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
+                                        Open the 3D part/assy &gt; Click <img src={clickImg} alt="Click" style={{ height: '60px', verticalAlign: 'middle', display: 'inline-block', margin: '0 4px' }} /> &gt; Make Drawing from Part/Assembly
                                     </p>
                                     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', marginTop: '0.2rem', flexWrap: 'wrap' }}>
                                         <div style={{ flex: '1 1 50%', minWidth: '300px' }}>

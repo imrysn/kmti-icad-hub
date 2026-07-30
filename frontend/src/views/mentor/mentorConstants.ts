@@ -940,7 +940,7 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
     title: '2D Standard', 
     content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'],
     children: [
-      { id: '2d-main', title: '2D Standard Main', content: [] },
+      { id: '2d-main', title: '2D Standard', content: [] },
       { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
     ]
   },
@@ -959,7 +959,7 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'angle-bar-dimensions', title: 'Angle Bar Dimensions', content: ['Placeholder'] },
   { id: 'available-plate-thickness-jis', title: 'Available Plate Thickness JIS', content: ['Placeholder'] },
   { id: 'bolting-kemco', title: 'Bolting (KEMCO Standard)', content: ['Placeholder'] },
-  { id: 'cross-ref', title: 'Cross ref & Previous dwg', content: ['Placeholder'] },
+  { id: 'cross-ref', title: 'Cross Ref & Previous Dwg', content: ['Placeholder'] },
   { id: 'expanded-metal', title: 'Expanded Metal', content: ['Placeholder'] },
   { id: 'jis-scale', title: 'JIS Scale', content: ['Placeholder'] },
   { id: 'keyplate-groove', title: 'Keyplate & Groove', content: ['Placeholder'] },
@@ -967,11 +967,11 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
   { id: 'paragon-smc', title: 'Paragon SMC', content: ['Placeholder'] },
   { 
     id: 'retainer-ring', 
-    title: 'Retainer Ring', 
+    title: 'Retaining Rings', 
     content: ['Placeholder'],
     children: [
-      { id: 'retainer-ring-main', title: 'Retainer Ring (JIS Standard)', content: [] },
-      { id: 'retainer-ring-spec', title: 'Retainer Ring Specifications (OCHIAI)', content: [] }
+      { id: 'retainer-ring-main', title: 'Retaining Rings-C (JIS Standard)', content: [] },
+      { id: 'retainer-ring-spec', title: 'Retaining Rings Specifications (OCHIAI)', content: [] }
     ]
   },
   { id: 'shaft-keyway', title: 'Shaft Keyway', content: ['Placeholder'] },

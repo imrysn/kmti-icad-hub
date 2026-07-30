@@ -1,6 +1,6 @@
 import React from "react";
-import menubar1 from "../../../../../assets/Solidworks/Introduction/Solidwork_Menubar1.png";
-import menubar2 from "../../../../../assets/Solidworks/Introduction/Solidwork_Menubar2.png";
+import menubar1 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Menubar1.png";
+import menubar2 from "../../../../../assets/Solidworks/3D_Fv/Solidwork_Menubar2.png";
 
 const MenuBarContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

@@ -12,8 +12,6 @@ interface PipingTableLessonProps {
 }
 
 const reminderSteps = [
-  "Piping Standard",
-  "REMINDER:",
   "Please review the Piping Parts Reference Table.",
   "Ensure standard parts are selected according to this table."
 ];
@@ -209,25 +207,6 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="lesson-intro">
-        <KaraokeLessonText
-          as="h3"
-          className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-          data-reading-index="0"
-          text="Piping Standard"
-          isActive={isSpeaking && currentIndex === 0}
-          currentCharIndex={currentCharIndex}
-        />
-        <KaraokeLessonText
-          className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-          data-reading-index="1"
-          text="REMINDER:"
-          isActive={isSpeaking && currentIndex === 1}
-          currentCharIndex={currentCharIndex}
-          style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}
-        />
-      </section>
-
       <div className="lesson-grid single-card" style={{ marginTop: "0.5rem" }}>
         <div className="lesson-card tab-content fade-in" style={{ paddingTop: "1.5rem", gap: "1rem" }}>
           <div
@@ -239,7 +218,7 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
               <KaraokeLessonText
                 as="span"
                 className="step-label"
-                text="Please review the Piping Parts Reference Table."
+                text="Please review the Piping Parts Reference Table"
                 isActive={isSpeaking && currentIndex === 2}
                 currentCharIndex={currentCharIndex}
               />
@@ -255,7 +234,7 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
               <KaraokeLessonText
                 as="span"
                 className="step-label"
-                text="Ensure standard parts are selected according to this table."
+                text="Ensure standard parts are selected according to this table"
                 isActive={isSpeaking && currentIndex === 3}
                 currentCharIndex={currentCharIndex}
               />
@@ -264,7 +243,9 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
 
           <div className="table-wrapper" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
             <div className="lesson-table-container" style={{ margin: 0 }}>
-              <table className="lesson-table piping-table-compact">
+              <table
+                className="lesson-table piping-table-compact"
+              >
                 <thead>
                   <tr>
                     <th style={{ width: '16%' }}>English</th>

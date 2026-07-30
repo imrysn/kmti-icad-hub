@@ -1,5 +1,5 @@
 import React from "react";
-import solidworksTreeView from "../../../../../assets/Solidworks/Introduction/Solidworks_TreeView.png";
+import solidworksTreeView from "../../../../../assets/Solidworks/3D_Fv/Solidworks_TreeView.png";
 
 const FeatureManagerTreeViewContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

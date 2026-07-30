@@ -25,11 +25,13 @@ const DimensioningChamferContent: React.FC = () => {
                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={chamferEdgeImg} alt="Chamfer Edge" className="software-screenshot" />
                     </div>
-                    <ol style={{ paddingLeft: '1.25rem', margin: '1.5rem 0 0 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
-                        <li>Select the chamfered edge.</li>
-                        <li>Select one of the lead-in edges.</li>
-                        <li>Place the dimension.</li>
-                        <li>Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></li>
+                    <ol style={{ paddingLeft: '1.25rem', margin: '1.5rem 0 0 0',  color: 'var(--text-muted)', lineHeight: '2.2' }}>
+                      <div>  Select the chamfered edge.</div>
+                        Select one of the lead-in edges.
+                        Place the dimension.
+
+                     <div>Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                     </div>
                     </ol>
                 </div>
             </div>
