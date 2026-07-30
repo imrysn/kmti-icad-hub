@@ -14,7 +14,7 @@ interface SpotlightConfig {
 }
 
 const SPOTLIGHTS: SpotlightConfig[] = [
-    { label: "Tree View", startTime: 0.7, endTime: 300.0, pxX: 140, pxY: 108, pxW: 244, pxH: 918 }
+    { label: "Tree View", startTime: 0.7, endTime: 300.0, pxX: 125, pxY: 155, pxW: 250, pxH: 860 }
 ];
 
 function Tree_View_Japanese_Tutorial() {
@@ -25,15 +25,35 @@ function Tree_View_Japanese_Tutorial() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const activeSpotlight = !isEnded ? SPOTLIGHTS.find(
-        (spot) => currentTime >= spot.startTime && currentTime <= spot.endTime
-    ) : undefined;
+    const activeSpotlightIndex = !isEnded
+        ? SPOTLIGHTS.findIndex(
+            (spot) => currentTime >= spot.startTime && currentTime <= spot.endTime
+        )
+        : -1;
+
+    const activeSpotlight = activeSpotlightIndex !== -1 ? SPOTLIGHTS[activeSpotlightIndex] : undefined;
 
     const jumpToTime = (time: number) => {
         if (videoRef.current) {
             setIsEnded(false);
             videoRef.current.currentTime = time;
             videoRef.current.play().catch(() => { });
+        }
+    };
+
+    const handlePrevStep = () => {
+        if (activeSpotlightIndex > 0) {
+            jumpToTime(SPOTLIGHTS[activeSpotlightIndex - 1].startTime);
+        } else {
+            jumpToTime(SPOTLIGHTS[0].startTime);
+        }
+    };
+
+    const handleNextStep = () => {
+        if (activeSpotlightIndex !== -1 && activeSpotlightIndex < SPOTLIGHTS.length - 1) {
+            jumpToTime(SPOTLIGHTS[activeSpotlightIndex + 1].startTime);
+        } else {
+            jumpToTime(SPOTLIGHTS[0].startTime);
         }
     };
 
@@ -67,7 +87,7 @@ function Tree_View_Japanese_Tutorial() {
                 alignItems: "center",
                 overflow: "hidden",
                 borderRadius: "8px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
+
             }}
         >
             {/* 16:9 Video Frame Container — maintains 100% precise spotlight positioning in fullscreen */}
@@ -111,107 +131,43 @@ function Tree_View_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight Dimming Overlay with Cutout Mask */}
+                {/* Spotlight box */}
                 {activeSpotlight && (
-                    <>
-                        {/* Top band: full width, above the box */}
+                    <div
+                        style={{
+                            position: "absolute",
+                            left: `${spotX}%`,
+                            top: `${spotY}%`,
+                            width: `${spotW}%`,
+                            height: `${spotH}%`,
+                            pointerEvents: "none",
+                            boxSizing: "border-box",
+                            border: "2px solid #B5179E",
+                            borderRadius: "2px",
+                            zIndex: 10,
+                            transition: "all 0.25s ease-out"
+                        }}
+                    >
                         <div
                             style={{
                                 position: "absolute",
-                                left: 0,
+                                left: "calc(100% + 8px)",
                                 top: 0,
-                                width: "100%",
-                                height: `${spotY}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Bottom band: full width, below the box */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY + spotH}%`,
-                                width: "100%",
-                                height: `${100 - (spotY + spotH)}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Left band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                top: `${spotY}%`,
-                                width: `${spotX}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
-                        {/* Right band: only spans the box's vertical range */}
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX + spotW}%`,
-                                top: `${spotY}%`,
-                                width: `${100 - (spotX + spotW)}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                backgroundColor: "rgba(0, 0, 0, 0.65)",
-                                backdropFilter: "brightness(0.4) saturate(0.3)",
-                                transition: "all 0.25s ease-out",
-                                zIndex: 8
-                            }}
-                        />
+                                backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                color: "#B5179E",
+                                border: "1px solid #B5179E",
+                                padding: "3px 10px",
+                                borderRadius: "6px",
+                                fontSize: "12px",
+                                fontWeight: "bold",
+                                whiteSpace: "nowrap",
+                                boxShadow: " 0 0 8px rgba(255, 20, 147, 0.4)",
 
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX}%`,
-                                top: `${spotY}%`,
-                                width: `${spotW}%`,
-                                height: `${spotH}%`,
-                                pointerEvents: "none",
-                                boxSizing: "border-box",
-                                border: "2.5px solid #ff1493",
-                                boxShadow: "0 0 10px #ff1493, 0 0 4px #ff1493",
-                                borderRadius: "2px",
-                                zIndex: 10,
-                                transition: "all 0.25s ease-out"
                             }}
                         >
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: "calc(100% + 8px)",
-                                    top: 0,
-                                    backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                    color: "#ff1493",
-                                    border: "1.5px solid #ff1493",
-                                    padding: "3px 10px",
-                                    borderRadius: "6px",
-                                    fontSize: "12px",
-                                    fontWeight: "bold",
-                                    whiteSpace: "nowrap",
-                                    boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
-                                    backdropFilter: "blur(4px)"
-                                }}
-                            >
-                                {activeSpotlight.label}
-                            </div>
+                            {activeSpotlight.label}
                         </div>
-                    </>
+                    </div>
                 )}
 
                 {/* Custom Floating Pill Video Controls Bar */}
@@ -220,8 +176,10 @@ function Tree_View_Japanese_Tutorial() {
                     containerRef={containerRef}
                     isFullscreen={isFullscreen}
                     onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
-                    onPrevStep={() => jumpToTime(0)}
-                    onNextStep={() => jumpToTime(0)}
+                    onPrevStep={handlePrevStep}
+                    onNextStep={handleNextStep}
+                    canGoPrev={activeSpotlightIndex > 0}
+                    canGoNext={activeSpotlightIndex === -1 || activeSpotlightIndex < SPOTLIGHTS.length - 1}
                 />
             </div>
         </div>

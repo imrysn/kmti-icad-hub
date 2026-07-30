@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import menuBarVideo from '../../../../../../assets/Commands/Japanese_Tutorial/Menu_Bar.mp4';
 import { VideoControlBar } from '../../Video_Control/VideoControlBar';
@@ -33,6 +33,21 @@ const DROPDOWN_WIDTHS: Record<string, string> = {
     Help: "17%"
 };
 
+// Highlight box size (in the video's native 1920x1042 pixel space) for each
+// menu label's button. Tune width/height per label so the spotlight cutout
+// matches that button's actual footprint in the video, instead of every
+// label sharing one fixed box size.
+const LABEL_BOX_SIZES: Record<string, { width: number; height: number }> = {
+    File: { width: 70, height: 26 },
+    View: { width: 60, height: 26 },
+    Information: { width: 81, height: 26 },
+    Settings: { width: 57, height: 26 },
+    Tools: { width: 63, height: 26 },
+    Window: { width: 83, height: 26 },
+    Help: { width: 66, height: 26 }
+};
+const DEFAULT_LABEL_BOX_SIZE = { width: 90, height: 26 };
+
 function Menu_Bar_Japanese_Tutorial() {
     const [videoError, setVideoError] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -41,6 +56,12 @@ function Menu_Bar_Japanese_Tutorial() {
     const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    // Ref to the 16:9 frame div that has overflow:hidden — used to compute
+    // the label button's real on-screen position so it can be rendered
+    // outside that clipping boundary via a portal.
+    const frameRef = useRef<HTMLDivElement>(null);
+
+    const [frameRect, setFrameRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
     const activeSpotlightIndex = SPOTLIGHTS.findIndex(
         (spot) => currentTime >= spot.startTime && currentTime <= spot.endTime
@@ -74,11 +95,58 @@ function Menu_Bar_Japanese_Tutorial() {
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
     const spotY = activeSpotlight ? ((activeSpotlight.pxY - 27 + 7 + 15) / 1042) * 100 : 0;
 
-    // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
-    const smallBoxW = (90 / 1920) * 100;
-    const smallBoxH = (26 / 1042) * 100;
-    const spotW = smallBoxW;
-    const spotH = smallBoxH;
+    // Box size matched to the active spotlight's own button footprint (falls
+    // back to a sensible default if a label isn't in LABEL_BOX_SIZES)
+    const activeBoxSize = activeSpotlight
+        ? (LABEL_BOX_SIZES[activeSpotlight.label] ?? DEFAULT_LABEL_BOX_SIZE)
+        : DEFAULT_LABEL_BOX_SIZE;
+    const spotW = (activeBoxSize.width / 1920) * 100;
+    const spotH = (activeBoxSize.height / 1042) * 100;
+
+    // Keep frameRect in sync with the actual rendered size/position of the
+    // 16:9 frame, so the portaled label button can be placed using real
+    // screen pixels instead of percentages that get clipped by the frame's
+    // overflow:hidden. Recomputes on fullscreen toggle, window resize, and
+    // whenever a spotlight becomes active (position may shift on entry).
+    useLayoutEffect(() => {
+        const updateRect = () => {
+            if (frameRef.current) {
+                const rect = frameRef.current.getBoundingClientRect();
+                setFrameRect({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+            }
+        };
+
+        updateRect();
+        window.addEventListener("resize", updateRect);
+        // capture:true so this fires even when a scrollable ANCESTOR (not
+        // window) scrolls — scroll events don't bubble, but capture-phase
+        // listeners on window still see them.
+        window.addEventListener("scroll", updateRect, true);
+        const settleTimer = setTimeout(updateRect, 50);
+
+        return () => {
+            window.removeEventListener("resize", updateRect);
+            window.removeEventListener("scroll", updateRect, true);
+            clearTimeout(settleTimer);
+        };
+    }, [isFullscreen, activeSpotlight]);
+    // Real on-screen pixel position for the label button + its dropdown
+    // image, derived from frameRect instead of percentages of a clipped
+    // ancestor. This is what gets portaled to document.body.
+    const labelButtonPos = activeSpotlight && frameRect
+        ? {
+            left: frameRect.left + (spotX / 100) * frameRect.width + (spotW / 100) * frameRect.width + 6,
+            top: frameRect.top + (spotY / 100) * frameRect.height - 8,
+        }
+        : null;
+
+    const dropdownImagePos = activeSpotlight && frameRect
+        ? {
+            left: frameRect.left + (spotX / 100) * frameRect.width,
+            top: frameRect.top + ((spotY + spotH) / 100) * frameRect.height + 6,
+            width: (parseFloat(DROPDOWN_WIDTHS[activeSpotlight.label] ?? "20") / 100) * frameRect.width,
+        }
+        : null;
 
     const videoContainerMarkup = (
         <div
@@ -111,6 +179,7 @@ function Menu_Bar_Japanese_Tutorial() {
         >
             {/* 16:9 Video Frame Container — always locked to the video's aspect ratio so spotlight/box percentages stay aligned with the actual video, even in fullscreen */}
             <div
+                ref={frameRef}
                 style={{
                     position: "relative",
                     width: "100%",
@@ -150,84 +219,24 @@ function Menu_Bar_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight cutout: a single element whose box-shadow spread fills the
-                    entire container with the dim color. Because there is only one element
-                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
-                    shared edge between separately-composited backdrop-filter layers, so no
-                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
+                {/* Spotlight box — stays inside the frame, unaffected by this fix
+                    since only the interactive label button was being clipped */}
                 {activeSpotlight && (
-                    <>
-                        <div
-                            style={{
-                                position: "absolute",
-                                left: `${spotX}%`,
-                                top: `${spotY}%`,
-                                width: `${smallBoxW}%`,
-                                height: `${smallBoxH}%`,
-                                pointerEvents: "none",
-                                boxSizing: "border-box",
-                                border: "2.5px solid #ff1493",
-                                borderRadius: "2px",
-                                zIndex: 10,
-                                boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 10px #ff1493, 0 0 4px #ff1493",
-                                transition: "all 0.25s ease-out"
-                            }}
-                        >
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: "calc(100% + 6px)",
-                                    top: "-8px",
-                                    zIndex: 20,
-                                    pointerEvents: "auto"
-                                }}
-                            >
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsLabelDropdownOpen(prev => !prev);
-                                    }}
-                                    style={{
-                                        backgroundColor: "#020202ff",
-                                        color: "#ff00f2ff",
-                                        border: "1px solid #ff00d4ff",
-                                        padding: "2px 8px",
-                                        borderRadius: "0px",
-                                        fontSize: "11px",
-                                        fontWeight: 500,
-                                        whiteSpace: "nowrap",
-
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    {activeSpotlight.label}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Image pop-up positioned below the spotlight box, expanded to a larger readable size */}
-                        {isLabelDropdownOpen && activeSpotlight.dropdownImage && (
-                            <img
-                                src={activeSpotlight.dropdownImage}
-                                alt={`${activeSpotlight.label} dropdown`}
-                                style={{
-                                    position: "absolute",
-                                    left: `${spotX}%`,
-                                    top: `${spotY + spotH}%`,
-                                    marginTop: "6px",
-                                    width: DROPDOWN_WIDTHS[activeSpotlight.label] ?? "20%",
-                                    height: "auto",
-                                    objectFit: "contain",
-                                    border: "1.5px solid #ff1493",
-                                    borderRadius: "4px",
-                                    boxShadow: "0 4px 16px rgba(0,0,0,0.8)",
-                                    zIndex: 15,
-                                    pointerEvents: "auto",
-                                    transition: "all 0.25s ease-out"
-                                }}
-                            />
-                        )}
-                    </>
+                    <div
+                        style={{
+                            position: "absolute",
+                            left: `${spotX}%`,
+                            top: `${spotY}%`,
+                            width: `${spotW}%`,
+                            height: `${spotH}%`,
+                            pointerEvents: "none",
+                            boxSizing: "border-box",
+                            border: "2.5px solid #B5179E",
+                            borderRadius: "2px",
+                            zIndex: 10,
+                            transition: "all 0.25s ease-out"
+                        }}
+                    />
                 )}
 
                 {/* Custom Floating Pill Video Controls Bar */}
@@ -242,6 +251,66 @@ function Menu_Bar_Japanese_Tutorial() {
                     canGoNext={activeSpotlightIndex === -1 || activeSpotlightIndex < SPOTLIGHTS.length - 1}
                 />
             </div>
+
+            {/* Label button + dropdown image — portaled to document.body as
+                position:fixed, computed from real screen coordinates. This
+                is what fixes the dead-click-zone: these elements now live
+                OUTSIDE the frame's overflow:hidden, so they can never be
+                clipped regardless of label width or fullscreen state. */}
+            {activeSpotlight && labelButtonPos && createPortal(
+                <>
+                    <div
+                        style={{
+                            position: "fixed",
+                            left: `${labelButtonPos.left}px`,
+                            top: `${labelButtonPos.top}px`,
+                            zIndex: 1000001,
+                            pointerEvents: "auto"
+                        }}
+                    >
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsLabelDropdownOpen(prev => !prev);
+                            }}
+                            style={{
+                                backgroundColor: "#020202ff",
+                                color: "#B5179E",
+                                border: "1px solid #B5179E",
+                                padding: "2px 8px",
+                                borderRadius: "0px",
+                                fontSize: "11px",
+                                fontWeight: 500,
+                                whiteSpace: "nowrap",
+                                cursor: "pointer"
+                            }}
+                        >
+                            {activeSpotlight.label}
+                        </button>
+                    </div>
+
+                    {isLabelDropdownOpen && activeSpotlight.dropdownImage && dropdownImagePos && (
+                        <img
+                            src={activeSpotlight.dropdownImage}
+                            alt={`${activeSpotlight.label} dropdown`}
+                            style={{
+                                position: "fixed",
+                                left: `${dropdownImagePos.left}px`,
+                                top: `${dropdownImagePos.top}px`,
+                                width: `${dropdownImagePos.width}px`,
+                                height: "auto",
+                                objectFit: "contain",
+                                border: "1.5px solid #B5179E",
+                                borderRadius: "4px",
+                                zIndex: 1000000,
+                                pointerEvents: "auto",
+                                transition: "all 0.25s ease-out"
+                            }}
+                        />
+                    )}
+                </>,
+                document.body
+            )}
         </div>
     );
 

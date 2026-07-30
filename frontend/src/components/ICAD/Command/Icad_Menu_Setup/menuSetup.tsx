@@ -1,10 +1,15 @@
 import { useState } from "react";
 import "./Menu_Setup_Theme/Menu_Setup_Theme.css";
 import { menuData } from "./Menu_Data/menuData";
+import ExitCourseButton from "../Exit_Course_Button/ExitCourseButton";
 
 type Category = keyof typeof menuData;
 
-export default function MenuSetup() {
+interface MenuSetupProps {
+    onExit?: () => void;
+}
+
+export default function MenuSetup({ onExit }: MenuSetupProps) {
     const [selected, setSelected] = useState<Category>("Function");
 
     const categories = Object.keys(menuData) as Category[];
@@ -12,7 +17,19 @@ export default function MenuSetup() {
     return (
 
         <div className="menu-setup-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <h1>Menu Setup</h1>
+
+            <div style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '100%',
+                padding: '0.54rem 1.2rem',
+                boxSizing: 'border-box',
+                borderBottom: '1px solid var(--border-color)',
+            }}>
+                <ExitCourseButton onExit={() => onExit?.()} />
+            </div>
+
+            <h1 style={{ marginTop: '50px' }}>Menu Setup</h1>
             <p style={{ marginBottom: '2rem' }}>(Keywords)</p>
 
 

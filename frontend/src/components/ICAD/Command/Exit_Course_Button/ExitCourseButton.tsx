@@ -68,7 +68,7 @@ function ExitCourseButton({ onExit }: ExitCourseButtonProps) {
             style={{
                 fontFamily: 'var(--font-main)',
                 fontSize: '12.8px',
-                padding: '10px 16px 6px',
+                padding: '8px 16px',
                 letterSpacing: '0.3px',
                 borderRadius: '6px',
                 boxSizing: 'border-box',

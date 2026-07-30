@@ -5,10 +5,12 @@ import Tree_View_Japanese_Tutorial from "./Tree_View/Tree_View";
 import { ReadAloudButton } from "../../../../ReadAloudButton";
 import { useTTSContext } from "../../../../../context/TTSContext";
 import ExitCourseButton from "../../Exit_Course_Button/ExitCourseButton";
+import "../../Command_Page_Theme/CommadPage.css";
 
 const FALLBACK_NAVBAR_HEIGHT = 60;
 const TOPBAR_HEIGHT = 52;
-const STUCK_BUTTON_GAP = 12;
+const STUCK_BUTTON_GAP = 20;
+const STICKY_TRIGGER_BUFFER = 24;
 
 interface Interface_LessonProps {
     onExit?: () => void;
@@ -16,14 +18,17 @@ interface Interface_LessonProps {
 
 function Interface_Lesson({ onExit }: Interface_LessonProps) {
     const [activeTab, setActiveTab] = useState("MENU BAR");
-    const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-    const [isSpeaking, setIsSpeaking] = useState(false);
     const { rate, voices, selectedVoiceURI } = useTTSContext();
+    const [isSpeaking, setIsSpeaking] = useState(false);
     const tabs = ["MENU BAR", "COMMAND MENU", "TREE VIEW"];
     const activeIndex = tabs.indexOf(activeTab);
 
     const sentinelRef = useRef<HTMLDivElement>(null);
     const [isButtonStuck, setIsButtonStuck] = useState(false);
+
+    const tabBarSentinelRef = useRef<HTMLDivElement>(null);
+    const [isTabBarStuck, setIsTabBarStuck] = useState(false);
+
     const [navbarHeight, setNavbarHeight] = useState(FALLBACK_NAVBAR_HEIGHT);
 
     const titleForTab = (tab: string) =>
@@ -67,12 +72,8 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
         return () => window.removeEventListener("resize", measure);
     }, [getGlobalNavbarHeight]);
 
-    // Total height of everything fixed at the top (global navbar + our
-    // Exit Course bar) that visually covers the sentinel before it
+    const obscuredHeight = navbarHeight + TOPBAR_HEIGHT + STICKY_TRIGGER_BUFFER;
 
-    const obscuredHeight = navbarHeight + TOPBAR_HEIGHT;
-
-    // Watch the sentinel using a shrunk root: rootMargin's negative top
     useEffect(() => {
         const sentinel = sentinelRef.current;
         if (!sentinel) return;
@@ -80,6 +81,25 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 setIsButtonStuck(!entry.isIntersecting);
+            },
+            {
+                root: null,
+                rootMargin: `-${obscuredHeight}px 0px 0px 0px`,
+                threshold: 0,
+            }
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [obscuredHeight]);
+
+    useEffect(() => {
+        const sentinel = tabBarSentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsTabBarStuck(!entry.isIntersecting);
             },
             {
                 root: null,
@@ -101,10 +121,36 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
         alignItems: 'center',
         justifyContent: 'flex-end',
         padding: '0.54rem 1.2rem',
+        backgroundColor: 'var(--bg-dark)',
         borderBottom: '1px solid var(--border-color)',
         flexShrink: 0,
         zIndex: 900,
     };
+
+    const tabBarBaseStyle: React.CSSProperties = {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "var(--glass-bg)",
+        padding: "9.6px",
+        borderRadius: "10px",
+        border: "1px solid var(--border-color)",
+        gap: "8px",
+    };
+
+    const renderTabButtons = () =>
+        tabs.map((tab) => {
+            const isActive = activeTab === tab;
+            return (
+                <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`lesson-tab-btn${isActive ? " active" : ""}`}
+                >
+                    {tab}
+                </button>
+            );
+        });
 
     return (
         <div style={{ width: "100%", minHeight: "100%", height: "auto", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-dark)", fontFamily: "var(--font-main)", overflowY: "auto", paddingBottom: "140px", position: "relative" }}>
@@ -114,8 +160,6 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
                 <ExitCourseButton onExit={() => onExit?.()} />
             </div>
 
-            {/* Fixed Read Lesson button — appears once the header's original
-                button becomes visually hidden behind the fixed bars above */}
             {isButtonStuck && (
                 <div style={{
                     position: "fixed",
@@ -131,7 +175,20 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
                 </div>
             )}
 
-            {/* Spacer so page content starts below the fixed top bar instead of underneath it */}
+            {isTabBarStuck && (
+                <div style={{
+                    position: "fixed",
+                    top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 900,
+                }}>
+                    <div style={tabBarBaseStyle}>
+                        {renderTabButtons()}
+                    </div>
+                </div>
+            )}
+
             <div style={{ width: "100%", height: `${TOPBAR_HEIGHT}px`, flexShrink: 0 }} />
 
             {/* Header */}
@@ -160,7 +217,6 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
                     {titleForTab(activeTab)}
                 </div>
 
-                {/* Sentinel + original in-header Read Lesson button */}
                 <div
                     ref={sentinelRef}
                     style={{
@@ -190,48 +246,16 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
                 <div style={{ width: "calc(100% - 40px)", maxWidth: "1200px", height: "1px", backgroundColor: "var(--border-color)", marginTop: "64px" }} />
             </div>
 
-            {/* Tab Pill Switcher */}
+            <div ref={tabBarSentinelRef} style={{ width: "1px", height: "1px" }} />
+
             <div style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: "var(--glass-bg)",
-                padding: "9.6px",
-                borderRadius: "10px",
-                border: "1px solid var(--border-color)",
-                margin: '32px 339.109px 100px',
-                gap: "8px"
+                ...tabBarBaseStyle,
+                margin: '32px 0 100px',
+                visibility: isTabBarStuck ? "hidden" : "visible",
             }}>
-                {tabs.map((tab) => {
-                    const isActive = activeTab === tab;
-                    const isHovered = hoveredTab === tab;
-                    return (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            style={{
-                                padding: "8px 16px",
-                                border: !isActive && isHovered ? "1px solid #57606A" : "1px solid transparent",
-                                borderRadius: "8px",
-                                backgroundColor: isActive ? "#DD4DFA" : "transparent",
-                                color: isActive ? "#ffffff" : isHovered ? "#DD4DFA" : "var(--text-muted)",
-                                fontWeight: "bold",
-                                fontSize: "12.8px",
-                                letterSpacing: "0.3px",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease",
-                                fontFamily: "Outfit, sans-serif",
-                            }}
-                            onMouseEnter={() => setHoveredTab(tab)}
-                            onMouseLeave={() => setHoveredTab(null)}
-                        >
-                            {tab}
-                        </button>
-                    );
-                })}
+                {renderTabButtons()}
             </div>
 
-            {/* Content */}
             <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px" }}>
                 {activeTab === "MENU BAR" ? (
                     <Menu_Bar_Japanese_Tutorial />
