@@ -83,9 +83,9 @@ describe('LoginView — rendering', () => {
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
-  it('renders KMTI brand text', () => {
+  it('renders KMTI brand logos', () => {
     renderLogin();
-    expect(screen.getByText('KMTI')).toBeInTheDocument();
+    expect(screen.getAllByRole('img', { name: 'KMTI' })).toHaveLength(1);
   });
 });
 // Validation

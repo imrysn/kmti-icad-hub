@@ -22,7 +22,7 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
     [speakRaw, translateSteps]
   );
   const registerText = useCallback(
-    (steps: string[]) => registerTextRaw(translateSteps(steps)),
+    (steps: string[], startIndex?: number) => registerTextRaw(translateSteps(steps), startIndex),
     [registerTextRaw, translateSteps]
   );
 

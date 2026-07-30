@@ -23,7 +23,7 @@ import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
 import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
 
-import kmtiLogo from './assets/kmti-training-hub.png';
+import kmtiTrainingHubLogo from './assets/logo/kmti-training-hub.png';
 import './styles/App.css';
 
 function AppContent() {
@@ -229,8 +229,8 @@ function AppContent() {
             <div className="header-left">
               <div className="app-title">
                 <img
-                  src={kmtiLogo}
-                  alt="KMTI Logo"
+                  src={kmtiTrainingHubLogo}
+                  alt="KMTI Training Hub"
                   draggable={false}
                   style={{
                     width: '30px',

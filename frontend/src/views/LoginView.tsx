@@ -7,6 +7,7 @@ import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import { parseBackendError } from '../utils/errorUtils';
 import { useTranslation } from '../context/LanguageContext';
+import kmtiSymbolLogo from '../assets/logo/kmti_logo.png';
 
 export const LoginView: React.FC = () => {
     const { t } = useTranslation();
@@ -125,15 +126,17 @@ export const LoginView: React.FC = () => {
             </button>
 
             <div className="login-brand-header">
-                <span className="login-logo-text">KMTI</span>
-                <div className="brand-subtitle">{t('login.subtitle_1') || 'ICAD MANUAL'}</div>
-                <div className="brand-subtitle">{t('login.subtitle_2') || 'TRAINING & STANDARD'}</div>
+                <div className="login-logo-stack" aria-label="KMTI">
+                    <img className="login-symbol-logo" src={kmtiSymbolLogo} alt="KMTI" draggable={false} />
+                </div>
+                <div className="brand-subtitle">{t('login.subtitle_1') || 'ICAD COURSE'}</div>
+                <div className="brand-subtitle">{t('login.subtitle_2') || 'COMPLETE TRAINING & PRACTICES'}</div>
             </div>
 
             <div className="login-form-wrapper">
 
                 <form onSubmit={handleSubmit} className="glass-form">
-                     <div className="input-group">
+                    <div className="input-group">
                         <label>{t('login.username')}</label>
                         <div className="input-wrapper">
                             <UserIcon className="input-icon" size={20} />
@@ -235,6 +238,6 @@ export const LoginView: React.FC = () => {
                     </div>
                 </div>
             </Modal>
-        </div>
+        </div >
     );
 };

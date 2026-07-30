@@ -1,6 +1,6 @@
 import { Minus,Square,X } from 'lucide-react';
 import React from 'react';
-import kmtiLogo from '../assets/kmti-training-hub.png';
+import kmtiLogo from '../assets/logo/kmti-training-hub.png';
 import '../styles/WindowControls.css';
 
 interface WindowControlsProps {

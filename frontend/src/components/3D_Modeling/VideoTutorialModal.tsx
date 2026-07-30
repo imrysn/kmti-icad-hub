@@ -44,7 +44,9 @@ interface VideoTutorialModalProps {
 }
 
 const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
-  const { t } = useTranslation(); isOpen, onClose, steps }) => {
+  isOpen, onClose, steps
+}) => {
+  const { t } = useTranslation();
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);

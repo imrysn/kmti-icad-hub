@@ -1,367 +1,304 @@
-/* GitHub-Inspired Login Design */
-:root {
-  --bg-login: var(--bg-dark);
-  --bg-form: var(--bg-surface);
-  --accent-btn: var(--color-primary);
-  --border-default: var(--border-color);
-  --border-active: var(--color-primary);
-}
-
+/* Login screen: intentionally independent from the application theme. */
 .unified-login-container {
+  --login-ink: #1d2d44;
+  --login-muted: #60708a;
+  --login-border: #d7e1ee;
+  --login-field: #f8fbff;
+  --login-primary: #3c96f6;
+  --login-primary-hover: #227fdc;
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  background: transparent;
-  font-family: var(--font-main);
-  overflow: hidden;
   position: relative;
+  box-sizing: border-box;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem;
+  width: 100%;
+  height: 100vh;
+  min-height: 100%;
+  overflow: hidden;
+  padding: 1.25rem;
+  background: #ffffff;
+  color: var(--login-ink);
+  font-family: var(--font-main);
 }
 
 .app-drag-region {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto;
+  z-index: 1;
   height: 48px;
   -webkit-app-region: drag;
-  z-index: 100;
 }
 
-/* ── Login Theme Switcher ────────────────────────────────────── */
-.login-theme-wrapper {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 1000;
+.ambient-particles {
+  display: none;
 }
 
-/* Branding Section */
 .login-brand-header {
+  z-index: 2;
+  margin-bottom: 2rem;
   text-align: center;
-  margin-bottom: 4.5rem;
-  z-index: 10;
 }
 
-.login-logo-text {
-  font-family: var(--font-heading);
-  font-size: 6rem;
-  font-weight: 800;
-  color: var(--color-primary);
-  letter-spacing: 0.1em;
-  line-height: 1;
-  margin-bottom: 0.5rem;
+.login-logo-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.6rem;
 }
 
-.brand-subtitle {
+.login-symbol-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  user-select: none;
+}
+
+.unified-login-container .brand-subtitle {
+  color: var(--login-ink);
   font-family: var(--font-main);
-  color: rgb(255, 255, 255);
-  font-size: 0.9rem;
-  font-weight: 300;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 800;
   letter-spacing: 0.2em;
-  line-height: 1.4;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
-/* Login Form */
 .login-form-wrapper {
-  width: 95%;
-  max-width: 400px;
-  z-index: 110;
+  z-index: 2;
+  width: min(100%, 360px);
   -webkit-app-region: no-drag;
 }
 
-.glass-form {
-  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
-  padding: 2rem;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card);
-  backdrop-filter: blur(var(--glass-blur));
+.unified-login-container .glass-form {
+  box-sizing: border-box;
+  padding: 1rem 0.5rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
-.input-group {
-  margin-bottom: 2rem;
+.unified-login-container .input-group {
+  margin-bottom: 1.75rem;
 }
 
-.input-group label {
+.unified-login-container .input-group label {
   display: block;
+  margin-bottom: 0.45rem;
+  color: var(--login-muted);
   font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 0.3rem;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
-.input-wrapper {
+.unified-login-container .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.unified-login-container .input-wrapper .input-icon {
   position: absolute;
+  z-index: 2;
   left: 16px;
   width: 18px;
   height: 18px;
-  color: var(--text-muted);
+  margin: 0;
+  color: #8a98ad;
   pointer-events: none;
 }
 
-.input-group input {
+.unified-login-container .input-wrapper input[type='text'],
+.unified-login-container .input-wrapper input[type='password'] {
+  box-sizing: border-box;
   width: 100%;
-  padding: 14px 14px 14px 48px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  color: var(--text-main);
-  font-size: 1rem;
-  transition: all 0.3s;
-  outline: none;
+  min-height: 44px;
+  padding: 0 48px !important;
+  border: 1px solid var(--login-border);
+  border-radius: 10px;
+  outline: 0;
+  background: var(--login-field);
+  color: var(--login-ink);
   font-family: var(--font-main);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-indent: 0;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
 }
 
-.input-group input:focus {
-  border-color: var(--color-primary);
-  background: var(--bg-surface);
+.unified-login-container .input-wrapper input[type='text']::placeholder,
+.unified-login-container .input-wrapper input[type='password']::placeholder {
+  color: #93a0b4;
 }
 
-.input-group input::placeholder {
-  color: var(--text-dim);
-  font-weight: 100;
-  font-size: 0.9rem;
+.unified-login-container .input-wrapper input[type='text']:hover,
+.unified-login-container .input-wrapper input[type='password']:hover {
+  border-color: #aebdd0;
 }
 
-.password-toggle-btn {
+.unified-login-container .input-wrapper input[type='text']:focus,
+.unified-login-container .input-wrapper input[type='password']:focus {
+  border-color: var(--login-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(60, 150, 246, 0.16);
+}
+
+.unified-login-container .password-toggle-btn {
   position: absolute;
   right: 16px;
-  background: transparent !important;
-  border: none !important;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
-}
-
-.password-toggle-btn:hover {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* GitHub Style Button */
-.glass-login-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 800;
-  font-family: var(--font-main);
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #8a98ad;
   cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 1.5rem;
-  letter-spacing: 0.2rem;
+  transform: none !important;
 }
 
-.glass-login-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-primary) 88%, #000);
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
+.unified-login-container .password-toggle-btn:hover {
+  color: var(--login-primary);
 }
 
-.glass-login-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Removed ambient particles and shine effects */
-.ambient-particles {
-  display: none;
-}
-
-.local-error-msg {
-  color: var(--color-error);
-  font-size: 0.8rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  margin-top: -0.25rem;
-  background: rgba(248, 81, 73, 0.1);
-  padding: 0.75rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-error);
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.forgot-password-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-family: var(--font-main);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s, text-decoration 0.2s;
-  outline: none;
-}
-
-.forgot-password-btn:hover {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.login-options-row {
+.unified-login-container .login-options-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: -0.75rem;
-  margin-bottom: 1.5rem;
+  min-height: 32px;
+  margin: -0.5rem 0 1.25rem;
 }
 
-.remember-me-checkbox {
+.unified-login-container .remember-me-checkbox {
   display: flex;
   align-items: center;
+  min-height: 32px;
+  margin: 0;
   gap: 8px;
+  color: var(--login-muted);
   cursor: pointer;
   font-size: 0.7rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   user-select: none;
-  transition: color 0.2s;
-  letter-spacing: 0.1em;
 }
 
-.remember-me-checkbox:hover {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.remember-me-checkbox input[type="checkbox"] {
-  cursor: pointer;
-  accent-color: var(--color-primary);
+.unified-login-container .remember-me-checkbox input[type='checkbox'] {
   width: 14px;
   height: 14px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.03);
+  margin: 0;
+  accent-color: var(--login-primary);
 }
 
-.login-options-row .forgot-password-btn {
+.unified-login-container .login-options-row .forgot-password-btn {
+  min-height: auto;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--login-muted);
+  cursor: pointer;
+  font-family: var(--font-main);
   font-size: 0.7rem;
-  padding: 0;
+  font-weight: 500;
   letter-spacing: 0.05em;
+  line-height: 1.25;
+  text-decoration: none;
+  transform: none !important;
 }
 
-.login-settings-btn {
-  position: absolute;
-  top: 16px;
-  right: 56px;
-  background: none;
-  border: none;
-  color: #a0aec0;
-  cursor: pointer;
-  z-index: 110;
-  -webkit-app-region: no-drag;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease-in-out;
+.unified-login-container .login-options-row .forgot-password-btn:hover {
+  color: var(--login-primary);
+  text-decoration: underline;
 }
 
-.login-settings-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-}
-
-.login-close-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: #a0aec0;
-  cursor: pointer;
-  z-index: 110;
-  -webkit-app-region: no-drag;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease-in-out;
-}
-
-.login-close-btn:hover {
-  background: rgba(248, 81, 73, 0.15);
-  color: #f85149;
-}
-
-/* Compact KMTI sign-in presentation */
-.unified-login-container {
-  background: var(--bg-dark);
-  padding: 1.25rem;
-}
-
-.login-brand-header {
-  margin-bottom: 2rem;
-}
-
-.login-logo-text {
-  font-size: clamp(2.5rem, 7vw, 3.2rem);
-  letter-spacing: 0.12em;
-}
-
-.brand-subtitle {
-  color: var(--text-main);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-}
-
-.login-form-wrapper {
-  max-width: 360px;
-}
-
-.glass-form {
-  background: var(--bg-surface);
-  border-color: var(--border-color);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-  backdrop-filter: none;
-}
-
-.glass-login-btn {
+.unified-login-container .glass-login-btn {
+  width: 100%;
   min-height: 46px;
   margin-top: 1rem;
-  letter-spacing: 0.18em;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--login-primary);
+  border-radius: 10px;
+  background: var(--login-primary);
   box-shadow: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
-.glass-login-btn:hover:not(:disabled) {
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-primary) 24%, transparent);
+.unified-login-container .glass-login-btn:hover:not(:disabled) {
+  border-color: var(--login-primary-hover);
+  background: var(--login-primary-hover);
+  box-shadow: none;
+  transform: none;
 }
 
-[data-theme='light'] .unified-login-container {
-  background: var(--bg-surface);
+.unified-login-container .glass-login-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.unified-login-container .local-error-msg {
+  margin: -0.25rem 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b42318;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.unified-login-container .login-settings-btn,
+.unified-login-container .login-close-btn {
+  position: absolute;
+  top: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #667085;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.unified-login-container .login-settings-btn {
+  right: 56px;
+}
+
+.unified-login-container .login-close-btn {
+  right: 16px;
+}
+
+.unified-login-container .login-settings-btn:hover {
+  color: var(--login-primary);
+}
+
+.unified-login-container .login-close-btn:hover {
+  color: #dc2626;
 }
 
 @media (max-width: 520px) {
@@ -369,168 +306,49 @@
     padding: 1rem;
   }
 
-  .glass-form {
-    padding: 1.5rem;
-  }
-}
-
-.login-form-wrapper .input-group input {
-  padding-left: 48px;
-}
-
-/* White login theme: preserve the layout without decorative canvas effects. */
-.unified-login-container,
-[data-theme='dark'] .unified-login-container,
-[data-theme='light'] .unified-login-container {
-  background: #ffffff;
-  color: #172033;
-}
-
-.unified-login-container .brand-subtitle {
-  color: #273247;
-}
-
-.unified-login-container .glass-form {
-  background: #ffffff;
-  border-color: #d8e0ec;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
-}
-
-.unified-login-container .input-group label,
-.unified-login-container .remember-me-checkbox,
-.unified-login-container .forgot-password-btn {
-  color: #667085;
-}
-
-.unified-login-container .remember-me-checkbox:hover,
-.unified-login-container .forgot-password-btn:hover {
-  color: var(--color-primary);
-}
-
-.unified-login-container .input-group input {
-  background: #f8fafc;
-  border-color: #cfd8e6;
-  color: #172033;
-}
-
-.unified-login-container .input-group input:focus {
-  background: #ffffff;
-  border-color: var(--color-primary);
-}
-
-.unified-login-container .input-group input::placeholder,
-.unified-login-container .input-icon,
-.unified-login-container .password-toggle-btn {
-  color: #8a96a8;
-}
-
-.unified-login-container .password-toggle-btn:hover,
-.unified-login-container .login-settings-btn:hover {
-  color: var(--color-primary);
-}
-
-.unified-login-container .login-settings-btn,
-.unified-login-container .login-close-btn {
-  color: #667085;
-}
-
-.unified-login-container .login-settings-btn:hover {
-  background: #f1f5f9;
-}
-
-/* Keep field icons and text on separate, consistently aligned columns. */
-.unified-login-container .input-wrapper {
-  position: relative;
-  display: grid;
-  align-items: center;
-}
-
-.unified-login-container .input-wrapper .input-icon {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  z-index: 2;
-  transform: translateY(-50%);
-  margin: 0;
-}
-
-.unified-login-container .input-wrapper input[type='text'],
-.unified-login-container .input-wrapper input[type='password'] {
-  box-sizing: border-box;
-  min-height: 44px;
-  padding: 0 48px !important;
-  text-indent: 0;
-}
-
-.unified-login-container .input-wrapper .password-toggle-btn {
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-}
-
-.unified-login-container .login-options-row {
-  min-height: 32px;
-  margin-top: -0.5rem;
-  margin-bottom: 1.25rem;
-}
-
-.unified-login-container .login-options-row .forgot-password-btn {
-  min-height: auto;
-  padding: 4px 0;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0;
-  box-shadow: none !important;
-  color: #667085;
-  line-height: 1.25;
-  text-decoration: none;
-  transform: none !important;
-}
-
-.unified-login-container .login-options-row .forgot-password-btn:hover {
-  background: transparent !important;
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.unified-login-container .remember-me-checkbox {
-  min-height: 32px;
-  margin: 0;
-}
-
-.unified-login-container .glass-form {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 1rem 0.5rem;
-}
-
-@media (max-width: 520px) {
   .unified-login-container .glass-form {
     padding: 0.75rem 0;
   }
 }
 
-.unified-login-container .login-settings-btn,
-.unified-login-container .login-close-btn {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  min-height: 36px;
-  padding: 0;
-  background: transparent !important;
-  border: none !important;
-  border-radius: 8px;
-  box-shadow: none !important;
-  transform: none !important;
+/* Logging out retains the user's theme preference. Keep the sign-in screen
+   visually complete in dark mode instead of combining a white canvas with
+   dark-theme controls. */
+:root[data-theme='dark'] .unified-login-container {
+  --login-ink: #e7eef8;
+  --login-muted: #aebdd0;
+  --login-border: #38506f;
+  --login-field: #1d2c43;
+  --login-primary: #4da3ff;
+  --login-primary-hover: #76b8ff;
+  background: #101a2a;
 }
 
-.unified-login-container .login-settings-btn:hover {
-  background: transparent !important;
-  color: var(--color-primary);
+:root[data-theme='dark'] .unified-login-container .brand-subtitle {
+  color: #e7eef8;
 }
 
-.unified-login-container .login-close-btn:hover {
-  background: transparent !important;
-  color: #dc2626;
+:root[data-theme='dark'] .unified-login-container .input-wrapper .input-icon,
+:root[data-theme='dark'] .unified-login-container .password-toggle-btn {
+  color: #9db1ca;
+}
+
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='text'],
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='password'] {
+  color: #edf4ff;
+}
+
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='text']::placeholder,
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='password']::placeholder {
+  color: #91a3ba;
+}
+
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='text']:focus,
+:root[data-theme='dark'] .unified-login-container .input-wrapper input[type='password']:focus {
+  background: #223550;
+}
+
+:root[data-theme='dark'] .unified-login-container .login-close-btn,
+:root[data-theme='dark'] .unified-login-container .login-settings-btn {
+  color: #aebdd0;
 }
