@@ -538,6 +538,7 @@ export const en_3d_common = {
   "lesson.title.interference": "Interference Check",
   "lesson.title.purchase-parts": "3D Purchase Parts",
   "lesson.title.purchase-parts-1": "3D Purchase Parts",
+  "lesson.title.parasolid": "Loading Parasolid",
   "lesson.title.parasolid-1": "Loading Parasolid",
   "lesson.title.op-sample": "Operation Sample",
   "lesson.title.op-sample-1": "Operation Sample",

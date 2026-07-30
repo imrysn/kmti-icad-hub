@@ -31,19 +31,19 @@ describe('KMTISensei', () => {
   it('starts Kokoro narration once and does not cancel it on context rerenders', () => {
     const view = render(
       <React.StrictMode>
-        <KMTISensei text="Welcome to the quotation tutorial." autoSpeak />
+        <KMTISensei text="Welcome to the training tutorial." autoSpeak />
       </React.StrictMode>,
     )
 
     act(() => vi.advanceTimersByTime(150))
     expect(speakMock).toHaveBeenCalledTimes(1)
-    expect(speakMock).toHaveBeenCalledWith(['Welcome to the quotation tutorial.'])
+    expect(speakMock).toHaveBeenCalledWith(['Welcome to the training tutorial.'])
 
     speakMock.mockClear()
     stopMock.mockClear()
     view.rerender(
       <React.StrictMode>
-        <KMTISensei text="Welcome to the quotation tutorial." autoSpeak />
+        <KMTISensei text="Welcome to the training tutorial." autoSpeak />
       </React.StrictMode>,
     )
     act(() => vi.runOnlyPendingTimers())

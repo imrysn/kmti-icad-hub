@@ -44,7 +44,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTION OF ALUMINUM FRAME" | "sgp pipes">(() => {
+  const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTION OF ALUMINUM FRAME" | "CONNECTIONS" | "sgp pipes">(() => {
     if (subLessonId === 'standard-4') {
       return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
     }

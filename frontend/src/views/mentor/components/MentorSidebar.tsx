@@ -1,6 +1,7 @@
-import { BookOpen,CheckCircle2,ChevronDown,ChevronRight,Lock,Menu,Search,X,Zap } from 'lucide-react';
+import { BookOpen,CheckCircle2,ChevronDown,ChevronRight,Lock,LogOut,Search,X,Zap } from 'lucide-react';
 import React,{ useEffect,useMemo,useRef,useState } from 'react';
 import { useTranslation } from '../../../context/LanguageContext';
+import { useUI } from '../../../context/UIContext';
 import { Course } from '../../../types';
 import { Lesson } from '../mentorConstants';
 import { AnalyticsCard } from './AnalyticsCard';
@@ -49,7 +50,6 @@ interface MentorSidebarProps {
     selectedCourse: Course;
     is2DDrawingCourse: boolean;
     sidebarOpen: boolean;
-    setSidebarOpen: (open: boolean) => void;
     activeLessonId: string;
     setActiveLessonId: (id: string) => void;
     expandedIds: Set<string>;
@@ -67,11 +67,11 @@ interface MentorSidebarProps {
 export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     selectedCourse,
     sidebarOpen,
-    setSidebarOpen,
     activeLessonId,
     setActiveLessonId,
     expandedIds,
     toggleExpand,
+    setSelectedCourse,
     completedLessons,
     isLoadingProgress,
     isEmployeeSide = false,
@@ -82,8 +82,19 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 }) => {
     // Search State
     const { t } = useTranslation();
+    const { requestConfirmation } = useUI();
     const [isSearchOpen, setIsSearchOpen] = useState(false); const [searchTerm, setSearchTerm] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
+
+    const handleExitCourse = async () => {
+        const confirmed = await requestConfirmation({
+            title: t('lesson.suspend_title'),
+            message: t('lesson.suspend_message'),
+            confirmText: t('lesson.suspend_confirm'),
+            type: 'danger'
+        });
+        if (confirmed) setSelectedCourse(null);
+    };
 
     // Lessons list based on course type
     // Lessons are now passed as props
@@ -157,27 +168,22 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
             <div className="sidebar-inner-container">
                 <div className="sidebar-course-header">
                     <div className="sidebar-course-meta">
-                        <button
-                            className="sidebar-toggle-btn"
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                            title={sidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
-                        >
-                            <Menu size={20} />
-                        </button>
-
-                        <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
-                            {isSearchOpen && (
-                                <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Escape') setIsSearchOpen(false);
-                                    }}
-                                />
-                            )}
-                            <button className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)}
-                                title={isSearchOpen ? "Close Search" : "Search Lessons"}
-                            >
-                                {isSearchOpen ? <X size={18} /> : <Search size={18} />}
-                            </button>
+                        {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
+                        <div className="sidebar-header-actions">
+                            <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
+                                {isSearchOpen && (
+                                    <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Escape') setIsSearchOpen(false);
+                                        }}
+                                    />
+                                )}
+                                <button className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)}
+                                    title={isSearchOpen ? "Close Search" : "Search Lessons"}
+                                >
+                                    {isSearchOpen ? <X size={18} /> : <Search size={18} />}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -194,9 +200,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                 {Math.round((completedLessonsCount / totalLessons) * 100)}%
                             </div>
                         </div>
-                    ) : (
-                        !isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>
-                    )}
+                    ) : null}
 
                     {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
                         <div className="sidebar-analytics-wrapper">
@@ -355,6 +359,16 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                         </div>
                     )}
                 </div>
+            </div>
+            <div className="sidebar-course-footer">
+                <button
+                    className="exit-course-btn sidebar-exit-course-btn"
+                    onClick={handleExitCourse}
+                    title={t('lesson.exit_course')}
+                >
+                    <LogOut size={16} aria-hidden="true" />
+                    <span>{t('lesson.exit_course')}</span>
+                </button>
             </div>
         </aside>
     );

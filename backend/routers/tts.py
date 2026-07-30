@@ -3,8 +3,10 @@ import logging
 import sys
 import hashlib
 import threading
+import re
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
+import httpx
 import soundfile as sf
 
 def get_base_path():
@@ -77,6 +79,18 @@ KOKORO_VOICES = [
     {"id": "kokoro://jf_teatime", "name": "Kokoro Teatime (JP Female - Premium)", "lang": "ja-JP", "voice_code": "jf_teatime"},
     {"id": "kokoro://jm_kiko", "name": "Kokoro Kiko (JP Male - Premium)", "lang": "ja-JP", "voice_code": "jm_kiko"}
 ]
+
+OPENAI_VOICES = [
+    {"id": "openai://marin", "name": "OpenAI Marin", "lang": "ja-JP", "voice_code": "marin"},
+    {"id": "openai://cedar", "name": "OpenAI Cedar", "lang": "en-US", "voice_code": "cedar"},
+]
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts").strip()
+OPENAI_TTS_VOICE_EN = os.getenv("OPENAI_TTS_VOICE_EN", "cedar").strip()
+OPENAI_TTS_VOICE_JA = os.getenv("OPENAI_TTS_VOICE_JA", "marin").strip()
+OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip().lower()
+TTS_PROVIDER = os.getenv("TTS_PROVIDER", "openai").strip().lower()
 
 def get_kokoro_model():
     global _kokoro_instance
@@ -156,7 +170,9 @@ def get_kokoro_model():
 
 @router.get("/voices")
 def list_voices():
-    """List available premium Kokoro voices."""
+    """List available voices for the configured TTS provider."""
+    if TTS_PROVIDER == "openai":
+        return OPENAI_VOICES + KOKORO_VOICES
     return KOKORO_VOICES
 
 def clean_text_for_espeak(text: str) -> str:
@@ -168,6 +184,105 @@ def clean_text_for_espeak(text: str) -> str:
     text = text.replace("\xa0", " ")
     return text
 
+def is_japanese_text(text: str) -> bool:
+    return bool(re.search(r"[\u3040-\u30ff\u3400-\u9fff\u3000-\u303f]", text))
+
+def normalize_voice_input(voice: str) -> str:
+    voice = (voice or "").strip()
+    if voice.startswith("kokoro://") or voice.startswith("openai://"):
+        return voice
+    return f"kokoro://{voice}"
+
+def get_openai_voice_for_lang(lang: str, requested_voice: str = "") -> str:
+    requested_voice = (requested_voice or "").strip()
+    if requested_voice.startswith("openai://"):
+        return requested_voice.replace("openai://", "")
+    if requested_voice in {v["voice_code"] for v in OPENAI_VOICES}:
+        return requested_voice
+
+    lang = (lang or "").lower()
+    if lang.startswith("ja"):
+        return OPENAI_TTS_VOICE_JA
+    return OPENAI_TTS_VOICE_EN
+
+def get_kokoro_voice_for_lang(lang: str, requested_voice: str = "") -> str:
+    requested_voice = (requested_voice or "").strip()
+    kokoro_voices = {v["voice_code"] for v in KOKORO_VOICES}
+    if requested_voice in kokoro_voices:
+        return requested_voice
+
+    lang = (lang or "").lower()
+    if lang.startswith("ja"):
+        return "jf_teatime"
+    return "af_sarah"
+
+def build_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str) -> str:
+    cache_string = f"{provider}_{model}_{voice}_{text}_{speed}_{lang}_{response_format}"
+    return hashlib.sha256(cache_string.encode("utf-8")).hexdigest()
+
+def openai_tts_synthesize(text: str, voice: str, speed: float, lang: str) -> tuple[bytes, str]:
+    if not OPENAI_API_KEY:
+        raise HTTPException(status_code=503, detail="OpenAI TTS is not configured. Missing OPENAI_API_KEY.")
+
+    openai_voice = get_openai_voice_for_lang(lang, voice)
+    response_format = OPENAI_TTS_RESPONSE_FORMAT
+    if response_format not in {"mp3", "wav", "ogg", "flac", "pcm"}:
+        response_format = "mp3"
+
+    payload = {
+        "model": OPENAI_TTS_MODEL,
+        "voice": openai_voice,
+        "input": text,
+        "response_format": response_format,
+        "speed": speed,
+    }
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    with httpx.Client(timeout=90.0) as client:
+        response = client.post("https://api.openai.com/v1/audio/speech", json=payload, headers=headers)
+        response.raise_for_status()
+        return response.content, response_format
+
+def kokoro_tts_synthesize(text: str, voice: str, speed: float, lang: str):
+    kokoro = get_kokoro_model()
+    try:
+        samples, sample_rate = kokoro.create(
+            text,
+            voice=voice,
+            speed=speed,
+            lang=lang
+        )
+    except Exception as inner_err:
+        logger.warning(f"Primary phonemization failed for: '{text}'. Error: {inner_err}. Attempting ASCII fallback.")
+        fallback_text = "".join(c for c in text if c.isalnum() or c.isspace() or c in ".,!?")
+        samples, sample_rate = kokoro.create(
+            fallback_text,
+            voice=voice,
+            speed=speed,
+            lang=lang
+        )
+
+    import numpy as np
+    if len(samples) > 1:
+        samples = np.append(samples[0], samples[1:] - 0.85 * samples[:-1])
+
+    try:
+        import scipy.signal
+        num_target_samples = int(len(samples) * 44100 / sample_rate)
+        samples = scipy.signal.resample(samples, num_target_samples)
+        sample_rate = 44100
+    except Exception as resample_err:
+        logger.warning(f"Resampling to 44100Hz failed: {resample_err}")
+
+    max_val = np.max(np.abs(samples))
+    if max_val > 0:
+        samples = (samples / max_val) * 0.98
+
+    return samples, sample_rate
+
 @router.get("/synthesize")
 def synthesize(
     text: str = Query(..., description="Text to convert to speech"),
@@ -175,98 +290,89 @@ def synthesize(
     speed: float = Query(1.0, ge=0.5, le=2.0, description="Speech speed rate"),
     lang: str = Query(None, description="Language code (defaults to US English or Japanese depending on voice)")
 ):
-    """Synthesize text to speech on-the-fly and return a WAV stream."""
+    """Synthesize text to speech on-the-fly and return a cached audio file."""
     if not text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty.")
 
-    # Strip URI prefix if passed from frontend
-    if voice.startswith("kokoro://"):
-        voice = voice.replace("kokoro://", "")
+    normalized_voice = normalize_voice_input(voice)
+    provider = TTS_PROVIDER
+    if normalized_voice.startswith("openai://"):
+        provider = "openai"
+    elif normalized_voice.startswith("kokoro://"):
+        provider = "kokoro"
 
-    # Ensure voice is valid
-    valid_voices = [v["voice_code"] for v in KOKORO_VOICES]
-    if voice not in valid_voices:
-        logger.warning(f"Requested voice '{voice}' not in predefined list. Attempting to use default.")
-        voice = "af_sarah"
-
-    # Auto-detect language if not explicitly provided
-    if lang is None:
-        lang = "ja" if voice.startswith("j") else "en-us"
-
-    # Clean text to prevent espeak / phonemizer crashes
-    clean_text = clean_text_for_espeak(text)
-
-    # Scale speed slightly to remove the slow-mo audiobook effect
     synthesis_speed = speed * 1.25
+    cache_lang = (lang or "").lower()
+    cache_voice = normalized_voice.replace("kokoro://", "").replace("openai://", "")
 
-    # Cache Lookup Logic
-    cache_string = f"{clean_text}_{voice}_{synthesis_speed}_{lang}"
-    cache_key = hashlib.sha256(cache_string.encode('utf-8')).hexdigest()
-    cache_filename = f"{cache_key}.wav"
+    if provider == "openai":
+        if not cache_lang:
+            cache_lang = "ja-jp" if is_japanese_text(text) else "en-us"
+        cache_format = OPENAI_TTS_RESPONSE_FORMAT if OPENAI_TTS_RESPONSE_FORMAT in {"mp3", "wav", "ogg", "flac", "pcm"} else "mp3"
+        cache_key = build_cache_key(provider, OPENAI_TTS_MODEL, cache_voice, text.strip(), synthesis_speed, cache_lang, cache_format)
+        cache_filename = f"{cache_key}.{cache_format}"
+    else:
+        if not cache_lang:
+            cache_lang = "ja" if cache_voice.startswith("j") else "en-us"
+        clean_text = clean_text_for_espeak(text)
+        cache_key = build_cache_key(provider, "kokoro-v1.0.onnx", cache_voice, clean_text, synthesis_speed, cache_lang, "wav")
+        cache_filename = f"{cache_key}.wav"
 
     # 1. Check read-only bundled cache first
     bundled_file_path = os.path.join(BUNDLED_CACHE_DIR, cache_filename)
     if os.path.exists(bundled_file_path):
-        logger.info(f"TTS Cache Hit (Bundled): '{clean_text[:30]}...' -> {cache_filename}")
+        logger.info(f"TTS Cache Hit (Bundled): '{text[:30]}...' -> {cache_filename}")
+        media_type = "audio/mpeg" if cache_filename.endswith(".mp3") else "audio/wav"
         return FileResponse(
             bundled_file_path,
-            media_type="audio/wav",
+            media_type=media_type,
             headers={"Content-Disposition": f"inline; filename={cache_filename}"}
         )
 
     # 2. Check writable local cache
     local_file_path = os.path.join(WRITABLE_CACHE_DIR, cache_filename)
     if os.path.exists(local_file_path):
-        logger.info(f"TTS Cache Hit (Local): '{clean_text[:30]}...' -> {cache_filename}")
+        logger.info(f"TTS Cache Hit (Local): '{text[:30]}...' -> {cache_filename}")
+        media_type = "audio/mpeg" if cache_filename.endswith(".mp3") else "audio/wav"
         return FileResponse(
             local_file_path,
-            media_type="audio/wav",
+            media_type=media_type,
             headers={"Content-Disposition": f"inline; filename={cache_filename}"}
         )
 
     try:
-        kokoro = get_kokoro_model()
-        try:
-            samples, sample_rate = kokoro.create(
-                clean_text,
-                voice=voice,
-                speed=synthesis_speed,
-                lang=lang
-            )
-        except Exception as inner_err:
-            logger.warning(f"Primary phonemization failed for: '{clean_text}'. Error: {inner_err}. Attempting ASCII fallback.")
-            # Fallback: Strip to basic alphanumeric characters to bypass phonemizer line mismatch bugs
-            fallback_text = "".join(c for c in clean_text if c.isalnum() or c.isspace() or c in ".,!?")
-            samples, sample_rate = kokoro.create(
-                fallback_text,
-                voice=voice,
-                speed=synthesis_speed,
-                lang=lang
-            )
+        if provider == "openai":
+            try:
+                audio_bytes, response_format = openai_tts_synthesize(
+                    text=text.strip(),
+                    voice=cache_voice,
+                    speed=synthesis_speed,
+                    lang=cache_lang
+                )
+                try:
+                    with open(local_file_path, "wb") as f:
+                        f.write(audio_bytes)
+                    logger.info(f"OpenAI TTS cache written: {cache_filename}")
+                except Exception as cache_write_err:
+                    logger.warning(f"Failed to write OpenAI TTS cache file: {cache_write_err}")
 
-        # Apply Pre-emphasis filter to reduce breathiness/whispering and boost vocal clarity
-        import numpy as np
-        if len(samples) > 1:
-            samples = np.append(samples[0], samples[1:] - 0.85 * samples[:-1])
+                media_type = "audio/mpeg" if response_format == "mp3" else f"audio/{response_format}"
+                return FileResponse(
+                    local_file_path,
+                    media_type=media_type,
+                    headers={"Content-Disposition": f"inline; filename={cache_filename}"}
+                )
+            except Exception as openai_err:
+                logger.exception(f"OpenAI TTS failed, falling back to Kokoro. Error: {openai_err}")
+                provider = "kokoro"
+                cache_voice = get_kokoro_voice_for_lang(cache_lang, cache_voice)
 
-        # High-quality resampling from 24000Hz to 44100Hz to eliminate browser resampling hiss
-        try:
-            import scipy.signal
-            num_target_samples = int(len(samples) * 44100 / sample_rate)
-            samples = scipy.signal.resample(samples, num_target_samples)
-            sample_rate = 44100
-        except Exception as resample_err:
-            logger.warning(f"Resampling to 44100Hz failed: {resample_err}")
+        clean_text = clean_text_for_espeak(text)
+        samples, sample_rate = kokoro_tts_synthesize(clean_text, cache_voice, synthesis_speed, cache_lang)
 
-        # Apply Peak Volume Normalization to prevent the quiet/whispering effect
-        max_val = np.max(np.abs(samples))
-        if max_val > 0:
-            samples = (samples / max_val) * 0.98
-
-        # Write samples directly to local cache file
         try:
             sf.write(local_file_path, samples, sample_rate, format="WAV")
-            logger.info(f"TTS Cache Written: {cache_filename}")
+            logger.info(f"Kokoro TTS cache written: {cache_filename}")
         except Exception as cache_write_err:
             logger.warning(f"Failed to write TTS cache file: {cache_write_err}")
 
@@ -278,5 +384,5 @@ def synthesize(
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Error generating speech with Kokoro TTS")
+        logger.exception("Error generating speech")
         raise HTTPException(status_code=500, detail=f"Speech synthesis failed: {str(e)}")

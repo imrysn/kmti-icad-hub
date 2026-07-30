@@ -26,7 +26,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
-  const { t, language, translateContent } = useTranslation();
+  const { t, language } = useTranslation();
   const TABS = [
     { id: 'cross-section', label: t('2d.additional.title') },
     { id: 'partial-detail', label: t('2d.additional.partial_detail') },

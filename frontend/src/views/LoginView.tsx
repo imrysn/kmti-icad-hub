@@ -10,6 +10,7 @@ import { useTranslation } from '../context/LanguageContext';
 import kmtiSymbolLogo from '../assets/logo/kmti_logo.png';
 
 export const LoginView: React.FC = () => {
+    const isDesktopApp = Boolean(window.electronAPI);
     const { t } = useTranslation();
     const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
@@ -110,20 +111,16 @@ export const LoginView: React.FC = () => {
             <div className="app-drag-region"></div>
             <div className="ambient-particles"></div>
 
-            <button
-                type="button"
-                className="login-close-btn"
-                onClick={() => {
-                    if (window.electronAPI) {
-                        window.electronAPI.close();
-                    } else {
-                        window.close();
-                    }
-                }}
-                title="Close Application"
-            >
-                <X size={20} />
-            </button>
+            {isDesktopApp && (
+                <button
+                    type="button"
+                    className="login-close-btn"
+                    onClick={() => window.electronAPI.close()}
+                    title="Close Application"
+                >
+                    <X size={20} />
+                </button>
+            )}
 
             <div className="login-brand-header">
                 <div className="login-logo-stack" aria-label="KMTI">

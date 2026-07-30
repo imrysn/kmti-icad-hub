@@ -140,23 +140,6 @@ export const getCourseLessons = async (courseId: string | number) => {
     return response.data;
 };
 
-export const quotationApi = {
-    get: (id: number | string) => api.get(`/api/v1/quotations/${id}`),
-    list: (params?: any) => api.get('/api/v1/quotations/', { params }),
-    create: (data: any) => api.post('/api/v1/quotations/', data),
-    update: (id: number | string, data: any) => api.patch(`/api/v1/quotations/${id}`, data),
-    delete: (id: number | string, workstation?: string, permanent?: boolean, computer_name?: string) => 
-        api.delete(`/api/v1/quotations/${id}`, { params: { workstation, permanent, computer_name } }),
-    getSessions: () => api.get('/api/v1/quotations/sessions'),
-    restore: (id: number | string, password?: string) => api.post(`/api/v1/quotations/${id}/restore`, { password }),
-    verifyPassword: (id: number | string, password?: string) => api.post(`/api/v1/quotations/${id}/verify`, { password }),
-    updateBilling: (id: number | string, data: any) => api.patch(`/api/v1/quotations/${id}/billing`, data),
-    getHistory: (id: number | string) => api.get(`/api/v1/quotations/${id}/history`),
-    createHistorySnapshot: (id: number | string, label = 'Manual Save') =>
-        api.post(`/api/v1/quotations/${id}/history`, { label }),
-    restoreHistory: (id: number | string, historyId: number | string) => api.get(`/api/v1/quotations/${id}/history/${historyId}`)
-};
-
 export const clientsApi = {
     list: (params?: any) => api.get('/api/v1/clients', { params }),
     create: (data: any) => api.post('/api/v1/clients', data)

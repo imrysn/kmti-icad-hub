@@ -1,6 +1,7 @@
 import { Target,Volume2 } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useTTS } from '../../hooks/useTTS';
+import { useTranslation } from '../../context/LanguageContext';
 import "../../styles/3D_Modeling/InteractiveImageMap.css";
 import { KaraokeLessonText } from '../KaraokeLessonText';
 
@@ -37,6 +38,7 @@ const InteractiveImageMap: React.FC<InteractiveImageMapProps> = ({
   externalIndex = -1,
   externalCharIndex = 0
 }) => {
+  const { t } = useTranslation();
   const { speak, stop, isSpeaking: isInternalSpeaking, currentCharIndex: internalCharIndex } = useTTS();
 
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);

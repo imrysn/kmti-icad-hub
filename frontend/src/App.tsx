@@ -1,4 +1,4 @@
-import { Bell,Briefcase,ClipboardList,GraduationCap,LogOut,Settings,User as UserIcon,WifiOff } from 'lucide-react';
+import { Bell,ClipboardList,GraduationCap,LogOut,Settings,User as UserIcon,WifiOff } from 'lucide-react';
 import { useEffect,useRef,useState } from 'react';
 import { Navigate,Route,Routes,useLocation,useNavigate } from 'react-router-dom';
 
@@ -27,6 +27,7 @@ import kmtiTrainingHubLogo from './assets/logo/kmti-training-hub.png';
 import './styles/App.css';
 
 function AppContent() {
+  const isDesktopApp = Boolean(window.electronAPI);
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
   const { isTelemetryOpen, toggleTelemetry } = useUI();
@@ -366,7 +367,7 @@ function AppContent() {
 
                 <div className="header-divider" />
 
-                <WindowControls buttonsOnly={true} />
+                {isDesktopApp && <WindowControls buttonsOnly={true} />}
               </div>
             </div>
           </header>

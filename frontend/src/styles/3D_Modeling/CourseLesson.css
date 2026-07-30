@@ -368,6 +368,10 @@
   filter: blur(1px);
 }
 
+[data-theme='light'] .lesson-progress-bar::after {
+  background: rgba(30, 136, 229, 0.35);
+}
+
 @keyframes auroraFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -389,8 +393,30 @@
 .lesson-navigation {
   display: flex;
   justify-content: space-between;
-  padding-top: 3rem;
-  margin-top: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  clear: both;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 4;
+  isolation: isolate;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+/* Keep navigation visually outside the lesson card even in lessons that
+   render it inside the card's JSX. This gives every lesson the same footer row. */
+.lesson-card:has(.lesson-navigation) {
+  margin-bottom: 4.5rem;
+}
+
+.lesson-card .lesson-navigation {
+  position: absolute;
+  top: calc(100% + 1.5rem);
+  right: 0;
+  left: 0;
+  margin-top: 0;
 }
 
 .nav-button {
@@ -558,8 +584,8 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   width: fit-content;
-  margin: 0 auto 2.5rem;
-  /* Center horizontally and add bottom spacing */
+  margin: 0 auto;
+  /* Center horizontally without extra bottom spacing */
   backdrop-filter: blur(var(--glass-blur));
   position: sticky;
   top: 1rem;

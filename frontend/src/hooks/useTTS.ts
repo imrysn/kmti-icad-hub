@@ -34,7 +34,7 @@ export const useTTS = () => {
   });
   const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(() => {
     const saved = localStorage.getItem('tts_voice_uri');
-    return saved && saved !== 'undefined' && saved !== 'null' && saved !== '' ? saved : 'kokoro://af_sarah';
+    return saved && saved !== 'undefined' && saved !== 'null' && saved !== '' ? saved : 'openai://marin';
   });
   const [voices, setVoices] = useState<TTSVoice[]>([]);
 
@@ -63,7 +63,7 @@ export const useTTS = () => {
 
       let premiumVoices: TTSVoice[] = [];
       try {
-        const response = await api.get('/tts/voices');
+      const response = await api.get('/tts/voices');
         if (response.data && Array.isArray(response.data)) {
           premiumVoices = response.data.map((v: any) => ({
             voiceURI: v.id,
@@ -180,11 +180,11 @@ export const useTTS = () => {
     // while the audio file is loading over the network.
     // They are set inside audio.onplaying and utterance.onstart below.
 
-    const isKokoro = selectedVoiceURI?.startsWith('kokoro://');
-    console.log("useTTS: speakSentence index:", index, "isKokoro:", isKokoro, "selectedVoiceURI:", selectedVoiceURI);
+    const isBackendVoice = selectedVoiceURI?.startsWith('kokoro://') || selectedVoiceURI?.startsWith('openai://');
+    console.log("useTTS: speakSentence index:", index, "isBackendVoice:", isBackendVoice, "selectedVoiceURI:", selectedVoiceURI);
 
-    if (isKokoro) {
-      const voiceName = selectedVoiceURI!.replace('kokoro://', '');
+    if (isBackendVoice) {
+      const voiceName = selectedVoiceURI!.replace('kokoro://', '').replace('openai://', '');
 
       let audio: HTMLAudioElement;
       if (preloadedAudioRef.current && preloadedAudioRef.current.index === index) {
@@ -325,7 +325,7 @@ export const useTTS = () => {
         voice = getTeacherVoice();
       }
 
-      if (voice && !voice.voiceURI.startsWith('kokoro://')) {
+      if (voice && !voice.voiceURI.startsWith('kokoro://') && !voice.voiceURI.startsWith('openai://')) {
         const rawVoices = window.speechSynthesis.getVoices();
         const nativeVoice = rawVoices.find(v => v.voiceURI === voice!.voiceURI);
         if (nativeVoice) utterance.voice = nativeVoice;

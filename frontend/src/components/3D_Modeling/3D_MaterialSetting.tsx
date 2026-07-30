@@ -156,7 +156,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
           />
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             const steps = activeTab === 'set' ? material1Steps : material2Steps;
-            speak([introTitle, introSubtitle, ...steps]);
+          speak([introTitle, introSubtitle, ...steps], 0);
           }} onStop={stop} />
         </h3>
         <KaraokeLessonText

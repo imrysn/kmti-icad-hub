@@ -56,6 +56,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
 
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      if (!document.fullscreenElement) setIsFullscreen(false);
+    };
+
+    document.addEventListener('fullscreenchange', syncFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
+  }, []);
+
   const handlePointerDown = (e: React.PointerEvent) => {
     dragRef.current = {
       startX: e.clientX,
@@ -185,6 +194,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       } else if (e.key === 'Escape') {
         e.preventDefault();
         setIsFullscreen(false);
+        if (document.fullscreenElement) {
+          void document.exitFullscreen();
+        }
       }
     };
 
@@ -213,12 +225,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
 
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
-    const isKokoro = savedVoice.startsWith('kokoro://');
+    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://marin';
+    const isBackendVoice = savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://');
     const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
 
-    if (isKokoro) {
-      const voiceName = savedVoice.replace('kokoro://', '');
+    if (isBackendVoice) {
+      const voiceName = savedVoice.replace('kokoro://', '').replace('openai://', '');
       const apiBase = api.defaults.baseURL || '';
 
       const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
@@ -530,9 +542,20 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     }
   };
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
+  const toggleFullscreen = async () => {
+    const shouldOpen = !isFullscreen;
+    setIsFullscreen(shouldOpen);
     setNavPos({ x: 0, y: 0 }); // reset control position when switching modes
+
+    try {
+      if (shouldOpen) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // The overlay remains available when the browser blocks native fullscreen.
+    }
   };
 
   const handleClose = () => {
@@ -579,10 +602,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             transform: currentData.zoom,
             transformOrigin: currentData.origin,
             display: 'block',
-            width: '100%',
+            width: isFullscreen ? '100vw' : '100%',
+            height: isFullscreen ? '100vh' : undefined,
             maxWidth: '100%',
-            maxHeight: isFullscreen ? '100vh' : 'calc(100vh - 200px)',
-            aspectRatio: '16 / 9',
+            maxHeight: isFullscreen ? 'none' : 'calc(100vh - 200px)',
+            aspectRatio: isFullscreen ? undefined : '16 / 9',
             minWidth: 0,
             minHeight: 0
           }}

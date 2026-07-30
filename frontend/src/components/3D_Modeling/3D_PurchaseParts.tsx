@@ -128,7 +128,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            <button className="nav-button next" onClick={handleNext}>{activeTab === 'part1' ? 'Next Part' : (nextLabel || t('common.next'))} <ChevronRight size={18} /></button>
+            <button className="nav-button next" onClick={handleNext}>{activeTab === 'part1' ? t('common.next') : (nextLabel || t('common.next'))} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

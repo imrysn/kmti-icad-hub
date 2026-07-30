@@ -34,8 +34,6 @@ import { en_components_sensei } from './en/components/sensei';
 import { ja_components_sensei } from './ja/components/sensei';
 import { en_components_course_selector } from './en/components/course_selector';
 import { ja_components_course_selector } from './ja/components/course_selector';
-import { en_components_quotation } from './en/components/quotation';
-import { ja_components_quotation } from './ja/components/quotation';
 import { en_components_notifications } from './en/components/notifications';
 import { ja_components_notifications } from './ja/components/notifications';
 import { en_components_time_record } from './en/components/time_record';
@@ -88,7 +86,6 @@ export const enTranslations: Record<string, string> = {
   ...en_components_login,
   ...en_components_sensei,
   ...en_components_course_selector,
-  ...en_components_quotation,
   ...en_components_notifications,
   ...en_components_time_record,
   ...en_components_quiz,
@@ -126,7 +123,6 @@ export const jaTranslations: Record<string, string> = {
   ...ja_components_login,
   ...ja_components_sensei,
   ...ja_components_course_selector,
-  ...ja_components_quotation,
   ...ja_components_notifications,
   ...ja_components_time_record,
   ...ja_components_quiz,

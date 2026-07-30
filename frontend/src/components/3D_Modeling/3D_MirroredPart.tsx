@@ -161,7 +161,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
           />
           <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
             const steps = activeTab === 'mirrored-part' ? mirrored1Steps : mirrored2Steps;
-            speak([introTitle, introSubtitle, ...steps]);
+          speak([introTitle, introSubtitle, ...steps], 0);
           }} onStop={stop} />
         </h3>
         <KaraokeLessonText

@@ -2,6 +2,7 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+import { useTranslation } from "../../context/LanguageContext";
 
 import "../../styles/2D_Drawing/CourseLesson.css";
 
@@ -19,16 +20,17 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
   onPrevLesson,
   nextLabel
 }) => {
+  const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, registerText } = useLessonCore('2d-titleblock');
   const TABS = [
-    { id: 'titleblock', label: 'Titleblock' }
+    { id: 'titleblock', label: t('2d.titleblock.tab') }
   ];
   const [activeTab, setActiveTab] = useState('titleblock');
 
   const currentTabSteps = [
-    "TITLE BLOCK",
-    "Review standard title block format including dimensions, project name, drawing number, designer name, and approved signature blocks.",
-    "Verify JIC B 0401 standards and details on sheet borders, templates, and scaling rules."
+    t('2d.step.title_block'),
+    t('2d.step.review_standard_title_block_fo'),
+    t('2d.step.verify_jic_b_0401_standards_an')
   ];
   const tabsList = [{ id: 'titleblock' }];
 
@@ -83,11 +85,11 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
                 <div className={`instruction-step ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-2rem" }}>
                   <div className="step-header">
                     <span className="step-number">19</span>
-                    <span className="step-label">Title Block</span>
+                    <span className="step-label">{t('2d.titleblock.tab')}</span>
                   </div>
                   <div className="step-description">
                     <div className="p-flush">
-                      Displays part informations such as Job Order, Drawing Number,  Part & Machine Name,  Drawn & Designer Name, Cross Reference and Pervious Drawing Number and Quantity
+                      {t('2d.titleblock.description')}
                     </div>
                     <img src={titleBlock1Img} alt="Title Block Definitions" className="software-screenshot screenshot-wide" />
                   </div>
@@ -98,10 +100,10 @@ const TitleBlockLesson: React.FC<TitleBlockLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={onPrevLesson}>
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('2d.previous')}
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || t('2d.next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>

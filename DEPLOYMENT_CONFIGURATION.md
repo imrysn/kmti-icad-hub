@@ -8,14 +8,14 @@ clean, reviewed commit/tag and record artifact checksums.
 
 ## Backend configuration
 
-1. Copy `backend/.env.example` to `.env` beside `KMTI_iCAD_Server.exe` on the
-   protected backend server.
+1. Copy `backend/.env.example` to `.env` on the protected API server.
 2. Replace every placeholder with deployment-specific values.
 3. Generate a unique `SECRET_KEY` with at least 32 random bytes. Never reuse a
    development or test key and never write the value to logs.
 4. Use a least-privileged MySQL service account.
-5. Set `CORS_ORIGINS` to the exact approved renderer origins. Do not rely on the
-   development fallback for production.
+5. Set `ENVIRONMENT=production` and set `CORS_ORIGINS` to the exact approved
+   browser origins, for example `https://training.example.jp`. Do not include
+   `localhost`, private network ranges, `null`, or `file://` in production.
 6. Restrict filesystem permissions so only the backend service account and
    authorized administrators can read `.env`.
 
@@ -25,9 +25,10 @@ sign in again.
 
 ## Frontend configuration
 
-Set `VITE_API_URL` to the address reachable from target workstations before
-building. Validate HTTP API calls, file downloads, Socket.IO, and WebSockets
-from a representative client on the deployment network.
+Copy `frontend/.env.example` to `frontend/.env.production` and set
+`VITE_API_URL` to the public HTTPS API address before building. Validate HTTP
+API calls, file downloads, Socket.IO, and WebSockets from a representative
+browser client.
 
 Use HTTPS when traffic can cross an untrusted network. If plain HTTP is kept on
 an isolated LAN, record the approved network threat model and firewall rules.

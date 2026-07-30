@@ -43,7 +43,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // UI/Interaction State
     const [activeLessonId, setActiveLessonId] = useState<string>('');
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    // Lesson navigation is always available while studying either course.
+    const sidebarOpen = true;
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
     const [averageScore, setAverageScore] = useState(0);
@@ -148,7 +149,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             const savedCourseId = localStorage.getItem(authService.getStorageKey('selectedCourseId'));
             const savedLessonId = localStorage.getItem(authService.getStorageKey('activeLessonId'));
             const savedExpanded = localStorage.getItem(authService.getStorageKey('expandedIds'));
-            const savedSidebar = localStorage.getItem(authService.getStorageKey('sidebarOpen'));
 
             if (savedCourseId) {
                 console.log('Restoring course from storage:', savedCourseId);
@@ -181,7 +181,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         setActiveLessonId(savedLessonId);
                     }
                     if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
-                    if (savedSidebar) setSidebarOpen(savedSidebar === 'true');
                 } else {
                     console.warn('Could not find course in list for ID:', savedCourseId);
                 }
@@ -275,17 +274,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 localStorage.setItem(authService.getStorageKey('selectedCourseId'), selectedCourse.id);
                 localStorage.setItem(authService.getStorageKey('activeLessonId'), activeLessonId);
                 localStorage.setItem(authService.getStorageKey('expandedIds'), JSON.stringify(Array.from(expandedIds)));
-                localStorage.setItem(authService.getStorageKey('sidebarOpen'), sidebarOpen.toString());
             } else {
                 // Clear persistence if we manually return to course selector
                 localStorage.removeItem(authService.getStorageKey('selectedCourseId'));
                 localStorage.removeItem(authService.getStorageKey('activeLessonId'));
                 localStorage.removeItem(authService.getStorageKey('expandedIds'));
-                localStorage.removeItem(authService.getStorageKey('sidebarOpen'));
             }
         }
     // Fix #9: Use expandedIdsKey (stable string) instead of expandedIds (Set reference)
-    }, [selectedCourse, activeLessonId, expandedIdsKey, sidebarOpen, isRestored]);
+    }, [selectedCourse, activeLessonId, expandedIdsKey, isRestored]);
 
     // Filter completions to only include valid modules for this specific course
     const relevantCompletedCount = useMemo(() =>
@@ -624,7 +621,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         selectedCourse={selectedCourse}
                         is2DDrawingCourse={is2DDrawingCourse}
                         sidebarOpen={sidebarOpen}
-                        setSidebarOpen={setSidebarOpen}
                         activeLessonId={activeLessonId}
                         setActiveLessonId={setActiveLessonId}
                         expandedIds={expandedIds}
@@ -700,9 +696,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         allLessonIdsLength={allLessonIds.length}
                         goToNextLesson={goToNextLesson}
                         goToPrevLesson={goToPrevLesson}
-                        sidebarOpen={sidebarOpen}
-                        setSidebarOpen={setSidebarOpen}
-                        setSelectedCourse={setSelectedCourse}
                         getActiveLessonTitle={getActiveLessonTitle}
                         lessons={currentLessons}
                         completedLessons={completedLessons}

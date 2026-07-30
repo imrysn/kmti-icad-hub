@@ -538,6 +538,7 @@ export const ja_3d_common = {
   "lesson.title.interference": "\u5e72\u6e09\u30c1\u30a7\u30c3\u30af",
   "lesson.title.purchase-parts": "3D\u8cfc\u5165\u90e8\u54c1",
   "lesson.title.purchase-parts-1": "3D\u8cfc\u5165\u90e8\u54c1",
+  "lesson.title.parasolid": "\u30d1\u30e9\u30bd\u30ea\u30c3\u30c9\u306e\u8aad\u307f\u8fbc\u307f",
   "lesson.title.parasolid-1": "\u30d1\u30e9\u30bd\u30ea\u30c3\u30c9\u306e\u8aad\u307f\u8fbc\u307f",
   "lesson.title.op-sample": "\u64cd\u4f5c\u30b5\u30f3\u30d7\u30eb",
   "lesson.title.op-sample-1": "\u64cd\u4f5c\u30b5\u30f3\u30d7\u30eb",

@@ -84,8 +84,11 @@ app = FastAPI(title="KMTI iCAD Hub API")
 # Enable CORS for Electron app and dev servers
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
 origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()] if cors_origins_env else []
+is_production = os.getenv("ENVIRONMENT", "development").strip().lower() == "production"
 
 if not origins:
+    if is_production:
+        raise RuntimeError("CRITICAL CONFIGURATION ERROR: CORS_ORIGINS must be set in production.")
     # Fallback only for local dev if not specified
     origins = [
         "http://localhost:5173",
@@ -99,11 +102,15 @@ if not origins:
 
 cors_options = {
     "allow_origins": origins,
-    "allow_origin_regex": r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
     "allow_credentials": True,
     "allow_methods": ["*"],
     "allow_headers": ["*"],
 }
+
+# A configured allowlist must be exact. The development-only regex is retained
+# solely for a local API server accessed through a LAN development address.
+if not cors_origins_env and not is_production:
+    cors_options["allow_origin_regex"] = r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?"
 
 app.add_middleware(
     CORSMiddleware,

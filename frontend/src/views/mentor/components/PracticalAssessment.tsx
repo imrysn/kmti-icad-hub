@@ -5,12 +5,10 @@ import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
 import { useTranslation } from '../../../context/LanguageContext';
 import { useUI } from '../../../context/UIContext';
-import { useNotification } from '../../../context/NotificationContext';
 import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
-import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
+import { AssessmentTask } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
-import { invalidateCache } from '../../../services/api';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 import '../../../styles/mentor/PracticalAssessment.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
@@ -25,6 +23,7 @@ interface PracticalAssessmentProps {
 
 
 export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false, assessmentType = '3D' }) => {
+    const isDesktopApp = Boolean(window.electronAPI);
     const location = useLocation();
     const { t } = useTranslation();
     const [showInstructions, setShowInstructions] = useState<boolean>(() => {
@@ -51,7 +50,6 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     // Fix #7: Inject the app's styled ConfirmationModal into the hook
     const { requestConfirmation } = useUI();
-    const { showNotification } = useNotification();
 
     const {
         tasks,
@@ -506,7 +504,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                             unitsMap.get(unitName)!.push(task);
                                         });
 
-                                        return Array.from(unitsMap.entries()).map(([unitName, unitTasks], unitIndex, unitEntries) => {
+                                        return Array.from(unitsMap.entries()).map(([unitName, unitTasks]) => {
                                             const sortedUnitTasks = [...unitTasks].sort((a, b) => {
                                                 const isPartA = !a.is_assembly;
                                                 const isPartB = !b.is_assembly;
@@ -640,7 +638,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                     />
                                                                                 )}
                                                                                 {!task.is_virtual_extra && !task.is_virtual_quotation && (
-                                                                                    <>
+                                                                                    isDesktopApp ? <>
                                                                                         <button type="button" className="task-action-btn primary" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
@@ -657,7 +655,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         }}>
                                                                                             <Download size={14} /> {t('practical.download')}
                                                                                         </button>
-                                                                                    </>
+                                                                                    </> : <button type="button" className="task-action-btn primary" onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        e.stopPropagation();
+                                                                                        stopwatchRefs.current[actualTaskId]?.startTimer();
+                                                                                        handleDownloadTask(task);
+                                                                                    }}>
+                                                                                        <Download size={14} /> {t('practical.download')}
+                                                                                    </button>
                                                                                 )}
                                                                             </div>
                                                                         </div>

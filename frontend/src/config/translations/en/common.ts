@@ -8,7 +8,6 @@ export const en_common = {
   "nav.admin_tab": "Admin",
   "nav.trainee_overview": "Trainee Overview",
   "nav.manuals": "iCAD Manuals",
-  "nav.quotation": "Quotation",
   "common.close": "Close",
   "common.next": "Next",
   "common.previous": "Previous",
