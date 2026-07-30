@@ -15,8 +15,7 @@ interface ParagonSMCProps {
 }
 
 const reminderSteps = [
-    "Paragon SMC",
-    "Please review the Paragon SMC reference.",
+    "Please review the Paragon SMC reference",
 ];
 
 const ParagonSMC: React.FC<ParagonSMCProps> = ({
@@ -71,17 +70,6 @@ const ParagonSMC: React.FC<ParagonSMCProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Paragon SMC"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -95,7 +83,7 @@ const ParagonSMC: React.FC<ParagonSMCProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the Paragon SMC reference."
+                                text="Please review the Paragon SMC reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />

@@ -72,20 +72,20 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            {/* ── Section 1: Bolt Hole Diameter Standard ── */}
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Bolt Hole Diameter Standard"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
+
+                    {/* ── Section 1: Bolt Hole Diameter Standard ── */}
+                    <div className="lesson-intro" style={{ border: "none", background: "none", boxShadow: "none", backdropFilter: "none", marginBottom: "0.5rem", padding: "1rem 0" }}>
+                        <KaraokeLessonText
+                            as="h3"
+                            className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
+                            data-reading-index="0"
+                            text="Bolt Hole Diameter Standard"
+                            isActive={isSpeaking && currentIndex === 0}
+                                currentCharIndex={currentCharIndex}
+                        />
+                    </div>
 
                     {/* Bolt Hole Diameter Image */}
                     <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
@@ -98,21 +98,17 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                     </div>
 
                     {/* ── Section 2: Bolt Length Standard ── */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                        style={{ marginTop: "3rem" }}
-                    >
-                        <div className="step-header">
-                            <KaraokeLessonText
-                                as="h4"
-                                className="step-label"
-                                text="Bolt Length Standard"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                                style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)", marginBottom: "1rem" }}
-                            />
-                        </div>
+                    <div className="lesson-intro" style={{ border: "none", background: "none", boxShadow: "none", backdropFilter: "none", marginBottom: "0.5rem", padding: "1rem 0", marginTop: "2rem" }}>
+                        <KaraokeLessonText
+                            as="h3"
+                            className={`section-title ${currentIndex === 1 ? "reading-active" : ""}`}
+                            data-reading-index="1"
+                            text="Bolt Length Standard"
+                            isActive={isSpeaking && currentIndex === 1}
+                            currentCharIndex={currentCharIndex}
+                        />
+                    </div>
+                    <div>
                         <div className="step-description" style={{ alignItems: "center" }}>
                             <img
                                 src={boltLengthImg}

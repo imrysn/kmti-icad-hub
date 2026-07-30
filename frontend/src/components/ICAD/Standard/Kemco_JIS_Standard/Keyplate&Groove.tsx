@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
@@ -36,6 +36,8 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
         registerText,
     } = useLessonCore("keyplate-groove");
 
+    const [activeTab, setActiveTab] = useState<"keyplate" | "oil groove">("keyplate");
+
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
@@ -72,56 +74,50 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            {/* ── Section 1: Key Plate & Groove ── */}
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Key Plate & Groove"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
+            {/* Navigation Bar */}
+            <div className="lesson-tabs" style={{ marginTop: "0", marginBottom: "1rem" }}>
+                <button
+                    className={`tab-button ${activeTab === "keyplate" ? "active" : ""}`}
+                    onClick={() => setActiveTab("keyplate")}
+                >
+                    Keyplate
+                </button>
+                <button
+                    className={`tab-button ${activeTab === "oil groove" ? "active" : ""}`}
+                    onClick={() => setActiveTab("oil groove")}
+                >
+                    Oil Groove
+                </button>
+            </div>
 
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
-                    {/* Key Plate & Groove Image */}
-                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center"}}>
-                        <img
-                            src={keywayPlateImg}
-                            alt="Key Plate & Groove"
-                            className="software-screenshot"
-                            style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                        />
-                    </div>
-
-                    {/* ── Section 2: Oil Groove ── */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                        style={{ marginTop: "1rem" }}
-                    >
-                        <div className="step-header">
-                            <KaraokeLessonText
-                                as="h4"
-                                className="step-label"
-                                text="Oil Groove"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                                style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-main)", marginBottom: "1rem" }}
-                            />
-                        </div>
-                        <div className="step-description" style={{ marginTop: "0rem", alignItems: "center"}}>
+                    {activeTab === "keyplate" ? (
+                        <div className="step-description" style={{ marginTop: "1rem", alignItems: "center"}}>
                             <img
-                                src={oilGrooveImg}
-                                alt="Oil Groove"
+                                src={keywayPlateImg}
+                                alt="Key Plate & Groove"
                                 className="software-screenshot"
-                                style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                             />
                         </div>
-                    </div>
+                    ) : (
+                        <div
+                            className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
+                            data-reading-index="1"
+                            style={{ marginTop: "1rem" }}
+                        >
+                            <div className="step-description" style={{ marginTop: "0rem", alignItems: "center"}}>
+                                <img
+                                    src={oilGrooveImg}
+                                    alt="Oil Groove"
+                                    className="software-screenshot"
+                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                />
+                            </div>
+                        </div>
+                    )}
 
                     {/* Page Navigation */}
                     <div className="lesson-navigation mt-12">

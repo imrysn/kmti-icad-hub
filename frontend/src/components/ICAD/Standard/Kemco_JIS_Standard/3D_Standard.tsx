@@ -16,8 +16,6 @@ interface ThreeDStandardLessonProps {
 }
 
 const reminderSteps = [
-    "3D STANDARD",
-    "REMINDER:",
     "Place the origin in the correct position for both the parts and the assembly.",
     "Ensure all dimensions are applied in 3D.",
     "Apply materials and layers to all 3D parts and assemblies, particularly the purchased parts.",
@@ -76,24 +74,6 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="3D STANDARD"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-                <KaraokeLessonText
-                    className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
-                    data-reading-index="1"
-                    text="REMINDER:"
-                    isActive={isSpeaking && currentIndex === 1}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in" style={{ gap: "1rem" }}>
 
@@ -107,7 +87,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Place the origin in the correct position for both the parts and the assembly."
+                                text="Place the origin in the correct position for both the parts and the assembly"
                                 isActive={isSpeaking && currentIndex === 2}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -132,7 +112,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Ensure all dimensions are applied in 3D."
+                                text="Ensure all dimensions are applied in 3D"
                                 isActive={isSpeaking && currentIndex === 3}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -149,7 +129,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Apply materials and layers to all 3D parts and assemblies, particularly the purchased parts."
+                                text="Apply materials and layers to all 3D parts and assemblies, particularly the purchased parts"
                                 isActive={isSpeaking && currentIndex === 4}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -174,7 +154,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please remember to check interference in the 3D assemblies."
+                                text="Please remember to check interference in the 3D assemblies"
                                 isActive={isSpeaking && currentIndex === 5}
                                 currentCharIndex={currentCharIndex}
                             />

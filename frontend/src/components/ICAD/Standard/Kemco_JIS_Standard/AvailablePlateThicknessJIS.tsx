@@ -15,7 +15,6 @@ interface AvailablePlateThicknessJISProps {
 }
 
 const reminderSteps = [
-    "Plate Thickness",
     "Please review the available plate thickness reference.",
 ];
 
@@ -71,17 +70,6 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Plate Thickness"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -95,21 +83,41 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the available plate thickness reference."
+                                text="Please review the available plate thickness reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* ── Plate Thickness Image ── */}
-                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                        <img
-                            src={plateThicknessImg}
-                            alt="Available Plate Thickness"
-                            className="software-screenshot"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                        />
+                    {/* ── Plate Thickness Table ── */}
+                    <div className="step-description lesson-table-container" style={{ marginTop: "1rem", width: "100%", maxWidth: "900px", margin: "1rem auto 0 auto" }}>
+                        <table className="lesson-table" style={{ width: "100%", textAlign: "center" }}>
+                            <thead>
+                                <tr>
+                                    <th colSpan={4} style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', padding: "1rem" }}>
+                                        AVAILABLE PLATE THICKNESS<br />(JIS)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    ["2.3mm", "12mm", "28mm", "45mm"],
+                                    ["3.2mm", "16mm", "32mm", "50mm"],
+                                    ["4.5mm", "19mm", "36mm", "63mm"],
+                                    ["6mm", "22mm", "38mm", ""],
+                                    ["9mm", "25mm", "40mm", ""]
+                                ].map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        {row.map((cell, colIndex) => (
+                                            <td key={colIndex}>
+                                                {cell}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
 
                     {/* Page Navigation */}

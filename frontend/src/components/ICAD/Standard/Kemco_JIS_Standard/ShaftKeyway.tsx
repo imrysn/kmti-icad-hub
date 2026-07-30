@@ -15,8 +15,7 @@ interface ShaftKeywayProps {
 }
 
 const reminderSteps = [
-    "Shaft Keyway",
-    "Please review the Shaft Keyway reference.",
+    "Please review the Shaft Keyway reference",
 ];
 
 const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
@@ -71,17 +70,6 @@ const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Shaft Keyway"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -95,7 +83,7 @@ const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the Shaft Keyway reference."
+                                text="Please review the Shaft Keyway reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />

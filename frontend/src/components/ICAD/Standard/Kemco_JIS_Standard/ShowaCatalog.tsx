@@ -30,7 +30,6 @@ interface ShowaCatalogProps {
 }
 
 const reminderSteps = [
-    "SHOWA Catalog",
     "Please review the SHOWA Catalog for reference.",
 ];
 
@@ -51,6 +50,71 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
     } = useLessonCore("showa-catalog");
 
     const [activeTab, setActiveTab] = useState<"page1" | "page2">("page1");
+    const [galleryIndex, setGalleryIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+    // Reset gallery index when tab changes
+    useEffect(() => {
+        setGalleryIndex(0);
+    }, [activeTab]);
+
+    let currentGalleryImages: { src: string; label: string; number: number; }[] = [];
+    if (activeTab === "page1") {
+        currentGalleryImages = [
+            { src: showaCatalog1, label: "SHOWA Catalog Page 1", number: 1 },
+            { src: showaCatalog2, label: "SHOWA Catalog Page 1", number: 2 },
+            { src: showaCatalog3, label: "SHOWA Catalog Page 1", number: 3 },
+            { src: showaCatalog4, label: "SHOWA Catalog Page 1", number: 4 },
+            { src: showaCatalog5, label: "SHOWA Catalog Page 1", number: 5 },
+            { src: showaCatalog6, label: "SHOWA Catalog Page 1", number: 6 },
+            { src: showaCatalog7, label: "SHOWA Catalog Page 1", number: 7 },
+        ];
+    } else {
+        currentGalleryImages = [
+            { src: showaCatalog8, label: "SHOWA Catalog Page 2", number: 1 },
+            { src: showaCatalog9, label: "SHOWA Catalog Page 2", number: 2 },
+            { src: showaCatalog10, label: "SHOWA Catalog Page 2", number: 3 },
+            { src: showaCatalog11, label: "SHOWA Catalog Page 2", number: 4 },
+            { src: showaCatalog12, label: "SHOWA Catalog Page 2", number: 5 },
+            { src: showaCatalog13, label: "SHOWA Catalog Page 2", number: 6 },
+            { src: showaCatalog14, label: "SHOWA Catalog Page 2", number: 7 },
+        ];
+    }
+
+    const safeGalleryIndex = galleryIndex >= currentGalleryImages.length ? 0 : galleryIndex;
+
+    const handleGalleryNext = () => {
+        setGalleryIndex((prev) => (prev + 1) % currentGalleryImages.length);
+    };
+
+    const handleGalleryPrev = () => {
+        setGalleryIndex((prev) => (prev - 1 + currentGalleryImages.length) % currentGalleryImages.length);
+    };
+
+    const minSwipeDistance = 50;
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (touchStart === null || touchEnd === null) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            handleGalleryNext();
+        } else if (isRightSwipe) {
+            handleGalleryPrev();
+        }
+    };
 
     useEffect(() => {
         registerText(reminderSteps, 0);
@@ -104,17 +168,6 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                 </button>
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="SHOWA Catalog"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -128,66 +181,106 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the SHOWA Catalog for reference."
+                                text="Please review the SHOWA Catalog for reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
                         </div>
                     </div>
 
-                    {/* Images Page 1 */}
-                    {activeTab === "page1" && (
-                        <>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog1} alt="SHOWA Catalog 1" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog2} alt="SHOWA Catalog 2" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog3} alt="SHOWA Catalog 3" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog4} alt="SHOWA Catalog 4" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog5} alt="SHOWA Catalog 5" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog6} alt="SHOWA Catalog 6" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog7} alt="SHOWA Catalog 7" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                        </>
-                    )}
+                    {/* ── Image Gallery ── */}
+                    <div
+                        className="gallery-container mt-2"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            position: "relative",
+                            width: "100%",
+                        }}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                    >
+                        {/* Image Frame */}
+                        <div
+                            style={{
+                                width: "100%",
+                                height: "1300px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                overflow: "hidden",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <img
+                                src={currentGalleryImages[safeGalleryIndex].src}
+                                alt={currentGalleryImages[safeGalleryIndex].label}
+                                loading="lazy"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    objectFit: "contain"
+                                }}
+                            />
+                        </div>
 
-                    {/* Images Page 2 */}
-                    {activeTab === "page2" && (
-                        <>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog8} alt="SHOWA Catalog 8" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
+                        {/* Slider Controls & Indicators */}
+                        {currentGalleryImages.length > 1 && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    gap: "1rem",
+                                    width: "100%",
+                                    marginTop: "1rem"
+                                }}
+                            >
+                                <button
+                                    onClick={handleGalleryPrev}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        color: "var(--accent)",
+                                        padding: "0.25rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                    aria-label="Previous image"
+                                >
+                                    <ChevronLeft size={22} />
+                                </button>
+
+                                <div style={{ textAlign: "center" }}>
+                                    <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
+                                        {currentGalleryImages[safeGalleryIndex].label}
+                                    </span>
+                                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                                        Image {currentGalleryImages[safeGalleryIndex].number} of {currentGalleryImages.length}
+                                    </span>
+                                </div>
+
+                                <button
+                                    onClick={handleGalleryNext}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        color: "var(--accent)",
+                                        padding: "0.25rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
+                                    aria-label="Next image"
+                                >
+                                    <ChevronRight size={22} />
+                                </button>
                             </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog9} alt="SHOWA Catalog 9" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog10} alt="SHOWA Catalog 10" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog11} alt="SHOWA Catalog 11" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog12} alt="SHOWA Catalog 12" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog13} alt="SHOWA Catalog 13" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                            <div className="step-description" style={{ marginTop: "0.5rem", alignItems: "center" }}>
-                                <img src={showaCatalog14} alt="SHOWA Catalog 14" className="software-screenshot" style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }} />
-                            </div>
-                        </>
-                    )}
+                        )}
+                    </div>
 
                     {/* Page Navigation */}
                     <div className="lesson-navigation mt-12">

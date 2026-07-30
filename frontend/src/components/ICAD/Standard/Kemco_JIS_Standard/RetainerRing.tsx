@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
@@ -19,8 +19,8 @@ interface RetainerRingProps {
 }
 
 const reminderSteps = [
-    "Retainer Ring (JIS Standard)",
-    "Retainer Ring Specifications (OCHIAI)",
+    "Retaining Rings-C (JIS Standard)",
+    "Retaining Rings Specifications (OCHIAI)",
 ];
 
 const RetainerRing: React.FC<RetainerRingProps> = ({
@@ -39,6 +39,8 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
         currentCharIndex,
         registerText,
     } = useLessonCore("retainer-ring");
+
+    const [activeTab, setActiveTab] = useState<"internal" | "external">("external");
 
     useEffect(() => {
         registerText(reminderSteps, 0);
@@ -78,39 +80,44 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
 
             {(!subLessonId || subLessonId === 'retainer-ring-main' || subLessonId === 'retainer-ring') && (
                 <>
-                    {/* ── Section 1: Retainer Ring (JIS Standard) ── */}
-                    <section className="lesson-intro">
-                        <KaraokeLessonText
-                            as="h3"
-                            className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                            data-reading-index="0"
-                            text="Retainer Ring (JIS Standard)"
-                            isActive={isSpeaking && currentIndex === 0}
-                            currentCharIndex={currentCharIndex}
-                        />
-                    </section>
+                    {/* Navigation Bar */}
+                    <div className="lesson-tabs" style={{ marginTop: "0", marginBottom: "1rem" }}>
+                        <button
+                            className={`tab-button ${activeTab === "external" ? "active" : ""}`}
+                            onClick={() => setActiveTab("external")}
+                        >
+                            External
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === "internal" ? "active" : ""}`}
+                            onClick={() => setActiveTab("internal")}
+                        >
+                            Internal
+                        </button>
+                    </div>
 
                     <div className="lesson-grid single-card">
                         <div className="lesson-card tab-content fade-in">
-                            {/* Image 1 */}
-                            <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                                <img
-                                    src={retainerRing1Img}
-                                    alt="Retainer Ring 1"
-                                    className="software-screenshot"
-                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                />
-                            </div>
-
-                            {/* Image 2 */}
-                            <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                                <img
-                                    src={retainerRing2Img}
-                                    alt="Retainer Ring 2"
-                                    className="software-screenshot"
-                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                />
-                            </div>
+                            {/* Images for JIS Standard */}
+                            {activeTab === "internal" ? (
+                                <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
+                                    <img
+                                        src={retainerRing2Img}
+                                        alt="Retaining Ring Internal"
+                                        className="software-screenshot"
+                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
+                                    <img
+                                        src={retainerRing1Img}
+                                        alt="Retaining Ring External"
+                                        className="software-screenshot"
+                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                    />
+                                </div>
+                            )}
 
                             {/* Page Navigation */}
                             <div className="lesson-navigation mt-12">
@@ -132,16 +139,6 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
 
             {subLessonId === 'retainer-ring-spec' && (
                 <>
-                    <section className="lesson-intro">
-                        <KaraokeLessonText
-                            as="h3"
-                            className={`section-title ${currentIndex === 1 ? "reading-active" : ""}`}
-                            data-reading-index="1"
-                            text="Retainer Ring Specifications (OCHIAI)"
-                            isActive={isSpeaking && currentIndex === 1}
-                            currentCharIndex={currentCharIndex}
-                        />
-                    </section>
                     
                     <div className="lesson-grid single-card">
                         <div className="lesson-card tab-content fade-in">
@@ -154,7 +151,7 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                                 <div className="step-description" style={{ alignItems: "center" }}>
                                     <img
                                         src={retainerRing3Img}
-                                        alt="Retainer Ring Specifications 3"
+                                        alt="Retaining Ring Specifications Internal"
                                         className="software-screenshot"
                                         style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                     />
@@ -164,7 +161,7 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                                 <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                                     <img
                                         src={retainerRing4Img}
-                                        alt="Retainer Ring Specifications 4"
+                                        alt="Retaining Ring Specifications External"
                                         className="software-screenshot"
                                         style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                                     />

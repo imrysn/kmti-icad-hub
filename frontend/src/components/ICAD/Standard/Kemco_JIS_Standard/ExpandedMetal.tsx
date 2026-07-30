@@ -16,8 +16,7 @@ interface ExpandedMetalProps {
 }
 
 const reminderSteps = [
-    "Expanded Metal",
-    "Please review the Expanded Metal reference.",
+    "Please review the Expanded Metal reference",
 ];
 
 const ExpandedMetal: React.FC<ExpandedMetalProps> = ({
@@ -72,17 +71,6 @@ const ExpandedMetal: React.FC<ExpandedMetalProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <section className="lesson-intro">
-                <KaraokeLessonText
-                    as="h3"
-                    className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                    data-reading-index="0"
-                    text="Expanded Metal"
-                    isActive={isSpeaking && currentIndex === 0}
-                    currentCharIndex={currentCharIndex}
-                />
-            </section>
-
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
@@ -96,7 +84,7 @@ const ExpandedMetal: React.FC<ExpandedMetalProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please review the Expanded Metal reference."
+                                text="Please review the Expanded Metal reference"
                                 isActive={isSpeaking && currentIndex === 1}
                                 currentCharIndex={currentCharIndex}
                             />
