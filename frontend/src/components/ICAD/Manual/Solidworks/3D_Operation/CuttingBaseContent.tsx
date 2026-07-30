@@ -12,13 +12,13 @@ const CuttingBaseContent: React.FC = () => (
             
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px' }}>
                         <span className="step-number">1</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click <strong>Spacebar</strong> then select <strong>Front</strong>.
                         </span>
                     </div>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px' }}>
                         <span className="step-number">2</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             In <strong>Sketch</strong> tab, select <strong>Sketch</strong>{' '}
@@ -27,13 +27,13 @@ const CuttingBaseContent: React.FC = () => (
                             </span>
                         </span>
                     </div>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px' }}>
                         <span className="step-number">3</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click the <strong>front face</strong>.
                         </span>
                     </div>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">4</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Draw the sketch to be cut.
@@ -57,7 +57,7 @@ const CuttingBaseContent: React.FC = () => (
         <div className="instruction-step">
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">5</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>{' '}
@@ -66,13 +66,13 @@ const CuttingBaseContent: React.FC = () => (
                             </span>
                         </span>
                     </div>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">6</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             <strong>Cut-Extrude</strong> property manager will come up. In <strong>End Condition</strong>, select <strong>Through All</strong>.
                         </span>
                     </div>
-                    <div className="step-header" style={{ marginBottom: 0 }}>
+                    <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">7</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
                             Click{' '}

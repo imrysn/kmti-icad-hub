@@ -13,7 +13,7 @@ const SheetMetalContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">3D Part Modeling.</span>
             </div>
@@ -21,7 +21,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">
                     In <strong>Sketch</strong> tab, click <strong>Line (L)</strong>{' '}
@@ -39,7 +39,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Add sketch relation & dimensions.</span>
             </div>
@@ -52,7 +52,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     In <strong>Sheet Metal</strong> tab, click <strong>Base Flange / Tab</strong>{' '}
@@ -65,7 +65,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">Base Flange property manager and preview of sheet metal part will appear. Edit the properties.</span>
             </div>
@@ -78,7 +78,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">
                     Click{' '}
@@ -96,7 +96,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 7 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">7</span>
                 <span className="step-label">Edit Properties</span>
             </div>
@@ -119,7 +119,7 @@ const SheetMetalContent: React.FC = () => (
 
         {/* Step 8 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">8</span>
                 <span className="step-label">Save part</span>
             </div>

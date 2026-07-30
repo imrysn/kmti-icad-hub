@@ -9,7 +9,7 @@ const GettingMaterialWeightContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">Place the pointer on the <strong>rollback bar</strong> under the <strong>last feature</strong>.</span>
             </div>
@@ -17,7 +17,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">Drag the <strong>rollback bar</strong> under the <strong>Boss-Extrude1</strong>.</span>
             </div>
@@ -30,7 +30,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     Click <strong>Rebuild</strong>{' '}
@@ -44,7 +44,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     In <strong>Menu Bar</strong>, click <strong>File Properties</strong>{' '}
@@ -57,7 +57,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">Input the <strong>Wt/Pc Evaluated Value</strong> (with red underline) to <strong>Mat'l Wt Value</strong> (red arrow).</span>
             </div>
@@ -65,7 +65,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">Click <strong>OK</strong>.</span>
             </div>
@@ -78,7 +78,7 @@ const GettingMaterialWeightContent: React.FC = () => (
 
         {/* Step 7 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">7</span>
                 <span className="step-label">Drag the <strong>rollback bar</strong> under the <strong>last feature</strong>.</span>
             </div>

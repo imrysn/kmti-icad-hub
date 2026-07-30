@@ -7,7 +7,7 @@ const EditingPropertiesContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"   style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
 
@@ -21,7 +21,7 @@ const EditingPropertiesContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"   style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">The Dialog box will appear. Edit File / Part Properties (It is linked to 2D Balloon & BOM).</span>
             </div>
@@ -40,7 +40,7 @@ const EditingPropertiesContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Click <strong>OK</strong>.</span>
             </div>

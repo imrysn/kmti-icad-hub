@@ -10,7 +10,7 @@ const AddingHolesContent: React.FC = () => (
     <>
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Features</strong> tab, click <strong>Hole Wizard</strong>{' '}
@@ -24,7 +24,7 @@ const AddingHolesContent: React.FC = () => (
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">
                     In{' '}
@@ -43,7 +43,7 @@ const AddingHolesContent: React.FC = () => (
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     In{' '}
@@ -71,7 +71,7 @@ const AddingHolesContent: React.FC = () => (
 
 
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     Click{' '}

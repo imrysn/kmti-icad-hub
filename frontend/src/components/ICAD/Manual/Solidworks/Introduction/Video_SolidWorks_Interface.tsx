@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import VideoTutorialViewer from '../../3D_Modeling/VideoTutorialViewer';
 import { SOLIDWORKS_TUTORIAL_STEPS } from './VideoTutorialData/solidworksInterfaceTutorial';
-import mainInterface from '../../../../../assets/Solidworks/3D_Fv/SW_UI_Main.png';
+import mainInterface from '../../../../../assets/Solidworks/3D_Fv/Solidwork_Interface_main.png';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from '../../../../../hooks/useLessonCore';
 

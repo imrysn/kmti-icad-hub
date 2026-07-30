@@ -17,7 +17,7 @@ const CreatingAssemblyContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">1</span>
                 <span className="step-label">Follow the procedure.</span>
             </div>
@@ -39,7 +39,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">2</span>
                 <span className="step-label">Insert Component</span>
             </div>
@@ -56,7 +56,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     To fix the <strong>part origin</strong>, point the cursor on the <strong>assembly origin</strong> and click.
@@ -82,7 +82,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">Insert another part.</span>
             </div>
@@ -111,7 +111,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
                 <span className="step-label">Drag the part and click beside the first part.</span>
             </div>
@@ -128,7 +128,7 @@ const CreatingAssemblyContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">Mate the parts.</span>
             </div>

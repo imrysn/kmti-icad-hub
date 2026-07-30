@@ -12,7 +12,7 @@ const InsertMainViewsContent: React.FC = () => {
 
                     <div className="step-header" style={{marginBottom:'1rem'}}>
                 <span className="step-number">1</span>
-                <span className="step-label">Add sketch geometry. On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '30px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
+                <span className="step-label">Add sketch geometry. On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
             </div>
                     
                             <div className="step-header" style={{marginBottom:'1rem'}}>

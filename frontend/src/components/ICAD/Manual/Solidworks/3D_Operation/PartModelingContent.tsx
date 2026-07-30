@@ -17,7 +17,7 @@ const PartModelingContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">Open a SolidWorks window.</span>
             </div>
@@ -25,7 +25,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">Create New File.</span>
             </div>
@@ -42,7 +42,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">Select New Part Document.</span>
             </div>
@@ -91,7 +91,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">Set the Material.</span>
             </div>
@@ -129,7 +129,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 5 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}} >
                 <span className="step-number">5</span>
                 <span className="step-label">Show the Origin.</span>
             </div>
@@ -146,7 +146,7 @@ const PartModelingContent: React.FC = () => (
                     </span>
                 </p>
 
-                <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                <div className="image-wrapper" style={{ marginTop: '1.5rem'}}>
                     <img
                         src={appearImg}
                         alt="Origin will appear in the graphics area"
@@ -158,7 +158,7 @@ const PartModelingContent: React.FC = () => (
 
         {/* Step 6 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">6</span>
                 <span className="step-label">Select plane to be used.</span>
             </div>

@@ -34,6 +34,9 @@ export interface TutorialStep {
   videoSrc?: string;
   videoStart?: number;
   videoEnd?: number;
+  image?: string;
+  hasMoreContent?: boolean;
+  moreContentComponent?: React.ReactNode;
 }
 
 interface VideoTutorialViewerProps {
@@ -45,6 +48,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [showMoreContent, setShowMoreContent] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -131,6 +135,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
     if (isPlaying) {
       speakCurrentStep();
     } else {
+      setShowMoreContent(false);
       if (synthRef.current) synthRef.current.cancel();
       if (audioRef.current) {
         audioRef.current.pause();
@@ -165,7 +170,35 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         video.play().catch(err => console.log("Video resume on step change failed:", err));
       }
     }
+    setShowMoreContent(false);
   }, [currentStep]);
+
+  // Preload next step's TTS audio to prevent generation delay
+  useEffect(() => {
+    if (currentStep < steps.length - 1) {
+      const nextStep = steps[currentStep + 1];
+      const title = nextStep.title;
+      const text = nextStep.text;
+      const fullTextToSpeak = `${title}. ${text}`;
+
+      const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
+      const spokenText = sanitizeSpeech(fullTextToSpeak);
+
+      const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
+      const isKokoro = savedVoice.startsWith('kokoro://');
+      const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
+
+      if (isKokoro) {
+        const voiceName = savedVoice.replace('kokoro://', '');
+        const apiBase = api.defaults.baseURL || '';
+        const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
+        
+        const preloadAudio = new Audio();
+        preloadAudio.preload = "auto";
+        preloadAudio.src = textUrl;
+      }
+    }
+  }, [currentStep, steps]);
 
   // Keyboard navigation (only active when fullscreen or maybe always if focused, but let's just keep it)
   useEffect(() => {
@@ -545,6 +578,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
   const handleClose = () => {
     handleStop();
     setCurrentStep(0);
+    setShowMoreContent(false);
   };
 
   if (!steps || steps.length === 0) return null;
@@ -638,7 +672,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
             />
           ) : (
             <img
-              src={imageSrc || icadInterfaceImg}
+              src={currentData.image || imageSrc || icadInterfaceImg}
               alt="iCAD Interface"
               className="tutorial-image"
               style={{
@@ -663,7 +697,37 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         isPlaying && (
           <div className="tutorial-subtitle-flat">
             <h2 className="tutorial-title">{currentData.title}</h2>
-            {renderKaraokeText()}
+            {showMoreContent && currentData.moreContentComponent ? (
+              <div style={{ marginTop: '1rem', pointerEvents: 'auto' }}>
+                {currentData.moreContentComponent}
+              </div>
+            ) : (
+              <>
+                {renderKaraokeText()}
+                {currentData.hasMoreContent && (
+                  <button 
+                    className="tutorial-more-btn" 
+                    onClick={() => setShowMoreContent(true)}
+                    style={{
+                      marginTop: '1rem',
+                      padding: '0.4rem 1rem',
+                      background: 'transparent',
+                      border: '1px solid var(--primary)',
+                      color: 'var(--primary)',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      alignSelf: 'flex-end',
+                      display: 'block',
+                      marginLeft: 'auto',
+                      pointerEvents: 'auto'
+                    }}
+                  >
+                    More
+                  </button>
+                )}
+              </>
+            )}
           </div>
         )
       ) : (
@@ -681,14 +745,45 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
           {currentStep > 0 && (
             <button
               className="tutorial-subtitle-close"
-              onClick={handleClose}
-              title="Close Step (Back to Intro)"
+              onClick={showMoreContent ? () => setShowMoreContent(false) : handleClose}
+              title={showMoreContent ? "Back to description" : "Close Step (Back to Intro)"}
             >
               <X size={18} />
             </button>
           )}
           <h2 className="tutorial-title">{currentData.title}</h2>
-          {renderKaraokeText()}
+          
+          {showMoreContent && currentData.moreContentComponent ? (
+            <div style={{ marginTop: '1rem', pointerEvents: 'auto' }}>
+              {currentData.moreContentComponent}
+            </div>
+          ) : (
+            <>
+              {renderKaraokeText()}
+              {currentData.hasMoreContent && (
+                <button 
+                  className="tutorial-more-btn" 
+                  onClick={() => setShowMoreContent(true)}
+                  style={{
+                    marginTop: '1rem',
+                    padding: '0.4rem 1rem',
+                    background: 'transparent',
+                    border: '1px solid var(--primary)',
+                    color: 'var(--primary)',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    alignSelf: 'flex-end',
+                    display: 'block',
+                    marginLeft: 'auto',
+                    pointerEvents: 'auto'
+                  }}
+                >
+                  More
+                </button>
+              )}
+            </>
+          )}
         </div>
       )}
 

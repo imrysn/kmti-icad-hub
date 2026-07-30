@@ -8,7 +8,7 @@ const LinearPatternContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">
                     In <strong>Assembly</strong> tab, click <strong>Linear Component</strong>{' '}
@@ -21,7 +21,7 @@ const LinearPatternContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">Input the distance, quantity and parts needed to pattern.</span>
             </div>
@@ -42,7 +42,7 @@ const LinearPatternContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     Click{' '}

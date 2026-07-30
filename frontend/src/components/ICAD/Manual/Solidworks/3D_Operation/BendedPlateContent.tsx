@@ -13,7 +13,7 @@ const BendedPlateContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
                 <span className="step-label">Click <strong>Spacebar</strong>, then select <strong>Front View</strong>.</span>
             </div>
@@ -26,7 +26,7 @@ const BendedPlateContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
                 <span className="step-label">
                     In the <strong>FeatureManager Design Tree</strong>, click{' '}
@@ -44,7 +44,7 @@ const BendedPlateContent: React.FC = () => (
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
                 <span className="step-label">
                     Click <strong>Unsuppress</strong>{' '}
@@ -62,7 +62,7 @@ const BendedPlateContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">4</span>
                 <span className="step-label">
                     In <strong>Evaluate</strong> Tab, click <strong>Measure</strong>{' '}

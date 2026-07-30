@@ -8,7 +8,7 @@ const ExtrudingBaseContent: React.FC = () => (
     <>
         {/* Step 10 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">10</span>
                 <span className="step-label">Extrude the sketch into a solid.</span>
             </div>

@@ -67,7 +67,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                             <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                                                 In View Layout, click Section View.
                                                 <span className="image-wrapper-flush" style={{ marginLeft: '1rem', display: 'flex' }}>
-                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '50px' }} />
+                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '60px' }} />
                                                 </span>
                                             </span>
                                         </div>

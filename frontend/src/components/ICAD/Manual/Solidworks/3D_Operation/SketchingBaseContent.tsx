@@ -13,7 +13,7 @@ const SketchingBaseContent: React.FC = () => (
     <>
         {/* Step 7 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">7</span>
                 <span className="step-label">Add sketch geometry.</span>
             </div>
@@ -33,7 +33,7 @@ const SketchingBaseContent: React.FC = () => (
 
         {/* Step 8 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">8</span>
                 <span className="step-label">Add sketch relations (if necessary).</span>
             </div>
@@ -64,7 +64,7 @@ const SketchingBaseContent: React.FC = () => (
 
         {/* Step 9 */}
         <div className="instruction-step">
-            <div className="step-header">
+            <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">9</span>
                 <span className="step-label">Insert dimension/s.</span>
             </div>
