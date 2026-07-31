@@ -14,7 +14,7 @@ interface SpotlightConfig {
 }
 
 const SPOTLIGHTS: SpotlightConfig[] = [
-    { label: "Tree View", startTime: 0.7, endTime: 300.0, pxX: 125, pxY: 155, pxW: 250, pxH: 860 }
+    { label: "Tree View", startTime: 0.7, endTime: 20.3, pxX: 125, pxY: 155, pxW: 249, pxH: 865 }
 ];
 
 function Tree_View_Japanese_Tutorial() {
