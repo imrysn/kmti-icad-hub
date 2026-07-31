@@ -941,7 +941,7 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
     content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'],
     children: [
       { id: '2d-main', title: '2D Standard', content: [] },
-      { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
+      { id: '2d-gallery', title: '2D Standard Reference', content: [] }
     ]
   },
   { id: 'piping', title: 'Piping Standard', content: ['Placeholder for Piping'] },

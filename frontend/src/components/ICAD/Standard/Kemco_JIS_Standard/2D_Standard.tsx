@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutGrid, X } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
+import icadInterfaceBg from "../../../../assets/3D_INTERACTIVE/icad_interface.jpg";
 import mainViewsImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_main_views.png";
 import dimensioningOrderImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_dimensioning_order.png";
 import criticalDetailsImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_critical_details.png";
@@ -96,6 +97,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   } = useLessonCore("kemco-2d-standard");
 
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -284,125 +286,297 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       )}
 
       {subLessonId === '2d-gallery' && (
-        <>
-          <div className="lesson-grid single-card">
-            <div className="lesson-card tab-content fade-in">
-              <div className="card-header">
-                <h4 className="section-title">{galleryImages[galleryIndex].label}</h4>
-              </div>
+        <div
+          style={{
+            background: "#000",
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            padding: "2rem 2rem 3rem",
+            gap: "1.5rem",
+          }}
+        >
+          {/* ── Top bar: card-header style, flex-start, Browse menu right ── */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
+            <h4 style={{
+              color: "#fff",
+              margin: 0,
+              fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
+              borderLeft: "4px solid #DD4DFA",
+              paddingLeft: "0.75rem",
+            }}>
+              {galleryImages[galleryIndex].label}
+            </h4>
 
-              <div
-                className="gallery-container"
+            {/* Browse shortcut menu — right */}
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <button
+                onClick={() => setShowMenu((v) => !v)}
                 style={{
-                  padding: "1.5rem",
+                  background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "999px",
+                  padding: "0.5rem 1rem",
+                  cursor: "pointer",
+                  color: "#fff",
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
-                  position: "relative",
-                  width: "100%",
+                  gap: "0.4rem",
+                  fontSize: "0.8rem",
+                  fontWeight: 700,
+                  transition: "all 0.2s ease",
+                  boxShadow: showMenu ? "0 0 18px rgba(221,77,250,0.5)" : "none",
                 }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                aria-label="Browse images"
               >
-                {/* Image Frame */}
-                <div
-                  style={{
-                    width: "100%",
-                    height: "650px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                  }}
-                >
-                  {galleryImages[galleryIndex].content ? (
-                    galleryImages[galleryIndex].content
-                  ) : (
-                    <img
-                      src={galleryImages[galleryIndex].src}
-                      alt={galleryImages[galleryIndex].alt}
-                      loading="lazy"
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  )}
-                </div>
+                {showMenu ? <X size={15} /> : <LayoutGrid size={15} />}
+                {showMenu ? "Close" : "Browse"}
+              </button>
 
-                {/* Slider Controls & Indicators */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "1rem",
-                    width: "100%",
-                    marginTop: "1.5rem"
-                  }}
-                >
-                  <button
-                    onClick={handleGalleryPrev}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--accent)",
-                      padding: "0.25rem",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft size={22} />
-                  </button>
-
-                  <div style={{ textAlign: "center" }}>
-                    <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                      {galleryImages[galleryIndex].label}
-                    </span>
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      Image {galleryImages[galleryIndex].number} of 13
-                    </span>
+              {showMenu && (
+                <div style={{
+                  position: "absolute",
+                  top: "calc(100% + 10px)",
+                  right: 0,
+                  width: "280px",
+                  background: "#0a0a12",
+                  border: "1px solid rgba(221,77,250,0.4)",
+                  borderRadius: "14px",
+                  boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                  zIndex: 1000,
+                  maxHeight: "440px",
+                  overflowY: "auto",
+                  padding: "0.5rem 0",
+                }}>
+                  <div style={{
+                    padding: "0.65rem 1rem",
+                    fontSize: "0.65rem",
+                    fontWeight: 800,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: "#DD4DFA",
+                    borderBottom: "1px solid rgba(255,255,255,0.07)",
+                    marginBottom: "0.25rem",
+                  }}>
+                    2D Standard Reference
                   </div>
-
-                  <button
-                    onClick={handleGalleryNext}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--accent)",
-                      padding: "0.25rem",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    aria-label="Next image"
-                  >
-                    <ChevronRight size={22} />
-                  </button>
+                  {galleryImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => { setGalleryIndex(idx); setShowMenu(false); }}
+                      style={{
+                        width: "100%",
+                        background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
+                        border: "none",
+                        borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
+                        padding: "0.6rem 1rem",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                        fontSize: "0.82rem",
+                        fontWeight: idx === galleryIndex ? 700 : 400,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.65rem",
+                        transition: "all 0.15s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (idx !== galleryIndex) {
+                          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (idx !== galleryIndex) {
+                          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                          (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                        }
+                      }}
+                    >
+                      <span style={{
+                        display: "inline-flex", alignItems: "center", justifyContent: "center",
+                        width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
+                        background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                        fontSize: "0.68rem", fontWeight: 800,
+                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                      }}>
+                        {img.number}
+                      </span>
+                      <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                        {img.label}
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              </div>
-
-              {/* Page Navigation */}
-              <div className="lesson-navigation mt-12">
-                <button
-                  className="nav-button"
-                  onClick={handlePrev}
-                  disabled={!onPrevLesson}
-                >
-                  <ChevronLeft size={18} /> Previous
-                </button>
-                <button className="nav-button next" onClick={handleNext}>
-                  {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-                </button>
-              </div>
+              )}
             </div>
           </div>
-        </>
+
+          {/* ── ICAD Interface Frame ── */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              position: "relative",
+              width: "130%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              borderRadius: "10px",
+              overflow: "hidden",
+              boxShadow: "0 12px 60px rgba(0,0,0,0.8)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              lineHeight: 0,
+            }}
+          >
+            {/* ICAD screenshot — defines aspect ratio */}
+            <img
+              src={icadInterfaceBg}
+              alt="ICAD iCAD SX Interface"
+              style={{ width: "100%", height: "auto", display: "block" }}
+              draggable={false}
+            />
+
+            {/* Gallery image overlaid on the pink canvas
+                Pink canvas: left≈21.1%, top≈10.7%, width≈69.6%, height≈84% */}
+            <div style={{
+              position: "absolute",
+              left: "21.1%",
+              top: "10.7%",
+              width: "69.6%",
+              height: "84%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              padding: "1%",
+            }}>
+              {galleryImages[galleryIndex].content ? (
+                galleryImages[galleryIndex].content
+              ) : (
+                <img
+                  src={galleryImages[galleryIndex].src}
+                  alt={galleryImages[galleryIndex].alt}
+                  loading="lazy"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "contain",
+                    transition: "opacity 0.25s ease",
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Dark pill control bar — bottom-right of the frame (like the reference) */}
+            <div style={{
+              position: "absolute",
+              bottom: "4%",
+              right: "2%",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.25rem",
+              background: "rgba(15,15,25,0.88)",
+              backdropFilter: "blur(16px)",
+              borderRadius: "999px",
+              padding: "0.4rem 0.75rem",
+              border: "1px solid rgba(255,255,255,0.1)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+            }}>
+              <button
+                onClick={handleGalleryPrev}
+                style={{
+                  background: "none", border: "none", cursor: "pointer", color: "#fff",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
+                }}
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <span style={{
+                fontSize: "0.75rem", fontWeight: 600, color: "rgba(255,255,255,0.7)",
+                padding: "0 0.35rem", whiteSpace: "nowrap",
+              }}>
+                {galleryImages[galleryIndex].number} / {galleryImages.length}
+              </span>
+
+              <button
+                onClick={handleGalleryNext}
+                style={{
+                  background: "none", border: "none", cursor: "pointer", color: "#fff",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
+                }}
+                aria-label="Next image"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* ── Bottom navigation: PREVIOUS | NEXT LESSON ── */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            maxWidth: "860px",
+            width: "100%",
+            margin: "0 auto",
+            paddingTop: "0.5rem",
+          }}>
+            <button
+              onClick={handlePrev}
+              disabled={!onPrevLesson}
+              style={{
+                background: "transparent",
+                border: "1px solid rgba(255,255,255,0.25)",
+                borderRadius: "999px",
+                padding: "0.75rem 1.75rem",
+                color: "rgba(255,255,255,0.8)",
+                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                cursor: !onPrevLesson ? "not-allowed" : "pointer",
+                opacity: !onPrevLesson ? 0.35 : 1,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <ChevronLeft size={16} /> Previous
+            </button>
+
+            <button
+              onClick={handleNext}
+              style={{
+                background: "#DD4DFA",
+                border: "none",
+                borderRadius: "999px",
+                padding: "0.75rem 1.75rem",
+                color: "#fff",
+                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                boxShadow: "0 0 20px rgba(221,77,250,0.45)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {nextLabel || "Next Lesson"} <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
       )}
     </div>
   );

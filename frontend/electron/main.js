@@ -57,10 +57,13 @@ function createWindow() {
     // Handle development shortcuts and DevTools
     if (!app.isPackaged) {
         const devUrl = 'http://localhost:5173';
-        mainWindow.loadURL(devUrl).catch(() => {
-            console.log('Failed to load 5173, trying 5174...');
-            mainWindow.loadURL('http://localhost:5174');
-        });
+        const loadDevServer = () => {
+            mainWindow.loadURL(devUrl).catch(() => {
+                console.log('Dev server not ready, retrying in 500ms...');
+                setTimeout(loadDevServer, 500);
+            });
+        };
+        loadDevServer();
 
         // DevTools auto-open disabled to prevent "Failed to fetch" console errors
         // mainWindow.webContents.openDevTools();
@@ -361,7 +364,16 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+    const { session } = require('electron');
+    try {
+        await session.defaultSession.clearCache();
+        console.log('Session cache cleared successfully.');
+    } catch (err) {
+        console.error('Failed to clear session cache:', err);
+    }
+    createWindow();
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
