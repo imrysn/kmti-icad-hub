@@ -7,7 +7,7 @@ const CenterlineContent: React.FC = () => {
     return (
         <>
             <div className="instruction-step">
-                <div className="step-header">
+                <div className="step-header"  style={{padding:'8px 0px'}}>
                     <span className="step-number">1</span>
                     <span className="step-label">In Annotation, click Center line.</span>
                 </div>
@@ -19,7 +19,7 @@ const CenterlineContent: React.FC = () => {
             </div>
 
             <div className="instruction-step">
-                <div className="step-header">
+                <div className="step-header"  style={{padding:'8px 0px'}}>
                     <span className="step-number">2</span>
                     <span className="step-label">Select two edges to manually insert centerlines.</span>
                 </div>
@@ -31,7 +31,7 @@ const CenterlineContent: React.FC = () => {
             </div>
 
             <div className="instruction-step">
-                <div className="step-header">
+                <div className="step-header"  style={{padding:'8px 0px'}}>
                     <span className="step-number">3 </span>
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>

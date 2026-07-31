@@ -47,7 +47,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                         <div className="fade-in" style={{ marginTop: '2rem' }}>
                             {/* Step 1 */}
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">1</span>
                                     <span className="step-label">Right click on the leader of the welding symbol.</span>
                                 </div>
@@ -55,7 +55,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 2 */}
                             <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">2</span>
                                     <span className="step-label">Click Insert New Branch.</span>
                                 </div>
@@ -72,7 +72,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 3 */}
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">3</span>
                                     <span className="step-label">Position the new branch.</span>
                                 </div>
@@ -80,12 +80,12 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 4 */}
                             <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">4</span>
                                     <span className="step-label">Double click the welding symbol to display the properties.</span>
                                 </div>
                                 <div className="step-description">
-                                    <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
+                                    <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                         Uncheck <strong>Use multi jog leader</strong>, then click <strong>OK</strong>.
                                     </p>
                                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -100,7 +100,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 5 */}
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">5</span>
                                     <span className="step-label">Change the Arrow Head.</span>
                                 </div>
@@ -120,7 +120,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                         <div className="fade-in" style={{ marginTop: '2rem' }}>
                             {/* Step 1 */}
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">1</span>
                                     <span className="step-label">Right click on the leader of the welding symbol.</span>
                                 </div>
@@ -128,7 +128,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 2 */}
                             <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">2</span>
                                     <span className="step-label">Click Add Jog Point.</span>
                                 </div>
@@ -145,7 +145,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 3 */}
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">3</span>
                                     <span className="step-label">Click on the leader line.</span>
                                 </div>
@@ -153,7 +153,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
 
                             {/* Step 4 */}
                             <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">4</span>
                                     <span className="step-label">Adjust the Jog Point.</span>
                                 </div>

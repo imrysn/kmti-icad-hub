@@ -62,53 +62,53 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                 {/* Left side: Steps 1 to 6 */}
                                 <div style={{ flex: '1 1 50%', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header" style={{ alignItems: 'center' }}>
+                                        <div className="step-header" style={{ alignItems: 'center', padding:'8px 0px' }}>
                                             <span className="step-number">1 </span>
                                             <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                                                 In View Layout, click Section View.
                                                 <span className="image-wrapper-flush" style={{ marginLeft: '1rem', display: 'flex' }}>
-                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '60px' }} />
+                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '60px', width: "60px" }} />
                                                 </span>
                                             </span>
                                         </div>
                                     </div>
 
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header">
+                                        <div className="step-header"  style={{padding:'8px 0px'}}>
                                             <span className="step-number">2</span>
                                             <span className="step-label">Select a cutting line to use. (Select Vertical)</span>
                                         </div>
                                     </div>
                                     
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header">
+                                        <div className="step-header"  style={{padding:'8px 0px'}}>
                                             <span className="step-number">3 </span>
                                             <span className="step-label">Position the cutting line then click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
                                         </div>
                                     </div>
 
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header">
+                                        <div className="step-header"  style={{padding:'8px 0px'}}>
                                             <span className="step-number">4</span>
                                             <span className="step-label">Check Flip Direction if needed.</span>
                                         </div>
                                     </div>
 
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header" style={{ alignItems: 'flex-start' }}>
+                                        <div className="step-header" style={{ alignItems: 'flex-start', padding:'8px 0px' }}>
                                             <span className="step-number">5 </span>
                                             <span className="step-label">Position the section view. (Edit Property Manager if needed)</span>
                                         </div>
                                         <div className="step-description">
                                             <ol style={{ paddingLeft: '1.25rem', margin: '0.5rem 0 0 0', color: 'var(--text-muted)', lineHeight: '2' }}>
-                                              <div> On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /> </div>
+                                              <div> On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /> </div>
                                                <div> Click Use Custom Scale then set the scale to 1:2.</div>
                                             </ol>
                                         </div>
                                     </div>
 
                                     <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                                        <div className="step-header">
+                                        <div className="step-header" style={{padding:'8px 0px'}}>
                                             <span className="step-number">6</span>
                                             <span className="step-label">Drop the view.</span>
                                         </div>
@@ -129,7 +129,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                         <img src={vertical2Img} alt="Drop the view" className="software-screenshot screenshot-wide" style={{ maxWidth: '800px', width: '100%' }} />
                                     </div>
 
-                                    <p className="p-flush" style={{ color: 'var(--text-normal)', marginTop: '2rem' }}>
+                                    <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '2rem' }}>
                                         In the Property Manager, Section name, Section Depth, Scale can be edited and set.
                                     </p>
 
@@ -170,28 +170,28 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                             </div>
 
                             <div className="instruction-step" style={{ paddingBottom: '0', marginBottom: '0.5rem' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">1</span>
                                     <span className="step-label">Click on the hatch area.</span>
                                 </div>
                             </div>
 
                             <div className="instruction-step" style={{ paddingBottom: '0', paddingTop: '0', marginBottom: '0.5rem' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">2</span>
                                     <span className="step-label">Uncheck Material crosshatch.</span>
                                 </div>
                             </div>
 
                             <div className="instruction-step" style={{ paddingBottom: '0', paddingTop: '0', marginBottom: '0.5rem' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">3</span>
                                     <span className="step-label">Click None.</span>
                                 </div>
                             </div>
 
                             <div className="instruction-step" style={{ paddingTop: '0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">4 </span>
                                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                                 </div>
