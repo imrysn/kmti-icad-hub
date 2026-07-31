@@ -611,7 +611,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, []);
 
     const goToNextLesson = useCallback(() => {
-        if (activeLessonId === 'sw-status-bar') {
+        if (activeLessonId === 'sw-keyboard-shortcuts') {
             // Cross-module: Introduction → 3D Operation (3D Part Modeling)
             const sw3dCourse: Course = {
                 id: 'mock-sw-3d',
@@ -691,7 +691,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     const goToPrevLesson = useCallback(() => {
         if (activeLessonId === 'sw-part-modeling') {
-            // Cross-module: 3D Operation → Introduction (Status Bar)
+            // Cross-module: 3D Operation → Introduction (Keyboard Shortcuts)
             const swIntroCourse: Course = {
                 id: 'mock-sw-intro',
                 title: 'SolidWorks Introduction',
@@ -699,8 +699,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 course_type: 'Manual'
             };
             setSelectedCourse(swIntroCourse);
-            setActiveLessonId('sw-status-bar');
-            setExpandedIds(new Set(['sw-status-bar-main']));
+            setActiveLessonId('sw-keyboard-shortcuts');
+            setExpandedIds(new Set(['sw-keyboard-shortcuts-main']));
             return;
         }
 
@@ -787,7 +787,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                {course.id !== 'practical-assessment' && course.id !== '2d-assessment' && (
+                {course.id !== 'practical-assessment' && course.id !== '2d-assessment' && course.id !== 'mock-sw-intro' && (
                     <MentorSidebar
                         selectedCourse={course}
                         is2DDrawingCourse={is2DDrawingCourse}
@@ -876,6 +876,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         completedLessons={completedLessons}
                         onLessonComplete={fetchProgress}
                         isEmployeeSide={isEmployeeSide}
+                        setActiveLessonId={setActiveLessonId}
                     />
                 )}
             </div>
