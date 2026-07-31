@@ -138,7 +138,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex < tabs.length - 1) {
       setActiveTab(tabs[currentIndex + 1]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
     } else {
       if (onNextLesson) onNextLesson();
     }
@@ -153,7 +153,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex > 0) {
       setActiveTab(tabs[currentIndex - 1]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
     } else {
       if (onPrevLesson) onPrevLesson();
     }

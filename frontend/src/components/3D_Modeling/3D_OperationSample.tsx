@@ -103,13 +103,13 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
   const handleNext = () => {
     if (activeTab === 'sample1') setActiveTab('sample2');
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = () => {
     if (activeTab === 'sample2') setActiveTab('sample1');
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const getStepClass = (_stepId: string) => "instruction-step";

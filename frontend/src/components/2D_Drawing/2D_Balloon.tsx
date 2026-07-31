@@ -206,7 +206,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

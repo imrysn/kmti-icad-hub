@@ -83,7 +83,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -97,7 +97,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useEffect(() => {
@@ -286,7 +286,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
   const handlePrev = (isAuto = false) => {
     stop();
@@ -299,7 +299,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useEffect(() => {

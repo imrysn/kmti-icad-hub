@@ -82,7 +82,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     }
     if (activeTab === 'import') setActiveTab('edit');
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -92,7 +92,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     }
     if (activeTab === 'edit') setActiveTab('import');
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const getStepClass = (_stepId: string) => "instruction-step";

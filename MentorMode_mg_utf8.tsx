@@ -1,4 +1,4 @@
-import { Lock } from 'lucide-react';
+﻿import { Lock } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../../context/WebSocketContext';
@@ -43,6 +43,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // UI/Interaction State
     const [activeLessonId, setActiveLessonId] = useState<string>('');
+    // Lesson navigation is always available while studying either course.
+    const sidebarOpen = true;
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
     const [averageScore, setAverageScore] = useState(0);
@@ -198,7 +200,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 return;
             }
 
-            // Fix #1: Guard — if the memo hasn't resolved yet, defer this check
+            // Fix #1: Guard 窶・if the memo hasn't resolved yet, defer this check
             if (completable3DCount === 0 || completable2DCount === 0) {
                 setIsCheckingPrereq(false);
                 return;
@@ -262,7 +264,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Re-run when memo counts settle (Fix #1: completable counts are dependencies)
     }, [completable3DCount, completable2DCount, canBypass]);
 
-    // Fix #9: Stable string fingerprint from expandedIds — prevents Set reference re-renders
+    // Fix #9: Stable string fingerprint from expandedIds 窶・prevents Set reference re-renders
     const expandedIdsKey = useMemo(() => [...expandedIds].sort().join(','), [expandedIds]);
 
     // Session Persistence Sync (Save to LocalStorage)
@@ -459,7 +461,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         };
 
         if (activeLessonId) {
-            // Read current tab state directly — no patching of localStorage
+            // Read current tab state directly 窶・no patching of localStorage
             let currentTabId: string | null = null;
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
@@ -618,7 +620,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     <MentorSidebar
                         selectedCourse={selectedCourse}
                         is2DDrawingCourse={is2DDrawingCourse}
-                        sidebarOpen={true}
+                        sidebarOpen={sidebarOpen}
                         activeLessonId={activeLessonId}
                         setActiveLessonId={setActiveLessonId}
                         expandedIds={expandedIds}

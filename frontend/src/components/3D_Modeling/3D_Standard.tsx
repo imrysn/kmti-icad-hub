@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
@@ -38,7 +38,8 @@ interface StandardLessonProps {
 const StandardLesson: React.FC<StandardLessonProps> = ({
   subLessonId = 'standard-1',
   onNextLesson,
-  onPrevLesson }) => {
+  onPrevLesson,
+  nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTIONS" | "sgp pipes">(() => {
     if (subLessonId === 'standard-4') {
       return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
@@ -83,12 +84,15 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
       if (isValidFor1 || isValidFor4 || isValidFor6) {
         localStorage.setItem(`${subLessonId}-tab`, activeTab);
+        setTimeout(() => {
+            document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 150);
       }
     }
   }, [subLessonId, activeTab]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   }, [activeTab]);
 
   const {
@@ -190,7 +194,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+  };
+
+  const isLastTab = () => {
+    if (subLessonId === 'standard-1') return activeTab === 'sprocket';
+    if (subLessonId === 'standard-4') return activeTab === 'bolt';
+    if (subLessonId === 'standard-6') return activeTab === 'sgp pipes';
+    return true;
   };
 
   const handlePrev = () => {
@@ -215,7 +226,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   // --- Content Mapping ---
@@ -626,8 +637,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <thead>
                         <tr>
                           <th>Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
+                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
                           <th>Japanese Name</th>
                         </tr>
                       </thead>
@@ -679,8 +690,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <thead>
                         <tr>
                           <th>Stainless Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
+                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
                           <th>Japanese Name</th>
                         </tr>
                       </thead>
@@ -711,8 +722,8 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                       <thead>
                         <tr>
                           <th>Type</th>
-                          <th>Code</th>
-                          <th>Size</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
+                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
                           <th>Article (JIS)</th>
                         </tr>
                       </thead>
@@ -1122,6 +1133,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>{isLastTab() ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

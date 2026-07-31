@@ -104,7 +104,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     else if (activeTab === "subtract") setActiveTab("intersect");
     else if (activeTab === "intersect") setActiveTab("separate");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -116,7 +116,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     else if (activeTab === "intersect") setActiveTab("subtract");
     else if (activeTab === "subtract") setActiveTab("union");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Boolean Operation";

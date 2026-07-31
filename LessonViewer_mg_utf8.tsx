@@ -1,6 +1,7 @@
-import { BookOpen,ChevronLeft,ChevronRight,Loader2,Video } from 'lucide-react';
+﻿import { BookOpen,ChevronLeft,ChevronRight,Loader2,Video } from 'lucide-react';
 import React,{ lazy,Suspense,useCallback,useEffect,useRef,useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import { useTranslation } from '../../../context/LanguageContext';
 import api from '../../../services/api';
 import { authService } from '../../../services/authService';
 import { Lesson } from '../mentorConstants';
@@ -82,6 +83,15 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onLessonComplete,
   isEmployeeSide = false
 }) => {
+  const { t } = useTranslation();
+  const lessonTitleKey = `lesson.title.${activeLessonId}`;
+  const translatedLessonTitle = t(lessonTitleKey);
+  const activeLessonTitle = translatedLessonTitle === lessonTitleKey
+    ? getActiveLessonTitle(lessons, activeLessonId)
+    : translatedLessonTitle;
+  const lessonIndicator = t('lesson.indicator')
+    .replace('{current}', String(currentLessonIndex + 1))
+    .replace('{total}', String(allLessonIdsLength));
   useAuth();
   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
@@ -311,8 +321,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
   const isLastLesson = currentLessonIndex === allLessonIdsLength - 1;
-  const willShowQuiz = hasQuiz && !isModuleCompleted && !isEmployeeSide;
-  const nextLabel = willShowQuiz ? 'ASSESSMENT QUIZ' : 'Next Lesson';
+  // Keep the lesson footer predictable: ordinary lessons advance with 窶廸ext窶・
+  // while only the final lesson is labelled 窶廸ext Lesson窶・
+  const nextLabel = isLastLesson ? t('lesson.next_lesson') : t('common.next');
 
   const handleQuizComplete = async (score: number, detailedAnswers?: any[]) => {
     if (!parentResult?.parent) return;
@@ -396,9 +407,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
 
           <div className="lesson-header-banner">
-            <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
+            <p className="lesson-indicator">{lessonIndicator}</p>
             <h2 className="lesson-banner-title">
-              {getActiveLessonTitle(lessons, activeLessonId)}
+              {activeLessonTitle}
             </h2>
             <div className="lesson-banner-divider"></div>
           </div>
@@ -523,7 +534,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 return (
                   <div className="content-placeholder">
                     <Video size={48} className="content-placeholder__icon" />
-                    <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
+                    <p>{t('lesson.coming_soon')} <strong>{activeLessonId}</strong></p>
                     <p className="content-placeholder__note">
                       This area will host the instructional text, video demonstrations, and active testing prompts.
                     </p>

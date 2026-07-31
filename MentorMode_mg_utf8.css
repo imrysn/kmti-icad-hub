@@ -1,5 +1,5 @@
-/* ============================================================
-   Mentor Mode — Midnight Aurora Edition
+﻿/* ============================================================
+   Mentor Mode 窶・Midnight Aurora Edition
    Glassmorphism Sidebar & Dynamic Content View
    ============================================================ */
 
@@ -8,7 +8,7 @@
   flex-direction: column;
   height: calc(100vh - 60px);
   background: var(--bg-dark);
-  background-image: radial-gradient(rgba(221, 77, 250, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(var(--color-primary-glow) 1px, transparent 1px);
   background-size: 20px 20px;
   overflow: hidden;
   position: relative;
@@ -20,7 +20,7 @@
   background-size: 20px 20px;
 }
 
-/* ── Course Selection Grid ────────────────────────────────────── */
+/* 笏笏 Course Selection Grid 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .course-selector-container {
   padding: 4rem 2rem;
@@ -95,7 +95,7 @@
   align-items: center;
 }
 
-/* ── Course Card Graphic Containers ────────────────────────── */
+/* 笏笏 Course Card Graphic Containers 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .card-graphic-container {
   width: 100%;
@@ -115,7 +115,7 @@
   bottom: 0px;
   width: 100px;
   height: 12px;
-  background: radial-gradient(ellipse at center, rgba(221, 77, 250, 0.4) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, var(--color-primary-glow) 0%, transparent 70%);
   border-radius: 50%;
   z-index: 0;
   pointer-events: none;
@@ -240,7 +240,7 @@
   opacity: 0.85;
 }
 
-/* ── 2D & Practical Cards: always white text over image bg (any theme, any lock state) ── */
+/* 笏笏 2D & Practical Cards: always white text over image bg (any theme, any lock state) 笏笏 */
 .course-card.card-2d::before,
 .course-card.card-practical::before {
   content: '';
@@ -282,7 +282,7 @@
 }
 
 
-/* ── Locked Card: contrast & hierarchy ──────────────────────── */
+/* 笏笏 Locked Card: contrast & hierarchy 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 /* Gradient scrim between image bg and text content */
 .course-card.locked::before {
@@ -409,8 +409,8 @@
 }
 
 [data-theme='light'] .course-card button {
-  border-color: #b5179e !important;
-  color: #b5179e !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
 }
 
 /* Hover Reveals */
@@ -438,31 +438,31 @@
 }
 
 [data-theme='light'] .course-card:hover:not(.locked) button {
-  background: #b5179e !important;
-  border-color: #b5179e !important;
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
   color: #ffffff !important;
 }
 
 .course-card button:hover {
-  background: #c72bfa !important;
-  border-color: #c72bfa !important;
+  background: color-mix(in srgb, var(--primary) 88%, #000) !important;
+  border-color: color-mix(in srgb, var(--primary) 88%, #000) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(221, 77, 250, 0.4) !important;
+  box-shadow: none !important;
 }
 
 [data-theme='light'] .course-card button:hover {
-  background: #9d1282 !important;
-  border-color: #9d1282 !important;
+  background: color-mix(in srgb, var(--primary) 88%, #000) !important;
+  border-color: color-mix(in srgb, var(--primary) 88%, #000) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(181, 23, 158, 0.3) !important;
+  box-shadow: none !important;
 }
 
-/* Premium card hover state with Brand Magenta Glow */
+/* Premium card hover state with KMTI red glow */
 .course-card:hover {
   border-color: var(--primary);
   background: var(--bg-surface);
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(221, 77, 250, 0.22);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px var(--color-primary-glow);
 }
 
 [data-theme='light'] .course-card:hover {
@@ -479,7 +479,7 @@
 }
 
 
-/* ── Locked Course Card ────────────────────────────────────── */
+/* 笏笏 Locked Course Card 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .course-card.locked {
   cursor: not-allowed;
@@ -583,7 +583,7 @@
   cursor: not-allowed;
 }
 
-/* ── Layout Core ─────────────────────────────────────────────── */
+/* 笏笏 Layout Core 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .course-view-container {
   display: flex;
@@ -591,7 +591,7 @@
   overflow: hidden;
 }
 
-/* ── Sidebar ─────────────────────────────────────────────────── */
+/* 笏笏 Sidebar 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .course-sidebar {
   position: absolute;
@@ -614,7 +614,7 @@
   box-shadow: var(--shadow-card);
 }
 
-/* ── Hover Sidebar Overrides for Inner Content ── */
+/* 笏笏 Hover Sidebar Overrides for Inner Content 笏笏 */
 .sidebar-inner-container {
   display: flex;
   flex-direction: column;
@@ -624,7 +624,7 @@
   overflow-x: hidden;
   width: 100%;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--text-muted) 10%, transparent) transparent;
+  scrollbar-color: transparent transparent;
 }
 
 /* Keep the lesson-list scrollbar available without competing with the content. */
@@ -637,7 +637,7 @@
 }
 
 .sidebar-inner-container::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-muted) 10%, transparent);
+  background: transparent;
   border-radius: var(--radius-full);
 }
 
@@ -691,22 +691,19 @@
   z-index: 20;
 }
 
-.sidebar-course-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--text-main);
-  margin: 0;
-  min-width: 0;
+.course-sidebar:not(.open) .sidebar-course-header {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sidebar-header-actions {
+.sidebar-course-meta {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 0.75rem;
-  flex: 1;
+  width: 100%;
 }
 
 .sidebar-exit-course-btn {
@@ -724,27 +721,12 @@
   border-top: 1px solid var(--border-color);
 }
 
-.course-sidebar:not(.open) .sidebar-course-header {
-  padding: 2rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.sidebar-course-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
 .course-sidebar:not(.open) .sidebar-course-meta {
   justify-content: center;
 }
 
 .sidebar-toggle-btn,
-.sidebar-search-btn-top,
-.collapsed-dashboard-icon {
+.sidebar-search-btn-top {
   background: transparent;
   border: none;
   color: #ffffff;
@@ -760,32 +742,31 @@
   padding: 0;
 }
 
-[data-theme='light'] .sidebar-toggle-btn, 
+[data-theme='light'] .sidebar-toggle-btn,
 [data-theme='light'] .sidebar-search-btn-top {
   color: #020617;
 }
 
-.sidebar-toggle-btn:hover {
+.sidebar-toggle-btn:hover,
+.sidebar-search-btn-top:hover {
+  background: transparent;
   color: var(--primary);
   transform: scale(1.1);
 }
 
-.sidebar-search-btn-top,
-.sidebar-search-btn-top:hover,
-.sidebar-search-btn-top:focus,
-.sidebar-search-btn-top:active {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  outline: none !important;
-  transform: none !important;
-}
-.sidebar-search-btn-top:hover {
+[data-theme='light'] .sidebar-toggle-btn:hover,
+[data-theme='light'] .sidebar-search-btn-top:hover {
+  background: rgba(0, 0, 0, 0.05);
   color: var(--primary);
 }
 
-[data-theme='light'] .sidebar-toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
+.sidebar-search-btn-top:hover {
+  transform: none;
+}
+
+[data-theme='light'] .sidebar-toggle-btn:hover,
+[data-theme='light'] .sidebar-search-btn-top:hover {
+  background: transparent;
   color: var(--primary);
 }
 
@@ -804,11 +785,6 @@
   flex: 0 1 auto;
   justify-content: flex-end;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-search-wrapper.expanded {
-  flex: 1;
-  width: 100%;
 }
 
 .sidebar-search-wrapper.hidden {
@@ -844,8 +820,7 @@
 }
 
 .sidebar-search-wrapper.expanded .sidebar-search-input {
-  width: 100%;
-  flex: 1;
+  width: 128px;
   opacity: 1;
 }
 
@@ -853,11 +828,21 @@
   border-color: var(--primary);
 }
 
+.sidebar-course-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-main);
+  margin: 0;
+  min-width: 0;
+}
+
 [data-theme='light'] .sidebar-course-title {
   color: var(--text-main);
 }
 
-/* ── Collapsed Dashboard (Dock) ──────────────────────────────── */
+/* 笏笏 Collapsed Dashboard (Dock) 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .sidebar-collapsed-dashboard {
   display: flex;
@@ -895,7 +880,7 @@
   border: 1px solid var(--border-color);
 }
 
-/* ── Analytics Card Dashboard ────────────────────────────────── */
+/* 笏笏 Analytics Card Dashboard 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .sidebar-analytics-wrapper {
   margin-top: 1.25rem;
@@ -956,9 +941,9 @@
 }
 
 .analytics-badge.master {
-  background: rgba(244, 63, 94, 0.2);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  background: var(--color-primary-glow);
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .analytics-badge.pro {
@@ -1083,7 +1068,7 @@
   background: var(--bg-secondary);
 }
 
-/* ── Lesson List ────────────────────────────────────────────── */
+/* 笏笏 Lesson List 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .sidebar-section {
   padding: 1.5rem 1rem 0;
@@ -1339,7 +1324,7 @@
   filter: grayscale(0.5);
 }
 
-/* ── Search Empty State ────────────────────────────────────── */
+/* 笏笏 Search Empty State 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .sidebar-search-empty {
   padding: 3rem 1.5rem;
@@ -1373,7 +1358,7 @@
   border-color: var(--primary);
 }
 
-/* ── Main Content Viewer & Split Layout ──────────────────────── */
+/* 笏笏 Main Content Viewer & Split Layout 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .main-content-viewer {
   flex: 1;
@@ -1440,14 +1425,14 @@
 }
 
 .lesson-header-banner {
-  margin: 1.5rem 0 0 0;
+  margin: 0;
   padding: 1.5rem 2rem 1rem;
   position: relative;
   text-align: center;
 }
 
 .lesson-banner-title {
-  font-family: var(--font-heading) !important;
+  font-family: var(--font-heading);
   font-size: 2.5rem !important;
   font-weight: 800 !important;
   color: var(--text-main);
@@ -1466,7 +1451,6 @@
 }
 
 .lesson-content-body {
-  margin-top: 1.5rem;
   padding: 0 2rem 4rem;
 }
 
@@ -1474,6 +1458,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.8rem;
@@ -1507,6 +1492,7 @@
   .lesson-header-banner {
     padding-top: 4.5rem;
   }
+
 }
 
 .sidebar-toggle {
@@ -1523,7 +1509,7 @@
   box-shadow: none !important;
 }
 
-/* ── Antigravity Chatbot Style Overrides (Mentor Mode Only) ── */
+/* 笏笏 Antigravity Chatbot Style Overrides (Mentor Mode Only) 笏笏 */
 
 .lesson-chatbot-sidebar .chatbot-layout {
   height: 1018px;
@@ -1700,7 +1686,7 @@
   display: none !important;
 }
 
-/* ── UI Scale Down for Narrow (300px) Layout Compatibility ── */
+/* 笏笏 UI Scale Down for Narrow (300px) Layout Compatibility 笏笏 */
 
 .lesson-chatbot-sidebar .chat-frontier-container {
   padding: 1rem !important;
@@ -1751,7 +1737,7 @@
   line-height: 1.3 !important;
 }
 
-/* ── Search Highlighting & Badges ────────────────────────────── */
+/* 笏笏 Search Highlighting & Badges 笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏 */
 
 .lesson-title-text-group {
   display: flex;
@@ -1934,8 +1920,32 @@
   background: var(--color-primary-glow);
 }
 
-@media (prefers-reduced-motion: reduce) {
+/* Keep training screens calm and task-focused. */
+.course-card {
+  box-shadow: none;
+}
 
+.course-card:hover:not(.locked) {
+  border-color: var(--primary);
+  box-shadow: none;
+  transform: none;
+}
+
+.mentor-mode,
+[data-theme='light'] .mentor-mode {
+  background-image: none;
+}
+
+.course-card.card-3d .card-graphic-container::after {
+  display: none;
+}
+
+.course-welcome-icon:hover,
+.course-card:hover:not(.locked) .card-graphic-container {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
   .course-card,
   .lesson-item {
     transition: none;

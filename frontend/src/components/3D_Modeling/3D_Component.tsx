@@ -153,7 +153,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) setActiveTab(tabs[i + 1].id as any);
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -162,7 +162,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) setActiveTab(tabs[i - 1].id as any);
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
 

@@ -76,7 +76,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
     }
     if (activeTab === "create") setActiveTab("change");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -86,7 +86,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
     }
     if (activeTab === "change") setActiveTab("create");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = activeTab === 'create' ? 'Creating 3D Part' : 'Changing 3D Part Name';

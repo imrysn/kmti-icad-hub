@@ -1,25 +1,25 @@
 
 
-import React,{
-useEffect,useRef,
-useState
+import React, {
+  useEffect, useRef,
+  useState
 } from 'react';
 
 import {
-ChevronLeft,
-ChevronRight,
-Play
+  ChevronLeft,
+  ChevronRight,
+  Play
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 
 import '../../styles/3D_Modeling/CourseLesson.css';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 import {
-boxTutorialSteps,
-coneTutorialSteps,
-cylinderTutorialSteps,
-polygonTutorialSteps,
-torusTutorialSteps
+  boxTutorialSteps,
+  coneTutorialSteps,
+  cylinderTutorialSteps,
+  polygonTutorialSteps,
+  torusTutorialSteps
 } from './VideoTutorialData/basicOp1TutorialSteps';
 import VideoTutorialViewer from './VideoTutorialViewer';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
@@ -113,8 +113,7 @@ import extrudeBothSide from '../../assets/3D_Image_File/basic_operation4_extrusi
 /* cspell:disable-line */
 
 import revolveIcon from '../../assets/3D_Image_File/basic_operation4_revolve.png';
-
-
+import revolveP1 from '../../assets/3D_Image_File/basic_operation4_revolve_p1.png';
 import revolveP2 from '../../assets/3D_Image_File/basic_operation4_revolve_p2.png';
 
 import showHideMenu from '../../assets/3D_Image_File/basic_operation4_show_hide.jpg';
@@ -266,7 +265,7 @@ interface SubLessonProps {
   nextLabel?: string;
 }
 
-const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
+const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
@@ -274,6 +273,9 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const videoSectionRef = useRef<HTMLDivElement>(null);
@@ -320,7 +322,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     registerText(lessonSteps, 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerText]);
 
 
@@ -341,7 +343,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -352,7 +354,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
 
@@ -529,7 +531,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -548,6 +550,9 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const moveSteps = [
@@ -622,7 +627,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -633,7 +638,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   useEffect(() => {
@@ -643,7 +648,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(fullSteps, startIdx);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, registerText]);
 
   const wasSpeakingRef = React.useRef(false);
@@ -669,7 +674,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
     }
     wasSpeakingRef.current = isSpeaking;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSpeaking, activeTab]);
 
   const prevTabRef = React.useRef(activeTab);
@@ -1017,7 +1022,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
+              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '898px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1133,7 +1138,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1150,6 +1155,9 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const sketchSteps = [
@@ -1186,7 +1194,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -1197,7 +1205,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   useEffect(() => {
@@ -1448,7 +1456,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
+                  <img src={revolveP1} alt="Revolve Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -1538,7 +1546,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1550,7 +1558,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 /* ── Basic Operation (4): Show/Hide / Stretch / Resize ── */
 
 
-const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
+const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
   const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
   });
@@ -1558,6 +1566,9 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const showHideSteps = [
@@ -1606,7 +1617,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -1617,7 +1628,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   // Register TTS text per active tab so karaoke indices stay correct
@@ -1625,15 +1636,15 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     const introTitle = activeTab === 'showHide' ? "Show / Hide"
       : activeTab === 'stretch' ? "Stretch / Shape / Cut"
-      : "Resize";
+        : "Resize";
     const introDesc = activeTab === 'showHide'
       ? "Tools use to switch between displaying and hiding entities."
       : activeTab === 'stretch'
-      ? "Tools used to modify the length and form of solid entities."
-      : "Tool used to scale up or scale down a solid entity.";
+        ? "Tools used to modify the length and form of solid entities."
+        : "Tool used to scale up or scale down a solid entity.";
     const steps = activeTab === 'showHide' ? showHideSteps
       : activeTab === 'stretch' ? stretchSteps
-      : resizeSteps;
+        : resizeSteps;
     registerText([introTitle, introDesc, ...steps], 0);
   }, [activeTab, registerText]);
 
@@ -2062,7 +2073,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -2080,6 +2091,9 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
 
@@ -2230,6 +2244,6 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
   }
 };
 
-export { BasicOperation1,BasicOperation2,BasicOperation3,BasicOperation4,BasicOperation5,BasicOperationLesson };
+export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
 export default BasicOperationLesson;
 

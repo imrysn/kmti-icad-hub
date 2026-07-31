@@ -87,7 +87,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -100,7 +100,7 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useEffect(() => {

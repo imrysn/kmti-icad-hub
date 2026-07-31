@@ -197,7 +197,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

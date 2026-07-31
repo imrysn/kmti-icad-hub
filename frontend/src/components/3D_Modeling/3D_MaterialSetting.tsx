@@ -78,7 +78,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     }
     if (activeTab === "set") setActiveTab("unlisted");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -88,7 +88,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     }
     if (activeTab === "unlisted") setActiveTab("set");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Material Setting";

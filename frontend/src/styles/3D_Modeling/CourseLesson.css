@@ -364,8 +364,13 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
   filter: blur(1px);
+}
+
+[data-theme='light'] .lesson-progress-bar::after {
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes auroraFlow {
@@ -677,18 +682,21 @@
 
 .lesson-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   overflow: hidden;
   font-size: 0.9rem;
   color: #E2E8F0;
   table-layout: auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: none;
 }
 
 .lesson-table th,
 .lesson-table td {
   padding: 1rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
   vertical-align: middle;
   line-height: 1.6;
 }
@@ -709,7 +717,7 @@
   text-align: center;
   padding-left: 0.5rem;
   background: none !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: none;
   color: #F1F5F9 !important;
 }
 
@@ -729,14 +737,10 @@
   padding: 1rem 1rem;
 }
 
-.lesson-table thead th:first-child {
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-
 [data-theme='light'] .lesson-table thead th {
   background: rgba(99, 102, 241, 0.08);
   color: #6366F1 !important;
-  /* Darker indigo for visibility in light mode */
+  border-bottom-color: #6365f1;
 }
 
 .lesson-table tbody tr:nth-child(even) {
@@ -784,10 +788,6 @@
 [data-theme='light'] .lesson-table-container {
   background: #ffffff;
   border-color: rgba(99, 102, 241, 0.15);
-}
-
-[data-theme='light'] .lesson-table thead th {
-  background: rgba(99, 102, 241, 0.05);
 }
 
 [data-theme='light'] .lesson-table th,

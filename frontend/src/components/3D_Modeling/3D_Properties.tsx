@@ -96,7 +96,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     if (activeTab === "color") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("info");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -107,7 +107,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     if (activeTab === "info") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("color");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const getStepClass = (_stepId: string) => "instruction-step";

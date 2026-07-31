@@ -41,7 +41,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = () => {
@@ -51,7 +51,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
 

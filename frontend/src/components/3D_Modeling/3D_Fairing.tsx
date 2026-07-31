@@ -82,7 +82,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     if (activeTab === 'chamfer') setActiveTab('fillet');
     else if (activeTab === 'fillet') setActiveTab('shell');
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -93,7 +93,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     if (activeTab === 'fillet') setActiveTab('chamfer');
     else if (activeTab === 'shell') setActiveTab('fillet');
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Fairing";

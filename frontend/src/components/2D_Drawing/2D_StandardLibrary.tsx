@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
@@ -19,6 +19,7 @@ interface StandardLibraryLessonProps {
 }
 
 const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
+  nextLabel,
   onNextLesson,
   onPrevLesson}) => {
   const TABS = [
@@ -48,7 +49,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -63,7 +64,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const currentTitle = "STANDARD PART LIBRARY";
@@ -230,6 +231,9 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
+            </button>
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

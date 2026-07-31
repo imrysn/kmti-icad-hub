@@ -43,8 +43,8 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

@@ -78,7 +78,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -93,7 +93,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -677,7 +677,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

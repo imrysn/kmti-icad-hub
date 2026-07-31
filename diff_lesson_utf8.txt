@@ -1,0 +1,116 @@
+﻿diff --git a/frontend/src/views/mentor/components/LessonViewer.tsx b/frontend/src/views/mentor/components/LessonViewer.tsx
+index 8a98f4b..e3b6f9b 100644
+--- a/frontend/src/views/mentor/components/LessonViewer.tsx
++++ b/frontend/src/views/mentor/components/LessonViewer.tsx
+@@ -1,10 +1,9 @@
+ import { BookOpen,ChevronLeft,ChevronRight,Loader2,Video } from 'lucide-react';
+ import React,{ lazy,Suspense,useCallback,useEffect,useRef,useState } from 'react';
+-import { useUI } from '../../../context/UIContext';
+ import { useAuth } from '../../../hooks/useAuth';
++import { useTranslation } from '../../../context/LanguageContext';
+ import api from '../../../services/api';
+ import { authService } from '../../../services/authService';
+-import { Course } from '../../../types';
+ import { Lesson } from '../mentorConstants';
+ import { QuizModal } from './QuizModal';
+ 
+@@ -64,9 +63,6 @@ interface LessonViewerProps {
+   allLessonIdsLength: number;
+   goToNextLesson: () => void;
+   goToPrevLesson: () => void;
+-  sidebarOpen: boolean;
+-  setSidebarOpen: (open: boolean) => void;
+-  setSelectedCourse: (course: Course | null) => void;
+   getActiveLessonTitle: (lessons: Lesson[], id: string) => string;
+   lessons: Lesson[];
+   completedLessons: string[];
+@@ -81,14 +77,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+   allLessonIdsLength,
+   goToNextLesson,
+   goToPrevLesson,
+-  setSelectedCourse,
+   getActiveLessonTitle,
+   lessons,
+   completedLessons,
+   onLessonComplete,
+   isEmployeeSide = false
+ }) => {
+-  const { requestConfirmation } = useUI();
++  const { t } = useTranslation();
++  const lessonTitleKey = `lesson.title.${activeLessonId}`;
++  const translatedLessonTitle = t(lessonTitleKey);
++  const activeLessonTitle = translatedLessonTitle === lessonTitleKey
++    ? getActiveLessonTitle(lessons, activeLessonId)
++    : translatedLessonTitle;
++  const lessonIndicator = t('lesson.indicator')
++    .replace('{current}', String(currentLessonIndex + 1))
++    .replace('{total}', String(allLessonIdsLength));
+   useAuth();
+   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
+   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
+@@ -298,18 +301,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+     };
+   }, [isSpeaking, currentIndex, activeParagraphText, activeLessonId, setCurrentIndex]);
+ 
+-  const handleExitCourse = async () => {
+-    const confirmed = await requestConfirmation({
+-      title: 'SUSPEND LEARNING SESSION',
+-      message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
+-      confirmText: 'Suspend Session',
+-      type: 'info'
+-    });
+-    if (confirmed) {
+-      setSelectedCourse(null);
+-    }
+-  };
+-
+     // Use the passed lessons prop
+   const findParentAndQuiz = (): { parent: Lesson; isLastSub: boolean } | null => {
+     for (const lesson of lessons) {
+@@ -329,7 +320,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+   const parentResult = findParentAndQuiz();
+   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
+   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
+-  const nextLabel = (hasQuiz && !isModuleCompleted && !isEmployeeSide) ? 'Continue' : 'Next Lesson';
++  const isLastLesson = currentLessonIndex === allLessonIdsLength - 1;
++  // Keep the lesson footer predictable: ordinary lessons advance with 窶廸ext窶・
++  // while only the final lesson is labelled 窶廸ext Lesson窶・
++  const nextLabel = isLastLesson ? t('lesson.next_lesson') : t('common.next');
+ 
+   const handleQuizComplete = async (score: number, detailedAnswers?: any[]) => {
+     if (!parentResult?.parent) return;
+@@ -390,13 +384,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+ 
+   return (
+     <main className="main-content-viewer">
+-      <div className="sticky-lesson-controls" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
+-
+-        <button className="exit-course-btn" onClick={handleExitCourse}>
+-          EXIT COURSE
+-        </button>
+-      </div>
+-
+       <div className="lesson-split-layout">
+         <div className="lesson-scroll-area">
+           {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
+@@ -420,9 +407,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+           </div>
+ 
+           <div className="lesson-header-banner">
+-            <p className="lesson-indicator">Lesson {currentLessonIndex + 1} of {allLessonIdsLength}</p>
++            <p className="lesson-indicator">{lessonIndicator}</p>
+             <h2 className="lesson-banner-title">
+-              {getActiveLessonTitle(lessons, activeLessonId)}
++              {activeLessonTitle}
+             </h2>
+             <div className="lesson-banner-divider"></div>
+           </div>
+@@ -547,7 +534,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+                 return (
+                   <div className="content-placeholder">
+                     <Video size={48} className="content-placeholder__icon" />
+-                    <p>Lesson content for <strong>{activeLessonId}</strong> will be provided soon.</p>
++                    <p>{t('lesson.coming_soon')} <strong>{activeLessonId}</strong></p>
+                     <p className="content-placeholder__note">
+                       This area will host the instructional text, video demonstrations, and active testing prompts.
+                     </p>
