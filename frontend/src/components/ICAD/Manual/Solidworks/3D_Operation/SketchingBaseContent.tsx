@@ -72,23 +72,23 @@ const SketchingBaseContent: React.FC = () => (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
                     <div style={{ flex: '1 1 400px' }}>
                         <ol style={{ paddingLeft: '1.25rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                            <li>
+                            
                                 In <strong>Sketch</strong> tab, click <strong>Smart Dimension</strong>{' '}
                                 <span className="image-wrapper-flush">
                                     <img src={smartImg} alt="Smart Dimension" style={{ height: '45px', verticalAlign: 'middle' }} />
                                 </span>
-                            </li>
-                            <li>Select line(s) to be dimensioned.</li>
-                            <li>
+                            <div>
+                            Select line(s) to be dimensioned.
+                            </div>
+                            <div>
                                 This dialog box will appear after selecting line(s).<br />
                                 Input the required dimension.
-                            </li>
-                            <li>
+                            </div>
                                 Click{' '}
                                 <span className="image-wrapper-flush">
                                     <img src={checkImg} alt="Check" style={{ height: '28px', verticalAlign: 'middle' }} />
                                 </span>
-                            </li>
+                            
                         </ol>
 
                         <div className="instruction-box" style={{ marginTop: '1.5rem' }}>

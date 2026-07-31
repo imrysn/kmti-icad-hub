@@ -36,7 +36,7 @@ const DetailView: React.FC<DetailViewProps> = ({
                     </div>
 
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header"  style={{padding:'8px 0px'}}>
                             <span className="step-number">1</span>
                             <span className="step-label">In View Layout, click Detail View.</span>
                         </div>
@@ -48,7 +48,7 @@ const DetailView: React.FC<DetailViewProps> = ({
                     </div>
 
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header"  style={{padding:'8px 0px'}}>
                             <span className="step-number">2</span>
                             <span className="step-label">Sketch a circle.</span>
                         </div>
@@ -60,21 +60,21 @@ const DetailView: React.FC<DetailViewProps> = ({
                     </div>
 
                     <div className="instruction-step" style={{ paddingBottom: '0', marginBottom: '0.5rem' }}>
-                        <div className="step-header">
+                        <div className="step-header"  style={{padding:'8px 0px'}}>
                             <span className="step-number">3</span>
                             <span className="step-label">Edit Detail View Property Manager.</span>
                         </div>
                     </div>
 
                     <div className="instruction-step" style={{ paddingBottom: '0', paddingTop: '0', marginBottom: '0.5rem' }}>
-                        <div className="step-header">
+                        <div className="step-header"  style={{padding:'8px 0px'}}>
                             <span className="step-number">4</span>
                             <span className="step-label">Position the created view.</span>
                         </div>
                     </div>
 
                     <div className="instruction-step" style={{ paddingTop: '0' }}>
-                        <div className="step-header">
+                        <div className="step-header"  style={{padding:'8px 0px'}}>
                             <span className="step-number">5</span>
                             <span className="step-label">Add necessary dimensions and note.</span>
                         </div>

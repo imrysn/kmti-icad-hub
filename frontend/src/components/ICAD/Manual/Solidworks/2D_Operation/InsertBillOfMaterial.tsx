@@ -42,7 +42,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                     <div className="fade-in" style={{ marginTop: '2rem' }}>
                         {/* Step 1 */}
                         <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">1</span>
                                 <span className="step-label">In the <strong>Insert</strong> menu, under <strong>Tables</strong>, click <strong>Bill of Materials</strong>.</span>
                             </div>
@@ -50,7 +50,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 2 */}
                         <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">2</span>
                                 <span className="step-label">Click the part/assembly drawing.</span>
                             </div>
@@ -67,7 +67,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 3 */}
                         <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">3</span>
                                 <span className="step-label">Edit the <strong>Table Template</strong>.</span>
                             </div>
@@ -82,7 +82,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 4 */}
                         <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">4</span>
                                 <span className="step-label">Edit <strong>BOM Type</strong>, then select <strong>Top-level only</strong>.</span>
                             </div>
@@ -90,7 +90,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 5 */}
                         <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">5</span>
                                 <span className="step-label">
                                     Click <img src={checkImg} alt="Check mark" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
@@ -100,7 +100,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 6 */}
                         <div className="instruction-step" style={{ padding: '2rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">6</span>
                                 <span className="step-label">Position the Bill of Material.</span>
                             </div>
@@ -153,7 +153,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
 
                         {/* Step 7 */}
                         <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
-                            <div className="step-header">
+                            <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">7</span>
                                 <span className="step-label">Click the Bill of Material.</span>
                             </div>
