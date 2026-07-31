@@ -37,6 +37,7 @@ export interface TutorialStep {
   image?: string;
   hasMoreContent?: boolean;
   moreContentComponent?: React.ReactNode;
+  expandedWidth?: string;
 }
 
 interface VideoTutorialViewerProps {
@@ -739,6 +740,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
             left: 'auto',
             right: 'auto',
             transform: 'none',
+            ...(showMoreContent && currentData.expandedWidth ? { width: currentData.expandedWidth } : {}),
             ...currentData.subtitlePos
           }}
         >

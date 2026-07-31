@@ -12,7 +12,7 @@ const CommandManagerContent: React.FC = () => (
 
             {/* Part Mode */}
             <div style={{ marginTop: '1.5rem' }}>
-                <div className="step-header">
+                <div className="step-header" style={{padding:'8px 0px'}}>
                     <span className="step-label">Part Mode CommandManager</span>
                 </div>
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
@@ -28,7 +28,7 @@ const CommandManagerContent: React.FC = () => (
 
             {/* Assembly Mode */}
             <div style={{ marginTop: '2rem' }}>
-                <div className="step-header">
+                <div className="step-header"  style={{padding:'8px 0px'}}>
                     <span className="step-label">Assembly Mode CommandManager</span>
                 </div>
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
@@ -44,7 +44,7 @@ const CommandManagerContent: React.FC = () => (
 
             {/* Drawing Mode */}
             <div style={{ marginTop: '2rem' }}>
-                <div className="step-header">
+                <div className="step-header"  style={{padding:'8px 0px'}}>
                     <span className="step-label">Drawing Mode CommandManager</span>
                 </div>
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
