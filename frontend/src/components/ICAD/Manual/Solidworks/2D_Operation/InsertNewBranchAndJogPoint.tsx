@@ -85,7 +85,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                                     <span className="step-label">Double click the welding symbol to display the properties.</span>
                                 </div>
                                 <div className="step-description">
-                                    <p className="p-flush" style={{ color: 'var(--text-normal)' }}>
+                                    <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                         Uncheck <strong>Use multi jog leader</strong>, then click <strong>OK</strong>.
                                     </p>
                                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>

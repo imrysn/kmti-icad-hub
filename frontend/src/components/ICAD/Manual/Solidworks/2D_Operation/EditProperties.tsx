@@ -42,11 +42,11 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
                                 <span className="step-number">1</span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     In the <strong>Menu Bar</strong>, click <strong>File Properties</strong>
-                                    <img src={filePropertiesImg} alt="File Properties Icon" style={{ height: '2rem', verticalAlign: 'middle' }} />
+                                    <img src={filePropertiesImg} alt="File Properties Icon" style={{  verticalAlign: 'middle' }} />
                                 </span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', width:'500px' }}>
                                     <img
                                         src={fileProperties1Img}
                                         alt="File Properties Dialog"

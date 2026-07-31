@@ -41,7 +41,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                                 <span className="step-number">1</span>
                                 <span className="step-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     In the <strong>Menu Bar</strong>, click <strong>Save</strong>
-                                    <img src={saveIconImg} alt="Save Icon" style={{ height: '2.5rem', verticalAlign: 'middle' }} />
+                                    <img src={saveIconImg} alt="Save Icon" style={{ height: '60px', verticalAlign: 'middle' }} />
                                     or press <strong>Ctrl + S</strong> to save the file.
                                 </span>
                             </div>

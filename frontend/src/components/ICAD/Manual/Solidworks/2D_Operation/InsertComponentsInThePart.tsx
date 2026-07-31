@@ -68,7 +68,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                 <li>
                                     Click <strong>A2 - JFE</strong>{' '}
                                     <span className="image-wrapper-flush">
-                                        <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                        <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '50px', verticalAlign: 'middle' }} />
                                     </span>
                                 </li>
                                 <li>

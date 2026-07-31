@@ -67,7 +67,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                             <span className="step-label" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                                                 In View Layout, click Section View.
                                                 <span className="image-wrapper-flush" style={{ marginLeft: '1rem', display: 'flex' }}>
-                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '60px' }} />
+                                                    <img src={svLogoImg} alt="Section View Logo" style={{ height: '60px', width: "60px" }} />
                                                 </span>
                                             </span>
                                         </div>
@@ -101,7 +101,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                         </div>
                                         <div className="step-description">
                                             <ol style={{ paddingLeft: '1.25rem', margin: '0.5rem 0 0 0', color: 'var(--text-muted)', lineHeight: '2' }}>
-                                              <div> On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /> </div>
+                                              <div> On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /> </div>
                                                <div> Click Use Custom Scale then set the scale to 1:2.</div>
                                             </ol>
                                         </div>
@@ -129,7 +129,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                         <img src={vertical2Img} alt="Drop the view" className="software-screenshot screenshot-wide" style={{ maxWidth: '800px', width: '100%' }} />
                                     </div>
 
-                                    <p className="p-flush" style={{ color: 'var(--text-normal)', marginTop: '2rem' }}>
+                                    <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '2rem' }}>
                                         In the Property Manager, Section name, Section Depth, Scale can be edited and set.
                                     </p>
 
