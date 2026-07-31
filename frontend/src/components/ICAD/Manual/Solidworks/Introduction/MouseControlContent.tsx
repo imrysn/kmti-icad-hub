@@ -7,7 +7,7 @@ const MouseControlContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>
         <div className="instruction-step" style={{ paddingLeft: '1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: "1rem" }}>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                     <img src={mouseLeft} alt="Left Mouse Button" style={{ width: '40px', objectFit: 'contain' }} />
                     <span style={{ fontSize: '1rem', color: 'var(--text-primary)' }}><strong>Left</strong> - use to Select object.</span>

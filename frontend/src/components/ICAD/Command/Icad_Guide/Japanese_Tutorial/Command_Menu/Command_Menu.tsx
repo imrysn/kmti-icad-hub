@@ -114,6 +114,18 @@ function Command_Menu_Japanese_Tutorial() {
 
     const activeSpotlight = getActiveSpotlight(currentTime, isEnded);
 
+    // Index into CHIPS_NAV of the chip whose startTime has most recently
+    // passed — used to enable/disable the prev/next controls correctly.
+    const activeSpotlightIndex = (() => {
+        if (isEnded) return -1;
+        for (let i = CHIPS_NAV.length - 1; i >= 0; i--) {
+            if (currentTime >= CHIPS_NAV[i].startTime) {
+                return i;
+            }
+        }
+        return -1;
+    })();
+
     const jumpToTime = (time: number) => {
         if (videoRef.current) {
             setIsEnded(false);
@@ -177,7 +189,6 @@ function Command_Menu_Japanese_Tutorial() {
                 alignItems: "center",
                 overflow: "hidden",
                 borderRadius: "8px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
             }}
         >
             {/* 16:9 Video Frame Container — maintains 100% precise spotlight positioning in fullscreen */}
@@ -221,11 +232,7 @@ function Command_Menu_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight cutout: a single element whose box-shadow spread fills the
-                    entire container with the dim color. Because there is only one element
-                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
-                    shared edge between separately-composited backdrop-filter layers, so no
-                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
+                {/* Spotlight box. */}
                 {activeSpotlight && (
                     <div
                         style={{
@@ -236,10 +243,9 @@ function Command_Menu_Japanese_Tutorial() {
                             height: `${spotH}%`,
                             pointerEvents: "none",
                             boxSizing: "border-box",
-                            border: "2.5px solid #ff1493",
+                            border: "2px solid #B5179E",
                             borderRadius: "2px",
                             zIndex: 10,
-                            boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 10px #ff1493, 0 0 4px #ff1493",
                             transition: activeSpotlight.isTransitioning ? "height 0.05s linear" : "none"
                         }}
                     >
@@ -249,15 +255,15 @@ function Command_Menu_Japanese_Tutorial() {
                                 left: "calc(100% + 8px)",
                                 top: 0,
                                 backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                color: "#ff1493",
-                                border: "1.5px solid #ff1493",
+                                color: "#B5179E",
+                                border: "1.5px solid #B5179E",
                                 padding: "4px 10px",
                                 borderRadius: "6px",
                                 fontSize: "12px",
                                 fontWeight: "bold",
                                 whiteSpace: "nowrap",
-                                boxShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 8px rgba(255, 20, 147, 0.4)",
-                                backdropFilter: "blur(4px)"
+                                boxShadow: "0 0 8px rgba(255, 20, 147, 0.4)",
+
                             }}
                         >
                             {activeSpotlight.label}
@@ -273,6 +279,8 @@ function Command_Menu_Japanese_Tutorial() {
                     onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
+                    canGoPrev={activeSpotlightIndex > 0}
+                    canGoNext={activeSpotlightIndex === -1 || activeSpotlightIndex < CHIPS_NAV.length - 1}
                 />
             </div>
         </div>

@@ -33,6 +33,21 @@ const DROPDOWN_WIDTHS: Record<string, string> = {
     Help: "17%"
 };
 
+// Highlight box size (in the video's native 1920x1042 pixel space) for each
+// menu label's button. Tune width/height per label so the spotlight cutout
+// matches that button's actual footprint in the video, instead of every
+// label sharing one fixed box size.
+const LABEL_BOX_SIZES: Record<string, { width: number; height: number }> = {
+    File: { width: 70, height: 26 },
+    View: { width: 60, height: 26 },
+    Information: { width: 81, height: 26 },
+    Settings: { width: 57, height: 26 },
+    Tools: { width: 63, height: 26 },
+    Window: { width: 83, height: 26 },
+    Help: { width: 66, height: 26 }
+};
+const DEFAULT_LABEL_BOX_SIZE = { width: 90, height: 26 };
+
 function Menu_Bar_Japanese_Tutorial() {
     const [videoError, setVideoError] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -74,11 +89,13 @@ function Menu_Bar_Japanese_Tutorial() {
     const spotX = activeSpotlight ? (activeSpotlight.pxX / 1920) * 100 : 0;
     const spotY = activeSpotlight ? ((activeSpotlight.pxY - 27 + 7 + 15) / 1042) * 100 : 0;
 
-    // Small box pinned near the label button's footprint — the spotlight cutout now matches this size
-    const smallBoxW = (90 / 1920) * 100;
-    const smallBoxH = (26 / 1042) * 100;
-    const spotW = smallBoxW;
-    const spotH = smallBoxH;
+    // Box size matched to the active spotlight's own button footprint (falls
+    // back to a sensible default if a label isn't in LABEL_BOX_SIZES)
+    const activeBoxSize = activeSpotlight
+        ? (LABEL_BOX_SIZES[activeSpotlight.label] ?? DEFAULT_LABEL_BOX_SIZE)
+        : DEFAULT_LABEL_BOX_SIZE;
+    const spotW = (activeBoxSize.width / 1920) * 100;
+    const spotH = (activeBoxSize.height / 1042) * 100;
 
     const videoContainerMarkup = (
         <div
@@ -113,8 +130,8 @@ function Menu_Bar_Japanese_Tutorial() {
             <div
                 style={{
                     position: "relative",
-                    width: "100%",
-                    height: "100%",
+                    width: isFullscreen ? "min(100vw, calc(100vh * 1.84261))" : "100%",
+                    height: isFullscreen ? "min(100vh, calc(100vw * 0.542708))" : "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
                     aspectRatio: "1920 / 1042",
@@ -150,62 +167,61 @@ function Menu_Bar_Japanese_Tutorial() {
                     Your browser does not support HTML5 video playback.
                 </video>
 
-                {/* Spotlight cutout: a single element whose box-shadow spread fills the
-                    entire container with the dim color. Because there is only one element
-                    (instead of 4 separate top/bottom/left/right dimming divs), there is no
-                    shared edge between separately-composited backdrop-filter layers, so no
-                    seam/artifact line can appear at the top or bottom of the highlighted box. */}
+                {/* Spotlight */}
                 {activeSpotlight && (
                     <>
+                        {/* Visual Spotlight Outline Frame */}
                         <div
                             style={{
                                 position: "absolute",
                                 left: `${spotX}%`,
                                 top: `${spotY}%`,
-                                width: `${smallBoxW}%`,
-                                height: `${smallBoxH}%`,
+                                width: `${spotW}%`,
+                                height: `${spotH}%`,
                                 pointerEvents: "none",
                                 boxSizing: "border-box",
-                                border: "2.5px solid #ff1493",
+                                border: "2.5px solid #B5179E",
                                 borderRadius: "2px",
                                 zIndex: 10,
-                                boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 10px #ff1493, 0 0 4px #ff1493",
+                                transition: "all 0.25s ease-out"
+                            }}
+                        />
+
+                        {/* Visible Label Tag Button — The exact clickable target element */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsLabelDropdownOpen(prev => !prev);
+                            }}
+                            title={`Click to toggle ${activeSpotlight.label} dropdown`}
+                            style={{
+                                position: "absolute",
+                                left: `calc(${spotX + spotW}% + 6px)`,
+                                top: `calc(${spotY}% - 6px)`,
+                                zIndex: 30,
+                                pointerEvents: "auto",
+                                backgroundColor: "#020202",
+                                color: "#B5179E",
+                                border: "1.5px solid #B5179E",
+                                padding: "4px 10px",
+                                borderRadius: "4px",
+                                fontSize: "12px",
+                                fontWeight: 600,
+                                whiteSpace: "nowrap",
+                                cursor: "pointer",
+                                boxShadow: "0 2px 10px rgba(0,0,0,0.7)",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                userSelect: "none",
+                                outline: "none",
                                 transition: "all 0.25s ease-out"
                             }}
                         >
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    left: "calc(100% + 6px)",
-                                    top: "-8px",
-                                    zIndex: 20,
-                                    pointerEvents: "auto"
-                                }}
-                            >
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsLabelDropdownOpen(prev => !prev);
-                                    }}
-                                    style={{
-                                        backgroundColor: "#020202ff",
-                                        color: "#ff00f2ff",
-                                        border: "1px solid #ff00d4ff",
-                                        padding: "2px 8px",
-                                        borderRadius: "0px",
-                                        fontSize: "11px",
-                                        fontWeight: 500,
-                                        whiteSpace: "nowrap",
+                            {activeSpotlight.label}
+                        </button>
 
-                                        cursor: "pointer"
-                                    }}
-                                >
-                                    {activeSpotlight.label}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Image pop-up positioned below the spotlight box, expanded to a larger readable size */}
+                        {/* Dropdown Image pop-up */}
                         {isLabelDropdownOpen && activeSpotlight.dropdownImage && (
                             <img
                                 src={activeSpotlight.dropdownImage}
@@ -218,10 +234,9 @@ function Menu_Bar_Japanese_Tutorial() {
                                     width: DROPDOWN_WIDTHS[activeSpotlight.label] ?? "20%",
                                     height: "auto",
                                     objectFit: "contain",
-                                    border: "1.5px solid #ff1493",
+                                    border: "1.5px solid #B5179E",
                                     borderRadius: "4px",
-                                    boxShadow: "0 4px 16px rgba(0,0,0,0.8)",
-                                    zIndex: 15,
+                                    zIndex: 20,
                                     pointerEvents: "auto",
                                     transition: "all 0.25s ease-out"
                                 }}
