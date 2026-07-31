@@ -74,23 +74,11 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the available plate thickness reference"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
-                    </div>
 
                     {/* ── Plate Thickness Table ── */}
+                    <div className="card-header">
+                        <h4 className="section-title"> Plate Thickness </h4>
+                    </div>
                     <div className="step-description lesson-table-container" style={{ marginTop: "1rem", width: "100%", maxWidth: "900px", margin: "1rem auto 0 auto" }}>
                         <table className="lesson-table" style={{ width: "100%", textAlign: "center" }}>
                             <thead>

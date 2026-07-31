@@ -944,14 +944,14 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
       { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
     ]
   },
-  { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
+  { id: 'piping', title: 'Piping Standard', content: ['Placeholder for Piping'] },
   { 
     id: 'general-standard-steel', 
     title: 'General Standard Steel', 
     content: ['Placeholder'],
     children: [
       { id: 'general-standard-steel-main', title: 'General Standard Steel Material Table', content: [] },
-      { id: 'general-standard-steel-flat', title: 'Flat Bar Reference Table', content: [] },
+      { id: 'general-standard-steel-flat', title: 'Flat Bar', content: [] },
       { id: 'general-standard-steel-round', title: 'Round Bar', content: [] }
     ]
   },

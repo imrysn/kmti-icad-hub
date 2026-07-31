@@ -76,6 +76,9 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
 
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in" style={{ gap: "1rem" }}>
+                    <div className="card-header">
+                        <h4 className="section-title">Reminder:</h4>
+                    </div>
 
                     {/* Item 1 */}
                     <div
@@ -87,7 +90,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Place the origin in the correct position for both the parts and the assembly"
+                                text="Place the  <span class='red-text'> origin </span> in the correct position for both the parts and the assembly"
                                 isActive={isSpeaking && currentIndex === 2}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -112,7 +115,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Ensure all dimensions are applied in 3D"
+                                text="Ensure <span class='red-text'> all dimensions are applied </span> in 3D"
                                 isActive={isSpeaking && currentIndex === 3}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -129,7 +132,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Apply materials and layers to all 3D parts and assemblies, particularly the purchased parts"
+                                text="Apply <span class='red-text'> materials and layers </span> to all 3D parts and assemblies, particularly the purchased parts"
                                 isActive={isSpeaking && currentIndex === 4}
                                 currentCharIndex={currentCharIndex}
                             />
@@ -139,7 +142,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                                 src={materialsLayersImg}
                                 alt="Materials and Layers"
                                 className="software-screenshot"
-                                style={{ maxWidth: "90%", height: "auto" }}
+                                style={{ maxWidth: "100%", height: "auto" }}
                             />
                         </div>
                     </div>
@@ -154,7 +157,7 @@ const ThreeDStandardLesson: React.FC<ThreeDStandardLessonProps> = ({
                             <KaraokeLessonText
                                 as="span"
                                 className="step-label"
-                                text="Please remember to check interference in the 3D assemblies"
+                                text="Please remember to check <span class='red-text'> interference </span> in the 3D assemblies"
                                 isActive={isSpeaking && currentIndex === 5}
                                 currentCharIndex={currentCharIndex}
                             />

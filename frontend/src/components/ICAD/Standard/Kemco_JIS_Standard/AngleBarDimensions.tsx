@@ -93,39 +93,81 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
-                    {/* Section: Unequal Leg */}
-                    {activeTab === 'unequal' && (
-                        <div
-                            className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                            data-reading-index="1"
-                        >
-                            <div className="step-description" style={{ alignItems: "center" }}>
-                                <img
-                                    src={unequalLegImg}
-                                    alt="Unequal Leg Angle Bar Dimensions"
-                                    className="software-screenshot"
-                                    style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                />
-                            </div>
-                        </div>
-                    )}
+        {/* Section: Unequal Leg */}
+        {activeTab === "unequal" && (
+    <>
+        <div className="card-header">
+            <h4 className="section-title">Angle (unequal Leg) Standard Sizes</h4>
+        </div>
 
-                    {/* Section: Equal Leg */}
-                    {activeTab === 'equal' && (
-                        <div
-                            className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
-                            data-reading-index="2"
-                        >
-                            <div className="step-description" style={{ alignItems: "center" }}>
-                                <img
-                                    src={equalLegImg}
-                                    alt="Equal Leg Angle Bar Dimensions"
-                                    className="software-screenshot"
-                                    style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                />
-                            </div>
-                        </div>
-                    )}
+        <div
+            className={`instruction-step ${
+                currentIndex === 1 ? "reading-active" : ""
+            }`}
+            data-reading-index="1"
+        >
+            <div
+                className="step-description"
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                }}
+            >
+                <img
+                    src={unequalLegImg}
+                    alt="Unequal Leg Angle Bar Dimensions"
+                    className="software-screenshot"
+                    style={{
+                        maxWidth: "70%",
+                        height: "auto",
+                        objectFit: "contain",
+                        borderRadius: "8px",
+                    }}
+                />
+            </div>
+        </div>
+    </>
+)}
+
+        {/* Section: Equal Leg */}
+        {activeTab === "equal" && (
+    <>
+        <div className="card-header">
+            <h4 className="section-title">Equal Angle Standard</h4>
+        </div>
+
+        <div
+            className={`instruction-step ${
+                currentIndex === 2 ? "reading-active" : ""
+            }`}
+            data-reading-index="2"
+        >
+            <div
+                className="step-description"
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                }}
+            >
+                <img
+                    src={equalLegImg}
+                    alt="Equal Leg Angle Bar Dimensions"
+                    className="software-screenshot"
+                    style={{
+                        maxWidth: "70%",
+                        height: "auto",
+                        objectFit: "contain",
+                        borderRadius: "8px",
+                    }}
+                />
+            </div>
+        </div>
+    </>
+)}
 
                     {/* Page Navigation */}
                     <div className="lesson-navigation mt-12">

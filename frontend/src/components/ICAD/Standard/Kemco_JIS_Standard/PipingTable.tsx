@@ -213,32 +213,6 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
             className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
             data-reading-index="2"
           >
-            <div className="step-header">
-              <span className="step-number">1 </span>
-              <KaraokeLessonText
-                as="span"
-                className="step-label"
-                text="Please review the Piping Parts Reference Table"
-                isActive={isSpeaking && currentIndex === 2}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-          </div>
-
-          <div
-            className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
-            data-reading-index="3"
-          >
-            <div className="step-header">
-              <span className="step-number">2 </span>
-              <KaraokeLessonText
-                as="span"
-                className="step-label"
-                text="Ensure standard parts are selected according to this table"
-                isActive={isSpeaking && currentIndex === 3}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
           </div>
 
           <div className="table-wrapper" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
@@ -248,19 +222,19 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
               >
                 <thead>
                   <tr>
-                    <th style={{ width: '16%' }}>English</th>
-                    <th style={{ width: '16%' }}>Item Name (Japanese)</th>
-                    <th style={{ width: '22%' }}>Part No. / Spec</th>
-                    <th style={{ width: '46%' }}>Notes</th>
+                    <th style={{ width: '16%', fontSize: '13.6px', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center' }}>English</th>
+                    <th style={{ width: '16%', fontSize: '13.6px', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center' }}>Item Name (Japanese)</th>
+                    <th style={{ width: '22%', fontSize: '13.6px', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center' }}>Part No. / Spec</th>
+                    <th style={{ width: '46%', fontSize: '13.6px', textTransform: 'uppercase', color: 'var(--accent)', textAlign: 'center' }}>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {tableData.map((row, index) => (
                     <tr key={index}>
-                      <td style={{ textAlign: 'left' }}>{row.english}</td>
-                      <td className={row.highlight ? "highlight-cell-yellow" : ""} style={{ textAlign: 'left' }}>{row.itemName}</td>
-                      <td className={row.highlight ? "highlight-cell-yellow" : ""} style={{ textAlign: 'left', whiteSpace: 'nowrap' }}>{row.spec}</td>
-                      <td style={{ textAlign: 'left' }}>
+                      <td style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold' }}>{row.english}</td>
+                      <td className={row.highlight ? "highlight-cell-yellow" : ""} style={{ textAlign: 'center', fontSize: '14px' }}>{row.itemName}</td>
+                      <td className={row.highlight ? "highlight-cell-yellow" : ""} style={{ textAlign: 'center', fontSize: '14px', whiteSpace: 'nowrap' }}>{row.spec}</td>
+                      <td style={{ textAlign: 'center', fontSize: '14px' }}>
                         {row.note1 && row.note2
                           ? <>{row.note1}<br /><span style={{ opacity: 0.8 }}>{row.note2}</span></>
                           : row.note1 || row.note2}

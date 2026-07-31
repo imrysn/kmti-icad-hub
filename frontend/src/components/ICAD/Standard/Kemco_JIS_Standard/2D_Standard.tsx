@@ -15,7 +15,6 @@ import slotLongHolesImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_
 import bendedPlateImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_bended_plate.png";
 import computationBendedImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_computation_bended.png";
 import keyPlateImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_key_plate.png";
-import materialImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_material.png";
 import stkm16a13aImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_stkm_16a&13a.png";
 import borekeyToleranceImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_borekey_tolerance.png";
 import grooveImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_groove.png";
@@ -33,19 +32,44 @@ interface TwoDStandardLessonProps {
 }
 
 const galleryImages = [
-  { src: slotLongHolesImg, label: "Slot Holes / Long Holes", number: 1 },
-  { src: bendedPlateImg, label: "Bended Plate", number: 2 },
-  { src: computationBendedImg, label: "Computation of Bended", number: 3 },
-  { src: keyPlateImg, label: "Key Plate", number: 4 },
-  { src: materialImg, label: "Material Specification", number: 5 },
-  { src: stkm16a13aImg, label: "STKM 16A & 13A", number: 6 },
-  { src: borekeyToleranceImg, label: "Bore Key Tolerance", number: 7 },
-  { src: grooveImg, label: "Groove Specification", number: 8 },
-  { src: instruction1Img, label: "Drawing Instruction 1", number: 9 },
-  { src: instruction2Img, label: "Drawing Instruction 2", number: 10 },
-  { src: instruction3Img, label: "Drawing Instruction 3", number: 11 },
-  { src: ss400dImg, label: "SS400-D Properties", number: 12 },
-  { src: indicationQuantityImg, label: "Indication of Quantity", number: 13 }
+  { src: slotLongHolesImg, label: "Slot Holes / Long Holes", alt: "Slot Holes / Long Holes", number: 1 },
+  { src: bendedPlateImg, label: "Bended Plate", alt: "Bended Plate", number: 2 },
+  { src: computationBendedImg, label: "Computation of Bended", alt: "Computation of Bended", number: 3 },
+  { src: keyPlateImg, label: "Key Plate", alt: "Key Plate", number: 4 },
+  { 
+    label: "Material Specification", 
+    alt: "Material Specification", 
+    number: 5,
+    content: (
+        <div className="lesson-table-container" style={{ width: "100%", maxWidth: "300px", margin: "0 auto" }}>
+            <table className="lesson-table" style={{ width: "100%" }}>
+                <thead>
+                    <tr>
+                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#F97316', borderBottom: '2px solid #DD4DFA', textAlign: "center", fontSize: "1.2rem" }}>SPCC</th>
+                    </tr>
+                    <tr>
+                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>Thickness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {[1, 2, 2.3, 3, 3.2].map((val, idx) => (
+                        <tr key={idx}>
+                            <td style={{ textAlign: "center" }}>{val}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+  },
+  { src: stkm16a13aImg, label: "STKM 16A & STKM13A", alt: "STKM 16A & STKM13A", number: 6 },
+  { src: borekeyToleranceImg, label: "Bore Key Tolerance", alt: "Bore Key Tolerance", number: 7 },
+  { src: grooveImg, label: "Groove", alt: "Groove", number: 8 },
+  { src: instruction1Img, label: "Drawing Instruction 1", alt: "Drawing Instruction 1", number: 9 },
+  { src: instruction2Img, label: "Drawing Instruction 2", alt: "Drawing Instruction 2", number: 10 },
+  { src: instruction3Img, label: "Drawing Instruction 3", alt: "Drawing Instruction 3", number: 11 },
+  { src: ss400dImg, label: "SS400-D Properties", alt: "SS400-D Properties", number: 12 },
+  { src: indicationQuantityImg, label: <>Indication of Quantity for <span className="red-text">(Hole,Chamfer and Radius)</span></>, alt: "Indication of Quantity for (Hole,Chamfer and Radius)", number: 13 }
 ];
 
 const reminderSteps = [
@@ -150,6 +174,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
+              <div className="card-header">
+                <h4 className="section-title">Reminder:</h4>
+              </div>
+              
               {/* Item 1 */}
               <div
                 className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
@@ -185,19 +213,19 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 data-reading-index="3"
               >
                 <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
-                  <div style={{ flex: "1.2", minWidth: "280px" }}>
-                    <div className="step-header" style={{ marginBottom: "1.5rem", alignItems: "flex-start" }}>
+                  <div style={{ flex: "4", minWidth: "200px" }}>
+                    <div className="step-header" style={{ marginBottom: "3rem", alignItems: "flex-start" }}>
                       <span className="step-number">2 </span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>'
+                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views.</span> However, if additional dimensions are needed and these views become crowded, place them on the right <span style="display: inline-block;">view, utilize other views, or create <span class="red-text">detailed/section views</span></span>'
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                   </div>
-                  <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
+                  <div style={{ flex: "1", minWidth: "150px", display: "flex", justifyContent: "center" }}>
                     <img
                       src={dimensioningOrderImg}
                       alt="Dimensioning Order"
@@ -231,7 +259,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       src={criticalDetailsImg}
                       alt="Critical Details"
                       className="software-screenshot"
-                      style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                      style={{ maxWidth: "105%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                     />
                   </div>
                 </div>
@@ -259,6 +287,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
         <>
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
+              <div className="card-header">
+                <h4 className="section-title">{galleryImages[galleryIndex].label}</h4>
+              </div>
+
               <div
                 className="gallery-container"
                 style={{
@@ -285,16 +317,20 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     borderRadius: "8px",
                   }}
                 >
-                  <img
-                    src={galleryImages[galleryIndex].src}
-                    alt={galleryImages[galleryIndex].label}
-                    loading="lazy"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain"
-                    }}
-                  />
+                  {galleryImages[galleryIndex].content ? (
+                    galleryImages[galleryIndex].content
+                  ) : (
+                    <img
+                      src={galleryImages[galleryIndex].src}
+                      alt={galleryImages[galleryIndex].alt}
+                      loading="lazy"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain"
+                      }}
+                    />
+                  )}
                 </div>
 
                 {/* Slider Controls & Indicators */}

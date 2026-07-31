@@ -172,21 +172,6 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the SHOWA Catalog for reference"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
-                    </div>
 
                     {/* ── Image Gallery ── */}
                     <div
