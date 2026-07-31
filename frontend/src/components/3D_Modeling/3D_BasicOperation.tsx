@@ -1,14 +1,14 @@
 
 
-import React,{
-useEffect,useRef,
-useState
+import React, {
+  useEffect, useRef,
+  useState
 } from 'react';
 
 import {
-ChevronLeft,
-ChevronRight,
-Play
+  ChevronLeft,
+  ChevronRight,
+  Play
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 
@@ -16,11 +16,11 @@ import '../../styles/3D_Modeling/CourseLesson.css';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 import { useTranslation } from '../../context/LanguageContext';
 import {
-boxTutorialSteps,
-coneTutorialSteps,
-cylinderTutorialSteps,
-polygonTutorialSteps,
-torusTutorialSteps
+  boxTutorialSteps,
+  coneTutorialSteps,
+  cylinderTutorialSteps,
+  polygonTutorialSteps,
+  torusTutorialSteps
 } from './VideoTutorialData/basicOp1TutorialSteps';
 import VideoTutorialViewer from './VideoTutorialViewer';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
@@ -330,7 +330,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     registerText(lessonSteps, 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerText]);
 
 
@@ -653,7 +653,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     const fullSteps = [introTitle, introDesc, t(`basicOp2.${activeTab}.title`), ...currentSteps];
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(fullSteps, startIdx);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, registerText]);
 
   const wasSpeakingRef = React.useRef(false);
@@ -679,7 +679,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
     }
     wasSpeakingRef.current = isSpeaking;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSpeaking, activeTab]);
 
   const prevTabRef = React.useRef(activeTab);
@@ -1022,7 +1022,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>{t('lesson.result')}</h4></div>
-              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
+              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '898px' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1619,15 +1619,15 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     const introTitle = activeTab === 'showHide' ? t('basicOp4.showHide.heading')
       : activeTab === 'stretch' ? t('basicOp4.stretch.heading')
-      : t('basicOp4.resize.heading');
+        : t('basicOp4.resize.heading');
     const introDesc = activeTab === 'showHide'
       ? t('basicOp4.showHide.desc')
       : activeTab === 'stretch'
-      ? t('basicOp4.stretch.desc')
-      : t('basicOp4.resize.desc');
+        ? t('basicOp4.stretch.desc')
+        : t('basicOp4.resize.desc');
     const steps = activeTab === 'showHide' ? showHideSteps
       : activeTab === 'stretch' ? stretchSteps
-      : resizeSteps;
+        : resizeSteps;
     registerText([introTitle, introDesc, ...steps], 0);
   }, [activeTab, registerText, t]);
 
@@ -2225,6 +2225,6 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
   }
 };
 
-export { BasicOperation1,BasicOperation2,BasicOperation3,BasicOperation4,BasicOperation5,BasicOperationLesson };
+export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
 export default BasicOperationLesson;
 

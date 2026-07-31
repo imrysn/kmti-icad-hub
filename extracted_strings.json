@@ -179,9 +179,9 @@
       "Go to File then  Save As then Use the Purchase part code as File name.",
       "Step 5: Set all important informations of the part:",
       "Other way to add comment to the Part.",
-      "1.) Right-click the Top 3D Part on the tree view",
-      "2.) Select Properties. The Property dialog box will appear.",
-      "3.) Enter the comment for the specific part then Press OK"
+      "Right-click the Top 3D Part on the tree view",
+      "Select Properties. The Property dialog box will appear.",
+      "Enter the comment for the specific part then Press OK"
     ],
     "editSteps": [
       "LIGHTEN B-REP SOLID",
@@ -193,9 +193,9 @@
       "Go to File then Save As then Use the Purchase part code as File name.",
       "Step 5: Set all important informations of the part:",
       "Other way to add comment to the Part.",
-      "1.) Right-click the Top 3D Part on the tree view",
-      "2.) Select Properties. The Property dialog box will appear.",
-      "3.) Enter the comment for the specific part then Press OK"
+      "Right-click the Top 3D Part on the tree view",
+      "Select Properties. The Property dialog box will appear.",
+      "Enter the comment for the specific part then Press OK"
     ],
     "introSubtitle": [
       "Tools used to import and export parasolid data, and edit B-Rep solid for 3D Purchase Parts. This tool is use for creating 3D Purchase Parts."

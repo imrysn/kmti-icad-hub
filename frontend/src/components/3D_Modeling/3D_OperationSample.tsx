@@ -407,7 +407,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               {/* Segments A and B */}
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
                 <div style={{ flex: "1", marginBottom: "3rem"}}>
-                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>{t('common.opsample.t2_sega')}</u></p>
+                  <p className="p-flush" style={{ marginBottom: "1rem" }}><u>{t('common.opsample.t2_sega')}</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "1rem" }}>{t('common.opsample.t2_use_cyl')}</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>{t('common.opsample.t2_cyl_union')}</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    {t('common.opsample.step2_5')}</p>
@@ -416,7 +416,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <img src={segmentAResult} alt={t('common.segment_a')} className="software-screenshot mt-4" style={{ width: "900px", height: "auto", marginTop: "1rem"}} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>{t('common.opsample.t2_segb')}</u></p>
+                  <p className="p-flush" style={{ marginBottom: "1rem" }}><u>{t('common.opsample.t2_segb')}</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>{t('common.opsample.t2_use_cyl')}</p>
                   <p className="p-flush">{t('common.opsample.t2_b_d')}</p>
                   <p className="p-flush">{t('common.opsample.t2_b_h')}</p>
@@ -427,7 +427,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               {/* Segment C */}
               <div className="mt-8">
-                <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>{t('common.opsample.t2_segc')}</u></p>
+                <p className="p-flush" style={{ marginBottom: "1rem" }}><u>{t('common.opsample.t2_segc')}</u></p>
                 <p className="p-flush">{t('common.opsample.t2_c_desc')}</p>
                 <img src={mainDrawing3} alt={t('common.segment_c_technical_drawing')} className="software-screenshot mt-4" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
 

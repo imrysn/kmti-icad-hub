@@ -112,7 +112,7 @@ def sync_standard_quiz():
                     order=i
                 )
                 db.add(q)
-                print(f"Added question {i+1}")
+                print(f"Added question {i+1}") 
 
         # Delete extra questions if any
         if len(existing_questions) > len(new_questions):

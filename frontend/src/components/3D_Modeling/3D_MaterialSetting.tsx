@@ -71,7 +71,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
 
   const tabs = [
     { id: "set", label: t('materialsetting.material1Steps.step0') },
-    { id: "unlisted", label: "UNLISTED MATERIALS" },
+    { id: "unlisted", label: t('materialsetting.tabs.unlisted') || "UNLISTED MATERIALS" },
   ];
 
   const handleNext = (isAuto = false) => {

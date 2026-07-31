@@ -817,7 +817,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text={t('standard.boltLengthSteps.step1')}
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
                         <table style={{ border: 'none', background: 'transparent' }}>
                           <tbody>
@@ -839,10 +839,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           </tbody>
                         </table>
                         <br />
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (8 x 1.5) + (2+9)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = 12 + 11</p>
-                        <p className="p-flush" style={{ color: "white" }}><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
+                        <p className="p-flush">Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
+                        <p className="p-flush">Bolt Length = (8 x 1.5) + (2+9)</p>
+                        <p className="p-flush">Bolt Length = 12 + 11</p>
+                        <p className="p-flush"><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
                         <br />
                       </div>
                       <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
@@ -903,9 +903,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: "white", marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>{t('standard.pillow.bolting_for')}</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>{t('standard.pillow.bolting_for')}</p>
                         <p className="p-flush">{t('standard.misc.hb')}</p>
                         <p className="p-flush">{t('standard.misc.sw')}</p>
                         <p className="p-flush">{t('standard.misc.fwh_slotted1')} - <strong className="red-text">{t('standard.misc.fwh_slotted2')}</strong></p>
@@ -920,7 +920,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>{t('standard.pillow.flange_type')}</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>{t('standard.pillow.flange_type')}</p>
                         <p className="p-flush">{t('standard.misc.hb')}</p>
                         <p className="p-flush">{t('standard.misc.sw')}</p>
 
@@ -975,9 +975,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />{t('standard.misc.slotted_threaded_hole')}</p>
+                        <p className="p-flush"> <strong>CASE 1: </strong><br />{t('standard.misc.slotted_threaded_hole')}</p>
                         <br />
                         <p className="p-flush">{t('standard.misc.hb')}</p>
                         <p className="p-flush">{t('standard.misc.sw')}</p>
@@ -998,9 +998,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />{t('standard.misc.slotted_drill_hole')}</p>
+                        <p className="p-flush"><strong>CASE 2: </strong><br />{t('standard.misc.slotted_drill_hole')}</p>
                         <br />
                         <p className="p-flush">{t('standard.misc.hb')}</p>
                         <p className="p-flush">{t('standard.misc.fwh_only')}</p>
@@ -1037,9 +1037,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />{t('standard.misc.on_c_channel')}</p>
+                        <p className="p-flush"> <strong>CASE 1: </strong><br />{t('standard.misc.on_c_channel')}</p>
                         <br />
                         <p className="p-flush">{t('standard.misc.hb')}</p>
                         <p className="p-flush">{t('standard.misc.aw5')}</p>
@@ -1057,7 +1057,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />{t('standard.misc.both_drill_hole')}</p>
+                        <p className="p-flush"> <strong>CASE 2: </strong><br />{t('standard.misc.both_drill_hole')}</p>
                         <br />
                         <p className="p-flush">{t('standard.misc.cs')}</p>
                         <p className="p-flush">{t('standard.misc.sw')}</p>

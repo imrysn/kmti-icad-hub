@@ -68,8 +68,8 @@ const PartLesson: React.FC<PartLessonProps> = ({
     t('part.changeSteps.step6')
   ];
   const tabs = [
-    { id: "create", label: "Create 3D Part" },
-    { id: "change", label: "Change 3D Part Name" },
+    { id: "create", label: t('part.tabs.create') || "Create 3D Part" },
+    { id: "change", label: t('part.tabs.change') || "Change 3D Part Name" },
   ];
 
   const handleNext = (isAuto = false) => {

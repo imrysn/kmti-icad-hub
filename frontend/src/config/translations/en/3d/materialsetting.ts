@@ -15,5 +15,6 @@ export const en_3d_materialsetting = {
   "materialsetting.material2Steps.step1": "On ICAD, S35C is not included on the material list. In this case, we can use S45C as material on 3D. In case of 2D detailing, we need to put S35C on BOM instead of S45C. S45C is use as material for S35C in order to compute for the material weight and final weight of the part. However, there is no need to release the material on 3D part since the specific gravity of the two materials are almost the same.",
   "materialsetting.material2Steps.step2": "Other materials that are not on ICAD Material List include:",
   "materialsetting.introTitle": "Material Setting",
-  "materialsetting.introSubtitle": "Setting material is important in order to measure the weight of the part based on the material's specific gravity and it is a factor to consider in adding layer and color to the part.",
+  "materialsetting.introSubtitle": "Material setting is important to measure the weight of the part based on the material's specific gravity, and is also a factor to consider when adding layers and colors to the part.",
+  "materialsetting.tabs.unlisted": "Unlisted Materials"
 };
