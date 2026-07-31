@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
@@ -36,6 +36,8 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
         registerText,
     } = useLessonCore("bolting-kemco");
 
+    const [activeTab, setActiveTab] = useState<'bolt-hole' | 'bolt-length'>('bolt-hole');
+
     useEffect(() => {
         registerText(reminderSteps, 0);
     }, [registerText]);
@@ -65,48 +67,54 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
         if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-
+    
     return (
         <div className="course-lesson-container" ref={containerRef}>
             <div className="lesson-progress-container">
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
+            <div className="lesson-tabs" style={{ marginTop: "0", marginBottom: "1rem" }}>
+                <button
+                    className={`tab-button ${activeTab === "bolt-hole" ? "active" : ""}`}
+                    onClick={() => setActiveTab("bolt-hole")}
+                >
+                    Bolt Hole
+                </button>
+                <button
+                    className={`tab-button ${activeTab === "bolt-length" ? "active" : ""}`}
+                    onClick={() => setActiveTab("bolt-length")}
+                >
+                    Bolt Length
+                </button>
+            </div>
+
             <div className="lesson-grid single-card">
                 <div className="lesson-card tab-content fade-in">
 
                     {/* ── Section 1: Bolt Hole Diameter Standard ── */}
-                    <div className="lesson-intro" style={{ border: "none", background: "none", boxShadow: "none", backdropFilter: "none", marginBottom: "0.5rem", padding: "1rem 0" }}>
-                        <KaraokeLessonText
-                            as="h3"
-                            className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-                            data-reading-index="0"
-                            text="Bolt Hole Diameter Standard"
-                            isActive={isSpeaking && currentIndex === 0}
-                                currentCharIndex={currentCharIndex}
-                        />
+                    {activeTab === 'bolt-hole' && (
+                    <>
+                    <div className="card-header">
+                        <h4 className="section-title"> Bolt Hole </h4>
                     </div>
-
                     {/* Bolt Hole Diameter Image */}
                     <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
                         <img
                             src={boltAndBoltImg}
                             alt="Bolt Hole Diameter Standard"
                             className="software-screenshot"
-                            style={{ maxWidth: "70%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                            style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                         />
                     </div>
+                    </>
+                    )}
 
                     {/* ── Section 2: Bolt Length Standard ── */}
-                    <div className="lesson-intro" style={{ border: "none", background: "none", boxShadow: "none", backdropFilter: "none", marginBottom: "0.5rem", padding: "1rem 0", marginTop: "2rem" }}>
-                        <KaraokeLessonText
-                            as="h3"
-                            className={`section-title ${currentIndex === 1 ? "reading-active" : ""}`}
-                            data-reading-index="1"
-                            text="Bolt Length Standard"
-                            isActive={isSpeaking && currentIndex === 1}
-                            currentCharIndex={currentCharIndex}
-                        />
+                    {activeTab === 'bolt-length' && (
+                    <>
+                    <div className="card-header">
+                        <h4 className="section-title"> Bolt Length </h4>
                     </div>
                     <div>
                         <div className="step-description" style={{ alignItems: "center" }}>
@@ -118,6 +126,8 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                             />
                         </div>
                     </div>
+                    </>
+                    )}
 
                     {/* Page Navigation */}
                     <div className="lesson-navigation mt-12">

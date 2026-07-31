@@ -74,21 +74,6 @@ const ShaftKeyway: React.FC<ShaftKeywayProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the Shaft Keyway reference"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
-                    </div>
 
                     {/* ── Shaft Keyway Image ── */}
                     <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>

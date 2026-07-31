@@ -74,20 +74,8 @@ const OST2Specification: React.FC<OST2SpecificationProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the OST-2 Specification reference"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
+                    <div className="card-header">
+                        <h4 className="section-title"> OST-2 Specification </h4>
                     </div>
 
                     {/* ── OST-2 Specification Image ── */}

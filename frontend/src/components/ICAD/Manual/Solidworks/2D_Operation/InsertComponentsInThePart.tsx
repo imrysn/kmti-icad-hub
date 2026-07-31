@@ -65,15 +65,15 @@ const Page1Lesson: React.FC<Page1Props> = ({
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                
-                                    Click <strong>A2 - JFE</strong>{'                '}
+                                <li>
+                                    Click <strong>A2 - JFE</strong>{' '}
                                     <span className="image-wrapper-flush">
                                         <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '40px', verticalAlign: 'middle' }} />
                                     </span>
-                                
-                                <div></div>
+                                </li>
+                                <li>
                                     Click <strong>OK</strong> or Double click <strong>A2 - JFE</strong>.
-                                
+                                </li>
                             </ol>
 
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
