@@ -104,7 +104,7 @@ if __name__ == "__main__":
     try:
         import uvicorn
         from backend.main import app
-        from backend.database import get_db_mode, engine, SessionLocal
+        from backend.database import get_db_mode, engine, SessionLocal, patch_schema
         from backend.models import Base, User
         from backend.create_test_users import create_test_users
 
@@ -112,6 +112,9 @@ if __name__ == "__main__":
         try:
             print("Verifying database schema...")
             Base.metadata.create_all(bind=engine)
+            # Safe schema patch for SQLite in case DB_MODE is sqlite
+            if get_db_mode() == "sqlite":
+                patch_schema(engine, is_mysql=False)
             db = SessionLocal()
             if db.query(User).count() == 0:
                 print("No users found in database. Seeding default accounts (admin, employee, trainee)...")

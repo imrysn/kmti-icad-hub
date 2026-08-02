@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,FileSpreadsheet,FileText,Folder,HelpCircle,Lock,Play,RotateCcw,Trash2,Upload,UploadCloud,Zap } from 'lucide-react';
+import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,ExternalLink,FileSpreadsheet,FileText,Folder,HelpCircle,Lock,Play,RotateCcw,Trash2,Upload,UploadCloud,Zap } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
@@ -105,6 +105,15 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
             showNotification(error?.response?.data?.detail || 'Failed to submit quotation.', 'error');
         } finally {
             setQuotationUploadingSet(null);
+        }
+    };
+
+    const handleOpenInCAD = async (submissionId: number) => {
+        try {
+            await assessmentService.openSubmissionInCAD(submissionId);
+            showNotification('File sent to CAD software', 'success');
+        } catch (error: any) {
+            showNotification(error?.response?.data?.detail || 'Failed to open file in CAD.', 'error');
         }
     };
 
@@ -581,7 +590,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                 }
                                                             }}
                                                             disabled={isBulkDownloading}
-                                                            title="Download All Unit Files"
+                                                            title="Download All Reference Drawing"
                                                             style={{ marginLeft: '0.5rem', padding: '0.4rem 0.8rem' }}
                                                         >
                                                             <UploadCloud size={16} style={{ transform: 'rotate(180deg)' }} /> Bulk Download
@@ -589,7 +598,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         <button
                                                             className="task-action-btn danger"
                                                             onClick={() => handleBulkDelete(sortedUnitTasks.map(t => t.id))}
-                                                            title="Delete All Uploaded Files"
+                                                            title="Delete All Submitted Files"
                                                             style={{
                                                                 marginLeft: '0.5rem',
                                                                 padding: '0.4rem 0.8rem',
@@ -697,7 +706,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                 )}
                                                                                 {!task.is_virtual_extra && !task.is_virtual_quotation && (
                                                                                     <>
-                                                                                        <button type="button" className="task-action-btn primary" onClick={(e) => {
+                                                                                        <button type="button" className="task-action-btn primary" title="Open the reference drawing" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
@@ -705,7 +714,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                         }}>
                                                                                             <Play size={14} /> Open in iJCAD
                                                                                         </button>
-                                                                                        <button type="button" className="task-action-btn secondary" onClick={(e) => {
+                                                                                        <button type="button" className="task-action-btn secondary" title="Download the reference drawing" onClick={(e) => {
                                                                                             e.preventDefault();
                                                                                             e.stopPropagation();
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
@@ -784,7 +793,14 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <div className="table-actions-horizontal">
+                                                                                                <div className="table-actions-horizontal" style={{ gap: '4px' }}>
+                                                                                                    <button
+                                                                                                        className="action-btn-styled outline"
+                                                                                                        title="Open in CAD"
+                                                                                                        onClick={() => handleOpenInCAD(sub.id)}
+                                                                                                    >
+                                                                                                        <ExternalLink size={14} />
+                                                                                                    </button>
                                                                                                     <button
                                                                                                         className="action-btn-styled delete"
                                                                                                         title="Delete submission"
