@@ -291,11 +291,30 @@ function Menu_Bar_Japanese_Tutorial() {
                             zIndex: 50,
                             pointerEvents: "none",
                             transition: "all 0.5s ease-out",
-                            transform: "translate(-2px, -2px)",
+                            transform: "translate(-6px, -2px)",
                             filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.5))"
                         }}
                     >
-                        <path d="M4 2L18.4 11.2L11.5 13L15.5 21L12.5 22.5L8.5 14.5L3 18V2Z" fill="white" stroke="black" strokeWidth="1" strokeLinejoin="round" />
+                        <path
+                            fill="white"
+                            stroke="black"
+                            strokeWidth="1.2"
+                            strokeLinejoin="round"
+                            strokeLinecap="round"
+                            d="M10 2.8
+               a1.3 1.3 0 0 1 2.6 0v7.1
+               a1.3 1.3 0 0 1 2.5-0.4l0.2 0.6
+               a1.3 1.3 0 0 1 2.3 0.2l0.2 0.5
+               a1.3 1.3 0 0 1 2.2 0.9v4.2
+               c0 3.2-2.2 5.9-5.4 6.4
+               c-0.3 0.05-0.6 0.08-0.9 0.08h-1.9
+               c-1.3 0-2.5-0.6-3.3-1.6
+               l-4.6-5.9
+               a1.4 1.4 0 0 1 0.2-2
+               a1.4 1.4 0 0 1 1.9 0.1
+               l2 2.1
+               V2.8z"
+                        />
                     </svg>
                 )}
 
@@ -312,7 +331,7 @@ function Menu_Bar_Japanese_Tutorial() {
                     onStop={handleStop}
                 />
             </div>
-        </div>
+        </div >
     );
 
     return (

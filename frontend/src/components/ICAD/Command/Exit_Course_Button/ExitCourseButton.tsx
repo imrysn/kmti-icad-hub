@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useUI } from '../../../../context/UIContext';
-
+import { ICADCommandView } from '../../../../views/mentor/components/ICADCommandView';
 
 interface ExitCourseButtonProps {
-    onExit: () => void;
+    onExit?: (view?: typeof ICADCommandView) => void;
 }
-
 
 function useCurrentTheme(): 'light' | 'dark' {
     const getTheme = () =>
@@ -22,26 +21,36 @@ function useCurrentTheme(): 'light' | 'dark' {
     return theme;
 }
 
-
-export function useExitCourseHandler(onExit: () => void) {
+export function useExitCourseHandler(onExit?: (view?: typeof ICADCommandView) => void) {
     const { requestConfirmation } = useUI();
 
     const handleExitCourse = async () => {
-        const confirmed = await requestConfirmation({
-            title: 'SUSPEND LEARNING SESSION',
-            message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
-            confirmText: 'Suspend Session',
-            type: 'info'
-        });
-        if (confirmed) {
-            onExit();
+        try {
+            const confirmed = await requestConfirmation({
+                title: 'SUSPEND LEARNING SESSION',
+                message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
+                confirmText: 'Suspend Session',
+                type: 'info'
+            });
+            if (confirmed) {
+                if (onExit) {
+                    onExit(ICADCommandView);
+                }
+                window.dispatchEvent(new CustomEvent('resetCourseView'));
+            }
+        } catch (err) {
+            console.error('[handleExitCourse] Confirmation failed:', err);
         }
     };
 
     return handleExitCourse;
 }
 
-function ExitCourseButton({ onExit }: ExitCourseButtonProps) {
+interface ExitCourseButtonComponentProps {
+    onExit?: (view?: typeof ICADCommandView) => void;
+}
+
+function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
     const handleExitCourse = useExitCourseHandler(onExit);
     const [isExitHovered, setIsExitHovered] = useState(false);
     const theme = useCurrentTheme();
@@ -53,7 +62,6 @@ function ExitCourseButton({ onExit }: ExitCourseButtonProps) {
             color: isExitHovered ? '#ffffffff' : '#FCA5A5',
         }
         : {
-
             background: isExitHovered ? '#cf222e' : 'rgba(252, 165, 165, 0.28)',
             border: '1px solid #FCA5A5',
             color: isExitHovered ? '#ffffffff' : '#FCA5A5',
