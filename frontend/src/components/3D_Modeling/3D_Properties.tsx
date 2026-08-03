@@ -272,6 +272,13 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
               <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot mt-8" style={{ height: "400px", width: "auto" }} />
             </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -420,6 +427,13 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot mt-4 screenshot-wide" />
               </div>
             </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -530,15 +544,15 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 </div>
               </div>
             </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
-
-        <div className="lesson-navigation">
-          <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={() => handleNext()}>
-            {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
-          </button>
-        </div>
       </div>
     </div>
   );

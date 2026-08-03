@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,ExternalLink,FileSpreadsheet,FileText,Folder,HelpCircle,Lock,Play,RotateCcw,Trash2,Upload,UploadCloud,Zap } from 'lucide-react';
+import { AlertCircle,CheckCircle2,ChevronRight,Clock,Download,ExternalLink,FileSpreadsheet,FileText,Folder,HelpCircle,Lock,LogOut,Play,RotateCcw,Trash2,Upload,UploadCloud,Zap } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
@@ -421,40 +421,42 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         })}
                     </div>
                 </div>
+                
+                <div className="sidebar-actions-group" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', borderTop: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))' }}>
+                    <button
+                        className="sidebar-action-btn hover-bg-subtle"
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', padding: '0.75rem 1rem', background: 'transparent', border: '1px solid var(--border-color, rgba(255,255,255,0.05))', borderRadius: '8px', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
+                        onClick={() => setTimeRecordModalOpen(true)}
+                    >
+                        <Clock size={16} /> Time Records
+                    </button>
+                    <button
+                        className="sidebar-action-btn hover-bg-subtle"
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', padding: '0.75rem 1rem', background: 'transparent', border: '1px solid var(--border-color, rgba(255,255,255,0.05))', borderRadius: '8px', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
+                        onClick={() => {
+                            fetchTrash();
+                            setTrashModalOpen(true);
+                        }}
+                    >
+                        <Trash2 size={16} /> Trash Bin
+                    </button>
+                </div>
+                
+                <div className="sidebar-course-footer">
+                    <button
+                        className="exit-course-btn sidebar-exit-course-btn"
+                        onClick={onBack}
+                        title="EXIT COURSE"
+                    >
+                        <LogOut size={16} aria-hidden="true" />
+                        <span>EXIT COURSE</span>
+                    </button>
+                </div>
             </aside>
 
             {/* ── Main Content ── */}
             <main className="main-content-viewer">
-                {/* Sticky Header */}
-                <div className="sticky-lesson-controls" style={{ justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                            {getSetDisplayName(activeSet)}
-                        </h3>
-                        <span className="task-count">{currentSetTasks.length} Tasks</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <button
-                            className="trash-bin-header-btn"
-                            style={{ background: 'var(--surface-color)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}
-                            onClick={() => setTimeRecordModalOpen(true)}
-                        >
-                            <Clock size={16} /> Time Records
-                        </button>
-                        <button
-                            className="trash-bin-header-btn"
-                            onClick={() => {
-                                fetchTrash();
-                                setTrashModalOpen(true);
-                            }}
-                        >
-                            <Trash2 size={16} /> Trash Bin
-                        </button>
-                        <button className="exit-course-btn" onClick={onBack}>
-                            EXIT COURSE
-                        </button>
-                    </div>
-                </div>
+
 
                 {/* Task Row Cards */}
                 <div className="lesson-split-layout">
@@ -563,7 +565,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                         background: 'var(--bg-card, rgba(15, 23, 42, 0.45))',
                                                         border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
                                                         borderRadius: '12px',
-                                                        padding: '1rem 1.5rem',
+                                                        padding: '1.25rem 1.5rem',
                                                         marginBottom: '1rem',
                                                         display: 'flex',
                                                         alignItems: 'center',
@@ -720,7 +722,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleDownloadTask(task);
                                                                                         }}>
-                                                                                            <Download size={14} /> Download
+                                                                                            <Download size={14} />
                                                                                         </button>
                                                                                     </>
                                                                                 )}

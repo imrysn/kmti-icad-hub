@@ -33,7 +33,7 @@ export const TaskStopwatch = forwardRef<TaskStopwatchHandle, TaskStopwatchProps>
     }));
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--bg-surface)', padding: '0.25rem 0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)', marginLeft: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.75rem', borderRadius: '4px', marginLeft: '1rem' }}>
             <Clock size={14} className={isRunning ? 'text-blue-400' : 'text-gray-400'} />
             <span style={{ fontSize: '0.85rem', fontFamily: 'monospace', fontWeight: 'bold', color: isRunning ? 'var(--primary-color, #3b82f6)' : 'var(--text-main)' }}>
                 {formattedTime}

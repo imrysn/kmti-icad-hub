@@ -372,6 +372,12 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               </div>
             </div>
 
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>
+                {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -507,15 +513,15 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               </div>
               <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save</p>
             </div>
+            
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={handleNext}>
+                {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
-
-        <div className="lesson-navigation">
-          <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={handleNext}>
-            {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -636,10 +636,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Types</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
-                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
-                          <th>Japanese Name</th>
+                          <th style={{ width: '45%' }}>Types</th>
+                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
+                          <th style={{ width: '20%' }}>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -689,10 +689,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Stainless Types</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
-                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
-                          <th>Japanese Name</th>
+                          <th style={{ width: '45%' }}>Stainless Types</th>
+                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
+                          <th style={{ width: '20%' }}>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -721,10 +721,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Type</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Code</th>
-                          <th style={{ minWidth: '200px', width: '30%' }}>Size</th>
-                          <th>Article (JIS)</th>
+                          <th style={{ width: '45%' }}>Type</th>
+                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
+                          <th style={{ width: '20%' }}>Article (JIS)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -824,7 +824,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text="Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm."
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
                         <table style={{ border: 'none', background: 'transparent' }}>
                           <tbody>
@@ -846,10 +846,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           </tbody>
                         </table>
                         <br />
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (8 x 1.5) + (2+9)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = 12 + 11</p>
-                        <p className="p-flush" style={{ color: "white" }}><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
+                        <p className="p-flush">Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
+                        <p className="p-flush">Bolt Length = (8 x 1.5) + (2+9)</p>
+                        <p className="p-flush">Bolt Length = 12 + 11</p>
+                        <p className="p-flush"><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
                         <br />
                       </div>
                       <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
@@ -910,9 +910,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: "white", marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>Bolting for Pillow Block:</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>Bolting for Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
                         <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
@@ -927,7 +927,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>For Flange-type Pillow Block:</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>For Flange-type Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
 
@@ -982,9 +982,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />Slotted + Threaded Hole</p>
+                        <p className="p-flush"> <strong >CASE 1: </strong><br />Slotted + Threaded Hole</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
@@ -1005,9 +1005,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />Slotted + Drill hole</p>
+                        <p className="p-flush"><strong >CASE 2: </strong><br />Slotted + Drill hole</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Flatwasher (FWH)</p>
@@ -1044,9 +1044,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />On C-Channel</p>
+                        <p className="p-flush"> <strong >CASE 1: </strong><br />On C-Channel</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Taper washer (AW5)</p>
@@ -1064,7 +1064,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />Both Drill hole</p>
+                        <p className="p-flush"> <strong >CASE 2: </strong><br />Both Drill hole</p>
                         <br />
                         <p className="p-flush">Hex Sockethead Cap Screw (CS)</p>
                         <p className="p-flush">Spring Washer (SW)</p>

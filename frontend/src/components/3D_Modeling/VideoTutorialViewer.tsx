@@ -42,6 +42,15 @@ interface VideoTutorialViewerProps {
 
 const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const safeStep = steps && steps.length > 0 ? (currentStep < steps.length ? currentStep : 0) : 0;
+  const currentData = steps && steps.length > 0 ? steps[safeStep] : null;
+
+  useEffect(() => {
+    if (steps && steps.length > 0 && currentStep >= steps.length) {
+      setCurrentStep(0);
+    }
+  }, [steps, currentStep]);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
@@ -206,10 +215,13 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     setIsPaused(false);
 
 
-    const text = steps[currentStep].text;
+    if (!currentData) return;
+    const text = currentData.text;
+    const titleText = currentData.title ? `${currentData.title}. ` : '';
+    const fullTextForSpeech = titleText + text;
 
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
-    const spokenText = sanitizeSpeech(text);
+    const spokenText = sanitizeSpeech(fullTextForSpeech);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
     const isKokoro = savedVoice.startsWith('kokoro://');
@@ -225,7 +237,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (text.length * 60) / savedRate;
+      const estimatedDuration = (fullTextForSpeech.length * 60) / savedRate;
 
       let wordIdx = 0;
       let searchFrom = 0;
@@ -238,7 +250,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           ? textAudio.duration
           : (estimatedDuration / 1000);
         const totalMs = durationSec * 1000;
-        const msPerChar = totalMs / (text.length || 1);
+        const msPerChar = totalMs / (fullTextForSpeech.length || 1);
+        
+        const initialDelay = titleText.length * msPerChar;
 
         const highlightNextWord = () => {
           if (!isPlaying) return;
@@ -254,7 +268,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             activeIntervalRef.current = setTimeout(highlightNextWord, delay);
           }
         };
-        highlightNextWord();
+        
+        activeIntervalRef.current = setTimeout(highlightNextWord, initialDelay);
       };
 
       textAudio.onpause = () => {
@@ -300,7 +315,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       };
 
       textAudio.play().catch(err => {
-        console.error("Text audio play failed:", err);
+        if (err.name !== 'AbortError') {
+          console.error("Text audio play failed:", err);
+        }
         textAudio.onended?.(null as any);
       });
     } else {
@@ -311,11 +328,17 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       textUtterance.rate = savedRate * 0.9;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (text.length * 60) / textUtterance.rate;
+      const estimatedDuration = (fullTextForSpeech.length * 60) / textUtterance.rate;
       let boundaryFired = false;
 
       const getOriginalIndex = (spokenIdx: number) => {
-        if (text.length === spokenText.length) return spokenIdx;
+        const sanitizedTitleLen = sanitizeSpeech(titleText).length;
+        if (spokenIdx < sanitizedTitleLen) {
+            return 0;
+        }
+        const adjustedSpokenIdx = spokenIdx - sanitizedTitleLen;
+
+        if (text.length === (spokenText.length - sanitizedTitleLen)) return adjustedSpokenIdx;
         const regex = /i\s*cad/ig;
         let match;
         let shift = 0;
@@ -324,13 +347,13 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           const matchIdx = match.index;
           const matchText = match[0];
           const diff = 7 - matchText.length;
-          if (matchIdx + shift < spokenIdx) {
+          if (matchIdx + shift < adjustedSpokenIdx) {
             shift += diff;
           } else {
             break;
           }
         }
-        return Math.max(0, spokenIdx - shift);
+        return Math.max(0, adjustedSpokenIdx - shift);
       };
 
       textUtterance.onstart = () => {
@@ -338,7 +361,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
           if (!boundaryFired && synthRef.current) {
             let wordIdx = 0;
             let searchFrom = 0;
-            const msPerChar = estimatedDuration / (text.length || 1);
+            const msPerChar = estimatedDuration / (fullTextForSpeech.length || 1);
+            const initialDelay = titleText.length * msPerChar;
 
             const highlightNextWord = () => {
               if (wordIdx < words.length) {
@@ -353,7 +377,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
                 activeIntervalRef.current = setTimeout(highlightNextWord, delay);
               }
             };
-            highlightNextWord();
+            activeIntervalRef.current = setTimeout(highlightNextWord, initialDelay);
           }
         }, 300);
       };
@@ -538,9 +562,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     setCurrentStep(0);
   };
 
-  if (!steps || steps.length === 0) return null;
-
-  const currentData = steps[currentStep];
+  if (!currentData) return null;
 
   const getActiveSpotlight = () => {
     if (currentCharIndex === 0 || !currentData.wordSpotlights) {

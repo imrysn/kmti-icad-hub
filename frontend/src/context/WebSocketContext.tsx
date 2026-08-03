@@ -71,6 +71,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
   const connect = useCallback(() => {
     if (!token || !isMountedRef.current) return;
 
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+
     if (wsRef.current && wsRef.current.readyState < WebSocket.CLOSING) {
       wsRef.current.close();
     }
@@ -105,12 +110,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
 
     ws.onclose = (event) => {
       if (!isMountedRef.current) return;
+      // If this websocket is no longer the active one, don't trigger reconnect logic
+      if (wsRef.current !== ws) return;
+
       setIsConnected(false);
       if (token) {
         // Exponential backoff, cap at 30s
         const delay = Math.min(reconnectDelayRef.current, 30000);
         reconnectDelayRef.current = delay * 1.5;
         console.log(`[WS] Disconnected (Code: ${event.code}, Reason: "${event.reason || 'None'}"). Reconnecting in ${delay}ms...`);
+        if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
         reconnectTimeoutRef.current = setTimeout(connect, delay);
       }
     };
