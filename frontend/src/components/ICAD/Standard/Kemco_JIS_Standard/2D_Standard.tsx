@@ -288,7 +288,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       {subLessonId === '2d-gallery' && (
         <div
           style={{
-            background: "#000",
+            background: "var(--bg-dark)",
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
@@ -299,7 +299,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
           {/* ── Top bar: card-header style, flex-start, Browse menu right ── */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
             <h4 style={{
-              color: "#fff",
+              color: "var(--text-main)",
               margin: 0,
               fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
               borderLeft: "4px solid #DD4DFA",
@@ -313,12 +313,12 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               <button
                 onClick={() => setShowMenu((v) => !v)}
                 style={{
-                  background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: showMenu ? "#DD4DFA" : "var(--bg-surface)",
+                  border: "1px solid var(--border-color)",
                   borderRadius: "999px",
                   padding: "0.5rem 1rem",
                   cursor: "pointer",
-                  color: "#fff",
+                  color: showMenu ? "#fff" : "var(--text-main)",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.4rem",
@@ -339,10 +339,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                   top: "calc(100% + 10px)",
                   right: 0,
                   width: "280px",
-                  background: "#0a0a12",
+                  background: "var(--bg-surface)",
                   border: "1px solid rgba(221,77,250,0.4)",
                   borderRadius: "14px",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                  boxShadow: "var(--shadow-card)",
                   zIndex: 1000,
                   maxHeight: "440px",
                   overflowY: "auto",
@@ -355,7 +355,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     color: "#DD4DFA",
-                    borderBottom: "1px solid rgba(255,255,255,0.07)",
+                    borderBottom: "1px solid var(--border-color)",
                     marginBottom: "0.25rem",
                   }}>
                     2D Standard Reference
@@ -372,7 +372,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                         padding: "0.6rem 1rem",
                         textAlign: "left",
                         cursor: "pointer",
-                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-muted)",
                         fontSize: "0.82rem",
                         fontWeight: idx === galleryIndex ? 700 : 400,
                         display: "flex",
@@ -382,27 +382,27 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       }}
                       onMouseEnter={(e) => {
                         if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
-                          (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                          (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)";
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (idx !== galleryIndex) {
                           (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                          (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
                         }
                       }}
                     >
                       <span style={{
                         display: "inline-flex", alignItems: "center", justifyContent: "center",
                         width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                        background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                        background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "var(--bg-hover)",
                         fontSize: "0.68rem", fontWeight: 800,
-                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-dim)",
                       }}>
                         {img.number}
                       </span>
-                      <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                      <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "var(--text-main)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
                         {img.label}
                       </span>
                     </button>
@@ -424,8 +424,8 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               transform: "translateX(-50%)",
               borderRadius: "10px",
               overflow: "hidden",
-              boxShadow: "0 12px 60px rgba(0,0,0,0.8)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              boxShadow: "var(--shadow-card)",
+              border: "1px solid var(--border-color)",
               lineHeight: 0,
             }}
           >
@@ -476,17 +476,17 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               display: "flex",
               alignItems: "center",
               gap: "0.25rem",
-              background: "rgba(15,15,25,0.88)",
+              background: "var(--bg-surface)",
               backdropFilter: "blur(16px)",
               borderRadius: "999px",
               padding: "0.4rem 0.75rem",
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+              border: "1px solid var(--border-color)",
+              boxShadow: "var(--shadow-card)",
             }}>
               <button
                 onClick={handleGalleryPrev}
                 style={{
-                  background: "none", border: "none", cursor: "pointer", color: "#fff",
+                  background: "none", border: "none", cursor: "pointer", color: "var(--text-main)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
                 }}
@@ -496,7 +496,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               </button>
 
               <span style={{
-                fontSize: "0.75rem", fontWeight: 600, color: "rgba(255,255,255,0.7)",
+                fontSize: "0.75rem", fontWeight: 600, color: "var(--text-muted)",
                 padding: "0 0.35rem", whiteSpace: "nowrap",
               }}>
                 {galleryImages[galleryIndex].number} / {galleryImages.length}
@@ -505,7 +505,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               <button
                 onClick={handleGalleryNext}
                 style={{
-                  background: "none", border: "none", cursor: "pointer", color: "#fff",
+                  background: "none", border: "none", cursor: "pointer", color: "var(--text-main)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
                 }}
@@ -531,10 +531,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               disabled={!onPrevLesson}
               style={{
                 background: "transparent",
-                border: "1px solid rgba(255,255,255,0.25)",
+                border: "1px solid var(--border-color)",
                 borderRadius: "999px",
                 padding: "0.75rem 1.75rem",
-                color: "rgba(255,255,255,0.8)",
+                color: "var(--text-main)",
                 fontFamily: "var(--font-heading, 'Inter', sans-serif)",
                 fontWeight: 700,
                 fontSize: "0.85rem",
