@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, LayoutGrid, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutGrid, X, GripHorizontal, Maximize, Minimize } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Static Assets */
-import icadInterfaceBg from "../../../../assets/3D_INTERACTIVE/icad_interface.jpg";
 import mainViewsImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_main_views.png";
 import dimensioningOrderImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_dimensioning_order.png";
 import criticalDetailsImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_critical_details.png";
@@ -100,6 +99,9 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [navPos, setNavPos] = useState({ x: 0, y: 0 });
+  const [isGalleryFullscreen, setIsGalleryFullscreen] = useState(false);
+  const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
   useEffect(() => {
     registerText(reminderSteps, 0);
@@ -163,6 +165,39 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
     } else if (isRightSwipe) {
       handleGalleryPrev();
     }
+  };
+
+  // Control bar drag handlers (Solidworks-style draggable pill)
+  const handlePillPointerDown = (e: React.PointerEvent) => {
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startNavX: navPos.x,
+      startNavY: navPos.y,
+    };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePillPointerMove = (e: React.PointerEvent) => {
+    if (!dragRef.current) return;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    setNavPos({
+      x: dragRef.current.startNavX + dx,
+      y: dragRef.current.startNavY + dy,
+    });
+  };
+
+  const handlePillPointerUp = (e: React.PointerEvent) => {
+    if (dragRef.current) {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      dragRef.current = null;
+    }
+  };
+
+  const toggleGalleryFullscreen = () => {
+    setIsGalleryFullscreen((v) => !v);
+    setNavPos({ x: 0, y: 0 });
   };
 
   return (
@@ -286,170 +321,54 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       )}
 
       {subLessonId === '2d-gallery' && (
-        <div
-          style={{
-            background: "var(--bg-dark)",
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            padding: "2rem 2rem 3rem",
-            gap: "1.5rem",
-          }}
-        >
-          {/* ── Top bar: card-header style, flex-start, Browse menu right ── */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
-            <h4 style={{
-              color: "var(--text-main)",
-              margin: 0,
-              fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
-              borderLeft: "4px solid #DD4DFA",
-              paddingLeft: "0.75rem",
+        <div className="gallery-section-wrapper">
+          {/* ── Title header: lesson count + image title (no card-header) ── */}
+          <div style={{ textAlign: "center", paddingBottom: "0.25rem" }}>
+            <span style={{
+              display: "block",
+              fontSize: "0.78rem",
+              fontWeight: 500,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#DD4DFA",
+              marginBottom: "0.4rem",
             }}>
+              {galleryImages[galleryIndex].number} of {galleryImages.length}
+            </span>
+            <h2
+              className="gallery-image-title"
+              style={{
+                margin: 0,
+                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.15,
+              }}
+            >
               {galleryImages[galleryIndex].label}
-            </h4>
-
-            {/* Browse shortcut menu — right */}
-            <div style={{ position: "relative", flexShrink: 0 }}>
-              <button
-                onClick={() => setShowMenu((v) => !v)}
-                style={{
-                  background: showMenu ? "#DD4DFA" : "var(--bg-surface)",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "999px",
-                  padding: "0.5rem 1rem",
-                  cursor: "pointer",
-                  color: showMenu ? "#fff" : "var(--text-main)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  transition: "all 0.2s ease",
-                  boxShadow: showMenu ? "0 0 18px rgba(221,77,250,0.5)" : "none",
-                }}
-                aria-label="Browse images"
-              >
-                {showMenu ? <X size={15} /> : <LayoutGrid size={15} />}
-                {showMenu ? "Close" : "Browse"}
-              </button>
-
-              {showMenu && (
-                <div style={{
-                  position: "absolute",
-                  top: "calc(100% + 10px)",
-                  right: 0,
-                  width: "280px",
-                  background: "var(--bg-surface)",
-                  border: "1px solid rgba(221,77,250,0.4)",
-                  borderRadius: "14px",
-                  boxShadow: "var(--shadow-card)",
-                  zIndex: 1000,
-                  maxHeight: "440px",
-                  overflowY: "auto",
-                  padding: "0.5rem 0",
-                }}>
-                  <div style={{
-                    padding: "0.65rem 1rem",
-                    fontSize: "0.65rem",
-                    fontWeight: 800,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: "#DD4DFA",
-                    borderBottom: "1px solid var(--border-color)",
-                    marginBottom: "0.25rem",
-                  }}>
-                    2D Standard Reference
-                  </div>
-                  {galleryImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => { setGalleryIndex(idx); setShowMenu(false); }}
-                      style={{
-                        width: "100%",
-                        background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
-                        border: "none",
-                        borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
-                        padding: "0.6rem 1rem",
-                        textAlign: "left",
-                        cursor: "pointer",
-                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-muted)",
-                        fontSize: "0.82rem",
-                        fontWeight: idx === galleryIndex ? 700 : 400,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.65rem",
-                        transition: "all 0.15s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover)";
-                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
-                        }
-                      }}
-                    >
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                        background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "var(--bg-hover)",
-                        fontSize: "0.68rem", fontWeight: 800,
-                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-dim)",
-                      }}>
-                        {img.number}
-                      </span>
-                      <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "var(--text-main)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
-                        {img.label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            </h2>
           </div>
 
-          {/* ── ICAD Interface Frame ── */}
+          {/* ── Pink.png background frame with gallery image ── */}
           <div
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             style={{
               position: "relative",
-              width: "130%",
-              left: "50%",
-              transform: "translateX(-50%)",
-              borderRadius: "10px",
-              overflow: "hidden",
-              boxShadow: "var(--shadow-card)",
-              border: "1px solid var(--border-color)",
-              lineHeight: 0,
+              width: "100%",
+              maxWidth: "1000px",
+              margin: "0 auto",
+              aspectRatio: "16 / 9",
             }}
           >
-            {/* ICAD screenshot — defines aspect ratio */}
-            <img
-              src={icadInterfaceBg}
-              alt="ICAD iCAD SX Interface"
-              style={{ width: "100%", height: "auto", display: "block" }}
-              draggable={false}
-            />
-
-            {/* Gallery image overlaid on the pink canvas
-                Pink canvas: left≈21.1%, top≈10.7%, width≈69.6%, height≈84% */}
+            {/* Gallery image centered */}
             <div style={{
               position: "absolute",
-              left: "21.1%",
-              top: "10.7%",
-              width: "69.6%",
-              height: "84%",
+              inset: 0,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              overflow: "hidden",
-              padding: "1%",
             }}>
               {galleryImages[galleryIndex].content ? (
                 galleryImages[galleryIndex].content
@@ -468,111 +387,198 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               )}
             </div>
 
-            {/* Dark pill control bar — bottom-right of the frame (like the reference) */}
-            <div style={{
-              position: "absolute",
-              bottom: "4%",
-              right: "2%",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.25rem",
-              background: "var(--bg-surface)",
-              backdropFilter: "blur(16px)",
-              borderRadius: "999px",
-              padding: "0.4rem 0.75rem",
-              border: "1px solid var(--border-color)",
-              boxShadow: "var(--shadow-card)",
-            }}>
+            {/* ── Solidworks-style draggable dark pill control bar ── */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "4%",
+                right: "2%",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                background: "rgba(20, 20, 25, 0.95)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "40px",
+                padding: "8px 16px",
+                border: "1px solid rgba(255,255,255,0.1)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                color: "#fff",
+                zIndex: 30,
+                transform: `translate(${navPos.x}px, ${navPos.y}px)`,
+                animation: "slideUpFade 0.5s ease-out",
+              }}
+            >
+              {/* Drag handle */}
+              <div
+                onPointerDown={handlePillPointerDown}
+                onPointerMove={handlePillPointerMove}
+                onPointerUp={handlePillPointerUp}
+                onPointerCancel={handlePillPointerUp}
+                title="Drag to move panel"
+                style={{ cursor: "grab", padding: "8px", marginRight: "4px", borderRadius: "4px", display: "flex" }}
+              >
+                <GripHorizontal size={20} color="#888" />
+              </div>
+
+              {/* Browse button (replaces Play) */}
+              <div style={{ position: "relative" }}>
+                <button
+                  onClick={() => setShowMenu((v) => !v)}
+                  title="Browse images"
+                  style={{
+                    background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.1)",
+                    border: "none",
+                    color: "#fff",
+                    padding: "6px 12px",
+                    borderRadius: "20px",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontWeight: 500,
+                    boxShadow: showMenu ? "0 0 18px rgba(221,77,250,0.5)" : "none",
+                  }}
+                  aria-label="Browse images"
+                >
+                  {showMenu ? <X size={15} /> : <LayoutGrid size={15} />}
+                  {showMenu ? "Close" : "Browse"}
+                </button>
+
+                {showMenu && (
+                  <div style={{
+                    position: "absolute",
+                    bottom: "calc(100% + 10px)",
+                    right: 0,
+                    width: "280px",
+                    background: "#0a0a12",
+                    border: "1px solid rgba(221,77,250,0.4)",
+                    borderRadius: "14px",
+                    boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                    zIndex: 1000,
+                    maxHeight: "440px",
+                    overflowY: "auto",
+                    padding: "0.5rem 0",
+                  }}>
+                    <div style={{
+                      padding: "0.65rem 1rem",
+                      fontSize: "0.65rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "#DD4DFA",
+                      borderBottom: "1px solid rgba(255,255,255,0.07)",
+                      marginBottom: "0.25rem",
+                    }}>
+                      {galleryImages[galleryIndex].label}
+                    </div>
+                    {galleryImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => { setGalleryIndex(idx); setShowMenu(false); }}
+                        style={{
+                          width: "100%",
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
+                          border: "none",
+                          borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
+                          padding: "0.6rem 1rem",
+                          textAlign: "left",
+                          cursor: "pointer",
+                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                          fontSize: "0.82rem",
+                          fontWeight: idx === galleryIndex ? 700 : 400,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.65rem",
+                          transition: "all 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (idx !== galleryIndex) {
+                            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (idx !== galleryIndex) {
+                            (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                          }
+                        }}
+                      >
+                        <span style={{
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                          fontSize: "0.68rem", fontWeight: 800,
+                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                        }}>
+                          {img.number}
+                        </span>
+                        <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                          {img.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Previous */}
               <button
                 onClick={handleGalleryPrev}
                 style={{
-                  background: "none", border: "none", cursor: "pointer", color: "var(--text-main)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
                 }}
                 aria-label="Previous image"
               >
                 <ChevronLeft size={18} />
               </button>
 
-              <span style={{
-                fontSize: "0.75rem", fontWeight: 600, color: "var(--text-muted)",
-                padding: "0 0.35rem", whiteSpace: "nowrap",
-              }}>
-                {galleryImages[galleryIndex].number} / {galleryImages.length}
-              </span>
-
+              {/* Next */}
               <button
                 onClick={handleGalleryNext}
                 style={{
-                  background: "none", border: "none", cursor: "pointer", color: "var(--text-main)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  padding: "0.2rem 0.35rem", borderRadius: "50%", transition: "background 0.15s",
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
                 }}
                 aria-label="Next image"
               >
                 <ChevronRight size={18} />
               </button>
+
+              {/* Fullscreen toggle */}
+              <button
+                onClick={toggleGalleryFullscreen}
+                title={isGalleryFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                style={{
+                  background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
+                }}
+              >
+                {isGalleryFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+              </button>
             </div>
           </div>
 
           {/* ── Bottom navigation: PREVIOUS | NEXT LESSON ── */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            maxWidth: "860px",
-            width: "100%",
-            margin: "0 auto",
-            paddingTop: "0.5rem",
-          }}>
+          <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0 }}>
             <button
+              className="nav-button"
               onClick={handlePrev}
               disabled={!onPrevLesson}
-              style={{
-                background: "transparent",
-                border: "1px solid var(--border-color)",
-                borderRadius: "999px",
-                padding: "0.75rem 1.75rem",
-                color: "var(--text-main)",
-                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                cursor: !onPrevLesson ? "not-allowed" : "pointer",
-                opacity: !onPrevLesson ? 0.35 : 1,
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                transition: "all 0.2s ease",
-              }}
             >
-              <ChevronLeft size={16} /> Previous
+              <ChevronLeft size={18} /> Previous
             </button>
-
             <button
+              className="nav-button next"
               onClick={handleNext}
-              style={{
-                background: "#DD4DFA",
-                border: "none",
-                borderRadius: "999px",
-                padding: "0.75rem 1.75rem",
-                color: "#fff",
-                fontFamily: "var(--font-heading, 'Inter', sans-serif)",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                boxShadow: "0 0 20px rgba(221,77,250,0.45)",
-                transition: "all 0.2s ease",
-              }}
             >
-              {nextLabel || "Next Lesson"} <ChevronRight size={16} />
+              {nextLabel || "Next Lesson"} <ChevronRight size={18} />
             </button>
           </div>
         </div>
