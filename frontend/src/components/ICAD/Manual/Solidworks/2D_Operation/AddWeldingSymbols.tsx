@@ -46,7 +46,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
 
                     {/* Step 1 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">1</span>
                             <span className="step-label">Under Annotation, click Weld Symbol.</span>
                         </div>
@@ -63,7 +63,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
 
                     {/* Step 2 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">2</span>
                             <span className="step-label">Welding Properties will appear.</span>
                         </div>
@@ -80,7 +80,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
 
                     {/* Step 3 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">3</span>
                             <span className="step-label">Place the welding symbol.</span>
                         </div>
@@ -88,7 +88,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
 
                     {/* Step 4 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">4</span>
                             <span className="step-label">Click OK.</span>
                         </div>

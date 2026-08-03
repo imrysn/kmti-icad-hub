@@ -74,21 +74,6 @@ const ParagonSMC: React.FC<ParagonSMCProps> = ({
                 <div className="lesson-card tab-content fade-in">
 
                     {/* Step 1 */}
-                    <div
-                        className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                        data-reading-index="1"
-                    >
-                        <div className="step-header">
-                            <span className="step-number">1 </span>
-                            <KaraokeLessonText
-                                as="span"
-                                className="step-label"
-                                text="Please review the Paragon SMC reference"
-                                isActive={isSpeaking && currentIndex === 1}
-                                currentCharIndex={currentCharIndex}
-                            />
-                        </div>
-                    </div>
 
                     {/* ── Paragon SMC Image ── */}
                     <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>

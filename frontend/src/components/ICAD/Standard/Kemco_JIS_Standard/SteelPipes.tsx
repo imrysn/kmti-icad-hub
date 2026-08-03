@@ -17,9 +17,8 @@ interface SteelPipesLessonProps {
 }
 
 const reminderSteps = [
-  "S45C Structural Steel Pipe - Inner Diameter Specified",
+  "S45C Structural Carbon Steel Pipe - Inner Diameter Specified",
   "(Akashi-Approve) (STKM16A)",
-  "Please review the specifications for the structural steel pipe.",
 ];
 
 const SteelPipesLesson: React.FC<SteelPipesLessonProps> = ({
@@ -119,14 +118,9 @@ const SteelPipesLesson: React.FC<SteelPipesLessonProps> = ({
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
           <div className="lesson-intro" style={{ border: "none", background: "none", boxShadow: "none", backdropFilter: "none", marginBottom: "0.5rem", padding: "1rem 0" }}>
-            <KaraokeLessonText
-              as="h3"
-              className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`}
-              data-reading-index="0"
-              text="S45C Structural Steel Pipe - Inner Diameter Specified"
-              isActive={isSpeaking && currentIndex === 0}
-              currentCharIndex={currentCharIndex}
-            />
+            <div className="card-header">
+              <h4 className="section-title"> S45C Structural Carbon Steel Pipe - Inner Diameter Specified </h4>
+            </div>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
               data-reading-index="1"
@@ -137,21 +131,6 @@ const SteelPipesLesson: React.FC<SteelPipesLessonProps> = ({
           </div>
 
       {/* Step 1 */}
-          <div
-            className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
-            data-reading-index="2"
-          >
-            <div className="step-header">
-              <span className="step-number">1 </span>
-              <KaraokeLessonText
-                as="span"
-                className="step-label"
-                text="Please review the specifications for the structural steel pipe"
-                isActive={isSpeaking && currentIndex === 2}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-          </div>
 
           {/* ── Image Gallery ── */}
           <div

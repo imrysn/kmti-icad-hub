@@ -11,14 +11,12 @@ import steelTable2Img from "../../../../assets/Standard/Kemco_JIS_Standard/steel
 import steelTable3Img from "../../../../assets/Standard/Kemco_JIS_Standard/steel_material_table3.png";
 
 /* Gallery Assets — Image 4 (Flat Bar) */
-import steelTable4Img from "../../../../assets/Standard/Kemco_JIS_Standard/steel_material_table4.png";
 import flatBar1Img from "../../../../assets/Standard/Kemco_JIS_Standard/Flat_Bar1.png";
 import flatBar2Img from "../../../../assets/Standard/Kemco_JIS_Standard/Flat_Bar2.png";
 import flatBar3Img from "../../../../assets/Standard/Kemco_JIS_Standard/Flat_Bar3.png";
 import flatBar4Img from "../../../../assets/Standard/Kemco_JIS_Standard/Flat_Bar4.png";
 
 /* Gallery Assets — Image 5 (Round Bar) */
-import steelTable5Img from "../../../../assets/Standard/Kemco_JIS_Standard/steel_material_table5.png";
 import roundBar1Img from "../../../../assets/Standard/Kemco_JIS_Standard/Round_Bar1.png";
 import roundBar2Img from "../../../../assets/Standard/Kemco_JIS_Standard/Round_Bar2.png";
 import roundBar3Img from "../../../../assets/Standard/Kemco_JIS_Standard/Round_Bar3.png";
@@ -68,22 +66,22 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
   let currentGalleryImages: { src: string; label: string; number: number; }[] = [];
   if (!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') {
     currentGalleryImages = [
-      { src: steelTable1Img, label: "Steel Material Table 1", number: 1 },
-      { src: steelTable2Img, label: "Steel Material Table 2", number: 2 },
-      { src: steelTable3Img, label: "Steel Material Table 3", number: 3 },
+      { src: steelTable1Img, label: "Flat Bar (Polished) SS400-D", number: 1 },
+      { src: steelTable2Img, label: "Flat Bar (Polished) S45C-D", number: 2 },
+      { src: steelTable3Img, label: "Square Steel (Black-SS400, S50C) & Round Bar (Black Coated) S25C, S45C, SCM440", number: 3 },
     ];
   } else if (subLessonId === 'general-standard-steel-flat') {
     currentGalleryImages = [
-      { src: flatBar1Img, label: "Flat Bar Reference Table 1", number: 1 },
-      { src: flatBar2Img, label: "Flat Bar Reference Table 2", number: 2 },
-      { src: flatBar3Img, label: "Flat Bar Reference Table 3", number: 3 },
-      { src: flatBar4Img, label: "Flat Bar Reference Table 4", number: 4 },
+      { src: flatBar1Img, label: "Flat Bar", number: 1 },
+      { src: flatBar2Img, label: "Flat Bar", number: 2 },
+      { src: flatBar3Img, label: "Flat Bar", number: 3 },
+      { src: flatBar4Img, label: "Flat Bar", number: 4 },
     ];
   } else if (subLessonId === 'general-standard-steel-round') {
     currentGalleryImages = [
-      { src: roundBar1Img, label: "Round Bar Reference Table 1", number: 1 },
-      { src: roundBar2Img, label: "Round Bar Reference Table 2", number: 2 },
-      { src: roundBar3Img, label: "Round Bar Reference Table 3", number: 3 },
+      { src: roundBar1Img, label: "Round Bar Size Chart (Polished)", number: 1 },
+      { src: roundBar2Img, label: "Round Bar Size Chart (Polished)", number: 2 },
+      { src: roundBar3Img, label: "Square/Hexagonal (Polished)", number: 3 },
     ];
   }
 
@@ -158,43 +156,11 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
 
           {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
             <>
-              {/* Step 1 */}
-              <div
-                className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
-                data-reading-index="2"
-                style={{ marginTop: "0.5rem" }}
-              >
-                <div className="step-header">
-                  <span className="step-number">1 </span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text="Please review the General Standard Steel Material Table"
-                    isActive={isSpeaking && currentIndex === 2}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div
-                className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`}
-                data-reading-index="3"
-                style={{ marginTop: "0.5rem" }}
-              >
-                <div className="step-header">
-                  <span className="step-number">2 </span>
-                  <KaraokeLessonText
-                    as="span"
-                    className="step-label"
-                    text="Ensure standard steel materials are selected according to this table"
-                    isActive={isSpeaking && currentIndex === 3}
-                    currentCharIndex={currentCharIndex}
-                  />
-                </div>
-              </div>
 
               {/* ── Image Gallery ── */}
+              <div className="card-header">
+                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
+              </div>
               <div
                 className="gallery-container mt-2"
                 style={{
@@ -212,7 +178,7 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "675px",
+                    height: "700px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -293,6 +259,9 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
           {subLessonId === 'general-standard-steel-flat' && (
             <div className="gallery-section mt-2" style={{ width: "100%" }}>
               {/* ── Image Gallery ── */}
+              <div className="card-header">
+                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
+              </div>
               <div
                 className="gallery-container"
                 style={{
@@ -391,6 +360,9 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
           {subLessonId === 'general-standard-steel-round' && (
             <div className="gallery-section mt-2" style={{ width: "100%" }}>
               {/* ── Image Gallery ── */}
+              <div className="card-header">
+                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
+              </div>
               <div
                 className="gallery-container"
                 style={{

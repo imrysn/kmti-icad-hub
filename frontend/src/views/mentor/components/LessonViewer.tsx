@@ -100,6 +100,7 @@ interface LessonViewerProps {
   completedLessons: string[];
   onLessonComplete: (id?: string) => void;
   isEmployeeSide?: boolean;
+  setActiveLessonId?: (id: string) => void;
 }
 
 export const LessonViewer: React.FC<LessonViewerProps> = ({
@@ -116,7 +117,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   lessons,
   completedLessons,
   onLessonComplete,
-  isEmployeeSide = false
+  isEmployeeSide = false,
+  setActiveLessonId
 }) => {
   const { requestConfirmation } = useUI();
   const { user } = useAuth();
@@ -429,7 +431,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       </div>
 
       <div className="lesson-split-layout">
-        <div className="lesson-scroll-area">
+        <div className="lesson-scroll-area" style={['sw-interface', 'sw-mouse-control', 'sw-keyboard-shortcuts'].includes(activeLessonId) ? { paddingLeft: 0 } : undefined}>
           {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
           <div style={{
             position: 'sticky',
@@ -477,15 +479,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '3d': () => <KemcoThreeDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': () => <KemcoTwoDStandardLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'piping': () => <PipingTableLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-interface': () => <SolidworkIntroLesson subLessonId="sw-interface" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-mouse-control': () => <SolidworkIntroLesson subLessonId="sw-mouse-control" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-keyboard-shortcuts': () => <SolidworkIntroLesson subLessonId="sw-keyboard-shortcuts" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-menu-bar': () => <SolidworkIntroLesson subLessonId="sw-menu-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-command-manager': () => <SolidworkIntroLesson subLessonId="sw-command-manager" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-heads-up-view-toolbar': () => <SolidworkIntroLesson subLessonId="sw-heads-up-view-toolbar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-feature-manager-tree-view': () => <SolidworkIntroLesson subLessonId="sw-feature-manager-tree-view" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-coordinate-system': () => <SolidworkIntroLesson subLessonId="sw-coordinate-system" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'sw-status-bar': () => <SolidworkIntroLesson subLessonId="sw-status-bar" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'sw-interface': () => <SolidworkIntroLesson subLessonId="sw-interface" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} setActiveLessonId={setActiveLessonId} />,
+                  'sw-mouse-control': () => <SolidworkIntroLesson subLessonId="sw-mouse-control" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} setActiveLessonId={setActiveLessonId} />,
+                  'sw-keyboard-shortcuts': () => <SolidworkIntroLesson subLessonId="sw-keyboard-shortcuts" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} setActiveLessonId={setActiveLessonId} />,
                   'sw-part-modeling': () => <SolidworkPartModelingLesson subLessonId="sw-part-modeling" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-sketching-base': () => <SolidworkPartModelingLesson subLessonId="sw-sketching-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'sw-extruding-base': () => <SolidworkPartModelingLesson subLessonId="sw-extruding-base" onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,

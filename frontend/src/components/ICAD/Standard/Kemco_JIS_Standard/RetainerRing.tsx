@@ -100,23 +100,33 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                         <div className="lesson-card tab-content fade-in">
                             {/* Images for JIS Standard */}
                             {activeTab === "internal" ? (
-                                <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                                    <img
-                                        src={retainerRing2Img}
-                                        alt="Retaining Ring Internal"
-                                        className="software-screenshot"
-                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                    />
-                                </div>
+                                <>
+                                    <div className="card-header">
+                                        <h4 className="section-title"> Retaining Rings C Type-Internal </h4>
+                                    </div>
+                                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
+                                        <img
+                                            src={retainerRing2Img}
+                                            alt="Retaining Ring Internal"
+                                            className="software-screenshot"
+                                            style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                        />
+                                    </div>
+                                </>
                             ) : (
-                                <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                                    <img
-                                        src={retainerRing1Img}
-                                        alt="Retaining Ring External"
-                                        className="software-screenshot"
-                                        style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                    />
-                                </div>
+                                <>
+                                    <div className="card-header">
+                                        <h4 className="section-title"> Retaining Rings C Type-External </h4>
+                                    </div>
+                                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
+                                        <img
+                                            src={retainerRing1Img}
+                                            alt="Retaining Ring External"
+                                            className="software-screenshot"
+                                            style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                                        />
+                                    </div>
+                                </>
                             )}
 
                             {/* Page Navigation */}
@@ -139,9 +149,12 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
 
             {subLessonId === 'retainer-ring-spec' && (
                 <>
-                    
+
                     <div className="lesson-grid single-card">
                         <div className="lesson-card tab-content fade-in">
+                            <div className="card-header">
+                                <h4 className="section-title"> Retaining Rings External </h4>
+                            </div>
                             <div
                                 className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
                                 data-reading-index="1"

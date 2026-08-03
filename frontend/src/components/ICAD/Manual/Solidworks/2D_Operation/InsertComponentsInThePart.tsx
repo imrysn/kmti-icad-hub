@@ -42,7 +42,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                     {/* Step 1 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">1</span>
                             <span className="step-label">Create New File</span>
                         </div>
@@ -59,21 +59,21 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                     {/* Step 2 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">2</span>
                             <span className="step-label">Select New Document</span>
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                
-                                    Click <strong>A2 - JFE</strong>{'                '}
+                                <li>
+                                    Click <strong>A2 - JFE</strong>{' '}
                                     <span className="image-wrapper-flush">
-                                        <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                        <img src={jfeImg} alt="A2 - JFE icon" style={{ height: '50px', verticalAlign: 'middle' }} />
                                     </span>
-                                
-                                <div></div>
+                                </li>
+                                <li>
                                     Click <strong>OK</strong> or Double click <strong>A2 - JFE</strong>.
-                                
+                                </li>
                             </ol>
 
                             <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -97,7 +97,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                     {/* Step 3 */}
                     <div className="instruction-step">
-                        <div className="step-header">
+                        <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">3</span>
                             <span className="step-label">Insert Parts/ Assembly</span>
                         </div>
@@ -107,7 +107,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             </p>
 
                             <div className="instruction-step" style={{ paddingTop: '1rem', paddingBottom: '0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">1</span>
                                     <span className="step-label">View Layout &gt; Model View &gt; Browse file from the folder &gt; Click Assem1 then Open.</span>
                                 </div>
@@ -122,7 +122,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             </div>
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">2</span>
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
@@ -137,7 +137,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             </div>
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
-                                <div className="step-header">
+                                <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">3</span>
                                     <span className="step-label">Make drawing from Part/Assy</span>
                                 </div>

@@ -5,6 +5,8 @@ import partModeImg from "../../../../../../assets/Solidworks/3D_Fv/Solidwork_Int
 import assemblyModeImg from "../../../../../../assets/Solidworks/3D_Fv/Assembly Mode.png";
 import drawingModeImg from "../../../../../../assets/Solidworks/3D_Fv/Drawing Mode.png";
 import CoordinateSystemContent from '../CoordinateSystemContent';
+import FeatureManagerTreeViewContent from '../FeatureManagerTreeViewContent';
+import StatusBarContent from '../StatusBarContent';
 
 export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
   {
@@ -80,7 +82,10 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "15%", left: "0%", width: "12.8%", height: "80%", opacity: 1 },
-    subtitlePos: { top: "50%", left: "16%" }
+    subtitlePos: { top: "20%", left: "15%" },
+    hasMoreContent: true,
+    moreContentComponent: <FeatureManagerTreeViewContent hideText={true} />,
+    expandedWidth: "700px"
   },
   {
     id: 8,
@@ -109,6 +114,9 @@ export const SOLIDWORKS_TUTORIAL_STEPS: TutorialStep[] = [
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "98%", left: "0%", width: "100%", height: "3%", opacity: 1 },
-    subtitlePos: { bottom: "5%", left: "50%", transform: "translateX(-50%)" }
+    subtitlePos: { bottom: "5%", left: "50%", transform: "translateX(-50%)" },
+    hasMoreContent: true,
+    moreContentComponent: <StatusBarContent hideText={true} />,
+    expandedWidth: "650px"
   }
 ];

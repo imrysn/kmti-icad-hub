@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutGrid, X, GripHorizontal, Maximize, Minimize } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../../KaraokeLessonText";
@@ -15,7 +15,6 @@ import slotLongHolesImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_
 import bendedPlateImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_bended_plate.png";
 import computationBendedImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_computation_bended.png";
 import keyPlateImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_key_plate.png";
-import materialImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_material.png";
 import stkm16a13aImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_stkm_16a&13a.png";
 import borekeyToleranceImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_borekey_tolerance.png";
 import grooveImg from "../../../../assets/Standard/Kemco_JIS_Standard/2d_standard_groove.png";
@@ -33,19 +32,44 @@ interface TwoDStandardLessonProps {
 }
 
 const galleryImages = [
-  { src: slotLongHolesImg, label: "Slot Holes / Long Holes", number: 1 },
-  { src: bendedPlateImg, label: "Bended Plate", number: 2 },
-  { src: computationBendedImg, label: "Computation of Bended", number: 3 },
-  { src: keyPlateImg, label: "Key Plate", number: 4 },
-  { src: materialImg, label: "Material Specification", number: 5 },
-  { src: stkm16a13aImg, label: "STKM 16A & 13A", number: 6 },
-  { src: borekeyToleranceImg, label: "Bore Key Tolerance", number: 7 },
-  { src: grooveImg, label: "Groove Specification", number: 8 },
-  { src: instruction1Img, label: "Drawing Instruction 1", number: 9 },
-  { src: instruction2Img, label: "Drawing Instruction 2", number: 10 },
-  { src: instruction3Img, label: "Drawing Instruction 3", number: 11 },
-  { src: ss400dImg, label: "SS400-D Properties", number: 12 },
-  { src: indicationQuantityImg, label: "Indication of Quantity", number: 13 }
+  { src: slotLongHolesImg, label: "Slot Holes / Long Holes", alt: "Slot Holes / Long Holes", number: 1 },
+  { src: bendedPlateImg, label: "Bended Plate", alt: "Bended Plate", number: 2 },
+  { src: computationBendedImg, label: "Computation of Bended", alt: "Computation of Bended", number: 3 },
+  { src: keyPlateImg, label: "Key Plate", alt: "Key Plate", number: 4 },
+  { 
+    label: "Material Specification", 
+    alt: "Material Specification", 
+    number: 5,
+    content: (
+        <div className="lesson-table-container" style={{ width: "100%", maxWidth: "300px", margin: "0 auto" }}>
+            <table className="lesson-table" style={{ width: "100%" }}>
+                <thead>
+                    <tr>
+                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#F97316', borderBottom: '2px solid #DD4DFA', textAlign: "center", fontSize: "1.2rem" }}>SPCC</th>
+                    </tr>
+                    <tr>
+                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>Thickness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {[1, 2, 2.3, 3, 3.2].map((val, idx) => (
+                        <tr key={idx}>
+                            <td style={{ textAlign: "center" }}>{val}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+  },
+  { src: stkm16a13aImg, label: "STKM 16A & STKM13A", alt: "STKM 16A & STKM13A", number: 6 },
+  { src: borekeyToleranceImg, label: "Bore Key Tolerance", alt: "Bore Key Tolerance", number: 7 },
+  { src: grooveImg, label: "Groove", alt: "Groove", number: 8 },
+  { src: instruction1Img, label: "Drawing Instruction 1", alt: "Drawing Instruction 1", number: 9 },
+  { src: instruction2Img, label: "Drawing Instruction 2", alt: "Drawing Instruction 2", number: 10 },
+  { src: instruction3Img, label: "Drawing Instruction 3", alt: "Drawing Instruction 3", number: 11 },
+  { src: ss400dImg, label: "SS400-D Properties", alt: "SS400-D Properties", number: 12 },
+  { src: indicationQuantityImg, label: <>Indication of Quantity for <span className="red-text">(Hole,Chamfer and Radius)</span></>, alt: "Indication of Quantity for (Hole,Chamfer and Radius)", number: 13 }
 ];
 
 const reminderSteps = [
@@ -72,8 +96,12 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   } = useLessonCore("kemco-2d-standard");
 
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [navPos, setNavPos] = useState({ x: 0, y: 0 });
+  const [isGalleryFullscreen, setIsGalleryFullscreen] = useState(false);
+  const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
   useEffect(() => {
     registerText(reminderSteps, 0);
@@ -139,6 +167,39 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
     }
   };
 
+  // Control bar drag handlers (Solidworks-style draggable pill)
+  const handlePillPointerDown = (e: React.PointerEvent) => {
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startNavX: navPos.x,
+      startNavY: navPos.y,
+    };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePillPointerMove = (e: React.PointerEvent) => {
+    if (!dragRef.current) return;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    setNavPos({
+      x: dragRef.current.startNavX + dx,
+      y: dragRef.current.startNavY + dy,
+    });
+  };
+
+  const handlePillPointerUp = (e: React.PointerEvent) => {
+    if (dragRef.current) {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      dragRef.current = null;
+    }
+  };
+
+  const toggleGalleryFullscreen = () => {
+    setIsGalleryFullscreen((v) => !v);
+    setNavPos({ x: 0, y: 0 });
+  };
+
   return (
     <div className="course-lesson-container" ref={containerRef}>
       <div className="lesson-progress-container">
@@ -150,6 +211,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
           <div className="lesson-grid single-card">
             <div className="lesson-card tab-content fade-in">
+              <div className="card-header">
+                <h4 className="section-title">Reminder:</h4>
+              </div>
+              
               {/* Item 1 */}
               <div
                 className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`}
@@ -185,19 +250,19 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 data-reading-index="3"
               >
                 <div className="flex-row-wrap" style={{ gap: "2.5rem", alignItems: "flex-start", justifyContent: "space-between" }}>
-                  <div style={{ flex: "1.2", minWidth: "280px" }}>
-                    <div className="step-header" style={{ marginBottom: "1.5rem", alignItems: "flex-start" }}>
+                  <div style={{ flex: "4", minWidth: "200px" }}>
+                    <div className="step-header" style={{ marginBottom: "3rem", alignItems: "flex-start" }}>
                       <span className="step-number">2 </span>
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views</span>. However, if additional dimensions are needed and these views become crowded, place them on the right view, utilize other views, or create <span class="red-text">detailed/section views</span>'
+                        text='Follow the standard dimensioning order: <span class="red-text">start with the top, left, and bottom views.</span> However, if additional dimensions are needed and these views become crowded, place them on the right <span style="display: inline-block;">view, utilize other views, or create <span class="red-text">detailed/section views</span></span>'
                         isActive={isSpeaking && currentIndex === 3}
                         currentCharIndex={currentCharIndex}
                       />
                     </div>
                   </div>
-                  <div style={{ flex: "1", minWidth: "280px", display: "flex", justifyContent: "center" }}>
+                  <div style={{ flex: "1", minWidth: "150px", display: "flex", justifyContent: "center" }}>
                     <img
                       src={dimensioningOrderImg}
                       alt="Dimensioning Order"
@@ -231,7 +296,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       src={criticalDetailsImg}
                       alt="Critical Details"
                       className="software-screenshot"
-                      style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+                      style={{ maxWidth: "105%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
                     />
                   </div>
                 </div>
@@ -256,117 +321,268 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       )}
 
       {subLessonId === '2d-gallery' && (
-        <>
-          <div className="lesson-grid single-card">
-            <div className="lesson-card tab-content fade-in">
+        <div className="gallery-section-wrapper">
+          {/* ── Title header: lesson count + image title (no card-header) ── */}
+          <div style={{ textAlign: "center", paddingBottom: "0.25rem" }}>
+            <span style={{
+              display: "block",
+              fontSize: "0.78rem",
+              fontWeight: 500,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#DD4DFA",
+              marginBottom: "0.4rem",
+            }}>
+              {galleryImages[galleryIndex].number} of {galleryImages.length}
+            </span>
+            <h2
+              className="gallery-image-title"
+              style={{
+                margin: 0,
+                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.15,
+              }}
+            >
+              {galleryImages[galleryIndex].label}
+            </h2>
+          </div>
+
+          {/* ── Pink.png background frame with gallery image ── */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "1000px",
+              margin: "0 auto",
+              aspectRatio: "16 / 9",
+            }}
+          >
+            {/* Gallery image centered */}
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+              {galleryImages[galleryIndex].content ? (
+                galleryImages[galleryIndex].content
+              ) : (
+                <img
+                  src={galleryImages[galleryIndex].src}
+                  alt={galleryImages[galleryIndex].alt}
+                  loading="lazy"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "contain",
+                    transition: "opacity 0.25s ease",
+                  }}
+                />
+              )}
+            </div>
+
+            {/* ── Solidworks-style draggable dark pill control bar ── */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "4%",
+                right: "2%",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                background: "rgba(20, 20, 25, 0.95)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "40px",
+                padding: "8px 16px",
+                border: "1px solid rgba(255,255,255,0.1)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                color: "#fff",
+                zIndex: 30,
+                transform: `translate(${navPos.x}px, ${navPos.y}px)`,
+                animation: "slideUpFade 0.5s ease-out",
+              }}
+            >
+              {/* Drag handle */}
               <div
-                className="gallery-container"
-                style={{
-                  padding: "1.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                  width: "100%",
-                }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                onPointerDown={handlePillPointerDown}
+                onPointerMove={handlePillPointerMove}
+                onPointerUp={handlePillPointerUp}
+                onPointerCancel={handlePillPointerUp}
+                title="Drag to move panel"
+                style={{ cursor: "grab", padding: "8px", marginRight: "4px", borderRadius: "4px", display: "flex" }}
               >
-                {/* Image Frame */}
-                <div
-                  style={{
-                    width: "100%",
-                    height: "650px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <img
-                    src={galleryImages[galleryIndex].src}
-                    alt={galleryImages[galleryIndex].label}
-                    loading="lazy"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain"
-                    }}
-                  />
-                </div>
-
-                {/* Slider Controls & Indicators */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "1rem",
-                    width: "100%",
-                    marginTop: "1.5rem"
-                  }}
-                >
-                  <button
-                    onClick={handleGalleryPrev}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--accent)",
-                      padding: "0.25rem",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft size={22} />
-                  </button>
-
-                  <div style={{ textAlign: "center" }}>
-                    <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                      {galleryImages[galleryIndex].label}
-                    </span>
-                    <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      Image {galleryImages[galleryIndex].number} of 13
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={handleGalleryNext}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "var(--accent)",
-                      padding: "0.25rem",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    aria-label="Next image"
-                  >
-                    <ChevronRight size={22} />
-                  </button>
-                </div>
+                <GripHorizontal size={20} color="#888" />
               </div>
 
-              {/* Page Navigation */}
-              <div className="lesson-navigation mt-12">
+              {/* Browse button (replaces Play) */}
+              <div style={{ position: "relative" }}>
                 <button
-                  className="nav-button"
-                  onClick={handlePrev}
-                  disabled={!onPrevLesson}
+                  onClick={() => setShowMenu((v) => !v)}
+                  title="Browse images"
+                  style={{
+                    background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.1)",
+                    border: "none",
+                    color: "#fff",
+                    padding: "6px 12px",
+                    borderRadius: "20px",
+                    fontSize: "0.8rem",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontWeight: 500,
+                    boxShadow: showMenu ? "0 0 18px rgba(221,77,250,0.5)" : "none",
+                  }}
+                  aria-label="Browse images"
                 >
-                  <ChevronLeft size={18} /> Previous
+                  {showMenu ? <X size={15} /> : <LayoutGrid size={15} />}
+                  {showMenu ? "Close" : "Browse"}
                 </button>
-                <button className="nav-button next" onClick={handleNext}>
-                  {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-                </button>
+
+                {showMenu && (
+                  <div style={{
+                    position: "absolute",
+                    bottom: "calc(100% + 10px)",
+                    right: 0,
+                    width: "280px",
+                    background: "#0a0a12",
+                    border: "1px solid rgba(221,77,250,0.4)",
+                    borderRadius: "14px",
+                    boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                    zIndex: 1000,
+                    maxHeight: "440px",
+                    overflowY: "auto",
+                    padding: "0.5rem 0",
+                  }}>
+                    <div style={{
+                      padding: "0.65rem 1rem",
+                      fontSize: "0.65rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "#DD4DFA",
+                      borderBottom: "1px solid rgba(255,255,255,0.07)",
+                      marginBottom: "0.25rem",
+                    }}>
+                      {galleryImages[galleryIndex].label}
+                    </div>
+                    {galleryImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => { setGalleryIndex(idx); setShowMenu(false); }}
+                        style={{
+                          width: "100%",
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
+                          border: "none",
+                          borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
+                          padding: "0.6rem 1rem",
+                          textAlign: "left",
+                          cursor: "pointer",
+                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                          fontSize: "0.82rem",
+                          fontWeight: idx === galleryIndex ? 700 : 400,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.65rem",
+                          transition: "all 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (idx !== galleryIndex) {
+                            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (idx !== galleryIndex) {
+                            (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                          }
+                        }}
+                      >
+                        <span style={{
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                          fontSize: "0.68rem", fontWeight: 800,
+                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                        }}>
+                          {img.number}
+                        </span>
+                        <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                          {img.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+
+              {/* Previous */}
+              <button
+                onClick={handleGalleryPrev}
+                style={{
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
+                }}
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              {/* Next */}
+              <button
+                onClick={handleGalleryNext}
+                style={{
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
+                }}
+                aria-label="Next image"
+              >
+                <ChevronRight size={18} />
+              </button>
+
+              {/* Fullscreen toggle */}
+              <button
+                onClick={toggleGalleryFullscreen}
+                title={isGalleryFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                style={{
+                  background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
+                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
+                }}
+              >
+                {isGalleryFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+              </button>
             </div>
           </div>
-        </>
+
+          {/* ── Bottom navigation: PREVIOUS | NEXT LESSON ── */}
+          <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0 }}>
+            <button
+              className="nav-button"
+              onClick={handlePrev}
+              disabled={!onPrevLesson}
+            >
+              <ChevronLeft size={18} /> Previous
+            </button>
+            <button
+              className="nav-button next"
+              onClick={handleNext}
+            >
+              {nextLabel || "Next Lesson"} <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
       )}
     </div>
   );

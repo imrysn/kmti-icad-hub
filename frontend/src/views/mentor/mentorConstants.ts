@@ -941,17 +941,17 @@ export const ICAD_KEMCO_LESSONS: Lesson[] = [
     content: ['2D Standard reminder: main views, dimensioning order, dimensions & critical details, standard details gallery.'],
     children: [
       { id: '2d-main', title: '2D Standard', content: [] },
-      { id: '2d-gallery', title: 'Reference Standard Gallery', content: [] }
+      { id: '2d-gallery', title: '2D Standard Reference', content: [] }
     ]
   },
-  { id: 'piping', title: 'Piping', content: ['Placeholder for Piping'] },
+  { id: 'piping', title: 'Piping Standard', content: ['Placeholder for Piping'] },
   { 
     id: 'general-standard-steel', 
     title: 'General Standard Steel', 
     content: ['Placeholder'],
     children: [
       { id: 'general-standard-steel-main', title: 'General Standard Steel Material Table', content: [] },
-      { id: 'general-standard-steel-flat', title: 'Flat Bar Reference Table', content: [] },
+      { id: 'general-standard-steel-flat', title: 'Flat Bar', content: [] },
       { id: 'general-standard-steel-round', title: 'Round Bar', content: [] }
     ]
   },
@@ -1004,60 +1004,6 @@ export const SOLIDWORKS_INTRO_LESSONS: Lesson[] = [
     isCompleted: false,
     children: [
       { id: 'sw-keyboard-shortcuts', title: 'Keyboard Shortcuts', content: ['Ctrl + N', 'Ctrl + S', 'Ctrl + Z', 'Ctrl + Y', 'Ctrl + C', 'Ctrl + V'] }
-    ]
-  },
-  {
-    id: 'sw-menu-bar-main',
-    title: 'Menu Bar',
-    content: ['Menu Bar'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-menu-bar', title: 'Menu Bar', content: ['Menu Bar'] }
-    ]
-  },
-  {
-    id: 'sw-command-manager-main',
-    title: 'Command Manager',
-    content: ['Command Manager'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-command-manager', title: 'Command Manager', content: ['Command Manager'] }
-    ]
-  },
-  {
-    id: 'sw-heads-up-view-toolbar-main',
-    title: 'Heads-up View Toolbar',
-    content: ['Heads-up View Toolbar'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-heads-up-view-toolbar', title: 'Heads-up View Toolbar', content: ['Heads-up View Toolbar'] }
-    ]
-  },
-  {
-    id: 'sw-feature-manager-tree-view-main',
-    title: 'FeatureManager Tree View',
-    content: ['FeatureManager Tree View'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-feature-manager-tree-view', title: 'FeatureManager Tree View', content: ['FeatureManager Tree View'] }
-    ]
-  },
-  {
-    id: 'sw-coordinate-system-main',
-    title: 'Coordinate System',
-    content: ['Coordinate System'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-coordinate-system', title: 'Coordinate System', content: ['Coordinate System'] }
-    ]
-  },
-  {
-    id: 'sw-status-bar-main',
-    title: 'Status Bar',
-    content: ['Status Bar'],
-    isCompleted: false,
-    children: [
-      { id: 'sw-status-bar', title: 'Status Bar', content: ['Status Bar'] }
     ]
   }
 ];

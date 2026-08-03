@@ -168,13 +168,14 @@ const PartModelingContent: React.FC = () => (
                     <span className="image-wrapper-flush">
                         <img src={f1Img} alt="FeatureManager Front Plane" style={{ height: '40px', verticalAlign: 'middle' }} />
                     </span>
-                    , click{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={f2Img} alt="Click" style={{ height: '40px', verticalAlign: 'middle' }} />
-                    </span>
+                  
                 </p>
 
                 <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                      click{' '}
+                    <span className="image-wrapper-flush">
+                        <img src={f2Img} alt="Click" style={{ height: '40px', verticalAlign: 'middle' }} />
+                    </span>
                     or in <strong>Sketch tab</strong>, click{' '}
                     <span className="image-wrapper-flush">
                         <img src={sImg} alt="Sketch tab click" style={{ height: '40px', verticalAlign: 'middle' }} />
