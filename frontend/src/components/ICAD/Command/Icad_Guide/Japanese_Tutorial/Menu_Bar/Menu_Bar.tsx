@@ -94,6 +94,12 @@ function Menu_Bar_Japanese_Tutorial() {
         setCursorPos(null);
     };
 
+    const handleContainerClick = () => {
+        setIsLabelDropdownOpen(false);
+        setStepIndex(-1);
+        setCursorPos(null);
+    }
+
     const renderDropdownMenu = (items: MenuItem[]) => {
         return (
             <ul style={{
@@ -101,7 +107,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 margin: 0,
                 padding: "2px 0",
                 minWidth: "160px",
-                fontSize: "12px",
+                fontSize: "8.8px",
                 fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                 color: "#333",
             }}>
@@ -155,6 +161,7 @@ function Menu_Bar_Japanese_Tutorial() {
         <div
             ref={containerRef}
             className={`video-fullscreen-container ${isFullscreen ? 'is-expanded-fullscreen' : ''}`}
+            onClick={handleContainerClick}
             style={isFullscreen ? {
                 position: "fixed",
                 top: 0,
@@ -170,7 +177,7 @@ function Menu_Bar_Japanese_Tutorial() {
             } : {
                 position: "relative",
                 width: "100%", // maximize width in normal view
-                maxWidth: "1200px", // increased max-width for bigger size
+                maxWidth: "1000px", // increased max-width for bigger size
                 aspectRatio: "16 / 9",
                 display: "flex",
                 justifyContent: "center",
@@ -248,18 +255,20 @@ function Menu_Bar_Japanese_Tutorial() {
 
                             {/* Native HTML/CSS Dropdown Menu */}
                             {isActive && isLabelDropdownOpen && spot.menuItems && (
-                                <div style={{
-                                    position: "absolute",
-                                    left: `${pos.x}%`,
-                                    top: `${pos.y + pos.h}%`,
-                                    marginTop: "2px", // Tight gap like native Windows menus
-                                    zIndex: 20,
-                                    pointerEvents: "auto",
-                                    backgroundColor: "#f2f2f2", // Windows native menu background color
-                                    border: "1px solid #a0a0a0",
-                                    boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                    transition: "opacity 0.2s ease-out"
-                                }}>
+                                <div
+                                    onClick={(e) => e.stopPropagation()}
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y + pos.h}%`,
+                                        marginTop: "2px", // Tight gap like native Windows menus
+                                        zIndex: 20,
+                                        pointerEvents: "auto",
+                                        backgroundColor: "#f2f2f2", // Windows native menu background color
+                                        border: "1px solid #a0a0a0",
+                                        boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                        transition: "opacity 0.2s ease-out"
+                                    }}>
                                     {renderDropdownMenu(spot.menuItems)}
                                 </div>
                             )}

@@ -390,9 +390,9 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)")}
             >
                 {isFullscreen ? (
-                    <Minimize size={17} color="#ffffff" strokeWidth={2.2} />
+                    <Minimize size={17} color="#ffffff" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                 ) : (
-                    <Maximize size={17} color="#ffffff" strokeWidth={2.2} />
+                    <Maximize size={17} color="#ffffff" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                 )}
             </button>
         </div>
