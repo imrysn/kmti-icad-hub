@@ -294,6 +294,7 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                             <VideoTutorialViewer 
                                 steps={SOLIDWORKS_TUTORIAL_STEPS} 
                                 imageSrc={mainInterface}
+                                showBrowser={true}
                             />
                         </div>
                     </div>

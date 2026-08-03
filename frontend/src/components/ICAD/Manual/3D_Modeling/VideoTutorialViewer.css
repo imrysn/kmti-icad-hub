@@ -373,3 +373,185 @@
      1.5px  1.5px 0 #000,
      0px 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
+
+/* Step Browser Popover (Exact 2D Standard Reference Styling) */
+.tutorial-browser-container {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  animation: popoverFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tutorial-browser-close-pill {
+  background: #DD4DFA;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 0 18px rgba(221, 77, 250, 0.5);
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.tutorial-browser-close-pill:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 24px rgba(221, 77, 250, 0.75);
+}
+
+.tutorial-browser-card {
+  width: 280px;
+  max-width: 90vw;
+  background: var(--bg-surface);
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.tutorial-browser-header {
+  padding: 0.65rem 1rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #DD4DFA;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.25rem;
+  user-select: none;
+}
+
+.tutorial-browser-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for Browser List (Matching 2D Standard) */
+.tutorial-browser-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.tutorial-browser-list::-webkit-scrollbar-track {
+  background: rgba(221, 77, 250, 0.05);
+  border-radius: 10px;
+}
+
+.tutorial-browser-list::-webkit-scrollbar-thumb {
+  background: rgba(221, 77, 250, 0.4);
+  border-radius: 10px;
+}
+
+.tutorial-browser-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.15s ease;
+}
+
+.tutorial-browser-item:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-main);
+}
+
+.tutorial-browser-item.active {
+  background: rgba(221, 77, 250, 0.18);
+  border-left: 3px solid #DD4DFA;
+  color: #DD4DFA;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.tutorial-browser-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: var(--bg-hover);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  transition: all 0.15s ease;
+}
+
+.tutorial-browser-badge.active {
+  background: rgba(221, 77, 250, 0.3);
+  color: #DD4DFA;
+}
+
+.tutorial-browser-item-title {
+  color: var(--text-main);
+  line-height: 1.4;
+  flex: 1;
+  font-size: 0.82rem;
+}
+
+.tutorial-browser-item.active .tutorial-browser-item-title {
+  color: #DD4DFA;
+  font-weight: 700;
+}
+
+.tutorial-btn.browser-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.tutorial-btn.browser-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.tutorial-btn.browser-btn.active {
+  background: #DD4DFA !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(221, 77, 250, 0.5) !important;
+}

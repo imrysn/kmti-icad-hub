@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X, LayoutGrid } from 'lucide-react';
 import './VideoTutorialViewer.css';
 import { api } from '../../../../services/api';
 
@@ -43,9 +43,11 @@ export interface TutorialStep {
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
   imageSrc?: string;
+  browserTitle?: string;
+  showBrowser?: boolean;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc, browserTitle, showBrowser = false }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -54,11 +56,52 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
+  const [isBrowserOpen, setIsBrowserOpen] = useState(false);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
+  const browserRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target &&
+        (target.closest('.theme-toggle-btn') ||
+         target.closest('.login-theme-wrapper') ||
+         target.closest('.theme-btn') ||
+         target.closest('[data-theme-toggle]') ||
+         target.closest('.theme-toggle-icon'))
+      ) {
+        return;
+      }
+      if (browserRef.current && !browserRef.current.contains(target)) {
+        setIsBrowserOpen(false);
+      }
+    };
+    if (isBrowserOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isBrowserOpen]);
+
+  const stepItems = steps
+    .map((step, actualIndex) => ({ step, actualIndex }))
+    .filter(item => item.step.title && item.step.title.trim() !== '');
+
+  const displayItems = stepItems.length > 0 
+    ? stepItems 
+    : steps.map((step, actualIndex) => ({ step, actualIndex }));
+
+  const handleSelectBrowserStep = (actualIdx: number) => {
+    setCurrentStep(actualIdx);
+    setCurrentCharIndex(0);
+    setIsBrowserOpen(false);
+  };
 
   const handlePointerDown = (e: React.PointerEvent) => {
     dragRef.current = {
@@ -791,6 +834,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
 
       {/* Persistent Floating Control Panel */}
       <div
+        ref={browserRef}
         className="tutorial-control-card"
         style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
       >
@@ -806,7 +850,50 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
           <GripHorizontal size={20} color="#888" />
         </div>
 
+        {/* Step Browser Popover */}
+        {showBrowser && isBrowserOpen && (
+          <div className="tutorial-browser-container fade-in">
+            <div className="tutorial-browser-card">
+              <div className="tutorial-browser-header">
+                {browserTitle || "SOLIDWORKS INTERFACE REFERENCE"}
+              </div>
+
+              <div className="tutorial-browser-list">
+                {displayItems.map((item, displayIdx) => {
+                  const isActive = currentStep === item.actualIndex;
+                  return (
+                    <button
+                      key={item.step.id ?? displayIdx}
+                      className={`tutorial-browser-item ${isActive ? 'active' : ''}`}
+                      onClick={() => handleSelectBrowserStep(item.actualIndex)}
+                    >
+                      <span className={`tutorial-browser-badge ${isActive ? 'active' : ''}`}>
+                        {displayIdx + 1}
+                      </span>
+                      <span className="tutorial-browser-item-title">
+                        {item.step.title}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="tutorial-controls">
+          {/* Browser Button (only in solidworks interface when showBrowser is true) */}
+          {showBrowser && (
+            <button
+              className={`tutorial-btn browser-btn ${isBrowserOpen ? 'active' : ''}`}
+              onClick={() => setIsBrowserOpen(prev => !prev)}
+              title={isBrowserOpen ? "Close Steps" : "Browse Steps"}
+            >
+              {isBrowserOpen ? <X size={16} /> : <LayoutGrid size={16} />}
+              {isBrowserOpen ? "Close" : "Browse"}
+            </button>
+          )}
+
           {/* Live timestamp badge */}
           {currentData.videoSrc && (
             <span
