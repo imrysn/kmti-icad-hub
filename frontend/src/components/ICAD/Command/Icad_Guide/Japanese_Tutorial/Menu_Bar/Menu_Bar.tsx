@@ -9,7 +9,7 @@ function Menu_Bar_Japanese_Tutorial() {
     const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
-    
+
     // Automation states
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
 
@@ -26,7 +26,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 setIsLabelDropdownOpen(false);
             } else if (stepIndex < SPOTLIGHTS.length) {
                 const spotlight = SPOTLIGHTS[stepIndex];
-                
+
                 // Determine which position to use
                 const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
 
@@ -36,11 +36,11 @@ function Menu_Bar_Japanese_Tutorial() {
                 // Wait 0.5s for cursor to move, then click
                 timeout = setTimeout(() => {
                     setIsLabelDropdownOpen(true);
-                    
+
                     // Show dropdown for 2 seconds, then go to next
                     timeout = setTimeout(() => {
                         setIsLabelDropdownOpen(false);
-                        
+
                         // Wait a tiny bit before moving to next
                         timeout = setTimeout(() => {
                             setStepIndex(prev => prev + 1);
@@ -124,14 +124,14 @@ function Menu_Bar_Japanese_Tutorial() {
                             cursor: "default",
                             position: "relative"
                         }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = "rgba(0, 120, 215, 0.1)";
-                            e.currentTarget.style.color = "#000";
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = "transparent";
-                            e.currentTarget.style.color = "#333";
-                        }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = "rgba(0, 120, 215, 0.1)";
+                                e.currentTarget.style.color = "#000";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = "transparent";
+                                e.currentTarget.style.color = "#333";
+                            }}
                         >
                             <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                 {item.label}
@@ -232,14 +232,14 @@ function Menu_Bar_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(0, 120, 215, 0.2)" : "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
                                 onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(0, 120, 215, 0.1)";
+                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
@@ -286,7 +286,7 @@ function Menu_Bar_Japanese_Tutorial() {
                             filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.5))"
                         }}
                     >
-                        <path d="M4 2L18.4 11.2L11.5 13L15.5 21L12.5 22.5L8.5 14.5L3 18V2Z" fill="white" stroke="black" strokeWidth="1" strokeLinejoin="round"/>
+                        <path d="M4 2L18.4 11.2L11.5 13L15.5 21L12.5 22.5L8.5 14.5L3 18V2Z" fill="white" stroke="black" strokeWidth="1" strokeLinejoin="round" />
                     </svg>
                 )}
 
