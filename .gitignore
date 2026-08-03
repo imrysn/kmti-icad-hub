@@ -2,6 +2,8 @@
 node_modules/
 dist/
 dist-electron/
+frontend/dist-electron-fixed/
+frontend/dist-electron-release/
 release/
 build/
 *.log
@@ -34,6 +36,7 @@ backend/vector_db/
 # Project Specific Assets
 backend/knowledge_base/
 backend/media/
+backend/tts_cache/
 
 # IDEs / Editors
 .vscode/
