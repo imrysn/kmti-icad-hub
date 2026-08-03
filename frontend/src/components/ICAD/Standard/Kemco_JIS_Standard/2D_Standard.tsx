@@ -452,10 +452,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     bottom: "calc(100% + 10px)",
                     right: 0,
                     width: "280px",
-                    background: "#0a0a12",
+                    background: "var(--bg-surface, #0a0a12)",
                     border: "1px solid rgba(221,77,250,0.4)",
                     borderRadius: "14px",
-                    boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                    boxShadow: "var(--shadow-card, 0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2))",
                     zIndex: 1000,
                     maxHeight: "440px",
                     overflowY: "auto",
@@ -468,10 +468,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
                       color: "#DD4DFA",
-                      borderBottom: "1px solid rgba(255,255,255,0.07)",
+                      borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.07))",
                       marginBottom: "0.25rem",
                     }}>
-                      {galleryImages[galleryIndex].label}
+                      {typeof galleryImages[galleryIndex].label === "string" ? galleryImages[galleryIndex].label : "2D Standard Reference"}
                     </div>
                     {galleryImages.map((img, idx) => (
                       <button
@@ -485,7 +485,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                           padding: "0.6rem 1rem",
                           textAlign: "left",
                           cursor: "pointer",
-                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                          color: idx === galleryIndex ? "#DD4DFA" : "var(--text-muted, rgba(255,255,255,0.75))",
                           fontSize: "0.82rem",
                           fontWeight: idx === galleryIndex ? 700 : 400,
                           display: "flex",
@@ -495,27 +495,27 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                         }}
                         onMouseEnter={(e) => {
                           if (idx !== galleryIndex) {
-                            (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
-                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                            (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover, rgba(255,255,255,0.04))";
+                            (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main, #fff)";
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (idx !== galleryIndex) {
                             (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                            (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted, rgba(255,255,255,0.75))";
                           }
                         }}
                       >
                         <span style={{
                           display: "inline-flex", alignItems: "center", justifyContent: "center",
                           width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "var(--bg-hover, rgba(255,255,255,0.07))",
                           fontSize: "0.68rem", fontWeight: 800,
-                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                          color: idx === galleryIndex ? "#DD4DFA" : "var(--text-dim, rgba(255,255,255,0.4))",
                         }}>
                           {img.number}
                         </span>
-                        <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                        <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "var(--text-main, rgba(255,255,255,0.85))", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
                           {img.label}
                         </span>
                       </button>
