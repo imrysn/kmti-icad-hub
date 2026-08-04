@@ -124,7 +124,7 @@ export const LoginView: React.FC = () => {
 
             <div className="login-brand-header">
                 <div className="login-logo-stack" aria-label="KMTI">
-                    <img className="login-symbol-logo" src={kmtiSymbolLogo} alt="KMTI" draggable={false} />
+                    <h1 style={{ fontSize: '4rem', fontWeight: 900, margin: 0, letterSpacing: '4px', color: 'var(--login-primary)' }}>KMTI</h1>
                 </div>
                 <div className="brand-subtitle">{t('login.subtitle_1') || 'ICAD COURSE'}</div>
                 <div className="brand-subtitle">{t('login.subtitle_2') || 'COMPLETE TRAINING & PRACTICES'}</div>

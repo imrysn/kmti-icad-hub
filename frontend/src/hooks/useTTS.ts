@@ -30,11 +30,11 @@ export const useTTS = () => {
   // User Preference States (with localStorage persistence)
   const [rate, setRateState] = useState<number>(() => {
     const saved = localStorage.getItem('tts_rate');
-    return saved ? parseFloat(saved) : 1.0;
+    return saved ? parseFloat(saved) : 0.8;
   });
   const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(() => {
     const saved = localStorage.getItem('tts_voice_uri');
-    return saved && saved !== 'undefined' && saved !== 'null' && saved !== '' ? saved : 'openai://marin';
+    return saved && saved !== 'undefined' && saved !== 'null' && saved !== '' ? saved : 'openai://nova';
   });
   const [voices, setVoices] = useState<TTSVoice[]>([]);
 

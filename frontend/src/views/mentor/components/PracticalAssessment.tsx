@@ -654,16 +654,16 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             e.stopPropagation();
                                                                                             stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                             handleDownloadTask(task);
-                                                                                        }}>
-                                                                                            <Download size={14} /> {t('practical.download')}
+                                                                                        }} title={t('practical.download')}>
+                                                                                            <Download size={14} />
                                                                                         </button>
                                                                                     </> : <button type="button" className="task-action-btn primary" onClick={(e) => {
                                                                                         e.preventDefault();
                                                                                         e.stopPropagation();
                                                                                         stopwatchRefs.current[actualTaskId]?.startTimer();
                                                                                         handleDownloadTask(task);
-                                                                                    }}>
-                                                                                        <Download size={14} /> {t('practical.download')}
+                                                                                    }} title={t('practical.download')}>
+                                                                                        <Download size={14} />
                                                                                     </button>
                                                                                 )}
                                                                             </div>
@@ -693,7 +693,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                             <Upload size={14} /> {taskSubmissions.length > 0 ? t('practical.add_another_folder') : t('practical.upload_folder')}
                                                                                         </button>
                                                                                     ) : (
-                                                                                        <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`}>
+                                                                                        <label htmlFor={uploadId} className={`resubmit-trigger-btn ${isUploading ? 'disabled' : ''}`} title={latestSubmission ? t('practical.resubmit') : t('practical.upload')}>
                                                                                             <Upload size={14} /> {latestSubmission ? t('practical.resubmit') : t('practical.upload')}
                                                                                         </label>
                                                                                     )}
@@ -934,6 +934,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                 <button
                                                                                                                     className="btn-primary resubmit-work-btn"
                                                                                                                     onClick={() => document.getElementById(uploadId)?.click()}
+                                                                                                                    title="Resubmit Corrected Work"
                                                                                                                 >
                                                                                                                     <Upload size={14} /> Resubmit Corrected Work
                                                                                                                 </button>

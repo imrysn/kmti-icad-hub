@@ -81,14 +81,19 @@ KOKORO_VOICES = [
 ]
 
 OPENAI_VOICES = [
-    {"id": "openai://marin", "name": "OpenAI Marin", "lang": "ja-JP", "voice_code": "marin"},
-    {"id": "openai://cedar", "name": "OpenAI Cedar", "lang": "en-US", "voice_code": "cedar"},
+    {"id": "openai://alloy", "name": "OpenAI Alloy (Neutral)", "lang": "en-US", "voice_code": "alloy"},
+    {"id": "openai://echo", "name": "OpenAI Echo (Male)", "lang": "en-US", "voice_code": "echo"},
+    {"id": "openai://fable", "name": "OpenAI Fable (Male)", "lang": "en-US", "voice_code": "fable"},
+    {"id": "openai://onyx", "name": "OpenAI Onyx (Male)", "lang": "en-US", "voice_code": "onyx"},
+    {"id": "openai://nova", "name": "OpenAI Nova (Female)", "lang": "en-US", "voice_code": "nova"},
+    {"id": "openai://shimmer", "name": "OpenAI Shimmer (Female)", "lang": "en-US", "voice_code": "shimmer"}
 ]
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
-OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts").strip()
-OPENAI_TTS_VOICE_EN = os.getenv("OPENAI_TTS_VOICE_EN", "cedar").strip()
-OPENAI_TTS_VOICE_JA = os.getenv("OPENAI_TTS_VOICE_JA", "marin").strip()
+OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1").strip()
+OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip()
+OPENAI_TTS_VOICE_EN = os.getenv("OPENAI_TTS_VOICE_EN", "nova").strip()
+OPENAI_TTS_VOICE_JA = os.getenv("OPENAI_TTS_VOICE_JA", "nova").strip()
 OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip().lower()
 TTS_PROVIDER = os.getenv("TTS_PROVIDER", "openai").strip().lower()
 

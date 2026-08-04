@@ -207,15 +207,14 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
 
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://marin';
+    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
     const isBackendVoice = savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://');
-    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
+    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
 
     if (isBackendVoice) {
-      const voiceName = savedVoice.replace('kokoro://', '').replace('openai://', '');
       const apiBase = api.defaults.baseURL || '';
 
-      const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
+      const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
 
       const textAudio = new Audio(textUrl);
       audioRef.current = textAudio;
