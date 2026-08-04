@@ -126,8 +126,8 @@ export const LoginView: React.FC = () => {
                 <div className="login-logo-stack" aria-label="KMTI">
                     <h1 style={{ fontSize: '4rem', fontWeight: 900, margin: 0, letterSpacing: '4px', color: 'var(--login-primary)' }}>KMTI</h1>
                 </div>
-                <div className="brand-subtitle">{t('login.subtitle_1') || 'ICAD COURSE'}</div>
-                <div className="brand-subtitle">{t('login.subtitle_2') || 'COMPLETE TRAINING & PRACTICES'}</div>
+                <div className="brand-subtitle">{t('login.subtitle_1') || 'TRAINING HUB'}</div>
+                <div className="brand-subtitle">{t('login.subtitle_2') || 'a learning platform for iCAD training'}</div>
             </div>
 
             <div className="login-form-wrapper">

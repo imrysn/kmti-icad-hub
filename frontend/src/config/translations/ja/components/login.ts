@@ -1,8 +1,7 @@
 export const ja_components_login = {
   "login.title": "KMTI iCAD ハブ",
-  "login.subtitle": "インタラクティブCADトレーニング＆サポートシステム",
-  "login.subtitle_1": "ICAD コース",
-  "login.subtitle_2": "完全なトレーニング",
+  "login.subtitle_1": "トレーニングハブ",
+  "login.subtitle_2": "iCAD用学習プラットフォーム",
   "login.username": "ユーザー名",
   "login.username_placeholder": "ユーザー名を入力",
   "login.password": "パスワード",
