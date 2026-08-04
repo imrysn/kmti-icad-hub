@@ -9,7 +9,7 @@ export const CourseCardSkeleton: React.FC = () => {
     return (
         <div className="course-card skeleton-container">
             {/* Title */}
-            <div className="skeleton skeleton-title" />
+            <div className="skeleton skeleton-title" /> 
 
             {/* Description (3 lines) */}
             <div className="skeleton-text-group">
