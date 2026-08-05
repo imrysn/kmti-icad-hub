@@ -30,36 +30,18 @@
   position: relative;
 }
 
-[data-theme="dark"] .quot-library-modal {
-  background: var(--bg-surface);
-  color: var(--text-main);
-  border-color: var(--border-color);
-  box-shadow: var(--shadow-card);
-}
 
-[data-theme="void"] .quot-library-modal {
-  background: var(--bg-surface);
-  color: #ff2040;
-  border-color: var(--border-color);
-  box-shadow: var(--shadow-card);
-}
 
 .quot-library-header {
   padding: 12px 32px 24px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-color);
   background: transparent;
 }
 
-[data-theme="dark"] .quot-library-header {
-  border-bottom-color: rgba(255, 255, 255, 0.05);
-}
 
-[data-theme="void"] .quot-library-header {
-  border-bottom-color: rgba(255, 0, 64, 0.15);
-}
 
 .quot-library-header-main h2 {
   margin: 0;

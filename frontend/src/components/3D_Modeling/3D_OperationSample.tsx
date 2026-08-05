@@ -60,6 +60,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     scrollProgress,
     containerRef,
     speak,
+    stop,
     isSpeaking,
     currentIndex,
     registerText
@@ -100,16 +101,28 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     "Step 10: Save the file"
   ];
 
-  const handleNext = () => {
-    if (activeTab === 'sample1') setActiveTab('sample2');
-    else if (onNextLesson) onNextLesson();
+  const handleTabChange = (tab: 'sample1' | 'sample2') => {
+    stop();
+    setActiveTab(tab);
     setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
+  const handleNext = () => {
+    stop();
+    if (activeTab === 'sample1') handleTabChange('sample2');
+    else {
+      if (onNextLesson) onNextLesson();
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+    }
+  };
+
   const handlePrev = () => {
-    if (activeTab === 'sample2') setActiveTab('sample1');
-    else if (onPrevLesson) onPrevLesson();
-    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+    stop();
+    if (activeTab === 'sample2') handleTabChange('sample1');
+    else {
+      if (onPrevLesson) onPrevLesson();
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+    }
   };
 
   const getStepClass = (_stepId: string) => "instruction-step";
@@ -142,8 +155,8 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
       </div>
 
       <div className="lesson-tabs">
-        <button className={`tab-button ${activeTab === 'sample1' ? 'active' : ''}`} onClick={() => setActiveTab('sample1')}>OPERATION SAMPLE 1</button>
-        <button className={`tab-button ${activeTab === 'sample2' ? 'active' : ''}`} onClick={() => setActiveTab('sample2')}>OPERATION SAMPLE 2</button>
+        <button className={`tab-button ${activeTab === 'sample1' ? 'active' : ''}`} onClick={() => handleTabChange('sample1')}>OPERATION SAMPLE 1</button>
+        <button className={`tab-button ${activeTab === 'sample2' ? 'active' : ''}`} onClick={() => handleTabChange('sample2')}>OPERATION SAMPLE 2</button>
       </div>
 
       <section className="lesson-intro">
@@ -410,7 +423,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               {/* Segments A and B */}
               <div className="flex-row-wrap mt-8" style={{ gap: '2rem', alignItems: 'flex-start', justifyContent: 'center' }}>
                 <div style={{ flex: "1", marginBottom: "3rem"}}>
-                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT A</u></p>
+                  <p className="p-flush" style={{ marginBottom: "1rem", color: "var(--text-main)"}}><u>SEGMENT A</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "1rem" }}>Use Arrange Cylinder</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove &gt; [UNION]</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    Coordinates (0,0,0)</p>
@@ -419,7 +432,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <img src={segmentAResult} alt="Segment A" className="software-screenshot mt-4" style={{ width: "900px", height: "auto", marginTop: "1rem"}} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT B</u></p>
+                  <p className="p-flush" style={{ marginBottom: "1rem", color: "var(--text-main)"}}><u>SEGMENT B</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Use Arrange Cylinder</p>
                   <p className="p-flush">INPUT: Diameter = 30mm</p>
                   <p className="p-flush">Height = 22.25mm</p>
@@ -430,7 +443,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 
               {/* Segment C */}
               <div className="mt-8">
-                <p className="p-flush" style={{ marginBottom: "1rem", color: "white"}}><u>SEGMENT C</u></p>
+                <p className="p-flush" style={{ marginBottom: "1rem", color: "var(--text-main)"}}><u>SEGMENT C</u></p>
                 <p className="p-flush">In this case, 2D Sketch is recommended in creating the 3D model for this part in order to get the required<br />dimensions precisely. Dimensions enclosed in parentheses are close but not exact with the original dimension.</p>
                 <img src={mainDrawing3} alt="Segment C Technical Drawing" className="software-screenshot mt-4" style={{ width: "900px", height: "400px", marginTop: "1rem", marginBottom: "2rem" }}  />
 

@@ -48,11 +48,11 @@
 
 .login-logo-text {
   font-family: var(--font-heading);
-  font-size: 6rem;
+  font-size: 7rem;
   font-weight: 800;
   color: var(--color-primary);
   letter-spacing: 0.1em;
-  line-height: 1;
+  line-height: 1.2;
   margin-bottom: 0.5rem;
 }
 
@@ -264,6 +264,13 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
+.remember-me-checkbox input[type="checkbox"]:focus,
+.remember-me-checkbox input[type="checkbox"]:focus-visible,
+.remember-me-checkbox input[type="checkbox"]:hover {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .login-options-row .forgot-password-btn {
   font-size: 0.7rem;
   padding: 0;
@@ -465,7 +472,8 @@
 .unified-login-container .input-wrapper .password-toggle-btn {
   top: 50%;
   right: 16px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) !important;
+  box-shadow: none !important;
 }
 
 .unified-login-container .login-options-row {
@@ -533,4 +541,25 @@
 .unified-login-container .login-close-btn:hover {
   background: transparent !important;
   color: #dc2626;
+}
+
+/* Ensure the Forgot Password Modal Perfectly Matches the Login Theme */
+.global-modal-container.login-theme-modal {
+  background: #ffffff;
+  border-color: #d7e1ee;
+  color: #1d2d44;
+}
+
+[data-theme='dark'] .global-modal-container.login-theme-modal {
+  background: #1d2c43;
+  border-color: #38506f;
+  color: #e7eef8;
+}
+
+.global-modal-container.login-theme-modal .global-modal-title {
+  color: inherit;
+}
+
+.global-modal-container.login-theme-modal .global-modal-close-btn {
+  color: #ef4444 !important;
 }

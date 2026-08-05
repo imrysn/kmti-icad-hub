@@ -123,7 +123,7 @@ const WeldingSymbolLesson: React.FC<WeldingSymbolLessonProps> = ({
                     <div style={{ flex: 1, minWidth: '300px', border: '1px solid red', padding: '1rem', backgroundColor: 'var(--bg-card, #fff)', color: 'var(--text-primary, #333)', fontSize: '0.95rem', borderRadius: '8px' }}>
                       <div style={{ color: 'red' }}>
                         <p style={{ marginBottom: '0.5rem' }}>Standard notes:</p>
-                        <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', color: 'var(--text-primary, #fff' }}>
+                        <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', color: 'var(--text-main)' }}>
                           <li>Tap, drill hole shall be chamfered finish.</li>
                           <li>Corner without any instruction shall be slightly chamfer.</li>
                           <li>When completed, burrs and dust must not exist.</li>

@@ -90,8 +90,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         const params = new URLSearchParams(location.search);
         const mode = params.get('mode');
 
-        if (mode === 'assessment' && selectedCourse?.id !== 'practical-assessment') {
-            const assessmentCourse: Course = {
+        if (mode === 'assessment' && selectedCourse?.id !== 'practical-assessment' && selectedCourse?.id !== '2d-assessment') {
+            const is2D = selectedCourse?.id?.toString() === '2';
+            const assessmentCourse: Course = is2D ? {
+                id: '2d-assessment',
+                title: '2D Detailing Assessment',
+                description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
+                course_type: 'Practical_2D',
+                order: 2.5
+            } : {
                 id: 'practical-assessment',
                 title: 'Practical Assessment',
                 description: 'Sequential 7-set drafting tasks in iJCAD.',
@@ -99,7 +106,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 order: 99
             };
             setSelectedCourse(assessmentCourse);
-        } else if (mode === 'manual' && selectedCourse?.id === 'practical-assessment') {
+        } else if (mode === 'manual' && (selectedCourse?.id === 'practical-assessment' || selectedCourse?.id === '2d-assessment')) {
             setSelectedCourse(null);
         }
     }, [location.search]);
@@ -365,8 +372,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (!selectedCourse || activeLessonId) return;
 
         if (is2DDrawingCourse) {
-            setActiveLessonId('2d-orthographic-1');
-            setExpandedIds(new Set(['2d-orthographic']));
+            setActiveLessonId('2d-orthographic');
+            setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
@@ -561,8 +568,45 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             });
         } else {
             console.debug('Cannot go to next lesson: already at end of course.');
+            
+            if (courses && courses.length > 0 && selectedCourse) {
+                const course3D = courses.find(c => c.id.toString() === '1');
+                const course2D = courses.find(c => c.id.toString() === '2');
+
+                const activeCards = [
+                    ...(course3D ? [course3D] : []),
+                    ...(isEmployeeSide ? [] : [{
+                        id: 'practical-assessment',
+                        title: '3D Practical Assessment',
+                        description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
+                        course_type: 'Practical',
+                        order: 1.5
+                    }]),
+                    ...(course2D ? [course2D] : []),
+                    ...(isEmployeeSide ? [] : [{
+                        id: '2d-assessment',
+                        title: '2D Detailing Assessment',
+                        description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
+                        course_type: 'Practical_2D',
+                        order: 2.5
+                    }])
+                ] as Course[];
+
+                const courseIndex = activeCards.findIndex(c => c.id === selectedCourse.id);
+                if (courseIndex !== -1 && courseIndex < activeCards.length - 1) {
+                    const nextCourse = activeCards[courseIndex + 1];
+                    console.log('Routing to Next Course:', nextCourse.title);
+                    
+                    localStorage.removeItem(authService.getStorageKey('activeLessonId'));
+                    setSelectedCourse(nextCourse);
+
+                    if (nextCourse.id === 'practical-assessment' || nextCourse.id === '2d-assessment') {
+                        navigate('/mentor?mode=assessment');
+                    }
+                }
+            }
         }
-    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons, courses, selectedCourse, navigate, isEmployeeSide]);
 
     const goToPrevLesson = useCallback(() => {
         if (currentLessonIndex > 0) {

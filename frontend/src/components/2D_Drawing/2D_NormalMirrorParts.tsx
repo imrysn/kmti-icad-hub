@@ -147,11 +147,11 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                     <div className="step-description">
                       <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
                         <strong className="red-text">Normal</strong><br />
-                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number</span> <span style={{ color: "#fff" }}>RTXXXXXN01</span>
+                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number</span> <span style={{ color: "var(--text-main)", fontWeight: "600" }}>RTXXXXXN01</span>
                       </p>
                       <p className="p-flush">
                         <strong className="red-text">Mirror parts</strong> are parts that are symmetrically the same.<br />
-                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "#fff" }}>RTXXXXXA01 & RTXXXXXB01</span>
+                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "var(--text-main)", fontWeight: "600" }}>RTXXXXXA01 & RTXXXXXB01</span>
                       </p>
                       <img src={img2} alt="Normal and Mirror parts drawing sheet" className="software-screenshot screenshot-wide mt-4" />
                     </div>

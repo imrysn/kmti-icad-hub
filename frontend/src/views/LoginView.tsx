@@ -124,8 +124,8 @@ export const LoginView: React.FC = () => {
 
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
-                <div className="brand-subtitle">ICAD MANUAL</div>
-                <div className="brand-subtitle">TRAINING & STANDARD</div>
+                <div className="brand-subtitle">TRAINING HUB</div>
+                <div className="brand-subtitle">ICAD MANUAL AND STANDARD</div>
             </div>
 
             <div className="login-form-wrapper">
@@ -180,54 +180,34 @@ export const LoginView: React.FC = () => {
                 title="Forgot Password"
                 tag="AUTH_RECOVERY"
                 size="sm"
+                containerClassName="login-theme-modal"
             >
                 {forgotPasswordMessage && (
                     <p className="modal-success-msg">{forgotPasswordMessage}</p>
                 )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div className="input-group">
-                        <label htmlFor="forgot-email" className="modal-field-label">Email or Username</label>
+                        <label htmlFor="forgot-email" className="modal-field-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.45rem', color: 'inherit', opacity: 0.7 }}>EMAIL OR USERNAME</label>
                         <input id="forgot-email" type="text" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)}
                             placeholder="Email or Username"
                             disabled={isForgotPasswordSubmitting}
                             style={{
                                 width: '100%',
-                                padding: '0.625rem 0.875rem',
-                                borderRadius: 'var(--radius-md)',
+                                padding: '0.75rem 1rem',
+                                borderRadius: '10px',
                                 border: '1px solid var(--border-color)',
-                                background: 'var(--bg-surface)',
-                                color: 'var(--text-main)',
-                                outline: 'none'
+                                background: 'transparent',
+                                color: 'inherit',
+                                outline: 'none',
+                                boxSizing: 'border-box'
                             }}
                         />
                     </div>
                     <div className="modal-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                        <button onClick={handleForgotPasswordCancel} className="cancel-button" disabled={isForgotPasswordSubmitting}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                borderRadius: '8px',
-                                fontSize: '0.8125rem',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                background: 'transparent',
-                                color: 'var(--text-muted)',
-                                border: '1px solid var(--border-color)'
-                            }}
-                        >
+                        <button onClick={handleForgotPasswordCancel} className="global-btn-secondary" disabled={isForgotPasswordSubmitting}>
                             Cancel
                         </button>
-                        <button onClick={handleForgotPasswordSubmit} className="submit-button" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}
-                            style={{
-                                padding: '0.5rem 1.25rem',
-                                borderRadius: '8px',
-                                fontSize: '0.8125rem',
-                                fontWeight: '700',
-                                cursor: 'pointer',
-                                border: 'none',
-                                background: 'var(--primary)',
-                                color: '#ffffff'
-                            }}
-                        >
+                        <button onClick={handleForgotPasswordSubmit} className="global-btn-primary" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}>
                             {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
                         </button>
                     </div>

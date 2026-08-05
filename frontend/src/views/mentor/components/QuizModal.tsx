@@ -467,9 +467,9 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       <div className="quiz-modal-content">
         {lockTimeLeft > 0 ? (
           <div className="quiz-warning-view">
-            <div className="warning-card" style={{ borderColor: 'rgba(239, 68, 68, 0.3)' }}>
-              <ShieldAlert className="warning-icon alert" size={80} style={{ color: '#ef4444' }} />
-              <h3 className="warning-title" style={{ color: '#ef4444' }}>Assessment Lockdown</h3>
+            <div className="warning-card" style={{ borderColor: 'var(--color-error)' }}>
+              <ShieldAlert className="warning-icon alert" size={80} style={{ color: 'var(--color-error)' }} />
+              <h3 className="warning-title" style={{ color: 'var(--color-error)' }}>Assessment Lockdown</h3>
               <p className="warning-intro" style={{ marginBottom: '1.5rem' }}>
                 You have failed this assessment 3 times in a row. To ensure thorough comprehension, you must review the module lessons before attempting again.
               </p>
@@ -479,11 +479,10 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 margin: '2rem 0',
                 padding: '1.5rem',
                 borderRadius: '12px',
-                background: 'rgba(239, 68, 68, 0.05)',
-                border: '1px solid rgba(239, 68, 68, 0.1)'
+                background: 'transparent'
               }}>
-                <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: '#9ca3af', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                  Lockdown Active
+                <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--text-muted)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  Time Remaining
                 </p>
                 <div style={{
                   fontSize: '3.5rem',
@@ -496,7 +495,7 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                 </div>
               </div>
 
-              <button className="start-btn" onClick={onClose} style={{ width: '100%', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'white' }}>
+              <button className="finish-btn retry" onClick={onClose} style={{ width: '100%', marginTop: '1.5rem' }}>
                 Return to Lesson
               </button>
             </div>
@@ -547,16 +546,16 @@ export const QuizModal: React.FC<QuizModalProps> = ({
                   fontSize: '0.9rem',
                   fontWeight: 800,
                   fontFamily: 'monospace',
-                  color: timeLeft <= 30 ? '#ef4444' : 'var(--primary)',
-                  background: 'rgba(255,255,255,0.03)',
+                  color: timeLeft <= 30 ? 'var(--color-error)' : 'var(--color-primary)',
+                  background: 'var(--bg-surface)',
                   padding: '0.4rem 0.8rem',
                   borderRadius: '8px',
-                  border: `1px solid ${timeLeft <= 30 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(99, 102, 241, 0.1)'}`,
+                  border: `1px solid ${timeLeft <= 30 ? 'var(--color-error)' : 'var(--border-color)'}`,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem'
                 }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: timeLeft <= 30 ? '#ef4444' : 'var(--primary)', animation: timeLeft <= 30 ? 'pulse 1s infinite' : 'none' }}></div>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: timeLeft <= 30 ? 'var(--color-error)' : 'var(--color-primary)', animation: timeLeft <= 30 ? 'pulse 1s infinite' : 'none' }}></div>
                   {formatTime(timeLeft)}
                 </div>
               </div>

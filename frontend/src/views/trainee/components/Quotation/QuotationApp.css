@@ -284,27 +284,27 @@
 }
 
 .btn.workspace-modal-cancel {
-  color: #B5179E !important;
+  color: var(--color-primary) !important;
   border-color: transparent !important;
-  background: rgba(181, 23, 158, 0.2) !important;
+  background: var(--color-primary-glow) !important;
   font-weight: 600 !important;
 }
 
-.btn.workspace-modal-cancel:hover {
-  background: rgba(181, 23, 158, 0.05) !important;
+.btn.workspace-modal-cancel:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-primary-glow) 50%, transparent) !important;
 }
 
 .btn.workspace-modal-confirm {
-  background: #B5179E !important;
-  border-color: #B5179E !important;
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
   color: white !important;
   font-weight: 700 !important;
   letter-spacing: 0.01em;
 }
 
-.btn.workspace-modal-confirm:hover {
-  background: #9d1489 !important;
-  border-color: #9d1489 !important;
+.btn.workspace-modal-confirm:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-primary) 88%, #000) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 88%, #000) !important;
 }
 
 
