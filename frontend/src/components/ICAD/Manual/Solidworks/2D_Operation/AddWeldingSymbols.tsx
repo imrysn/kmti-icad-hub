@@ -117,3 +117,4 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
 };
 
 export default AddWeldingSymbols;
+    
