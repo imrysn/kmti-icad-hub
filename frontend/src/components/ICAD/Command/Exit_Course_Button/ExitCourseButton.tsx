@@ -68,29 +68,48 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
         };
 
     return (
-        <button
-            className="exit-course-btn"
-            onClick={handleExitCourse}
-            onMouseEnter={() => setIsExitHovered(true)}
-            onMouseLeave={() => setIsExitHovered(false)}
+        <div
             style={{
-                fontFamily: 'var(--font-main)',
-                fontSize: '12.8px',
-                padding: '8px 16px',
-                letterSpacing: '0.3px',
-                borderRadius: '6px',
+                position: 'sticky',
+                top: 0,
+                left: 0,
+                right: 0,
+                width: '100vw',
+                marginLeft: 'calc(-50vw + 50%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                height: '56px',
+                padding: '0 20px',
+                backgroundColor: '#000000',
+                borderBottom: '1px solid var(--border-color)',
                 boxSizing: 'border-box',
-                lineHeight: '1.6',
-                fontWeight: 700,
-                transition: 'background-color 0.15s ease, color 0.15s ease',
-                textAlign: 'center',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-                ...exitButtonColors,
             }}
         >
-            EXIT COURSE
-        </button>
+            <button
+                className="exit-course-btn"
+                onClick={handleExitCourse}
+                onMouseEnter={() => setIsExitHovered(true)}
+                onMouseLeave={() => setIsExitHovered(false)}
+                style={{
+                    fontFamily: 'var(--font-main)',
+                    fontSize: '12.8px',
+                    padding: '8px 16px',
+                    letterSpacing: '0.3px',
+                    borderRadius: '6px',
+                    boxSizing: 'border-box',
+                    lineHeight: '1.6',
+                    fontWeight: 700,
+                    transition: 'background-color 0.15s ease, color 0.15s ease',
+                    textAlign: 'center',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                    ...exitButtonColors,
+                }}
+            >
+                EXIT COURSE
+            </button>
+        </div>
     );
 }
 

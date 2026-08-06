@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Menu_Bar_Japanese_Tutorial from "./Menu_Bar/Menu_Bar";
-import Command_Menu_Japanese_Tutorial from "./Command_Menu/Command_Menu";
 import Tree_View_Japanese_Tutorial from "./Tree_View/Tree_View";
 import { ReadAloudButton } from "../../../../ReadAloudButton";
 import { useTTSContext } from "../../../../../context/TTSContext";
@@ -20,7 +19,7 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
     const [activeTab, setActiveTab] = useState("MENU BAR");
     const { rate, voices, selectedVoiceURI } = useTTSContext();
     const [isSpeaking, setIsSpeaking] = useState(false);
-    const tabs = ["MENU BAR", "COMMAND MENU", "TREE VIEW"];
+    const tabs = ["MENU BAR", "TREE VIEW"];
     const activeIndex = tabs.indexOf(activeTab);
 
     const sentinelRef = useRef<HTMLDivElement>(null);
@@ -32,7 +31,7 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
     const [navbarHeight, setNavbarHeight] = useState(FALLBACK_NAVBAR_HEIGHT);
 
     const titleForTab = (tab: string) =>
-        tab === "MENU BAR" ? "Menu Bar" : tab === "COMMAND MENU" ? "Command Menu" : "Tree View";
+        tab === "MENU BAR" ? "Menu Bar" : "Tree View";
 
     const handleStartReading = () => {
         const utterance = new SpeechSynthesisUtterance(titleForTab(activeTab));
@@ -122,7 +121,6 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
         justifyContent: 'flex-end',
         padding: '0.54rem 1.2rem',
         backgroundColor: 'var(--bg-dark)',
-        borderBottom: '1px solid var(--border-color)',
         flexShrink: 0,
         zIndex: 900,
     };
@@ -134,7 +132,6 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
         backgroundColor: "var(--glass-bg)",
         padding: "9.6px",
         borderRadius: "10px",
-        border: "1px solid var(--border-color)",
         gap: "8px",
     };
 
@@ -259,14 +256,8 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
             <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px" }}>
                 {activeTab === "MENU BAR" ? (
                     <Menu_Bar_Japanese_Tutorial />
-                ) : activeTab === "COMMAND MENU" ? (
-                    <Command_Menu_Japanese_Tutorial />
-                ) : activeTab === "TREE VIEW" ? (
-                    <Tree_View_Japanese_Tutorial />
                 ) : (
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", color: "var(--text-main)" }}>
-                        <h2>{activeTab} Content</h2>
-                    </div>
+                    <Tree_View_Japanese_Tutorial />
                 )}
             </div>
 

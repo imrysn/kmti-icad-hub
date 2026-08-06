@@ -92,3 +92,20 @@
     color: #b5179e;
     box-shadow: 0 4px 15px #b5179e1f;
 }
+
+/* ── Top bar ── */
+
+/* DARK MODE — fixed top bar background */
+.lesson-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.54rem 1.2rem;
+    background-color: #000000;
+    flex-shrink: 0;
+}
+
+/* LIGHT MODE — fixed top bar background */
+[data-theme='light'] .lesson-topbar {
+    background-color: #e2e8f0;
+}

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import Tree_ViewImage from '../../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
-import { ImageControlBar } from '../../Image_Control/ImageControlBar';
-import { SPOTLIGHTS, MenuItem } from './Tree_View_Left_CLick/Tree_View_Left';
+import commmandmenu from '../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
+import { ImageControlBar } from '../../Icad_Guide/Image_Control/ImageControlBar';
+import { SPOTLIGHTS, MenuItem } from './CommandData';
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -84,7 +84,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
     );
 }
 
-function Tree_View_Japanese_Tutorial() {
+function Command_Menu_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -95,7 +95,7 @@ function Tree_View_Japanese_Tutorial() {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Handle automated sequence: walk through each spotlight, opening its dropdown in turn
+    // Handle automated sequence
     useEffect(() => {
         let timeout: NodeJS.Timeout;
 
@@ -117,7 +117,7 @@ function Tree_View_Japanese_Tutorial() {
                 timeout = setTimeout(() => {
                     setIsLabelDropdownOpen(true);
 
-                    // Show dropdown for 2 seconds, then go to next
+                    // Show highlight for 2 seconds, then go to next
                     timeout = setTimeout(() => {
                         setIsLabelDropdownOpen(false);
 
@@ -180,10 +180,10 @@ function Tree_View_Japanese_Tutorial() {
         setCursorPos(null);
     }
 
-    const imageContainerMarkup = (
+    const videoContainerMarkup = (
         <div
             ref={containerRef}
-            className={`image-fullscreen-container ${isFullscreen ? 'is-expanded-fullscreen' : ''}`}
+            className={`video-fullscreen-container ${isFullscreen ? 'is-expanded-fullscreen' : ''}`}
             onClick={handleContainerClick}
             style={isFullscreen ? {
                 position: "fixed",
@@ -199,8 +199,8 @@ function Tree_View_Japanese_Tutorial() {
                 overflow: "hidden"
             } : {
                 position: "relative",
-                width: "100%",
-                maxWidth: "1000px",
+                width: "100%", // maximize width in normal view
+                maxWidth: "1000px", // increased max-width for bigger size
                 aspectRatio: "16 / 9",
                 display: "flex",
                 justifyContent: "center",
@@ -225,8 +225,8 @@ function Tree_View_Japanese_Tutorial() {
                 }}
             >
                 <img
-                    src={Tree_ViewImage}
-                    alt="Tree View Image"
+                    src={commmandmenu}
+                    alt="Command Menu Image"
                     style={{
                         width: "100%",
                         height: "100%",
@@ -235,10 +235,11 @@ function Tree_View_Japanese_Tutorial() {
                     }}
                 />
 
-                {/* Render ALL label invisible buttons so they can be manually clicked anytime */}
+                {/* Render ALL spotlight buttons so they can be manually clicked anytime */}
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
+                    const showSpotlight = isActive && isLabelDropdownOpen;
 
                     return (
                         <div key={spot.label}>
@@ -262,36 +263,66 @@ function Tree_View_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
+                                    backgroundColor: "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
-                                    transition: "background-color 0.2s ease",
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
                                 }}
                             />
 
-                            {/* Native HTML/CSS Dropdown Menu — supports nested children submenus */}
-                            {isActive && isLabelDropdownOpen && spot.menuItems && spot.menuItems.length > 0 && (
+                            {/* Spotlight box — bordered outline + floating label, matching the video tutorial's style */}
+                            {showSpotlight && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w}%`,
+                                        height: `${pos.h}%`,
+                                        pointerEvents: "none",
+                                        boxSizing: "border-box",
+                                        border: "2px solid #B5179E",
+                                        borderRadius: "2px",
+                                        zIndex: 10,
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            left: "calc(100% + 8px)",
+                                            top: 0,
+                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                            color: "#B5179E",
+                                            border: "1.5px solid #B5179E",
+                                            padding: "4px 10px",
+                                            borderRadius: "6px",
+                                            fontSize: "12px",
+                                            fontWeight: "bold",
+                                            whiteSpace: "nowrap",
+                                            boxShadow: "0 0 8px rgba(255, 20, 147, 0.4)",
+                                        }}
+                                    >
+                                        {spot.label}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Dropdown menu — only spots with menuItems get one */}
+                            {showSpotlight && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     style={{
                                         position: "absolute",
-                                        left: `${pos.x + pos.w}%`,
-                                        top: `${pos.y}%`,
-                                        marginLeft: "2px",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y + pos.h}%`,
+                                        marginTop: "2px", // Tight gap like native Windows menus
                                         zIndex: 20,
                                         pointerEvents: "auto",
                                         backgroundColor: "#f2f2f2", // Windows native menu background color
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                        transition: "opacity 0.2s ease-out"
-                                    }}>
+                                    }}
+                                >
                                     <DropdownMenu items={spot.menuItems} />
                                 </div>
                             )}
@@ -313,7 +344,7 @@ function Tree_View_Japanese_Tutorial() {
                             top: `${cursorPos.y}%`,
                             zIndex: 50,
                             pointerEvents: "none",
-                            transition: "top 0.5s ease-out",
+                            transition: "all 0.5s ease-out",
                             transform: "translate(-6px, -2px)",
                             filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.5))"
                         }}
@@ -354,16 +385,16 @@ function Tree_View_Japanese_Tutorial() {
                     onStop={handleStop}
                 />
             </div>
-        </div>
+        </div >
     );
 
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                {isFullscreen ? createPortal(imageContainerMarkup, document.body) : imageContainerMarkup}
+                {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
             </div>
         </div>
     );
 }
 
-export default Tree_View_Japanese_Tutorial;
+export default Command_Menu_Japanese_Tutorial;

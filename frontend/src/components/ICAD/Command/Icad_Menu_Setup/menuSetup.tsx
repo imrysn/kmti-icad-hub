@@ -19,12 +19,6 @@ export default function MenuSetup({ onExit }: MenuSetupProps) {
         <div className="menu-setup-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
 
             <div style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                width: '100%',
-                padding: '0.54rem 1.2rem',
-                boxSizing: 'border-box',
-                borderBottom: '1px solid var(--border-color)',
             }}>
                 <ExitCourseButton onExit={() => onExit?.()} />
             </div>
