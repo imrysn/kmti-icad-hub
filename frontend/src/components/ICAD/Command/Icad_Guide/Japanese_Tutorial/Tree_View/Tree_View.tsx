@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import Tree_ViewImage from '../../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
 import { ImageControlBar } from '../../Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './Tree_View_Left_CLick/Tree_View_Left';
+import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_View.jpg';
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -90,6 +90,12 @@ function Tree_View_Japanese_Tutorial() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
+    // Right-click context menu: which item's menu is open, and where the
+    // cursor was when it was triggered (position is a % of the container,
+    // same coordinate space as everything else, so it scales/repositions
+    // correctly between normal and fullscreen).
+    const [contextMenu, setContextMenu] = useState<{ index: number; x: number; y: number } | null>(null);
+
     // Automation states
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
 
@@ -104,6 +110,7 @@ function Tree_View_Japanese_Tutorial() {
                 // start from first step
                 setStepIndex(0);
                 setIsLabelDropdownOpen(false);
+                setContextMenu(null);
             } else if (stepIndex < SPOTLIGHTS.length) {
                 const spotlight = SPOTLIGHTS[stepIndex];
 
@@ -112,6 +119,7 @@ function Tree_View_Japanese_Tutorial() {
 
                 setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
                 setIsLabelDropdownOpen(false);
+                setContextMenu(null);
 
                 // Wait 0.5s for cursor to move, then click
                 timeout = setTimeout(() => {
@@ -148,6 +156,7 @@ function Tree_View_Japanese_Tutorial() {
     const handlePrevStep = () => {
         setIsPlaying(false);
         setCursorPos(null);
+        setContextMenu(null);
         if (stepIndex > 0) {
             setStepIndex(stepIndex - 1);
             setIsLabelDropdownOpen(true);
@@ -157,6 +166,7 @@ function Tree_View_Japanese_Tutorial() {
     const handleNextStep = () => {
         setIsPlaying(false);
         setCursorPos(null);
+        setContextMenu(null);
         if (stepIndex < SPOTLIGHTS.length - 1) {
             setStepIndex(stepIndex === -1 ? 0 : stepIndex + 1);
             setIsLabelDropdownOpen(true);
@@ -171,6 +181,7 @@ function Tree_View_Japanese_Tutorial() {
         setIsPlaying(false);
         setStepIndex(-1);
         setIsLabelDropdownOpen(false);
+        setContextMenu(null);
         setCursorPos(null);
     };
 
@@ -178,6 +189,7 @@ function Tree_View_Japanese_Tutorial() {
         setIsLabelDropdownOpen(false);
         setStepIndex(-1);
         setCursorPos(null);
+        setContextMenu(null);
     }
 
     const imageContainerMarkup = (
@@ -225,7 +237,7 @@ function Tree_View_Japanese_Tutorial() {
                 }}
             >
                 <img
-                    src={Tree_ViewImage}
+                    src={Tree_View}
                     alt="Tree View Image"
                     style={{
                         width: "100%",
@@ -239,6 +251,7 @@ function Tree_View_Japanese_Tutorial() {
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
+                    const isContextActive = contextMenu?.index === i;
 
                     return (
                         <div key={spot.label}>
@@ -246,12 +259,31 @@ function Tree_View_Japanese_Tutorial() {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsPlaying(false);
+                                    setContextMenu(null); // left-click always closes any open right-click menu
                                     if (stepIndex === i) {
                                         setIsLabelDropdownOpen(!isLabelDropdownOpen);
                                     } else {
                                         setStepIndex(i);
                                         setIsLabelDropdownOpen(true);
                                     }
+                                }}
+                                onContextMenu={(e) => {
+                                    e.preventDefault(); // suppress the browser's native right-click menu
+                                    e.stopPropagation();
+                                    setIsPlaying(false);
+                                    setIsLabelDropdownOpen(false); // right-click always closes any open left-click dropdown
+
+                                    if (!spot.contextMenuItems || spot.contextMenuItems.length === 0) {
+                                        setContextMenu(null);
+                                        return;
+                                    }
+
+                                    const rect = containerRef.current?.getBoundingClientRect();
+                                    if (!rect) return;
+
+                                    const xPct = ((e.clientX - rect.left) / rect.width) * 100;
+                                    const yPct = ((e.clientY - rect.top) / rect.height) * 100;
+                                    setContextMenu({ index: i, x: xPct, y: yPct });
                                 }}
                                 title={spot.label}
                                 style={{
@@ -276,7 +308,7 @@ function Tree_View_Japanese_Tutorial() {
                                 }}
                             />
 
-                            {/* Native HTML/CSS Dropdown Menu — supports nested children submenus */}
+                            {/* Native HTML/CSS Dropdown Menu (left-click) — supports nested children submenus */}
                             {isActive && isLabelDropdownOpen && spot.menuItems && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
@@ -293,6 +325,26 @@ function Tree_View_Japanese_Tutorial() {
                                         transition: "opacity 0.2s ease-out"
                                     }}>
                                     <DropdownMenu items={spot.menuItems} />
+                                </div>
+                            )}
+
+                            {/* Right-click context menu — appears at the cursor's click position, not the item's position */}
+                            {isContextActive && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
+                                <div
+                                    onClick={(e) => e.stopPropagation()}
+                                    onContextMenu={(e) => e.preventDefault()}
+                                    style={{
+                                        position: "absolute",
+                                        left: `${contextMenu!.x}%`,
+                                        top: `${contextMenu!.y}%`,
+                                        zIndex: 60, // above every spotlight button (30), left-click dropdown (20), and the automation cursor (50)
+                                        pointerEvents: "auto",
+                                        backgroundColor: "#f2f2f2",
+                                        border: "1px solid #a0a0a0",
+                                        boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                        transition: "opacity 0.2s ease-out"
+                                    }}>
+                                    <DropdownMenu items={spot.contextMenuItems} />
                                 </div>
                             )}
                         </div>
