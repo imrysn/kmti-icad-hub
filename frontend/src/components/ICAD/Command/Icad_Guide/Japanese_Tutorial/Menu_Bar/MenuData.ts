@@ -34,13 +34,13 @@ export const FILE_MENU_ITEMS: MenuItem[] = [
     { label: "Close All (Z)" },
     { isDivider: true, label: "" },
     { label: "Save (S)", shortcut: "Ctrl+S" },
-    { label: "Save As(A)....", shortcut: "Ctrl+Shift+A" },
+    { label: "Save As(A)....", shortcut: "Ctrl+Shift+S" },
     { isDivider: true, label: "" },
-    { label: "Drawing Conversion Import(I)..." },
+    { label: "Drawing Conversion Import(I)...", shortcut: "Ctrl+I" },
     { label: "Drawing Conversion Export(E)..." },
     { isDivider: true, label: "" },
     { label: "Saved Output(D)..." },
-    { label: "Range Output / Print Area(H)...", shortcut: "Ctrl+P" },
+    { label: "Range Output / Print Area(H)... ", shortcut: "Ctrl+P" },
     { label: "Displayed Drawing Output(M)..." },
     { label: "Set Print Area(U)", hasSubmenu: true },
     { label: "Clear Print Area(Y)", hasSubmenu: true },
@@ -87,7 +87,7 @@ export const INFO_MENU_ITEMS: MenuItem[] = [
     { label: "Number of Parts (G)", hasSubmenu: true },
     { label: "Number of Balloons (B)", hasSubmenu: true },
     { label: "Group List (I)", hasSubmenu: true },
-    { label: "Number of Sub-Drawings (C)", hasSubmenu: true },
+    { label: "Number of Sub-Drawings (C)" },
     { isDivider: true, label: "" },
     { label: "View Information (V)" },
     { isDivider: true, label: "" },
@@ -96,7 +96,7 @@ export const INFO_MENU_ITEMS: MenuItem[] = [
 ];
 
 export const SETTINGS_MENU_ITEMS: MenuItem[] = [
-    { label: "Drafting Attributes (A)" },
+    { label: "Drafting Attributes (A)..." },
     { label: "Attribute Settings (I)..." },
     { label: "Drawing Attributes (C)" },
     { label: "View Switching Panel (V)..." },
@@ -122,7 +122,7 @@ export const SETTINGS_MENU_ITEMS: MenuItem[] = [
     { isDivider: true, label: "" },
     { label: "Define Extended Part Attributes (D)..." },
     { isDivider: true, label: "" },
-    { label: "Security Settings (T)" },
+    { label: "Security Settings (T)..." },
     { isDivider: true, label: "" },
     { label: "Save Application Position (P)", hasSubmenu: true }
 ];

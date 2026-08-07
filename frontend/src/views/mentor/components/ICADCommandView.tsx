@@ -77,7 +77,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
-                    <Icad_Guide />
+                    <Icad_Guide onExit={() => setGuidePage(null)} />
                 </div>
             </div>
         );
@@ -94,7 +94,7 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
-                    <Icad_Menu_Setup />
+                    <Icad_Menu_Setup onExit={() => setMenuSetupPage(null)} />
                 </div>
             </div>
         );

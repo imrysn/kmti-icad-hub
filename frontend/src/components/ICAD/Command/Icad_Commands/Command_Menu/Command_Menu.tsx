@@ -1,10 +1,90 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import commmandmenu from '../../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
-import { ImageControlBar } from '../../Image_Control/ImageControlBar';
-import { SPOTLIGHTS, MenuItem } from './MenuData';
+import commmandmenu from '../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
+import { ImageControlBar } from '../../Icad_Guide/Image_Control/ImageControlBar';
+import { SPOTLIGHTS, MenuItem } from './CommandData';
 
-function Menu_Bar_Japanese_Tutorial() {
+// Recursive dropdown that supports nested `children` — hovering an item
+// with children flies out a submenu to its right, native-menu style.
+function DropdownMenu({ items }: { items: MenuItem[] }) {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    return (
+        <ul style={{
+            listStyle: "none",
+            margin: 0,
+            padding: "2px 0",
+            minWidth: "160px",
+            fontSize: "8.8px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#333",
+        }}>
+            {items.map((item, index) => {
+                if (item.isDivider) {
+                    return (
+                        <li key={index} style={{
+                            height: "1px",
+                            backgroundColor: "#d7d7d7",
+                            margin: "3px 0"
+                        }} />
+                    );
+                }
+
+                const hasChildren = !!(item.children && item.children.length > 0);
+                const isHovered = hoveredIndex === index;
+
+                return (
+                    <li
+                        key={index}
+                        style={{
+                            padding: "4px 24px 4px 12px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            cursor: "default",
+                            position: "relative",
+                            backgroundColor: isHovered ? "rgba(0, 120, 215, 0.1)" : "transparent",
+                            color: isHovered ? "#000" : "#333",
+                        }}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            {item.label}
+                        </span>
+                        <span style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666" }}>
+                            {item.shortcut && <span>{item.shortcut}</span>}
+                            {(item.hasSubmenu || hasChildren) && (
+                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            )}
+                        </span>
+
+                        {hasChildren && isHovered && (
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    left: "100%",
+                                    top: "-2px",
+                                    marginLeft: "2px",
+                                    zIndex: 21,
+                                    backgroundColor: "#f2f2f2",
+                                    border: "1px solid #a0a0a0",
+                                    boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                }}
+                            >
+                                <DropdownMenu items={item.children!} />
+                            </div>
+                        )}
+                    </li>
+                );
+            })}
+        </ul>
+    );
+}
+
+function Command_Menu_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -37,7 +117,7 @@ function Menu_Bar_Japanese_Tutorial() {
                 timeout = setTimeout(() => {
                     setIsLabelDropdownOpen(true);
 
-                    // Show dropdown for 2 seconds, then go to next
+                    // Show highlight for 2 seconds, then go to next
                     timeout = setTimeout(() => {
                         setIsLabelDropdownOpen(false);
 
@@ -100,63 +180,6 @@ function Menu_Bar_Japanese_Tutorial() {
         setCursorPos(null);
     }
 
-    const renderDropdownMenu = (items: MenuItem[]) => {
-        return (
-            <ul style={{
-                listStyle: "none",
-                margin: 0,
-                padding: "2px 0",
-                minWidth: "160px",
-                fontSize: "8.8px",
-                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                color: "#333",
-            }}>
-                {items.map((item, index) => {
-                    if (item.isDivider) {
-                        return (
-                            <li key={index} style={{
-                                height: "1px",
-                                backgroundColor: "#d7d7d7",
-                                margin: "3px 0"
-                            }} />
-                        );
-                    }
-                    return (
-                        <li key={index} style={{
-                            padding: "4px 24px 4px 12px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            cursor: "default",
-                            position: "relative"
-                        }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = "rgba(0, 120, 215, 0.1)";
-                                e.currentTarget.style.color = "#000";
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = "transparent";
-                                e.currentTarget.style.color = "#333";
-                            }}
-                        >
-                            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                {item.label}
-                            </span>
-                            <span style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666" }}>
-                                {item.shortcut && <span>{item.shortcut}</span>}
-                                {item.hasSubmenu && (
-                                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                )}
-                            </span>
-                        </li>
-                    );
-                })}
-            </ul>
-        );
-    };
-
     const videoContainerMarkup = (
         <div
             ref={containerRef}
@@ -203,7 +226,7 @@ function Menu_Bar_Japanese_Tutorial() {
             >
                 <img
                     src={commmandmenu}
-                    alt="Menu Bar Image"
+                    alt="Command Menu Image"
                     style={{
                         width: "100%",
                         height: "100%",
@@ -212,10 +235,11 @@ function Menu_Bar_Japanese_Tutorial() {
                     }}
                 />
 
-                {/* Render ALL label invisible buttons so they can be manually clicked anytime */}
+                {/* Render ALL spotlight buttons so they can be manually clicked anytime */}
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
+                    const showSpotlight = isActive && isLabelDropdownOpen;
 
                     return (
                         <div key={spot.label}>
@@ -239,22 +263,52 @@ function Menu_Bar_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
+                                    backgroundColor: "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
-                                    transition: "background-color 0.2s ease",
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
                                 }}
                             />
 
-                            {/* Native HTML/CSS Dropdown Menu */}
-                            {isActive && isLabelDropdownOpen && spot.menuItems && (
+                            {/* Spotlight box — bordered outline + floating label, matching the video tutorial's style */}
+                            {showSpotlight && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w}%`,
+                                        height: `${pos.h}%`,
+                                        pointerEvents: "none",
+                                        boxSizing: "border-box",
+                                        border: "2px solid #B5179E",
+                                        borderRadius: "2px",
+                                        zIndex: 10,
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            left: "calc(100% + 8px)",
+                                            top: 0,
+                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
+                                            color: "#B5179E",
+                                            border: "1.5px solid #B5179E",
+                                            padding: "4px 10px",
+                                            borderRadius: "6px",
+                                            fontSize: "12px",
+                                            fontWeight: "bold",
+                                            whiteSpace: "nowrap",
+                                            boxShadow: "0 0 8px rgba(255, 20, 147, 0.4)",
+                                        }}
+                                    >
+                                        {spot.label}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Dropdown menu — only spots with menuItems get one */}
+                            {showSpotlight && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     style={{
@@ -267,9 +321,9 @@ function Menu_Bar_Japanese_Tutorial() {
                                         backgroundColor: "#f2f2f2", // Windows native menu background color
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                        transition: "opacity 0.2s ease-out"
-                                    }}>
-                                    {renderDropdownMenu(spot.menuItems)}
+                                    }}
+                                >
+                                    <DropdownMenu items={spot.menuItems} />
                                 </div>
                             )}
                         </div>
@@ -343,4 +397,4 @@ function Menu_Bar_Japanese_Tutorial() {
     );
 }
 
-export default Menu_Bar_Japanese_Tutorial;
+export default Command_Menu_Japanese_Tutorial;
