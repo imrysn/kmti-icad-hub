@@ -72,16 +72,13 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
             style={{
                 position: 'sticky',
                 top: 0,
-                left: 0,
-                right: 0,
-                width: '100vw',
-                marginLeft: 'calc(-50vw + 50%)',
+                width: '100%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
                 height: '56px',
                 padding: '0 20px',
-                backgroundColor: '#000000',
+                backgroundColor: theme === 'dark' ? '#000000' : 'transparent',
                 borderBottom: '1px solid var(--border-color)',
                 boxSizing: 'border-box',
             }}
