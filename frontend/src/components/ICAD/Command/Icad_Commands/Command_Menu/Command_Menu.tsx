@@ -90,8 +90,9 @@ function Command_Menu_Japanese_Tutorial() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
-    // Automation states
+    // Automation & Hover states
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
+    const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -239,6 +240,7 @@ function Command_Menu_Japanese_Tutorial() {
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
+                    const isHovered = hoveredSpotIndex === i && !isActive;
                     const showSpotlight = isActive && isLabelDropdownOpen;
 
                     return (
@@ -254,6 +256,8 @@ function Command_Menu_Japanese_Tutorial() {
                                         setIsLabelDropdownOpen(true);
                                     }
                                 }}
+                                onMouseEnter={() => setHoveredSpotIndex(i)}
+                                onMouseLeave={() => setHoveredSpotIndex(null)}
                                 title={spot.label}
                                 style={{
                                     position: "absolute",
@@ -265,24 +269,68 @@ function Command_Menu_Japanese_Tutorial() {
                                     pointerEvents: "auto",
                                     backgroundColor: "transparent",
                                     border: "none",
+                                    borderRadius: "0px",
+                                    boxSizing: "border-box",
                                     cursor: "pointer",
                                     outline: "none",
+                                    transition: "all 0.2s ease",
                                 }}
                             />
 
-                            {/* Spotlight box — bordered outline + floating label, matching the video tutorial's style */}
+                            {/* Half-width hover spotlight overlay */}
+                            {isHovered && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w * 1}%`,
+                                        height: `${pos.h}%`,
+                                        pointerEvents: "none",
+                                        backgroundColor: "rgba(236, 117, 247, 0.43)",
+                                        borderRadius: "0px",
+                                        boxSizing: "border-box",
+                                        zIndex: 25,
+                                        transition: "all 0.15s ease",
+                                    }}
+                                />
+                            )}
+
+                            {/* Active-state fill — the button itself no longer carries border/glow,
+                                this single overlay (below) is now the only source of the border/glow,
+                                so this just carries the translucent fill while a spot is selected. */}
+                            {isActive && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w * 1}%`,
+                                        height: `${pos.h}%`,
+                                        pointerEvents: "none",
+                                        backgroundColor: "rgba(234, 0, 255, 0.29)",
+                                        boxSizing: "border-box",
+                                        zIndex: 9,
+                                    }}
+                                />
+                            )}
+
+                            {/* Spotlight floating label — sharp square spotlight style.
+                                This is now the ONLY element that draws the border/glow, so there's
+                                just one border instead of two stacked ones. */}
                             {showSpotlight && (
                                 <div
                                     style={{
                                         position: "absolute",
                                         left: `${pos.x}%`,
                                         top: `${pos.y}%`,
-                                        width: `${pos.w}%`,
+                                        width: `${pos.w * 1}%`,
                                         height: `${pos.h}%`,
                                         pointerEvents: "none",
                                         boxSizing: "border-box",
-                                        border: "2px solid #B5179E",
-                                        borderRadius: "2px",
+                                        border: "1.5px solid #EA00FF",
+                                        borderRadius: "0px",
+                                        boxShadow: "rgba(234, 0, 255, 0.4)",
                                         zIndex: 10,
                                     }}
                                 >
@@ -292,14 +340,14 @@ function Command_Menu_Japanese_Tutorial() {
                                             left: "calc(100% + 8px)",
                                             top: 0,
                                             backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                            color: "#B5179E",
-                                            border: "1.5px solid #B5179E",
+                                            color: "#EA00FF",
+                                            border: "1.5px solid #EA00FF",
                                             padding: "4px 10px",
-                                            borderRadius: "6px",
+                                            borderRadius: "0px",
                                             fontSize: "12px",
                                             fontWeight: "bold",
                                             whiteSpace: "nowrap",
-                                            boxShadow: "0 0 8px rgba(255, 20, 147, 0.4)",
+                                            boxShadow: "0 0 8px rgba(234, 0, 255, 0.4)",
                                         }}
                                     >
                                         {spot.label}
