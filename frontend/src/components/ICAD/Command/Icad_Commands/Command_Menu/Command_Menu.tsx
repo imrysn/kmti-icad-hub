@@ -6,18 +6,27 @@ import { SPOTLIGHTS, MenuItem } from './CommandData';
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
-function DropdownMenu({ items }: { items: MenuItem[] }) {
+// Top-level items are arranged into 2 columns (column-major, like a
+// native multi-column context menu); nested submenus stay single-column.
+function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: number }) {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    const rows = Math.ceil(items.length / columns);
 
     return (
         <ul style={{
             listStyle: "none",
             margin: 0,
             padding: "2px 0",
-            minWidth: "160px",
+            minWidth: columns > 1 ? `${160 * columns}px` : "160px",
             fontSize: "8.8px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
+            display: columns > 1 ? "grid" : "block",
+            gridTemplateColumns: columns > 1 ? `repeat(${columns}, 1fr)` : undefined,
+            gridTemplateRows: columns > 1 ? `repeat(${rows}, auto)` : undefined,
+            gridAutoFlow: columns > 1 ? "row" : undefined,
+            columnGap: columns > 1 ? "4px" : undefined,
         }}>
             {items.map((item, index) => {
                 if (item.isDivider) {
@@ -74,7 +83,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                                     boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
                                 }}
                             >
-                                <DropdownMenu items={item.children!} />
+                                <DropdownMenu items={item.children!} columns={1} />
                             </div>
                         )}
                     </li>
@@ -86,13 +95,11 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
 
 function Command_Menu_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
-    // Automation & Hover states
+    // Automation state
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
-    const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -100,45 +107,30 @@ function Command_Menu_Japanese_Tutorial() {
     useEffect(() => {
         let timeout: NodeJS.Timeout;
 
-        if (isPlaying) {
-            if (stepIndex === -1) {
-                // start from first step
-                setStepIndex(0);
-                setIsLabelDropdownOpen(false);
-            } else if (stepIndex < SPOTLIGHTS.length) {
-                const spotlight = SPOTLIGHTS[stepIndex];
+        if (isPlaying && stepIndex === -1) {
+            setStepIndex(0);
+            return;
+        }
 
-                // Determine which position to use
-                const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
+        if (stepIndex >= 0 && stepIndex < SPOTLIGHTS.length) {
+            const spotlight = SPOTLIGHTS[stepIndex];
+            const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
 
-                setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
-                setIsLabelDropdownOpen(false);
+            setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
 
-                // Wait 0.5s for cursor to move, then click
+            if (isPlaying) {
+                // Wait 0.5s for cursor to move, hold the highlight for 2s, then advance
                 timeout = setTimeout(() => {
-                    setIsLabelDropdownOpen(true);
-
-                    // Show highlight for 2 seconds, then go to next
                     timeout = setTimeout(() => {
-                        setIsLabelDropdownOpen(false);
-
-                        // Wait a tiny bit before moving to next
-                        timeout = setTimeout(() => {
-                            setStepIndex(prev => prev + 1);
-                        }, 200);
-
+                        setStepIndex(prev => prev + 1);
                     }, 2000);
-
                 }, 500);
-
-            } else {
-                // End of sequence
-                setIsPlaying(false);
-                setStepIndex(-1);
-                setCursorPos(null);
             }
+        } else if (stepIndex >= SPOTLIGHTS.length) {
+            setIsPlaying(false);
+            setStepIndex(-1);
+            setCursorPos(null);
         } else {
-            // Paused or stopped
             setCursorPos(null);
         }
 
@@ -151,7 +143,6 @@ function Command_Menu_Japanese_Tutorial() {
         setCursorPos(null);
         if (stepIndex > 0) {
             setStepIndex(stepIndex - 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
@@ -160,7 +151,6 @@ function Command_Menu_Japanese_Tutorial() {
         setCursorPos(null);
         if (stepIndex < SPOTLIGHTS.length - 1) {
             setStepIndex(stepIndex === -1 ? 0 : stepIndex + 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
@@ -171,12 +161,10 @@ function Command_Menu_Japanese_Tutorial() {
     const handleStop = () => {
         setIsPlaying(false);
         setStepIndex(-1);
-        setIsLabelDropdownOpen(false);
         setCursorPos(null);
     };
 
     const handleContainerClick = () => {
-        setIsLabelDropdownOpen(false);
         setStepIndex(-1);
         setCursorPos(null);
     }
@@ -240,8 +228,6 @@ function Command_Menu_Japanese_Tutorial() {
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
-                    const isHovered = hoveredSpotIndex === i && !isActive;
-                    const showSpotlight = isActive && isLabelDropdownOpen;
 
                     return (
                         <div key={spot.label}>
@@ -249,15 +235,8 @@ function Command_Menu_Japanese_Tutorial() {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsPlaying(false);
-                                    if (stepIndex === i) {
-                                        setIsLabelDropdownOpen(!isLabelDropdownOpen);
-                                    } else {
-                                        setStepIndex(i);
-                                        setIsLabelDropdownOpen(true);
-                                    }
+                                    setStepIndex(i);
                                 }}
-                                onMouseEnter={() => setHoveredSpotIndex(i)}
-                                onMouseLeave={() => setHoveredSpotIndex(null)}
                                 title={spot.label}
                                 style={{
                                     position: "absolute",
@@ -267,111 +246,37 @@ function Command_Menu_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
                                     border: "none",
-                                    borderRadius: "0px",
-                                    boxSizing: "border-box",
                                     cursor: "pointer",
                                     outline: "none",
-                                    transition: "all 0.2s ease",
+                                    transition: "background-color 0.2s ease",
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
                                 }}
                             />
 
-                            {/* Half-width hover spotlight overlay */}
-                            {isHovered && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        left: `${pos.x}%`,
-                                        top: `${pos.y}%`,
-                                        width: `${pos.w * 1}%`,
-                                        height: `${pos.h}%`,
-                                        pointerEvents: "none",
-                                        backgroundColor: "rgba(236, 117, 247, 0.43)",
-                                        borderRadius: "0px",
-                                        boxSizing: "border-box",
-                                        zIndex: 25,
-                                        transition: "all 0.15s ease",
-                                    }}
-                                />
-                            )}
-
-                            {/* Active-state fill — the button itself no longer carries border/glow,
-                                this single overlay (below) is now the only source of the border/glow,
-                                so this just carries the translucent fill while a spot is selected. */}
-                            {isActive && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        left: `${pos.x}%`,
-                                        top: `${pos.y}%`,
-                                        width: `${pos.w * 1}%`,
-                                        height: `${pos.h}%`,
-                                        pointerEvents: "none",
-                                        backgroundColor: "rgba(234, 0, 255, 0.29)",
-                                        boxSizing: "border-box",
-                                        zIndex: 9,
-                                    }}
-                                />
-                            )}
-
-                            {/* Spotlight floating label — sharp square spotlight style.
-                                This is now the ONLY element that draws the border/glow, so there's
-                                just one border instead of two stacked ones. */}
-                            {showSpotlight && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        left: `${pos.x}%`,
-                                        top: `${pos.y}%`,
-                                        width: `${pos.w * 1}%`,
-                                        height: `${pos.h}%`,
-                                        pointerEvents: "none",
-                                        boxSizing: "border-box",
-                                        border: "1.5px solid #EA00FF",
-                                        borderRadius: "0px",
-                                        boxShadow: "rgba(234, 0, 255, 0.4)",
-                                        zIndex: 10,
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            left: "calc(100% + 8px)",
-                                            top: 0,
-                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                            color: "#EA00FF",
-                                            border: "1.5px solid #EA00FF",
-                                            padding: "4px 10px",
-                                            borderRadius: "0px",
-                                            fontSize: "12px",
-                                            fontWeight: "bold",
-                                            whiteSpace: "nowrap",
-                                            boxShadow: "0 0 8px rgba(234, 0, 255, 0.4)",
-                                        }}
-                                    >
-                                        {spot.label}
-                                    </div>
-                                </div>
-                            )}
-
                             {/* Dropdown menu — only spots with menuItems get one */}
-                            {showSpotlight && spot.menuItems.length > 0 && (
+                            {isActive && spot.menuItems && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     style={{
                                         position: "absolute",
                                         left: `${pos.x}%`,
                                         top: `${pos.y + pos.h}%`,
-                                        marginTop: "2px", // Tight gap like native Windows menus
-                                        zIndex: 20,
+                                        zIndex: 60, // above every spotlight button (30) and the automation cursor (50)
                                         pointerEvents: "auto",
                                         backgroundColor: "#f2f2f2", // Windows native menu background color
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                        transition: "opacity 0.2s ease-out"
                                     }}
                                 >
-                                    <DropdownMenu items={spot.menuItems} />
+                                    <DropdownMenu items={spot.menuItems} columns={2} />
                                 </div>
                             )}
                         </div>
