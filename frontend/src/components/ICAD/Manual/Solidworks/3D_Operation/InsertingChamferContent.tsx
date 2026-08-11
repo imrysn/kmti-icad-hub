@@ -42,11 +42,6 @@ const InsertingChamferContent: React.FC = () => (
                 <span className="step-number">3</span>
                 <span className="step-label">Change <strong>Distance</strong> to <strong>5 mm</strong>.</span>
             </div>
-            <div className="step-description">
-                <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
-                    <img src={chamfer1Img} alt="Chamfer PropertyManager" className="software-screenshot screenshot-wide" />
-                </div>
-            </div>
         </div>
 
         {/* Step 4 */}
@@ -64,6 +59,9 @@ const InsertingChamferContent: React.FC = () => (
                             <img src={edgeImg} alt="Selected edges" style={{ height: '35px', verticalAlign: 'middle' }} />
                         </span>
                     </p>
+                </div>
+                  <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
+                    <img src={chamfer1Img} alt="Chamfer PropertyManager" className="software-screenshot screenshot-wide" />
                 </div>
             </div>
         </div>

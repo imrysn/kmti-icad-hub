@@ -108,8 +108,8 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                                 </span>
                             </div>
                             <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    <img
+                                <div className="image-wrapper" style={{ marginTop: '0.2rem', display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                                    <img style={{height:'auto'}}
                                         src={balloon1Img}
                                         alt="Balloon positioning 1"
                                         className="software-screenshot screenshot-wide"
@@ -188,15 +188,31 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                     <div className="lesson-navigation" style={{ marginTop: "3rem" }}>
                         <button
                             className="nav-button"
-                            onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            onClick={() => {
+                                if (activeTab === 'edit') {
+                                    setActiveTab('insert');
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    if (onPrevLesson) onPrevLesson();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
                         >
                             <ChevronLeft size={18} /> Previous
                         </button>
                         <button
                             className="nav-button next"
-                            onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            onClick={() => {
+                                if (activeTab === 'insert') {
+                                    setActiveTab('edit');
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    if (onNextLesson) onNextLesson();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
                         >
-                            {nextLabel || 'Next'} <ChevronRight size={18} />
+                            {activeTab === 'insert' ? 'Next' : (nextLabel || 'Next')} <ChevronRight size={18} />
                         </button>
                     </div>
 

@@ -21,13 +21,18 @@ const HideShowLinesContent: React.FC = () => {
                                 <span className="step-label">Tangent Edge</span>
                             </div>
                             <div className="step-description">
-                                <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                    <div>Click a view.</div>
-                                        <div>
-                                    Right click on the view then point on Tangent Edge.
-                                    Click Tangent Edges Removed.
-                                    </div>
-                                </ol>
+                                <div className="step-header" style={{ padding: '8px 0px' }}>
+                                    <span className="step-number" style={{marginLeft:'30px'}}>1.1</span>
+                                    <span className="step-label">Click a view.</span>
+                                </div>
+                                <div className="step-header" style={{ padding: '8px 0px' }}>
+                                    <span className="step-number" style={{marginLeft:'30px'}}>1.2</span>
+                                    <span className="step-label">Right click on the view then point on Tangent Edge.</span>
+                                </div>
+                                <div className="step-header" style={{ padding: '8px 0px' }}>
+                                    <span className="step-number" style={{marginLeft:'30px'}}>1.3</span>
+                                    <span className="step-label">Click Tangent Edges Removed.</span>
+                                </div>
                                 <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                     <img
                                         src={tangentEdgesRemovedImg}
@@ -47,9 +52,10 @@ const HideShowLinesContent: React.FC = () => {
                                 <span className="step-label">Hide/Show Edges</span>
                             </div>
                             <div className="step-description">
-                                <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                    Click a line.
-                                </ol>
+                                <div className="step-header" style={{ padding: '8px 0px' }}>
+                                    <span className="step-number" style={{marginLeft:'30px'}}>2.1</span>
+                                    <span className="step-label">Click a line.</span>
+                                </div>
                                 <div className="image-wrapper" style={{ marginTop: '0.2rem', marginBottom: '1.5rem' }}>
                                     <img
                                         src={clickLineImg}
@@ -57,12 +63,15 @@ const HideShowLinesContent: React.FC = () => {
                                         className="software-screenshot"
                                     />
                                 </div>
-                                <ol start={2} style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                                    Click Hide/Show Edges. 
-                                    <span className="image-wrapper-flush">
-                                        <img src={clickHideImg} alt="A2 - JFE icon" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                <div className="step-header" style={{ padding: '8px 0px' }}>
+                                    <span className="step-number" style={{marginLeft:'30px'}}>2.2</span>
+                                    <span className="step-label">
+                                        Click Hide/Show Edges.{' '}
+                                        <span className="image-wrapper-flush">
+                                            <img src={clickHideImg} alt="Hide/Show Edges icon" style={{ height: '40px', verticalAlign: 'middle' }} />
+                                        </span>
                                     </span>
-                                </ol>
+                                </div>
                                 <div className="image-wrapper" style={{ marginTop: '0.2rem', marginBottom: '1.5rem' }}>
                                     
                                 </div>

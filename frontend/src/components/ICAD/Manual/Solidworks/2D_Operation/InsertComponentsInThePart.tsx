@@ -44,7 +44,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">1</span>
-                            <span className="step-label">Create New File</span>
+                            <span className="step-label">Create New File</span> <span className="red-text" style={{ fontSize: "15px" }}>(See Course 3D Operation Lesson "3D Part Modeling" No.2)</span>
                         </div>
                         <div className="step-description">
                             <div className="image-wrapper" style={{ marginTop: '1rem' }}>
@@ -61,7 +61,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     <div className="instruction-step">
                         <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">2</span>
-                            <span className="step-label">Select New Document</span>
+                            <span className="step-label">Select New Document</span> <span className="red-text" style={{ fontSize: "15px" }}>(See Course 3D Operation Lesson "3D Part Modeling" No.3)</span>
                         </div>
                         <div className="step-description">
                             <ol style={{ paddingLeft: '1.25rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
@@ -115,7 +115,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                                         <img src={layoutImg} alt="Insert Parts/Assembly via View Layout" className="software-screenshot screenshot-wide" />
                                     </div>
-                                    <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
+                                    <div className="instruction-box" style={{ marginTop: '0.5rem' , marginLeft:'330px'}}>
                                         <p className="p-flush red-text">※ It only inserts a part/assy view individually.</p>
                                     </div>
                                 </div>
@@ -123,11 +123,11 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
                                 <div className="step-header" style={{padding:'8px 0px'}}>
-                                    <span className="step-number">2</span>
+                                    <span className="step-number" style={{ marginLeft: '50px'}}>1.2</span> 
                                     <span className="step-label">Drag and Drop</span>
                                 </div>
                                 <div className="step-description">
-                                    <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
+                                    <div className="instruction-box" style={{ marginTop: '1.5rem' , marginLeft: '330px' }}>
                                         <p className="p-flush red-text">※ Hold the part/assy file from the folder then drag to the dwg sheet.</p>
                                     </div>
                                     <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
@@ -138,7 +138,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
 
                             <div className="instruction-step" style={{ paddingTop: '1.5rem', paddingBottom: '0' }}>
                                 <div className="step-header" style={{padding:'8px 0px'}}>
-                                    <span className="step-number">3</span>
+                                    <span className="step-number" style={{ marginLeft: '50px'}}>1.3</span>
                                     <span className="step-label">Make drawing from Part/Assy</span>
                                 </div>
                                 <div className="step-description">
@@ -152,14 +152,14 @@ const Page1Lesson: React.FC<Page1Props> = ({
                                             </div>
                                         </div>
                                         <div style={{ flex: '0 1 auto', minWidth: '200px' }}>
-                                            <div className="instruction-box" style={{ marginTop: '0.2rem' }}>
+                                            <div className="instruction-box" style={{ marginTop: '0.2rem'  , marginLeft:'300px' }}>
                                                 <p className="p-flush red-text">
-                                                    ※ It uses <strong>View Palette</strong> where<br />
-                                                    the user can choose then<br />
+                                                    ※ It uses <strong>View Palette</strong> where
+                                                    the user can choose then
                                                     drag and drop the view.
                                                 </p>
                                             </div>
-                                            <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
+                                            <div className="image-wrapper" style={{ marginTop: '3rem'}}>
                                                 <img src={viewImg} alt="View Palette" className="software-screenshot" style={{ maxHeight: '400px', width: 'auto' }} />
                                             </div>
                                         </div>

@@ -126,7 +126,7 @@ const SketchingBaseContent: React.FC = () => (
                 {/* Under Defined */}
                 <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <div className="image-wrapper" style={{ flexShrink: 0 }}>
-                        <img src={underImg} alt="Under Defined Sketch" style={{ height: 'auto', maxWidth: '200px' }} className="software-screenshot" />
+                        <img src={underImg} alt="Under Defined Sketch" style={{ height: '300px', maxWidth: '290px' }} className="software-screenshot" />
                     </div>
                     <div>
                         <p className="p-flush" style={{ color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '0.5rem' }}>Under Defined Sketch</p>
@@ -139,7 +139,7 @@ const SketchingBaseContent: React.FC = () => (
                 {/* Fully Defined */}
                 <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <div className="image-wrapper" style={{ flexShrink: 0 }}>
-                        <img src={fullyImg} alt="Fully Defined Sketch" style={{ height: 'auto', maxWidth: '200px' }} className="software-screenshot" />
+                        <img src={fullyImg} alt="Fully Defined Sketch" style={{ height: '300px', maxWidth: '300px' }} className="software-screenshot" />
                     </div>
                     <div>
                         <p className="p-flush" style={{ color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '0.5rem' }}>Fully Defined Sketch</p>
@@ -152,7 +152,7 @@ const SketchingBaseContent: React.FC = () => (
                 {/* Over Defined */}
                 <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                     <div className="image-wrapper" style={{ flexShrink: 0 }}>
-                        <img src={overImg} alt="Over Defined Sketch" style={{ height: 'auto', maxWidth: '200px' }} className="software-screenshot" />
+                        <img src={overImg} alt="Over Defined Sketch" style={{ height: 'auto', maxWidth: '360px' }} className="software-screenshot" />
                     </div>
                     <div>
                         <p className="p-flush" style={{ color: 'var(--text-muted)', fontWeight: 'bold', marginBottom: '0.5rem' }}>Over Defined Sketch</p>

@@ -28,6 +28,7 @@ const DimensioningChamferContent: React.FC = () => {
                     <ol style={{ paddingLeft: '1.25rem', margin: '1.5rem 0 0 0',  color: 'var(--text-muted)', lineHeight: '2.2' }}>
                       <div>  Select the chamfered edge.</div>
                         Select one of the lead-in edges.
+                        <div></div>
                         Place the dimension.
 
                      <div>Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />

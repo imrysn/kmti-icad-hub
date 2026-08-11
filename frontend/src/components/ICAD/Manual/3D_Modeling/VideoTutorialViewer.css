@@ -421,8 +421,9 @@
 }
 
 .tutorial-browser-card {
-  width: 280px;
-  max-width: 90vw;
+  width: max-content;
+  min-width: 300px;
+  max-width: 420px;
   background: var(--bg-surface);
   border: 1px solid rgba(221, 77, 250, 0.4);
   border-radius: 14px;
@@ -481,6 +482,7 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  white-space: nowrap;
   transition: all 0.15s ease;
 }
 
@@ -522,6 +524,9 @@
   line-height: 1.4;
   flex: 1;
   font-size: 0.82rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tutorial-browser-item.active .tutorial-browser-item-title {

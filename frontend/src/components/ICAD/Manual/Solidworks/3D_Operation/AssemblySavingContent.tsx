@@ -26,7 +26,7 @@ const AssemblySavingContent: React.FC = () => (
                 <span className="step-label">When this <strong>Dialog box</strong> appears, edit <strong>File Name</strong>. Then click <strong>Save</strong>.</span>
             </div>
             <div className="step-description">
-                <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <div className="image-wrapper" style={{ marginTop: '1.5rem' }}>
                     <img src={fileNameImg} alt="Save Dialog Box" className="software-screenshot screenshot-wide" />
                 </div>
             </div>
@@ -35,10 +35,10 @@ const AssemblySavingContent: React.FC = () => (
         {/* Step 3 (Additional Information) */}
         <div className="instruction-step">
             <div className="step-description">
-                <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontSize: '1rem' }}>
+                <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '1rem', fontSize: '1rem'}}>
                     Filename Extension: Assembly - <strong style={{ color: 'red' }}>.SLDASM</strong>
                 </p>
-                <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <div className="image-wrapper" style={{ marginTop: '1rem', marginBottom: '1.5rem' }}>
                     <img src={extensionImg} alt="Assembly Extension Result" className="software-screenshot screenshot-wide" />
                 </div>
             </div>

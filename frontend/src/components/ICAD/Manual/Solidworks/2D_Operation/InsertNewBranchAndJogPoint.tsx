@@ -82,7 +82,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                             <div className="instruction-step" style={{ padding: '2rem 0' }}>
                                 <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">4</span>
-                                    <span className="step-label">Double click the welding symbol to display the properties.</span>
+                                    <span className="step-label">Double click the welding symbol to show the properties.</span>
                                 </div>
                                 <div className="step-description">
                                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
@@ -102,7 +102,7 @@ const InsertNewBranchAndJogPoint: React.FC<InsertNewBranchAndJogPointProps> = ({
                             <div className="instruction-step" style={{ padding: '0.5rem 0' }}>
                                 <div className="step-header" style={{padding:'8px 0px'}}>
                                     <span className="step-number">5</span>
-                                    <span className="step-label">Change the Arrow Head.</span>
+                                    <span className="step-label">Change the Arrow Head.</span> <span className="red-text" style={{ fontSize: "15px" }}>(See Lesson<strong>"Add other view as needed"</strong>)</span>
                                 </div>
                                 <div className="step-description">
 

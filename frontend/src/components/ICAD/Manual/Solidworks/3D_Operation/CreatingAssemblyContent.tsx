@@ -19,7 +19,8 @@ const CreatingAssemblyContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">1</span>
-                <span className="step-label">Follow the procedure.</span>
+                <span className="step-label">Follow the procedure on</span> <span className="red-text" style={{ fontSize: "15px" }}>(<strong>Page 3 except No.4</strong>)</span>
+                
             </div>
             <div className="step-description">
                 <div className="instruction-box" style={{ marginTop: '1rem' }}>
@@ -113,15 +114,15 @@ const CreatingAssemblyContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
-                <span className="step-label">Drag the part and click beside the first part.</span>
+                <span className="step-label">Drag the newly inserted part beside the fixed part.</span>
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={assem2Img} alt="Second part inserted" className="software-screenshot screenshot-wide" />
                 </div>
                 <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
-                    <p className="p-flush red-text">※ Part is under defined because it doesn't have mating relation yet.</p>
-                    <p className="p-flush red-text" style={{ marginTop: '0.5rem' }}>※ It has letter (-) on its side.</p>
+                    <p className="p-flush red-text">※ Under defined part will be indicated by(-).</p>
+                    
                 </div>
             </div>
         </div>

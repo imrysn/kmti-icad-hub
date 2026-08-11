@@ -72,6 +72,7 @@ const BendedPlateContent: React.FC = () => (
                     , or type <strong>"M"</strong>.
                 </span>
             </div>
+             <div style={{ color: 'var(--text-muted)' }}>Then pick an edge of the part.</div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={measureImg} alt="Measure result" className="software-screenshot screenshot-wide" />

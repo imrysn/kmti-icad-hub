@@ -30,7 +30,7 @@ const AddDimentionAndNotes: React.FC<AddDimentionAndNotesProps> = ({
             ? 'Dimensioning Chamfer'
             : subLessonId === 'sw-2d-adding-notes'
                 ? 'Adding Notes'
-                : 'Add dimensions and notes';
+                : 'Dimensioning';
 
     return (
         <div className="course-lesson-container" ref={containerRef}>
