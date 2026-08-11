@@ -26,7 +26,7 @@ function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: num
             margin: 0,
             padding: "2px 0",
             minWidth: columns > 1 ? `${160 * columns}px` : "160px",
-            fontSize: "8.8px",
+            fontSize: "11px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
             display: columns > 1 ? "grid" : "block",
@@ -116,6 +116,7 @@ function Command_Menu_Japanese_Tutorial() {
 
     // Automation state
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
+    const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -311,6 +312,8 @@ function Command_Menu_Japanese_Tutorial() {
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
+                    const isHoverOpen = hoveredSpotIndex === i;
+                    const showDropdown = isActive || isHoverOpen;
 
                     return (
                         <div key={spot.label}>
@@ -320,7 +323,8 @@ function Command_Menu_Japanese_Tutorial() {
                                     setIsPlaying(false);
                                     setStepIndex(i);
                                 }}
-                                title={spot.label}
+                                onMouseEnter={() => setHoveredSpotIndex(i)}
+                                onMouseLeave={() => setHoveredSpotIndex(null)}
                                 style={{
                                     position: "absolute",
                                     left: `${pos.x}%`,
@@ -329,24 +333,45 @@ function Command_Menu_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
-                                onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
-                                }}
                             />
 
+                            {/* Instant black label tooltip shown on the right side of the spotlight button */}
+                            {isHoverOpen && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x + pos.w + 0.5}%`,
+                                        top: `${pos.y + pos.h / 2}%`,
+                                        transform: "translateY(-50%)",
+                                        backgroundColor: "#222222",
+                                        color: "#ffffff",
+                                        padding: "4px 8px",
+                                        borderRadius: "3px",
+                                        fontSize: "11px",
+                                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                        fontWeight: 300,
+                                        whiteSpace: "nowrap",
+                                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
+                                        zIndex: 70,
+                                        pointerEvents: "none",
+                                    }}
+                                >
+                                    {spot.label}
+                                </div>
+                            )}
+
                             {/* Dropdown menu — only spots with menuItems get one */}
-                            {isActive && spot.menuItems && spot.menuItems.length > 0 && (
+                            {showDropdown && spot.menuItems && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
+                                    onMouseEnter={() => setHoveredSpotIndex(i)}
+                                    onMouseLeave={() => setHoveredSpotIndex(null)}
                                     style={{
                                         position: "absolute",
                                         left: `${pos.x}%`,

@@ -15,7 +15,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
             margin: 0,
             padding: "2px 0",
             minWidth: "210px",
-            fontSize: "9.9px",
+            fontSize: "11px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
         }}>
@@ -108,6 +108,7 @@ function Tree_View_Japanese_Tutorial() {
 
     // Automation states
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
+    const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -241,6 +242,8 @@ function Tree_View_Japanese_Tutorial() {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
                     const isContextActive = contextMenu?.index === i;
+                    const isHoverOpen = hoveredSpotIndex === i;
+                    const showMenu = (isActive || isContextActive) || isHoverOpen;
 
                     return (
                         <div key={spot.label}>
@@ -268,7 +271,8 @@ function Tree_View_Japanese_Tutorial() {
                                     const yPct = ((e.clientY - rect.top) / rect.height) * 100;
                                     setContextMenu({ index: i, x: xPct, y: yPct });
                                 }}
-                                title={spot.label}
+                                onMouseEnter={() => setHoveredSpotIndex(i)}
+                                onMouseLeave={() => setHoveredSpotIndex(null)}
                                 style={{
                                     position: "absolute",
                                     left: `${pos.x}%`,
@@ -277,35 +281,56 @@ function Tree_View_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
-                                onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
-                                }}
                             />
 
-                            {/* Context menu — appears for active step or right-clicked position */}
-                            {(isActive || isContextActive) && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
+                            {/* Instant black label tooltip shown on the right side of the spotlight button */}
+                            {isHoverOpen && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x + pos.w + 0.5}%`,
+                                        top: `${pos.y + pos.h / 2}%`,
+                                        transform: "translateY(-50%)",
+                                        backgroundColor: "#222222",
+                                        color: "#ffffff",
+                                        padding: "4px 8px",
+                                        borderRadius: "3px",
+                                        fontSize: "11px",
+                                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                        fontWeight: 300,
+                                        whiteSpace: "nowrap",
+                                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
+                                        zIndex: 70,
+                                        pointerEvents: "none",
+                                    }}
+                                >
+                                    {spot.label}
+                                </div>
+                            )}
+
+                            {/* Context menu — appears for active step, right-clicked position, or hover */}
+                            {showMenu && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     onContextMenu={(e) => e.preventDefault()}
+                                    onMouseEnter={() => setHoveredSpotIndex(i)}
+                                    onMouseLeave={() => setHoveredSpotIndex(null)}
                                     style={{
                                         position: "absolute",
-                                        left: `${isContextActive ? contextMenu!.x : pos.x + 3.8}%`,
-                                        top: `${isContextActive ? contextMenu!.y : pos.y + pos.h}%`,
-                                        zIndex: 60, // above every spotlight button (30) and the automation cursor (50)
+                                        left: isContextActive && contextMenu ? `${contextMenu.x}%` : `${pos.x}%`,
+                                        top: isContextActive && contextMenu ? `${contextMenu.y}%` : `${pos.y + pos.h}%`,
+                                        marginTop: "2px",
+                                        zIndex: 60,
                                         pointerEvents: "auto",
                                         backgroundColor: "#f2f2f2",
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                        transition: "opacity 0.2s ease-out"
                                     }}>
                                     <DropdownMenu items={spot.contextMenuItems} />
                                 </div>

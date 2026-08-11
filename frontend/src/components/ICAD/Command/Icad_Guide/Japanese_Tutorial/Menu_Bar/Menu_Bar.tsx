@@ -15,7 +15,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
             margin: 0,
             padding: "2px 0",
             minWidth: "210px",
-            fontSize: "9.9px",
+            fontSize: "11px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
         }}>
@@ -98,6 +98,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
 function Menu_Bar_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
+    const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
@@ -251,6 +252,9 @@ function Menu_Bar_Japanese_Tutorial() {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
 
+                    const isHoverOpen = hoveredSpotIndex === i;
+                    const showDropdown = (isActive && isLabelDropdownOpen) || isHoverOpen;
+
                     return (
                         <div key={spot.label}>
                             <button
@@ -264,7 +268,8 @@ function Menu_Bar_Japanese_Tutorial() {
                                         setIsLabelDropdownOpen(true);
                                     }
                                 }}
-                                title={spot.label}
+                                onMouseEnter={() => setHoveredSpotIndex(i)}
+                                onMouseLeave={() => setHoveredSpotIndex(null)}
                                 style={{
                                     position: "absolute",
                                     left: `${pos.x}%`,
@@ -273,35 +278,55 @@ function Menu_Bar_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
-                                onMouseEnter={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
-                                }}
                             />
 
-                            {/* Native HTML/CSS Dropdown Menu — supports nested children submenus */}
-                            {isActive && isLabelDropdownOpen && spot.menuItems && (
+                            {/* Instant black label tooltip shown on the right side of the spotlight button */}
+                            {isHoverOpen && (
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x + pos.w + 0.5}%`,
+                                        top: `${pos.y + pos.h / 2}%`,
+                                        transform: "translateY(-50%)",
+                                        backgroundColor: "#222222",
+                                        color: "#ffffff",
+                                        padding: "4px 8px",
+                                        borderRadius: "3px",
+                                        fontSize: "11px",
+                                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                        fontWeight: 300,
+                                        whiteSpace: "nowrap",
+                                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
+                                        zIndex: 70,
+                                        pointerEvents: "none",
+                                    }}
+                                >
+                                    {spot.label}
+                                </div>
+                            )}
+
+                            {/* Dropdown — opens instantly on hover or on click/automation */}
+                            {showDropdown && spot.menuItems && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
+                                    onMouseEnter={() => setHoveredSpotIndex(i)}
+                                    onMouseLeave={() => setHoveredSpotIndex(null)}
                                     style={{
                                         position: "absolute",
                                         left: `${pos.x}%`,
                                         top: `${pos.y + pos.h}%`,
-                                        marginTop: "2px", // Tight gap like native Windows menus
-                                        zIndex: 20,
+                                        marginTop: "2px",
+                                        zIndex: 60,
                                         pointerEvents: "auto",
-                                        backgroundColor: "#f2f2f2", // Windows native menu background color
+                                        backgroundColor: "#f2f2f2",
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                        transition: "opacity 0.2s ease-out"
                                     }}>
                                     <DropdownMenu items={spot.menuItems} />
                                 </div>
