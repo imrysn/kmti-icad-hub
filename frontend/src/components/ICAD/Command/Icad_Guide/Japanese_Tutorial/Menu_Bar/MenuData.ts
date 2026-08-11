@@ -18,9 +18,9 @@ export interface PositionConfig {
 export interface SpotlightConfig {
     label: string;
     normalPos: PositionConfig;
-
     fullscreenPos: PositionConfig; // Independent config for fullscreen
-    menuItems: MenuItem[];
+    menuItems?: MenuItem[];
+    contextMenuItems?: MenuItem[];
 }
 
 // --------------------------------------------------------

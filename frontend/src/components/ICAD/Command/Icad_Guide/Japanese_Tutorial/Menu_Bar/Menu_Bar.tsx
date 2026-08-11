@@ -388,6 +388,13 @@ function Menu_Bar_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
+                    referenceTitle="MENU BAR REFERENCE"
+                    referenceItems={SPOTLIGHTS.map(s => s.label)}
+                    currentStepIndex={stepIndex}
+                    onSelectStep={(idx) => {
+                        setIsPlaying(false);
+                        setStepIndex(idx);
+                    }}
                 />
             </div>
         </div >

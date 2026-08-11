@@ -18,6 +18,7 @@ export interface SpotlightConfig {
     normalPos: PositionConfig;
     fullscreenPos: PositionConfig; // Independent config for fullscreen
     contextMenuItems?: MenuItem[]; // Right-click menu
+    menuItems?: MenuItem[];
 }
 
 // --------------------------------------------------------
