@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { createPortal } from 'react-dom';
 import commmandmenu from '../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
 import { ImageControlBar } from '../Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './CommandData';
@@ -119,6 +118,23 @@ function Command_Menu_Japanese_Tutorial() {
     const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Keep isFullscreen React state in sync with native browser fullscreen state
+    useEffect(() => {
+        const handleFSChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener("fullscreenchange", handleFSChange);
+        document.addEventListener("webkitfullscreenchange", handleFSChange);
+        document.addEventListener("mozfullscreenchange", handleFSChange);
+        document.addEventListener("MSFullscreenChange", handleFSChange);
+        return () => {
+            document.removeEventListener("fullscreenchange", handleFSChange);
+            document.removeEventListener("webkitfullscreenchange", handleFSChange);
+            document.removeEventListener("mozfullscreenchange", handleFSChange);
+            document.removeEventListener("MSFullscreenChange", handleFSChange);
+        };
+    }, []);
 
     const handleStartReading = () => {
         const textToRead = stepIndex >= 0 && SPOTLIGHTS[stepIndex] ? SPOTLIGHTS[stepIndex].label : "Command Menu";
@@ -436,7 +452,19 @@ function Command_Menu_Japanese_Tutorial() {
                 <ImageControlBar
                     containerRef={containerRef}
                     isFullscreen={isFullscreen}
-                    onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
+                    onToggleFullscreen={() => {
+                        const target = containerRef.current;
+                        if (!target) return;
+                        if (!document.fullscreenElement) {
+                            target.requestFullscreen().catch((err) => {
+                                console.error("Error entering native fullscreen:", err);
+                            });
+                        } else {
+                            document.exitFullscreen().catch((err) => {
+                                console.error("Error exiting native fullscreen:", err);
+                            });
+                        }
+                    }}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
                     canGoPrev={stepIndex > 0}
@@ -532,7 +560,7 @@ function Command_Menu_Japanese_Tutorial() {
 
             {/* Vertically scrollable content container matching Interface_Lesson.tsx */}
             <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "32px" }}>
-                {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
+                {videoContainerMarkup}
             </div>
         </div>
     );

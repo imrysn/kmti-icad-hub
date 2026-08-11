@@ -5,6 +5,7 @@ import {
     Square,
     ChevronLeft,
     ChevronRight,
+    ChevronDown,
     Maximize,
     Minimize,
     GripHorizontal,
@@ -15,6 +16,12 @@ import {
 export interface ReferenceItem {
     label: string;
     index?: number;
+}
+
+export interface ReferenceSection {
+    title: string;
+    items: (string | ReferenceItem)[];
+    indexOffset?: number; // global step index of the first item in this section
 }
 
 const DEFAULT_REFERENCE_ITEMS: (string | ReferenceItem)[] = [
@@ -45,6 +52,7 @@ interface ImageControlBarProps {
     // Reference / Browse Modal Props
     referenceTitle?: string;
     referenceItems?: (string | ReferenceItem)[];
+    referenceSections?: ReferenceSection[];
     currentStepIndex?: number;
     onSelectStep?: (index: number) => void;
     isBrowseOpen?: boolean;
@@ -64,6 +72,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
     onStop,
     referenceTitle = "SOLIDWORKS INTERFACE REFERENCE",
     referenceItems,
+    referenceSections,
     currentStepIndex,
     onSelectStep,
     isBrowseOpen: externalIsBrowseOpen,
@@ -74,6 +83,8 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
     const [navPos, setNavPos] = useState({ x: 0, y: 0 });
     const [internalIsBrowseOpen, setInternalIsBrowseOpen] = useState(false);
     const [hoveredItemIndex, setHoveredItemIndex] = useState<number | null>(null);
+    const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+    const [isTitleDropdownOpen, setIsTitleDropdownOpen] = useState(false);
     const [isLight, setIsLight] = useState(
         () => document.documentElement.getAttribute('data-theme') === 'light'
     );
@@ -87,6 +98,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
         return () => observer.disconnect();
     }, []);
 
+    // Keep the active section in range if referenceSections shrinks/changes
+    useEffect(() => {
+        if (referenceSections && activeSectionIndex >= referenceSections.length) {
+            setActiveSectionIndex(0);
+        }
+    }, [referenceSections, activeSectionIndex]);
+
     const isBrowseOpen = externalIsBrowseOpen !== undefined ? externalIsBrowseOpen : internalIsBrowseOpen;
 
     const toggleBrowse = () => {
@@ -94,13 +112,22 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
             onToggleBrowse();
         }
         setInternalIsBrowseOpen(prev => !prev);
+        setIsTitleDropdownOpen(false);
     };
 
     const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
     const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : (isNativeFullscreen || isCssFallback);
 
-    const itemsToRender = referenceItems && referenceItems.length > 0 ? referenceItems : DEFAULT_REFERENCE_ITEMS;
+    const hasSections = !!(referenceSections && referenceSections.length > 0);
+    const activeSection = hasSections ? referenceSections![activeSectionIndex] : null;
+    const canSwitchSections = hasSections && referenceSections!.length > 1;
+
+    const itemsToRender = activeSection
+        ? activeSection.items
+        : (referenceItems && referenceItems.length > 0 ? referenceItems : DEFAULT_REFERENCE_ITEMS);
+
+    const activeIndexOffset = activeSection?.indexOffset ?? 0;
 
     const checkIsFullscreen = () => {
         const doc = document as any;
@@ -277,61 +304,156 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         left: "0px",
                         width: "320px",
                         maxWidth: "calc(100vw - 36px)",
-                        backgroundColor: isLight ? "#FFFFFF" : "#121218F8",
-                        backdropFilter: "blur(16px)",
+                        backgroundColor: isLight ? "var(--glass-bg)" : "rgba(10, 6, 14, 0.92)",
+                        backdropFilter: "blur(var(--glass-blur))",
                         borderRadius: "20px",
-                        border: isLight
-                            ? "1px solid rgba(217, 70, 239, 0.4)"
-                            : "1px solid rgba(217, 70, 239, 0.35)",
+                        border: "1px solid #DD4DFA",
                         boxShadow: isLight
-                            ? "0 8px 32px rgba(0, 0, 0, 0.12), 0 0 20px rgba(217, 70, 239, 0.1)"
-                            : "0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(217, 70, 239, 0.2)",
+                            ? "var(--shadow-card)"
+                            : "var(--shadow-card), 0 0 25px rgba(221, 77, 250, 0.35)",
                         padding: "16px 18px",
                         zIndex: 1010,
-                        fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+                        fontFamily: "var(--font-main)"
                     }}
                 >
-                    {/* Header */}
+                    {/* Header — title becomes a select-style dropdown when there are multiple sections */}
                     <div
                         style={{
-                            fontSize: "11px",
-                            fontWeight: "700",
-                            color: "#d946ef",
-                            letterSpacing: "1.2px",
-                            textTransform: "uppercase",
+                            position: "relative",
+                            paddingTop: "0px",
                             paddingBottom: "12px",
+                            paddingLeft: "18px",
+                            paddingRight: "18px",
+                            marginLeft: "-18px",
+                            marginRight: "-18px",
                             marginBottom: "10px",
-                            borderBottom: isLight
-                                ? "1px solid rgba(0, 0, 0, 0.08)"
-                                : "1px solid rgba(255, 255, 255, 0.12)",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.25)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between"
                         }}
                     >
-                        <span>{referenceTitle}</span>
+                        {canSwitchSections ? (
+                            <button
+                                onClick={() => setIsTitleDropdownOpen(prev => !prev)}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                    cursor: "pointer",
+                                    fontSize: "11px",
+                                    fontWeight: "700",
+                                    color: "#DD4DFA",
+                                    letterSpacing: "1.2px",
+                                    textTransform: "uppercase",
+                                    fontFamily: "var(--font-heading)"
+                                }}
+                            >
+                                <span>{activeSection ? activeSection.title : referenceTitle}</span>
+                                <ChevronDown
+                                    size={13}
+                                    style={{
+                                        transform: isTitleDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                                        transition: "transform 0.2s ease"
+                                    }}
+                                />
+                            </button>
+                        ) : (
+                            <span style={{
+                                fontSize: "11px",
+                                fontWeight: "700",
+                                color: "#DD4DFA",
+                                letterSpacing: "1.2px",
+                                textTransform: "uppercase",
+                                fontFamily: "var(--font-heading)"
+                            }}>
+                                {activeSection ? activeSection.title : referenceTitle}
+                            </span>
+                        )}
+
                         <button
                             onClick={() => toggleBrowse()}
                             style={{
                                 background: "none",
                                 border: "none",
-                                color: isLight ? "rgba(0, 0, 0, 0.35)" : "rgba(255, 255, 255, 0.5)",
+                                color: "var(--text-muted)",
                                 cursor: "pointer",
                                 padding: "2px",
                                 display: "flex",
                                 alignItems: "center"
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = isLight ? "#000000" : "#FFFFFF")}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = isLight ? "rgba(0, 0, 0, 0.35)" : "rgba(255, 255, 255, 0.5)")}
+                            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                         >
                             <X size={14} />
                         </button>
+
+                        {/* Section-switcher dropdown, anchored under the title */}
+                        {canSwitchSections && isTitleDropdownOpen && (
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    top: "calc(100% + 6px)",
+                                    left: 0,
+                                    minWidth: "190px",
+                                    backgroundColor: isLight ? "var(--glass-bg)" : "#1c1c22",
+                                    border: "1px solid var(--glass-border)",
+                                    borderRadius: "10px",
+                                    boxShadow: "var(--shadow-card)",
+                                    overflow: "hidden",
+                                    zIndex: 30
+                                }}
+                            >
+                                {referenceSections!.map((section, idx) => {
+                                    const isSelected = idx === activeSectionIndex;
+                                    return (
+                                        <button
+                                            key={section.title}
+                                            onClick={() => {
+                                                setActiveSectionIndex(idx);
+                                                setIsTitleDropdownOpen(false);
+                                            }}
+                                            style={{
+                                                display: "block",
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "10px 14px",
+                                                border: "none",
+                                                cursor: "pointer",
+                                                fontSize: "11px",
+                                                fontWeight: "700",
+                                                letterSpacing: "0.8px",
+                                                textTransform: "uppercase",
+                                                fontFamily: "var(--font-main)",
+                                                backgroundColor: isSelected
+                                                    ? "rgba(221, 77, 250, 0.1)"
+                                                    : "transparent",
+                                                color: isSelected
+                                                    ? "#DD4DFA"
+                                                    : "var(--text-muted)"
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                if (!isSelected) e.currentTarget.style.backgroundColor = "rgba(221, 77, 250, 0.05)";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                                            }}
+                                        >
+                                            {section.title}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
 
-                    {/* List of items */}
+                    {/* List of items for the currently selected section (or flat items when no sections) */}
                     <div
                         style={{
-                            maxHeight: "340px",
+                            maxHeight: "380px",
                             overflowY: "auto",
                             display: "flex",
                             flexDirection: "column",
@@ -341,7 +463,8 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     >
                         {itemsToRender.map((item, idx) => {
                             const label = typeof item === "string" ? item : item.label;
-                            const itemIndex = typeof item === "string" ? idx : (item.index !== undefined ? item.index : idx);
+                            const localIdx = typeof item === "string" ? idx : (item.index !== undefined ? item.index : idx);
+                            const itemIndex = activeIndexOffset + localIdx;
                             const isActive = currentStepIndex === itemIndex;
                             const isHovered = hoveredItemIndex === itemIndex;
                             const isHighlighted = isActive || isHovered;
@@ -349,95 +472,45 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                             return (
                                 <div
                                     key={idx}
-                                    onClick={() => {
-                                        if (onSelectStep) {
-                                            onSelectStep(itemIndex);
-                                        }
-                                    }}
+                                    onClick={() => { if (onSelectStep) onSelectStep(itemIndex); }}
                                     onMouseEnter={() => setHoveredItemIndex(itemIndex)}
                                     onMouseLeave={() => setHoveredItemIndex(null)}
                                     style={{
-                                        position: "relative",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "12px",
-                                        padding: "8px 12px 8px 16px",
-                                        borderRadius: "10px",
+                                        position: "relative", display: "flex", alignItems: "center",
+                                        gap: "12px", padding: "8px 12px 8px 16px", borderRadius: "10px",
                                         cursor: "pointer",
                                         backgroundColor: isActive
-                                            ? (isLight ? "rgba(217, 70, 239, 0.08)" : "rgba(217, 70, 239, 0.2)")
-                                            : isHovered
-                                                ? (isLight ? "#f3f4f6" : "#222228")
-                                                : "transparent",
-                                        border: "1px solid transparent",
-                                        transition: "all 0.15s ease"
+                                            ? "rgba(221, 77, 250, 0.1)"
+                                            : isHovered ? "rgba(255, 255, 255, 0.06)" : "transparent",
+                                        border: "1px solid transparent", transition: "all 0.15s ease"
                                     }}
                                 >
-                                    {/* Left Magenta Vertical Accent Bar on Hover/Active */}
                                     {isHighlighted && (
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                left: "0px",
-                                                top: "0px",
-                                                bottom: "0px",
-                                                width: "4px",
-                                                borderTopLeftRadius: "10px",
-                                                borderBottomLeftRadius: "10px",
-                                                borderTopRightRadius: "0px",
-                                                borderBottomRightRadius: "0px",
-                                                backgroundColor: "#d946ef",
-                                                boxShadow: isLight
-                                                    ? "0 0 8px rgba(217, 70, 239, 0.3)"
-                                                    : "0 0 10px rgba(217, 70, 239, 0.5)"
-                                            }}
-                                        />
+                                        <div style={{
+                                            position: "absolute", left: "6px", top: "50%",
+                                            transform: "translateY(-50%)",
+                                            width: "4px", height: "60%",
+                                            borderRadius: "4px",
+                                            backgroundColor: "#DD4DFA"
+                                        }} />
                                     )}
-
-                                    {/* Number badge */}
-                                    <div
-                                        style={{
-                                            width: "24px",
-                                            height: "24px",
-                                            borderRadius: "6px",
-                                            backgroundColor: isActive
-                                                ? (isLight ? "rgba(217, 70, 239, 0.25)" : "#d946ef")
-                                                : isHovered
-                                                    ? (isLight ? "rgba(0, 0, 0, 0.12)" : "rgba(255, 255, 255, 0.16)")
-                                                    : (isLight ? "rgba(0, 0, 0, 0.07)" : "rgba(255, 255, 255, 0.1)"),
-                                            color: isActive
-                                                ? (isLight ? "#d946ef" : "#FFFFFF")
-                                                : isHovered
-                                                    ? (isLight ? "#111827" : "#FFFFFF")
-                                                    : (isLight ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.6)"),
-                                            fontSize: "11px",
-                                            fontWeight: "700",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            flexShrink: 0,
-                                            transition: "all 0.15s ease"
-                                        }}
-                                    >
-                                        {itemIndex + 1}
+                                    <div style={{
+                                        width: "24px", height: "24px", borderRadius: "6px", flexShrink: 0,
+                                        backgroundColor: isActive ? "rgba(221, 77, 250, 0.25)" : "rgba(255, 255, 255, 0.1)",
+                                        color: isActive ? "#DD4DFA" : isHovered ? "var(--text-primary)" : "var(--text-muted)",
+                                        fontSize: "11px", fontWeight: "700",
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                        transition: "all 0.15s ease"
+                                    }}>
+                                        {localIdx + 1}
                                     </div>
-
-                                    {/* Label */}
-                                    <span
-                                        style={{
-                                            fontSize: "13px",
-                                            fontWeight: isHighlighted ? "700" : "500",
-                                            color: isActive
-                                                ? (isLight ? "#d946ef" : "#FFFFFF")
-                                                : isHovered
-                                                    ? (isLight ? "#111827" : "#FFFFFF")
-                                                    : (isLight ? "#374151" : "rgba(255, 255, 255, 0.85)"),
-                                            whiteSpace: "nowrap",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            transition: "all 0.15s ease"
-                                        }}
-                                    >
+                                    <span style={{
+                                        fontSize: "13px", fontWeight: isHighlighted ? "700" : "600",
+                                        color: isActive ? "#DD4DFA" : "var(--text-primary)",
+                                        fontFamily: "var(--font-main)",
+                                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                                        transition: "all 0.15s ease"
+                                    }}>
                                         {label}
                                     </span>
                                 </div>
@@ -458,7 +531,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     backdropFilter: "blur(12px)",
                     padding: "8px 16px",
                     borderRadius: "32px",
-                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                    boxShadow: "var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.1)",
                     userSelect: "none"
                 }}
             >
@@ -493,8 +566,8 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         alignItems: "center",
                         gap: "7px",
                         background: isBrowseOpen
-                            ? "linear-gradient(135deg, #c026d3 0%, #d946ef 100%)"
-                            : "rgba(255, 255, 255, 0.13)",
+                            ? "#DD4DFA"
+                            : "rgba(12, 12, 12, 0.13)",
                         color: "#FFFFFF",
                         border: isBrowseOpen ? "none" : "1px solid rgba(255, 255, 255, 0.12)",
                         borderRadius: "20px",
@@ -503,9 +576,9 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         fontWeight: "600",
                         cursor: "pointer",
                         transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                        fontFamily: "Inter, system-ui, -apple-system, sans-serif",
+                        fontFamily: "var(--font-main)",
                         boxShadow: isBrowseOpen
-                            ? "0 0 16px rgba(217, 70, 239, 0.65), 0 2px 8px rgba(0, 0, 0, 0.4)"
+                            ? "0 2px 8px rgba(221, 77, 250, 0.4)"
                             : "none"
                     }}
                     onMouseEnter={(e) => {
@@ -549,7 +622,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         fontWeight: "600",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
-                        fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+                        fontFamily: "var(--font-main)"
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.26)")}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.16)")}
@@ -580,19 +653,20 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                             height: "36px",
                             padding: "6px 12px",
                             borderRadius: "50%",
-                            backgroundColor: "rgba(255, 255, 255, 0.12)",
-                            color: "#ffffff",
-                            border: "none",
+                            backgroundColor: "var(--glass-bg)",
+                            backdropFilter: "blur(8px)",
+                            color: "var(--text-white)",
+                            border: "1px solid var(--glass-border)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             cursor: "pointer",
                             transition: "all 0.2s ease"
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--glass-bg)")}
                     >
-                        <Square size={14} color="#ffffff" strokeWidth={2.2} />
+                        <Square size={14} color="var(--text-white)" strokeWidth={2.2} />
                     </button>
                 )}
 
@@ -609,9 +683,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "6px 12px",
                         borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.12)",
-                        color: "#ffffff",
-                        border: "none",
+                        backgroundColor: "var(--glass-bg)",
+                        backdropFilter: "blur(8px)",
+                        color: "var(--text-white)",
+                        border: "1px solid var(--glass-border)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -620,13 +695,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => {
-                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)";
+                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
                     }}
                     onMouseLeave={(e) => {
-                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                        if (canGoPrev) e.currentTarget.style.backgroundColor = "var(--glass-bg)";
                     }}
                 >
-                    <ChevronLeft size={18} color="#ffffff" strokeWidth={2.2} />
+                    <ChevronLeft size={18} color="var(--text-white)" strokeWidth={2.2} />
                 </button>
 
                 {/* Next Step Button */}
@@ -642,9 +717,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "6px 12px",
                         borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.12)",
-                        color: "#ffffff",
-                        border: "none",
+                        backgroundColor: "var(--glass-bg)",
+                        backdropFilter: "blur(8px)",
+                        color: "var(--text-white)",
+                        border: "1px solid var(--glass-border)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -653,13 +729,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => {
-                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.22)";
+                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
                     }}
                     onMouseLeave={(e) => {
-                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
+                        if (canGoNext) e.currentTarget.style.backgroundColor = "var(--glass-bg)";
                     }}
                 >
-                    <ChevronRight size={18} color="#ffffff" strokeWidth={2.2} />
+                    <ChevronRight size={18} color="var(--text-white)" strokeWidth={2.2} />
                 </button>
 
                 {/* Fullscreen Button */}
@@ -674,26 +750,26 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "0px 20px",
                         borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.15)",
-                        color: "#ffffff",
-                        border: "none",
+                        backgroundColor: "var(--glass-bg)",
+                        backdropFilter: "blur(8px)",
+                        color: "var(--text-white)",
+                        border: "1px solid var(--glass-border)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         cursor: "pointer",
                         transition: "all 0.2s ease"
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.25)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--glass-bg)")}
                 >
                     {isFullscreen ? (
-                        <Minimize size={17} color="#ffffff" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
+                        <Minimize size={17} color="var(--text-white)" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                     ) : (
-                        <Maximize size={17} color="#ffffff" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
+                        <Maximize size={17} color="var(--text-white)" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                     )}
                 </button>
             </div>
         </div>
     );
 };
-

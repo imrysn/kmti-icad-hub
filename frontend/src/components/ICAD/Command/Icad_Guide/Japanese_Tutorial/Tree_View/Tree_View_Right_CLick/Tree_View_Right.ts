@@ -204,7 +204,7 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "New Drawing 1",
         contextMenuItems: NEW_DRAWING_1_CONTEXT_ITEMS,
-        normalPos: row(0),        // LD11016U01_LMMU — y=155
+        normalPos: row(0.3),        // LD11016U01_LMMU — y=155
         fullscreenPos: row(0)
     },
     {
@@ -216,8 +216,8 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "LD11113N01",
         contextMenuItems: LD11113N01_CONTEXT_ITEMS,
-        normalPos: row(3.8),        // LD11113N01 — y=225
-        fullscreenPos: row(3.6)
+        normalPos: row(4.1),        // LD11113N01 — y=225
+        fullscreenPos: row(4)
     },
     {
         label: "16x192x720",

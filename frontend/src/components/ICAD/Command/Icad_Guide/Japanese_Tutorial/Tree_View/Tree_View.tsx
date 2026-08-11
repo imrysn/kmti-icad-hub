@@ -1,11 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
 import { SPOTLIGHTS as TREE_SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
 import { SPOTLIGHTS as MENU_BAR_SPOTLIGHTS } from '../Menu_Bar/MenuData';
 import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_View.jpg';
 
 const SPOTLIGHTS = [...MENU_BAR_SPOTLIGHTS, ...TREE_SPOTLIGHTS];
+
+// Sectioned reference list — one collapsible dropdown per source (Menu Bar,
+// Tree View), each item's index offset by where its group starts in the
+// combined SPOTLIGHTS array above so onSelectStep still lands correctly.
+const REFERENCE_SECTIONS = [
+    {
+        title: "MENU BAR GUIDE",
+        items: MENU_BAR_SPOTLIGHTS.map(s => s.label),
+        indexOffset: 0
+    },
+    {
+        title: "TREE VIEW GUIDE",
+        items: TREE_SPOTLIGHTS.map(s => s.label),
+        indexOffset: MENU_BAR_SPOTLIGHTS.length
+    }
+];
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -114,6 +129,23 @@ function Tree_View_Japanese_Tutorial() {
     const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Keep isFullscreen React state in sync with native browser fullscreen state
+    useEffect(() => {
+        const handleFSChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener("fullscreenchange", handleFSChange);
+        document.addEventListener("webkitfullscreenchange", handleFSChange);
+        document.addEventListener("mozfullscreenchange", handleFSChange);
+        document.addEventListener("MSFullscreenChange", handleFSChange);
+        return () => {
+            document.removeEventListener("fullscreenchange", handleFSChange);
+            document.removeEventListener("webkitfullscreenchange", handleFSChange);
+            document.removeEventListener("mozfullscreenchange", handleFSChange);
+            document.removeEventListener("MSFullscreenChange", handleFSChange);
+        };
+    }, []);
 
     // Handle automated sequence: walk the cursor through each spotlight, holding the highlight briefly on each
     useEffect(() => {
@@ -390,7 +422,19 @@ function Tree_View_Japanese_Tutorial() {
                 <ImageControlBar
                     containerRef={containerRef}
                     isFullscreen={isFullscreen}
-                    onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
+                    onToggleFullscreen={() => {
+                        const target = containerRef.current;
+                        if (!target) return;
+                        if (!document.fullscreenElement) {
+                            target.requestFullscreen().catch((err) => {
+                                console.error("Error entering native fullscreen:", err);
+                            });
+                        } else {
+                            document.exitFullscreen().catch((err) => {
+                                console.error("Error exiting native fullscreen:", err);
+                            });
+                        }
+                    }}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
                     canGoPrev={stepIndex > 0}
@@ -398,8 +442,8 @@ function Tree_View_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
-                    referenceTitle="TREE VIEW REFERENCE"
-                    referenceItems={SPOTLIGHTS.map(s => s.label)}
+                    referenceTitle="MENU BAR & TREE VIEW GUIDE"
+                    referenceSections={REFERENCE_SECTIONS}
                     currentStepIndex={stepIndex}
                     onSelectStep={(idx) => {
                         setIsPlaying(false);
@@ -413,7 +457,7 @@ function Tree_View_Japanese_Tutorial() {
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                {isFullscreen ? createPortal(imageContainerMarkup, document.body) : imageContainerMarkup}
+                {imageContainerMarkup}
             </div>
         </div>
     );

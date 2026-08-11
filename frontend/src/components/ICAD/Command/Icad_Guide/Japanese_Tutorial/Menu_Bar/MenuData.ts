@@ -421,37 +421,37 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "View",
         menuItems: VIEW_MENU_ITEMS,
-        normalPos: { x: toPctX(64), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(64), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(80), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(85), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) }
     },
     {
         label: "Information",
         menuItems: INFO_MENU_ITEMS,
-        normalPos: { x: toPctX(120), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(120), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(140), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(140), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) }
     },
     {
         label: "Settings",
         menuItems: SETTINGS_MENU_ITEMS,
-        normalPos: { x: toPctX(192), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(192), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(210), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(215), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) }
     },
     {
         label: "Tools",
         menuItems: TOOLS_MENU_ITEMS,
-        normalPos: { x: toPctX(251), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(251), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(270), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(270), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) }
     },
     {
         label: "Window",
         menuItems: WINDOW_MENU_ITEMS,
-        normalPos: { x: toPctX(311), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(311), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(330), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(330), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) }
     },
     {
         label: "Help",
         menuItems: HELP_MENU_ITEMS,
-        normalPos: { x: toPctX(390), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(390), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(410), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(410), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) }
     }
 ];
