@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
-import { SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
+import { SPOTLIGHTS as TREE_SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
+import { SPOTLIGHTS as MENU_BAR_SPOTLIGHTS } from '../Menu_Bar/MenuData';
 import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_View.jpg';
+
+const SPOTLIGHTS = [...MENU_BAR_SPOTLIGHTS, ...TREE_SPOTLIGHTS];
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -237,13 +240,14 @@ function Tree_View_Japanese_Tutorial() {
                     }}
                 />
 
-                {/* Render ALL label invisible buttons so they can be manually clicked anytime */}
+                {/* Render ALL label invisible buttons (Menu Bar + Tree View) so they can be manually clicked anytime */}
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
                     const isContextActive = contextMenu?.index === i;
                     const isHoverOpen = hoveredSpotIndex === i;
                     const showMenu = (isActive || isContextActive) || isHoverOpen;
+                    const menuItems = spot.menuItems || spot.contextMenuItems;
 
                     return (
                         <div key={spot.label}>
@@ -259,7 +263,8 @@ function Tree_View_Japanese_Tutorial() {
                                     e.stopPropagation();
                                     setIsPlaying(false);
 
-                                    if (!spot.contextMenuItems || spot.contextMenuItems.length === 0) {
+                                    const currentMenuItems = spot.menuItems || spot.contextMenuItems;
+                                    if (!currentMenuItems || currentMenuItems.length === 0) {
                                         setContextMenu(null);
                                         return;
                                     }
@@ -303,7 +308,7 @@ function Tree_View_Japanese_Tutorial() {
                                         borderRadius: "3px",
                                         fontSize: "11px",
                                         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                                        fontWeight: 300,
+                                        fontWeight: 600,
                                         whiteSpace: "nowrap",
                                         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
                                         zIndex: 70,
@@ -314,8 +319,8 @@ function Tree_View_Japanese_Tutorial() {
                                 </div>
                             )}
 
-                            {/* Context menu — appears for active step, right-clicked position, or hover */}
-                            {showMenu && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
+                            {/* Menu — appears for active step, right-clicked position, or hover */}
+                            {showMenu && menuItems && menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     onContextMenu={(e) => e.preventDefault()}
@@ -331,8 +336,9 @@ function Tree_View_Japanese_Tutorial() {
                                         backgroundColor: "#f2f2f2",
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                    }}>
-                                    <DropdownMenu items={spot.contextMenuItems} />
+                                    }}
+                                >
+                                    <DropdownMenu items={menuItems} />
                                 </div>
                             )}
                         </div>
@@ -392,6 +398,13 @@ function Tree_View_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
+                    referenceTitle="TREE VIEW REFERENCE"
+                    referenceItems={SPOTLIGHTS.map(s => s.label)}
+                    currentStepIndex={stepIndex}
+                    onSelectStep={(idx) => {
+                        setIsPlaying(false);
+                        setStepIndex(idx);
+                    }}
                 />
             </div>
         </div>

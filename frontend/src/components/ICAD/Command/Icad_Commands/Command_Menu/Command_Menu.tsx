@@ -444,6 +444,13 @@ function Command_Menu_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
+                    referenceTitle="COMMAND MENU REFERENCE"
+                    referenceItems={SPOTLIGHTS.map(s => s.label)}
+                    currentStepIndex={stepIndex}
+                    onSelectStep={(idx) => {
+                        setIsPlaying(false);
+                        setStepIndex(idx);
+                    }}
                 />
             </div>
         </div >
