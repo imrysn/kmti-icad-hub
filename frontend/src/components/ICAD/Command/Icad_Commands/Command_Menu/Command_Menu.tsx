@@ -1,23 +1,39 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import commmandmenu from '../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
-import { ImageControlBar } from '../../Icad_Guide/Image_Control/ImageControlBar';
+import { ImageControlBar } from '../Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './CommandData';
+import { ReadAloudButton } from '../../../../ReadAloudButton';
+import { useTTSContext } from '../../../../../context/TTSContext';
+
+const FALLBACK_NAVBAR_HEIGHT = 60;
+const TOPBAR_HEIGHT = 56;
+const STUCK_BUTTON_GAP = 20;
+const STICKY_TRIGGER_BUFFER = 24;
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
-function DropdownMenu({ items }: { items: MenuItem[] }) {
+// Top-level items are arranged into 2 columns (column-major, like a
+// native multi-column context menu); nested submenus stay single-column.
+function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: number }) {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    const rows = Math.ceil(items.length / columns);
 
     return (
         <ul style={{
             listStyle: "none",
             margin: 0,
             padding: "2px 0",
-            minWidth: "160px",
+            minWidth: columns > 1 ? `${160 * columns}px` : "160px",
             fontSize: "8.8px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
+            display: columns > 1 ? "grid" : "block",
+            gridTemplateColumns: columns > 1 ? `repeat(${columns}, 1fr)` : undefined,
+            gridTemplateRows: columns > 1 ? `repeat(${rows}, auto)` : undefined,
+            gridAutoFlow: columns > 1 ? "row" : undefined,
+            columnGap: columns > 1 ? "4px" : undefined,
         }}>
             {items.map((item, index) => {
                 if (item.isDivider) {
@@ -74,7 +90,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                                     boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
                                 }}
                             >
-                                <DropdownMenu items={item.children!} />
+                                <DropdownMenu items={item.children!} columns={1} />
                             </div>
                         )}
                     </li>
@@ -86,58 +102,117 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
 
 function Command_Menu_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
-    // Automation states
+    // TTS Read Aloud state
+    const { rate, voices, selectedVoiceURI } = useTTSContext();
+    const [isSpeaking, setIsSpeaking] = useState(false);
+
+    // Sticky ReadAloudButton logic matching Interface_Lesson.tsx
+    const sentinelRef = useRef<HTMLDivElement>(null);
+    const [isButtonStuck, setIsButtonStuck] = useState(false);
+    const [navbarHeight, setNavbarHeight] = useState(FALLBACK_NAVBAR_HEIGHT);
+
+    // Automation state
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleStartReading = () => {
+        const textToRead = stepIndex >= 0 && SPOTLIGHTS[stepIndex] ? SPOTLIGHTS[stepIndex].label : "Command Menu";
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.rate = rate;
+        const voice = voices.find((v) => v.voiceURI === selectedVoiceURI);
+        if (voice) utterance.voice = voice;
+        utterance.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+        setIsSpeaking(true);
+    };
+
+    const handleStopReading = () => {
+        window.speechSynthesis.cancel();
+        setIsSpeaking(false);
+    };
+
+    const getGlobalNavbarHeight = useCallback((): number => {
+        const candidates = ["header", "nav", ".app-topbar", ".app-navbar", ".main-navbar", "[data-app-navbar]"];
+        for (const selector of candidates) {
+            const el = document.querySelector(selector) as HTMLElement | null;
+            if (el) {
+                const style = window.getComputedStyle(el);
+                if (style.position === "fixed" || style.position === "sticky") {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.height > 0) return rect.height;
+                }
+            }
+        }
+        return FALLBACK_NAVBAR_HEIGHT;
+    }, []);
+
+    useEffect(() => {
+        const measure = () => setNavbarHeight(getGlobalNavbarHeight());
+        measure();
+        window.addEventListener("resize", measure);
+        return () => window.removeEventListener("resize", measure);
+    }, [getGlobalNavbarHeight]);
+
+    const obscuredHeight = navbarHeight + TOPBAR_HEIGHT + STICKY_TRIGGER_BUFFER;
+
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsButtonStuck(!entry.isIntersecting);
+            },
+            {
+                root: null,
+                rootMargin: `-${obscuredHeight}px 0px 0px 0px`,
+                threshold: 0,
+            }
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [obscuredHeight]);
+
+    useEffect(() => {
+        return () => {
+            window.speechSynthesis.cancel();
+        };
+    }, []);
 
     // Handle automated sequence
     useEffect(() => {
         let timeout: NodeJS.Timeout;
 
-        if (isPlaying) {
-            if (stepIndex === -1) {
-                // start from first step
-                setStepIndex(0);
-                setIsLabelDropdownOpen(false);
-            } else if (stepIndex < SPOTLIGHTS.length) {
-                const spotlight = SPOTLIGHTS[stepIndex];
+        if (isPlaying && stepIndex === -1) {
+            setStepIndex(0);
+            return;
+        }
 
-                // Determine which position to use
-                const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
+        if (stepIndex >= 0 && stepIndex < SPOTLIGHTS.length) {
+            const spotlight = SPOTLIGHTS[stepIndex];
+            const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
 
-                setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
-                setIsLabelDropdownOpen(false);
+            setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
 
-                // Wait 0.5s for cursor to move, then click
+            if (isPlaying) {
+                // Wait 0.5s for cursor to move, hold the highlight for 2s, then advance
                 timeout = setTimeout(() => {
-                    setIsLabelDropdownOpen(true);
-
-                    // Show highlight for 2 seconds, then go to next
                     timeout = setTimeout(() => {
-                        setIsLabelDropdownOpen(false);
-
-                        // Wait a tiny bit before moving to next
-                        timeout = setTimeout(() => {
-                            setStepIndex(prev => prev + 1);
-                        }, 200);
-
+                        setStepIndex(prev => prev + 1);
                     }, 2000);
-
                 }, 500);
-
-            } else {
-                // End of sequence
-                setIsPlaying(false);
-                setStepIndex(-1);
-                setCursorPos(null);
             }
+        } else if (stepIndex >= SPOTLIGHTS.length) {
+            setIsPlaying(false);
+            setStepIndex(-1);
+            setCursorPos(null);
         } else {
-            // Paused or stopped
             setCursorPos(null);
         }
 
@@ -150,7 +225,6 @@ function Command_Menu_Japanese_Tutorial() {
         setCursorPos(null);
         if (stepIndex > 0) {
             setStepIndex(stepIndex - 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
@@ -159,7 +233,6 @@ function Command_Menu_Japanese_Tutorial() {
         setCursorPos(null);
         if (stepIndex < SPOTLIGHTS.length - 1) {
             setStepIndex(stepIndex === -1 ? 0 : stepIndex + 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
@@ -170,12 +243,11 @@ function Command_Menu_Japanese_Tutorial() {
     const handleStop = () => {
         setIsPlaying(false);
         setStepIndex(-1);
-        setIsLabelDropdownOpen(false);
         setCursorPos(null);
+        handleStopReading();
     };
 
     const handleContainerClick = () => {
-        setIsLabelDropdownOpen(false);
         setStepIndex(-1);
         setCursorPos(null);
     }
@@ -239,7 +311,6 @@ function Command_Menu_Japanese_Tutorial() {
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
-                    const showSpotlight = isActive && isLabelDropdownOpen;
 
                     return (
                         <div key={spot.label}>
@@ -247,12 +318,7 @@ function Command_Menu_Japanese_Tutorial() {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsPlaying(false);
-                                    if (stepIndex === i) {
-                                        setIsLabelDropdownOpen(!isLabelDropdownOpen);
-                                    } else {
-                                        setStepIndex(i);
-                                        setIsLabelDropdownOpen(true);
-                                    }
+                                    setStepIndex(i);
                                 }}
                                 title={spot.label}
                                 style={{
@@ -263,67 +329,37 @@ function Command_Menu_Japanese_Tutorial() {
                                     height: `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: "transparent",
+                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
+                                    transition: "background-color 0.2s ease",
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!isActive) e.currentTarget.style.backgroundColor = "rgba(236, 117, 247, 0.27)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
                                 }}
                             />
 
-                            {/* Spotlight box — bordered outline + floating label, matching the video tutorial's style */}
-                            {showSpotlight && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        left: `${pos.x}%`,
-                                        top: `${pos.y}%`,
-                                        width: `${pos.w}%`,
-                                        height: `${pos.h}%`,
-                                        pointerEvents: "none",
-                                        boxSizing: "border-box",
-                                        border: "2px solid #B5179E",
-                                        borderRadius: "2px",
-                                        zIndex: 10,
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            left: "calc(100% + 8px)",
-                                            top: 0,
-                                            backgroundColor: "rgba(20, 20, 30, 0.9)",
-                                            color: "#B5179E",
-                                            border: "1.5px solid #B5179E",
-                                            padding: "4px 10px",
-                                            borderRadius: "6px",
-                                            fontSize: "12px",
-                                            fontWeight: "bold",
-                                            whiteSpace: "nowrap",
-                                            boxShadow: "0 0 8px rgba(255, 20, 147, 0.4)",
-                                        }}
-                                    >
-                                        {spot.label}
-                                    </div>
-                                </div>
-                            )}
-
                             {/* Dropdown menu — only spots with menuItems get one */}
-                            {showSpotlight && spot.menuItems.length > 0 && (
+                            {isActive && spot.menuItems && spot.menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     style={{
                                         position: "absolute",
                                         left: `${pos.x}%`,
                                         top: `${pos.y + pos.h}%`,
-                                        marginTop: "2px", // Tight gap like native Windows menus
-                                        zIndex: 20,
+                                        zIndex: 60, // above every spotlight button (30) and the automation cursor (50)
                                         pointerEvents: "auto",
                                         backgroundColor: "#f2f2f2", // Windows native menu background color
                                         border: "1px solid #a0a0a0",
                                         boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                        transition: "opacity 0.2s ease-out"
                                     }}
                                 >
-                                    <DropdownMenu items={spot.menuItems} />
+                                    <DropdownMenu items={spot.menuItems} columns={2} />
                                 </div>
                             )}
                         </div>
@@ -389,8 +425,81 @@ function Command_Menu_Japanese_Tutorial() {
     );
 
     return (
-        <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{
+            width: "100%",
+            minHeight: "100%",
+            height: "auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "var(--bg-dark)",
+            fontFamily: "var(--font-main)",
+            overflowY: "auto",
+            paddingBottom: "140px",
+            position: "relative"
+        }}>
+            {isButtonStuck && (
+                <div style={{
+                    position: "fixed",
+                    top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
+                    right: "24px",
+                    zIndex: 900,
+                }}>
+                    <ReadAloudButton
+                        isSpeaking={isSpeaking}
+                        onStart={handleStartReading}
+                        onStop={handleStopReading}
+                    />
+                </div>
+            )}
+
+            {/* Top bar spacer matching ExitCourseButton height (56px) */}
+            <div style={{ width: "100%", height: `${TOPBAR_HEIGHT}px`, flexShrink: 0 }} />
+
+            {/* Header matching Interface_Lesson.tsx layout & positioning exactly */}
+            <div style={{ position: "relative", width: "94.15%", padding: "56px 32px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{
+                    fontSize: "40px",
+                    margin: "0px 0px 16px",
+                    fontWeight: 800,
+                    color: "var(--text-white)",
+                    fontFamily: "Outfit, sans-serif",
+                    letterSpacing: "0.5px"
+                }}>
+                    Command Menu
+                </div>
+
+                <div
+                    ref={sentinelRef}
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "24px",
+                        width: "1px",
+                        height: "1px",
+                        transform: "translateY(-50%)"
+                    }}
+                />
+                {!isButtonStuck && (
+                    <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "24px",
+                        transform: "translateY(-50%)"
+                    }}>
+                        <ReadAloudButton
+                            isSpeaking={isSpeaking}
+                            onStart={handleStartReading}
+                            onStop={handleStopReading}
+                        />
+                    </div>
+                )}
+
+                <div style={{ width: "calc(100% - 40px)", maxWidth: "1200px", height: "1px", backgroundColor: "var(--border-color)", marginTop: "64px" }} />
+            </div>
+
+            {/* Vertically scrollable content container matching Interface_Lesson.tsx */}
+            <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "32px" }}>
                 {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { ImageControlBar } from '../../Image_Control/ImageControlBar';
-import { SPOTLIGHTS, MenuItem } from './Tree_View_Left_CLick/Tree_View_Left';
+import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
+import { SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
 import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_View.jpg';
 
 // Recursive dropdown that supports nested `children` — hovering an item
@@ -14,8 +14,8 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
             listStyle: "none",
             margin: 0,
             padding: "2px 0",
-            minWidth: "160px",
-            fontSize: "8.8px",
+            minWidth: "210px",
+            fontSize: "9.9px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
         }}>
@@ -37,7 +37,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                     <li
                         key={index}
                         style={{
-                            padding: "4px 24px 4px 12px",
+                            padding: "2px 35px 1px 25px",
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
@@ -54,12 +54,23 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                         </span>
                         <span style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666" }}>
                             {item.shortcut && <span>{item.shortcut}</span>}
-                            {(item.hasSubmenu || hasChildren) && (
+                        </span>
+
+                        {(item.hasSubmenu || hasChildren) && (
+                            <span style={{
+                                position: "absolute",
+                                right: "8px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                display: "flex",
+                                alignItems: "center",
+                                color: "#666",
+                            }}>
                                 <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <polyline points="9 18 15 12 9 6"></polyline>
                                 </svg>
-                            )}
-                        </span>
+                            </span>
+                        )}
 
                         {hasChildren && isHovered && (
                             <div
@@ -86,7 +97,6 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
 
 function Tree_View_Japanese_Tutorial() {
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
@@ -101,51 +111,36 @@ function Tree_View_Japanese_Tutorial() {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Handle automated sequence: walk through each spotlight, opening its dropdown in turn
+    // Handle automated sequence: walk the cursor through each spotlight, holding the highlight briefly on each
     useEffect(() => {
         let timeout: NodeJS.Timeout;
 
-        if (isPlaying) {
-            if (stepIndex === -1) {
-                // start from first step
-                setStepIndex(0);
-                setIsLabelDropdownOpen(false);
+        if (isPlaying && stepIndex === -1) {
+            setStepIndex(0);
+            setContextMenu(null);
+            return;
+        }
+
+        if (stepIndex >= 0 && stepIndex < SPOTLIGHTS.length) {
+            const spotlight = SPOTLIGHTS[stepIndex];
+            const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
+
+            setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
+
+            if (isPlaying) {
                 setContextMenu(null);
-            } else if (stepIndex < SPOTLIGHTS.length) {
-                const spotlight = SPOTLIGHTS[stepIndex];
-
-                // Determine which position to use
-                const pos = isFullscreen ? spotlight.fullscreenPos : spotlight.normalPos;
-
-                setCursorPos({ x: pos.x + pos.w / 2, y: pos.y + pos.h / 2 });
-                setIsLabelDropdownOpen(false);
-                setContextMenu(null);
-
-                // Wait 0.5s for cursor to move, then click
+                // Wait 0.5s for cursor to move, hold the highlight for 2s, then advance
                 timeout = setTimeout(() => {
-                    setIsLabelDropdownOpen(true);
-
-                    // Show dropdown for 2 seconds, then go to next
                     timeout = setTimeout(() => {
-                        setIsLabelDropdownOpen(false);
-
-                        // Wait a tiny bit before moving to next
-                        timeout = setTimeout(() => {
-                            setStepIndex(prev => prev + 1);
-                        }, 200);
-
+                        setStepIndex(prev => prev + 1);
                     }, 2000);
-
                 }, 500);
-
-            } else {
-                // End of sequence
-                setIsPlaying(false);
-                setStepIndex(-1);
-                setCursorPos(null);
             }
+        } else if (stepIndex >= SPOTLIGHTS.length) {
+            setIsPlaying(false);
+            setStepIndex(-1);
+            setCursorPos(null);
         } else {
-            // Paused or stopped
             setCursorPos(null);
         }
 
@@ -155,21 +150,17 @@ function Tree_View_Japanese_Tutorial() {
 
     const handlePrevStep = () => {
         setIsPlaying(false);
-        setCursorPos(null);
         setContextMenu(null);
         if (stepIndex > 0) {
             setStepIndex(stepIndex - 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
     const handleNextStep = () => {
         setIsPlaying(false);
-        setCursorPos(null);
         setContextMenu(null);
         if (stepIndex < SPOTLIGHTS.length - 1) {
             setStepIndex(stepIndex === -1 ? 0 : stepIndex + 1);
-            setIsLabelDropdownOpen(true);
         }
     };
 
@@ -180,13 +171,11 @@ function Tree_View_Japanese_Tutorial() {
     const handleStop = () => {
         setIsPlaying(false);
         setStepIndex(-1);
-        setIsLabelDropdownOpen(false);
         setContextMenu(null);
         setCursorPos(null);
     };
 
     const handleContainerClick = () => {
-        setIsLabelDropdownOpen(false);
         setStepIndex(-1);
         setCursorPos(null);
         setContextMenu(null);
@@ -260,18 +249,12 @@ function Tree_View_Japanese_Tutorial() {
                                     e.stopPropagation();
                                     setIsPlaying(false);
                                     setContextMenu(null); // left-click always closes any open right-click menu
-                                    if (stepIndex === i) {
-                                        setIsLabelDropdownOpen(!isLabelDropdownOpen);
-                                    } else {
-                                        setStepIndex(i);
-                                        setIsLabelDropdownOpen(true);
-                                    }
+                                    setStepIndex(i);
                                 }}
                                 onContextMenu={(e) => {
                                     e.preventDefault(); // suppress the browser's native right-click menu
                                     e.stopPropagation();
                                     setIsPlaying(false);
-                                    setIsLabelDropdownOpen(false); // right-click always closes any open left-click dropdown
 
                                     if (!spot.contextMenuItems || spot.contextMenuItems.length === 0) {
                                         setContextMenu(null);
@@ -308,36 +291,16 @@ function Tree_View_Japanese_Tutorial() {
                                 }}
                             />
 
-                            {/* Native HTML/CSS Dropdown Menu (left-click) — supports nested children submenus */}
-                            {isActive && isLabelDropdownOpen && spot.menuItems && spot.menuItems.length > 0 && (
-                                <div
-                                    onClick={(e) => e.stopPropagation()}
-                                    style={{
-                                        position: "absolute",
-                                        left: `${pos.x + pos.w}%`,
-                                        top: `${pos.y}%`,
-                                        marginLeft: "2px",
-                                        zIndex: 20,
-                                        pointerEvents: "auto",
-                                        backgroundColor: "#f2f2f2", // Windows native menu background color
-                                        border: "1px solid #a0a0a0",
-                                        boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                        transition: "opacity 0.2s ease-out"
-                                    }}>
-                                    <DropdownMenu items={spot.menuItems} />
-                                </div>
-                            )}
-
-                            {/* Right-click context menu — appears at the cursor's click position, not the item's position */}
-                            {isContextActive && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
+                            {/* Context menu — appears for active step or right-clicked position */}
+                            {(isActive || isContextActive) && spot.contextMenuItems && spot.contextMenuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     onContextMenu={(e) => e.preventDefault()}
                                     style={{
                                         position: "absolute",
-                                        left: `${contextMenu!.x}%`,
-                                        top: `${contextMenu!.y}%`,
-                                        zIndex: 60, // above every spotlight button (30), left-click dropdown (20), and the automation cursor (50)
+                                        left: `${isContextActive ? contextMenu!.x : pos.x + 3.8}%`,
+                                        top: `${isContextActive ? contextMenu!.y : pos.y + pos.h}%`,
+                                        zIndex: 60, // above every spotlight button (30) and the automation cursor (50)
                                         pointerEvents: "auto",
                                         backgroundColor: "#f2f2f2",
                                         border: "1px solid #a0a0a0",
@@ -365,8 +328,8 @@ function Tree_View_Japanese_Tutorial() {
                             top: `${cursorPos.y}%`,
                             zIndex: 50,
                             pointerEvents: "none",
-                            transition: "top 0.5s ease-out",
-                            transform: "translate(-6px, -2px)",
+                            transition: "all 0.5s ease-out",
+                            transform: "translate(-11px, -2px)",
                             filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.5))"
                         }}
                     >
