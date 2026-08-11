@@ -1,8 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import commmandmenu from '../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
-import { ImageControlBar } from '../../Icad_Guide/Image_Control/ImageControlBar';
+import { ImageControlBar } from '../Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './CommandData';
+import { ReadAloudButton } from '../../../../ReadAloudButton';
+import { useTTSContext } from '../../../../../context/TTSContext';
+
+const FALLBACK_NAVBAR_HEIGHT = 60;
+const TOPBAR_HEIGHT = 56;
+const STUCK_BUTTON_GAP = 20;
+const STICKY_TRIGGER_BUFFER = 24;
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -98,10 +105,85 @@ function Command_Menu_Japanese_Tutorial() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
+    // TTS Read Aloud state
+    const { rate, voices, selectedVoiceURI } = useTTSContext();
+    const [isSpeaking, setIsSpeaking] = useState(false);
+
+    // Sticky ReadAloudButton logic matching Interface_Lesson.tsx
+    const sentinelRef = useRef<HTMLDivElement>(null);
+    const [isButtonStuck, setIsButtonStuck] = useState(false);
+    const [navbarHeight, setNavbarHeight] = useState(FALLBACK_NAVBAR_HEIGHT);
+
     // Automation state
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleStartReading = () => {
+        const textToRead = stepIndex >= 0 && SPOTLIGHTS[stepIndex] ? SPOTLIGHTS[stepIndex].label : "Command Menu";
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.rate = rate;
+        const voice = voices.find((v) => v.voiceURI === selectedVoiceURI);
+        if (voice) utterance.voice = voice;
+        utterance.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+        setIsSpeaking(true);
+    };
+
+    const handleStopReading = () => {
+        window.speechSynthesis.cancel();
+        setIsSpeaking(false);
+    };
+
+    const getGlobalNavbarHeight = useCallback((): number => {
+        const candidates = ["header", "nav", ".app-topbar", ".app-navbar", ".main-navbar", "[data-app-navbar]"];
+        for (const selector of candidates) {
+            const el = document.querySelector(selector) as HTMLElement | null;
+            if (el) {
+                const style = window.getComputedStyle(el);
+                if (style.position === "fixed" || style.position === "sticky") {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.height > 0) return rect.height;
+                }
+            }
+        }
+        return FALLBACK_NAVBAR_HEIGHT;
+    }, []);
+
+    useEffect(() => {
+        const measure = () => setNavbarHeight(getGlobalNavbarHeight());
+        measure();
+        window.addEventListener("resize", measure);
+        return () => window.removeEventListener("resize", measure);
+    }, [getGlobalNavbarHeight]);
+
+    const obscuredHeight = navbarHeight + TOPBAR_HEIGHT + STICKY_TRIGGER_BUFFER;
+
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsButtonStuck(!entry.isIntersecting);
+            },
+            {
+                root: null,
+                rootMargin: `-${obscuredHeight}px 0px 0px 0px`,
+                threshold: 0,
+            }
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [obscuredHeight]);
+
+    useEffect(() => {
+        return () => {
+            window.speechSynthesis.cancel();
+        };
+    }, []);
 
     // Handle automated sequence
     useEffect(() => {
@@ -162,6 +244,7 @@ function Command_Menu_Japanese_Tutorial() {
         setIsPlaying(false);
         setStepIndex(-1);
         setCursorPos(null);
+        handleStopReading();
     };
 
     const handleContainerClick = () => {
@@ -342,8 +425,81 @@ function Command_Menu_Japanese_Tutorial() {
     );
 
     return (
-        <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
-            <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{
+            width: "100%",
+            minHeight: "100%",
+            height: "auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "var(--bg-dark)",
+            fontFamily: "var(--font-main)",
+            overflowY: "auto",
+            paddingBottom: "140px",
+            position: "relative"
+        }}>
+            {isButtonStuck && (
+                <div style={{
+                    position: "fixed",
+                    top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
+                    right: "24px",
+                    zIndex: 900,
+                }}>
+                    <ReadAloudButton
+                        isSpeaking={isSpeaking}
+                        onStart={handleStartReading}
+                        onStop={handleStopReading}
+                    />
+                </div>
+            )}
+
+            {/* Top bar spacer matching ExitCourseButton height (56px) */}
+            <div style={{ width: "100%", height: `${TOPBAR_HEIGHT}px`, flexShrink: 0 }} />
+
+            {/* Header matching Interface_Lesson.tsx layout & positioning exactly */}
+            <div style={{ position: "relative", width: "94.15%", padding: "56px 32px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{
+                    fontSize: "40px",
+                    margin: "0px 0px 16px",
+                    fontWeight: 800,
+                    color: "var(--text-white)",
+                    fontFamily: "Outfit, sans-serif",
+                    letterSpacing: "0.5px"
+                }}>
+                    Command Menu
+                </div>
+
+                <div
+                    ref={sentinelRef}
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "24px",
+                        width: "1px",
+                        height: "1px",
+                        transform: "translateY(-50%)"
+                    }}
+                />
+                {!isButtonStuck && (
+                    <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "24px",
+                        transform: "translateY(-50%)"
+                    }}>
+                        <ReadAloudButton
+                            isSpeaking={isSpeaking}
+                            onStart={handleStartReading}
+                            onStop={handleStopReading}
+                        />
+                    </div>
+                )}
+
+                <div style={{ width: "calc(100% - 40px)", maxWidth: "1200px", height: "1px", backgroundColor: "var(--border-color)", marginTop: "64px" }} />
+            </div>
+
+            {/* Vertically scrollable content container matching Interface_Lesson.tsx */}
+            <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "32px" }}>
                 {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
             </div>
         </div>

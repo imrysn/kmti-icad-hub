@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import commmandmenu from '../../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
-import { ImageControlBar } from '../../Image_Control/ImageControlBar';
+import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './MenuData';
 
 // Recursive dropdown that supports nested `children` — hovering an item

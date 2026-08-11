@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { ImageControlBar } from '../../Image_Control/ImageControlBar';
+import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
 import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_View.jpg';
 

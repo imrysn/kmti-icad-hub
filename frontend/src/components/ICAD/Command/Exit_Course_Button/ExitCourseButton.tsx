@@ -70,19 +70,27 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
     return (
         <div
             style={{
-                position: 'sticky',
-                top: 0,
                 width: '100%',
+                height: '56px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                height: '56px',
                 padding: '0 20px',
-                backgroundColor: theme === 'dark' ? '#000000' : 'transparent',
-                borderBottom: '1px solid var(--border-color)',
                 boxSizing: 'border-box',
+                position: 'relative',
             }}
         >
+            {/* Full-width bottom border that stretches edge-to-edge across the fixed top bar */}
+            <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '100vw',
+                height: '1px',
+                backgroundColor: 'var(--border-color)',
+            }} />
+
             <button
                 className="exit-course-btn"
                 onClick={handleExitCourse}
