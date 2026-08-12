@@ -338,7 +338,7 @@ function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: 
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
                     const isHoverOpen = hoveredSpotIndex === i;
-                    const showDropdown = isActive || isHoverOpen;
+                    const showDropdown = isActive;
 
                     return (
                         <div key={spot.label}>
@@ -469,7 +469,7 @@ function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: 
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
-                    referenceTitle="COMMAND MENU REFERENCE"
+                    referenceTitle="COMMAND MENU GUIDE"
                     referenceItems={SPOTLIGHTS.map(s => s.label)}
                     currentStepIndex={stepIndex}
                     onSelectStep={(idx) => {

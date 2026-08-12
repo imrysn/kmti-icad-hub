@@ -304,23 +304,39 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         }}
                     >
                         {canSwitchSections ? (
-                            <button
+                            <div
                                 onClick={() => setIsTitleDropdownOpen(prev => !prev)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        setIsTitleDropdownOpen(prev => !prev);
+                                    }
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = "transparent";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = "transparent";
+                                }}
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "space-between",
                                     width: "100%",
                                     background: "none",
+                                    backgroundColor: "transparent",
                                     border: "none",
                                     padding: 0,
-                                    cursor: "pointer",
+                                    cursor: "default",
                                     fontSize: "11px",
                                     fontWeight: "700",
                                     color: "#DD4DFA",
                                     letterSpacing: "0.4px",
                                     textTransform: "uppercase",
-                                    fontFamily: "var(--font-heading)"
+                                    fontFamily: "var(--font-heading)",
+                                    outline: "none",
                                 }}
                             >
                                 <span>{activeSection ? activeSection.title : referenceTitle}</span>
@@ -331,7 +347,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                         transition: "transform 0.2s ease"
                                     }}
                                 />
-                            </button>
+                            </div>
                         ) : (
                             <span style={{
                                 fontSize: "11px",
@@ -356,7 +372,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                     backgroundColor: isLight ? "var(--glass-bg)" : "#1c1c22",
                                     border: "1px solid var(--glass-border)",
                                     borderRadius: "10px",
-                                    boxShadow: "var(--shadow-card)",
+
                                     overflow: "hidden",
                                     zIndex: 30
                                 }}
