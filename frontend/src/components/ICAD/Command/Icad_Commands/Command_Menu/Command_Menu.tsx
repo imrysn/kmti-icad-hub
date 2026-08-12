@@ -11,6 +11,11 @@ const TOPBAR_HEIGHT = 56;
 const STUCK_BUTTON_GAP = 20;
 const STICKY_TRIGGER_BUFFER = 24;
 
+interface Command_Menu_Japanese_TutorialProps {
+    lessonNumber?: number;
+    totalLessons?: number;
+}
+
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
 // Top-level items are arranged into 2 columns (column-major, like a
@@ -100,7 +105,7 @@ function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: num
     );
 }
 
-function Command_Menu_Japanese_Tutorial() {
+function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: Command_Menu_Japanese_TutorialProps) {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
@@ -119,6 +124,26 @@ function Command_Menu_Japanese_Tutorial() {
     const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // NOTE: isFullscreen is a plain CSS-driven toggle — the viewer expands
+    // to fill only the browser's own page (position: fixed, 100vw/100vh)
+    // via videoContainerMarkup below, rendered through a portal directly
+    // into document.body so it sits above the app's navbar regardless of
+    // any stacking context the navbar creates. It intentionally never
+    // calls the native browser Fullscreen API, so the address bar, tabs,
+    // and OS taskbar all stay visible instead of the page taking over the
+    // whole monitor.
+
+    // Lock background scroll while the portal-rendered overlay is open
+    useEffect(() => {
+        if (isFullscreen) {
+            const previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = previousOverflow;
+            };
+        }
+    }, [isFullscreen]);
 
     const handleStartReading = () => {
         const textToRead = stepIndex >= 0 && SPOTLIGHTS[stepIndex] ? SPOTLIGHTS[stepIndex].label : "Command Menu";
@@ -265,7 +290,7 @@ function Command_Menu_Japanese_Tutorial() {
                 width: "100vw",
                 height: "100vh",
                 backgroundColor: "#000000",
-                zIndex: 999999,
+                zIndex: 2147483647, // max safe z-index; combined with the portal below, this guarantees the overlay sits above the app navbar
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -286,11 +311,11 @@ function Command_Menu_Japanese_Tutorial() {
             <div
                 style={{
                     position: "relative",
-                    width: isFullscreen ? "min(100vw, calc(100vh * 16 / 9))" : "100%",
-                    height: isFullscreen ? "min(100vh, calc(100vw * 9 / 16))" : "100%",
+                    width: isFullscreen ? "100vw" : "100%",
+                    height: isFullscreen ? "100vh" : "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: "16 / 9",
+                    aspectRatio: isFullscreen ? undefined : "16 / 9",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -470,6 +495,27 @@ function Command_Menu_Japanese_Tutorial() {
             paddingBottom: "140px",
             position: "relative"
         }}>
+
+            {/* Scoped color rule for the lesson counter — swap the media query for your
+                app's actual theme selector if you toggle via a class/data-attribute
+                rather than the OS-level color scheme */}
+            <style>{`
+        .icad-lesson-counter {
+            font-family: Outfit, sans-serif;
+            font-size: 16px;
+            color: #DD4DFA;
+            margin: 0 0 8px;
+            text-align: center;
+            word-spacing: 0.25em;
+            letter-spacing: normal;
+        }
+        @media (prefers-color-scheme: light) {
+            .icad-lesson-counter {
+                color: #B5179E;
+            }
+        }
+        `}</style>
+
             {isButtonStuck && (
                 <div style={{
                     position: "fixed",
@@ -490,6 +536,11 @@ function Command_Menu_Japanese_Tutorial() {
 
             {/* Header matching Interface_Lesson.tsx layout & positioning exactly */}
             <div style={{ position: "relative", width: "94.15%", padding: "56px 32px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+                <div className="icad-lesson-counter" style={{ fontWeight: "bold" }}>
+                    {totalLessons ? `Lesson ${lessonNumber} of ${totalLessons}` : `Lesson ${lessonNumber}`}
+                </div>
+
                 <div style={{
                     fontSize: "40px",
                     margin: "0px 0px 16px",

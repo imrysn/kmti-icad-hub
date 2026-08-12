@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import commmandmenu from '../../../../../../assets/Commands/Japanese_Tutorial/commmandmenu.jpg';
 import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './MenuData';
@@ -106,6 +105,23 @@ function Menu_Bar_Japanese_Tutorial() {
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // Keep isFullscreen React state in sync with native browser fullscreen state
+    useEffect(() => {
+        const handleFSChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener("fullscreenchange", handleFSChange);
+        document.addEventListener("webkitfullscreenchange", handleFSChange);
+        document.addEventListener("mozfullscreenchange", handleFSChange);
+        document.addEventListener("MSFullscreenChange", handleFSChange);
+        return () => {
+            document.removeEventListener("fullscreenchange", handleFSChange);
+            document.removeEventListener("webkitfullscreenchange", handleFSChange);
+            document.removeEventListener("mozfullscreenchange", handleFSChange);
+            document.removeEventListener("MSFullscreenChange", handleFSChange);
+        };
+    }, []);
 
     // Handle automated sequence
     useEffect(() => {
@@ -380,7 +396,19 @@ function Menu_Bar_Japanese_Tutorial() {
                 <ImageControlBar
                     containerRef={containerRef}
                     isFullscreen={isFullscreen}
-                    onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
+                    onToggleFullscreen={() => {
+                        const target = containerRef.current;
+                        if (!target) return;
+                        if (!document.fullscreenElement) {
+                            target.requestFullscreen().catch((err) => {
+                                console.error("Error entering native fullscreen:", err);
+                            });
+                        } else {
+                            document.exitFullscreen().catch((err) => {
+                                console.error("Error exiting native fullscreen:", err);
+                            });
+                        }
+                    }}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
                     canGoPrev={stepIndex > 0}
@@ -388,7 +416,7 @@ function Menu_Bar_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
-                    referenceTitle="MENU BAR REFERENCE"
+                    referenceTitle="MENU BAR GUIDE"
                     referenceItems={SPOTLIGHTS.map(s => s.label)}
                     currentStepIndex={stepIndex}
                     onSelectStep={(idx) => {
@@ -403,7 +431,7 @@ function Menu_Bar_Japanese_Tutorial() {
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
+                {videoContainerMarkup}
             </div>
         </div>
     );

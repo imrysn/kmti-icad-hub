@@ -7,6 +7,22 @@ import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_
 
 const SPOTLIGHTS = [...MENU_BAR_SPOTLIGHTS, ...TREE_SPOTLIGHTS];
 
+// Sectioned reference list — one collapsible dropdown per source (Menu Bar,
+// Tree View), each item's index offset by where its group starts in the
+// combined SPOTLIGHTS array above so onSelectStep still lands correctly.
+const REFERENCE_SECTIONS = [
+    {
+        title: "MENU BAR GUIDE",
+        items: MENU_BAR_SPOTLIGHTS.map(s => s.label),
+        indexOffset: 0
+    },
+    {
+        title: "TREE VIEW GUIDE",
+        items: TREE_SPOTLIGHTS.map(s => s.label),
+        indexOffset: MENU_BAR_SPOTLIGHTS.length
+    }
+];
+
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
 function DropdownMenu({ items }: { items: MenuItem[] }) {
@@ -115,6 +131,14 @@ function Tree_View_Japanese_Tutorial() {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // NOTE: isFullscreen is a CSS-driven toggle (position: fixed, 100vw/100vh)
+    // rather than the native browser Fullscreen API — so the address bar,
+    // tabs, and OS taskbar all stay visible instead of the page taking over
+    // the whole monitor. It's portaled to document.body (see the return
+    // statement below) so it escapes any ancestor stacking context — e.g.
+    // the app's own fixed header — and truly covers the entire viewport,
+    // header included.
+
     // Handle automated sequence: walk the cursor through each spotlight, holding the highlight briefly on each
     useEffect(() => {
         let timeout: NodeJS.Timeout;
@@ -218,11 +242,11 @@ function Tree_View_Japanese_Tutorial() {
             <div
                 style={{
                     position: "relative",
-                    width: isFullscreen ? "min(100vw, calc(100vh * 16 / 9))" : "100%",
-                    height: isFullscreen ? "min(100vh, calc(100vw * 9 / 16))" : "100%",
+                    width: isFullscreen ? "100vw" : "100%",
+                    height: isFullscreen ? "100vh" : "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: "16 / 9",
+                    aspectRatio: isFullscreen ? undefined : "16 / 9",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -398,8 +422,8 @@ function Tree_View_Japanese_Tutorial() {
                     isPlaying={isPlaying}
                     onTogglePlay={handleTogglePlay}
                     onStop={handleStop}
-                    referenceTitle="TREE VIEW REFERENCE"
-                    referenceItems={SPOTLIGHTS.map(s => s.label)}
+                    referenceTitle="MENU BAR & TREE VIEW GUIDE"
+                    referenceSections={REFERENCE_SECTIONS}
                     currentStepIndex={stepIndex}
                     onSelectStep={(idx) => {
                         setIsPlaying(false);

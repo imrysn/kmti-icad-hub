@@ -1,0 +1,316 @@
+/* ==========================================================================
+   ImageControlBar.css — wired into the Midnight Aurora token system
+   ========================================================================== */
+
+.icb-pill-wrapper {
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+    z-index: 1000;
+}
+
+.icb-pill-wrapper.is-dragging {
+    transition: none;
+}
+
+.icb-pill-wrapper:not(.is-dragging) {
+    transition: all 0.2s ease;
+}
+
+/* --- Browse Panel (glass card, same recipe as .lesson-table-container) --- */
+.icb-browse-panel {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 0;
+    width: 320px;
+    max-width: calc(100vw - 36px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card), 0 0 20px var(--color-primary-glow);
+    padding: 16px 18px;
+    z-index: 1010;
+    font-family: var(--font-main);
+}
+
+/* Force a near-black glass panel in dark mode to match the original mock,
+   while staying token-driven for light mode via --glass-bg */
+[data-theme='dark'] .icb-browse-panel {
+    background: #000000f8;
+}
+
+.icb-browse-header {
+    position: relative;
+    padding-bottom: 12px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icb-title,
+.icb-title-btn {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.icb-title-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.icb-title-btn .chevron {
+    transition: transform 0.2s ease;
+}
+
+.icb-title-btn.is-open .chevron {
+    transform: rotate(180deg);
+}
+
+.icb-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.icb-close-btn:hover {
+    color: var(--text-white);
+}
+
+/* --- Section switcher dropdown --- */
+.icb-section-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 190px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    z-index: 30;
+}
+
+[data-theme='dark'] .icb-section-menu {
+    background: #1c1c22;
+}
+
+.icb-section-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--text-main);
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icb-section-item:hover {
+    background: rgba(221, 77, 250, 0.08);
+}
+
+.icb-section-item.is-selected {
+    background: rgba(221, 77, 250, 0.15);
+    color: var(--primary);
+}
+
+/* --- Item list --- */
+.icb-item-list {
+    max-height: 380px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-right: 2px;
+}
+
+.icb-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.icb-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.icb-item.is-active {
+    background: rgba(221, 77, 250, 0.2);
+}
+
+.icb-item-accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--color-primary-glow);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.icb-item:hover .icb-item-accent,
+.icb-item.is-active .icb-item-accent {
+    opacity: 1;
+}
+
+.icb-item-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.icb-item:hover .icb-item-badge {
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--text-white);
+}
+
+.icb-item.is-active .icb-item-badge {
+    background: var(--primary);
+    color: #fff;
+}
+
+.icb-item-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.15s ease;
+}
+
+.icb-item:hover .icb-item-label {
+    color: var(--text-white);
+    font-weight: 700;
+}
+
+.icb-item.is-active .icb-item-label {
+    color: var(--text-white);
+    font-weight: 700;
+}
+
+/* --- Floating control pill --- */
+.icb-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #141419f2;
+    backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 32px;
+    box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+.icb-grip {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding-right: 2px;
+    cursor: grab;
+    touch-action: none;
+}
+
+.icb-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-white);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icb-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.icb-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
+.icb-pill-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text-white);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: var(--font-main);
+    font-size: 12.8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.13);
+    border: none;
+}
+
+.icb-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.icb-browse-btn {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.icb-browse-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.icb-browse-btn.is-active {
+    background: linear-gradient(135deg, #c026d3 0%, var(--primary) 100%);
+    border: none;
+    box-shadow: 0 0 16px var(--color-primary-glow), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.icb-browse-btn.is-active:hover {
+    opacity: 0.9;
+}
