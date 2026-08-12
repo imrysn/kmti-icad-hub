@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ImageControlBar } from '../../../Icad_Commands/Image_Control/ImageControlBar';
 import { SPOTLIGHTS as TREE_SPOTLIGHTS, MenuItem } from './Tree_View_Right_CLick/Tree_View_Right';
 import { SPOTLIGHTS as MENU_BAR_SPOTLIGHTS } from '../Menu_Bar/MenuData';
@@ -130,22 +131,13 @@ function Tree_View_Japanese_Tutorial() {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Keep isFullscreen React state in sync with native browser fullscreen state
-    useEffect(() => {
-        const handleFSChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
-        };
-        document.addEventListener("fullscreenchange", handleFSChange);
-        document.addEventListener("webkitfullscreenchange", handleFSChange);
-        document.addEventListener("mozfullscreenchange", handleFSChange);
-        document.addEventListener("MSFullscreenChange", handleFSChange);
-        return () => {
-            document.removeEventListener("fullscreenchange", handleFSChange);
-            document.removeEventListener("webkitfullscreenchange", handleFSChange);
-            document.removeEventListener("mozfullscreenchange", handleFSChange);
-            document.removeEventListener("MSFullscreenChange", handleFSChange);
-        };
-    }, []);
+    // NOTE: isFullscreen is a CSS-driven toggle (position: fixed, 100vw/100vh)
+    // rather than the native browser Fullscreen API — so the address bar,
+    // tabs, and OS taskbar all stay visible instead of the page taking over
+    // the whole monitor. It's portaled to document.body (see the return
+    // statement below) so it escapes any ancestor stacking context — e.g.
+    // the app's own fixed header — and truly covers the entire viewport,
+    // header included.
 
     // Handle automated sequence: walk the cursor through each spotlight, holding the highlight briefly on each
     useEffect(() => {
@@ -250,11 +242,11 @@ function Tree_View_Japanese_Tutorial() {
             <div
                 style={{
                     position: "relative",
-                    width: isFullscreen ? "min(100vw, calc(100vh * 16 / 9))" : "100%",
-                    height: isFullscreen ? "min(100vh, calc(100vw * 9 / 16))" : "100%",
+                    width: isFullscreen ? "100vw" : "100%",
+                    height: isFullscreen ? "100vh" : "100%",
                     maxWidth: "100%",
                     maxHeight: "100%",
-                    aspectRatio: "16 / 9",
+                    aspectRatio: isFullscreen ? undefined : "16 / 9",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -422,19 +414,7 @@ function Tree_View_Japanese_Tutorial() {
                 <ImageControlBar
                     containerRef={containerRef}
                     isFullscreen={isFullscreen}
-                    onToggleFullscreen={() => {
-                        const target = containerRef.current;
-                        if (!target) return;
-                        if (!document.fullscreenElement) {
-                            target.requestFullscreen().catch((err) => {
-                                console.error("Error entering native fullscreen:", err);
-                            });
-                        } else {
-                            document.exitFullscreen().catch((err) => {
-                                console.error("Error exiting native fullscreen:", err);
-                            });
-                        }
-                    }}
+                    onToggleFullscreen={() => setIsFullscreen(prev => !prev)}
                     onPrevStep={handlePrevStep}
                     onNextStep={handleNextStep}
                     canGoPrev={stepIndex > 0}
@@ -457,7 +437,7 @@ function Tree_View_Japanese_Tutorial() {
     return (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "var(--font-main)" }}>
             <div style={{ width: "100%", flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                {imageContainerMarkup}
+                {isFullscreen ? createPortal(imageContainerMarkup, document.body) : imageContainerMarkup}
             </div>
         </div>
     );

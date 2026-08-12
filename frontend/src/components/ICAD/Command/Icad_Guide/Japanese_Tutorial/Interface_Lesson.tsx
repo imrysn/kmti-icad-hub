@@ -12,9 +12,11 @@ const STICKY_TRIGGER_BUFFER = 24;
 
 interface Interface_LessonProps {
     onExit?: () => void;
+    lessonNumber?: number;
+    totalLessons?: number;
 }
 
-function Interface_Lesson({ onExit }: Interface_LessonProps) {
+function Interface_Lesson({ onExit, lessonNumber = 1, totalLessons = 1 }: Interface_LessonProps) {
     const { rate, voices, selectedVoiceURI } = useTTSContext();
     const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -99,6 +101,26 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
     return (
         <div style={{ width: "100%", minHeight: "100%", height: "auto", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-dark)", fontFamily: "var(--font-main)", overflowY: "auto", paddingBottom: "140px", position: "relative" }}>
 
+            {/* Scoped color rule for the lesson counter — swap the media query for your
+                app's actual theme selector if you toggle via a class/data-attribute
+                rather than the OS-level color scheme */}
+            <style>{`
+        .icad-lesson-counter {
+            font-family: Outfit, sans-serif;
+            font-size: 16px;
+            color: #DD4DFA;
+            margin: 0 0 8px;
+            text-align: center;
+            word-spacing: 0.25em;
+            letter-spacing: normal;
+        }
+        @media (prefers-color-scheme: light) {
+            .icad-lesson-counter {
+                color: #B5179E;
+            }
+        }
+        `}</style>
+
             {/* Fixed top bar — Exit Course only, pinned just below the global navbar */}
             <div style={topBarStyle} data-icad-topbar>
                 <ExitCourseButton onExit={() => onExit?.()} />
@@ -123,6 +145,10 @@ function Interface_Lesson({ onExit }: Interface_LessonProps) {
 
             {/* Header */}
             <div style={{ position: "relative", width: "94.15%", padding: "56px 32px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+                <div className="icad-lesson-counter" style={{ fontWeight: "bold" }}>
+                    {totalLessons ? `Lesson ${lessonNumber} of ${totalLessons}` : `Lesson ${lessonNumber}`}
+                </div>
 
                 <div style={{
                     fontSize: "40px",

@@ -2049,19 +2049,19 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "Draw",
         menuItems: DRAW_ITEMS,
-        normalPos: row(0, 0, 40, 52),
+        normalPos: row(0, 0.1, 40, 54),
         fullscreenPos: row(0, 0, 40, 54)
     },
     {
         label: "Drafting",
         menuItems: DRAFTING_ITEMS,
-        normalPos: row(1, 0, 40, 52),
+        normalPos: row(1, 0.1, 40, 54),
         fullscreenPos: row(1, 0, 40, 54)
     },
     {
         label: "File",
         menuItems: FILE_ITEMS,
-        normalPos: row(2, 0, 40, 52),
+        normalPos: row(2, 0.1, 40, 54),
         fullscreenPos: row(2, 0, 40, 54)
     },
 
@@ -2069,19 +2069,19 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "Subdrawings / Parts / Symbols",
         menuItems: SUBDRAWING_ITEMS,
-        normalPos: row(0, 1, 40, 52),
+        normalPos: row(0, 1.1, 40, 54),
         fullscreenPos: row(0, 1.1, 40, 54)
     },
     {
         label: "Tools",
         menuItems: TOOLS_ITEMS,
-        normalPos: row(1, 1, 40, 52),
+        normalPos: row(1, 1.1, 40, 54),
         fullscreenPos: row(1, 1.1, 40, 54)
     },
     {
         label: "Top-down",
         menuItems: TOPDOWN_ITEMS,
-        normalPos: row(2, 1, 40, 52),
+        normalPos: row(2, 1.1, 40, 54),
         fullscreenPos: row(2, 1.1, 40, 54)
     },
 
@@ -2089,19 +2089,19 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "Modeling",
         menuItems: MODELING_ITEMS,
-        normalPos: row(0, 2, 40, 52),
+        normalPos: row(0, 2.1, 40, 54),
         fullscreenPos: row(0, 2.1, 40, 54)
     },
     {
         label: "3D Tools",
         menuItems: THREE_D_TOOLS_ITEMS,
-        normalPos: row(1, 2, 40, 52),
+        normalPos: row(1, 2.1, 40, 54),
         fullscreenPos: row(1, 2.1, 40, 54)
     },
     {
         label: "3D Verification",
         menuItems: THREE_D_VERIFICATION_ITEMS,
-        normalPos: row(2, 2, 40, 52),
+        normalPos: row(2, 2.1, 40, 54),
         fullscreenPos: row(2, 2.1, 40, 54)
     },
 
@@ -2109,19 +2109,19 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "Manufacturing Information",
         menuItems: MANUFACTURING_INFORMATION_ITEMS,
-        normalPos: row(0, 3, 40, 52),
+        normalPos: row(0, 3.1, 40, 54),
         fullscreenPos: row(0, 3.1, 40, 54)
     },
     {
         label: "Action Design",
         menuItems: ACTION_DESIGN_ITEMS,
-        normalPos: row(1, 3, 40, 52),
+        normalPos: row(1, 3.1, 40, 54),
         fullscreenPos: row(1, 3.1, 40, 54)
     },
     {
         label: "Raster",
         menuItems: RASTER_ITEMS,
-        normalPos: row(2, 3, 40, 52),
+        normalPos: row(2, 3.1, 40, 54),
         fullscreenPos: row(2, 3.1, 40, 54)
     }
 ];

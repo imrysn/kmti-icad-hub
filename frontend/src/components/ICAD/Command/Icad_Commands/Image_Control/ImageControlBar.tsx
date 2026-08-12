@@ -117,7 +117,12 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
 
     const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
-    const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : (isNativeFullscreen || isCssFallback);
+    // CSS-only fullscreen: expands the container to fill the browser's own
+    // viewport/page rather than escalating to the OS-level native Fullscreen
+    // API. isNativeFullscreen is still tracked (in case the browser enters
+    // native fullscreen through some other means, e.g. the user hitting F11
+    // directly) but is no longer driven by this component's own toggle.
+    const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : isCssFallback;
 
     const hasSections = !!(referenceSections && referenceSections.length > 0);
     const activeSection = hasSections ? referenceSections![activeSectionIndex] : null;
@@ -170,14 +175,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
         }
     };
 
-    // Native Fullscreen change listeners
+    // Native Fullscreen change listeners — kept as a passive safety net so
+    // isNativeFullscreen stays accurate if native fullscreen is triggered
+    // by something outside this component (e.g. the user pressing F11).
     useEffect(() => {
         const handleFullscreenChange = () => {
             const isNative = checkIsFullscreen();
             setIsNativeFullscreen(isNative);
-            if (isNative) {
-                setIsCssFallback(false);
-            }
         };
 
         const events = [
@@ -233,53 +237,12 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
             return;
         }
 
-        const target = containerRef?.current as any;
-
-        if (isFullscreen) {
-            if (isNativeFullscreen) {
-                const doc = document as any;
-                const exitFS =
-                    doc.exitFullscreen ||
-                    doc.webkitExitFullscreen ||
-                    doc.mozCancelFullScreen ||
-                    doc.msExitFullscreen;
-
-                if (exitFS) {
-                    try {
-                        const res = exitFS.call(doc);
-                        if (res && typeof res.then === "function") {
-                            res.catch((e: any) => console.error("[ImageControlBar] Error exiting native fullscreen:", e));
-                        }
-                    } catch (e) {
-                        console.error("[ImageControlBar] Error exiting native fullscreen:", e);
-                    }
-                }
-            }
-            setIsCssFallback(false);
-        } else {
-            setIsCssFallback(true);
-            if (target) {
-                const requestFS =
-                    target.requestFullscreen ||
-                    target.webkitRequestFullscreen ||
-                    target.mozRequestFullScreen ||
-                    target.msRequestFullscreen ||
-                    target.webkitEnterFullscreen;
-
-                if (requestFS) {
-                    try {
-                        const res = requestFS.call(target);
-                        if (res && typeof res.then === "function") {
-                            res.catch((err: any) => {
-                                console.warn("[ImageControlBar] Native requestFullscreen rejected (using viewport expansion fallback):", err);
-                            });
-                        }
-                    } catch (err) {
-                        console.warn("[ImageControlBar] Native requestFullscreen call threw:", err);
-                    }
-                }
-            }
-        }
+        // Intentionally CSS-only: this expands the container to fill the
+        // browser's own viewport/page (handled by the consumer via
+        // containerRef + isCssFallback), rather than calling the native
+        // Fullscreen API, which would hand the entire monitor over to the
+        // page and hide the browser chrome (tabs, address bar, etc).
+        setIsCssFallback(prev => !prev);
     };
 
     return (
@@ -297,37 +260,44 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
             {/* Reference / Browse Floating Modal */}
             {isBrowseOpen && (
                 <div
+                    className="tutorial-browser-card"
                     onClick={(e) => e.stopPropagation()}
                     style={{
                         position: "absolute",
                         bottom: "calc(100% + 14px)",
-                        left: "0px",
-                        width: "320px",
+                        right: "0px",
+                        width: "280px",
+                        height: "440.42px",
+                        boxSizing: "border-box",
                         maxWidth: "calc(100vw - 36px)",
-                        backgroundColor: isLight ? "var(--glass-bg)" : "rgba(10, 6, 14, 0.92)",
+                        backgroundColor: isLight ? "#FFFFFF" : "#000000",
                         backdropFilter: "blur(var(--glass-blur))",
                         borderRadius: "20px",
                         border: "1px solid #DD4DFA",
                         boxShadow: isLight
                             ? "var(--shadow-card)"
                             : "var(--shadow-card), 0 0 25px rgba(221, 77, 250, 0.35)",
-                        padding: "16px 18px",
+                        padding: "16px 0px",
                         zIndex: 1010,
-                        fontFamily: "var(--font-main)"
+                        fontFamily: "var(--font-main)",
+                        display: "flex",
+                        flexDirection: "column"
                     }}
                 >
                     {/* Header — title becomes a select-style dropdown when there are multiple sections */}
                     <div
+                        className="tutorial-browser-header"
                         style={{
                             position: "relative",
+                            width: "278px",
+                            height: "38.42px",
+                            boxSizing: "border-box",
                             paddingTop: "0px",
-                            paddingBottom: "12px",
-                            paddingLeft: "18px",
-                            paddingRight: "18px",
-                            marginLeft: "-18px",
-                            marginRight: "-18px",
-                            marginBottom: "10px",
-                            borderBottom: "1px solid rgba(255, 255, 255, 0.25)",
+                            paddingBottom: "8px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            marginBottom: "6px",
+                            borderBottom: "1px solid color-mix(in srgb, var(--text-muted) 40%, transparent)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between"
@@ -339,7 +309,8 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
-                                    gap: "6px",
+                                    justifyContent: "space-between",
+                                    width: "100%",
                                     background: "none",
                                     border: "none",
                                     padding: 0,
@@ -347,7 +318,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                     fontSize: "11px",
                                     fontWeight: "700",
                                     color: "#DD4DFA",
-                                    letterSpacing: "1.2px",
+                                    letterSpacing: "0.4px",
                                     textTransform: "uppercase",
                                     fontFamily: "var(--font-heading)"
                                 }}
@@ -366,30 +337,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                 fontSize: "11px",
                                 fontWeight: "700",
                                 color: "#DD4DFA",
-                                letterSpacing: "1.2px",
+                                letterSpacing: "0.4px",
                                 textTransform: "uppercase",
                                 fontFamily: "var(--font-heading)"
                             }}>
                                 {activeSection ? activeSection.title : referenceTitle}
                             </span>
                         )}
-
-                        <button
-                            onClick={() => toggleBrowse()}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                color: "var(--text-muted)",
-                                cursor: "pointer",
-                                padding: "2px",
-                                display: "flex",
-                                alignItems: "center"
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
-                        >
-                            <X size={14} />
-                        </button>
 
                         {/* Section-switcher dropdown, anchored under the title */}
                         {canSwitchSections && isTitleDropdownOpen && (
@@ -453,12 +407,13 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     {/* List of items for the currently selected section (or flat items when no sections) */}
                     <div
                         style={{
-                            maxHeight: "380px",
+                            flex: 1,
+                            minHeight: 0,
                             overflowY: "auto",
+                            overflowX: 'hidden',
                             display: "flex",
                             flexDirection: "column",
                             gap: "3px",
-                            paddingRight: "2px"
                         }}
                     >
                         {itemsToRender.map((item, idx) => {
@@ -472,31 +427,35 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                             return (
                                 <div
                                     key={idx}
+                                    className={`tutorial-browser-item${isActive ? " active" : ""}`}
                                     onClick={() => { if (onSelectStep) onSelectStep(itemIndex); }}
                                     onMouseEnter={() => setHoveredItemIndex(itemIndex)}
                                     onMouseLeave={() => setHoveredItemIndex(null)}
                                     style={{
                                         position: "relative", display: "flex", alignItems: "center",
-                                        gap: "12px", padding: "8px 12px 8px 16px", borderRadius: "10px",
+                                        width: "278px", height: "38px", boxSizing: "border-box",
+                                        flexShrink: 0,
+                                        gap: "12px", padding: "8px 18px", borderRadius: "10px",
                                         cursor: "pointer",
                                         backgroundColor: isActive
-                                            ? "rgba(221, 77, 250, 0.1)"
-                                            : isHovered ? "rgba(255, 255, 255, 0.06)" : "transparent",
-                                        border: "1px solid transparent", transition: "all 0.15s ease"
+                                            ? "#DD4DFA2E"
+                                            : isHovered
+                                                ? (isLight ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.13)")
+                                                : "transparent",
+                                        borderTop: "1px solid transparent",
+                                        borderRight: "1px solid transparent",
+                                        borderBottom: "1px solid transparent",
+                                        borderLeft: isActive
+                                            ? "4px solid #DD4DFA"
+                                            : isHovered
+                                                ? (isLight ? "3px solid #9CA3AF" : "4px solid #DD4DFA")
+                                                : "1px solid transparent",
+                                        transition: "all 0.15s ease"
                                     }}
                                 >
-                                    {isHighlighted && (
-                                        <div style={{
-                                            position: "absolute", left: "6px", top: "50%",
-                                            transform: "translateY(-50%)",
-                                            width: "4px", height: "60%",
-                                            borderRadius: "4px",
-                                            backgroundColor: "#DD4DFA"
-                                        }} />
-                                    )}
                                     <div style={{
                                         width: "24px", height: "24px", borderRadius: "6px", flexShrink: 0,
-                                        backgroundColor: isActive ? "rgba(221, 77, 250, 0.25)" : "rgba(255, 255, 255, 0.1)",
+                                        backgroundColor: isActive ? "rgba(221, 77, 250, 0.25)" : (isLight ? "#0000000D" : "rgba(255, 255, 255, 0.1)"),
                                         color: isActive ? "#DD4DFA" : isHovered ? "var(--text-primary)" : "var(--text-muted)",
                                         fontSize: "11px", fontWeight: "700",
                                         display: "flex", alignItems: "center", justifyContent: "center",
@@ -506,7 +465,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                     </div>
                                     <span style={{
                                         fontSize: "13px", fontWeight: isHighlighted ? "700" : "600",
-                                        color: isActive ? "#DD4DFA" : "var(--text-primary)",
+                                        color: isActive ? "#DD4DFA" : (isLight ? "#1F2328" : "#E6EDF3"),
                                         fontFamily: "var(--font-main)",
                                         whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                                         transition: "all 0.15s ease"
@@ -653,10 +612,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                             height: "36px",
                             padding: "6px 12px",
                             borderRadius: "50%",
-                            backgroundColor: "var(--glass-bg)",
+                            backgroundColor: "rgba(255, 255, 255, 0.12)",
                             backdropFilter: "blur(8px)",
-                            color: "var(--text-white)",
-                            border: "1px solid var(--glass-border)",
+                            color: "#FFFFFF",
+                            border: "1px solid rgba(255, 255, 255, 0.12)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
@@ -664,9 +623,9 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                             transition: "all 0.2s ease"
                         }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--glass-bg)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
                     >
-                        <Square size={14} color="var(--text-white)" strokeWidth={2.2} />
+                        <Square size={14} color="#FFFFFF" strokeWidth={2.2} />
                     </button>
                 )}
 
@@ -683,10 +642,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "6px 12px",
                         borderRadius: "50%",
-                        backgroundColor: "var(--glass-bg)",
+                        backgroundColor: "rgba(255, 255, 255, 0.12)",
                         backdropFilter: "blur(8px)",
-                        color: "var(--text-white)",
-                        border: "1px solid var(--glass-border)",
+                        color: "#FFFFFF",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -698,10 +657,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
                     }}
                     onMouseLeave={(e) => {
-                        if (canGoPrev) e.currentTarget.style.backgroundColor = "var(--glass-bg)";
+                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
                     }}
                 >
-                    <ChevronLeft size={18} color="var(--text-white)" strokeWidth={2.2} />
+                    <ChevronLeft size={18} color="#FFFFFF" strokeWidth={2.2} />
                 </button>
 
                 {/* Next Step Button */}
@@ -717,10 +676,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "6px 12px",
                         borderRadius: "50%",
-                        backgroundColor: "var(--glass-bg)",
+                        backgroundColor: "rgba(255, 255, 255, 0.12)",
                         backdropFilter: "blur(8px)",
-                        color: "var(--text-white)",
-                        border: "1px solid var(--glass-border)",
+                        color: "#FFFFFF",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -732,10 +691,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
                     }}
                     onMouseLeave={(e) => {
-                        if (canGoNext) e.currentTarget.style.backgroundColor = "var(--glass-bg)";
+                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
                     }}
                 >
-                    <ChevronRight size={18} color="var(--text-white)" strokeWidth={2.2} />
+                    <ChevronRight size={18} color="#FFFFFF" strokeWidth={2.2} />
                 </button>
 
                 {/* Fullscreen Button */}
@@ -750,10 +709,10 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         height: "36px",
                         padding: "0px 20px",
                         borderRadius: "50%",
-                        backgroundColor: "var(--glass-bg)",
+                        backgroundColor: "rgba(255, 255, 255, 0.12)",
                         backdropFilter: "blur(8px)",
-                        color: "var(--text-white)",
-                        border: "1px solid var(--glass-border)",
+                        color: "#FFFFFF",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -761,12 +720,12 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--glass-bg)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
                 >
                     {isFullscreen ? (
-                        <Minimize size={17} color="var(--text-white)" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
+                        <Minimize size={17} color="#FFFFFF" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                     ) : (
-                        <Maximize size={17} color="var(--text-white)" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
+                        <Maximize size={17} color="#FFFFFF" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />
                     )}
                 </button>
             </div>

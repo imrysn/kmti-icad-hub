@@ -210,7 +210,7 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "LD11016U01",
         contextMenuItems: LD11016U01_CONTEXT_ITEMS,
-        normalPos: row(1),        // LD11016U01 (blue) — y=174
+        normalPos: row(1.2),        // LD11016U01 (blue) — y=174
         fullscreenPos: row(1)
     },
     {
@@ -222,25 +222,25 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "16x192x720",
         contextMenuItems: Panel_16x192x720_ITEMS,
-        normalPos: row(4.7),
-        fullscreenPos: row(4.6)
+        normalPos: row(5),
+        fullscreenPos: row(4.9)
     },
     {
         label: "19x350x720",
         contextMenuItems: Panel_16x192x720_ITEMS,
-        normalPos: row(5.7),
-        fullscreenPos: row(5.6)
+        normalPos: row(6),
+        fullscreenPos: row(5.9)
     },
     {
         label: "LD11114N01",
         contextMenuItems: LD11114N01_CONTEXT_ITEMS,
-        normalPos: row(8.5),        // LD11114N01 — y=241
-        fullscreenPos: row(8.4)
+        normalPos: row(9),        // LD11114N01 — y=241
+        fullscreenPos: row(8.7)
     },
     {
         label: "LD11116N01",
         contextMenuItems: LD11116N01_CONTEXT_ITEMS,
-        normalPos: row(10.5),        // LD11116N01 — y=273
-        fullscreenPos: row(10.4)
+        normalPos: row(11),        // LD11116N01 — y=273
+        fullscreenPos: row(10.6)
     },
 ];
