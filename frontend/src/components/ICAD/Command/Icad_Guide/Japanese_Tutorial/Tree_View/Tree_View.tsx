@@ -270,7 +270,7 @@ function Tree_View_Japanese_Tutorial() {
                     const isActive = stepIndex === i;
                     const isContextActive = contextMenu?.index === i;
                     const isHoverOpen = hoveredSpotIndex === i;
-                    const showMenu = (isActive || isContextActive) || isHoverOpen;
+                    const showMenu = (isActive || isContextActive);
                     const menuItems = spot.menuItems || spot.contextMenuItems;
 
                     return (
