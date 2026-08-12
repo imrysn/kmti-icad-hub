@@ -11,10 +11,25 @@ const TOPBAR_HEIGHT = 56;
 const STUCK_BUTTON_GAP = 20;
 const STICKY_TRIGGER_BUFFER = 24;
 
+const BORDER_COLOR = "#DD4DFA";
+
 interface Command_Menu_Japanese_TutorialProps {
     lessonNumber?: number;
     totalLessons?: number;
 }
+
+type Pos = { x: number; y: number; w: number; h: number };
+
+// Independent per-button pink border coordinates — one entry per SPOTLIGHTS
+// index, in the same % coordinate space as normalPos/fullscreenPos. This is
+// a ONE-TIME copy of each button's starting position at module load, kept
+// as its own separate array from here on. Adjust any x/y/w/h below to move
+// or resize that button's border WITHOUT touching CommandData.ts, and
+// editing CommandData.ts positions later will NOT move these borders.
+const SPOTLIGHT_BORDERS: { normal: Pos; fullscreen: Pos }[] = SPOTLIGHTS.map(spot => ({
+    normal: { ...spot.normalPos },
+    fullscreen: { ...spot.fullscreenPos },
+}));
 
 // Recursive dropdown that supports nested `children` — hovering an item
 // with children flies out a submenu to its right, native-menu style.
@@ -332,6 +347,30 @@ function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: 
                         outline: "none"
                     }}
                 />
+
+                {/* Per-button pink borders — coordinates come from SPOTLIGHT_BORDERS
+                    above, fully independent of each button's own hitbox position.
+                    Rendered behind the buttons (zIndex 25 < 30) so clicks still work. */}
+                {SPOTLIGHTS.map((spot, i) => {
+                    if (stepIndex !== i) return null;
+                    const borderPos = isFullscreen ? SPOTLIGHT_BORDERS[i].fullscreen : SPOTLIGHT_BORDERS[i].normal;
+                    return (
+                        <div
+                            key={`border-${spot.label}`}
+                            style={{
+                                position: "absolute",
+                                left: `${borderPos.x}%`,
+                                top: `${borderPos.y}%`,
+                                width: `${borderPos.w}%`,
+                                height: `${borderPos.h}%`,
+                                border: `2px solid ${BORDER_COLOR}`,
+                                boxSizing: "border-box",
+                                pointerEvents: "none",
+                                zIndex: 25,
+                            }}
+                        />
+                    );
+                })}
 
                 {/* Render ALL spotlight buttons so they can be manually clicked anytime */}
                 {SPOTLIGHTS.map((spot, i) => {
