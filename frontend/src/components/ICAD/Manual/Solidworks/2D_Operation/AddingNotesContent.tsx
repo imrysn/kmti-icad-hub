@@ -40,17 +40,18 @@ const AddingNotesContent: React.FC = () => {
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '18px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">
-                    <div className="image-wrapper" style={{ marginTop: '0.2rem', width:'700px' }}>
-                        <img src={plImg} alt="PL Note" className="software-screenshot screenshot-wide" />
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginTop: '0.2rem' }}>
+                        <div className="image-wrapper" style={{ flex: 1 }}>
+                            <img src={plImg} alt="PL Note" className="software-screenshot screenshot-wide" style={{ width: '100%' }} />
+                        </div>
+                        <div className="image-wrapper" style={{ flexShrink: 0 }}>
+                            <img src={arrowTypeImg} alt="Arrow Type" className="software-screenshot" style={{ width: '120px' }} />
+                        </div>
                     </div>
 
-                    <div className="image-wrapper" style={{ marginTop: '0.2rem' , marginLeft:'46rem' , transform: 'translateY(-300px)'}}>
-                        <img src={arrowTypeImg} alt="Arrow Type" className="software-screenshot" />
-                    </div>
-
-                    <div className="instruction-box" style={{ marginTop: '-15rem' }}>
-                        <p className="p-flush red-text">
-                            <img src={rightClickImg} alt="Right Click" style={{ height: '40px', verticalAlign: 'middle', display: 'inline-block', marginRight: '8px' }} />
+                    <div className="instruction-box" style={{ marginTop: '1rem' ,marginLeft: '-0.1rem', marginRight: '9rem' , transform: 'translateY(-106.6px)'}}>
+                        <p className="p-flush red-text" style={{fontSize: '15px'}}>
+                            <img src={rightClickImg} alt="Right Click" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginRight: '8px' }} />
                             ※ To change the arrow head, right click on the arrow head then pick on the Arrow head types.
                         </p>
                     </div>

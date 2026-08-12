@@ -51,7 +51,7 @@ const ProjectedViewContent: React.FC = () => {
                     <p className="p-flush red-text">
                         ※ Project view until all the needed views are inserted. 
                         <div>
-                         <span className="red-text" style={{ fontSize: "15px" }}>(See lesson <strong>"Insert Main Views"</strong>Projected Views)</span>
+                         <span className="red-text" style={{ fontSize: "15px" }}>(See lesson <strong>"Insert Main Views"</strong> Projected Views)</span>
                         </div>
                     </p>
                 </div>

@@ -37,7 +37,7 @@ const CenterMarkContent: React.FC = () => {
                     <span className="step-label">Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
                 </div>
                 <div className="step-description">
-                    <img src={centerMarkImg}  alt="Center Mark Properties" className="software-screenshot" />
+                    <img src={centerMarkImg}  alt="Center Mark Properties" className="software-screenshot"  style={{maxHeight: '750px'}}/>
                     <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                         <p className="p-flush red-text">
                             ※ Click the holes to manually insert center mark.

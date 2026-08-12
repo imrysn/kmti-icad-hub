@@ -10,6 +10,9 @@ const InsertMainViewsContent: React.FC = () => {
                 <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
 
 
+
+                  <span className="red-text" style={{ fontSize: "15px" }}>( In Lesson <strong>"Insert Components in the Part"</strong> Use No. 3.1 for inserting the part. )</span>
+
                     <div className="step-header" style={{padding:'8px 0px' }}>
                 <span className="step-number">1</span>
            On Display Style, Click the <strong>Hidden Lines Visible</strong> <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />

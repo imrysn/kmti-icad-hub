@@ -1196,7 +1196,7 @@ export const SOLIDWORKS_2D_OPERATION_LESSONS: Lesson[] = [
     title: 'Add Dimensions and Notes', 
     content: ['Dimensioning', 'Dimensioning Hole', 'Dimensioning Chamfer', 'Adding Notes'],
     children: [
-      { id: 'sw-2d-add-dimension-notes-base', title: 'Add Dimensions and Notes', content: ['Dimensioning'] },
+      { id: 'sw-2d-add-dimension-notes-base', title: 'Dimensioning', content: ['Dimensioning'] },
       { id: 'sw-2d-dimensioning-hole', title: 'Dimensioning Hole', content: ['Dimensioning Hole'] },
       { id: 'sw-2d-dimensioning-chamfer', title: 'Dimensioning Chamfer', content: ['Dimensioning Chamfer'] },
       { id: 'sw-2d-adding-notes', title: 'Adding Notes', content: ['Adding Notes'] }

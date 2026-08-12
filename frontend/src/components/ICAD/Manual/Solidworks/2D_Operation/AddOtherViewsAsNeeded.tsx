@@ -138,7 +138,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                             <img src={sectionView1Img} alt="Property Manager Section 1" className="software-screenshot" style={{ width: '350px' }} />
                                         </div>
                                         <div style={{ flex: '1 1 auto', minWidth: '400px' }}>
-                                            <img src={sectionView2Img} alt="Property Manager Section 2" className="software-screenshot screenshot-wide" style={{ width: '100%', maxWidth: '550px' }} />
+                                            <img src={sectionView2Img} alt="Property Manager Section 2" className="software-screenshot screenshot-wide" style={{ width: '100%', height:'573px' }} />
                                              </div>
                                             <div className="instruction-box" style={{ marginTop: '2rem', padding: 20 }}>
                                                 <div>
