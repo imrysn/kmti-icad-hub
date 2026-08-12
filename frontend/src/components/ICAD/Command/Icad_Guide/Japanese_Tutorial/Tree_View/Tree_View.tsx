@@ -7,9 +7,6 @@ import Tree_View from '../../../../../../assets/Commands/Japanese_Tutorial/Tree_
 
 const SPOTLIGHTS = [...MENU_BAR_SPOTLIGHTS, ...TREE_SPOTLIGHTS];
 
-// Sectioned reference list — one collapsible dropdown per source (Menu Bar,
-// Tree View), each item's index offset by where its group starts in the
-// combined SPOTLIGHTS array above so onSelectStep still lands correctly.
 const REFERENCE_SECTIONS = [
     {
         title: "MENU BAR GUIDE",
@@ -23,8 +20,20 @@ const REFERENCE_SECTIONS = [
     }
 ];
 
-// Recursive dropdown that supports nested `children` — hovering an item
-// with children flies out a submenu to its right, native-menu style.
+// Group border boxes — fully independent of SPOTLIGHTS button coordinates.
+// Adjust these x/y/w/h values directly (% of the image container, same
+// coordinate space as normalPos/fullscreenPos) to reposition or resize
+// either pink border. Changing a button's position elsewhere will NOT
+// move these, and changing these will NOT move any button.
+const MENU_BAR_BORDER = {
+    normal: { x: 0, y: 1.5, w: 25, h: 2.8 },
+    fullscreen: { x: 0, y: 1.5, w: 25, h: 2.8 },
+};
+const TREE_VIEW_BORDER = {
+    normal: { x: 6.9, y: 14.5, w: 12.8, h: 41 },
+    fullscreen: { x: 7, y: 14.5, w: 12.6, h: 80.5 },
+};
+
 function DropdownMenu({ items }: { items: MenuItem[] }) {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -51,6 +60,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
 
                 const hasChildren = !!(item.children && item.children.length > 0);
                 const isHovered = hoveredIndex === index;
+                const isDisabled = !!item.disabled;
 
                 return (
                     <li
@@ -63,9 +73,9 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                             cursor: "default",
                             position: "relative",
                             backgroundColor: isHovered ? "rgba(0, 120, 215, 0.1)" : "transparent",
-                            color: isHovered ? "#000" : "#333",
+                            color: isDisabled ? "#a0a0a0" : isHovered ? "#000" : "#333",
                         }}
-                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseEnter={() => !isDisabled && setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                     >
                         <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -110,7 +120,7 @@ function DropdownMenu({ items }: { items: MenuItem[] }) {
                     </li>
                 );
             })}
-        </ul>
+        </ul >
     );
 }
 
@@ -119,27 +129,13 @@ function Tree_View_Japanese_Tutorial() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
 
-    // Right-click context menu: which item's menu is open, and where the
-    // cursor was when it was triggered (position is a % of the container,
-    // same coordinate space as everything else, so it scales/repositions
-    // correctly between normal and fullscreen).
     const [contextMenu, setContextMenu] = useState<{ index: number; x: number; y: number } | null>(null);
 
-    // Automation states
     const [cursorPos, setCursorPos] = useState<{ x: number, y: number } | null>(null);
     const [hoveredSpotIndex, setHoveredSpotIndex] = useState<number | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // NOTE: isFullscreen is a CSS-driven toggle (position: fixed, 100vw/100vh)
-    // rather than the native browser Fullscreen API — so the address bar,
-    // tabs, and OS taskbar all stay visible instead of the page taking over
-    // the whole monitor. It's portaled to document.body (see the return
-    // statement below) so it escapes any ancestor stacking context — e.g.
-    // the app's own fixed header — and truly covers the entire viewport,
-    // header included.
-
-    // Handle automated sequence: walk the cursor through each spotlight, holding the highlight briefly on each
     useEffect(() => {
         let timeout: NodeJS.Timeout;
 
@@ -157,7 +153,6 @@ function Tree_View_Japanese_Tutorial() {
 
             if (isPlaying) {
                 setContextMenu(null);
-                // Wait 0.5s for cursor to move, hold the highlight for 2s, then advance
                 timeout = setTimeout(() => {
                     timeout = setTimeout(() => {
                         setStepIndex(prev => prev + 1);
@@ -209,6 +204,9 @@ function Tree_View_Japanese_Tutorial() {
         setContextMenu(null);
     }
 
+    const menuBarPos = isFullscreen ? MENU_BAR_BORDER.fullscreen : MENU_BAR_BORDER.normal;
+    const treeViewPos = isFullscreen ? TREE_VIEW_BORDER.fullscreen : TREE_VIEW_BORDER.normal;
+
     const imageContainerMarkup = (
         <div
             ref={containerRef}
@@ -259,12 +257,37 @@ function Tree_View_Japanese_Tutorial() {
                     style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "fill", // stretch to edges perfectly so coordinates match
+                        objectFit: "fill",
                         outline: "none"
                     }}
                 />
 
-                {/* Render ALL label invisible buttons (Menu Bar + Tree View) so they can be manually clicked anytime */}
+                {/* One static pink border wrapping the Menu Bar strip, and one wrapping
+                    the Tree View panel — coordinates come from MENU_BAR_BORDER /
+                    TREE_VIEW_BORDER above, fully independent of button positions. */}
+                <div style={{
+                    position: "absolute",
+                    left: `${menuBarPos.x}%`,
+                    top: `${menuBarPos.y}%`,
+                    width: `${menuBarPos.w}%`,
+                    height: `${menuBarPos.h}%`,
+                    border: "2px solid #DD4DFA",
+                    boxSizing: "border-box",
+                    pointerEvents: "none",
+                    zIndex: 15,
+                }} />
+                <div style={{
+                    position: "absolute",
+                    left: `${treeViewPos.x}%`,
+                    top: `${treeViewPos.y}%`,
+                    width: `${treeViewPos.w}%`,
+                    height: `${treeViewPos.h}%`,
+                    border: "2px solid #DD4DFA",
+                    boxSizing: "border-box",
+                    pointerEvents: "none",
+                    zIndex: 15,
+                }} />
+
                 {SPOTLIGHTS.map((spot, i) => {
                     const pos = isFullscreen ? spot.fullscreenPos : spot.normalPos;
                     const isActive = stepIndex === i;
@@ -272,6 +295,7 @@ function Tree_View_Japanese_Tutorial() {
                     const isHoverOpen = hoveredSpotIndex === i;
                     const showMenu = (isActive || isContextActive);
                     const menuItems = spot.menuItems || spot.contextMenuItems;
+                    const isMenuBarItem = i < MENU_BAR_SPOTLIGHTS.length; // gates tooltip label + dropdown side
 
                     return (
                         <div key={spot.label}>
@@ -279,11 +303,11 @@ function Tree_View_Japanese_Tutorial() {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsPlaying(false);
-                                    setContextMenu(null); // left-click always closes any open right-click menu
+                                    setContextMenu(null);
                                     setStepIndex(i);
                                 }}
                                 onContextMenu={(e) => {
-                                    e.preventDefault(); // suppress the browser's native right-click menu
+                                    e.preventDefault();
                                     e.stopPropagation();
                                     setIsPlaying(false);
 
@@ -318,8 +342,8 @@ function Tree_View_Japanese_Tutorial() {
                                 }}
                             />
 
-                            {/* Instant black label tooltip shown on the right side of the spotlight button */}
-                            {isHoverOpen && (
+                            {/* Tooltip label — only rendered for Menu Bar items, removed for Tree View */}
+                            {isHoverOpen && isMenuBarItem && (
                                 <div
                                     style={{
                                         position: "absolute",
@@ -343,24 +367,50 @@ function Tree_View_Japanese_Tutorial() {
                                 </div>
                             )}
 
-                            {/* Menu — appears for active step, right-clicked position, or hover */}
                             {showMenu && menuItems && menuItems.length > 0 && (
                                 <div
                                     onClick={(e) => e.stopPropagation()}
                                     onContextMenu={(e) => e.preventDefault()}
                                     onMouseEnter={() => setHoveredSpotIndex(i)}
                                     onMouseLeave={() => setHoveredSpotIndex(null)}
-                                    style={{
-                                        position: "absolute",
-                                        left: isContextActive && contextMenu ? `${contextMenu.x}%` : `${pos.x}%`,
-                                        top: isContextActive && contextMenu ? `${contextMenu.y}%` : `${pos.y + pos.h}%`,
-                                        marginTop: "2px",
-                                        zIndex: 60,
-                                        pointerEvents: "auto",
-                                        backgroundColor: "#f2f2f2",
-                                        border: "1px solid #a0a0a0",
-                                        boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
-                                    }}
+                                    style={
+                                        isContextActive && contextMenu
+                                            ? {
+                                                position: "absolute",
+                                                left: `${contextMenu.x}%`,
+                                                top: `${contextMenu.y}%`,
+                                                zIndex: 60,
+                                                pointerEvents: "auto",
+                                                backgroundColor: "#f2f2f2",
+                                                border: "1px solid #a0a0a0",
+                                                boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                            }
+                                            : isMenuBarItem
+                                                ? {
+                                                    // Menu Bar: dropdown appears below the item
+                                                    position: "absolute",
+                                                    left: `${pos.x}%`,
+                                                    top: `${pos.y + pos.h}%`,
+                                                    marginTop: "-2px",
+                                                    zIndex: 60,
+                                                    pointerEvents: "auto",
+                                                    backgroundColor: "#f2f2f2",
+                                                    border: "1px solid #a0a0a0",
+                                                    boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                                }
+                                                : {
+                                                    // Tree View: dropdown appears to the right of the item
+                                                    position: "absolute",
+                                                    left: `${pos.x + pos.w}%`,
+                                                    top: `${pos.y}%`,
+                                                    marginLeft: "-2px",
+                                                    zIndex: 60,
+                                                    pointerEvents: "auto",
+                                                    backgroundColor: "#f2f2f2",
+                                                    border: "1px solid #a0a0a0",
+                                                    boxShadow: "2px 2px 5px rgba(0,0,0,0.2)",
+                                                }
+                                    }
                                 >
                                     <DropdownMenu items={menuItems} />
                                 </div>
@@ -369,7 +419,6 @@ function Tree_View_Japanese_Tutorial() {
                     );
                 })}
 
-                {/* Animated Cursor for the sequence */}
                 {cursorPos && (
                     <svg
                         width="24"

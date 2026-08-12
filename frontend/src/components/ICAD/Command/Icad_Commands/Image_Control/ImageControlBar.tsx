@@ -328,7 +328,7 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                                     background: "none",
                                     backgroundColor: "transparent",
                                     border: "none",
-                                    padding: 0,
+                                    padding: 9,
                                     cursor: "default",
                                     fontSize: "11px",
                                     fontWeight: "700",

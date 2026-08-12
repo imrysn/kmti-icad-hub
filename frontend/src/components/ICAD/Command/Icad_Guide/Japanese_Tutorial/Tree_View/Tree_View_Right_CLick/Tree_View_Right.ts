@@ -4,6 +4,7 @@ export interface MenuItem {
     hasSubmenu?: boolean;
     isDivider?: boolean;
     children?: MenuItem[];
+    disabled?: boolean;
 }
 
 export interface PositionConfig {
@@ -48,7 +49,7 @@ export const LD11016U01_CONTEXT_ITEMS: MenuItem[] = [
 
 
 export const LD11113N01_CONTEXT_ITEMS: MenuItem[] = [
-    { label: "Select (S)" },
+    { label: "Select (S)", disabled: true },
     { label: "Confirm (U)" },
     { label: " ", isDivider: true },
     { label: "Show (V)" },
@@ -69,7 +70,7 @@ export const LD11113N01_CONTEXT_ITEMS: MenuItem[] = [
 ];
 
 export const LD11114N01_CONTEXT_ITEMS: MenuItem[] = [
-    { label: "Select (S)" },
+    { label: "Select (S)", disabled: true },
     { label: "Confirm (U)" },
     { label: " ", isDivider: true },
     { label: "Show (V)" },
@@ -92,7 +93,7 @@ export const LD11114N01_CONTEXT_ITEMS: MenuItem[] = [
 ];
 
 export const LD11116N01_CONTEXT_ITEMS: MenuItem[] = [
-    { label: "Select (S)" },
+    { label: "Select (S)", disabled: true },
     { label: "Confirm (U)" },
     { label: " ", isDivider: true },
     { label: "Show (V)" },
@@ -109,7 +110,7 @@ export const LD11116N01_CONTEXT_ITEMS: MenuItem[] = [
 ];
 
 export const Panel_16x192x720_ITEMS: MenuItem[] = [
-    { label: "Select (S)" },
+    { label: "Select (S)", disabled: true },
     { label: "Confirm (U)" },
     { label: " ", isDivider: true },
     { label: "Show (V)" },
@@ -130,7 +131,7 @@ export const Panel_16x192x720_ITEMS: MenuItem[] = [
 ];
 
 export const Panel_19x350x720_ITEMS: MenuItem[] = [
-    { label: "Select (S)" },
+    { label: "Select (S)", disabled: true },
     { label: "Confirm (U)" },
     { label: " ", isDivider: true },
     { label: "Show (V)" },
@@ -234,13 +235,13 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "LD11114N01",
         contextMenuItems: LD11114N01_CONTEXT_ITEMS,
-        normalPos: row(9),        // LD11114N01 — y=241
+        normalPos: row(8.8),        // LD11114N01 — y=241
         fullscreenPos: row(8.7)
     },
     {
         label: "LD11116N01",
         contextMenuItems: LD11116N01_CONTEXT_ITEMS,
-        normalPos: row(11),        // LD11116N01 — y=273
+        normalPos: row(10.8),        // LD11116N01 — y=273
         fullscreenPos: row(10.6)
     },
 ];

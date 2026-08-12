@@ -6,6 +6,7 @@ export interface MenuItem {
     hasSubmenu?: boolean;
     isDivider?: boolean;
     children?: MenuItem[];
+    disabled?: boolean;
 }
 
 export interface PositionConfig {
@@ -67,11 +68,11 @@ export const FILE_MENU_ITEMS: MenuItem[] = [
         ]
     },
     { isDivider: true, label: "" },
-    { label: "1 Open [File Path...]" },
-    { label: "2 Open [File Path...]" },
-    { label: "3 Open [File Path...]" },
-    { label: "4 Open [File Path...]" },
-    { label: "5 Open [File Path...]" },
+    { label: "1 Open [File Path...]", disabled: true },
+    { label: "2 Open [File Path...]", disabled: true },
+    { label: "3 Open [File Path...]", disabled: true },
+    { label: "4 Open [File Path...]", disabled: true },
+    { label: "5 Open [File Path...]", disabled: true },
     { isDivider: true, label: "" },
     { label: "Exit (X)" },
 ];
@@ -415,43 +416,43 @@ export const SPOTLIGHTS: SpotlightConfig[] = [
     {
         label: "File",
         menuItems: FILE_MENU_ITEMS,
-        normalPos: { x: toPctX(0), y: toPctY(25), w: toPctX(70), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(0), y: toPctY(25), w: toPctX(70), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(18), y: toPctY(25), w: toPctX(70), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(20), y: toPctY(23), w: toPctX(70), h: toPctY(26 + 5) }
     },
     {
         label: "View",
         menuItems: VIEW_MENU_ITEMS,
         normalPos: { x: toPctX(80), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(85), y: toPctY(25), w: toPctX(60), h: toPctY(26 + 5) }
+        fullscreenPos: { x: toPctX(85), y: toPctY(23), w: toPctX(60), h: toPctY(26 + 5) }
     },
     {
         label: "Information",
         menuItems: INFO_MENU_ITEMS,
         normalPos: { x: toPctX(140), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(140), y: toPctY(25), w: toPctX(81), h: toPctY(26 + 5) }
+        fullscreenPos: { x: toPctX(140), y: toPctY(23), w: toPctX(81), h: toPctY(26 + 5) }
     },
     {
         label: "Settings",
         menuItems: SETTINGS_MENU_ITEMS,
-        normalPos: { x: toPctX(210), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(215), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(212), y: toPctY(25), w: toPctX(57), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(218), y: toPctY(23), w: toPctX(57), h: toPctY(26 + 5) }
     },
     {
         label: "Tools",
         menuItems: TOOLS_MENU_ITEMS,
-        normalPos: { x: toPctX(270), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(270), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(272), y: toPctY(25), w: toPctX(63), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(272), y: toPctY(23), w: toPctX(63), h: toPctY(26 + 5) }
     },
     {
         label: "Window",
         menuItems: WINDOW_MENU_ITEMS,
-        normalPos: { x: toPctX(330), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(330), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) }
+        normalPos: { x: toPctX(332), y: toPctY(25), w: toPctX(83), h: toPctY(26 + 5) },
+        fullscreenPos: { x: toPctX(332), y: toPctY(23), w: toPctX(83), h: toPctY(26 + 5) }
     },
     {
         label: "Help",
         menuItems: HELP_MENU_ITEMS,
         normalPos: { x: toPctX(410), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) },
-        fullscreenPos: { x: toPctX(410), y: toPctY(25), w: toPctX(66), h: toPctY(26 + 5) }
+        fullscreenPos: { x: toPctX(410), y: toPctY(23), w: toPctX(66), h: toPctY(26 + 5) }
     }
 ];
