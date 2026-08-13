@@ -221,10 +221,10 @@ const RevisionCodeLesson: React.FC<RevisionCodeLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}>
+            <button className="nav-button" onClick={() => handlePrev?.()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={handleNext}>
+            <button className="nav-button next" onClick={() => handleNext?.()}>
               {nextLabel || 'Next'} <ChevronRight size={18} />
             </button>
           </div>
