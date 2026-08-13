@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Body
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Body
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import os
 import shutil
-import zipfile
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -12,15 +11,13 @@ from ..database import get_db, APP_PATH
 from sqlalchemy.orm import joinedload
 from ..models import AssessmentTask, AssessmentSubmission, AssessmentFeedback, TrainerTraineeMapping, User, Notification, TraineeSetMapping, UserActivity
 from ..schemas import (
-    AssessmentTaskResponse, AssessmentSubmissionResponse, 
-    AssessmentFeedbackResponse, AssessmentSubmissionCreate,
-    AssessmentTaskCreate, TrainerTraineeMappingResponse,
+    AssessmentTaskResponse, AssessmentSubmissionResponse,
+    TrainerTraineeMappingResponse,
     TrainerTraineeMappingCreate, TraineeSetMappingResponse,
     TraineeSetMappingCreate
 )
 from .auth import get_current_user
 from ..websocket_manager import notification_manager
-from pathlib import Path
 
 from ..services.storage_service import get_safe_path, handle_task_upload
 from ..services.assessment_service import resequence_set_task_codes
@@ -130,7 +127,8 @@ def get_assessment_tasks(
         return tasks
 
     # Get user's approved submissions
-    approved_set_numbers = db.query(AssessmentTask.set_number).join(
+    # Note: approved sets are used implicitly via mapping_dict logic below
+    db.query(AssessmentTask.set_number).join(
         AssessmentSubmission, AssessmentTask.id == AssessmentSubmission.task_id
     ).filter(
         AssessmentSubmission.user_id == current_user.id,
@@ -810,8 +808,6 @@ async def submit_task(
 
 # --- Trainer (Employee) Endpoints ---
 
-from ..models import TraineeSetMapping
-
 @router.get("/trainer/trainees/{trainee_id}/set-mappings", response_model=List[TraineeSetMappingResponse])
 def get_trainee_set_mappings(
     trainee_id: int,
@@ -1162,7 +1158,7 @@ def delete_submission(
             raise HTTPException(status_code=403, detail="You do not have permission to delete this submission.")
         
         # Store file path before deleting record
-        file_to_delete = submission.submission_file_path
+        # File path stored; soft delete only (file remains on disk)
 
         # 1. Soft Delete from Database (mark as deleted)
         submission.is_deleted = True

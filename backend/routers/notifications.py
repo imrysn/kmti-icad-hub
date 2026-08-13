@@ -1,4 +1,4 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException, Query
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import SessionLocal, get_db  # Import SessionLocal, get_db
 from ..models import User, UserActivity, TrainerTraineeMapping, Notification

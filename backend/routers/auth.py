@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog, QuizScore, UserProgress, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
+from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
 from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role

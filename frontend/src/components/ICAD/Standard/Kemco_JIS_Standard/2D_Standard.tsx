@@ -114,6 +114,9 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   const panStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
   const lastPinchDistRef = useRef<number | null>(null);
   const fsContainerRef = useRef<HTMLDivElement>(null);
+  // Refs for browse dropdowns — wheel events inside these should scroll the list, not zoom the image
+  const fsBrowseDropdownRef = useRef<HTMLDivElement>(null);
+  const normalBrowseDropdownRef = useRef<HTMLDivElement>(null);
 
   const resetZoomPan = useCallback(() => {
     setZoom(1);
@@ -152,6 +155,20 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
     el.addEventListener('wheel', handleFsWheel, { passive: false });
     return () => el.removeEventListener('wheel', handleFsWheel);
   }, [isGalleryFullscreen, handleFsWheel]);
+
+  // Attach non-passive wheel listeners to the browse dropdowns so their scroll
+  // events are stopped before reaching the fullscreen zoom handler.
+  useEffect(() => {
+    const stopProp = (e: WheelEvent) => e.stopPropagation();
+    const fsEl = fsBrowseDropdownRef.current;
+    const normEl = normalBrowseDropdownRef.current;
+    if (fsEl) fsEl.addEventListener('wheel', stopProp, { passive: false });
+    if (normEl) normEl.addEventListener('wheel', stopProp, { passive: false });
+    return () => {
+      if (fsEl) fsEl.removeEventListener('wheel', stopProp);
+      if (normEl) normEl.removeEventListener('wheel', stopProp);
+    };
+  }, [showMenu, isGalleryFullscreen]);
 
   // Mouse drag pan in fullscreen
   const handleFsMouseDown = useCallback((e: React.MouseEvent) => {
@@ -586,7 +603,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 </button>
 
                 {showMenu && (
-                  <div style={{
+                  <div ref={normalBrowseDropdownRef} style={{
                     position: "absolute",
                     bottom: "calc(100% + 10px)",
                     right: 0,
@@ -913,6 +930,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               </button>
               {showMenu && (
                 <div
+                  ref={fsBrowseDropdownRef}
                   className="fs-browse-dropdown"
                   style={{
                     position: "absolute",
@@ -920,10 +938,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     left: "50%",
                     transform: "translateX(-50%)",
                     width: "280px",
-                    background: "rgba(20, 20, 25, 0.95)",
+                    background: "var(--bg-surface, #0a0a12)",
                     border: "1px solid rgba(221,77,250,0.4)",
                     borderRadius: "14px",
-                    boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                    boxShadow: "var(--shadow-card, 0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2))",
                     zIndex: 10002,
                     maxHeight: "50vh",
                     overflowY: "auto",
@@ -932,7 +950,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                   <div style={{
                     padding: "0.65rem 1rem", fontSize: "0.65rem", fontWeight: 800,
                     letterSpacing: "0.12em", textTransform: "uppercase", color: "#DD4DFA",
-                    borderBottom: "1px solid rgba(255,255,255,0.07)", marginBottom: "0.25rem",
+                    borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.07))", marginBottom: "0.25rem",
                   }}>
                     {typeof galleryImages[galleryIndex].label === "string" ? galleryImages[galleryIndex].label : "2D Standard Reference"}
                   </div>
@@ -947,21 +965,21 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                         border: "none",
                         borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
                         padding: "0.6rem 1rem", textAlign: "left", cursor: "pointer",
-                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
+                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-muted, rgba(255,255,255,0.75))",
                         fontSize: "0.82rem", fontWeight: idx === galleryIndex ? 700 : 400,
                         display: "flex", alignItems: "center", gap: "0.65rem",
                         transition: "all 0.15s ease",
                       }}
                       onMouseEnter={(e) => {
                         if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
-                          (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                          (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover, rgba(255,255,255,0.04))";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main, #fff)";
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (idx !== galleryIndex) {
                           (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                          (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted, rgba(255,255,255,0.75))";
                         }
                       }}
                     >
@@ -970,13 +988,13 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                         style={{
                           display: "inline-flex", alignItems: "center", justifyContent: "center",
                           width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "var(--bg-hover, rgba(255,255,255,0.07))",
                           fontSize: "0.68rem", fontWeight: 800,
-                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                          color: idx === galleryIndex ? "#DD4DFA" : "var(--text-dim, rgba(255,255,255,0.4))",
                         }}>
                         {img.number}
                       </span>
-                      <span className="fs-browse-item-label" style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                      <span className="fs-browse-item-label" style={{ color: idx === galleryIndex ? "#DD4DFA" : "var(--text-main, rgba(255,255,255,0.85))", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
                         {img.label}
                       </span>
                     </button>

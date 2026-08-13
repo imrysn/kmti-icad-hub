@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 import sys
 # Set up logging

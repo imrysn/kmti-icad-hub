@@ -1,6 +1,5 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 # Load environment variables from the backend directory
 env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
@@ -11,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db, get_db_mode
-from .routers import auth, admin, lessons, quizzes, assessments
+# Routers are imported below after app and middleware are set up
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi import Request
