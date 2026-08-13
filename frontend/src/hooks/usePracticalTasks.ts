@@ -97,8 +97,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         const url = assessmentService.getDownloadUrl(task.id);
         const token = authService.getToken();
         await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: originalFilename }],
-          token
+          tasks: [{ id: task.id, url, target_relative_path: originalFilename }],
+          token: token || ''
         });
       } else {
         const blob = await assessmentService.getMasterFileBlob(task.id);
@@ -175,8 +175,8 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
         const token = authService.getToken();
         await window.electronAPI.downloadBulkFiles({
-          tasks: [{ url, target_relative_path: filename }],
-          token
+          tasks: [{ id: feedback.id || 0, url, target_relative_path: filename }],
+          token: token || ''
         });
       } else {
         const response = await api.get(`/api/v1/assessments/feedback/${feedback.id}/download`, {

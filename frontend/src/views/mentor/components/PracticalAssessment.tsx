@@ -87,7 +87,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
     const [trashModalOpen, setTrashModalOpen] = useState(false);
     const [timeRecordModalOpen, setTimeRecordModalOpen] = useState(false);
     
-    const currentUser = authService.getCurrentUser();
+    const currentUser = authService.getStoredUser();
     const userId = currentUser ? currentUser.id : 0;
     const stopwatchRefs = useRef<{ [key: number]: TaskStopwatchHandle | null }>({});
 
@@ -903,7 +903,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                                                                                                                 )}
 
                                                                                                                 {/* Reply Input Box (rendered for the last feedback item if it doesn't have a trainee reply yet) */}
-                                                                                                                {fIdx === feedbackSubmission.feedback.length - 1 && !fb.trainee_reply && (
+                                                                                                                {feedbackSubmission.feedback && fIdx === feedbackSubmission.feedback.length - 1 && !fb.trainee_reply && (
                                                                                                                     <div className="feedback-reply-input-group" style={{ width: '100%', marginTop: '0.5rem' }}>
                                                                                                                         <textarea
                                                                                                                             placeholder="Reply to trainer comment..."

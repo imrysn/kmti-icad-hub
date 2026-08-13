@@ -8,8 +8,10 @@ export interface ConfirmationModalProps {
     title: string;
     message: React.ReactNode;
     confirmText?: string;
+    confirmLabel?: string;
     cancelText?: string;
     type?: 'confirm' | 'danger' | 'info';
+    variant?: string;
     onConfirm: () => void;
     onCancel: () => void;
 }
@@ -18,17 +20,22 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     title,
     message,
-    confirmText = 'Confirm Action',
+    confirmText,
+    confirmLabel,
     cancelText = 'Cancel',
-    type = 'confirm',
+    type,
+    variant,
     onConfirm,
     onCancel
 }) => {
     if (!isOpen) return null;
 
+    const effectiveConfirmText = confirmLabel || confirmText || 'Confirm Action';
+    const effectiveType = type || (variant === 'danger' ? 'danger' : variant === 'info' ? 'info' : 'confirm');
+
     const getIcon = () => {
         const iconSize = 24;
-        switch (type) {
+        switch (effectiveType) {
             case 'danger': return <AlertTriangle size={iconSize} />;
             case 'info': return <Info size={iconSize} />;
             default: return <CheckCircle2 size={iconSize} />;
@@ -40,11 +47,11 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             isOpen={isOpen} 
             onClose={onCancel} 
             title={title} 
-            tag={`SYSTEM_REQUEST // ${type.toUpperCase()}`}
+            tag={`SYSTEM_REQUEST // ${effectiveType.toUpperCase()}`}
             size="sm"
         >
             <div className="hybrid-modal-body">
-                <div className={`hybrid-icon-wrapper ${type}`}>
+                <div className={`hybrid-icon-wrapper ${effectiveType}`}>
                     {getIcon()}
                 </div>
                 <div className="hybrid-text-wrapper">
@@ -56,8 +63,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 <button className="global-btn-secondary" onClick={onCancel}>
                     {cancelText}
                 </button>
-                <button className={`global-btn-${type === 'danger' ? 'danger' : 'primary'}`} onClick={onConfirm}>
-                    {confirmText}
+                <button className={`global-btn-${effectiveType === 'danger' ? 'danger' : 'primary'}`} onClick={onConfirm}>
+                    {effectiveConfirmText}
                 </button>
             </div>
         </Modal>
