@@ -56,9 +56,6 @@ const EditProperties: React.FC<EditPropertiesProps> = ({
 
                                 {/* Summary Information Section */}
                                 <div className="instruction-box" style={{ marginTop: '0rem' }}>
-                                    <h5 style={{ color: 'var(--text-normal)', marginBottom: '1rem', fontSize: '1.05rem' }}>
-                                        Summary Information
-                                    </h5>
                                     <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
                                         The Summary Information will appear.
                                     </p>

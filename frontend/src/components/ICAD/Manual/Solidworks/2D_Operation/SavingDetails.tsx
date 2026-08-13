@@ -51,7 +51,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                         <div className="instruction-step" style={{ marginTop: '2rem' }}>
                             <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">2</span>
-                                <span className="step-label">When the dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.</span>
+                                <span className="step-label">When this dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.</span>
                             </div>
                             <div className="step-description">
                                 <div className="image-wrapper" style={{ marginTop: '1rem' }}>

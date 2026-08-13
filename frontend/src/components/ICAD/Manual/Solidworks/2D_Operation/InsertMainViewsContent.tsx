@@ -10,19 +10,21 @@ const InsertMainViewsContent: React.FC = () => {
                 <ol style={{ paddingLeft: '1.25rem', margin: '1rem 0', color: 'var(--text-normal)', lineHeight: '2.2' }}>
 
 
+
+                  <span className="red-text" style={{ fontSize: "15px" }}>( In Lesson <strong>"Insert Components in the Part"</strong> Use No. 3.1 for inserting the part. )</span>
+
                     <div className="step-header" style={{padding:'8px 0px' }}>
                 <span className="step-number">1</span>
-                <span className="step-label">Add sketch geometry. On Display Style, Click the Hidden Lines Visible <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
+           On Display Style, Click the <strong>Hidden Lines Visible</strong> <img src={hiddenVisibleImg} alt="Hidden Lines Visible" style={{ height: '50px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
             </div>
                     
                             <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
-                <span className="step-label"> Click Use Custom Scale then set the scale to 1:2.</span>
-            </div>
-             
+              Click Use <strong>Custom Scale</strong> then set the scale to 1:2.
+             </div>
                   <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
-                <span className="step-label">  Click on the sheet to drop the part.</span>
+                 Click on the sheet to drop the part.
             </div>
              
                       <div className="step-header" style={{padding:'8px 0px'}}>

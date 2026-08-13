@@ -46,6 +46,7 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                                 <span className="step-number">1</span>
                                 <span className="step-label">In the <strong>Insert</strong> menu, under <strong>Tables</strong>, click <strong>Bill of Materials</strong>.</span>
                             </div>
+                            <img src={insertMenuImg} alt="Insert Menu Image" style={{height:'20rem', width:'30rem'}}/>
                         </div>
 
                         {/* Step 2 */}
@@ -53,15 +54,6 @@ const InsertBillOfMaterial: React.FC<InsertBillOfMaterialProps> = ({
                             <div className="step-header" style={{padding:'8px 0px'}}>
                                 <span className="step-number">2</span>
                                 <span className="step-label">Click the part/assembly drawing.</span>
-                            </div>
-                            <div className="step-description">
-                                <div className="image-wrapper" style={{ marginTop: '1rem' }}>
-                                    <img
-                                        src={insertMenuImg}
-                                        alt="Insert Menu"
-                                        className="software-screenshot screenshot-wide"
-                                    />
-                                </div>
                             </div>
                         </div>
 

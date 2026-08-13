@@ -78,7 +78,7 @@ const AddingHolesContent: React.FC = () => (
                     <span className="image-wrapper-flush">
                         <img src={checkImg} alt="Check button" style={{ height: '28px', verticalAlign: 'middle' }} />
                     </span>
-                    .
+                    
                 </span>
             </div>
         </div>

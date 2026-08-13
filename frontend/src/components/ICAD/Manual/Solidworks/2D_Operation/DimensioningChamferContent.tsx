@@ -22,17 +22,19 @@ const DimensioningChamferContent: React.FC = () => {
                     <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
                         <img src={chamferDimensionImg} alt="Chamfer Dimension" className="software-screenshot screenshot-wide" />
                     </div>
-                    <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
-                        <img src={chamferEdgeImg} alt="Chamfer Edge" className="software-screenshot" />
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginTop: '1rem' }}>
+                        <div className="image-wrapper" style={{ flexShrink: 0 }}>
+                            <img src={chamferEdgeImg} alt="Chamfer Edge" className="software-screenshot" />
+                        </div>
+                        <ol style={{ paddingLeft: '7.5rem', margin: '0', color: 'var(--text-muted)', lineHeight: '2.2', flex: 1 }}>
+                            <div>Select the chamfered edge.</div>
+                            Select one of the lead-in edges.
+                            <div></div>
+                            Place the dimension.
+                            <div>Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
+                            </div>
+                        </ol>
                     </div>
-                    <ol style={{ paddingLeft: '1.25rem', margin: '1.5rem 0 0 0',  color: 'var(--text-muted)', lineHeight: '2.2' }}>
-                      <div>  Select the chamfered edge.</div>
-                        Select one of the lead-in edges.
-                        Place the dimension.
-
-                     <div>Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />
-                     </div>
-                    </ol>
                 </div>
             </div>
         </>

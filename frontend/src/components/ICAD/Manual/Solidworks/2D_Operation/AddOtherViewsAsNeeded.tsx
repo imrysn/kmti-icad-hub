@@ -126,7 +126,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                             <div className="instruction-step">
                                 <div className="step-description">
                                     <div className="image-wrapper" style={{ marginTop: '1rem' }}>
-                                        <img src={vertical2Img} alt="Drop the view" className="software-screenshot screenshot-wide" style={{ maxWidth: '800px', width: '100%' }} />
+                                        <img src={vertical2Img} alt="Drop the view" className="software-screenshot screenshot-wide" style={{ maxWidth: '1000px', width: '100%' }} />
                                     </div>
 
                                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '2rem' }}>
@@ -138,13 +138,16 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                             <img src={sectionView1Img} alt="Property Manager Section 1" className="software-screenshot" style={{ width: '350px' }} />
                                         </div>
                                         <div style={{ flex: '1 1 auto', minWidth: '400px' }}>
-                                            <img src={sectionView2Img} alt="Property Manager Section 2" className="software-screenshot screenshot-wide" style={{ width: '100%', maxWidth: '800px' }} />
+                                            <img src={sectionView2Img} alt="Property Manager Section 2" className="software-screenshot screenshot-wide" style={{ width: '100%', height:'573px' }} />
+                                             </div>
                                             <div className="instruction-box" style={{ marginTop: '2rem', padding: 20 }}>
+                                                <div>
                                                 <p className="p-flush red-text">
-                                                    ※ Section View sets a limitation of scope of the Section View.
+                                                    <span style={{marginRight:''}}>※ Section View sets a limitation of scope of the Section View.</span>
                                                 </p>
+                                                </div>
                                             </div>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -208,15 +211,31 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                     <div className="lesson-navigation" style={{ marginTop: "3rem" }}>
                         <button
                             className="nav-button"
-                            onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            onClick={() => {
+                                if (activeTab === 'removeHatch') {
+                                    setActiveTab('sectionView');
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    if (onPrevLesson) onPrevLesson();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
                         >
                             <ChevronLeft size={18} /> Previous
                         </button>
                         <button
                             className="nav-button next"
-                            onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            onClick={() => {
+                                if (activeTab === 'sectionView') {
+                                    setActiveTab('removeHatch');
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                } else {
+                                    if (onNextLesson) onNextLesson();
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }}
                         >
-                            {nextLabel || 'Next'} <ChevronRight size={18} />
+                            {activeTab === 'sectionView' ? 'Next' : (nextLabel || 'Next')} <ChevronRight size={18} />
                         </button>
                     </div>
 

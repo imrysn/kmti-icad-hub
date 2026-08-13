@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useUI } from '../../../../context/UIContext';
-
+import { ICADCommandView } from '../../../../views/mentor/components/ICADCommandView';
 
 interface ExitCourseButtonProps {
-    onExit: () => void;
+    onExit?: (view?: typeof ICADCommandView) => void;
 }
-
 
 function useCurrentTheme(): 'light' | 'dark' {
     const getTheme = () =>
@@ -22,26 +21,36 @@ function useCurrentTheme(): 'light' | 'dark' {
     return theme;
 }
 
-
-export function useExitCourseHandler(onExit: () => void) {
+export function useExitCourseHandler(onExit?: (view?: typeof ICADCommandView) => void) {
     const { requestConfirmation } = useUI();
 
     const handleExitCourse = async () => {
-        const confirmed = await requestConfirmation({
-            title: 'SUSPEND LEARNING SESSION',
-            message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
-            confirmText: 'Suspend Session',
-            type: 'info'
-        });
-        if (confirmed) {
-            onExit();
+        try {
+            const confirmed = await requestConfirmation({
+                title: 'SUSPEND LEARNING SESSION',
+                message: 'Are you sure you want to disconnect? Your current progress has been safely synchronized. You will be returned to the module hub.',
+                confirmText: 'Suspend Session',
+                type: 'info'
+            });
+            if (confirmed) {
+                if (onExit) {
+                    onExit(ICADCommandView);
+                }
+                window.dispatchEvent(new CustomEvent('resetCourseView'));
+            }
+        } catch (err) {
+            console.error('[handleExitCourse] Confirmation failed:', err);
         }
     };
 
     return handleExitCourse;
 }
 
-function ExitCourseButton({ onExit }: ExitCourseButtonProps) {
+interface ExitCourseButtonComponentProps {
+    onExit?: (view?: typeof ICADCommandView) => void;
+}
+
+function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
     const handleExitCourse = useExitCourseHandler(onExit);
     const [isExitHovered, setIsExitHovered] = useState(false);
     const theme = useCurrentTheme();
@@ -53,36 +62,59 @@ function ExitCourseButton({ onExit }: ExitCourseButtonProps) {
             color: isExitHovered ? '#ffffffff' : '#FCA5A5',
         }
         : {
-
             background: isExitHovered ? '#cf222e' : 'rgba(252, 165, 165, 0.28)',
             border: '1px solid #FCA5A5',
             color: isExitHovered ? '#ffffffff' : '#FCA5A5',
         };
 
     return (
-        <button
-            className="exit-course-btn"
-            onClick={handleExitCourse}
-            onMouseEnter={() => setIsExitHovered(true)}
-            onMouseLeave={() => setIsExitHovered(false)}
+        <div
             style={{
-                fontFamily: 'var(--font-main)',
-                fontSize: '12.8px',
-                padding: '8px 16px',
-                letterSpacing: '0.3px',
-                borderRadius: '6px',
+                width: '100%',
+                height: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                padding: '0 20px',
                 boxSizing: 'border-box',
-                lineHeight: '1.6',
-                fontWeight: 700,
-                transition: 'background-color 0.15s ease, color 0.15s ease',
-                textAlign: 'center',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-                ...exitButtonColors,
+                position: 'relative',
             }}
         >
-            EXIT COURSE
-        </button>
+            {/* Full-width bottom border that stretches edge-to-edge across the fixed top bar */}
+            <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '100vw',
+                height: '1px',
+                backgroundColor: 'var(--border-color)',
+            }} />
+
+            <button
+                className="exit-course-btn"
+                onClick={handleExitCourse}
+                onMouseEnter={() => setIsExitHovered(true)}
+                onMouseLeave={() => setIsExitHovered(false)}
+                style={{
+                    fontFamily: 'var(--font-main)',
+                    fontSize: '12.8px',
+                    padding: '8px 16px',
+                    letterSpacing: '0.3px',
+                    borderRadius: '6px',
+                    boxSizing: 'border-box',
+                    lineHeight: '1.6',
+                    fontWeight: 700,
+                    transition: 'background-color 0.15s ease, color 0.15s ease',
+                    textAlign: 'center',
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                    ...exitButtonColors,
+                }}
+            >
+                EXIT COURSE
+            </button>
+        </div>
     );
 }
 

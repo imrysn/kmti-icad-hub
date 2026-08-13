@@ -30,7 +30,7 @@ const ProjectedViewContent: React.FC = () => {
 
             <div className="step-header" style={{ padding:'8px 0px'}}>
                 <span className="step-number">5</span>
-                <span className="step-label"> Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} />.</span>
+                <span className="step-label"> Click <img src={checkImg} alt="Check" style={{ height: '25px', verticalAlign: 'middle', display: 'inline-block', marginLeft: '4px' }} /></span>
             </div>
 
                 <div className="image-wrapper" style={{ marginTop: '0.2rem' }}>
@@ -49,7 +49,10 @@ const ProjectedViewContent: React.FC = () => {
 
                 <div className="instruction-box" style={{ marginTop: '0.5rem' }}>
                     <p className="p-flush red-text">
-                        ※ Project view until all the needed views are inserted.
+                        ※ Project view until all the needed views are inserted. 
+                        <div>
+                         <span className="red-text" style={{ fontSize: "15px" }}>(See lesson <strong>"Insert Main Views"</strong> Projected Views)</span>
+                        </div>
                     </p>
                 </div>
 

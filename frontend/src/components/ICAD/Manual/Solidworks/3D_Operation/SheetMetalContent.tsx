@@ -15,7 +15,7 @@ const SheetMetalContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
-                <span className="step-label">3D Part Modeling.</span>
+                <span className="step-label">3D Part Modeling.</span><span className="red-text" style={{ fontSize: "15px" }}>(See Lesson "3D Part Modeling" Follow Step 2 to 6)</span>
             </div>
         </div>
 
@@ -41,7 +41,7 @@ const SheetMetalContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">3</span>
-                <span className="step-label">Add sketch relation & dimensions.</span>
+                <span className="step-label">Add sketch relation & dimensions.</span><span className="red-text" style={{ fontSize: "15px" }}>(See Lesson "Sketching the Base")</span>
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
@@ -103,13 +103,24 @@ const SheetMetalContent: React.FC = () => (
             <div className="step-description">
                 <ol style={{ paddingLeft: '.80rem', margin: '0.75rem 0', color: 'var(--text-muted)', lineHeight: '2.2' }}>
                   <span>  While the Summary Information is open, double click the part then the dimensions will appear.</span>
-                    <div></div>
-                       <span> Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate). Bended plates total length cannot be linked.
-                    </span> 
-                <div></div>
-                       <span>  Input Wt/Pc Evaluated Value to Mat'l Wt Value.</span> 
+                    <div>
+                       <span> Click on the red line area, Type PL2.3, type "x", click 45, type "x342".  342 (Total Length of plate).</span>
+                      <div>
+                         <span> Bended plates total length cannot be linked.</span> 
+                         </div>
+                     </div>
+                      <div>
+                       <span className="red-text" style={{ fontSize: "15px" }}>(See Lesson<strong>  "Getting the Total Length of Bended Plate"</strong>to know how to get the Total Length of bended plate)</span>
+                  </div>
                     
-                   <span>  Click OK.</span> 
+                <div>
+                       <span>  Input Wt/Pc Evaluated Value to Mat'l Wt Value.</span> 
+                       </div>
+                       <div>
+                    <span className="red-text" style={{ fontSize: "15px" }}>(See Lesson<strong>"Getting the Mat'l Wt (Material weight) of a part"</strong> to know how to get the Material weight value)</span>
+                   </div>
+                   <div>
+                   <span>  Click OK.</span> </div>
                 </ol>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={summaryImg} alt="Summary Properties" className="software-screenshot screenshot-wide" />
@@ -122,6 +133,7 @@ const SheetMetalContent: React.FC = () => (
             <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">8</span>
                 <span className="step-label">Save part</span>
+                
             </div>
             <div className="step-description">
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>

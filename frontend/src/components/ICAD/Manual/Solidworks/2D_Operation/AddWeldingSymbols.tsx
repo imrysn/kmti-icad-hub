@@ -90,7 +90,7 @@ const AddWeldingSymbols: React.FC<AddWeldingSymbolsProps> = ({
                     <div className="instruction-step">
                         <div className="step-header" style={{padding:'8px 0px'}}>
                             <span className="step-number">4</span>
-                            <span className="step-label">Click OK.</span>
+                            <span className="step-label">Click OK</span>
                         </div>
                     </div>
 

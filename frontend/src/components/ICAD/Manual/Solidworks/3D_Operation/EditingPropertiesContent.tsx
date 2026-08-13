@@ -51,7 +51,7 @@ const EditingPropertiesContent: React.FC = () => (
 
                 <div className="instruction-box" style={{ marginTop: '1.5rem', padding: '1rem' }}>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                        <strong style={{ color: 'red' }}>MAT'L</strong> - Type of material used on part.
+                        <strong style={{ color: 'red' }}>MAT'L</strong> - Type of material used on part. <span className="red-text" style={{ fontSize: "15px" }}>(Please see Lesson "3D Part Modeling" No.4)</span>
                     </p>
                     <p className="p-flush" style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                         <strong style={{ color: 'red' }}>Wt/Pc</strong> - Finished weight of part (automatically updates)
