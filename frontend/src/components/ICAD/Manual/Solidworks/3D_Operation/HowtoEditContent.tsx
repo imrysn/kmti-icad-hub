@@ -16,8 +16,7 @@ import clickEditFeaturesImg from "../../../../../assets/Solidworks/3D_Operation/
 import newMatingImg from "../../../../../assets/Solidworks/3D_Operation/3D_New_Mating.png";
 import ConcentricImg from "../../../../../assets/Solidworks/3D_Operation/3D_Concentric.png";
 
-// Fallback if 3D_New_Mating.png doesn't exist, we'll try to let Vite complain, 
-// but normally it's safe to assume the user uploaded it since they said "image19 -> 3D_New_Mating.png".
+
 
 export const HowToEditSketchContent: React.FC = () => (
     <div style={{ padding: '1rem 0', color: 'var(--text-color)' }}>

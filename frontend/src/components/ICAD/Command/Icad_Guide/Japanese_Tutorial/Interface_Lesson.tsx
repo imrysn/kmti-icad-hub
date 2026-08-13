@@ -96,6 +96,7 @@ function Interface_Lesson({ onExit, lessonNumber = 1, totalLessons = 1 }: Interf
         backgroundColor: 'var(--bg-dark)',
         flexShrink: 0,
         zIndex: 900,
+        borderBottom: '1px solid var(--border-color)',
     };
 
     return (
