@@ -5,15 +5,17 @@ import { ImageControlBar } from '../Image_Control/ImageControlBar';
 import { SPOTLIGHTS, MenuItem } from './CommandData';
 import { ReadAloudButton } from '../../../../ReadAloudButton';
 import { useTTSContext } from '../../../../../context/TTSContext';
+import ExitCourseButton from '../../Exit_Course_Button/ExitCourseButton';
 
 const FALLBACK_NAVBAR_HEIGHT = 60;
 const TOPBAR_HEIGHT = 56;
 const STUCK_BUTTON_GAP = 20;
 const STICKY_TRIGGER_BUFFER = 24;
 
-const BORDER_COLOR = "#DD4DFA";
+const BORDER_COLOR = "#B5179E";
 
 interface Command_Menu_Japanese_TutorialProps {
+    onExit?: () => void;
     lessonNumber?: number;
     totalLessons?: number;
 }
@@ -120,7 +122,7 @@ function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: num
     );
 }
 
-function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: Command_Menu_Japanese_TutorialProps) {
+function Command_Menu_Japanese_Tutorial({ onExit, lessonNumber = 1, totalLessons = 1 }: Command_Menu_Japanese_TutorialProps) {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [stepIndex, setStepIndex] = useState(-1);
@@ -292,6 +294,21 @@ function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: 
         setStepIndex(-1);
         setCursorPos(null);
     }
+
+    const topBarStyle: React.CSSProperties = {
+        position: "fixed",
+        top: `${navbarHeight}px`,
+        left: 0,
+        right: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0.54rem 1.2rem',
+        backgroundColor: 'var(--bg-dark)',
+        flexShrink: 0,
+        zIndex: 900,
+        borderBottom: '1px solid var(--border-color)',
+    };
 
     const videoContainerMarkup = (
         <div
@@ -554,6 +571,11 @@ function Command_Menu_Japanese_Tutorial({ lessonNumber = 1, totalLessons = 1 }: 
             }
         }
         `}</style>
+
+            {/* Fixed top bar — Exit Course only, pinned just below the global navbar */}
+            <div style={topBarStyle} data-icad-topbar>
+                <ExitCourseButton onExit={() => onExit?.()} />
+            </div>
 
             {isButtonStuck && (
                 <div style={{

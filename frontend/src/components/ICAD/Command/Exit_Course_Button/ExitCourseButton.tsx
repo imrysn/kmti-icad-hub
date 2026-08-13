@@ -71,33 +71,18 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
         <div
             style={{
                 width: '100%',
-                height: '56px',
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'flex-end',
-                padding: '0 20px',
-                boxSizing: 'border-box',
-                position: 'relative',
+
             }}
         >
-            {/* Full-width bottom border that stretches edge-to-edge across the fixed top bar */}
-            <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '100vw',
-                height: '1px',
-                backgroundColor: 'var(--border-color)',
-            }} />
-
             <button
                 className="exit-course-btn"
                 onClick={handleExitCourse}
                 onMouseEnter={() => setIsExitHovered(true)}
                 onMouseLeave={() => setIsExitHovered(false)}
                 style={{
-                    fontFamily: 'var(--font-main)',
+                    fontFamily: 'Outfit, sans-serif',
                     fontSize: '12.8px',
                     padding: '8px 16px',
                     letterSpacing: '0.3px',
@@ -109,6 +94,7 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
                     textAlign: 'center',
                     flexShrink: 0,
                     whiteSpace: 'nowrap',
+                    cursor: 'pointer',
                     ...exitButtonColors,
                 }}
             >

@@ -30,7 +30,7 @@ const MENU_BAR_BORDER = {
     fullscreen: { x: 0, y: 1.5, w: 25, h: 2.8 },
 };
 const TREE_VIEW_BORDER = {
-    normal: { x: 6.9, y: 14.5, w: 12.8, h: 41 },
+    normal: { x: 6.9, y: 14.5, w: 12.8, h: 80.5 },
     fullscreen: { x: 7, y: 14.5, w: 12.6, h: 80.5 },
 };
 
@@ -271,7 +271,7 @@ function Tree_View_Japanese_Tutorial() {
                     top: `${menuBarPos.y}%`,
                     width: `${menuBarPos.w}%`,
                     height: `${menuBarPos.h}%`,
-                    border: "2px solid #DD4DFA",
+                    border: "2px solid #B5179E",
                     boxSizing: "border-box",
                     pointerEvents: "none",
                     zIndex: 15,
@@ -282,7 +282,7 @@ function Tree_View_Japanese_Tutorial() {
                     top: `${treeViewPos.y}%`,
                     width: `${treeViewPos.w}%`,
                     height: `${treeViewPos.h}%`,
-                    border: "2px solid #DD4DFA",
+                    border: "2px solid #B5179E",
                     boxSizing: "border-box",
                     pointerEvents: "none",
                     zIndex: 15,
