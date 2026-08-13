@@ -45,7 +45,7 @@ const galleryImages = [
         <table className="lesson-table" style={{ width: "100%" }}>
           <thead>
             <tr>
-              <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#F97316', borderBottom: '2px solid #DD4DFA', textAlign: "center", fontSize: "1.2rem" }}>SPCC</th>
+              <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center", fontSize: "1.2rem" }}>SPCC</th>
             </tr>
             <tr>
               <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>Thickness</th>
@@ -103,6 +103,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   const [isGalleryFullscreen, setIsGalleryFullscreen] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
+  // Fullscreen pill drag position
+  const [fsPillPos, setFsPillPos] = useState({ x: 0, y: 0 });
+  const fsPillDragRef = useRef<{ startX: number; startY: number; startPX: number; startPY: number } | null>(null);
+
   // Zoom & Pan state for fullscreen
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -132,10 +136,22 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   }, [isGalleryFullscreen]);
 
   // Mouse wheel zoom in fullscreen
-  const handleFsWheel = useCallback((e: React.WheelEvent) => {
+  // NOTE: We use a native non-passive listener (via useEffect below) so that
+  // e.preventDefault() actually stops the page from scrolling. React's synthetic
+  // onWheel handler is passive by default and cannot call preventDefault().
+  const handleFsWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
     setZoom(prev => Math.min(8, Math.max(0.5, prev - e.deltaY * 0.001)));
   }, []);
+
+  // Attach a non-passive native wheel listener to the fullscreen container
+  // so preventDefault() is honored and the page does not scroll while zooming.
+  useEffect(() => {
+    const el = fsContainerRef.current;
+    if (!el || !isGalleryFullscreen) return;
+    el.addEventListener('wheel', handleFsWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleFsWheel);
+  }, [isGalleryFullscreen, handleFsWheel]);
 
   // Mouse drag pan in fullscreen
   const handleFsMouseDown = useCallback((e: React.MouseEvent) => {
@@ -283,9 +299,43 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
     }
   };
 
+  // Fullscreen pill drag handlers
+  const handleFsPillPointerDown = (e: React.PointerEvent) => {
+    fsPillDragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startPX: fsPillPos.x,
+      startPY: fsPillPos.y,
+    };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const handleFsPillPointerMove = (e: React.PointerEvent) => {
+    if (!fsPillDragRef.current) return;
+    e.stopPropagation();
+    const dx = e.clientX - fsPillDragRef.current.startX;
+    const dy = e.clientY - fsPillDragRef.current.startY;
+    // Round to whole pixels to prevent sub-pixel blurriness on the composited pill layer
+    setFsPillPos({
+      x: Math.round(fsPillDragRef.current.startPX + dx),
+      y: Math.round(fsPillDragRef.current.startPY + dy),
+    });
+  };
+
+  const handleFsPillPointerUp = (e: React.PointerEvent) => {
+    if (fsPillDragRef.current) {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      fsPillDragRef.current = null;
+    }
+    e.stopPropagation();
+  };
+
   const toggleGalleryFullscreen = () => {
     setIsGalleryFullscreen((v) => !v);
     setNavPos({ x: 0, y: 0 });
+    setFsPillPos({ x: 0, y: 0 });
     resetZoomPan();
   };
 
@@ -677,7 +727,8 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       {isGalleryFullscreen && subLessonId === '2d-gallery' && (
         <div
           ref={fsContainerRef}
-          onWheel={handleFsWheel}
+          className="gallery-fullscreen-overlay"
+          /* wheel handled by native non-passive listener in useEffect */
           onMouseDown={handleFsMouseDown}
           onMouseMove={handleFsMouseMove}
           onMouseUp={handleFsMouseUp}
@@ -689,7 +740,6 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
             position: "fixed",
             inset: 0,
             zIndex: 9999,
-            background: "rgba(5, 5, 12, 0.97)",
             backdropFilter: "blur(18px)",
             display: "flex",
             alignItems: "center",
@@ -708,8 +758,8 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              maxWidth: "90vw",
-              maxHeight: "90vh",
+              maxWidth: "98vw",
+              maxHeight: "80vh",
             }}
           >
             {galleryImages[galleryIndex].content ? (
@@ -720,8 +770,8 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 alt={galleryImages[galleryIndex].alt}
                 draggable={false}
                 style={{
-                  maxWidth: "90vw",
-                  maxHeight: "90vh",
+                  maxWidth: "98vw",
+                  maxHeight: "80vh",
                   objectFit: "contain",
                   pointerEvents: "none",
                   borderRadius: "4px",
@@ -731,7 +781,9 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
           </div>
 
           {/* Title overlay (top-center) */}
-          <div style={{
+          <div 
+            className="gallery-fullscreen-title-container"
+            style={{
             position: "absolute",
             top: "1.2rem",
             left: "50%",
@@ -739,6 +791,10 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
             textAlign: "center",
             pointerEvents: "none",
             zIndex: 10001,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}>
             <span style={{
               display: "block",
@@ -751,10 +807,11 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
             }}>
               {galleryImages[galleryIndex].number} of {galleryImages.length}
             </span>
-            <span style={{
+            <span 
+              className="gallery-fullscreen-title"
+              style={{
               fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
               fontWeight: 800,
-              color: "#fff",
               letterSpacing: "-0.02em",
             }}>
               {galleryImages[galleryIndex].label}
@@ -762,17 +819,14 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
           </div>
 
           {/* Zoom indicator (bottom-left) */}
-          <div style={{
+          <div className="fs-zoom-badge" style={{
             position: "absolute",
             bottom: "5rem",
             left: "1.5rem",
-            background: "rgba(20,20,25,0.85)",
             backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "20px",
             padding: "5px 14px",
             fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.6)",
             fontWeight: 600,
             letterSpacing: "0.04em",
             pointerEvents: "none",
@@ -784,18 +838,16 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
           {/* Reset zoom button */}
           {zoom !== 1 && (
             <button
+              className="fs-reset-btn"
               onClick={(e) => { e.stopPropagation(); resetZoomPan(); }}
               style={{
                 position: "absolute",
                 bottom: "5rem",
                 left: "5.5rem",
-                background: "rgba(20,20,25,0.85)",
                 backdropFilter: "blur(8px)",
-                border: "1px solid rgba(221,77,250,0.4)",
                 borderRadius: "20px",
                 padding: "5px 14px",
                 fontSize: "0.75rem",
-                color: "#DD4DFA",
                 fontWeight: 600,
                 cursor: "pointer",
                 zIndex: 10001,
@@ -808,32 +860,46 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
           {/* Fullscreen control pill */}
           <div
+            className="fs-control-pill"
+            onMouseDown={(e) => e.stopPropagation()}
+            onPointerMove={handleFsPillPointerMove}
+            onPointerUp={handleFsPillPointerUp}
+            onPointerCancel={handleFsPillPointerUp}
             style={{
               position: "absolute",
               bottom: "1.5rem",
               left: "50%",
-              transform: "translateX(-50%)",
+              transform: `translate(calc(-50% + ${fsPillPos.x}px), ${fsPillPos.y}px)`,
               display: "flex",
               alignItems: "center",
               gap: "10px",
               background: "rgba(20, 20, 25, 0.95)",
-              backdropFilter: "blur(10px)",
               borderRadius: "40px",
               padding: "8px 16px",
               border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.5), 0 0 30px rgba(221,77,250,0.15)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
               color: "#fff",
               zIndex: 10001,
             }}
           >
+            {/* Drag handle */}
+            <div
+              onPointerDown={handleFsPillPointerDown}
+              title="Drag to move panel"
+              style={{ cursor: "grab", padding: "4px 6px", display: "flex", alignItems: "center", flexShrink: 0 }}
+            >
+              <GripHorizontal size={18} color="#666" />
+            </div>
             {/* Browse */}
             <div style={{ position: "relative" }}>
               <button
+                className={`fs-browse-btn${showMenu ? " fs-browse-btn--active" : ""}`}
                 onClick={(e) => { e.stopPropagation(); setShowMenu((v) => !v); }}
                 title="Browse images"
                 style={{
                   background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.1)",
-                  border: "none", color: "#fff",
+                  border: "none",
+                  color: "#fff",
                   padding: "6px 12px", borderRadius: "20px", fontSize: "0.8rem",
                   cursor: "pointer", transition: "all 0.2s",
                   display: "flex", alignItems: "center", gap: "6px",
@@ -846,21 +912,23 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 {showMenu ? "Close" : "Browse"}
               </button>
               {showMenu && (
-                <div style={{
-                  position: "absolute",
-                  bottom: "calc(100% + 10px)",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "280px",
-                  background: "var(--bg-surface, #0a0a12)",
-                  border: "1px solid rgba(221,77,250,0.4)",
-                  borderRadius: "14px",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
-                  zIndex: 10002,
-                  maxHeight: "50vh",
-                  overflowY: "auto",
-                  padding: "0.5rem 0",
-                }}>
+                <div
+                  className="fs-browse-dropdown"
+                  style={{
+                    position: "absolute",
+                    bottom: "calc(100% + 10px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "280px",
+                    background: "rgba(20, 20, 25, 0.95)",
+                    border: "1px solid rgba(221,77,250,0.4)",
+                    borderRadius: "14px",
+                    boxShadow: "0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2)",
+                    zIndex: 10002,
+                    maxHeight: "50vh",
+                    overflowY: "auto",
+                    padding: "0.5rem 0",
+                  }}>
                   <div style={{
                     padding: "0.65rem 1rem", fontSize: "0.65rem", fontWeight: 800,
                     letterSpacing: "0.12em", textTransform: "uppercase", color: "#DD4DFA",
@@ -871,6 +939,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                   {galleryImages.map((img, idx) => (
                     <button
                       key={idx}
+                      className={`fs-browse-item${idx === galleryIndex ? " fs-browse-item--active" : ""}`}
                       onClick={(e) => { e.stopPropagation(); setGalleryIndex(idx); setShowMenu(false); }}
                       style={{
                         width: "100%",
@@ -881,18 +950,33 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                         color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.75)",
                         fontSize: "0.82rem", fontWeight: idx === galleryIndex ? 700 : 400,
                         display: "flex", alignItems: "center", gap: "0.65rem",
+                        transition: "all 0.15s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (idx !== galleryIndex) {
+                          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (idx !== galleryIndex) {
+                          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                          (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.75)";
+                        }
                       }}
                     >
-                      <span style={{
-                        display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                        background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
-                        fontSize: "0.68rem", fontWeight: 800,
-                        color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
-                      }}>
+                      <span
+                        className="fs-browse-num"
+                        style={{
+                          display: "inline-flex", alignItems: "center", justifyContent: "center",
+                          width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
+                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "rgba(255,255,255,0.07)",
+                          fontSize: "0.68rem", fontWeight: 800,
+                          color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.4)",
+                        }}>
                         {img.number}
                       </span>
-                      <span style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
+                      <span className="fs-browse-item-label" style={{ color: idx === galleryIndex ? "#DD4DFA" : "rgba(255,255,255,0.85)", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
                         {img.label}
                       </span>
                     </button>
@@ -903,6 +987,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
             {/* Zoom out */}
             <button
+              className="fs-pill-btn"
               onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.max(0.5, +(prev - 0.25).toFixed(2))); }}
               title="Zoom out"
               style={{
@@ -918,6 +1003,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
             {/* Zoom in */}
             <button
+              className="fs-pill-btn"
               onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.min(8, +(prev + 0.25).toFixed(2))); }}
               title="Zoom in"
               style={{
@@ -933,6 +1019,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
             {/* Previous */}
             <button
+              className="fs-pill-btn"
               onClick={(e) => { e.stopPropagation(); handleGalleryPrev(); }}
               style={{
                 background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
@@ -946,6 +1033,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
             {/* Next */}
             <button
+              className="fs-pill-btn"
               onClick={(e) => { e.stopPropagation(); handleGalleryNext(); }}
               style={{
                 background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
@@ -959,10 +1047,11 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
             {/* Exit fullscreen */}
             <button
+              className="fs-exit-btn"
               onClick={(e) => { e.stopPropagation(); toggleGalleryFullscreen(); }}
               title="Exit Fullscreen"
               style={{
-                background: "rgba(221,77,250,0.2)", border: "1px solid rgba(221,77,250,0.4)", color: "#DD4DFA",
+                background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
                 padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
                 cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
               }}
@@ -971,21 +1060,26 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
             </button>
           </div>
 
-          {/* Hint text */}
-          <div style={{
-            position: "absolute",
-            top: "4rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontSize: "0.65rem",
-            color: "rgba(255,255,255,0.25)",
-            pointerEvents: "none",
-            letterSpacing: "0.06em",
-            whiteSpace: "nowrap",
-            zIndex: 10001,
-          }}>
-            Scroll to zoom · Drag to pan · ESC to exit
-          </div>
+          {/* Hint text — intentionally outside the overlay stacking context */}
+        </div>
+      )}
+
+      {/* Hint text rendered as a fixed sibling above the overlay (z-index > 9999) */}
+      {isGalleryFullscreen && subLessonId === '2d-gallery' && (
+        <div
+          className="gallery-fullscreen-hint"
+          style={{
+          position: "fixed",
+          top: "5.5rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontSize: "0.65rem",
+          pointerEvents: "none",
+          letterSpacing: "0.06em",
+          whiteSpace: "nowrap",
+          zIndex: 10010,
+        }}>
+          Scroll to zoom · Drag to pan · ESC to exit
         </div>
       )}
     </div>

@@ -975,3 +975,172 @@
 [data-theme='light'] .gallery-image-title {
   color: #0f172a;
 }
+
+.gallery-fullscreen-overlay {
+  background: rgba(5, 5, 12, 0.97);
+}
+[data-theme='light'] .gallery-fullscreen-overlay {
+  background: rgba(248, 250, 252, 0.97); /* slate-50 */
+}
+
+.gallery-fullscreen-title {
+  color: #fff;
+}
+[data-theme='light'] .gallery-fullscreen-title {
+  color: #0f172a;
+}
+
+.gallery-fullscreen-title-container {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+[data-theme='light'] .gallery-fullscreen-title-container {
+  text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+}
+
+.gallery-fullscreen-hint {
+  color: rgba(255, 255, 255, 0.25);
+}
+[data-theme='light'] .gallery-fullscreen-hint {
+  color: rgba(15, 23, 42, 0.35);
+}
+
+/* --- Fullscreen Control Pill --- */
+/*
+ * The ::before handles the backdrop blur in its own composited layer.
+ * This keeps the pill's text/icons on a separate crisp layer, preventing
+ * the blur filter from resampling/softening the pill's own content.
+ */
+.fs-control-pill {
+  position: relative;
+  background: rgba(20, 20, 25, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  /* Crisp text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme='light'] .fs-control-pill {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), 0 0 30px rgba(221, 77, 250, 0.12);
+}
+
+/* Pill icon buttons (zoom +/-, prev/next) */
+.fs-pill-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+}
+[data-theme='light'] .fs-pill-btn {
+  background: rgba(0, 0, 0, 0.07);
+  color: #0f172a;
+}
+[data-theme='light'] .fs-pill-btn:hover {
+  background: rgba(0, 0, 0, 0.13);
+}
+
+/* Browse button (inactive state) */
+.fs-browse-btn {
+  color: #fff;
+}
+[data-theme='light'] .fs-browse-btn {
+  color: #0f172a;
+}
+[data-theme='light'] .fs-browse-btn:not(.fs-browse-btn--active) {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Exit fullscreen button */
+.fs-exit-btn {
+  background: rgba(221, 77, 250, 0.2);
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  color: #DD4DFA;
+}
+[data-theme='light'] .fs-exit-btn {
+  background: rgba(221, 77, 250, 0.12);
+  border: 1px solid rgba(221, 77, 250, 0.5);
+  color: #a21cde;
+}
+
+/* Zoom indicator badge */
+.fs-zoom-badge {
+  background: rgba(20, 20, 25, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+[data-theme='light'] .fs-zoom-badge {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(15, 23, 42, 0.65);
+}
+
+/* Reset zoom button */
+.fs-reset-btn {
+  background: rgba(20, 20, 25, 0.85);
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  color: #DD4DFA;
+}
+[data-theme='light'] .fs-reset-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(221, 77, 250, 0.5);
+  color: #a21cde;
+}
+
+/* --- Browse Dropdown --- */
+.fs-browse-dropdown {
+  background: #0a0a12;
+  border: 1px solid rgba(221, 77, 250, 0.4);
+}
+[data-theme='light'] .fs-browse-dropdown {
+  background: #ffffff;
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18), 0 0 24px rgba(221, 77, 250, 0.15);
+}
+
+/* Browse dropdown item */
+.fs-browse-item {
+  color: rgba(255, 255, 255, 0.75);
+}
+.fs-browse-item--active {
+  color: #DD4DFA;
+}
+[data-theme='light'] .fs-browse-item {
+  color: #374151;
+}
+[data-theme='light'] .fs-browse-item--active {
+  color: #a21cde;
+}
+
+/* Browse dropdown item label */
+.fs-browse-item-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+.fs-browse-item--active .fs-browse-item-label {
+  color: #DD4DFA;
+}
+[data-theme='light'] .fs-browse-item-label {
+  color: #1e293b;
+}
+[data-theme='light'] .fs-browse-item--active .fs-browse-item-label {
+  color: #a21cde;
+}
+
+/* Browse dropdown number badge */
+.fs-browse-num {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.4);
+}
+.fs-browse-item--active .fs-browse-num {
+  background: rgba(221, 77, 250, 0.3);
+  color: #DD4DFA;
+}
+[data-theme='light'] .fs-browse-num {
+  background: rgba(0, 0, 0, 0.07);
+  color: #6b7280;
+}
+[data-theme='light'] .fs-browse-item--active .fs-browse-num {
+  background: rgba(221, 77, 250, 0.18);
+  color: #a21cde;
+}
