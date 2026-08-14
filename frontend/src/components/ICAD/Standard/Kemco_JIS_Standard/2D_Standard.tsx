@@ -97,15 +97,8 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
-  const [isGalleryFullscreen, setIsGalleryFullscreen] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
-
-  // Fullscreen pill drag position
-  const [fsPillPos, setFsPillPos] = useState({ x: 0, y: 0 });
-  const fsPillDragRef = useRef<{ startX: number; startY: number; startPX: number; startPY: number } | null>(null);
 
   // Zoom & Pan state for fullscreen
   const [zoom, setZoom] = useState(1);
@@ -114,29 +107,18 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   const panStartRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
   const lastPinchDistRef = useRef<number | null>(null);
   const fsContainerRef = useRef<HTMLDivElement>(null);
-  // Refs for browse dropdowns — wheel events inside these should scroll the list, not zoom the image
+  // Ref for browse dropdown — wheel events inside these should scroll the list, not zoom the image
   const fsBrowseDropdownRef = useRef<HTMLDivElement>(null);
-  const normalBrowseDropdownRef = useRef<HTMLDivElement>(null);
 
   const resetZoomPan = useCallback(() => {
     setZoom(1);
     setPan({ x: 0, y: 0 });
   }, []);
 
-  // Reset zoom/pan when image changes or fullscreen exits
+  // Reset zoom/pan when image changes
   useEffect(() => {
     resetZoomPan();
-  }, [galleryIndex, isGalleryFullscreen, resetZoomPan]);
-
-  // ESC key exits fullscreen
-  useEffect(() => {
-    if (!isGalleryFullscreen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsGalleryFullscreen(false);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [isGalleryFullscreen]);
+  }, [galleryIndex, resetZoomPan]);
 
   // Mouse wheel zoom in fullscreen
   // NOTE: We use a native non-passive listener (via useEffect below) so that
@@ -151,24 +133,21 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   // so preventDefault() is honored and the page does not scroll while zooming.
   useEffect(() => {
     const el = fsContainerRef.current;
-    if (!el || !isGalleryFullscreen) return;
+    if (!el) return;
     el.addEventListener('wheel', handleFsWheel, { passive: false });
     return () => el.removeEventListener('wheel', handleFsWheel);
-  }, [isGalleryFullscreen, handleFsWheel]);
+  }, [handleFsWheel]);
 
   // Attach non-passive wheel listeners to the browse dropdowns so their scroll
   // events are stopped before reaching the fullscreen zoom handler.
   useEffect(() => {
     const stopProp = (e: WheelEvent) => e.stopPropagation();
     const fsEl = fsBrowseDropdownRef.current;
-    const normEl = normalBrowseDropdownRef.current;
     if (fsEl) fsEl.addEventListener('wheel', stopProp, { passive: false });
-    if (normEl) normEl.addEventListener('wheel', stopProp, { passive: false });
     return () => {
       if (fsEl) fsEl.removeEventListener('wheel', stopProp);
-      if (normEl) normEl.removeEventListener('wheel', stopProp);
     };
-  }, [showMenu, isGalleryFullscreen]);
+  }, [showMenu]);
 
   // Mouse drag pan in fullscreen
   const handleFsMouseDown = useCallback((e: React.MouseEvent) => {
@@ -264,29 +243,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
   };
 
   // Touch Swipe Gesture Handlers
-  const minSwipeDistance = 50;
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStart === null || touchEnd === null) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      handleGalleryNext();
-    } else if (isRightSwipe) {
-      handleGalleryPrev();
-    }
-  };
+  // Removed swipe navigation in favor of pinch-zoom/pan
 
   // Control bar drag handlers (Solidworks-style draggable pill)
   const handlePillPointerDown = (e: React.PointerEvent) => {
@@ -316,48 +273,13 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
     }
   };
 
-  // Fullscreen pill drag handlers
-  const handleFsPillPointerDown = (e: React.PointerEvent) => {
-    fsPillDragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      startPX: fsPillPos.x,
-      startPY: fsPillPos.y,
-    };
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
-  const handleFsPillPointerMove = (e: React.PointerEvent) => {
-    if (!fsPillDragRef.current) return;
-    e.stopPropagation();
-    const dx = e.clientX - fsPillDragRef.current.startX;
-    const dy = e.clientY - fsPillDragRef.current.startY;
-    // Round to whole pixels to prevent sub-pixel blurriness on the composited pill layer
-    setFsPillPos({
-      x: Math.round(fsPillDragRef.current.startPX + dx),
-      y: Math.round(fsPillDragRef.current.startPY + dy),
-    });
-  };
-
-  const handleFsPillPointerUp = (e: React.PointerEvent) => {
-    if (fsPillDragRef.current) {
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-      fsPillDragRef.current = null;
-    }
-    e.stopPropagation();
-  };
-
-  const toggleGalleryFullscreen = () => {
-    setIsGalleryFullscreen((v) => !v);
-    setNavPos({ x: 0, y: 0 });
-    setFsPillPos({ x: 0, y: 0 });
-    resetZoomPan();
-  };
+  // Fullscreen toggle and drag handlers removed
 
   return (
-    <div className="course-lesson-container" ref={containerRef}>
+    <div 
+      className="course-lesson-container" 
+      ref={containerRef}
+    >
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -477,9 +399,9 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
       )}
 
       {subLessonId === '2d-gallery' && (
-        <div className="gallery-section-wrapper">
+        <div className="gallery-section-wrapper" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
           {/* ── Title header: lesson count + image title (no card-header) ── */}
-          <div style={{ textAlign: "center", paddingBottom: "0.25rem" }}>
+          <div style={{ textAlign: "center", paddingBottom: "0.25rem", flexShrink: 0 }}>
             <span style={{
               display: "block",
               fontSize: "0.78rem",
@@ -505,26 +427,64 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
             </h2>
           </div>
 
-          {/* ── Pink.png background frame with gallery image ── */}
+          {/* ── The Viewer ── */}
           <div
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            ref={fsContainerRef}
+            className="gallery-viewer"
+            onMouseDown={handleFsMouseDown}
+            onMouseMove={handleFsMouseMove}
+            onMouseUp={handleFsMouseUp}
+            onMouseLeave={handleFsMouseUp}
+            onTouchStart={handleFsTouchStart}
+            onTouchMove={handleFsTouchMove}
+            onTouchEnd={handleFsTouchEnd}
             style={{
               position: "relative",
               width: "100%",
               maxWidth: "1000px",
               margin: "0 auto",
               aspectRatio: "16 / 9",
+              flexShrink: 0,
+              cursor: isPanningRef.current ? "grabbing" : "grab",
+              userSelect: "none",
             }}
           >
-            {/* Gallery image centered */}
+            {/* Inner clipping container for background and image */}
             <div style={{
               position: "absolute",
               inset: 0,
+              background: "var(--gallery-bg, rgba(0,0,0,0.2))",
+              borderRadius: "8px",
+              overflow: "hidden",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+            }}>
+              {/* Hint text at top */}
+              <div style={{
+                position: "absolute",
+                top: "1rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                fontSize: "0.7rem",
+                color: "var(--text-main, rgba(255,255,255,0.5))",
+                pointerEvents: "none",
+                letterSpacing: "0.06em",
+                zIndex: 10,
+              }}>
+                Scroll to zoom · Drag to pan
+              </div>
+
+            {/* Gallery image centered */}
+            <div style={{
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              transformOrigin: "center center",
+              transition: isPanningRef.current ? "none" : "transform 0.05s ease-out",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
             }}>
               {galleryImages[galleryIndex].content ? (
                 galleryImages[galleryIndex].content
@@ -532,19 +492,74 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 <img
                   src={galleryImages[galleryIndex].src}
                   alt={galleryImages[galleryIndex].alt}
+                  draggable={false}
                   loading="lazy"
                   style={{
                     maxWidth: "100%",
                     maxHeight: "100%",
                     objectFit: "contain",
+                    pointerEvents: "none",
                     transition: "opacity 0.25s ease",
                   }}
                 />
               )}
             </div>
+          </div>
+
+          {/* UI Overlays (not clipped by overflow: hidden) */}
+
+          {/* Zoom indicator (bottom-left) */}
+            <div className="fs-zoom-badge" style={{
+              position: "absolute",
+              bottom: "4%",
+              left: "2%",
+              backdropFilter: "blur(10px)",
+              background: "rgba(20, 20, 25, 0.6)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "#fff",
+              borderRadius: "20px",
+              padding: "5px 14px",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              letterSpacing: "0.04em",
+              pointerEvents: "none",
+              zIndex: 30,
+            }}>
+              {Math.round(zoom * 100)}%
+            </div>
+
+            {/* Reset zoom button */}
+            {zoom !== 1 && (
+              <button
+                className="fs-reset-btn"
+                onClick={(e) => { e.stopPropagation(); resetZoomPan(); }}
+                style={{
+                  position: "absolute",
+                  bottom: "4%",
+                  left: "6rem",
+                  backdropFilter: "blur(10px)",
+                  background: "rgba(20, 20, 25, 0.6)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#fff",
+                  borderRadius: "20px",
+                  padding: "5px 14px",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  zIndex: 30,
+                  transition: "all 0.2s",
+                }}
+              >
+                Reset
+              </button>
+            )}
 
             {/* ── Solidworks-style draggable dark pill control bar ── */}
             <div
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerMove={handlePillPointerMove}
+              onPointerUp={handlePillPointerUp}
+              onPointerCancel={handlePillPointerUp}
               style={{
                 position: "absolute",
                 bottom: "4%",
@@ -567,19 +582,16 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               {/* Drag handle */}
               <div
                 onPointerDown={handlePillPointerDown}
-                onPointerMove={handlePillPointerMove}
-                onPointerUp={handlePillPointerUp}
-                onPointerCancel={handlePillPointerUp}
                 title="Drag to move panel"
-                style={{ cursor: "grab", padding: "8px", marginRight: "4px", borderRadius: "4px", display: "flex" }}
+                style={{ cursor: "grab", padding: "8px", marginRight: "4px", borderRadius: "4px", display: "flex", alignItems: "center" }}
               >
                 <GripHorizontal size={20} color="#888" />
               </div>
 
-              {/* Browse button (replaces Play) */}
+              {/* Browse button */}
               <div style={{ position: "relative" }}>
                 <button
-                  onClick={() => setShowMenu((v) => !v)}
+                  onClick={(e) => { e.stopPropagation(); setShowMenu((v) => !v); }}
                   title="Browse images"
                   style={{
                     background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.1)",
@@ -603,7 +615,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 </button>
 
                 {showMenu && (
-                  <div ref={normalBrowseDropdownRef} style={{
+                  <div ref={fsBrowseDropdownRef} style={{
                     position: "absolute",
                     bottom: "calc(100% + 10px)",
                     right: 0,
@@ -632,7 +644,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                     {galleryImages.map((img, idx) => (
                       <button
                         key={idx}
-                        onClick={() => { setGalleryIndex(idx); setShowMenu(false); }}
+                        onClick={(e) => { e.stopPropagation(); setGalleryIndex(idx); setShowMenu(false); }}
                         style={{
                           width: "100%",
                           background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
@@ -680,9 +692,39 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
                 )}
               </div>
 
+              {/* Zoom out */}
+              <button
+                onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.max(0.5, +(prev - 0.25).toFixed(2))); }}
+                title="Zoom out"
+                style={{
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.9rem",
+                  cursor: "pointer", transition: "all 0.2s", fontWeight: 700,
+                  display: "flex", alignItems: "center",
+                }}
+                aria-label="Zoom out"
+              >
+                −
+              </button>
+
+              {/* Zoom in */}
+              <button
+                onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.min(8, +(prev + 0.25).toFixed(2))); }}
+                title="Zoom in"
+                style={{
+                  background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
+                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.9rem",
+                  cursor: "pointer", transition: "all 0.2s", fontWeight: 700,
+                  display: "flex", alignItems: "center",
+                }}
+                aria-label="Zoom in"
+              >
+                +
+              </button>
+
               {/* Previous */}
               <button
-                onClick={handleGalleryPrev}
+                onClick={(e) => { e.stopPropagation(); handleGalleryPrev(); }}
                 style={{
                   background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
                   padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
@@ -695,7 +737,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
 
               {/* Next */}
               <button
-                onClick={handleGalleryNext}
+                onClick={(e) => { e.stopPropagation(); handleGalleryNext(); }}
                 style={{
                   background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
                   padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
@@ -705,24 +747,11 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               >
                 <ChevronRight size={18} />
               </button>
-
-              {/* Fullscreen toggle */}
-              <button
-                onClick={toggleGalleryFullscreen}
-                title={isGalleryFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                style={{
-                  background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
-                  padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
-                  cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
-                }}
-              >
-                {isGalleryFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-              </button>
             </div>
           </div>
 
           {/* ── Bottom navigation: PREVIOUS | NEXT LESSON ── */}
-          <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0 }}>
+          <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0, flexShrink: 0 }}>
             <button
               className="nav-button"
               onClick={handlePrev}
@@ -740,366 +769,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
         </div>
       )}
 
-      {/* ── FULLSCREEN OVERLAY ── */}
-      {isGalleryFullscreen && subLessonId === '2d-gallery' && (
-        <div
-          ref={fsContainerRef}
-          className="gallery-fullscreen-overlay"
-          /* wheel handled by native non-passive listener in useEffect */
-          onMouseDown={handleFsMouseDown}
-          onMouseMove={handleFsMouseMove}
-          onMouseUp={handleFsMouseUp}
-          onMouseLeave={handleFsMouseUp}
-          onTouchStart={handleFsTouchStart}
-          onTouchMove={handleFsTouchMove}
-          onTouchEnd={handleFsTouchEnd}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            backdropFilter: "blur(18px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-            cursor: isPanningRef.current ? "grabbing" : "grab",
-            userSelect: "none",
-          }}
-        >
-          {/* Fullscreen image / content */}
-          <div
-            style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              transformOrigin: "center center",
-              transition: isPanningRef.current ? "none" : "transform 0.05s ease-out",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "98vw",
-              maxHeight: "80vh",
-            }}
-          >
-            {galleryImages[galleryIndex].content ? (
-              galleryImages[galleryIndex].content
-            ) : (
-              <img
-                src={galleryImages[galleryIndex].src}
-                alt={galleryImages[galleryIndex].alt}
-                draggable={false}
-                style={{
-                  maxWidth: "98vw",
-                  maxHeight: "80vh",
-                  objectFit: "contain",
-                  pointerEvents: "none",
-                  borderRadius: "4px",
-                }}
-              />
-            )}
-          </div>
 
-          {/* Title overlay (top-center) */}
-          <div 
-            className="gallery-fullscreen-title-container"
-            style={{
-            position: "absolute",
-            top: "1.2rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            textAlign: "center",
-            pointerEvents: "none",
-            zIndex: 10001,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <span style={{
-              display: "block",
-              fontSize: "0.7rem",
-              fontWeight: 600,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "#DD4DFA",
-              marginBottom: "0.2rem",
-            }}>
-              {galleryImages[galleryIndex].number} of {galleryImages.length}
-            </span>
-            <span 
-              className="gallery-fullscreen-title"
-              style={{
-              fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.02em",
-            }}>
-              {galleryImages[galleryIndex].label}
-            </span>
-          </div>
-
-          {/* Zoom indicator (bottom-left) */}
-          <div className="fs-zoom-badge" style={{
-            position: "absolute",
-            bottom: "5rem",
-            left: "1.5rem",
-            backdropFilter: "blur(8px)",
-            borderRadius: "20px",
-            padding: "5px 14px",
-            fontSize: "0.75rem",
-            fontWeight: 600,
-            letterSpacing: "0.04em",
-            pointerEvents: "none",
-            zIndex: 10001,
-          }}>
-            {Math.round(zoom * 100)}%
-          </div>
-
-          {/* Reset zoom button */}
-          {zoom !== 1 && (
-            <button
-              className="fs-reset-btn"
-              onClick={(e) => { e.stopPropagation(); resetZoomPan(); }}
-              style={{
-                position: "absolute",
-                bottom: "5rem",
-                left: "5.5rem",
-                backdropFilter: "blur(8px)",
-                borderRadius: "20px",
-                padding: "5px 14px",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                zIndex: 10001,
-                transition: "all 0.2s",
-              }}
-            >
-              Reset
-            </button>
-          )}
-
-          {/* Fullscreen control pill */}
-          <div
-            className="fs-control-pill"
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerMove={handleFsPillPointerMove}
-            onPointerUp={handleFsPillPointerUp}
-            onPointerCancel={handleFsPillPointerUp}
-            style={{
-              position: "absolute",
-              bottom: "1.5rem",
-              left: "50%",
-              transform: `translate(calc(-50% + ${fsPillPos.x}px), ${fsPillPos.y}px)`,
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              background: "rgba(20, 20, 25, 0.95)",
-              borderRadius: "40px",
-              padding: "8px 16px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-              color: "#fff",
-              zIndex: 10001,
-            }}
-          >
-            {/* Drag handle */}
-            <div
-              onPointerDown={handleFsPillPointerDown}
-              title="Drag to move panel"
-              style={{ cursor: "grab", padding: "4px 6px", display: "flex", alignItems: "center", flexShrink: 0 }}
-            >
-              <GripHorizontal size={18} color="#666" />
-            </div>
-            {/* Browse */}
-            <div style={{ position: "relative" }}>
-              <button
-                className={`fs-browse-btn${showMenu ? " fs-browse-btn--active" : ""}`}
-                onClick={(e) => { e.stopPropagation(); setShowMenu((v) => !v); }}
-                title="Browse images"
-                style={{
-                  background: showMenu ? "#DD4DFA" : "rgba(255,255,255,0.1)",
-                  border: "none",
-                  color: "#fff",
-                  padding: "6px 12px", borderRadius: "20px", fontSize: "0.8rem",
-                  cursor: "pointer", transition: "all 0.2s",
-                  display: "flex", alignItems: "center", gap: "6px",
-                  fontWeight: 500,
-                  boxShadow: showMenu ? "0 0 18px rgba(221,77,250,0.5)" : "none",
-                }}
-                aria-label="Browse images"
-              >
-                {showMenu ? <X size={15} /> : <LayoutGrid size={15} />}
-                {showMenu ? "Close" : "Browse"}
-              </button>
-              {showMenu && (
-                <div
-                  ref={fsBrowseDropdownRef}
-                  className="fs-browse-dropdown"
-                  style={{
-                    position: "absolute",
-                    bottom: "calc(100% + 10px)",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "280px",
-                    background: "var(--bg-surface, #0a0a12)",
-                    border: "1px solid rgba(221,77,250,0.4)",
-                    borderRadius: "14px",
-                    boxShadow: "var(--shadow-card, 0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2))",
-                    zIndex: 10002,
-                    maxHeight: "50vh",
-                    overflowY: "auto",
-                    padding: "0.5rem 0",
-                  }}>
-                  <div style={{
-                    padding: "0.65rem 1rem", fontSize: "0.65rem", fontWeight: 800,
-                    letterSpacing: "0.12em", textTransform: "uppercase", color: "#DD4DFA",
-                    borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.07))", marginBottom: "0.25rem",
-                  }}>
-                    {typeof galleryImages[galleryIndex].label === "string" ? galleryImages[galleryIndex].label : "2D Standard Reference"}
-                  </div>
-                  {galleryImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      className={`fs-browse-item${idx === galleryIndex ? " fs-browse-item--active" : ""}`}
-                      onClick={(e) => { e.stopPropagation(); setGalleryIndex(idx); setShowMenu(false); }}
-                      style={{
-                        width: "100%",
-                        background: idx === galleryIndex ? "rgba(221,77,250,0.18)" : "transparent",
-                        border: "none",
-                        borderLeft: idx === galleryIndex ? "3px solid #DD4DFA" : "3px solid transparent",
-                        padding: "0.6rem 1rem", textAlign: "left", cursor: "pointer",
-                        color: idx === galleryIndex ? "#DD4DFA" : "var(--text-muted, rgba(255,255,255,0.75))",
-                        fontSize: "0.82rem", fontWeight: idx === galleryIndex ? 700 : 400,
-                        display: "flex", alignItems: "center", gap: "0.65rem",
-                        transition: "all 0.15s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover, rgba(255,255,255,0.04))";
-                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main, #fff)";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (idx !== galleryIndex) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted, rgba(255,255,255,0.75))";
-                        }
-                      }}
-                    >
-                      <span
-                        className="fs-browse-num"
-                        style={{
-                          display: "inline-flex", alignItems: "center", justifyContent: "center",
-                          width: "22px", height: "22px", borderRadius: "6px", flexShrink: 0,
-                          background: idx === galleryIndex ? "rgba(221,77,250,0.3)" : "var(--bg-hover, rgba(255,255,255,0.07))",
-                          fontSize: "0.68rem", fontWeight: 800,
-                          color: idx === galleryIndex ? "#DD4DFA" : "var(--text-dim, rgba(255,255,255,0.4))",
-                        }}>
-                        {img.number}
-                      </span>
-                      <span className="fs-browse-item-label" style={{ color: idx === galleryIndex ? "#DD4DFA" : "var(--text-main, rgba(255,255,255,0.85))", lineHeight: 1.4, flex: 1, fontSize: "0.82rem" }}>
-                        {img.label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Zoom out */}
-            <button
-              className="fs-pill-btn"
-              onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.max(0.5, +(prev - 0.25).toFixed(2))); }}
-              title="Zoom out"
-              style={{
-                background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
-                padding: "6px 10px", borderRadius: "20px", fontSize: "0.9rem",
-                cursor: "pointer", transition: "all 0.2s", fontWeight: 700,
-                display: "flex", alignItems: "center",
-              }}
-              aria-label="Zoom out"
-            >
-              −
-            </button>
-
-            {/* Zoom in */}
-            <button
-              className="fs-pill-btn"
-              onClick={(e) => { e.stopPropagation(); setZoom(prev => Math.min(8, +(prev + 0.25).toFixed(2))); }}
-              title="Zoom in"
-              style={{
-                background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
-                padding: "6px 10px", borderRadius: "20px", fontSize: "0.9rem",
-                cursor: "pointer", transition: "all 0.2s", fontWeight: 700,
-                display: "flex", alignItems: "center",
-              }}
-              aria-label="Zoom in"
-            >
-              +
-            </button>
-
-            {/* Previous */}
-            <button
-              className="fs-pill-btn"
-              onClick={(e) => { e.stopPropagation(); handleGalleryPrev(); }}
-              style={{
-                background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
-                padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
-                cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
-              }}
-              aria-label="Previous image"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            {/* Next */}
-            <button
-              className="fs-pill-btn"
-              onClick={(e) => { e.stopPropagation(); handleGalleryNext(); }}
-              style={{
-                background: "rgba(255,255,255,0.1)", border: "none", color: "#fff",
-                padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
-                cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
-              }}
-              aria-label="Next image"
-            >
-              <ChevronRight size={18} />
-            </button>
-
-            {/* Exit fullscreen */}
-            <button
-              className="fs-exit-btn"
-              onClick={(e) => { e.stopPropagation(); toggleGalleryFullscreen(); }}
-              title="Exit Fullscreen"
-              style={{
-                background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
-                padding: "6px 10px", borderRadius: "20px", fontSize: "0.8rem",
-                cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center",
-              }}
-            >
-              <Minimize size={18} />
-            </button>
-          </div>
-
-          {/* Hint text — intentionally outside the overlay stacking context */}
-        </div>
-      )}
-
-      {/* Hint text rendered as a fixed sibling above the overlay (z-index > 9999) */}
-      {isGalleryFullscreen && subLessonId === '2d-gallery' && (
-        <div
-          className="gallery-fullscreen-hint"
-          style={{
-          position: "fixed",
-          top: "5.5rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          fontSize: "0.65rem",
-          pointerEvents: "none",
-          letterSpacing: "0.06em",
-          whiteSpace: "nowrap",
-          zIndex: 10010,
-        }}>
-          Scroll to zoom · Drag to pan · ESC to exit
-        </div>
-      )}
     </div>
   );
 };

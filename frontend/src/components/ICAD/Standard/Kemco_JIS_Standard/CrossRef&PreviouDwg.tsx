@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
+import ImageGalleryViewer from "../ImageGalleryViewer";
 
 /* Static Assets */
 import crossRefImg from "../../../../assets/Standard/Kemco_JIS_Standard/crossref_&_previousdwg.png";
@@ -18,6 +17,10 @@ const reminderSteps = [
     "Please review the Cross Ref. No. & Previous Dwg. No. reference",
 ];
 
+const images = [
+    { src: crossRefImg, label: "Cross Ref. No. & Previous Dwg. No.", alt: "Cross Reference Drawing", number: 1 }
+];
+
 const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
     onNextLesson,
     onPrevLesson,
@@ -30,7 +33,6 @@ const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
         stop,
         isSpeaking,
         currentIndex,
-        currentCharIndex,
         registerText,
     } = useLessonCore("cross-ref");
 
@@ -70,39 +72,13 @@ const CrossRefPreviousDwg: React.FC<CrossRefPreviousDwgProps> = ({
                 <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
             </div>
 
-            <div className="lesson-grid single-card">
-                <div className="lesson-card tab-content fade-in">
-
-                    {/* Step 1 */}
-                    <div className="card-header">
-                        <h4 className="section-title"> Cross Ref. No. & Previous Dwg. No. </h4>
-                    </div>
-
-                    {/* ── Cross Ref & Previous Dwg Image ── */}
-                    <div className="step-description" style={{ marginTop: "1rem", alignItems: "center" }}>
-                        <img
-                            src={crossRefImg}
-                            alt="Cross Reference Drawing"
-                            className="software-screenshot"
-                            style={{ maxWidth: "100%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                        />
-                    </div>
-
-                    {/* Page Navigation */}
-                    <div className="lesson-navigation mt-12">
-                        <button
-                            className="nav-button"
-                            onClick={handlePrev}
-                            disabled={!onPrevLesson}
-                        >
-                            <ChevronLeft size={18} /> Previous
-                        </button>
-                        <button className="nav-button next" onClick={handleNext}>
-                            {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ImageGalleryViewer
+                images={images}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                nextLabel={nextLabel}
+                prevDisabled={!onPrevLesson}
+            />
         </div>
     );
 };

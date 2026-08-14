@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
+import ImageGalleryViewer from "../ImageGalleryViewer";
 
 /* Static Assets */
 import keywayPlateImg from "../../../../assets/Standard/Kemco_JIS_Standard/Keyway_Plates&Shaft_Ends.png";
@@ -32,7 +31,6 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
         stop,
         isSpeaking,
         currentIndex,
-        currentCharIndex,
         registerText,
     } = useLessonCore("keyplate-groove");
 
@@ -68,6 +66,12 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const currentImages = activeTab === "keyplate" ? [
+        { src: keywayPlateImg, label: "Key Plate & Groove", number: 1 }
+    ] : [
+        { src: oilGrooveImg, label: "Oil Groove", number: 1 }
+    ];
+
     return (
         <div className="course-lesson-container" ref={containerRef}>
             <div className="lesson-progress-container">
@@ -90,50 +94,14 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                 </button>
             </div>
 
-            <div className="lesson-grid single-card">
-                <div className="lesson-card tab-content fade-in">
-
-                    {activeTab === "keyplate" ? (
-                        <div className="step-description" style={{ marginTop: "1rem", alignItems: "center"}}>
-                            <img
-                                src={keywayPlateImg}
-                                alt="Key Plate & Groove"
-                                className="software-screenshot"
-                                style={{ maxWidth: "80%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                            />
-                        </div>
-                    ) : (
-                        <div
-                            className={`instruction-step ${currentIndex === 1 ? "reading-active" : ""}`}
-                            data-reading-index="1"
-                            style={{ marginTop: "1rem" }}
-                        >
-                            <div className="step-description" style={{ marginTop: "0rem", alignItems: "center"}}>
-                                <img
-                                    src={oilGrooveImg}
-                                    alt="Oil Groove"
-                                    className="software-screenshot"
-                                    style={{ maxWidth: "90%", height: "auto", objectFit: "contain", borderRadius: "8px" }}
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Page Navigation */}
-                    <div className="lesson-navigation mt-12">
-                        <button
-                            className="nav-button"
-                            onClick={handlePrev}
-                            disabled={!onPrevLesson}
-                        >
-                            <ChevronLeft size={18} /> Previous
-                        </button>
-                        <button className="nav-button next" onClick={handleNext}>
-                            {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ImageGalleryViewer
+                images={currentImages}
+                showCounter={false}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                nextLabel={nextLabel}
+                prevDisabled={!onPrevLesson}
+            />
         </div>
     );
 };

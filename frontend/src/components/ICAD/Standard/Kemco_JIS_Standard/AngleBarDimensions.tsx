@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
+import ImageGalleryViewer from "../ImageGalleryViewer";
 
 /* Static Assets */
 import unequalLegImg from "../../../../assets/Standard/Kemco_JIS_Standard/angle_bar_unequal_leg.png";
@@ -32,7 +31,6 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
         stop,
         isSpeaking,
         currentIndex,
-        currentCharIndex,
         registerText,
     } = useLessonCore("angle-bar-dimensions");
 
@@ -68,6 +66,12 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const currentImages = activeTab === "unequal" ? [
+        { src: unequalLegImg, label: "Angle (unequal Leg) Standard Sizes", number: 1 }
+    ] : [
+        { src: equalLegImg, label: "Equal Angle Standard", number: 1 }
+    ];
+
     return (
         <div className="course-lesson-container" ref={containerRef}>
             <div className="lesson-progress-container">
@@ -90,100 +94,14 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
                 </button>
             </div>
 
-            <div className="lesson-grid single-card">
-                <div className="lesson-card tab-content fade-in">
-
-        {/* Section: Unequal Leg */}
-        {activeTab === "unequal" && (
-    <>
-        <div className="card-header">
-            <h4 className="section-title">Angle (unequal Leg) Standard Sizes</h4>
-        </div>
-
-        <div
-            className={`instruction-step ${
-                currentIndex === 1 ? "reading-active" : ""
-            }`}
-            data-reading-index="1"
-        >
-            <div
-                className="step-description"
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                }}
-            >
-                <img
-                    src={unequalLegImg}
-                    alt="Unequal Leg Angle Bar Dimensions"
-                    className="software-screenshot"
-                    style={{
-                        maxWidth: "70%",
-                        height: "auto",
-                        objectFit: "contain",
-                        borderRadius: "8px",
-                    }}
-                />
-            </div>
-        </div>
-    </>
-)}
-
-        {/* Section: Equal Leg */}
-        {activeTab === "equal" && (
-    <>
-        <div className="card-header">
-            <h4 className="section-title">Equal Angle Standard</h4>
-        </div>
-
-        <div
-            className={`instruction-step ${
-                currentIndex === 2 ? "reading-active" : ""
-            }`}
-            data-reading-index="2"
-        >
-            <div
-                className="step-description"
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                }}
-            >
-                <img
-                    src={equalLegImg}
-                    alt="Equal Leg Angle Bar Dimensions"
-                    className="software-screenshot"
-                    style={{
-                        maxWidth: "70%",
-                        height: "auto",
-                        objectFit: "contain",
-                        borderRadius: "8px",
-                    }}
-                />
-            </div>
-        </div>
-    </>
-)}
-
-                    {/* Page Navigation */}
-                    <div className="lesson-navigation mt-12">
-                        <button
-                            className="nav-button"
-                            onClick={handlePrev}
-                            disabled={!onPrevLesson}
-                        >
-                            <ChevronLeft size={18} /> Previous
-                        </button>
-                        <button className="nav-button next" onClick={handleNext}>
-                            {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ImageGalleryViewer
+                images={currentImages}
+                showCounter={false}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                nextLabel={nextLabel}
+                prevDisabled={!onPrevLesson}
+            />
         </div>
     );
 };

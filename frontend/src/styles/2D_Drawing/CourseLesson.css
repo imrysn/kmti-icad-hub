@@ -1143,4 +1143,13 @@
 [data-theme='light'] .fs-browse-item--active .fs-browse-num {
   background: rgba(221, 77, 250, 0.18);
   color: #a21cde;
+}
+
+/* Gallery Viewer Background */
+.gallery-viewer {
+  --gallery-bg: rgba(0,0,0,0.2);
+}
+
+[data-theme='light'] .gallery-viewer {
+  --gallery-bg: transparent;
 }

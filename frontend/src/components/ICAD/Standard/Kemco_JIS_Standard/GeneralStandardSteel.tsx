@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import React, { useEffect } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
+import ImageGalleryViewer from "../ImageGalleryViewer";
 
 /* Static Assets — Images 1, 2, 3 */
 import steelTable1Img from "../../../../assets/Standard/Kemco_JIS_Standard/steel_material_table1.png";
@@ -46,22 +45,12 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex,
     registerText,
   } = useLessonCore("kemco-general-standard-steel");
 
   useEffect(() => {
     registerText(reminderSteps, 0);
   }, [registerText]);
-
-  const [galleryIndex, setGalleryIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  // Reset gallery index when subLessonId changes
-  useEffect(() => {
-    setGalleryIndex(0);
-  }, [subLessonId]);
 
   let currentGalleryImages: { src: string; label: string; number: number; }[] = [];
   if (!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') {
@@ -72,10 +61,10 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
     ];
   } else if (subLessonId === 'general-standard-steel-flat') {
     currentGalleryImages = [
-      { src: flatBar1Img, label: "Flat Bar", number: 1 },
-      { src: flatBar2Img, label: "Flat Bar", number: 2 },
-      { src: flatBar3Img, label: "Flat Bar", number: 3 },
-      { src: flatBar4Img, label: "Flat Bar", number: 4 },
+      { src: flatBar1Img, label: "Flat Bar 1", number: 1 },
+      { src: flatBar2Img, label: "Flat Bar 2", number: 2 },
+      { src: flatBar3Img, label: "Flat Bar 3", number: 3 },
+      { src: flatBar4Img, label: "Flat Bar 4", number: 4 },
     ];
   } else if (subLessonId === 'general-standard-steel-round') {
     currentGalleryImages = [
@@ -84,40 +73,6 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
       { src: roundBar3Img, label: "Square/Hexagonal (Polished)", number: 3 },
     ];
   }
-
-  const safeGalleryIndex = galleryIndex >= currentGalleryImages.length ? 0 : galleryIndex;
-
-  const handleGalleryNext = () => {
-    setGalleryIndex((prev) => (prev + 1) % currentGalleryImages.length);
-  };
-
-  const handleGalleryPrev = () => {
-    setGalleryIndex((prev) => (prev - 1 + currentGalleryImages.length) % currentGalleryImages.length);
-  };
-
-  const minSwipeDistance = 50;
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStart === null || touchEnd === null) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      handleGalleryNext();
-    } else if (isRightSwipe) {
-      handleGalleryPrev();
-    }
-  };
 
   const tabsList = [{ id: "kemco-general-standard-steel" }];
 
@@ -151,329 +106,14 @@ const GeneralStandardSteelLesson: React.FC<GeneralStandardSteelLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <div className="lesson-grid single-card" style={{ marginTop: "0.5rem" }}>
-        <div className="lesson-card tab-content fade-in" style={{ paddingTop: "1.5rem", gap: "0rem" }}>
-
-          {(!subLessonId || subLessonId === 'general-standard-steel-main' || subLessonId === 'general-standard-steel') && (
-            <>
-
-              {/* ── Image Gallery ── */}
-              <div className="card-header">
-                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
-              </div>
-              <div
-                className="gallery-container mt-2"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                  width: "100%",
-                }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                {/* Image Frame */}
-                <div
-                  style={{
-                    width: "100%",
-                    height: "700px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <img
-                    src={currentGalleryImages[safeGalleryIndex].src}
-                    alt={currentGalleryImages[safeGalleryIndex].label}
-                    loading="lazy"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain"
-                    }}
-                  />
-                </div>
-
-                {/* Slider Controls & Indicators */}
-                {currentGalleryImages.length > 1 && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "1rem",
-                      width: "100%",
-                      marginTop: "1rem"
-                    }}
-                  >
-                    <button
-                      onClick={handleGalleryPrev}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft size={22} />
-                    </button>
-
-                    <div style={{ textAlign: "center" }}>
-                      <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                        {currentGalleryImages[safeGalleryIndex].label}
-                      </span>
-                      <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                        Image {currentGalleryImages[safeGalleryIndex].number} of {currentGalleryImages.length}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={handleGalleryNext}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Next image"
-                    >
-                      <ChevronRight size={22} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {subLessonId === 'general-standard-steel-flat' && (
-            <div className="gallery-section mt-2" style={{ width: "100%" }}>
-              {/* ── Image Gallery ── */}
-              <div className="card-header">
-                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
-              </div>
-              <div
-                className="gallery-container"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                  width: "100%",
-                }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                {/* Image Frame */}
-                <div
-                  style={{
-                    width: "200%",
-                    height: "1500px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <img
-                    src={currentGalleryImages[safeGalleryIndex].src}
-                    alt={currentGalleryImages[safeGalleryIndex].label}
-                    loading="lazy"
-                    style={{
-                      maxWidth: "200%",
-                      maxHeight: "100%",
-                      objectFit: "contain"
-                    }}
-                  />
-                </div>
-
-                {/* Slider Controls & Indicators */}
-                {currentGalleryImages.length > 1 && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "1rem",
-                      width: "100%",
-                      marginTop: "1rem"
-                    }}
-                  >
-                    <button
-                      onClick={handleGalleryPrev}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft size={22} />
-                    </button>
-
-                    <div style={{ textAlign: "center" }}>
-                      <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                        {currentGalleryImages[safeGalleryIndex].label}
-                      </span>
-                      <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                        Image {currentGalleryImages[safeGalleryIndex].number} of {currentGalleryImages.length}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={handleGalleryNext}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Next image"
-                    >
-                      <ChevronRight size={22} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {subLessonId === 'general-standard-steel-round' && (
-            <div className="gallery-section mt-2" style={{ width: "100%" }}>
-              {/* ── Image Gallery ── */}
-              <div className="card-header">
-                <h4 className="section-title" style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>{currentGalleryImages[safeGalleryIndex].label}</h4>
-              </div>
-              <div
-                className="gallery-container"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                  width: "100%",
-                }}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                {/* Image Frame */}
-                <div
-                  style={{
-                    width: "100%",
-                    height: "1000px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <img
-                    src={currentGalleryImages[safeGalleryIndex].src}
-                    alt={currentGalleryImages[safeGalleryIndex].label}
-                    loading="lazy"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain"
-                    }}
-                  />
-                </div>
-
-                {/* Slider Controls & Indicators */}
-                {currentGalleryImages.length > 1 && (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "1rem",
-                      width: "100%",
-                      marginTop: "1rem"
-                    }}
-                  >
-                    <button
-                      onClick={handleGalleryPrev}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft size={22} />
-                    </button>
-
-                    <div style={{ textAlign: "center" }}>
-                      <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-main)", display: "block" }}>
-                        {currentGalleryImages[safeGalleryIndex].label}
-                      </span>
-                      <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                        Image {currentGalleryImages[safeGalleryIndex].number} of {currentGalleryImages.length}
-                      </span>
-                    </div>
-
-                    <button
-                      onClick={handleGalleryNext}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--accent)",
-                        padding: "0.25rem",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      aria-label="Next image"
-                    >
-                      <ChevronRight size={22} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Page Navigation */}
-          <div className="lesson-navigation mt-12">
-            <button
-              className="nav-button"
-              onClick={handlePrev}
-              disabled={!onPrevLesson}
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <button className="nav-button next" onClick={handleNext}>
-              {nextLabel || "Next Lesson"} <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
-
+      <ImageGalleryViewer
+        images={currentGalleryImages}
+        showCounter={true}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        nextLabel={nextLabel}
+        prevDisabled={!onPrevLesson}
+      />
     </div>
   );
 };
