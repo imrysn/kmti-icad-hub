@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ...auth.dependencies import require_permission
 from ...database import get_db
-from ...models import AccessPlan, AuditEvent, Course, PlanEntitlement, User, UserPlanAssignment
+from ...models import AccessPlan, AssessmentTask, AuditEvent, Course, PlanEntitlement, User, UserPlanAssignment
 from ...schemas import AccessPlanCreate, AccessPlanResponse, AccessPlanUpdate, CourseResponse, PlanAssignmentCreate, PlanAssignmentResponse, PlanEntitlementInput
 from ...services.access_plan_service import serialize_plan
 
@@ -27,6 +27,15 @@ def list_access_plans(db: Session = Depends(get_db), _: User = Depends(require_p
 def list_course_resources(db: Session = Depends(get_db), _: User = Depends(require_permission("plan.read"))):
     """Course identifiers available to the entitlement editor."""
     return db.query(Course).order_by(Course.order, Course.id).all()
+
+
+@router.get("/access-plan-resources/practical-sets")
+def list_practical_set_resources(db: Session = Depends(get_db), _: User = Depends(require_permission("plan.read"))):
+    rows = db.query(AssessmentTask.assessment_type, AssessmentTask.set_number, AssessmentTask.set_name).filter(
+        (AssessmentTask.task_code != "QUOT") | (AssessmentTask.task_code.is_(None))
+    ).distinct().order_by(AssessmentTask.assessment_type, AssessmentTask.set_number).all()
+    return [{"resource_id": f"{kind or '3D'}:{number}", "assessment_type": kind or "3D", "set_number": number,
+             "name": name or f"Set {number}"} for kind, number, name in rows]
 
 @router.post("/access-plans", response_model=AccessPlanResponse, status_code=status.HTTP_201_CREATED)
 def create_access_plan(payload: AccessPlanCreate, db: Session = Depends(get_db), admin: User = Depends(require_permission("plan.manage"))):

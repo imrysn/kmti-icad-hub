@@ -21,6 +21,8 @@ from ..websocket_manager import notification_manager
 from ..services.storage_service import get_safe_path, handle_task_upload
 from ..services.assessment_service import resequence_set_task_codes
 from ..services.progress_service import calculate_all_trainee_progress
+from ..services.entitlement_service import has_practical_set_access, require_practical_task_access
+from ..services.access_control_service import get_active_role_codes, user_has_permission
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
 
@@ -167,6 +169,9 @@ def get_assessment_tasks(
     if current_user.role in ["admin", "employee"]:
         return tasks
 
+    # Plan entitlement is the outer boundary; trainer mappings can narrow it further.
+    tasks = [task for task in tasks if has_practical_set_access(db, current_user, task)]
+
     # Get user's approved submissions
     approved_set_numbers = db.query(AssessmentTask.set_number).join(
         AssessmentSubmission, AssessmentTask.id == AssessmentSubmission.task_id
@@ -208,7 +213,16 @@ def get_my_set_mappings(
 ):
     """Get explicitly unlocked set mappings for the current trainee."""
     from ..models import TraineeSetMapping
-    return db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
+    mappings = db.query(TraineeSetMapping).filter(TraineeSetMapping.trainee_id == current_user.id).all()
+    entitled = []
+    for mapping in mappings:
+        sample = db.query(AssessmentTask).filter(
+            AssessmentTask.set_number == mapping.actual_set_number,
+            AssessmentTask.assessment_type == (mapping.assessment_type or "3D"),
+        ).first()
+        if sample and has_practical_set_access(db, current_user, sample):
+            entitled.append(mapping)
+    return entitled
 
 @router.get("/my-submissions", response_model=List[AssessmentSubmissionResponse])
 def get_my_submissions(
@@ -683,6 +697,7 @@ def download_master_file(
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task or not task.master_file_path:
         raise HTTPException(status_code=404, detail="Master file not found")
+    require_practical_task_access(db, current_user, task)
 
     # Fix #5: Trainees may only download files for tasks in their assigned sets
     if current_user.role == "trainee":
@@ -727,6 +742,9 @@ async def submit_task(
     task = db.query(AssessmentTask).filter(AssessmentTask.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
+    if "learner" not in get_active_role_codes(db, current_user) or not user_has_permission(db, current_user, "submission.create_own"):
+        raise HTTPException(status_code=403, detail="Only learners may submit practical work")
+    require_practical_task_access(db, current_user, task)
 
     # Define upload directory mirroring the master structure
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""

@@ -1,11 +1,12 @@
 import { BookOpen, Check, Layers, Loader2 } from 'lucide-react';
 import React from 'react';
-import { AccessPlan, adminService, CourseResource } from '../../../services/adminService';
+import { AccessPlan, adminService, CourseResource, PracticalSetResource } from '../../../services/adminService';
 import '../../../styles/AccessPlanManagement.css';
 
 export const AccessPlanManagement: React.FC = () => {
     const [plans, setPlans] = React.useState<AccessPlan[]>([]);
     const [courses, setCourses] = React.useState<CourseResource[]>([]);
+    const [practicalSets, setPracticalSets] = React.useState<PracticalSetResource[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [savingId, setSavingId] = React.useState<number | null>(null);
     const [error, setError] = React.useState<string | null>(null);
@@ -13,8 +14,10 @@ export const AccessPlanManagement: React.FC = () => {
     const load = React.useCallback(async () => {
         try {
             setError(null);
-            const [loadedPlans, loadedCourses] = await Promise.all([adminService.getAccessPlans(), adminService.getAccessPlanCourseResources()]);
-            setPlans(loadedPlans); setCourses(loadedCourses);
+            const [loadedPlans, loadedCourses, loadedSets] = await Promise.all([
+                adminService.getAccessPlans(), adminService.getAccessPlanCourseResources(), adminService.getAccessPlanPracticalSetResources()
+            ]);
+            setPlans(loadedPlans); setCourses(loadedCourses); setPracticalSets(loadedSets);
         }
         catch { setError('Unable to load access plans.'); }
         finally { setLoading(false); }
@@ -27,6 +30,20 @@ export const AccessPlanManagement: React.FC = () => {
             const updated = await adminService.updateAccessPlan(plan.id, changes);
             setPlans((current) => current.map((item) => item.id === updated.id ? updated : item));
         } catch { setError('The access plan could not be updated.'); }
+        finally { setSavingId(null); }
+    };
+
+    const togglePracticalSet = async (plan: AccessPlan, resourceId: string, included: boolean) => {
+        setSavingId(plan.id); setError(null);
+        try {
+            const retained = plan.entitlements.filter((item) => item.resource_type !== 'practical_set')
+                .map(({ resource_type, resource_id, permission_code, limits_json }) => ({ resource_type, resource_id, permission_code, limits_json }));
+            const selected = new Set(plan.entitlements.filter((item) => item.resource_type === 'practical_set').map((item) => item.resource_id));
+            included ? selected.add(resourceId) : selected.delete(resourceId);
+            const practicalEntitlements = Array.from(selected).map((resource_id) => ({ resource_type: 'practical_set', resource_id, permission_code: 'view' }));
+            const updated = await adminService.replaceAccessPlanEntitlements(plan.id, [...retained, ...practicalEntitlements]);
+            setPlans((current) => current.map((item) => item.id === updated.id ? updated : item));
+        } catch { setError('Practical-set access could not be saved.'); }
         finally { setSavingId(null); }
     };
 
@@ -70,6 +87,16 @@ export const AccessPlanManagement: React.FC = () => {
                             checked={plan.entitlements.some((item) => item.resource_type === 'course' && item.resource_id === course.course_type)}
                             onChange={(event) => toggleCourse(plan, course.course_type, event.target.checked)} />
                         <span>{course.title}</span>
+                    </label>)}
+                </fieldset>
+                <fieldset className="access-plan-course-list" disabled={savingId === plan.id || !plan.is_active}>
+                    <legend>Included practical sets</legend>
+                    {practicalSets.length === 0 && <span className="access-plan-empty">No practical sets are available yet.</span>}
+                    {practicalSets.map((item) => <label key={item.resource_id}>
+                        <input type="checkbox"
+                            checked={plan.entitlements.some((entitlement) => entitlement.resource_type === 'practical_set' && entitlement.resource_id === item.resource_id)}
+                            onChange={(event) => togglePracticalSet(plan, item.resource_id, event.target.checked)} />
+                        <span>{item.assessment_type} · {item.name}</span>
                     </label>)}
                 </fieldset>
                 <div className="access-plan-controls">

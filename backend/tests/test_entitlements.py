@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from backend.models import AccessPlan, AuditEvent, Course, Lesson, PlanEntitlement, Quiz, UserPlanAssignment
+from backend.models import AccessPlan, AssessmentTask, AuditEvent, Course, Lesson, PlanEntitlement, Quiz, UserPlanAssignment
 from backend.services.access_control_service import sync_legacy_user_access
 from backend.services.access_plan_service import seed_access_plans
 
@@ -78,3 +78,56 @@ def test_instructor_retains_curriculum_access_without_learner_plan(client, db, e
     allowed, _, _, _ = _curriculum(db)
     headers = {"Authorization": f"Bearer {employee_token}"}
     assert client.get(f"/api/v1/courses/{allowed.id}/lessons", headers=headers).status_code == 200
+
+
+def _practical_tasks(db):
+    first = AssessmentTask(set_number=1, task_code="P1", title="Foundation Part", assessment_type="3D", order=1)
+    second = AssessmentTask(set_number=2, task_code="P1", title="Advanced Part", assessment_type="3D", order=1)
+    drawing = AssessmentTask(set_number=1, task_code="P1", title="Foundation Drawing", assessment_type="2D", order=1)
+    db.add_all([first, second, drawing]); db.commit()
+    return first, second, drawing
+
+
+def _grant_practical_set(db, user, resource_id="3D:1"):
+    seed_access_plans(db)
+    plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+    db.add(PlanEntitlement(plan_id=plan.id, resource_type="practical_set", resource_id=resource_id, permission_code="view"))
+    db.add(UserPlanAssignment(user_id=user.id, plan_id=plan.id, starts_at=datetime.utcnow() - timedelta(minutes=1), status="active", reason="test"))
+    db.commit()
+
+
+def test_practical_task_list_is_filtered_by_type_and_set(client, db, trainee_user, trainee_token):
+    first, second, drawing = _practical_tasks(db)
+    _grant_practical_set(db, trainee_user, "3D:1")
+    response = client.get("/api/v1/assessments/tasks", headers={"Authorization": f"Bearer {trainee_token}"})
+    assert response.status_code == 200
+    assert [item["id"] for item in response.json()] == [first.id]
+    assert second.id not in [item["id"] for item in response.json()]
+    assert drawing.id not in [item["id"] for item in response.json()]
+
+
+def test_practical_download_and_submission_bypass_are_denied_before_file_access(client, db, trainee_token):
+    first, _, _ = _practical_tasks(db)
+    first.master_file_path = "missing/master.dwg"; db.commit()
+    headers = {"Authorization": f"Bearer {trainee_token}"}
+    assert client.get(f"/api/v1/assessments/tasks/{first.id}/download", headers=headers).status_code == 403
+    response = client.post(
+        f"/api/v1/assessments/submit/{first.id}", headers=headers,
+        files={"file": ("attempt.dwg", b"cad")}, data={"assessment_type": "3D", "time_spent_seconds": "10"},
+    )
+    assert response.status_code == 403
+
+
+def test_instructor_can_view_practical_tasks_but_cannot_submit_as_learner(client, db, employee_token):
+    first, _, _ = _practical_tasks(db)
+    headers = {"Authorization": f"Bearer {employee_token}"}
+    assert client.get("/api/v1/assessments/tasks", headers=headers).status_code == 200
+    response = client.post(f"/api/v1/assessments/submit/{first.id}", headers=headers, files={"file": ("attempt.dwg", b"cad")})
+    assert response.status_code == 403
+
+
+def test_admin_can_list_practical_resources(client, db, admin_user, admin_token):
+    sync_legacy_user_access(db, admin_user); _practical_tasks(db); db.commit()
+    response = client.get("/api/v1/admin/access-plan-resources/practical-sets", headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 200
+    assert {item["resource_id"] for item in response.json()} == {"3D:1", "3D:2", "2D:1"}

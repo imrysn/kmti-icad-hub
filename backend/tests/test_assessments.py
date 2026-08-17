@@ -9,10 +9,11 @@ Covers:
 """
 
 import pytest
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
-from backend.models import AssessmentTask, AssessmentSubmission, TrainerTraineeMapping, TraineeSetMapping
+from backend.models import AccessPlan, AssessmentTask, AssessmentSubmission, PlanEntitlement, TrainerTraineeMapping, TraineeSetMapping, UserPlanAssignment
+from backend.services.access_plan_service import seed_access_plans
 from .conftest import auth_headers
 
 
@@ -67,7 +68,12 @@ def trainer_mapping(db, employee_user, trainee_user) -> TrainerTraineeMapping:
 class TestGetTasks:
     ENDPOINT = "/api/v1/assessments/tasks"
 
-    def test_trainee_can_get_tasks(self, client, trainee_token, seed_task):
+    def test_trainee_can_get_entitled_tasks(self, client, db, trainee_user, trainee_token, seed_task):
+        seed_access_plans(db)
+        plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+        db.add(PlanEntitlement(plan_id=plan.id, resource_type="practical_set", resource_id="3D:1", permission_code="view"))
+        db.add(UserPlanAssignment(user_id=trainee_user.id, plan_id=plan.id, starts_at=datetime.utcnow() - timedelta(minutes=1), status="active", reason="assessment test"))
+        db.commit()
         response = client.get(self.ENDPOINT, headers=auth_headers(trainee_token))
         assert response.status_code == 200
         tasks = response.json()

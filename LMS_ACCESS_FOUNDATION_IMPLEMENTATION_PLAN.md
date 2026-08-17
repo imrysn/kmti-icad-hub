@@ -820,8 +820,8 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Enforce entitlement checks on course lists/details.
 - [x] Enforce entitlement checks on lessons and media metadata.
 - [x] Enforce entitlement checks on quizzes.
-- [ ] Enforce entitlement checks on practical task lists/downloads.
-- [ ] Enforce entitlement checks on submissions and trainer services.
+- [x] Enforce entitlement checks on practical task lists/downloads.
+- [~] Enforce entitlement checks on submissions and trainer services. (New learner submissions require plan access; historical submissions remain available; trainer-service feature entitlements pending.)
 - [ ] Preserve access history when a plan changes.
 - [ ] Add scheduled expiration processing.
 - [ ] Add plan-change audit and notifications.

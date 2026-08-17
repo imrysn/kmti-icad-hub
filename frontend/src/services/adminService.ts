@@ -75,6 +75,10 @@ export interface CourseResource {
     id: number; title: string; description?: string; course_type: string; order: number;
 }
 
+export interface PracticalSetResource {
+    resource_id: string; assessment_type: string; set_number: number; name: string;
+}
+
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
     department?: string; job_title?: string; country_code?: string; reason_for_access?: string;
@@ -139,6 +143,10 @@ export const adminService = {
 
     async getAccessPlanCourseResources(): Promise<CourseResource[]> {
         return (await api.get('/admin/access-plan-resources/courses')).data;
+    },
+
+    async getAccessPlanPracticalSetResources(): Promise<PracticalSetResource[]> {
+        return (await api.get('/admin/access-plan-resources/practical-sets')).data;
     },
 
     async replaceAccessPlanEntitlements(planId: number, entitlements: Array<{ resource_type: string; resource_id: string; permission_code: string; limits_json?: string }>): Promise<AccessPlan> {

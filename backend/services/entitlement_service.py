@@ -6,7 +6,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from ..models import AccessPlan, Course, PlanEntitlement, Quiz, User, UserPlanAssignment
+from ..models import AccessPlan, AssessmentTask, Course, PlanEntitlement, Quiz, User, UserPlanAssignment
 from .access_control_service import get_active_role_codes
 
 
@@ -97,6 +97,26 @@ def require_quiz_access(db: Session, user: User, quiz: Quiz) -> None:
     if has_entitlement(db, user, "quiz", quiz.slug) or has_entitlement(db, user, "course", quiz.course_type) or is_learning_operator(db, user):
         return
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this assessment")
+
+
+def practical_set_resource_id(task: AssessmentTask) -> str:
+    return f"{task.assessment_type or '3D'}:{task.set_number}"
+
+
+def has_practical_set_access(db: Session, user: User, task: AssessmentTask) -> bool:
+    assessment_type = task.assessment_type or "3D"
+    return (
+        is_learning_operator(db, user)
+        or has_entitlement(db, user, "practical_set", practical_set_resource_id(task))
+        or has_entitlement(db, user, "practical_set", f"{assessment_type}:*")
+        or has_entitlement(db, user, "practical_set", "*")
+    )
+
+
+def require_practical_task_access(db: Session, user: User, task: AssessmentTask) -> None:
+    if has_practical_set_access(db, user, task):
+        return
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this practical assessment set")
 
 
 def serialize_effective_access(db: Session, user: User) -> dict:
