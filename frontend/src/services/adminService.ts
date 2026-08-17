@@ -79,6 +79,12 @@ export interface RegistrationApplication {
     reviewed_at?: string; internal_review_notes?: string; applicant_message?: string; version: number;
 }
 
+export interface AccountInvitation {
+    id:number; email:string; full_name:string; role_code:'learner'|'instructor'|'admin'; preferred_language:string;
+    status:string; plan_id?:number; plan_name?:string; admin_areas:string[]; expires_at:string; accepted_at?:string;
+    created_at:string; acceptance_token?:string;
+}
+
 export interface Quiz {
     id: number;
     slug: string;
@@ -101,6 +107,10 @@ export interface Question {
 }
 
 export const adminService = {
+    async getInvitations():Promise<AccountInvitation[]>{ return (await api.get('/admin/invitations')).data; },
+    async createInvitation(data:{email:string;full_name:string;role_code:string;preferred_language:string;plan_id?:number;admin_areas:string[];expires_in_days:number}):Promise<AccountInvitation>{ return (await api.post('/admin/invitations',data)).data; },
+    async resendInvitation(id:number):Promise<AccountInvitation>{ return (await api.post(`/admin/invitations/${id}/resend`)).data; },
+    async cancelInvitation(id:number):Promise<AccountInvitation>{ return (await api.post(`/admin/invitations/${id}/cancel`)).data; },
     async getRegistrationApplications(status = 'pending_approval'): Promise<RegistrationApplication[]> {
         return (await api.get('/admin/registration-applications', { params: { status } })).data;
     },

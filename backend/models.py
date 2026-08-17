@@ -296,6 +296,42 @@ class EmailOutbox(Base):
     created_at = Column(DateTime, nullable=False, default=func.now())
 
 
+class AccountInvitation(Base):
+    """Administrator-issued, expiring and single-use account invitation."""
+    __tablename__ = "account_invitations"
+    __table_args__ = (
+        CheckConstraint("status IN ('pending','accepted','expired','cancelled','superseded')", name="ck_account_invitation_status"),
+    )
+
+    id = Column(Integer, primary_key=True)
+    email_normalized = Column(String(255), nullable=False, index=True)
+    full_name = Column(String(200), nullable=False)
+    preferred_language = Column(String(10), nullable=False, default="en")
+    status = Column(String(30), nullable=False, default="pending", index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    admin_area_codes_json = Column(Text, nullable=True)
+    invited_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    accepted_at = Column(DateTime, nullable=True)
+    cancelled_at = Column(DateTime, nullable=True)
+    superseded_by_id = Column(Integer, ForeignKey("account_invitations.id"), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
+class AccountInvitationRole(Base):
+    __tablename__ = "account_invitation_roles"
+    invitation_id = Column(Integer, ForeignKey("account_invitations.id", ondelete="CASCADE"), primary_key=True)
+    role_id = Column(Integer, ForeignKey("roles.id"), primary_key=True)
+
+
+class AccountInvitationPlan(Base):
+    __tablename__ = "account_invitation_plans"
+    invitation_id = Column(Integer, ForeignKey("account_invitations.id", ondelete="CASCADE"), primary_key=True)
+    plan_id = Column(Integer, ForeignKey("access_plans.id"), nullable=False)
+    starts_at = Column(DateTime, nullable=False, default=func.now())
+    ends_at = Column(DateTime, nullable=True)
+
+
 class SystemLog(Base):
     """Stores system events for audit trail"""
     __tablename__ = "system_logs"

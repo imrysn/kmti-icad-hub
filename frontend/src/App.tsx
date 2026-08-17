@@ -19,6 +19,7 @@ import { assessmentService } from './services/assessmentService';
 import { authService } from './services/authService';
 import { LoginView } from './views/LoginView';
 import { RegistrationView } from './views/RegistrationView';
+import { InvitationAcceptanceView } from './views/InvitationAcceptanceView';
 import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
@@ -217,6 +218,7 @@ function AppContent() {
           <Routes>
             <Route path="/login" element={<LoginView />} />
             <Route path="/register" element={<RegistrationView />} />
+            <Route path="/invitation/accept" element={<InvitationAcceptanceView />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>

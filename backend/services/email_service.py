@@ -8,7 +8,7 @@ import html
 import os
 from sqlalchemy.orm import Session
 
-from ..models import AccessPlan, EmailOutbox, RegistrationApplication, User
+from ..models import AccessPlan, AccountInvitation, EmailOutbox, RegistrationApplication, User
 
 
 def queue_verification_email(db: Session, user: User, application: RegistrationApplication, token: str) -> EmailOutbox:
@@ -103,6 +103,31 @@ def queue_registration_decision_email(
         html_body=html_body,
         related_type="registration_application",
         related_id=str(application.id),
+    )
+    db.add(message)
+    return message
+
+
+def queue_invitation_email(db: Session, invitation: AccountInvitation, token: str, role_code: str, plan_name: str | None) -> EmailOutbox:
+    app_url = os.getenv("PUBLIC_APP_URL", "http://127.0.0.1:5173").rstrip("/")
+    acceptance_url = f"{app_url}/#/invitation/accept?token={token}"
+    if invitation.preferred_language == "ja":
+        subject = "KMTI Training Hub への招待"
+        heading = "KMTI Training Hub への招待"
+        detail = f"役割: {role_code}" + (f" / プラン: {plan_name}" if plan_name else "")
+        button = "招待を受け入れる"
+    else:
+        subject = "You are invited to KMTI Training Hub"
+        heading = "Your KMTI Training Hub invitation"
+        detail = f"Role: {role_code}" + (f" / Plan: {plan_name}" if plan_name else "")
+        button = "Accept invitation"
+    text_body = f"{invitation.full_name}\n\n{detail}\n{acceptance_url}\n\nThis invitation expires on {invitation.expires_at}."
+    html_body = f"<h1>{html.escape(heading)}</h1><p>{html.escape(invitation.full_name)},</p><p>{html.escape(detail)}</p><p><a href=\"{html.escape(acceptance_url, quote=True)}\">{html.escape(button)}</a></p>"
+    message = EmailOutbox(
+        message_type="invitation.created", recipient_email=invitation.email_normalized,
+        recipient_name=invitation.full_name, preferred_language=invitation.preferred_language,
+        subject=subject, text_body=text_body, html_body=html_body,
+        related_type="account_invitation", related_id=str(invitation.id),
     )
     db.add(message)
     return message

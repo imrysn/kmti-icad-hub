@@ -218,6 +218,53 @@ class RegistrationApplicationResponse(BaseModel):
     applicant_message: Optional[str] = None
     version: int
 
+
+class InvitationCreate(BaseModel):
+    email: EmailStr
+    full_name: str = Field(min_length=1, max_length=200)
+    role_code: Literal["learner", "instructor", "admin"]
+    preferred_language: Literal["en", "ja"] = "en"
+    plan_id: Optional[int] = None
+    starts_at: Optional[datetime] = None
+    ends_at: Optional[datetime] = None
+    admin_areas: List[Literal["content", "organization", "platform"]] = []
+    expires_in_days: int = Field(default=7, ge=1, le=30)
+
+
+class InvitationResponse(BaseModel):
+    id: int
+    email: str
+    full_name: str
+    role_code: str
+    preferred_language: str
+    status: str
+    plan_id: Optional[int] = None
+    plan_name: Optional[str] = None
+    admin_areas: List[str] = []
+    expires_at: datetime
+    accepted_at: Optional[datetime] = None
+    created_at: datetime
+    acceptance_token: Optional[str] = None
+
+
+class InvitationValidateResponse(BaseModel):
+    email: str
+    full_name: str
+    role_code: str
+    plan_name: Optional[str] = None
+    admin_areas: List[str] = []
+    expires_at: datetime
+
+
+class InvitationAcceptRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=500)
+    username: str = Field(min_length=2, max_length=100)
+    password: str = Field(min_length=8, max_length=128)
+    privacy_policy_version: str = Field(min_length=1, max_length=50)
+    terms_version: str = Field(min_length=1, max_length=50)
+    privacy_accepted: bool
+    terms_accepted: bool
+
 class Token(BaseModel):
     """Schema for JWT token response"""
     access_token: str

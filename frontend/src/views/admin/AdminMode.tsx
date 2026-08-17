@@ -22,6 +22,7 @@ import { UserManagement } from './components/UserManagement';
 import { UserModal } from './components/UserModal';
 import { AdminAccessDenied } from './components/AdminAccessDenied';
 import { RegistrationApprovalManagement } from './components/RegistrationApprovalManagement';
+import { InvitationManagement } from './components/InvitationManagement';
 import { AdminArea, authService, UserAccess } from '../../services/authService';
 
 export type AdminTab =
@@ -234,7 +235,7 @@ export const AdminMode: React.FC = () => {
                     {activeTab === 'knowledge-base' && <AdminComingSoon title="Knowledge-base content" description="Manage the documents used by the training hub knowledge base." available={['Upload, preview, download, delete, and re-index API foundation']} />}
                     {activeTab === 'media-translations' && <AdminComingSoon title="Media and translations" description="Manage reusable images, videos, captions, and translated course content." />}
                     {activeTab === 'registration-approvals' && <RegistrationApprovalManagement />}
-                    {activeTab === 'invitations' && <AdminComingSoon title="Invitations" description="Invite learners and instructors, assign their organization, role, and initial access plan." />}
+                    {activeTab === 'invitations' && <InvitationManagement />}
                     {activeTab === 'instructors' && <AdminComingSoon title="Instructors" description="Manage instructor profiles, course assignments, and learner responsibilities." available={['Trainer assignment support in practical training sets']} />}
                     {activeTab === 'access-plans' && <AccessPlanManagement />}
                     {activeTab === 'security' && <AdminComingSoon title="Security" description="Review administrative permissions, session policies, and account-protection settings." available={['Area-based admin permissions and protected routes']} />}

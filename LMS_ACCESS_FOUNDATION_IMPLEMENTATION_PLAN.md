@@ -743,7 +743,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Add refresh-session records.
 - [x] Add email verification tokens.
 - [ ] Add password reset tokens.
-- [ ] Add account invitations, invited roles, and invited learner-plan records.
+- [x] Add account invitations, invited roles, and invited learner-plan records.
 - [x] Add registration applications.
 - [x] Add access plans.
 - [x] Add plan entitlements.
@@ -796,17 +796,17 @@ Use this as the durable project tracker. Check an item only after implementation
 
 ### Invitation backend
 
-- [ ] Implement invitation list/detail endpoints.
-- [ ] Implement individual learner invitation.
-- [ ] Implement Instructor and permission-scoped Admin invitations.
+- [ ] Implement invitation list/detail endpoints. (List endpoint complete; dedicated detail endpoint follows.)
+- [x] Implement individual learner invitation.
+- [x] Implement Instructor and permission-scoped Admin invitations.
 - [ ] Implement CSV bulk learner invitations with dry-run validation.
 - [ ] Validate inviter permissions for every requested role.
 - [ ] Prevent Platform-area access through ordinary invitations unless the inviter has the explicit high-risk grant permission.
-- [ ] Add duplicate account/application/invitation detection.
-- [ ] Implement hashed single-use invitation tokens.
-- [ ] Implement invitation validation and atomic acceptance.
-- [ ] Implement resend/replacement behavior.
-- [ ] Implement cancellation and expiration processing.
+- [ ] Add duplicate account/application/invitation detection. (Existing accounts and pending invitations complete; pending registration cross-check follows.)
+- [x] Implement hashed single-use invitation tokens.
+- [x] Implement invitation validation and atomic acceptance.
+- [x] Implement resend/replacement behavior.
+- [x] Implement cancellation and expiration processing.
 - [ ] Implement optional second-review flag if approved.
 - [ ] Add invitation-created, sent, accepted, expired, cancelled, and superseded audit events.
 
@@ -854,10 +854,10 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Create forgot/reset password pages.
 - [ ] Add safe status-specific sign-in messages.
 - [ ] Validate mobile, tablet, and desktop layouts.
-- [ ] Create invitation acceptance route and form.
-- [ ] Show predetermined plan/role summary safely.
-- [ ] Create expired/cancelled/used/superseded invitation states.
-- [ ] Create invitation acceptance success page.
+- [x] Create invitation acceptance route and form.
+- [x] Show predetermined plan/role summary safely.
+- [x] Create expired/cancelled/used/superseded invitation states.
+- [x] Create invitation acceptance success page.
 
 ### Administration frontend
 
@@ -881,13 +881,13 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Create learner plan assignment/history interface.
 - [ ] Create upgrade/downgrade/expiration flow.
 - [ ] Create temporary override flow.
-- [ ] Create invitation-center navigation and status badge.
-- [ ] Create individual invitation form with permission-aware roles.
+- [ ] Create invitation-center navigation and status badge. (Navigation complete; pending status badge follows.)
+- [x] Create individual invitation form with permission-aware roles.
 - [ ] Add learner plan and access-date selection to invitations.
 - [ ] Create bulk learner CSV import and validation preview.
-- [ ] Create invitation list with search/status filters.
-- [ ] Create resend, cancel, and replace actions.
-- [ ] Show duplicate account/application/invitation warnings.
+- [ ] Create invitation list with search/status filters. (Invitation list complete; search and filters follow.)
+- [x] Create resend, cancel, and replace actions.
+- [x] Show duplicate account/application/invitation warnings.
 - [ ] Show invitation audit timeline.
 
 ### Learner frontend
