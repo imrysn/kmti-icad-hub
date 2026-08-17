@@ -158,47 +158,14 @@ class TestListUsers:
     def test_unauthenticated_cannot_list_users(self, client):
         response = client.get(self.ENDPOINT)
         assert response.status_code == 401
-# PATCH /api/v1/auth/users/{id}/status  (Admin only)
-class TestToggleUserStatus:
-    def test_admin_can_disable_user(self, client, admin_token, trainee_user):
-        response = client.patch(
-            f"/api/v1/auth/users/{trainee_user.id}/status",
-            headers=auth_headers(admin_token),
-        )
-        assert response.status_code == 200
-        assert response.json()["is_active"] is False
-
-    def test_admin_can_re_enable_user(self, client, admin_token, db, trainee_user):
-        trainee_user.is_active = False
-        db.commit()
-        response = client.patch(
-            f"/api/v1/auth/users/{trainee_user.id}/status",
-            headers=auth_headers(admin_token),
-        )
-        assert response.status_code == 200
-        assert response.json()["is_active"] is True
-
-    def test_admin_cannot_disable_self(self, client, admin_user, admin_token):
-        response = client.patch(
-            f"/api/v1/auth/users/{admin_user.id}/status",
-            headers=auth_headers(admin_token),
-        )
-        assert response.status_code == 400
-        assert "own account" in response.json()["detail"].lower()
-
-    def test_disable_nonexistent_user(self, client, admin_token):
-        response = client.patch(
-            "/api/v1/auth/users/999999/status",
-            headers=auth_headers(admin_token),
-        )
-        assert response.status_code == 404
-
-    def test_trainee_cannot_toggle_status(self, client, trainee_token, trainee_user):
-        response = client.patch(
-            f"/api/v1/auth/users/{trainee_user.id}/status",
-            headers=auth_headers(trainee_token),
-        )
-        assert response.status_code == 403
+# The legacy one-click status route is intentionally retired. Account status is
+# covered by test_account_administration.py through the audited access endpoint.
+def test_legacy_toggle_status_route_is_retired(client, admin_token, trainee_user):
+    response = client.patch(
+        f"/api/v1/auth/users/{trainee_user.id}/status",
+        headers=auth_headers(admin_token),
+    )
+    assert response.status_code == 404
 # POST /api/v1/auth/submit-quiz
 class TestSubmitQuiz:
     ENDPOINT = "/api/v1/auth/submit-quiz"
@@ -249,7 +216,7 @@ class TestSubmitQuiz:
         assert response.status_code == 401
 # GET /api/v1/auth/progress/{course_id}
 class TestCourseProgress:
-    def test_get_progress_empty(self, client, trainee_token):
+    def test_get_progress_empty(self, client, trainee_token, seed_quiz):
         response = client.get("/api/v1/auth/progress/2D_Drawing", headers=auth_headers(trainee_token))
         assert response.status_code == 200
         assert response.json() == []

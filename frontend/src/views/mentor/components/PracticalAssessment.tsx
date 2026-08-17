@@ -392,7 +392,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                         style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', width: '100%', padding: '0.75rem 1rem', background: 'transparent', border: '1px solid var(--border-color, rgba(255,255,255,0.05))', borderRadius: '8px', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
                         onClick={() => setTimeRecordModalOpen(true)}
                     >
-                        <Clock size={16} /> {t('practical.time_records', 'Time Records')}
+                        <Clock size={16} /> {t('practical.time_records')}
                     </button>
                     <button
                         className="sidebar-action-btn hover-bg-subtle"
@@ -402,7 +402,7 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                             setTrashModalOpen(true);
                         }}
                     >
-                        <Trash2 size={16} /> {t('trash.modal_title', 'Trash Bin')}
+                        <Trash2 size={16} /> {t('trash.modal_title')}
                     </button>
                 </div>
                 
@@ -410,10 +410,10 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
                     <button
                         className="exit-course-btn sidebar-exit-course-btn"
                         onClick={onBack}
-                        title={t('practical.exit_course', 'EXIT COURSE')}
+                        title={t('practical.exit_course')}
                     >
                         <LogOut size={16} aria-hidden="true" />
-                        <span>{t('practical.exit_course', 'EXIT COURSE')}</span>
+                        <span>{t('practical.exit_course')}</span>
                     </button>
                 </div>
             </aside>

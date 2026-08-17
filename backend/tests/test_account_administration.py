@@ -48,20 +48,20 @@ def test_admin_cannot_change_own_access(client, db, admin_user, admin_token):
     assert response.status_code == 400
 
 
-def test_organization_admin_cannot_grant_platform_area(client, db, admin_user, admin_token, trainee_user):
+def test_organization_admin_can_bootstrap_first_platform_admin(client, db, admin_user, admin_token, trainee_user):
     _seed_admin(db, admin_user)
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "admin", "admin_areas": ["content", "platform"], "account_status": "active", "reason": "Unauthorized platform grant"},
+        json={"role_code": "admin", "admin_areas": ["content", "platform"], "account_status": "active", "reason": "Bootstrap first platform administrator"},
         headers=_headers(admin_token),
     )
-    assert response.status_code == 403
+    assert response.status_code == 200
+    assert get_active_admin_areas(db, trainee_user) == {"content", "platform"}
 
 
 def test_authorized_platform_admin_can_grant_platform_area(client, db, admin_user, admin_token, trainee_user):
     _seed_admin(db, admin_user); seed_access_foundation(db)
-    permission = db.query(Permission).filter(Permission.code == "admin.area.platform.assign").one()
-    db.add(UserPermissionGrant(user_id=admin_user.id, permission_id=permission.id, effect="allow", reason="Bootstrap platform owner")); db.commit()
+    db.add(AdminAreaGrant(user_id=admin_user.id, area_code="platform", reason="Existing platform owner")); db.commit()
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
         json={"role_code": "admin", "admin_areas": ["platform"], "account_status": "active", "reason": "Platform operations assignment"},

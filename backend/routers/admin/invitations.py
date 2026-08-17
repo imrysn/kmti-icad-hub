@@ -11,7 +11,7 @@ from ...auth.dependencies import require_permission
 from ...database import get_db
 from ...models import AccountInvitation, AccountInvitationPlan, AccountInvitationRole, AccessPlan, AuditEvent, Role, User
 from ...schemas import InvitationCreate, InvitationResponse
-from ...services.access_control_service import user_has_permission
+from ...services.access_control_service import can_assign_platform_area
 from ...services.email_service import queue_invitation_email
 
 router = APIRouter()
@@ -53,7 +53,7 @@ def _validate_payload(db: Session, payload: InvitationCreate, admin: User) -> tu
         raise HTTPException(status_code=422, detail="Admin invitations require at least one Admin Panel area")
     if payload.role_code != "admin" and areas:
         raise HTTPException(status_code=422, detail="Admin Panel areas require the Admin role")
-    if "platform" in areas and not user_has_permission(db, admin, "admin.area.platform.assign"):
+    if "platform" in areas and not can_assign_platform_area(db, admin):
         raise HTTPException(status_code=403, detail="Platform-area invitations require explicit Platform grant permission")
     if payload.ends_at and payload.starts_at and payload.ends_at <= payload.starts_at:
         raise HTTPException(status_code=422, detail="Invitation plan end date must be after its start date")

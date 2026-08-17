@@ -21,7 +21,7 @@ os.environ.setdefault("USE_MYSQL", "false")
 
 from backend.database import Base, get_db
 from backend.main import app, api_app
-from backend.models import User, Quiz, Question
+from backend.models import AccessPlan, Course, Lesson, PlanEntitlement, Question, Quiz, User, UserPlanAssignment
 from backend.auth.security import hash_password, create_access_token
 
 # ── In-memory SQLite engine — isolated per test session ──────────────────────
@@ -147,7 +147,22 @@ def auth_headers(token: str) -> dict:
 # ── Quiz seed fixture ─────────────────────────────────────────────────────────
 
 @pytest.fixture()
-def seed_quiz(db) -> Quiz:
+def seed_quiz(db, trainee_user) -> Quiz:
+    course = Course(title="2D Drawing", course_type="2D_Drawing", order=1)
+    plan = AccessPlan(code="test-foundations", name="Test Foundations", is_active=True)
+    db.add_all([course, plan])
+    db.flush()
+    db.add_all([
+        PlanEntitlement(plan_id=plan.id, resource_type="course", resource_id="2D_Drawing", permission_code="view"),
+        UserPlanAssignment(
+            user_id=trainee_user.id,
+            plan_id=plan.id,
+            starts_at=datetime.now(timezone.utc).replace(tzinfo=None),
+            status="active",
+            reason="Automated test entitlement",
+        ),
+    ])
+    db.add(Lesson(course_id=course.id, title="Test Keyway Lesson", slug="test-keyway-lesson", is_published=True))
     quiz = Quiz(
         slug="test-keyway-lesson",
         title="Test Keyway Quiz",

@@ -7,7 +7,7 @@ from ...models import AdminAreaGrant, AuditEvent, Role, User, UserRole, SystemLo
 from ...schemas import AdminUserAccessResponse, AdminUserAccessUpdate, UserCreateAdmin, UserUpdate, UserResponse
 from ...auth.dependencies import require_permission
 from ...auth.security import hash_password
-from ...services.access_control_service import get_active_admin_areas, get_active_role_codes, seed_access_foundation, sync_legacy_user_access, user_has_permission
+from ...services.access_control_service import can_assign_platform_area, get_active_admin_areas, get_active_role_codes, seed_access_foundation, sync_legacy_user_access
 
 router = APIRouter()
 
@@ -43,7 +43,7 @@ def update_user_access(user_id: int, payload: AdminUserAccessUpdate, db: Session
         raise HTTPException(status_code=422, detail="Only Admin accounts may receive Admin Panel areas")
     if target.id == admin.id and ({payload.role_code} != before_roles or desired_areas != before_areas or payload.account_status != before_status):
         raise HTTPException(status_code=400, detail="You cannot change your own role, Admin areas, or account status")
-    if ("platform" in desired_areas) != ("platform" in before_areas) and not user_has_permission(db, admin, "admin.area.platform.assign"):
+    if ("platform" in desired_areas) != ("platform" in before_areas) and not can_assign_platform_area(db, admin):
         raise HTTPException(status_code=403, detail="Platform-area grant authority is required")
     if "platform" in before_areas and "platform" not in desired_areas:
         other_platform_admins = db.query(AdminAreaGrant.id).filter(AdminAreaGrant.area_code == "platform", AdminAreaGrant.revoked_at.is_(None), AdminAreaGrant.user_id != target.id).count()

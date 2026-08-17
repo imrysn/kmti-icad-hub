@@ -1,5 +1,3 @@
-import { V } from "vitest/dist/chunks/evaluatedModules.d.BxJ5omdx";
-
 export interface MenuItem {
     label: string;
     shortcut?: string;

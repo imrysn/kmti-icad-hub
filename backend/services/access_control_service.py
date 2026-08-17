@@ -73,6 +73,7 @@ AREA_PERMISSION_CODES = {
     },
     "platform": {
         "admin.area.platform.access",
+        "admin.area.platform.assign",
         "audit.read_security",
         "platform.configure",
     },
@@ -216,6 +217,17 @@ def get_effective_permissions(db: Session, user: User) -> set[str]:
 
 def user_has_permission(db: Session, user: User, permission_code: str) -> bool:
     return permission_code in get_effective_permissions(db, user)
+
+
+def can_assign_platform_area(db: Session, user: User) -> bool:
+    """Allow Platform admins to delegate, with a safe first-admin bootstrap."""
+    if user_has_permission(db, user, "admin.area.platform.assign"):
+        return True
+    platform_admin_count = db.query(AdminAreaGrant.id).filter(
+        AdminAreaGrant.area_code == "platform",
+        AdminAreaGrant.revoked_at.is_(None),
+    ).count()
+    return platform_admin_count == 0 and "organization" in get_active_admin_areas(db, user)
 
 
 def user_has_admin_area(db: Session, user: User, area_code: str) -> bool:
