@@ -767,7 +767,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Add refresh-token reuse detection.
 - [ ] Add generic public authentication/recovery responses.
 - [ ] Add login and registration rate limits.
-- [ ] Add verification/reset resend limits.
+- [ ] Add verification/reset resend limits. (Verification resend is limited; password-reset limits follow.)
 - [ ] Add CAPTCHA verification.
 - [ ] Add normalized email uniqueness.
 - [ ] Add MFA requirement for Admins with Platform-area access.
@@ -783,7 +783,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Validate consent versions and timestamps.
 - [x] Add duplicate and existing-account handling.
 - [x] Implement email verification endpoint.
-- [ ] Implement verification resend endpoint.
+- [x] Implement verification resend endpoint.
 - [x] Implement application status transitions. (Submission, verification, approval, and rejection complete; clarification and cancellation follow.)
 - [ ] Implement paginated admin application list/detail. (List/detail endpoints complete; pagination follows.)
 - [x] Implement approve transaction.
@@ -829,11 +829,11 @@ Use this as the durable project tracker. Check an item only after implementation
 ### Transactional email
 
 - [ ] Configure verified sender domain, SPF, DKIM, and DMARC.
-- [ ] Implement transactional outbox.
+- [x] Implement transactional outbox.
 - [ ] Implement background delivery and retries.
-- [ ] Create English templates.
-- [ ] Create Japanese templates.
-- [ ] Implement safe expiring links.
+- [x] Create English templates. (Email verification complete; remaining event templates follow.)
+- [x] Create Japanese templates. (Email verification complete; remaining event templates follow.)
+- [x] Implement safe expiring links.
 - [ ] Record delivery states and provider message IDs.
 - [ ] Add bounce/complaint handling.
 - [ ] Test Gmail, Outlook, and target company mail systems.
@@ -848,8 +848,8 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Add CAPTCHA integration.
 - [x] Add safe submission confirmation.
 - [x] Create email-verification result pages.
-- [ ] Create resend-verification flow.
-- [ ] Create pending-approval page.
+- [x] Create resend-verification flow.
+- [x] Create pending-approval page.
 - [ ] Create clarification flow if approved for phase scope.
 - [ ] Create forgot/reset password pages.
 - [ ] Add safe status-specific sign-in messages.

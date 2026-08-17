@@ -1,0 +1,21 @@
+.registration-resend {
+  align-items: flex-end;
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.5rem auto;
+  max-width: 420px;
+  text-align: left;
+}
+
+.registration-resend label { flex: 1; }
+
+.registration-dev-link {
+  background: #fff8db;
+  border: 1px solid #f0d768;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+@media (max-width: 700px) {
+  .registration-resend { align-items: stretch; flex-direction: column; }
+}

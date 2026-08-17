@@ -1,4 +1,4 @@
-from backend.models import AuditEvent, RegistrationApplication, User, UserPlanAssignment
+from backend.models import AuditEvent, EmailOutbox, EmailVerificationToken, RegistrationApplication, User, UserPlanAssignment
 from backend.services.access_control_service import sync_legacy_user_access
 from backend.services.access_plan_service import seed_access_plans
 
@@ -57,6 +57,9 @@ def test_public_registration_verifies_then_waits_for_approval(client, db):
     login = client.post("/api/v1/auth/login", json={"username": user.username, "password": "Applicant@123"})
     assert login.status_code == 400
     assert db.query(AuditEvent).filter(AuditEvent.action == "registration.email_verified").count() == 1
+    email = db.query(EmailOutbox).filter(EmailOutbox.related_id == str(application.id)).one()
+    assert email.status == "pending"
+    assert "#/register?token=" in email.text_body
 
 
 def test_duplicate_submission_has_generic_response(client, db):
@@ -95,3 +98,35 @@ def test_stale_or_repeated_admin_decision_is_rejected(client, db, admin_user, ad
     second = client.post(f"/api/v1/admin/registration-applications/{application.id}/approve", json=payload, headers={"Authorization": f"Bearer {admin_token}"})
     assert first.status_code == 200
     assert second.status_code == 409
+
+
+def test_resend_replaces_old_token_and_is_generic_for_unknown_email(client, db):
+    seed_access_plans(db); db.commit()
+    from backend.models import AccessPlan
+    plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+    submitted = client.post("/api/v1/registrations", json=_payload(plan.id, "resend"))
+    old_token = submitted.json()["verification_token"]
+    resent = client.post("/api/v1/registrations/resend-verification", json={"email": "applicant_resend@example.com"})
+    assert resent.status_code == 202
+    assert resent.json()["verification_token"] != old_token
+    assert client.post("/api/v1/registrations/verify-email", json={"token": old_token}).status_code == 400
+    assert client.post("/api/v1/registrations/verify-email", json={"token": resent.json()["verification_token"]}).status_code == 200
+    assert db.query(EmailOutbox).count() == 2
+    unknown = client.post("/api/v1/registrations/resend-verification", json={"email": "unknown@example.com"})
+    assert unknown.status_code == 202
+    assert unknown.json()["application_id"] is None
+
+
+def test_resend_is_limited_to_three_verification_tokens_per_hour(client, db):
+    seed_access_plans(db); db.commit()
+    from backend.models import AccessPlan
+    plan = db.query(AccessPlan).first()
+    client.post("/api/v1/registrations", json=_payload(plan.id, "limit"))
+    first = client.post("/api/v1/registrations/resend-verification", json={"email": "applicant_limit@example.com"})
+    second = client.post("/api/v1/registrations/resend-verification", json={"email": "applicant_limit@example.com"})
+    third = client.post("/api/v1/registrations/resend-verification", json={"email": "applicant_limit@example.com"})
+    assert first.json()["verification_token"]
+    assert second.json()["verification_token"]
+    assert third.json()["verification_token"] is None
+    application = db.query(RegistrationApplication).filter(RegistrationApplication.email_normalized == "applicant_limit@example.com").one()
+    assert db.query(EmailVerificationToken).filter(EmailVerificationToken.application_id == application.id).count() == 3

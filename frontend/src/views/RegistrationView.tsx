@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { registrationService, PublicAccessPlan, RegistrationPayload } from '../services/registrationService';
 import '../styles/RegistrationView.css';
+import '../styles/RegistrationVerification.css';
 
 const initialForm: RegistrationPayload = {
   username: '', email: '', password: '', full_name: '', requested_plan_id: 0,
@@ -18,6 +19,8 @@ export const RegistrationView: React.FC = () => {
   const [message, setMessage] = React.useState('');
   const [error, setError] = React.useState('');
   const [busy, setBusy] = React.useState(false);
+  const [resendEmail, setResendEmail] = React.useState('');
+  const [developmentToken, setDevelopmentToken] = React.useState('');
 
   React.useEffect(() => {
     if (verificationToken) {
@@ -42,12 +45,22 @@ export const RegistrationView: React.FC = () => {
     try {
       const result = await registrationService.submit(form);
       setMessage(result.message);
-      if (result.verification_token) setMessage(`${result.message} Development verification link: #/register?token=${result.verification_token}`);
+      setResendEmail(form.email);
+      if (result.verification_token) setDevelopmentToken(result.verification_token);
     } catch (err: any) { setError(err?.response?.data?.detail || 'Registration could not be submitted.'); }
     finally { setBusy(false); }
   };
 
-  if (verificationToken || message) return <div className="registration-page"><section className="registration-card registration-result"><span className="registration-eyebrow">KMTI TRAINING HUB</span><h1>{error ? 'Verification unavailable' : 'Application received'}</h1><p>{error || message || (busy ? 'Checking your link…' : '')}</p><Link to="/login">Return to sign in</Link></section></div>;
+  const resend = async (event: React.FormEvent) => {
+    event.preventDefault(); setBusy(true); setError('');
+    try {
+      const result = await registrationService.resendVerification(resendEmail);
+      setMessage(result.message); setDevelopmentToken(result.verification_token || '');
+    } catch { setError('Verification instructions could not be requested. Please try again later.'); }
+    finally { setBusy(false); }
+  };
+
+  if (verificationToken || message) return <div className="registration-page"><section className="registration-card registration-result"><span className="registration-eyebrow">KMTI TRAINING HUB</span><h1>{error ? 'Verification unavailable' : verificationToken ? 'Email verified' : 'Check your email'}</h1><p>{error || message || (busy ? 'Checking your link…' : '')}</p>{developmentToken && <p className="registration-dev-link"><strong>Development only:</strong> <Link to={`/register?token=${developmentToken}`}>Open verification link</Link></p>}{!verificationToken && <form className="registration-resend" onSubmit={resend}><label>Email address<input required type="email" value={resendEmail} onChange={event => setResendEmail(event.target.value)} /></label><button disabled={busy}>{busy ? 'Requesting…' : 'Resend verification'}</button></form>}<Link to="/login">Return to sign in</Link></section></div>;
 
   return <div className="registration-page"><section className="registration-card">
     <header><span className="registration-eyebrow">KMTI TRAINING HUB</span><h1>Apply for training access</h1><p>Create a learner application. Access begins only after email verification and administrator approval.</p></header>

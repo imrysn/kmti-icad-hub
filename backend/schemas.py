@@ -185,6 +185,10 @@ class EmailVerificationRequest(BaseModel):
     token: str = Field(min_length=20, max_length=500)
 
 
+class VerificationResendRequest(BaseModel):
+    email: EmailStr
+
+
 class RegistrationReviewRequest(BaseModel):
     version: int
     assigned_plan_id: Optional[int] = None

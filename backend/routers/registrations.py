@@ -12,6 +12,8 @@ from ..auth.security import hash_password
 from ..database import get_db
 from ..models import AccessPlan, AuditEvent, EmailVerificationToken, RegistrationApplication, User
 from ..schemas import EmailVerificationRequest, RegistrationCreate, RegistrationSubmissionResponse
+from ..schemas import VerificationResendRequest
+from ..services.email_service import queue_verification_email
 
 
 router = APIRouter(prefix="/registrations", tags=["Registrations"])
@@ -79,6 +81,7 @@ def submit_registration(payload: RegistrationCreate, db: Session = Depends(get_d
         token_hash=_token_hash(raw_token),
         expires_at=now + timedelta(hours=24),
     ))
+    queue_verification_email(db, user, application, raw_token)
     db.add(AuditEvent(
         action="registration.submitted",
         target_type="registration_application",
@@ -89,6 +92,46 @@ def submit_registration(payload: RegistrationCreate, db: Session = Depends(get_d
 
     # Until transactional email is connected, local development exposes the
     # token so the verification workflow can be tested. Production never does.
+    is_development = os.getenv("ENVIRONMENT", "development").lower() == "development"
+    return RegistrationSubmissionResponse(
+        message=GENERIC_SUBMISSION_MESSAGE,
+        application_id=application.id if is_development else None,
+        verification_token=raw_token if is_development else None,
+    )
+
+
+@router.post("/resend-verification", response_model=RegistrationSubmissionResponse, status_code=status.HTTP_202_ACCEPTED)
+def resend_verification(payload: VerificationResendRequest, db: Session = Depends(get_db)):
+    email = str(payload.email).strip().lower()
+    application = db.query(RegistrationApplication).filter(
+        RegistrationApplication.email_normalized == email,
+        RegistrationApplication.status == "email_verification_pending",
+    ).order_by(RegistrationApplication.submitted_at.desc()).first()
+    if not application:
+        return RegistrationSubmissionResponse(message=GENERIC_SUBMISSION_MESSAGE)
+
+    now = datetime.now(timezone.utc)
+    recent_count = db.query(EmailVerificationToken).filter(
+        EmailVerificationToken.application_id == application.id,
+        EmailVerificationToken.created_at >= now - timedelta(hours=1),
+    ).count()
+    if recent_count >= 3:
+        return RegistrationSubmissionResponse(message=GENERIC_SUBMISSION_MESSAGE)
+
+    user = db.query(User).filter(User.id == application.user_id).one()
+    db.query(EmailVerificationToken).filter(
+        EmailVerificationToken.application_id == application.id,
+        EmailVerificationToken.used_at.is_(None),
+    ).update({EmailVerificationToken.used_at: now}, synchronize_session=False)
+    raw_token = secrets.token_urlsafe(32)
+    db.add(EmailVerificationToken(
+        application_id=application.id,
+        token_hash=_token_hash(raw_token),
+        expires_at=now + timedelta(hours=24),
+    ))
+    queue_verification_email(db, user, application, raw_token)
+    db.add(AuditEvent(action="registration.verification_resent", target_type="registration_application", target_id=str(application.id)))
+    db.commit()
     is_development = os.getenv("ENVIRONMENT", "development").lower() == "development"
     return RegistrationSubmissionResponse(
         message=GENERIC_SUBMISSION_MESSAGE,

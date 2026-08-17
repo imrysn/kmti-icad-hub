@@ -21,4 +21,7 @@ export const registrationService = {
   async verifyEmail(token: string): Promise<{ message: string }> {
     return (await publicApi.post('/registrations/verify-email', { token })).data;
   },
+  async resendVerification(email: string): Promise<{ message: string; verification_token?: string }> {
+    return (await publicApi.post('/registrations/resend-verification', { email })).data;
+  },
 };

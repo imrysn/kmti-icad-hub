@@ -269,6 +269,33 @@ class EmailVerificationToken(Base):
     created_at = Column(DateTime, nullable=False, default=func.now())
 
 
+class EmailOutbox(Base):
+    """Transactional email queued in the same database transaction as its event."""
+    __tablename__ = "email_outbox"
+    __table_args__ = (
+        CheckConstraint("status IN ('pending','processing','sent','failed','cancelled')", name="ck_email_outbox_status"),
+    )
+
+    id = Column(Integer, primary_key=True)
+    message_type = Column(String(100), nullable=False, index=True)
+    recipient_email = Column(String(255), nullable=False, index=True)
+    recipient_name = Column(String(200), nullable=True)
+    preferred_language = Column(String(10), nullable=False, default="en")
+    subject = Column(String(500), nullable=False)
+    text_body = Column(Text, nullable=False)
+    html_body = Column(Text, nullable=False)
+    status = Column(String(20), nullable=False, default="pending", index=True)
+    attempts = Column(Integer, nullable=False, default=0)
+    next_attempt_at = Column(DateTime, nullable=False, default=func.now(), index=True)
+    last_attempt_at = Column(DateTime, nullable=True)
+    sent_at = Column(DateTime, nullable=True)
+    provider_message_id = Column(String(255), nullable=True)
+    last_error = Column(String(1000), nullable=True)
+    related_type = Column(String(100), nullable=True)
+    related_id = Column(String(100), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
 class SystemLog(Base):
     """Stores system events for audit trail"""
     __tablename__ = "system_logs"
