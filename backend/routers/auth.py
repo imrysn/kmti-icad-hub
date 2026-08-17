@@ -10,8 +10,8 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import AuditEvent, PasswordResetToken, RefreshSession, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, LogoutRequest, PasswordResetRequest, RefreshTokenRequest, QuizSubmission, LessonProgress
+from ..models import AuditEvent, MfaEnrollmentChallenge, MfaRecoveryCode, PasswordResetToken, RefreshSession, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, LogoutRequest, MfaConfirmationRequest, MfaEnrollmentRequest, PasswordResetRequest, RefreshTokenRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_permission, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
@@ -20,6 +20,7 @@ from ..websocket_manager import notification_manager
 from ..services.email_service import queue_password_reset_email
 from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
 from ..identity import normalize_email_address
+from ..services.mfa_service import decrypt_secret, encrypt_secret, hash_mfa_token, new_recovery_codes, new_totp_secret, provisioning_uri, verify_totp
 import hashlib
 import os
 import secrets
@@ -132,6 +133,25 @@ def login(login_data: UserLogin, request: Request, db: Session = Depends(get_db)
             detail="Inactive user account"
         )
 
+    if "platform" in get_active_admin_areas(db, user):
+        if not user.mfa_enabled:
+            raw_challenge = secrets.token_urlsafe(32)
+            now = datetime.now(timezone.utc).replace(tzinfo=None)
+            db.query(MfaEnrollmentChallenge).filter(MfaEnrollmentChallenge.user_id == user.id, MfaEnrollmentChallenge.used_at.is_(None)).update({MfaEnrollmentChallenge.used_at: now}, synchronize_session=False)
+            db.add(MfaEnrollmentChallenge(user_id=user.id, token_hash=hash_mfa_token(raw_challenge), expires_at=now + timedelta(minutes=10)))
+            db.commit()
+            raise HTTPException(status_code=403, detail={"code": "mfa_enrollment_required", "message": "Authenticator setup is required for Platform access.", "enrollment_token": raw_challenge})
+        if not login_data.mfa_code:
+            raise HTTPException(status_code=403, detail={"code": "mfa_required", "message": "Enter your authenticator or recovery code."})
+        accepted = verify_totp(decrypt_secret(user.mfa_secret_encrypted), login_data.mfa_code)
+        if not accepted:
+            recovery = db.query(MfaRecoveryCode).filter(MfaRecoveryCode.user_id == user.id, MfaRecoveryCode.code_hash == hash_mfa_token(login_data.mfa_code), MfaRecoveryCode.used_at.is_(None)).first()
+            if recovery:
+                recovery.used_at = datetime.now(timezone.utc).replace(tzinfo=None); accepted = True
+        if not accepted:
+            db.add(AuditEvent(actor_user_id=user.id, action="mfa.login_failed", target_type="user", target_id=str(user.id), result="denied")); db.commit()
+            raise HTTPException(status_code=401, detail="Authenticator code is invalid")
+
     # Check for required role if specified
     if login_data.required_role:
         if login_data.required_role == "admin":
@@ -167,6 +187,36 @@ def login(login_data: UserLogin, request: Request, db: Session = Depends(get_db)
     db.commit()
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "user": user}
+
+
+def _enrollment(db: Session, raw_token: str) -> tuple[MfaEnrollmentChallenge, User]:
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    challenge = db.query(MfaEnrollmentChallenge).filter(MfaEnrollmentChallenge.token_hash == hash_mfa_token(raw_token), MfaEnrollmentChallenge.used_at.is_(None), MfaEnrollmentChallenge.expires_at > now).first()
+    if not challenge:
+        raise HTTPException(status_code=400, detail="MFA enrollment challenge is invalid or expired")
+    return challenge, db.query(User).filter(User.id == challenge.user_id).one()
+
+
+@router.post("/mfa/enroll")
+def enroll_mfa(payload: MfaEnrollmentRequest, db: Session = Depends(get_db)):
+    _, user = _enrollment(db, payload.enrollment_token)
+    if "platform" not in get_active_admin_areas(db, user):
+        raise HTTPException(status_code=403, detail="MFA enrollment is unavailable")
+    secret = new_totp_secret(); user.mfa_secret_encrypted = encrypt_secret(secret); db.commit()
+    return {"secret": secret, "provisioning_uri": provisioning_uri(secret, user.email)}
+
+
+@router.post("/mfa/confirm")
+def confirm_mfa(payload: MfaConfirmationRequest, db: Session = Depends(get_db)):
+    challenge, user = _enrollment(db, payload.enrollment_token)
+    if not user.mfa_secret_encrypted or not verify_totp(decrypt_secret(user.mfa_secret_encrypted), payload.code):
+        raise HTTPException(status_code=422, detail="Authenticator code is invalid")
+    now = datetime.now(timezone.utc).replace(tzinfo=None); challenge.used_at = now; user.mfa_enabled = True
+    codes = new_recovery_codes()
+    db.query(MfaRecoveryCode).filter(MfaRecoveryCode.user_id == user.id, MfaRecoveryCode.used_at.is_(None)).update({MfaRecoveryCode.used_at: now}, synchronize_session=False)
+    for code in codes: db.add(MfaRecoveryCode(user_id=user.id, code_hash=hash_mfa_token(code)))
+    db.add(AuditEvent(actor_user_id=user.id, action="mfa.enabled", target_type="user", target_id=str(user.id), result="success")); db.commit()
+    return {"message": "MFA enabled. Store these recovery codes securely; they will not be shown again.", "recovery_codes": codes}
 
 @router.post("/refresh", response_model=Token)
 def refresh_session(request: RefreshTokenRequest, db: Session = Depends(get_db)):

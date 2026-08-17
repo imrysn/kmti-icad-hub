@@ -129,6 +129,15 @@ class UserLogin(BaseModel):
     remember_me: bool = False
     required_role: Optional[Literal["trainee", "employee", "admin", "user"]] = None
     captcha_token: Optional[str] = None
+    mfa_code: Optional[str] = Field(default=None, min_length=6, max_length=32)
+
+
+class MfaEnrollmentRequest(BaseModel):
+    enrollment_token: str = Field(min_length=20, max_length=500)
+
+
+class MfaConfirmationRequest(MfaEnrollmentRequest):
+    code: str = Field(min_length=6, max_length=10)
 
 class ForgotPasswordRequest(BaseModel):
     """Schema for forgot password request"""

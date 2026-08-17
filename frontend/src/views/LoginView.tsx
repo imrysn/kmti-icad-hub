@@ -13,7 +13,9 @@ export const LoginView: React.FC = () => {
     const { t } = useTranslation();
     const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
+    const [formData, setFormData] = useState({ username: '', password: '', mfa_code: '' }); const [localError, setLocalError] = useState('');
+    const [mfaEnrollment, setMfaEnrollment] = useState<{token:string;secret:string}|null>(null);
+    const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
     const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);
 
     // Forgot Password State
@@ -65,6 +67,7 @@ export const LoginView: React.FC = () => {
                 username: formData.username,
                 password: formData.password,
                 remember_me: rememberMe
+                ,mfa_code: formData.mfa_code || undefined
             });
             // Explicitly navigate to home to trigger role-based redirect in App.tsx
             if (window.electronAPI) {
@@ -72,8 +75,27 @@ export const LoginView: React.FC = () => {
             }
             navigate('/');
         } catch (err: any) {
-            setLocalError(err.message || 'LOGIN FAILED. CHECK YOUR CREDENTIALS.');
+            const message = err.message || 'LOGIN FAILED. CHECK YOUR CREDENTIALS.';
+            try {
+                const detail = JSON.parse(message);
+                if (detail.code === 'mfa_enrollment_required' && detail.enrollment_token) {
+                    const setup = await authService.enrollMfa(detail.enrollment_token);
+                    setMfaEnrollment({token: detail.enrollment_token, secret: setup.secret});
+                    setLocalError('Set up your authenticator, then enter its six-digit code below.');
+                    return;
+                }
+                if (detail.code === 'mfa_required') { setLocalError(detail.message); return; }
+            } catch { /* ordinary login error */ }
+            setLocalError(message);
         }
+    };
+
+    const confirmMfa = async () => {
+        if (!mfaEnrollment || !formData.mfa_code) return;
+        try {
+            const result = await authService.confirmMfa(mfaEnrollment.token, formData.mfa_code);
+            setRecoveryCodes(result.recovery_codes); setMfaEnrollment(null); setLocalError('MFA enabled. Save the recovery codes, then sign in.');
+        } catch (err: any) { setLocalError(parseBackendError(err, 'Authenticator code could not be confirmed.')); }
     };
 
     const handleForgotPassword = () => {
@@ -140,6 +162,13 @@ export const LoginView: React.FC = () => {
                             <input type="text" name="username" value={formData.username} onChange={handleInputChange} disabled={isLoggingIn} placeholder={t('login.username_placeholder') || 'Enter username'} />
                         </div>
                     </div>
+
+                    <div className="input-group">
+                        <label>Authenticator or recovery code</label>
+                        <div className="input-wrapper"><Lock className="input-icon" size={20} /><input type="text" inputMode="numeric" autoComplete="one-time-code" name="mfa_code" value={formData.mfa_code} onChange={handleInputChange} disabled={isLoggingIn} placeholder="Required for Platform administrators" /></div>
+                    </div>
+                    {mfaEnrollment && <div className="local-error-msg"><strong>Authenticator setup key:</strong><br/><code>{mfaEnrollment.secret}</code><br/><button type="button" onClick={confirmMfa}>Confirm authenticator code</button></div>}
+                    {recoveryCodes.length > 0 && <div className="local-error-msg"><strong>Save these one-time recovery codes:</strong><br/><code>{recoveryCodes.join('\n')}</code></div>}
 
                     <div className="input-group">
                         <label>{t('login.password')}</label>

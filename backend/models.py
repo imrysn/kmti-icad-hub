@@ -94,6 +94,8 @@ class User(Base):
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     custom_comments = Column(JSON, default=list)
+    mfa_enabled = Column(Boolean, default=False, nullable=False)
+    mfa_secret_encrypted = Column(Text, nullable=True)
 
 
 @event.listens_for(User, "before_insert")
@@ -113,6 +115,25 @@ class Role(Base):
     name = Column(String(100), nullable=False)
     description = Column(String(500), nullable=True)
     is_system = Column(Boolean, default=True, nullable=False)
+
+
+class MfaEnrollmentChallenge(Base):
+    __tablename__ = "mfa_enrollment_challenges"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=func.now(), nullable=False)
+
+
+class MfaRecoveryCode(Base):
+    __tablename__ = "mfa_recovery_codes"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    code_hash = Column(String(64), nullable=False, unique=True, index=True)
+    used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=func.now(), nullable=False)
 
 
 class Permission(Base):
