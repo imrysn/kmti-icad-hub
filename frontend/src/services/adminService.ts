@@ -77,6 +77,8 @@ export interface CourseResource {
 export interface CurriculumCourse extends CourseResource {
     lifecycle_status: 'draft'|'in_review'|'published'|'archived'; published_at?:string; updated_at?:string;
 }
+export interface Cohort {id:number;code:string;name:string;description?:string;is_active:boolean;created_at:string}
+export interface CourseRun {id:number;course_id:number;course_title:string;cohort_id:number;cohort_name:string;title:string;instructor_user_id?:number;instructor_name?:string;starts_at:string;ends_at?:string;status:string;enrollment_count:number}
 
 export interface PracticalSetResource {
     resource_id: string; assessment_type: string; set_number: number; name: string;
@@ -138,6 +140,12 @@ export const adminService = {
     async getCurriculumCourses():Promise<CurriculumCourse[]>{ return (await api.get('/admin/curriculum/courses')).data; },
     async createCurriculumCourse(data:{title:string;description?:string;course_type:string;order?:number}):Promise<CurriculumCourse>{ return (await api.post('/admin/curriculum/courses',data)).data; },
     async changeCourseLifecycle(id:number,status:CurriculumCourse['lifecycle_status'],reason:string):Promise<CurriculumCourse>{ return (await api.post(`/admin/curriculum/courses/${id}/lifecycle`,{status,reason})).data; },
+    async getCohorts():Promise<Cohort[]>{return (await api.get('/admin/course-delivery/cohorts')).data;},
+    async createCohort(data:{code:string;name:string;description?:string}):Promise<Cohort>{return (await api.post('/admin/course-delivery/cohorts',data)).data;},
+    async getCourseRuns():Promise<CourseRun[]>{return (await api.get('/admin/course-delivery/runs')).data;},
+    async createCourseRun(data:{course_id:number;cohort_id:number;title:string;starts_at:string;ends_at?:string;instructor_user_id?:number}):Promise<CourseRun>{return (await api.post('/admin/course-delivery/runs',data)).data;},
+    async assignRunInstructor(runId:number,instructor_user_id:number,reason:string):Promise<CourseRun>{return (await api.put(`/admin/course-delivery/runs/${runId}/instructor`,{instructor_user_id,reason})).data;},
+    async enrollLearner(runId:number,learner_user_id:number,reason:string):Promise<void>{await api.post(`/admin/course-delivery/runs/${runId}/enrollments`,{learner_user_id,reason});},
     async getInvitations():Promise<AccountInvitation[]>{ return (await api.get('/admin/invitations')).data; },
     async createInvitation(data:{email:string;full_name:string;role_code:string;preferred_language:string;plan_id?:number;admin_areas:string[];expires_in_days:number}):Promise<AccountInvitation>{ return (await api.post('/admin/invitations',data)).data; },
     async resendInvitation(id:number):Promise<AccountInvitation>{ return (await api.post(`/admin/invitations/${id}/resend`)).data; },

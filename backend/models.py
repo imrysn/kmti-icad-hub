@@ -479,6 +479,43 @@ class Course(Base):
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
 
+class Cohort(Base):
+    """Named learner group used to organize delivery of a course run."""
+    __tablename__ = "cohorts"
+    id = Column(Integer, primary_key=True)
+    code = Column(String(80), nullable=False, unique=True, index=True)
+    name = Column(String(200), nullable=False)
+    description = Column(String(500), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True, index=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
+class CourseRun(Base):
+    """A scheduled offering of one published course to one cohort."""
+    __tablename__ = "course_runs"
+    id = Column(Integer, primary_key=True)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False, index=True)
+    cohort_id = Column(Integer, ForeignKey("cohorts.id"), nullable=False, index=True)
+    title = Column(String(200), nullable=False)
+    instructor_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    starts_at = Column(DateTime, nullable=False)
+    ends_at = Column(DateTime, nullable=True)
+    status = Column(String(30), nullable=False, default="scheduled", index=True)
+    created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
+class CourseEnrollment(Base):
+    __tablename__ = "course_enrollments"
+    __table_args__ = (UniqueConstraint("course_run_id", "learner_user_id", name="uq_course_run_learner"),)
+    id = Column(Integer, primary_key=True)
+    course_run_id = Column(Integer, ForeignKey("course_runs.id", ondelete="CASCADE"), nullable=False, index=True)
+    learner_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    status = Column(String(30), nullable=False, default="enrolled", index=True)
+    enrolled_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    enrolled_at = Column(DateTime, nullable=False, default=func.now())
+
+
 class Lesson(Base):
     """Hierarchical curriculum lessons"""
     __tablename__ = "lessons"

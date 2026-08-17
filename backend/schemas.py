@@ -407,6 +407,43 @@ class CourseLifecycleUpdate(BaseModel):
     status: Literal["draft", "in_review", "published", "archived"]
     reason: str = Field(min_length=3, max_length=500)
 
+class CohortCreate(BaseModel):
+    code: str = Field(min_length=2, max_length=80, pattern=r"^[A-Za-z0-9_-]+$")
+    name: str = Field(min_length=2, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=500)
+
+class CohortResponse(CohortCreate):
+    id: int
+    is_active: bool
+    created_at: datetime
+    class Config: from_attributes = True
+
+class CourseRunCreate(BaseModel):
+    course_id: int
+    cohort_id: int
+    title: str = Field(min_length=2, max_length=200)
+    instructor_user_id: Optional[int] = None
+    starts_at: datetime
+    ends_at: Optional[datetime] = None
+    @field_validator("ends_at")
+    @classmethod
+    def valid_end(cls, value, info):
+        if value is not None and info.data.get("starts_at") and value <= info.data["starts_at"]: raise ValueError("End date must be after start date")
+        return value
+
+class CourseRunResponse(BaseModel):
+    id:int; course_id:int; course_title:str; cohort_id:int; cohort_name:str; title:str
+    instructor_user_id:Optional[int]=None; instructor_name:Optional[str]=None
+    starts_at:datetime; ends_at:Optional[datetime]=None; status:str; enrollment_count:int=0
+
+class CourseRunInstructorUpdate(BaseModel):
+    instructor_user_id: int
+    reason: str = Field(min_length=3, max_length=500)
+
+class CourseEnrollmentCreate(BaseModel):
+    learner_user_id: int
+    reason: str = Field(min_length=3, max_length=500)
+
 class LessonBase(BaseModel):
     course_id: int
     parent_id: Optional[int] = None

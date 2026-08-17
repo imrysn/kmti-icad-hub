@@ -24,6 +24,7 @@ import { AdminAccessDenied } from './components/AdminAccessDenied';
 import { RegistrationApprovalManagement } from './components/RegistrationApprovalManagement';
 import { InvitationManagement } from './components/InvitationManagement';
 import { CurriculumManagement } from './components/CurriculumManagement';
+import { CourseDeliveryManagement } from './components/CourseDeliveryManagement';
 import { AdminArea, authService, UserAccess } from '../../services/authService';
 
 export type AdminTab =
@@ -235,7 +236,7 @@ export const AdminMode: React.FC = () => {
                     {activeTab === 'media-translations' && <AdminComingSoon title="Media and translations" description="Manage reusable images, videos, captions, and translated course content." />}
                     {activeTab === 'registration-approvals' && <RegistrationApprovalManagement />}
                     {activeTab === 'invitations' && <InvitationManagement />}
-                    {activeTab === 'instructors' && <AdminComingSoon title="Instructors" description="Manage instructor profiles, course assignments, and learner responsibilities." available={['Trainer assignment support in practical training sets']} />}
+                    {activeTab === 'instructors' && <CourseDeliveryManagement />}
                     {activeTab === 'access-plans' && <AccessPlanManagement />}
                     {activeTab === 'security' && <AdminComingSoon title="Security" description="Review administrative permissions, session policies, and account-protection settings." available={['Area-based admin permissions and protected routes']} />}
                     {activeTab === 'email-integrations' && <AdminComingSoon title="Email and integrations" description="Configure registration, invitation, notification, and external-service providers." />}
