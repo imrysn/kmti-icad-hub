@@ -114,8 +114,6 @@ export const AdminMode: React.FC = () => {
         selectedUser,
         setSelectedUser,
         fetchData,
-        handleToggleStatus,
-        handleDeleteUser,
         handleSaveUser,
         handleExport
     } = useAdminDashboard(activeTab);
@@ -177,7 +175,7 @@ export const AdminMode: React.FC = () => {
 
                     <div style={{ display: activeTab === 'users' ? 'block' : 'none' }}>
                         <ErrorBoundary>
-                            <UserManagement users={users} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleToggleStatus={handleToggleStatus} handleDeleteUser={handleDeleteUser} onAddUser={() => {
+                            <UserManagement users={users} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onRefresh={fetchData} onAddUser={() => {
                                     setSelectedUser(null);
                                     setIsUserModalOpen(true);
                                 }}

@@ -1,11 +1,9 @@
 import { useCallback,useEffect,useState } from 'react';
-import { useUI } from '../context/UIContext';
 import { adminService,SystemAuditLog,SystemStats,TraineeProgress } from '../services/adminService';
 import { authService,User } from '../services/authService';
 import { parseBackendError } from '../utils/errorUtils';
 
 export const useAdminDashboard = (activeTab: string) => {
-  const { requestConfirmation } = useUI();
   const [stats, setStats] = useState<SystemStats | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [progress, setProgress] = useState<TraineeProgress[]>([]);
@@ -74,32 +72,6 @@ export const useAdminDashboard = (activeTab: string) => {
   }, [fetchData]);
 
 
-  const handleToggleStatus = useCallback(async (userId: number) => {
-    try {
-      const updated = await authService.toggleUserStatus(userId);
-      setUsers((prev: User[]) => prev.map(u => u.id === updated.id ? { ...u, is_active: updated.is_active } : u));
-    } catch (err: any) {
-      setError(parseBackendError(err, 'Failed to update user status.'));
-    }
-  }, []);
-
-  const handleDeleteUser = useCallback(async (userId: number) => {
-    const confirmed = await requestConfirmation({
-      title: 'Delete User',
-      message: 'Are you sure you want to permanently delete this user? This action cannot be undone.',
-      confirmText: 'Delete',
-      type: 'danger'
-    });
-    if (!confirmed) return;
-    try {
-      await adminService.deleteUser(userId);
-      setUsers((prev: User[]) => prev.filter(u => u.id !== userId));
-      if (activeTab === 'overview') fetchData();
-    } catch (err: any) {
-      setError(parseBackendError(err, 'Failed to delete user.'));
-    }
-  }, [activeTab, fetchData, requestConfirmation]);
-
   const handleSaveUser = useCallback(async (userData: any) => {
     try {
       if (selectedUser) {
@@ -141,8 +113,6 @@ export const useAdminDashboard = (activeTab: string) => {
     selectedUser,
     setSelectedUser,
     fetchData,
-    handleToggleStatus,
-    handleDeleteUser,
     handleSaveUser,
     handleExport
   };

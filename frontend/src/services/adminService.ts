@@ -88,6 +88,11 @@ export interface EntitlementOverride {
     permission_code: string; effect: 'allow' | 'deny'; starts_at: string; ends_at: string;
     reason: string; revoked_at?: string; created_at: string;
 }
+export interface AdminUserAccess {
+    user_id: number; role_code: 'learner' | 'instructor' | 'admin';
+    admin_areas: Array<'content' | 'organization' | 'platform'>;
+    account_status: 'active' | 'suspended' | 'deactivated'; is_active: boolean;
+}
 
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
@@ -181,6 +186,14 @@ export const adminService = {
 
     async revokeUserEntitlementOverride(userId: number, overrideId: number): Promise<EntitlementOverride> {
         return (await api.delete(`/admin/users/${userId}/entitlement-overrides/${overrideId}`)).data;
+    },
+
+    async getUserAccess(userId: number): Promise<AdminUserAccess> {
+        return (await api.get(`/admin/users/${userId}/access`)).data;
+    },
+
+    async updateUserAccess(userId: number, data: { role_code: AdminUserAccess['role_code']; admin_areas: AdminUserAccess['admin_areas']; account_status: AdminUserAccess['account_status']; reason: string }): Promise<AdminUserAccess> {
+        return (await api.put(`/admin/users/${userId}/access`, data)).data;
     },
 
     async getStats(): Promise<SystemStats> {

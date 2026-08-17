@@ -13,7 +13,7 @@ from ..database import get_db
 from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
 from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
-from ..auth.dependencies import get_current_user, require_role
+from ..auth.dependencies import get_current_user, require_permission, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
 from ..services.entitlement_service import require_course_access, require_lesson_access, serialize_effective_access
 from ..websocket_manager import notification_manager
@@ -236,43 +236,13 @@ async def logout(current_user: User = Depends(get_current_user)):
 @router.get("/users", response_model=List[UserResponse])
 def list_users(
     db: Session = Depends(get_db),
-    _: User = Depends(require_role("admin"))
+    _: User = Depends(require_permission("user.read"))
 ):
     """
     List all registered users. Admin only.
     """
     return db.query(User).order_by(User.created_at.desc()).all()
 
-
-@router.patch("/users/{user_id}/status")
-def toggle_user_status(
-    user_id: int,
-    db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
-):
-    """
-    Enable or disable a user account. Admin only.
-    Cannot disable your own account.
-    """
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    if user.id == admin.id:
-        raise HTTPException(status_code=400, detail="Cannot disable your own account")
-    user.is_active = not user.is_active
-
-    # Log the status change
-    log_entry = SystemLog(
-        level="INFO",
-        message=f"Admin {admin.username} {'enabled' if user.is_active else 'disabled'} user {user.username}",
-        context="USER_MGMT",
-        user_id=admin.id
-    )
-    db.add(log_entry)
-
-    db.commit()
-    db.refresh(user)
-    return {"id": user.id, "username": user.username, "is_active": user.is_active}
 
 from pydantic import BaseModel
 

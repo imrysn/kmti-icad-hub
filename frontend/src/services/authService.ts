@@ -26,6 +26,7 @@ export interface User {
     created_at?: string;
     last_login?: string;
     custom_comments?: string[];
+    account_status?: 'active' | 'suspended' | 'deactivated' | string;
 }
 
 export interface TokenResponse {
@@ -163,14 +164,6 @@ export const authService = {
      */
     async getUsers(): Promise<User[]> {
         const response = await authApi.get<User[]>('/auth/users');
-        return response.data;
-    },
-
-    /**
-     * Toggle a user's active status (admin only)
-     */
-    async toggleUserStatus(userId: number): Promise<{ id: number; username: string; is_active: boolean }> {
-        const response = await authApi.patch(`/auth/users/${userId}/status`);
         return response.data;
     },
 

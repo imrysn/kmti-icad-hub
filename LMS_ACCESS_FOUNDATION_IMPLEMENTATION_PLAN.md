@@ -759,7 +759,7 @@ Use this as the durable project tracker. Check an item only after implementation
 
 ### Backend identity and security
 
-- [ ] Replace single-role authorization with permission policies. (User, knowledge/content, analytics, audit, heatmap, and broadcast APIs migrated; remaining assessment/settings routes follow incrementally.)
+- [~] Replace single-role authorization with permission policies. (Normalized user role/area/status administration plus knowledge/content, analytics, audit, heatmap, and broadcast APIs migrated; remaining assessment/settings routes follow incrementally.)
 - [ ] Enforce account status during authentication and token refresh. (Sign-in and bearer authentication complete; refresh sessions are a later slice.)
 - [ ] Implement short-lived access sessions and rotating refresh sessions.
 - [ ] Hash stored verification, reset, invitation, and refresh tokens.

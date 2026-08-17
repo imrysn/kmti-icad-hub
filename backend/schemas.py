@@ -144,6 +144,7 @@ class UserResponse(BaseModel):
     created_at: Optional[datetime] = None
     last_login: Optional[datetime] = None
     custom_comments: Optional[List[str]] = []
+    account_status: str = "active"
     
     class Config:
         from_attributes = True
@@ -154,6 +155,28 @@ class UserAccessResponse(BaseModel):
     roles: List[str]
     admin_areas: List[str]
     permissions: List[str]
+
+
+class AdminUserAccessResponse(BaseModel):
+    user_id: int
+    role_code: str
+    admin_areas: List[str] = Field(default_factory=list)
+    account_status: str
+    is_active: bool
+
+
+class AdminUserAccessUpdate(BaseModel):
+    role_code: Literal["learner", "instructor", "admin"]
+    admin_areas: List[Literal["content", "organization", "platform"]] = Field(default_factory=list)
+    account_status: Literal["active", "suspended", "deactivated"]
+    reason: str = Field(min_length=3, max_length=500)
+
+    @field_validator("admin_areas")
+    @classmethod
+    def unique_admin_areas(cls, value: List[str]):
+        if len(value) != len(set(value)):
+            raise ValueError("Admin areas must be unique")
+        return value
 
 
 class RegistrationCreate(BaseModel):

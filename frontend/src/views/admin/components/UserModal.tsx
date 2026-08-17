@@ -68,7 +68,7 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
                 {error && <div className="modal-error">{error}</div>}
 
                 <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
-                    <div className="form-group full" style={{ gridColumn: 'span 2' }}>
+                    {!user && <div className="form-group full" style={{ gridColumn: 'span 2' }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}><Shield size={14} /> {t("admin.system_role")}</label>
                         <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}
                         >
@@ -76,7 +76,7 @@ export const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, u
                             <option value="employee">{t("admin.role_employee")}</option>
                             <option value="admin">{t("admin.role_admin")}</option>
                         </select>
-                    </div>
+                    </div>}
 
                     <div className="form-group full" style={{ gridColumn: 'span 2' }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>{t("admin.full_name")}</label>

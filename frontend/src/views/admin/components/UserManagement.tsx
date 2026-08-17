@@ -1,17 +1,17 @@
-import { CalendarClock,Edit2,Filter,Search,Shield,Trash2,User as UserIcon,UserPlus } from 'lucide-react';
+import { CalendarClock,Edit2,Filter,Search,Shield,ShieldCheck,User as UserIcon,UserPlus } from 'lucide-react';
 import React,{ useState } from 'react';
 import { User } from '../../../services/authService';
 import { PlanAssignmentPanel } from './PlanAssignmentPanel';
+import { AccountAccessPanel } from './AccountAccessPanel';
 
 interface UserManagementProps {
     users: User[];
     currentUser: User | null;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
-    handleToggleStatus: (id: number) => Promise<void>;
-    handleDeleteUser: (id: number) => Promise<void>;
     onAddUser: () => void;
     onEditUser: (user: User) => void;
+    onRefresh: () => Promise<void>;
 }
 
 export const UserManagement: React.FC<UserManagementProps> = ({
@@ -19,13 +19,13 @@ export const UserManagement: React.FC<UserManagementProps> = ({
     currentUser,
     searchQuery,
     setSearchQuery,
-    handleToggleStatus,
-    handleDeleteUser,
     onAddUser,
-    onEditUser
+    onEditUser,
+    onRefresh
 }) => {
     const [roleFilter, setRoleFilter] = useState<string>('All');
     const [planUser, setPlanUser] = useState<User | null>(null);
+    const [accessUser, setAccessUser] = useState<User | null>(null);
 
     const filteredUsers = users.filter((u: User) => {
         const matchesSearch = u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -95,8 +95,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                     </span>
                                 </td>
                                 <td>
-                                    <span className={`status-pill ${u.is_active ? 'active' : 'inactive'}`}>
-                                        {u.is_active ? 'Active' : 'Inactive'}
+                                    <span className={`status-pill ${u.account_status === 'active' || (!u.account_status && u.is_active) ? 'active' : 'inactive'}`}>
+                                        {u.account_status || (u.is_active ? 'Active' : 'Inactive')}
                                     </span>
                                 </td>
                                 <td>{u.created_at ? new Date(u.created_at.endsWith('Z') || u.created_at.includes('+') ? u.created_at : u.created_at + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}</td>
@@ -108,17 +108,11 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                             <Edit2 size={14} />
                                         </button>
                                         {u.role === 'trainee' && <button className="action-icon-btn plan-btn" onClick={() => setPlanUser(u)} title="Manage access plan"><CalendarClock size={14} /></button>}
-                                        <button className="action-icon-btn toggle-btn" onClick={() => handleToggleStatus(u.id)}
+                                        <button className="action-icon-btn" onClick={() => setAccessUser(u)}
                                             disabled={u.id === currentUser?.id}
-                                            title={u.is_active ? 'Deactivate' : 'Activate'}
+                                            title="Manage role, Admin areas, and account status"
                                         >
-                                            {u.is_active ? 'Revoke' : 'Permit'}
-                                        </button>
-                                        <button className="action-icon-btn delete-btn" onClick={() => handleDeleteUser(u.id)}
-                                            disabled={u.id === currentUser?.id}
-                                            title="Delete User"
-                                        >
-                                            <Trash2 size={14} />
+                                            <ShieldCheck size={14} />
                                         </button>
                                     </div>
                                 </td>
@@ -128,6 +122,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                 </table>
             </div>
             {planUser && <PlanAssignmentPanel user={planUser} onClose={() => setPlanUser(null)} />}
+            {accessUser && <AccountAccessPanel user={accessUser} onClose={() => setAccessUser(null)} onSaved={onRefresh} />}
         </section>
     );
 };
