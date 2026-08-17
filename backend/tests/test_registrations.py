@@ -86,6 +86,9 @@ def test_organization_admin_approves_application_and_assigns_plan(client, db, ad
     user = db.query(User).filter(User.id == application.user_id).one()
     assert user.is_active is True and user.account_status == "active"
     assert db.query(UserPlanAssignment).filter(UserPlanAssignment.user_id == user.id, UserPlanAssignment.plan_id == plan.id).count() == 1
+    email = db.query(EmailOutbox).filter(EmailOutbox.message_type == "registration.approved", EmailOutbox.related_id == str(application.id)).one()
+    assert plan.name in email.text_body
+    assert "Approved for pilot" not in email.text_body
     login = client.post("/api/v1/auth/login", json={"username": user.username, "password": "Applicant@123"})
     assert login.status_code == 200
 
@@ -130,3 +133,17 @@ def test_resend_is_limited_to_three_verification_tokens_per_hour(client, db):
     assert third.json()["verification_token"] is None
     application = db.query(RegistrationApplication).filter(RegistrationApplication.email_normalized == "applicant_limit@example.com").one()
     assert db.query(EmailVerificationToken).filter(EmailVerificationToken.application_id == application.id).count() == 3
+
+
+def test_rejection_email_uses_applicant_message_never_internal_reason(client, db, admin_user, admin_token):
+    application, _ = _submit_and_verify(client, db, "reject")
+    sync_legacy_user_access(db, admin_user); db.commit()
+    rejected = client.post(
+        f"/api/v1/admin/registration-applications/{application.id}/reject",
+        json={"version": application.version, "internal_reason": "Confidential fraud score", "applicant_message": "Please contact KMTI support."},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert rejected.status_code == 200
+    email = db.query(EmailOutbox).filter(EmailOutbox.message_type == "registration.rejected", EmailOutbox.related_id == str(application.id)).one()
+    assert "Please contact KMTI support." in email.text_body
+    assert "Confidential fraud score" not in email.text_body

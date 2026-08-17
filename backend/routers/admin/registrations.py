@@ -8,6 +8,7 @@ from ...auth.dependencies import require_permission
 from ...database import get_db
 from ...models import AccessPlan, AuditEvent, RegistrationApplication, Role, User, UserPlanAssignment, UserRole
 from ...schemas import RegistrationApplicationResponse, RegistrationReviewRequest
+from ...services.email_service import queue_registration_decision_email
 
 
 router = APIRouter()
@@ -97,6 +98,7 @@ def approve_registration(
     if learner_role and not db.query(UserRole).filter(UserRole.user_id == user.id, UserRole.role_id == learner_role.id, UserRole.revoked_at.is_(None)).first():
         db.add(UserRole(user_id=user.id, role_id=learner_role.id, granted_by_user_id=admin.id, reason="Registration approved"))
     db.add(AuditEvent(actor_user_id=admin.id, action="registration.approved", target_type="registration_application", target_id=str(application.id), metadata_json=json.dumps({"assigned_plan_id": plan.id})))
+    queue_registration_decision_email(db, user, application, "approved", plan)
     db.commit()
     return _serialize(db, application)
 
@@ -120,5 +122,6 @@ def reject_registration(
     application.applicant_message = payload.applicant_message
     application.version += 1
     db.add(AuditEvent(actor_user_id=admin.id, action="registration.rejected", target_type="registration_application", target_id=str(application.id)))
+    queue_registration_decision_email(db, user, application, "rejected")
     db.commit()
     return _serialize(db, application)

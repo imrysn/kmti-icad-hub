@@ -830,11 +830,11 @@ Use this as the durable project tracker. Check an item only after implementation
 
 - [ ] Configure verified sender domain, SPF, DKIM, and DMARC.
 - [x] Implement transactional outbox.
-- [ ] Implement background delivery and retries.
+- [x] Implement background delivery and retries. (SMTP adapter is disabled until verified sender credentials are configured.)
 - [x] Create English templates. (Email verification complete; remaining event templates follow.)
 - [x] Create Japanese templates. (Email verification complete; remaining event templates follow.)
 - [x] Implement safe expiring links.
-- [ ] Record delivery states and provider message IDs.
+- [x] Record delivery states and provider message IDs.
 - [ ] Add bounce/complaint handling.
 - [ ] Test Gmail, Outlook, and target company mail systems.
 - [ ] Add operations view for failed messages.
@@ -922,7 +922,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Unit-test plan date boundaries and timezone behavior.
 - [ ] Unit-test effective entitlements and overrides.
 - [x] Integration-test registration and verification.
-- [ ] Integration-test approval/rejection/clarification.
+- [ ] Integration-test approval/rejection/clarification. (Approval/rejection decisions and safe learner emails are tested; clarification follows.)
 - [x] Integration-test duplicate and concurrent decisions.
 - [ ] Integration-test role escalation prevention.
 - [ ] Integration-test plan CRUD and assignment history.

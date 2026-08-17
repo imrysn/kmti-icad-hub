@@ -83,6 +83,12 @@ except Exception as e:
 
 app = FastAPI(title="KMTI iCAD Hub API")
 
+
+@app.on_event("startup")
+def start_optional_email_worker():
+    from .services.email_delivery_service import start_email_delivery_worker
+    start_email_delivery_worker()
+
 # Enable CORS for Electron app and dev servers
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
 origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()] if cors_origins_env else []
