@@ -73,7 +73,10 @@ try:
             migrations_map = {
                 "courses": {
                     "title_ja": "VARCHAR(200) NULL",
-                    "description_ja": "VARCHAR(500) NULL"
+                    "description_ja": "VARCHAR(500) NULL",
+                    "lifecycle_status": "VARCHAR(30) NOT NULL DEFAULT 'published'",
+                    "published_at": "DATETIME NULL",
+                    "updated_at": "DATETIME NULL"
                 },
                 "lessons": {
                     "title_ja": "VARCHAR(200) NULL"

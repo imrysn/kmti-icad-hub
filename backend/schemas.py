@@ -36,6 +36,9 @@ class CourseResponse(BaseModel):
     description: Optional[str] = None
     course_type: str
     order: int
+    lifecycle_status: Literal["draft", "in_review", "published", "archived"] = "published"
+    published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -390,10 +393,19 @@ class QuizResponse(QuizBase):
 # --- Curriculum Management ---
 
 class CourseCreate(BaseModel):
-    title: str
+    title: str = Field(min_length=2, max_length=200)
     description: Optional[str] = None
-    course_type: str
+    course_type: str = Field(min_length=2, max_length=50, pattern=r"^[A-Za-z0-9_-]+$")
     order: int = 0
+
+class CourseUpdate(BaseModel):
+    title: Optional[str] = Field(default=None, min_length=2, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=500)
+    order: Optional[int] = None
+
+class CourseLifecycleUpdate(BaseModel):
+    status: Literal["draft", "in_review", "published", "archived"]
+    reason: str = Field(min_length=3, max_length=500)
 
 class LessonBase(BaseModel):
     course_id: int

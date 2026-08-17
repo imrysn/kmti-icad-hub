@@ -5,7 +5,7 @@ from ..schemas import CourseList, CourseProgress, CourseResponse
 class CourseService:
     def get_available_courses(self, db: Session, lang: str = "en") -> CourseList:
         """Fetch all available courses from the database."""
-        courses = db.query(CourseModel).order_by(CourseModel.order).all()
+        courses = db.query(CourseModel).filter(CourseModel.lifecycle_status == "published").order_by(CourseModel.order).all()
         
         # If no courses in DB, return empty list
         course_responses = [

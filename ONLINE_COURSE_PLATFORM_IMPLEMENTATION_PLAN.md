@@ -349,6 +349,8 @@ Architectural rules:
 9. Versioned practical submission and grading state machine.
 10. One representative hard-coded lesson migrated into the draft/review/publish content pipeline.
 
+Current progress on slice 10: `[~]` The course-level draft → review → publish → archive workflow, permission boundary, learner visibility filter, audit trail, automated tests, and Curriculum Admin UI are complete. Versioned lesson authoring and migration of a representative hard-coded lesson remain.
+
 Each slice should include schema migration, API, UI, authorization, audit event, tests, telemetry, user documentation, and rollback notes rather than delivering backend and frontend in isolated long-running branches.
 
 ## 12. Success metrics for the pilot

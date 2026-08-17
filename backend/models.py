@@ -472,6 +472,11 @@ class Course(Base):
     description_ja = Column(String(500), nullable=True)
     course_type = Column(String(50), unique=True) # e.g., "2D_Drawing", "3D_Modeling"
     order = Column(Integer, default=0)
+    # Compatibility default: legacy/seeded courses remain visible. The new
+    # authoring API explicitly creates every new course as a draft.
+    lifecycle_status = Column(String(30), nullable=False, default="published", index=True)
+    published_at = Column(DateTime, nullable=True)
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
 
 class Lesson(Base):

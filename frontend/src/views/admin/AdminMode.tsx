@@ -23,6 +23,7 @@ import { UserModal } from './components/UserModal';
 import { AdminAccessDenied } from './components/AdminAccessDenied';
 import { RegistrationApprovalManagement } from './components/RegistrationApprovalManagement';
 import { InvitationManagement } from './components/InvitationManagement';
+import { CurriculumManagement } from './components/CurriculumManagement';
 import { AdminArea, authService, UserAccess } from '../../services/authService';
 
 export type AdminTab =
@@ -229,7 +230,7 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    {activeTab === 'curriculum' && <AdminComingSoon title="Curriculum" description="Build and arrange courses, modules, lessons, prerequisites, and completion rules." available={['Course, lesson, and lesson-content API foundation']} />}
+                    {activeTab === 'curriculum' && <CurriculumManagement />}
                     {activeTab === 'knowledge-base' && <AdminComingSoon title="Knowledge-base content" description="Manage the documents used by the training hub knowledge base." available={['Upload, preview, download, delete, and re-index API foundation']} />}
                     {activeTab === 'media-translations' && <AdminComingSoon title="Media and translations" description="Manage reusable images, videos, captions, and translated course content." />}
                     {activeTab === 'registration-approvals' && <RegistrationApprovalManagement />}
