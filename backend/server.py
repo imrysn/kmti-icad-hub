@@ -35,6 +35,14 @@ def get_base_path():
 
 BASE_PATH = get_base_path()
 
+# This launcher belongs to the online LMS branch. Load its isolated profile
+# before importing backend.main/database, even when invoked directly from an
+# IDE terminal with ``python backend/server.py``.
+if "ENV_FILE_PATH" not in os.environ:
+    development_env = os.path.join(BASE_PATH, "backend", ".env.lms-development")
+    bundled_env = os.path.join(BASE_PATH, ".env.lms-development")
+    os.environ["ENV_FILE_PATH"] = development_env if os.path.exists(development_env) else bundled_env
+
 def get_local_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -62,21 +70,17 @@ def print_banner():
 
 def print_status(db_mode):
     ip = get_local_ip()
-    port = int(os.getenv("SERVER_PORT", 3001))
+    port = int(os.getenv("SERVER_PORT", 3002))
 
     db_color = Fore.CYAN if db_mode == "mysql" else Fore.YELLOW
-    db_text = "Network Mode (MySQL)" if db_mode == "mysql" else "Local Fallback Mode (SQLite)"
+    db_text = "Dedicated LMS Database (MySQL)" if db_mode == "mysql" else "Dedicated LMS Database (SQLite)"
 
     print(f"{Fore.GREEN}[+] {Fore.WHITE}Server Status: {Fore.GREEN}ONLINE")
     print(f"{Fore.GREEN}[+] {Fore.WHITE}API Endpoint : {Fore.CYAN}http://{ip}:{port}")
     print(f"{Fore.GREEN}[+] {Fore.WHITE}Database Mode: {db_color}{db_text}")
 
     if db_mode == "mysql":
-        print(f"{Fore.GREEN}[+] {Fore.WHITE}Database Host: {Fore.CYAN}{os.getenv('DB_HOST', 'KMTI-NAS')}")
-    else:
-        print(f"{Fore.YELLOW}[!] {Fore.WHITE}Warning: NAS connection failed. Using local storage.")
-
-    print(f"{Fore.GREEN}[+] {Fore.WHITE}Network Path : {Fore.CYAN}\\\\KMTI-NAS\\Shared\\data")
+        print(f"{Fore.GREEN}[+] {Fore.WHITE}Database Host: {Fore.CYAN}{os.getenv('DB_HOST', 'dedicated-lms-database')}")
     print(f"{Fore.GREEN}=======================================================================")
     print(f"{Fore.WHITE}Press {Fore.RED}Ctrl+C{Fore.WHITE} to shut down the server safely.")
     print("")
@@ -93,7 +97,6 @@ if __name__ == "__main__":
 
     # 2. Configure environment before heavy imports
     if getattr(sys, 'frozen', False):
-        os.environ["ENV_FILE_PATH"] = os.path.join(BASE_PATH, ".env")
         # Disable ChromaDB telemetry which can cause hangs/delays
         os.environ["ANONYMIZED_TELEMETRY"] = "False"
         # Ensure we can find our own package
@@ -120,15 +123,7 @@ if __name__ == "__main__":
         except Exception as db_init_err:
             print(f"[!] Database initialization/seeding warning: {db_init_err}")
 
-        # Start SQLite-to-MySQL background sync worker
-        try:
-            from backend.sync_worker import start_sync_worker
-            start_sync_worker()
-            print("[+] SQLite-to-MySQL sync worker started successfully.")
-        except Exception as se:
-            print(f"[!] Sync worker could not be started: {se}")
-
-        port = int(os.getenv("SERVER_PORT", 3001))
+        port = int(os.getenv("SERVER_PORT", 3002))
         host = "0.0.0.0"
         db_mode = get_db_mode()
         print_status(db_mode)
@@ -235,7 +230,7 @@ if __name__ == "__main__":
         db_title = tk.Label(left_info, text="Database Mode:", font=("Segoe UI", 10, "bold"), bg="#0f172a", fg="#94a3b8")
         db_title.pack(anchor="w")
 
-        db_text = "Network Mode (MySQL)" if db_mode == "mysql" else "Local Fallback Mode (SQLite)"
+        db_text = "Dedicated LMS Database (MySQL)" if db_mode == "mysql" else "Dedicated LMS Database (SQLite)"
         db_color = "#22c55e" if db_mode == "mysql" else "#f59e0b"
 
         db_val = tk.Label(left_info, text=db_text, font=("Segoe UI", 11, "bold"), bg="#0f172a", fg=db_color)
@@ -246,7 +241,8 @@ if __name__ == "__main__":
         right_actions.pack(side="right", fill="y", padx=10)
 
         def open_browser():
-            webbrowser.open(api_url)
+            frontend_url = os.getenv("FRONTEND_URL", "http://127.0.0.1:5173")
+            webbrowser.open(frontend_url)
 
         btn_style = {
             "font": ("Segoe UI", 10, "bold"),
@@ -323,9 +319,7 @@ if __name__ == "__main__":
         print(f"[+] API Endpoint : {api_url}")
         print(f"[+] Database Mode: {db_text}")
         if db_mode == "mysql":
-            print(f"[+] Database Host: {os.getenv('DB_HOST', 'KMTI-NAS')}")
-        else:
-            print("[!] Warning: NAS connection failed. Using local storage fallback.")
+            print(f"[+] Database Host: {os.getenv('DB_HOST', 'dedicated-lms-database')}")
         print("=======================================================================")
 
         root.mainloop()
