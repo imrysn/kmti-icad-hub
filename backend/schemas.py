@@ -192,6 +192,31 @@ class AdminUserAccessUpdate(BaseModel):
         return value
 
 
+class AdminPermissionItem(BaseModel):
+    code: str
+    description: str
+    area: Literal["content", "organization", "platform"]
+    enabled: bool
+
+
+class AdminUserPermissionsResponse(BaseModel):
+    user_id: int
+    permissions: List[AdminPermissionItem] = Field(default_factory=list)
+
+
+class AdminUserPermissionsUpdate(BaseModel):
+    enabled_codes: List[str] = Field(default_factory=list)
+    reason: str = Field(min_length=3, max_length=500)
+    reauth_password: str = Field(min_length=1, max_length=128)
+
+    @field_validator("enabled_codes")
+    @classmethod
+    def unique_enabled_codes(cls, value: List[str]):
+        if len(value) != len(set(value)):
+            raise ValueError("Enabled permission codes must be unique")
+        return value
+
+
 class RegistrationCreate(BaseModel):
     username: str = Field(min_length=2, max_length=100)
     email: EmailStr

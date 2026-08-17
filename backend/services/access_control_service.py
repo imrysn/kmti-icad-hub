@@ -58,7 +58,7 @@ ROLE_PERMISSION_CODES = {
 }
 
 AREA_PERMISSION_CODES = {
-    "content": {"admin.area.content.access", "content.edit"},
+    "content": {"admin.area.content.access", "content.edit", "content.publish"},
     "organization": {
         "admin.area.organization.access",
         "registration.review",
@@ -78,6 +78,24 @@ AREA_PERMISSION_CODES = {
         "platform.configure",
     },
 }
+
+STRUCTURAL_PERMISSION_CODES = {
+    "admin.area.content.access",
+    "admin.area.organization.access",
+    "admin.area.platform.access",
+}
+
+
+def manageable_permissions_for_areas(areas: set[str]) -> set[str]:
+    """Permissions configurable within assigned areas; page access stays structural."""
+    return set().union(*(AREA_PERMISSION_CODES.get(area, set()) for area in areas)) - STRUCTURAL_PERMISSION_CODES
+
+
+def permission_area(permission_code: str) -> str | None:
+    for area, codes in AREA_PERMISSION_CODES.items():
+        if permission_code in codes:
+            return area
+    return None
 
 LEGACY_ROLE_MAP = {"trainee": "learner", "employee": "instructor", "admin": "admin"}
 

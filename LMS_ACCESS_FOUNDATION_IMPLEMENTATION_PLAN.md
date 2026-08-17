@@ -211,7 +211,7 @@ Invitation statuses:
 - Only an Admin with Platform user-management permission may grant or revoke Platform-area access.
 - Admins cannot grant themselves additional areas or permissions.
 - Admin invitations use single-use, expiring links and explicitly list the granted areas.
-- MFA is required for every Admin with Platform-area access and configurable/strongly recommended for all Admins.
+- MFA is not part of the current product scope; sensitive Admin changes use current-password re-authentication, explicit authorization boundaries, reasons, and audit records.
 - Every Admin role, area, or permission change requires re-authentication, a reason, and an audit event.
 
 ### 4.5 Plan assignment and changes
@@ -571,7 +571,7 @@ Direct navigation to an ungranted page must return an access-denied view, and it
 - CAPTCHA or equivalent risk control for public forms.
 - Normalized case-insensitive email uniqueness.
 - Password breach/strength checks and secure hashing.
-- MFA for every Admin with Platform-area access.
+- Current-password re-authentication and auditing for sensitive Platform-area changes; MFA removed by product decision.
 - CSRF protection when cookie-authenticated state-changing endpoints are used.
 - Content Security Policy, frame restrictions, secure headers, and safe redirect allowlists.
 - Secrets provided through protected deployment configuration.
@@ -770,8 +770,8 @@ Use this as the durable project tracker. Check an item only after implementation
 - [~] Add verification/reset resend limits. (Single-instance protection complete; move counters to a shared store before multi-instance production.)
 - [~] Add CAPTCHA verification. (Provider-neutral backend verification and feature flags complete; production provider credentials and frontend widget follow.)
 - [x] Add normalized email uniqueness.
-- [ ] Add MFA requirement for Admins with Platform-area access.
-- [~] Add re-authentication for Admin role, area, and permission changes. (Role, area, and account-status changes require current-password verification; granular permission-management endpoints follow.)
+- [x] Remove MFA from the current scope and retain current-password re-authentication plus audit controls.
+- [x] Add current-password re-authentication for Admin role, area, account-status, and granular permission changes.
 - [x] Prevent Admins from expanding their own access.
 - [x] Prevent Organization-area Admins from granting Platform-area access.
 - [ ] Add security event alerts.
@@ -871,8 +871,8 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Create clarification request flow.
 - [ ] Show application audit timeline.
 - [ ] Create role-management interface.
-- [ ] Create Admin area and granular permission-management interface.
-- [ ] Protect Platform-area access controls with re-authentication and MFA.
+- [x] Create Admin area and granular permission-management interface.
+- [x] Protect Platform-area access controls with current-password re-authentication and recorded reasons. (MFA was removed from the product scope by decision.)
 - [x] Create separate Content Editor, Organization, and Platform Admin Panel pages.
 - [x] Hide ungranted Admin pages and show access denied on direct navigation.
 - [x] Add current-user roles, Admin areas, and effective-permissions API.
@@ -1011,7 +1011,7 @@ The phase is complete only when all scenarios pass in a production-like staging 
 - A Content Editor Admin can open the Content Editor page but not Organization or Platform pages.
 - An Organization Admin can manage registrations, invitations, users, and plans but cannot open Platform settings.
 - A Platform Admin can open technical/security pages.
-- Platform-area access can be granted only by an authorized Platform Admin after MFA/re-authentication and a recorded reason.
+- Platform-area access can be granted only by an authorized Platform Admin after current-password re-authentication and a recorded reason.
 - An Admin cannot expand their own areas or permissions.
 - All changes are visible in the security audit trail.
 

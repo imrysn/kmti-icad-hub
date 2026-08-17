@@ -93,6 +93,8 @@ export interface AdminUserAccess {
     admin_areas: Array<'content' | 'organization' | 'platform'>;
     account_status: 'active' | 'suspended' | 'deactivated'; is_active: boolean;
 }
+export interface AdminPermissionItem { code:string; description:string; area:'content'|'organization'|'platform'; enabled:boolean; }
+export interface AdminUserPermissions { user_id:number; permissions:AdminPermissionItem[]; }
 
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
@@ -194,6 +196,14 @@ export const adminService = {
 
     async updateUserAccess(userId: number, data: { role_code: AdminUserAccess['role_code']; admin_areas: AdminUserAccess['admin_areas']; account_status: AdminUserAccess['account_status']; reason: string; reauth_password: string }): Promise<AdminUserAccess> {
         return (await api.put(`/admin/users/${userId}/access`, data)).data;
+    },
+
+    async getUserPermissions(userId: number): Promise<AdminUserPermissions> {
+        return (await api.get(`/admin/users/${userId}/permissions`)).data;
+    },
+
+    async updateUserPermissions(userId: number, data: { enabled_codes:string[]; reason:string; reauth_password:string }): Promise<AdminUserPermissions> {
+        return (await api.put(`/admin/users/${userId}/permissions`, data)).data;
     },
 
     async getStats(): Promise<SystemStats> {

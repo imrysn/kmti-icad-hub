@@ -3,12 +3,12 @@ from sqlalchemy.orm import Session
 from ...database import get_db
 from datetime import datetime
 import json
-from ...models import AdminAreaGrant, AuditEvent, Role, User, UserRole, SystemLog
-from ...schemas import AdminUserAccessResponse, AdminUserAccessUpdate, UserCreateAdmin, UserUpdate, UserResponse
+from ...models import AdminAreaGrant, AuditEvent, Permission, Role, User, UserPermissionGrant, UserRole, SystemLog
+from ...schemas import AdminPermissionItem, AdminUserAccessResponse, AdminUserAccessUpdate, AdminUserPermissionsResponse, AdminUserPermissionsUpdate, UserCreateAdmin, UserUpdate, UserResponse
 from ...auth.dependencies import require_permission
 from ...auth.security import hash_password, verify_password
 from ...identity import normalize_email_address
-from ...services.access_control_service import can_assign_platform_area, get_active_admin_areas, get_active_role_codes, seed_access_foundation, sync_legacy_user_access
+from ...services.access_control_service import AREA_PERMISSION_CODES, PERMISSION_DEFINITIONS, can_assign_platform_area, get_active_admin_areas, get_active_role_codes, get_effective_permissions, manageable_permissions_for_areas, permission_area, seed_access_foundation, sync_legacy_user_access
 
 router = APIRouter()
 
@@ -87,6 +87,54 @@ def update_user_access(user_id: int, payload: AdminUserAccessUpdate, db: Session
         "reason": payload.reason,
     })))
     db.commit(); db.refresh(target); return _access_response(db, target)
+
+
+def _permissions_response(db: Session, target: User) -> AdminUserPermissionsResponse:
+    manageable = manageable_permissions_for_areas(get_active_admin_areas(db, target))
+    effective = get_effective_permissions(db, target)
+    items = [AdminPermissionItem(code=code, description=PERMISSION_DEFINITIONS[code], area=permission_area(code), enabled=code in effective) for code in sorted(manageable)]
+    return AdminUserPermissionsResponse(user_id=target.id, permissions=items)
+
+
+@router.get("/users/{user_id}/permissions", response_model=AdminUserPermissionsResponse)
+def get_user_permissions(user_id: int, db: Session = Depends(get_db), _: User = Depends(require_permission("user.read"))):
+    target = _user_or_404(db, user_id); seed_access_foundation(db); sync_legacy_user_access(db, target); db.commit()
+    return _permissions_response(db, target)
+
+
+@router.put("/users/{user_id}/permissions", response_model=AdminUserPermissionsResponse)
+def update_user_permissions(user_id: int, payload: AdminUserPermissionsUpdate, db: Session = Depends(get_db), admin: User = Depends(require_permission("role.assign"))):
+    target = _user_or_404(db, user_id); seed_access_foundation(db); sync_legacy_user_access(db, target); db.flush()
+    if target.id == admin.id:
+        raise HTTPException(status_code=400, detail="You cannot change your own permissions")
+    if not verify_password(payload.reauth_password, admin.hashed_password):
+        db.add(AuditEvent(actor_user_id=admin.id, action="user.permission_reauthentication_failed", target_type="user", target_id=str(target.id), result="denied", metadata_json=json.dumps({"reason": payload.reason})))
+        db.commit(); raise HTTPException(status_code=403, detail="Re-authentication failed")
+    target_areas = get_active_admin_areas(db, target)
+    manageable = manageable_permissions_for_areas(target_areas)
+    requested = set(payload.enabled_codes)
+    unknown = requested - manageable
+    if unknown:
+        raise HTTPException(status_code=422, detail=f"Permissions are outside the target's assigned Admin areas: {', '.join(sorted(unknown))}")
+    actor_manageable = manageable_permissions_for_areas(get_active_admin_areas(db, admin))
+    changed = {code for code in manageable if (code in get_effective_permissions(db, target)) != (code in requested)}
+    if changed - actor_manageable:
+        raise HTTPException(status_code=403, detail="You cannot manage permissions outside your own Admin areas")
+    now = datetime.utcnow()
+    active = db.query(UserPermissionGrant).filter(UserPermissionGrant.user_id == target.id, UserPermissionGrant.revoked_at.is_(None)).all()
+    for grant in active:
+        permission = db.query(Permission).filter(Permission.id == grant.permission_id).one()
+        if permission.code in changed:
+            grant.revoked_at = now; grant.reason = payload.reason
+    base = set().union(*(AREA_PERMISSION_CODES.get(area, set()) for area in target_areas))
+    for code in changed:
+        effect = "allow" if code in requested and code not in base else "deny"
+        if code in requested and code in base:
+            continue
+        permission = db.query(Permission).filter(Permission.code == code).one()
+        db.add(UserPermissionGrant(user_id=target.id, permission_id=permission.id, effect=effect, granted_by_user_id=admin.id, reason=payload.reason))
+    db.add(AuditEvent(actor_user_id=admin.id, action="user.permissions_updated", target_type="user", target_id=str(target.id), result="success", metadata_json=json.dumps({"enabled_codes": sorted(requested), "changed_codes": sorted(changed), "reason": payload.reason})))
+    db.commit(); return _permissions_response(db, target)
 
 @router.delete("/users/{user_id}")
 def delete_user(
