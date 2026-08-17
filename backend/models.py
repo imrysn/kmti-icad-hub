@@ -292,6 +292,18 @@ class EmailVerificationToken(Base):
     created_at = Column(DateTime, nullable=False, default=func.now())
 
 
+class PasswordResetToken(Base):
+    """Hashed, expiring, single-use password recovery token."""
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now(), index=True)
+
+
 class EmailOutbox(Base):
     """Transactional email queued in the same database transaction as its event."""
     __tablename__ = "email_outbox"

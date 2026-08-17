@@ -133,6 +133,10 @@ class ForgotPasswordRequest(BaseModel):
     """Schema for forgot password request"""
     username_or_email: str
 
+class PasswordResetRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=500)
+    password: str = Field(min_length=8, max_length=128)
+
 class UserResponse(BaseModel):
     """Schema for user information response"""
     id: int

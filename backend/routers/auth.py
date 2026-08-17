@@ -10,13 +10,17 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
+from ..models import AuditEvent, PasswordResetToken, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, PasswordResetRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_permission, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
 from ..services.entitlement_service import require_course_access, require_lesson_access, serialize_effective_access
 from ..websocket_manager import notification_manager
+from ..services.email_service import queue_password_reset_email
+import hashlib
+import os
+import secrets
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -154,7 +158,7 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
 @router.post("/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
     """
-    Handle forgot password request by logging it for admin review.
+    Queue a generic, rate-limited password recovery email when the account exists.
     """
     # Find user if possible (for logging context)
     user = db.query(User).filter(
@@ -162,19 +166,57 @@ async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(
         (User.email == request.username_or_email)
     ).first()
 
-    message = f"Password reset requested for: {request.username_or_email}"
-
-    # Log the request
-    log_entry = SystemLog(
-        level="WARNING",
-        message=message,
-        context="AUTH_RESET",
-        user_id=user.id if user else None
-    )
-    db.add(log_entry)
+    raw_token = None
+    if user and user.email:
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        recent = db.query(PasswordResetToken).filter(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.created_at >= now - timedelta(hours=1),
+        ).count()
+        if recent < 3:
+            db.query(PasswordResetToken).filter(
+                PasswordResetToken.user_id == user.id,
+                PasswordResetToken.used_at.is_(None),
+            ).update({PasswordResetToken.used_at: now}, synchronize_session=False)
+            raw_token = secrets.token_urlsafe(32)
+            db.add(PasswordResetToken(
+                user_id=user.id,
+                token_hash=hashlib.sha256(raw_token.encode()).hexdigest(),
+                expires_at=now + timedelta(hours=1),
+                created_at=now,
+            ))
+            queue_password_reset_email(db, user, raw_token)
+            db.add(AuditEvent(actor_user_id=user.id, action="account.password_reset_requested", target_type="user", target_id=str(user.id)))
     db.commit()
+    response = {"message": "If an eligible account exists, password reset instructions will be sent."}
+    if raw_token and os.getenv("ENVIRONMENT", "development").lower() == "development":
+        response["reset_token"] = raw_token
+    return response
 
-    return {"message": "If an account exists for that username/email, a reset request has been sent to the administrator."}
+
+@router.post("/reset-password")
+def reset_password(request: PasswordResetRequest, db: Session = Depends(get_db)):
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    token_hash = hashlib.sha256(request.token.encode()).hexdigest()
+    reset = db.query(PasswordResetToken).filter(
+        PasswordResetToken.token_hash == token_hash,
+        PasswordResetToken.used_at.is_(None),
+        PasswordResetToken.expires_at > now,
+    ).first()
+    if reset is None:
+        raise HTTPException(status_code=400, detail="This password reset link is invalid or expired")
+    user = db.query(User).filter(User.id == reset.user_id).first()
+    if user is None:
+        raise HTTPException(status_code=400, detail="This password reset link is invalid or expired")
+    user.hashed_password = hash_password(request.password)
+    reset.used_at = now
+    db.query(PasswordResetToken).filter(
+        PasswordResetToken.user_id == user.id,
+        PasswordResetToken.used_at.is_(None),
+    ).update({PasswordResetToken.used_at: now}, synchronize_session=False)
+    db.add(AuditEvent(actor_user_id=user.id, action="account.password_reset_completed", target_type="user", target_id=str(user.id)))
+    db.commit()
+    return {"message": "Your password has been reset. You can now sign in."}
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):

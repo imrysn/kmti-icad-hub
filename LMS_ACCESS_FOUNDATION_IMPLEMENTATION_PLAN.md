@@ -742,7 +742,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Add granular Admin permission allow/deny records.
 - [ ] Add refresh-session records.
 - [x] Add email verification tokens.
-- [ ] Add password reset tokens.
+- [x] Add password reset tokens.
 - [x] Add account invitations, invited roles, and invited learner-plan records.
 - [x] Add registration applications.
 - [x] Add access plans.
@@ -851,7 +851,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Create resend-verification flow.
 - [x] Create pending-approval page.
 - [ ] Create clarification flow if approved for phase scope.
-- [ ] Create forgot/reset password pages.
+- [x] Create forgot/reset password pages.
 - [ ] Add safe status-specific sign-in messages.
 - [ ] Validate mobile, tablet, and desktop layouts.
 - [x] Create invitation acceptance route and form.

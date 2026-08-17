@@ -131,3 +131,32 @@ def queue_invitation_email(db: Session, invitation: AccountInvitation, token: st
     )
     db.add(message)
     return message
+
+
+def queue_password_reset_email(db: Session, user: User, token: str) -> EmailOutbox:
+    app_url = os.getenv("PUBLIC_APP_URL", "http://127.0.0.1:5173").rstrip("/")
+    reset_url = f"{app_url}/#/password/reset?token={token}"
+    name = user.full_name or user.username
+    if user.preferred_language == "ja":
+        subject = "KMTI Training Hub パスワード再設定"
+        heading = "パスワードを再設定"
+        text_body = f"{name} 様\n\n1時間以内に次のリンクからパスワードを再設定してください:\n{reset_url}"
+        button = "パスワードを再設定"
+    else:
+        subject = "Reset your KMTI Training Hub password"
+        heading = "Reset your password"
+        text_body = f"Hello {name},\n\nReset your password within one hour:\n{reset_url}"
+        button = "Reset password"
+    message = EmailOutbox(
+        message_type="account.password_reset",
+        recipient_email=user.email,
+        recipient_name=name,
+        preferred_language=user.preferred_language,
+        subject=subject,
+        text_body=text_body,
+        html_body=f'<h1>{html.escape(heading)}</h1><p>{html.escape(name)},</p><p><a href="{html.escape(reset_url, quote=True)}">{html.escape(button)}</a></p><p>This link expires in one hour.</p>',
+        related_type="user",
+        related_id=str(user.id),
+    )
+    db.add(message)
+    return message

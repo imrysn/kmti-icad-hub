@@ -19,6 +19,7 @@ export const LoginView: React.FC = () => {
     // Forgot Password State
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
     const [forgotPasswordMessage, setForgotPasswordMessage] = useState(''); const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
+    const [developmentResetToken, setDevelopmentResetToken] = useState('');
 
     // Load remembered username on mount and check for session expiration
     useEffect(() => {
@@ -79,12 +80,14 @@ export const LoginView: React.FC = () => {
         setShowForgotPasswordModal(true);
         setForgotPasswordEmail('');
         setForgotPasswordMessage('');
+        setDevelopmentResetToken('');
     };
 
     const handleForgotPasswordCancel = () => {
         setShowForgotPasswordModal(false);
         setForgotPasswordEmail('');
         setForgotPasswordMessage('');
+        setDevelopmentResetToken('');
     };
 
     const handleForgotPasswordSubmit = async () => {
@@ -94,10 +97,8 @@ export const LoginView: React.FC = () => {
         try {
             const response = await authService.forgotPassword(forgotPasswordEmail);
             setForgotPasswordMessage(response.message);
+            setDevelopmentResetToken(response.reset_token || '');
             // Close modal after delay
-            setTimeout(() => {
-                setShowForgotPasswordModal(false);
-            }, 3000);
         } catch (err: any) {
             setForgotPasswordMessage(parseBackendError(err, 'Failed to send reset request. Please try again later.'));
         } finally {
@@ -186,6 +187,7 @@ export const LoginView: React.FC = () => {
                 {forgotPasswordMessage && (
                     <p className="modal-success-msg">{forgotPasswordMessage}</p>
                 )}
+                {developmentResetToken && <p className="registration-dev-link"><strong>Development only:</strong> <Link to={`/password/reset?token=${developmentResetToken}`} onClick={() => setShowForgotPasswordModal(false)}>Open password reset link</Link></p>}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div className="input-group">
                         <label htmlFor="forgot-email" className="modal-field-label">Email or Username</label>
