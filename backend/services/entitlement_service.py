@@ -81,6 +81,9 @@ def resolve_course(db: Session, course_reference: str) -> Course | None:
     return query.filter(Course.course_type == str(course_reference)).first()
 
 
+LEGACY_COURSE_CODES = {"1": "3D_Modeling", "3D_Modeling": "3D_Modeling", "2": "2D_Drawing", "2D_Drawing": "2D_Drawing"}
+
+
 def require_course_access(db: Session, user: User, course_reference: str) -> Course | None:
     # Practical assessments are represented as a virtual course.
     if course_reference == "practical-assessment":
@@ -90,6 +93,9 @@ def require_course_access(db: Session, user: User, course_reference: str) -> Cou
         return None
     course = resolve_course(db, course_reference)
     if course is None:
+        legacy_code = LEGACY_COURSE_CODES.get(str(course_reference))
+        if legacy_code and (is_learning_operator(db, user) or has_entitlement(db, user, "course", legacy_code)):
+            return None
         raise HTTPException(status_code=404, detail="Course not found")
     if not has_entitlement(db, user, "course", course.course_type):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this course")

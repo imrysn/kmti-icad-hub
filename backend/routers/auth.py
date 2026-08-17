@@ -371,10 +371,20 @@ def get_course_progress(
     """
     Get all completed lessons and scores for a specific course for the current user.
     """
-    require_course_access(db, current_user, course_id)
+    course = require_course_access(db, current_user, course_id)
+    # Progress historically used numeric database IDs while entitlements use
+    # stable course codes. Read both representations during the migration.
+    course_references = {str(course_id)}
+    if course is not None:
+        course_references.update({str(course.id), course.course_type})
+    else:
+        from ..services.entitlement_service import LEGACY_COURSE_CODES
+        stable_code = LEGACY_COURSE_CODES.get(str(course_id))
+        if stable_code:
+            course_references.update({stable_code, "1" if stable_code == "3D_Modeling" else "2"})
     scores = db.query(QuizScore).filter(
         QuizScore.user_id == current_user.id,
-        QuizScore.course_id == course_id
+        QuizScore.course_id.in_(course_references)
     ).all()
 
     return [

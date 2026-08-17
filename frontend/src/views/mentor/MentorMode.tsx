@@ -218,8 +218,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             }
 
             try {
-                // Course ID '1' is 3D Modeling
-                const progress3D = await authService.getLessonProgress('1');
+                const progress3D = await authService.getLessonProgress('3D_Modeling');
                 const completedCount3D = progress3D.filter((p: any) => p.is_completed).length;
 
                 // Mark as completed if all quizzes are passed
@@ -259,7 +258,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 }
 
                 // Course ID '2' is 2D Drawing
-                const progress2D = await authService.getLessonProgress('2');
+                const progress2D = await authService.getLessonProgress('2D_Drawing');
                 const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
                 setIs2DCompleted(completedCount2D >= completable2DCount);
             } catch (err) {
@@ -334,7 +333,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
         setIsLoadingProgress(true);
         try {
-            const progress = await authService.getLessonProgress(selectedCourse.id);
+            const progress = await authService.getLessonProgress(selectedCourse.course_type || selectedCourse.id);
             // Only count as completed if score is >= 80
             const ids = progress.filter((p: any) => p.is_completed).map((p: any) => p.lesson_id);
 
