@@ -63,7 +63,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ token, chi
       }
     } else {
       const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      wsUrl = `${proto}//${window.location.hostname || '127.0.0.1'}:3001/api/v1/notifications/ws`;
+      wsUrl = `${proto}//${window.location.hostname || '127.0.0.1'}:3002/api/v1/notifications/ws`;
     }
     return tokenVal ? `${wsUrl}?token=${encodeURIComponent(tokenVal)}` : wsUrl;
   }, []);

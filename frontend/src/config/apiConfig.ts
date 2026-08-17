@@ -13,14 +13,14 @@ const resolveApiBaseUrl = (): string => {
     if (configuredUrl) return normalizeUrl(configuredUrl);
 
     if (typeof import.meta.env !== 'undefined' && import.meta.env.DEV) {
-        return `http://${getBrowserHost()}:8000`;
+        return `http://${getBrowserHost()}:3002`;
     }
 
     if (typeof window !== 'undefined' && /^https?:$/.test(window.location.protocol)) {
         return normalizeUrl(window.location.origin);
     }
 
-    return 'http://127.0.0.1:3001';
+    return 'http://127.0.0.1:3002';
 };
 
 export const API_BASE_URL = resolveApiBaseUrl();
