@@ -437,8 +437,8 @@ export const AssessmentManagement: React.FC = () => {
             <div className="management-header">
                 <div className="toolbar">
                     <div className="search-box">
-                        <Search size={16} color="#94a3b8" />
-                        <input type="text" placeholder="Search assessments..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                        <Search className="search-box-icon" size={17} aria-hidden="true" />
+                        <input aria-label="Search assessments" type="search" placeholder="Search assessments" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                     </div>
                     <button className="toolbar-btn" onClick={() => { setCurrentQuiz({ course_type: '2D_Drawing' }); setIsEditingQuiz(true); }}>
                         <Plus size={16} /> New Assessment

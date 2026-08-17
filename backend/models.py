@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON, CheckConstraint, UniqueConstraint
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 try:
@@ -80,9 +80,193 @@ class User(Base):
     full_name = Column(String(200))
     role = Column(String(50), default="trainee")  # "trainee", "employee", "admin"
     is_active = Column(Boolean, default=True)
+    # LMS access-foundation fields. The legacy role/is_active columns remain
+    # authoritative during the compatibility rollout.
+    account_status = Column(String(50), default="active", nullable=False, index=True)
+    email_verified_at = Column(DateTime, nullable=True)
+    approved_at = Column(DateTime, nullable=True)
+    approved_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    preferred_language = Column(String(10), default="en", nullable=False)
+    timezone = Column(String(100), default="Asia/Manila", nullable=False)
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     custom_comments = Column(JSON, default=list)
+
+
+class Role(Base):
+    """Stable platform roles: learner, instructor, and admin."""
+    __tablename__ = "roles"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String(50), unique=True, nullable=False, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(String(500), nullable=True)
+    is_system = Column(Boolean, default=True, nullable=False)
+
+
+class Permission(Base):
+    """Named server-side capability used by authorization policies."""
+    __tablename__ = "permissions"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String(100), unique=True, nullable=False, index=True)
+    description = Column(String(500), nullable=True)
+
+
+class RolePermission(Base):
+    __tablename__ = "role_permissions"
+
+    role_id = Column(Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True)
+    permission_id = Column(Integer, ForeignKey("permissions.id", ondelete="CASCADE"), primary_key=True)
+
+
+class UserRole(Base):
+    """Append-friendly role grant history; revoked rows are retained."""
+    __tablename__ = "user_roles"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    role_id = Column(Integer, ForeignKey("roles.id", ondelete="CASCADE"), nullable=False, index=True)
+    granted_at = Column(DateTime, default=func.now(), nullable=False)
+    granted_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    revoked_at = Column(DateTime, nullable=True, index=True)
+    reason = Column(String(500), nullable=True)
+
+
+class AdminAreaGrant(Base):
+    """Controls visibility and base access for the three Admin Panel pages."""
+    __tablename__ = "admin_area_grants"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    area_code = Column(String(50), nullable=False, index=True)  # content, organization, platform
+    granted_at = Column(DateTime, default=func.now(), nullable=False)
+    granted_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    revoked_at = Column(DateTime, nullable=True, index=True)
+    reason = Column(String(500), nullable=True)
+
+
+class UserPermissionGrant(Base):
+    """Granular allow/deny exception within an assigned Admin area."""
+    __tablename__ = "user_permission_grants"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    permission_id = Column(Integer, ForeignKey("permissions.id", ondelete="CASCADE"), nullable=False)
+    effect = Column(String(10), nullable=False, default="allow")  # allow or deny
+    granted_at = Column(DateTime, default=func.now(), nullable=False)
+    granted_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    revoked_at = Column(DateTime, nullable=True, index=True)
+    reason = Column(String(500), nullable=True)
+
+
+class AuditEvent(Base):
+    """Append-only security and administration audit record."""
+    __tablename__ = "audit_events"
+
+    id = Column(Integer, primary_key=True)
+    occurred_at = Column(DateTime, default=func.now(), nullable=False, index=True)
+    actor_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    action = Column(String(100), nullable=False, index=True)
+    target_type = Column(String(100), nullable=False)
+    target_id = Column(String(100), nullable=True)
+    request_id = Column(String(100), nullable=True, index=True)
+    result = Column(String(50), nullable=False, default="success")
+    # Text-encoded JSON keeps compatibility with the deployed MySQL/MariaDB
+    # version, which does not support a native JSON column for this table.
+    metadata_json = Column(Text, nullable=True)
+
+
+class AccessPlan(Base):
+    """Configurable learner access level; not a billing subscription."""
+    __tablename__ = "access_plans"
+
+    id = Column(Integer, primary_key=True)
+    code = Column(String(50), unique=True, nullable=False, index=True)
+    name = Column(String(150), nullable=False)
+    description = Column(String(1000), nullable=True)
+    display_order = Column(Integer, nullable=False, default=0)
+    is_active = Column(Boolean, nullable=False, default=True, index=True)
+    is_publicly_requestable = Column(Boolean, nullable=False, default=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, default=func.now(), onupdate=func.now())
+
+
+class PlanEntitlement(Base):
+    """A resource or service made available through an access plan."""
+    __tablename__ = "plan_entitlements"
+    __table_args__ = (UniqueConstraint("plan_id", "resource_type", "resource_id", "permission_code", name="uq_plan_entitlement_resource"),)
+
+    id = Column(Integer, primary_key=True)
+    plan_id = Column(Integer, ForeignKey("access_plans.id", ondelete="CASCADE"), nullable=False, index=True)
+    resource_type = Column(String(50), nullable=False, index=True)
+    resource_id = Column(String(150), nullable=False)
+    permission_code = Column(String(100), nullable=False, default="view")
+    limits_json = Column(Text, nullable=True)
+
+
+class UserPlanAssignment(Base):
+    """Append-friendly learner plan history."""
+    __tablename__ = "user_plan_assignments"
+    __table_args__ = (
+        CheckConstraint("status IN ('scheduled','active','expired','cancelled')", name="ck_user_plan_assignment_status"),
+        CheckConstraint("ends_at IS NULL OR ends_at > starts_at", name="ck_user_plan_assignment_dates"),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    plan_id = Column(Integer, ForeignKey("access_plans.id"), nullable=False, index=True)
+    starts_at = Column(DateTime, nullable=False, default=func.now())
+    ends_at = Column(DateTime, nullable=True, index=True)
+    status = Column(String(30), nullable=False, default="active", index=True)
+    assigned_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reason = Column(String(500), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
+class RegistrationApplication(Base):
+    """Public learner application reviewed by an Organization administrator."""
+    __tablename__ = "registration_applications"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('email_verification_pending','pending_approval','approved','rejected','clarification_required','cancelled','duplicate')",
+            name="ck_registration_application_status",
+        ),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True, index=True)
+    email_normalized = Column(String(255), nullable=False, index=True)
+    company_name = Column(String(200), nullable=True)
+    department = Column(String(200), nullable=True)
+    job_title = Column(String(200), nullable=True)
+    country_code = Column(String(2), nullable=True)
+    reason_for_access = Column(String(2000), nullable=True)
+    requested_plan_id = Column(Integer, ForeignKey("access_plans.id"), nullable=False, index=True)
+    assigned_plan_id = Column(Integer, ForeignKey("access_plans.id"), nullable=True)
+    status = Column(String(50), nullable=False, default="email_verification_pending", index=True)
+    submitted_at = Column(DateTime, nullable=False, default=func.now())
+    email_verified_at = Column(DateTime, nullable=True)
+    reviewed_at = Column(DateTime, nullable=True)
+    reviewed_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    internal_review_notes = Column(Text, nullable=True)
+    applicant_message = Column(Text, nullable=True)
+    privacy_policy_version = Column(String(50), nullable=False)
+    privacy_consented_at = Column(DateTime, nullable=False)
+    terms_version = Column(String(50), nullable=False)
+    terms_accepted_at = Column(DateTime, nullable=False)
+    version = Column(Integer, nullable=False, default=1)
+
+
+class EmailVerificationToken(Base):
+    __tablename__ = "email_verification_tokens"
+
+    id = Column(Integer, primary_key=True)
+    application_id = Column(Integer, ForeignKey("registration_applications.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
 
 
 class SystemLog(Base):

@@ -7,7 +7,7 @@ from datetime import timedelta
 
 from ...database import get_db
 from ...models import User, UserProgress, SystemLog, Broadcast
-from ...auth.dependencies import require_role
+from ...auth.dependencies import require_permission
 from ...rag_engine import rag_engine
 from ...time_utils import utc_now
 
@@ -16,7 +16,7 @@ router = APIRouter()
 @router.get("/stats")
 def get_system_stats(
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("platform.configure"))
 ):
     """Get system-wide statistics for the dashboard"""
     total_users = db.query(User).count()
@@ -62,7 +62,7 @@ def get_system_stats(
 def get_system_logs(
     limit: int = 50,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("audit.read_security"))
 ):
     """Get recent system audit logs"""
     logs = db.query(SystemLog).order_by(SystemLog.created_at.desc()).limit(limit).all()
@@ -82,7 +82,7 @@ def create_broadcast(
     message: str,
     level: str = "info",
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("employee"))
+    admin: User = Depends(require_permission("admin.area.organization.access"))
 ):
     """Create a new system-wide broadcast message"""
     broadcast = Broadcast(message=message, level=level, created_by=admin.id)
@@ -115,7 +115,7 @@ def get_active_broadcasts(
 @router.get("/heatmap")
 def get_training_heatmap(
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("admin.area.organization.access"))
 ):
     """Get activity counts per course for heatmap (Recent 60 mins)"""
     one_hour_ago = utc_now() - timedelta(minutes=60)
@@ -133,7 +133,7 @@ def get_training_heatmap(
 def delete_broadcast(
     broadcast_id: int,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("employee"))
+    admin: User = Depends(require_permission("admin.area.organization.access"))
 ):
     """Delete a system-wide broadcast message"""
     broadcast = db.query(Broadcast).filter(Broadcast.id == broadcast_id).first()

@@ -11,9 +11,10 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
+from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
 from ..websocket_manager import notification_manager
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -98,7 +99,7 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    if not user.is_active:
+    if not user.is_active or user.account_status != "active":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Inactive user account"
@@ -186,6 +187,19 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
         User information
     """
     return current_user
+
+
+@router.get("/me/access", response_model=UserAccessResponse)
+def get_current_user_access(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Return effective roles, Admin Panel areas, and named permissions."""
+    return UserAccessResponse(
+        roles=sorted(get_active_role_codes(db, current_user)),
+        admin_areas=sorted(get_active_admin_areas(db, current_user)),
+        permissions=sorted(get_effective_permissions(db, current_user)),
+    )
 
 @router.put("/me/custom-comments", response_model=UserResponse)
 async def update_custom_comments(

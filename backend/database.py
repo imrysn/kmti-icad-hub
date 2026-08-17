@@ -19,15 +19,21 @@ def get_app_path():
 
 APP_PATH = get_app_path()
 
-# Load environment variables from the project root
-env_path = os.getenv("ENV_FILE_PATH", os.path.join(APP_PATH, ".env"))
+# The LMS defaults to its own environment instead of the legacy desktop .env.
+env_path = os.getenv(
+    "ENV_FILE_PATH",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env.lms-development"),
+)
 load_dotenv(env_path, override=True)
 
 Base = declarative_base()
 
 # Configuration
 USE_MYSQL = os.getenv("USE_MYSQL", "false").lower() == "true"
-SQLITE_URL = f"sqlite:///{os.path.join(APP_PATH, 'kmti_icad.db')}"
+configured_sqlite_path = os.getenv("SQLITE_DB_PATH", "kmti_icad.db")
+if not os.path.isabs(configured_sqlite_path):
+    configured_sqlite_path = os.path.join(APP_PATH, configured_sqlite_path)
+SQLITE_URL = f"sqlite:///{configured_sqlite_path}"
 DB_MODE = "sqlite" # Default/Fallback mode
 
 # Initialize SQLite engine & session maker
@@ -50,9 +56,18 @@ MySQLSessionLocal = None
 
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "3306")
-DB_NAME = os.getenv("DB_NAME", "kmtihub")
+DB_NAME = os.getenv("DB_NAME", "kmti_lms")
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
+
+if os.getenv("ENFORCE_LMS_DATABASE_ISOLATION", "true").lower() == "true" and USE_MYSQL:
+    normalized_host = DB_HOST.strip().lower()
+    normalized_name = DB_NAME.strip().lower()
+    if normalized_host == "kmti-nas" or normalized_name == "kmtihub":
+        raise RuntimeError(
+            "LMS startup refused: the configured MySQL target belongs to the "
+            "legacy KMTI desktop application. Configure a dedicated LMS database."
+        )
 
 if USE_MYSQL:
 

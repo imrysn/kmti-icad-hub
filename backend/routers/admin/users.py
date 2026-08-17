@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from ...database import get_db
 from ...models import User, SystemLog
 from ...schemas import UserCreateAdmin, UserUpdate, UserResponse
-from ...auth.dependencies import require_role
+from ...auth.dependencies import require_permission
 from ...auth.security import hash_password
 
 router = APIRouter()
@@ -12,7 +12,7 @@ router = APIRouter()
 def delete_user(
     user_id: int,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("user.manage"))
 ):
     """Permanently delete a user. Admin only."""
     user = db.query(User).filter(User.id == user_id).first()
@@ -41,7 +41,7 @@ def delete_user(
 def create_user_as_admin(
     user_data: UserCreateAdmin,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("user.manage"))
 ):
     """Admin-only endpoint to create users with direct role assignment."""
     # Check for existing user
@@ -81,7 +81,7 @@ def update_user_as_admin(
     user_id: int,
     user_update: UserUpdate,
     db: Session = Depends(get_db),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("user.manage"))
 ):
     """Admin-only endpoint to update user details."""
     print("DEBUG UserUpdate:", user_update.model_dump())

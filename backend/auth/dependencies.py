@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models import User
 from .security import decode_token
+from ..services.access_control_service import user_has_admin_area, user_has_permission
 
 # Security scheme for JWT bearer tokens
 security = HTTPBearer()
@@ -52,7 +53,7 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     
-    if not user.is_active:
+    if not user.is_active or user.account_status != "active":
         raise HTTPException(status_code=400, detail="Inactive user")
     
     return user
@@ -79,3 +80,35 @@ def require_role(required_role: str):
         return current_user
     
     return role_checker
+
+
+def require_permission(permission_code: str):
+    """Require a named permission from the normalized access model."""
+    async def permission_checker(
+        current_user: User = Depends(get_current_user),
+        db: Session = Depends(get_db),
+    ) -> User:
+        if not user_has_permission(db, current_user, permission_code):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Required permission: {permission_code}",
+            )
+        return current_user
+
+    return permission_checker
+
+
+def require_admin_area(area_code: str):
+    """Require one of the Content, Organization, or Platform Admin areas."""
+    async def area_checker(
+        current_user: User = Depends(get_current_user),
+        db: Session = Depends(get_db),
+    ) -> User:
+        if not user_has_admin_area(db, current_user, area_code):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Required Admin area: {area_code}",
+            )
+        return current_user
+
+    return area_checker

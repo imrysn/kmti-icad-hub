@@ -18,6 +18,7 @@ import { api,getSystemStatus } from './services/api';
 import { assessmentService } from './services/assessmentService';
 import { authService } from './services/authService';
 import { LoginView } from './views/LoginView';
+import { RegistrationView } from './views/RegistrationView';
 import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
@@ -215,6 +216,7 @@ function AppContent() {
 
           <Routes>
             <Route path="/login" element={<LoginView />} />
+            <Route path="/register" element={<RegistrationView />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>

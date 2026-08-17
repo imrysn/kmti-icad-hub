@@ -34,6 +34,14 @@ export interface TokenResponse {
     user: User;
 }
 
+export type AdminArea = 'content' | 'organization' | 'platform';
+
+export interface UserAccess {
+    roles: Array<'learner' | 'instructor' | 'admin' | string>;
+    admin_areas: AdminArea[];
+    permissions: string[];
+}
+
 // Shared Axios instance — reuses the same interceptors as api.ts so that
 // 401 handling, token injection, and base URL config are all in one place.
 const authApi = axios.create({
@@ -112,6 +120,11 @@ export const authService = {
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
         sessionStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
+
+    async getCurrentUserAccess(): Promise<UserAccess> {
+        const response = await authApi.get<UserAccess>('/auth/me/access');
         return response.data;
     },
 

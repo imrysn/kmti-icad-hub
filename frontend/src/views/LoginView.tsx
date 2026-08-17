@@ -1,13 +1,12 @@
 import { Eye, EyeOff, Lock, User as UserIcon, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Modal } from '../components/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import { parseBackendError } from '../utils/errorUtils';
 import { useTranslation } from '../context/LanguageContext';
-import kmtiSymbolLogo from '../assets/logo/kmti_logo.png';
 
 export const LoginView: React.FC = () => {
     const isDesktopApp = Boolean(window.electronAPI);
@@ -172,6 +171,7 @@ export const LoginView: React.FC = () => {
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
                         {isLoggingIn ? (t('common.loading') || 'Logging...') : t('login.btn')}
                     </button>
+                    {!isDesktopApp && <Link to="/register" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: 'var(--login-primary)' }}>Apply for training access</Link>}
                 </form>
             </div>
 

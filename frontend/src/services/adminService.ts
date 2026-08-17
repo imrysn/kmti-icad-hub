@@ -60,6 +60,25 @@ export interface SystemAuditLog {
     created_at: string;
 }
 
+export interface AccessPlan {
+    id: number;
+    code: string;
+    name: string;
+    description?: string;
+    display_order: number;
+    is_active: boolean;
+    is_publicly_requestable: boolean;
+    entitlements: Array<{ id: number; plan_id: number; resource_type: string; resource_id: string; permission_code: string; limits_json?: string }>;
+}
+
+export interface RegistrationApplication {
+    id: number; user_id: number; email: string; full_name: string; company_name?: string;
+    department?: string; job_title?: string; country_code?: string; reason_for_access?: string;
+    requested_plan_id: number; assigned_plan_id?: number; requested_plan_name?: string;
+    assigned_plan_name?: string; status: string; submitted_at: string; email_verified_at?: string;
+    reviewed_at?: string; internal_review_notes?: string; applicant_message?: string; version: number;
+}
+
 export interface Quiz {
     id: number;
     slug: string;
@@ -82,6 +101,28 @@ export interface Question {
 }
 
 export const adminService = {
+    async getRegistrationApplications(status = 'pending_approval'): Promise<RegistrationApplication[]> {
+        return (await api.get('/admin/registration-applications', { params: { status } })).data;
+    },
+
+    async approveRegistration(id: number, version: number, assignedPlanId: number, internalReason?: string): Promise<RegistrationApplication> {
+        return (await api.post(`/admin/registration-applications/${id}/approve`, { version, assigned_plan_id: assignedPlanId, internal_reason: internalReason })).data;
+    },
+
+    async rejectRegistration(id: number, version: number, internalReason?: string, applicantMessage?: string): Promise<RegistrationApplication> {
+        return (await api.post(`/admin/registration-applications/${id}/reject`, { version, internal_reason: internalReason, applicant_message: applicantMessage })).data;
+    },
+
+    async getAccessPlans(): Promise<AccessPlan[]> {
+        const response = await api.get('/admin/access-plans');
+        return response.data;
+    },
+
+    async updateAccessPlan(planId: number, data: Partial<Pick<AccessPlan, 'name' | 'description' | 'display_order' | 'is_active' | 'is_publicly_requestable'>>): Promise<AccessPlan> {
+        const response = await api.patch(`/admin/access-plans/${planId}`, data);
+        return response.data;
+    },
+
     async getStats(): Promise<SystemStats> {
         return cachedGet('/admin/stats');
     },

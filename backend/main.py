@@ -1,8 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from the backend directory
-env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+# This branch is an isolated online LMS. Never fall back to the legacy desktop
+# application's backend/.env when it is started without the batch launcher.
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+env_path = os.getenv("ENV_FILE_PATH", os.path.join(backend_dir, ".env.lms-development"))
 load_dotenv(env_path, override=True)
 
 from fastapi import FastAPI, Depends
@@ -170,7 +172,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, contacts
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, contacts, plans, registrations
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -182,6 +184,8 @@ app.include_router(notifications.router, prefix="/api/v1")
 app.include_router(settings.router, prefix="/api/v1")
 app.include_router(tts.router, prefix="/api/v1")
 app.include_router(contacts.router, prefix="/api/v1")
+app.include_router(plans.router, prefix="/api/v1")
+app.include_router(registrations.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

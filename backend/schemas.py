@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from datetime import datetime
 from typing import List, Literal, Optional
 
@@ -147,6 +147,72 @@ class UserResponse(BaseModel):
     
     class Config:
         from_attributes = True
+
+
+class UserAccessResponse(BaseModel):
+    """Effective authorization data used to construct protected navigation."""
+    roles: List[str]
+    admin_areas: List[str]
+    permissions: List[str]
+
+
+class RegistrationCreate(BaseModel):
+    username: str = Field(min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+    full_name: str = Field(min_length=1, max_length=200)
+    requested_plan_id: int
+    company_name: Optional[str] = Field(default=None, max_length=200)
+    department: Optional[str] = Field(default=None, max_length=200)
+    job_title: Optional[str] = Field(default=None, max_length=200)
+    country_code: Optional[str] = Field(default=None, min_length=2, max_length=2)
+    reason_for_access: Optional[str] = Field(default=None, max_length=2000)
+    preferred_language: Literal["en", "ja"] = "en"
+    timezone: str = Field(default="Asia/Manila", max_length=100)
+    privacy_policy_version: str = Field(min_length=1, max_length=50)
+    terms_version: str = Field(min_length=1, max_length=50)
+    privacy_accepted: bool
+    terms_accepted: bool
+
+
+class RegistrationSubmissionResponse(BaseModel):
+    message: str
+    application_id: Optional[int] = None
+    verification_token: Optional[str] = None
+
+
+class EmailVerificationRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=500)
+
+
+class RegistrationReviewRequest(BaseModel):
+    version: int
+    assigned_plan_id: Optional[int] = None
+    internal_reason: Optional[str] = Field(default=None, max_length=2000)
+    applicant_message: Optional[str] = Field(default=None, max_length=2000)
+
+
+class RegistrationApplicationResponse(BaseModel):
+    id: int
+    user_id: int
+    email: str
+    full_name: str
+    company_name: Optional[str] = None
+    department: Optional[str] = None
+    job_title: Optional[str] = None
+    country_code: Optional[str] = None
+    reason_for_access: Optional[str] = None
+    requested_plan_id: int
+    assigned_plan_id: Optional[int] = None
+    requested_plan_name: Optional[str] = None
+    assigned_plan_name: Optional[str] = None
+    status: str
+    submitted_at: datetime
+    email_verified_at: Optional[datetime] = None
+    reviewed_at: Optional[datetime] = None
+    internal_review_notes: Optional[str] = None
+    applicant_message: Optional[str] = None
+    version: int
 
 class Token(BaseModel):
     """Schema for JWT token response"""
@@ -385,4 +451,44 @@ class ChatRequest(BaseModel):
         if v and len(v) > 3:
             raise ValueError("Cannot upload more than 3 images")
         return v
+
+
+class PlanEntitlementInput(BaseModel):
+    resource_type: str
+    resource_id: str
+    permission_code: str = "view"
+    limits_json: Optional[str] = None
+
+
+class PlanEntitlementResponse(PlanEntitlementInput):
+    id: int
+    plan_id: int
+    class Config:
+        from_attributes = True
+
+
+class AccessPlanCreate(BaseModel):
+    code: str
+    name: str
+    description: Optional[str] = None
+    display_order: int = 0
+    is_active: bool = True
+    is_publicly_requestable: bool = True
+
+
+class AccessPlanUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    display_order: Optional[int] = None
+    is_active: Optional[bool] = None
+    is_publicly_requestable: Optional[bool] = None
+
+
+class AccessPlanResponse(AccessPlanCreate):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+    entitlements: List[PlanEntitlementResponse] = Field(default_factory=list)
+    class Config:
+        from_attributes = True
 

@@ -7,7 +7,7 @@ import csv
 from datetime import datetime
 
 from ...models import User
-from ...auth.dependencies import require_role
+from ...auth.dependencies import require_permission
 from ...ingest_knowledge_base import ingest_directory
 
 # Resolve backend/knowledge_base path dynamically from backend/routers/admin/kb.py
@@ -22,7 +22,7 @@ router = APIRouter()
 
 @router.post("/reindex")
 def trigger_kb_reindex(
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """Manually trigger re-indexing of the knowledge base directory"""
     kb_dir = KB_DIR
@@ -35,7 +35,7 @@ def trigger_kb_reindex(
 
 @router.get("/kb/files")
 def list_kb_files(
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """List all files in the knowledge base directory"""
     kb_dir = KB_DIR
@@ -55,7 +55,7 @@ def list_kb_files(
 @router.post("/kb/upload")
 async def upload_kb_files(
     files: List[UploadFile] = File(...),
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """Upload one or more files to the knowledge base"""
     kb_dir = KB_DIR
@@ -76,7 +76,7 @@ async def upload_kb_files(
 @router.get("/kb/files/{filename}/preview")
 def preview_kb_file(
     filename: str,
-    admin: User = Depends(require_role("employee"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """Return file contents as JSON rows for in-browser preview (CSV and XLSX only)."""
     # Sanitize — no path traversal
@@ -145,7 +145,7 @@ def preview_kb_file(
 @router.get("/kb/files/{filename}/download")
 def download_kb_file(
     filename: str,
-    admin: User = Depends(require_role("employee"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """Download a KB file directly."""
     if "/" in filename or "\\" in filename or ".." in filename:
@@ -163,7 +163,7 @@ def download_kb_file(
 @router.delete("/kb/files/{filename}")
 def delete_kb_file(
     filename: str,
-    admin: User = Depends(require_role("admin"))
+    admin: User = Depends(require_permission("content.edit"))
 ):
     """Delete a file from the knowledge base"""
     # Sanitize — no path traversal

@@ -9,6 +9,8 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
 import { AdminHeader } from './components/AdminHeader';
 import { AdminSidebar } from './components/AdminSidebar';
+import { AdminComingSoon } from './components/AdminComingSoon';
+import { AccessPlanManagement } from './components/AccessPlanManagement';
 import { AssessmentManagement } from './components/AssessmentManagement';
 import { AuditLogs } from './components/AuditLogs';
 import { BroadcastCenter } from './components/BroadcastCenter';
@@ -18,23 +20,80 @@ import { SystemAnalytics } from './components/SystemAnalytics';
 import { TraineeDetail } from './components/TraineeDetail';
 import { UserManagement } from './components/UserManagement';
 import { UserModal } from './components/UserModal';
+import { AdminAccessDenied } from './components/AdminAccessDenied';
+import { RegistrationApprovalManagement } from './components/RegistrationApprovalManagement';
+import { AdminArea, authService, UserAccess } from '../../services/authService';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs' | 'trainees';
+export type AdminTab =
+    | 'curriculum' | 'assessments' | 'knowledge-base' | 'media-translations'
+    | 'registration-approvals' | 'invitations' | 'users' | 'instructors' | 'access-plans' | 'reports-broadcasts'
+    | 'system-health' | 'audit-records' | 'security' | 'email-integrations' | 'storage-backups' | 'technical-settings'
+    | 'overview' | 'progress' | 'practical' | 'logs' | 'trainees';
+
+const AREA_DEFAULT_TAB: Record<AdminArea, AdminTab> = {
+    content: 'curriculum',
+    organization: 'registration-approvals',
+    platform: 'system-health',
+};
+
+const TAB_AREA: Partial<Record<AdminTab, AdminArea>> = {
+    assessments: 'content',
+    practical: 'content',
+    curriculum: 'content',
+    'knowledge-base': 'content',
+    'media-translations': 'content',
+    'registration-approvals': 'organization',
+    invitations: 'organization',
+    users: 'organization',
+    instructors: 'organization',
+    'access-plans': 'organization',
+    'reports-broadcasts': 'organization',
+    progress: 'organization',
+    'system-health': 'platform',
+    'audit-records': 'platform',
+    security: 'platform',
+    'email-integrations': 'platform',
+    'storage-backups': 'platform',
+    'technical-settings': 'platform',
+    overview: 'platform',
+    logs: 'platform',
+};
 
 export const AdminMode: React.FC = () => {
     const location = useLocation();
-
-    // Derive active tab from URL path
-    const pathParts = location.pathname.split('/');
-    const activeTab = (pathParts[pathParts.length - 1] as AdminTab) || 'overview';
-
     const navigate = useNavigate();
+    const pathParts = location.pathname.split('/').filter(Boolean);
+    const requestedArea = pathParts[1] as AdminArea | undefined;
+    const requestedTab = pathParts[2] as AdminTab | undefined;
+    const legacyTab = pathParts.length === 2 ? pathParts[1] as AdminTab : undefined;
+    const activeTab = requestedTab || legacyTab || 'registration-approvals';
+    const [access, setAccess] = React.useState<UserAccess | null>(null);
+    const [accessError, setAccessError] = React.useState<string | null>(null);
+
     React.useEffect(() => {
-        const path = location.pathname;
-        if (path === '/admin' || path === '/admin/') {
-            navigate('/admin/overview', { replace: true });
+        let mounted = true;
+        authService.getCurrentUserAccess()
+            .then((result) => mounted && setAccess(result))
+            .catch(() => mounted && setAccessError('Unable to load your administrative access.'));
+        return () => { mounted = false; };
+    }, []);
+
+    React.useEffect(() => {
+        if (!access) return;
+        const firstArea = access.admin_areas[0];
+        if ((location.pathname === '/admin' || location.pathname === '/admin/') && firstArea) {
+            navigate(`/admin/${firstArea}/${AREA_DEFAULT_TAB[firstArea]}`, { replace: true });
+            return;
         }
-    }, [location.pathname, navigate]);
+        if (legacyTab && TAB_AREA[legacyTab]) {
+            const area = TAB_AREA[legacyTab]!;
+            navigate(`/admin/${area}/${legacyTab}`, { replace: true });
+            return;
+        }
+        if (requestedArea && access.admin_areas.includes(requestedArea) && !requestedTab) {
+            navigate(`/admin/${requestedArea}/${AREA_DEFAULT_TAB[requestedArea]}`, { replace: true });
+        }
+    }, [access, legacyTab, location.pathname, navigate, requestedArea, requestedTab]);
 
     const {
         stats,
@@ -67,18 +126,35 @@ export const AdminMode: React.FC = () => {
 
     // Prevent full-page flashing/flickering by only displaying overlay when switching to an empty tab
     const isTabDataEmpty =
-        (activeTab === 'overview' && !stats) ||
+        ((activeTab === 'overview' || activeTab === 'system-health') && !stats) ||
         (activeTab === 'users' && users.length === 0) ||
-        (activeTab === 'progress' && progress.length === 0) ||
-        (activeTab === 'logs' && logs.length === 0);
+        ((activeTab === 'progress' || activeTab === 'reports-broadcasts') && progress.length === 0) ||
+        ((activeTab === 'logs' || activeTab === 'audit-records') && logs.length === 0);
 
     const showLoader = loading && isTabDataEmpty;
+    const isRootRoute = pathParts.length === 1;
+    const isLegacyRoute = Boolean(legacyTab && TAB_AREA[legacyTab]);
+    const isAccessDenied = Boolean(
+        access && !isRootRoute && !isLegacyRoute &&
+        (!requestedArea || !access.admin_areas.includes(requestedArea) || TAB_AREA[activeTab] !== requestedArea)
+    );
+
+    if (!access && !accessError) {
+        return <div className="admin-layout"><div className="loading-overlay"><div className="spinner"></div></div></div>;
+    }
+
+    if (accessError || !access) {
+        return <div className="admin-layout"><AdminAccessDenied area="Admin Panel" /></div>;
+    }
 
     return (
         <div className="admin-layout">
-            <AdminSidebar currentUser={currentUser} />
+            <AdminSidebar adminAreas={access.admin_areas} />
 
             <main className="admin-main">
+                {isAccessDenied ? (
+                    <AdminAccessDenied area={requestedArea || 'requested'} />
+                ) : <>
                 <AdminHeader activeTab={activeTab} stats={stats} selectedTrainee={selectedTrainee} fetchData={fetchData} loading={loading} />
 
                 <div className={`page-content ${location.search.includes('subtab=assessments') || location.search.includes('subtab=sets') ? 'no-scroll' : ''}`} style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
@@ -88,7 +164,7 @@ export const AdminMode: React.FC = () => {
                         </div>
                     )}
 
-                    <div style={{ display: activeTab === 'overview' ? 'block' : 'none' }}>
+                    <div style={{ display: activeTab === 'system-health' || activeTab === 'overview' ? 'block' : 'none' }}>
                         <ErrorBoundary>
                             {stats && (
                                 <div className="dashboard-scrollable">
@@ -112,7 +188,7 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    <div style={{ display: activeTab === 'progress' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
+                    <div style={{ display: activeTab === 'reports-broadcasts' || activeTab === 'progress' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
                         <ErrorBoundary>
                             {(() => {
                                 const params = new URLSearchParams(location.search);
@@ -148,11 +224,23 @@ export const AdminMode: React.FC = () => {
                         </ErrorBoundary>
                     </div>
 
-                    <div style={{ display: activeTab === 'logs' ? 'block' : 'none' }}>
+                    <div style={{ display: activeTab === 'audit-records' || activeTab === 'logs' ? 'block' : 'none' }}>
                         <ErrorBoundary>
                             <AuditLogs logs={logs} />
                         </ErrorBoundary>
                     </div>
+
+                    {activeTab === 'curriculum' && <AdminComingSoon title="Curriculum" description="Build and arrange courses, modules, lessons, prerequisites, and completion rules." available={['Course, lesson, and lesson-content API foundation']} />}
+                    {activeTab === 'knowledge-base' && <AdminComingSoon title="Knowledge-base content" description="Manage the documents used by the training hub knowledge base." available={['Upload, preview, download, delete, and re-index API foundation']} />}
+                    {activeTab === 'media-translations' && <AdminComingSoon title="Media and translations" description="Manage reusable images, videos, captions, and translated course content." />}
+                    {activeTab === 'registration-approvals' && <RegistrationApprovalManagement />}
+                    {activeTab === 'invitations' && <AdminComingSoon title="Invitations" description="Invite learners and instructors, assign their organization, role, and initial access plan." />}
+                    {activeTab === 'instructors' && <AdminComingSoon title="Instructors" description="Manage instructor profiles, course assignments, and learner responsibilities." available={['Trainer assignment support in practical training sets']} />}
+                    {activeTab === 'access-plans' && <AccessPlanManagement />}
+                    {activeTab === 'security' && <AdminComingSoon title="Security" description="Review administrative permissions, session policies, and account-protection settings." available={['Area-based admin permissions and protected routes']} />}
+                    {activeTab === 'email-integrations' && <AdminComingSoon title="Email and integrations" description="Configure registration, invitation, notification, and external-service providers." />}
+                    {activeTab === 'storage-backups' && <AdminComingSoon title="Storage and backups" description="Monitor file storage and manage backup, retention, and recovery policies." />}
+                    {activeTab === 'technical-settings' && <AdminComingSoon title="Technical settings" description="Manage platform-wide operational settings from one controlled location." available={['System-settings API foundation']} />}
 
                     {showLoader && (
                         <div className="loading-overlay">
@@ -160,13 +248,14 @@ export const AdminMode: React.FC = () => {
                         </div>
                     )}
                 </div>
+                </>}
             </main>
-            <BroadcastCenter />
+            {access.admin_areas.includes('organization') && <BroadcastCenter />}
 
-            <UserModal isOpen={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}
+            {access.admin_areas.includes('organization') && <UserModal isOpen={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}
                 onSave={handleSaveUser}
                 user={selectedUser}
-            />
+            />}
         </div>
     );
 };
