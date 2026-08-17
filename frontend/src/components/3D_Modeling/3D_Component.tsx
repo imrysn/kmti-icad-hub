@@ -65,14 +65,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
   const moveSteps = [
     "MOVE COMPONENT",
     "Step 1: Select Move Component from the icon menu.",
-    "Select the component to move then GO",
+    "Select the component to move then Right Click",
     "Specify the movement distance on the X,Y and Z-axis on the item entry. then Press Enter",
     "RESULT"
   ];
   const copySteps =
     ["COPY COMPONENT",
       "Step 1: Select Copy Component from the icon menu.",
-      "Select the component to copy then GO",
+      "Select the component to copy then Right Click",
       "Specify the distance on the X,Y and Z-axis and the number of copies needed then Press Enter",
       "RESULT"
     ];
@@ -80,7 +80,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     "MIRROR COMPONENT",
     "Use to move/relocate a component by mirror movement.",
     "Step 1: Select Mirror Component from the icon menu.",
-    "Select the components to be mirror then GO",
+    "Select the components to be mirror then Right Click",
     "Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.",
     "RESULT"
   ];
@@ -88,7 +88,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     "ROTATE COMPONENT",
     "Use to move/relocate a component by rotating on an axis.",
     "Step 1: Select Rotate Component from the icon menu.",
-    "Select the component to rotate then GO",
+    "Select the component to rotate then Right Click",
     "Select 2 points to set the axis of rotation.",
     "Step 4: Specify the desired angle of rotation on the item entry then press Enter.",
     "RESULT"
@@ -102,7 +102,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
     "ROTATE COPY COMPONENT",
     "Use to create a duplicate of a component by rotating on an axis.",
     "Step 1: Select Rotate Component from the icon menu.",
-    "Select the component to be rotated then GO",
+    "Select the component to be rotated then Right Click",
     "Step 3: Select 2 points to set the axis of rotation.",
     "Step 4: Specify the desired angle of rotation on the item entry then press Enter.",
     "RESULT"
@@ -281,7 +281,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the component to move &gt; GO"
+                    text="Select the component to move then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -366,7 +366,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the component to copy &gt; GO"
+                    text="Select the component to copy then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -381,7 +381,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label">
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the distance on the X,Y and Z-axis and the number of copies needed &gt; Press Enter"
+                    text="Specify the distance on the X,Y and Z-axis and the number of copies needed then Press Enter"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -461,7 +461,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the components to be mirror &gt; GO"
+                    text="Select the components to be mirror then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -552,7 +552,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the component to rotate &gt; GO"
+                    text="Select the component to rotate then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -713,7 +713,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the component to be rotated &gt; GO"
+                    text="Select the component to be rotated then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -888,3 +888,4 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
 };
 
 export default ComponentLesson;
+

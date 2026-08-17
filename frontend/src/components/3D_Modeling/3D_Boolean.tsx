@@ -57,7 +57,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "UNION",
     "Tool for joining 3D entities into a single entity.",
     "Step 1: Select Union from the icon menu.",
-    "Step 2: Select all 3D entities for joining then GO",
+    "Step 2: Select all 3D entities for joining then Right Click",
   ];
 
   const subtractSteps = [
@@ -65,7 +65,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "Tool for creating cutouts on 3D entities.",
     "Step 1: Select Subtract from the icon menu.",
     "Step 2: First, select the Target entity.",
-    "Step 3: Select the tool entities then GO. Tool entities will disappear and become components after subtraction.",
+    "Step 3: Select the tool entities then Right Click. Tool entities will disappear and become components after subtraction.",
     "This subtract tool will retain the tool entities after subtraction.",
   ];
 
@@ -73,7 +73,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "INTERSECT",
     "Tool that creates entity of the product of two intersecting entities.",
     "Step 1: Select Intersect from the icon menu.",
-    "Step 2: Select the intersecting entities then GO",
+    "Step 2: Select the intersecting entities then Right Click",
     "Intersecting entities will not disappear after the process.",
   ];
 
@@ -81,10 +81,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "SEPARATE ENTITY",
     "Tool use to reverse boolean operations by creating CSG solid.",
     "Component: By product of boolean operations (entities joined by union, cutout, holes). This tool is use to separate specified entities from the solid entity.",
-    "Step 1: Select the desired components to be separated from the solid entity then GO",
+    "Step 1: Select the desired components to be separated from the solid entity then Right Click",
     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK",
     "This tool is use to separate all components from the solid entity.",
-    "Step 1: Select the solid entity then GO",
+    "Step 1: Select the solid entity then Right Click",
     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK"
   ];
 
@@ -232,7 +232,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select entities to join then GO"
+                      text="Select entities to join then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -334,7 +334,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the tool entities then GO"
+                      text="Select the tool entities then Right Click"
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
@@ -455,7 +455,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select intersecting entities then GO"
+                      text="Select intersecting entities then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -554,7 +554,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the desired components to be separated from the solid entity &gt; GO"
+                      text="Select the desired components to be separated from the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -600,7 +600,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the solid entity &gt; GO"
+                      text="Select the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
@@ -642,3 +642,4 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 };
 
 export default BooleanLesson;
+

@@ -28,7 +28,7 @@ import collar2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_col
 
 /* Importing assets for Standard Part Detail (6) */
 import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
-import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
+// import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
 import reliefProcess1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
 
 /* Importing assets for Standard Part Detail (7) */
@@ -549,8 +549,37 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       />
                     </div>
                     <div className="step-description">
-                      <div className="mb-4">
-                        <img src={scaleImg} alt="Standard Scales" className="software-screenshot screenshot-wide" />
+                      <div className="lesson-table-container mt-4">
+                        <table className="lesson-table">
+                          <thead>
+                            <tr>
+                              <th>TYPE</th>
+                              <th>SCALE JIS Z 8314</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>CURRENT MEASURE</td>
+                              <td>1:1</td>
+                            </tr>
+                            <tr>
+                              <td>Upsize (1)</td>
+                              <td>2:1, 5:1, 10:1, 20:1, 50:1</td>
+                            </tr>
+                            <tr>
+                              <td>Upsize (2)</td>
+                              <td>√2:1, 2.5:1, 100:1</td>
+                            </tr>
+                            <tr>
+                              <td>Down Size (1)</td>
+                              <td>1:2, (1:3), (1:4), 1:5, 1:10, 1:20, 1:50</td>
+                            </tr>
+                            <tr>
+                              <td>Down Size (2)</td>
+                              <td>1:√2, 1:2.5, 1:2√2, 1:3, 1:4, 1:5√2, 1:25, 1:250</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">

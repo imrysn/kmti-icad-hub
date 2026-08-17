@@ -268,9 +268,58 @@
 }
 
 .status-badge.large {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.25rem;
-    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    font-weight: 800;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 0.5rem;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    justify-content: center;
+}
+
+.status-badge.large.approved {
+    background: transparent;
+    color: var(--color-success);
+    border: none;
+    box-shadow: none;
+}
+
+.status-badge.large.rejected {
+    background: transparent;
+    color: var(--color-error);
+    border: none;
+    box-shadow: none;
+}
+
+.status-badge.large.pending {
+    background: transparent;
+    color: var(--color-warning);
+    border: none;
+    box-shadow: none;
+}
+
+[data-theme='light'] .status-badge.large.approved {
+    background: transparent;
+    border: none;
+    color: #166534;
+    box-shadow: none;
+}
+
+[data-theme='light'] .status-badge.large.rejected {
+    background: transparent;
+    border: none;
+    color: #991b1b;
+    box-shadow: none;
+}
+
+[data-theme='light'] .status-badge.large.pending {
+    background: transparent;
+    border: none;
+    color: #92400e;
+    box-shadow: none;
 }
 
 .card-actions.compact-actions {
@@ -1436,6 +1485,11 @@
     box-shadow: 0 0 8px var(--color-primary);
 }
 
+[data-theme='light'] .row-btn-primary:hover {
+    background: var(--color-primary-dark, #8b1278);
+    opacity: 1;
+}
+
 /* New Dashboard Main Tabs Layout */
 .dashboard-main-tabs {
     display: flex;
@@ -1624,4 +1678,3 @@
   .trainer-dashboard .trainee-group-body {
     padding: 1rem;
   }
-}

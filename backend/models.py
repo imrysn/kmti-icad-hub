@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON, UniqueConstraint
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 try:
@@ -108,6 +108,22 @@ class Broadcast(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=func.now())
     created_by = Column(Integer)  # Admin user ID
+
+
+class BroadcastAcknowledgement(Base):
+    """Tracks which users have acknowledged a specific broadcast"""
+    __tablename__ = "broadcast_acknowledgements"
+    __table_args__ = (
+        UniqueConstraint("broadcast_id", "user_id", name="uq_broadcast_acknowledgement"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    broadcast_id = Column(Integer, ForeignKey("broadcasts.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    acknowledged_at = Column(DateTime, default=func.now(), nullable=False)
+
+    broadcast = relationship("Broadcast")
+    user = relationship("User")
 
 
 

@@ -87,7 +87,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
       subtitle: 'Aligning projected views and deleting unnecessary views.',
       steps: [
         "View Alignment: If views are not aligned, use the create-three-view tool to adjust. Aligning lines will appear as guides to help you restore proper projection integrity.",
-        "Delete View: Select any unnecessary views, click GO, and confirm in the dialog box to remove them from your drawing template."
+        "Delete View: Select any unnecessary views, click Right Click, and confirm in the dialog box to remove them from your drawing template."
       ]
     }
   };
@@ -248,7 +248,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <div className="flex-row gap-4 mt-4">
                         <div className="instruction-box" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
-                            1. Click the unnecessary view, then GO.
+                            1. Click the unnecessary view, then Right Click.
                           </p>
                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
                             2. Delete view dialog box display.

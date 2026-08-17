@@ -84,6 +84,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
 }
 
 .category-tag {
@@ -240,4 +241,25 @@
     background: white;
     transform: rotate(90deg);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.ack-btn {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.28));
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: var(--text-main);
+    cursor: pointer;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.ack-btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.24), rgba(59, 130, 246, 0.34));
+    border-color: rgba(59, 130, 246, 0.45);
 }

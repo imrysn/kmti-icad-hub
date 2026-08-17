@@ -36,6 +36,17 @@ def patch_schema(engine, is_mysql=False):
                             logger.info(f"Schema patch custom_comments skipped or failed for {table}: {e}")
         except Exception as e:
             logger.warning(f"Schema patcher failed for {table}: {e}")
+            
+    # Additional patch for assessment_submissions
+    try:
+        with engine.begin() as conn:
+            try:
+                conn.execute(text("ALTER TABLE assessment_submissions ADD COLUMN time_spent_seconds INTEGER DEFAULT 0"))
+            except Exception as e:
+                if "Duplicate column name" not in str(e) and "duplicate column name" not in str(e).lower():
+                    logger.info(f"Schema patch time_spent_seconds skipped or failed for assessment_submissions: {e}")
+    except Exception as e:
+        logger.warning(f"Schema patcher failed for assessment_submissions: {e}")
 
 # Path helper for PyInstaller
 def get_app_path():

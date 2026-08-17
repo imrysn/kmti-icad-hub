@@ -545,7 +545,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                 <button
-                    className="quick-comment-btn add-custom"
+                    className="quick-comment-btn add-custom ghost-btn"
                     style={{
                         padding: '0',
                         fontSize: '0.8rem',
@@ -1284,21 +1284,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                 </h4>
                                 <div className="history-timeline" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '0.5rem' }}>
                                     {selectedTaskSubmissions.map((sub, index) => {
-                                        const isApproved = sub.status === 'approved';
-                                        const isRejected = sub.status === 'rejected';
+                                        const displayStatus = (index > 0 && sub.status === 'pending') ? 'rejected' : sub.status;
+                                        const isApproved = displayStatus === 'approved';
+                                        const isRejected = displayStatus === 'rejected';
                                         const statusColor = isApproved ? 'var(--color-success)' : isRejected ? 'var(--color-error)' : 'var(--color-warning)';
-                                        return (
+                                                                        return (
                                             <div key={sub.id} className="history-node" style={{ display: 'flex', gap: '1.5rem', marginBottom: '0.5rem' }}>
                                                 <div className="node-marker" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.25rem' }}>
                                                     <div className={`node-dot ${sub.status}`} style={{ width: '14px', height: '14px', borderRadius: '50%', background: statusColor, boxShadow: `0 0 12px ${statusColor}` }}></div>
                                                     {index !== selectedTaskSubmissions.length - 1 && <div className="node-line" style={{ width: '2px', flex: 1, background: 'linear-gradient(to bottom, rgba(255,255,255,0.1), transparent)', marginTop: '8px', minHeight: '40px' }}></div>}
                                                 </div>
-                                                <div className="node-content" style={{ flex: 1, background: 'rgba(255,255,255,0.015)', borderRadius: '12px', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.3s ease' }}
-                                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'; }}
-                                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.015)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
-                                                >
+                                                <div className="node-content" style={{ flex: 1, background: 'rgba(255,255,255,0.015)', borderRadius: '12px', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.3s ease' }}>
                                                     <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                                        <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                            <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
+                                                            <div className={`status-badge ${displayStatus}`} style={{ textTransform: 'uppercase', padding: '0.2rem 0.6rem', fontSize: '0.65rem' }}>
+                                                                {displayStatus}
+                                                            </div>
+                                                        </div>
                                                         <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-hover)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
                                                     </div>
                                                     <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'var(--bg-hover)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
@@ -1333,7 +1336,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                     </div>
 
                                                     {/* Chat / Feedback Section */}
-                                                    <div style={{ background: 'rgba(0,0,0,0.15)', borderRadius: '10px', padding: '1rem', border: '1px solid rgba(255,255,255,0.02)' }}>
+                                                    <div style={{ borderRadius: '10px', padding: '1rem', border: '1px solid rgba(255,255,255,0.02)' }}>
                                                         {sub.feedback && sub.feedback.length > 0 ? (
                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                                                 {sub.feedback.map(fb => (
@@ -1381,12 +1384,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
                             {/* Right Side: Action Form */}
                             <div className="action-panel" style={{ flex: '0.8', minWidth: '340px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px var(--bg-hover)' }}>
-                                <div className="review-task-info" style={{ background: 'var(--bg-hover)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.03)' }}>
-                                    <span className="label" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Current Status</span>
-                                    <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1.1rem', fontWeight: 800, padding: '0.75rem 1rem', borderRadius: '8px', textAlign: 'center', marginTop: '0.5rem', width: '100%', textTransform: 'uppercase', letterSpacing: '2px', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.15)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)', border: `1px solid ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.3)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, boxShadow: `0 0 15px ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)'}` }}>
-                                        {selectedTaskSubmissions[0].status}
-                                    </div>
-                                </div>
 
                                 <div className="feedback-form-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
                                     <h4 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>Provide Feedback</h4>
@@ -1500,8 +1497,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                                 }}
                                                                             />
                                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
-                                                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                                <button className="ghost-btn" onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+                                                                                <button className="ghost-btn" onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
                                                                             </div>
                                                                         </>
                                                                     ) : (
@@ -1509,8 +1506,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                                                                 {comment}
                                                                             </div>
-                                                                            <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
-                                                                            <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                            <button className="ghost-btn" onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+                                                                            <button className="ghost-btn" onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
                                                                         </>
                                                                     )}
                                                                 </div>
@@ -1776,8 +1773,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                             }}
                                                                         />
                                                                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                                            <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
-                                                                            <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                            <button className="ghost-btn" onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+                                                                            <button className="ghost-btn" onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
                                                                         </div>
                                                                     </>
                                                                 ) : (
@@ -1785,8 +1782,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                                                         <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                                                             {comment}
                                                                         </div>
-                                                                        <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
-                                                                        <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                        <button className="ghost-btn" onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+                                                                        <button className="ghost-btn" onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
                                                                     </>
                                                                 )}
                                                             </div>

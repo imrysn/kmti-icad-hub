@@ -56,7 +56,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "Entity. The entire solid entity will change its color.",
     "Pick a color then select the solid entity",
     "Face. Only selected faces or surfaces will change its color",
-    "Pick a color then select surface to be changed then GO"
+    "Pick a color then select surface to be changed then Right Click"
   ];
 
   const layerSteps = [
@@ -71,10 +71,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "INFORMATION",
     "Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).",
     "Displays coordinates of a point from the origin then Pick a point",
-    "Measures the length of an edge then Pick an edge then GO",
+    "Measures the length of an edge then Pick an edge then Right Click",
     "Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge",
     "Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points",
-    "Displays the informations about the selected entity then Pick the solid entity then GO"
+    "Displays the informations about the selected entity then Pick the solid entity then Right Click"
   ];
 
   const {
@@ -224,7 +224,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <KaraokeLessonText
                         as="p"
                         className="p-flush"
-                        text="Pick a color > Select the solid entity"
+                        text="Pick a color then Select the solid entity"
                         isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
                       />
@@ -257,7 +257,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <p className="p-flush">
                         <KaraokeLessonText
                           as="span"
-                          text="Pick a color > Select surface to be changed > GO"
+                          text="Pick a color then Select surface to be changed then Right Click"
                           isActive={isSpeaking && currentIndex === 8}
                           currentCharIndex={currentCharIndex}
                         />
@@ -276,7 +276,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
             <div className="lesson-navigation">
               <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={() => handleNext()}>
-                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+                {'Next'} <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -431,7 +431,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
             <div className="lesson-navigation">
               <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={() => handleNext()}>
-                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+                {'Next'} <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -469,7 +469,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Displays coordinates of a point from the origin > Pick a point"
+                      text="Displays coordinates of a point from the origin then Pick a point"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -485,7 +485,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the length of an edge > Pick an edge > GO"
+                      text="Measures the length of an edge then Pick an edge then Right Click"
                       isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
@@ -501,7 +501,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the distance between two points or edges > Pick first point/edge > Pick second point/edge"
+                      text="Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge"
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
@@ -519,7 +519,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the angle between two edges or three points > Pick 2 edges > Pick 3 Points "
+                      text="Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points "
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -535,7 +535,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Displays the informations about the selected entity > Pick the solid entity > GO"
+                      text="Displays the informations about the selected entity then Pick the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />

@@ -111,6 +111,14 @@ function AppContent() {
         showNotification(data.message || `A new assessment set has been unlocked by your trainer.`, 'info', 0, '/mentor?mode=assessment');
         window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
         notificationTriggered = true;
+      } else if (data.event === "BROADCAST_ACKNOWLEDGED" && role === 'admin') {
+        showNotification(
+          data.message || `${data.full_name || data.username || 'A user'} has acknowledged the broadcast.`,
+          'info',
+          0,
+          '/admin'
+        );
+        notificationTriggered = true;
       } else if (data.event === "GLOBAL_REFRESH") {
         window.dispatchEvent(new CustomEvent('kmti-global-refresh'));
       }
@@ -315,18 +323,17 @@ function AppContent() {
                     <span style={{
                       position: 'absolute',
                       top: '-4px',
-                      right: '-4px',
-                      background: 'var(--accent-red, #ef4444)',
-                      color: '#fff',
+                      right: '-8px',
+                      background: 'transparent',
+                      color: 'var(--accent-red, #ef4444)',
                       borderRadius: '50%',
                       width: '18px',
                       height: '18px',
-                      fontSize: '10px',
+                      fontSize: '11px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontWeight: 'bold',
-                      border: '2px solid var(--bg-surface)'
+                      fontWeight: '900'
                     }}>
                       {unreadCount}
                     </span>

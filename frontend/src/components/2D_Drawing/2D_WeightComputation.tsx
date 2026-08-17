@@ -1,5 +1,5 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
@@ -7,11 +7,11 @@ import { KaraokeLessonText } from "../KaraokeLessonText";
 import "../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Weight Computation */
-import cylinderExImg from "../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg";
-import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
-import shapeSteelEx1Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg";
-import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg";
-import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
+// import cylinderExImg from "../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg";
+// import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
+// import shapeSteelEx1Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg";
+// import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg";
+// import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
 interface WeightComputationLessonProps {
   nextLabel?: string;
   onNextLesson?: () => void;
@@ -83,7 +83,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
             <div className="flex-col tab-content fade-in">
 
               {/* === Section Header === */}
-              <div className={`step-header ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-1rem", marginBottom:" -1rem" }}>
+              <div className={`step-header ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-1rem", marginBottom: " -1rem" }}>
                 <span className="step-number">15</span>
                 <KaraokeLessonText as="span" className="step-label" text="Material Weight Computation" isActive={isSpeaking && currentIndex === 0} currentCharIndex={currentCharIndex} />
               </div>
@@ -132,7 +132,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                   <KaraokeLessonText as="span" className="step-label" text="Plate ( L × W × H × SG )" isActive={isSpeaking && currentIndex === 2} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
-                  <img src={plateExImg} alt="Plate Computation Example" className="software-screenshot screenshot-wide" />
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 16 × 90 × 120</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: SS400</span></div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.016m × 0.09m × 0.12m × 7850kg/m³</div>
+                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 1.36 kg</div>
+                  </div>
                   <div className="instruction-box mt-6">
                     <p className="p-flush"><strong className="red-text">Note:</strong></p>
                     <p className="p-flush">Dimension is always in millimeter.</p>
@@ -149,7 +155,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                   <KaraokeLessonText as="span" className="step-label" text="Cylinder ( pi × r² × L × SG ) or [ ( pi × d² × L × SG ) / 4 ]" isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
-                  <img src={cylinderExImg} alt="Cylinder Computation Example" className="software-screenshot screenshot-wide" />
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: φ60 × 115</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: S45C</span></div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 3.1416 × (0.03m)² × 0.115m × 7840kg/m³</div>
+                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 2.55 kg</div>
+                  </div>
                   <div className="instruction-box mt-6">
                     <p className="p-flush"><strong className="red-text">Note:</strong></p>
                     <p className="p-flush">Dimension is always in millimeter.</p>
@@ -166,8 +178,26 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                   <KaraokeLessonText as="span" className="step-label" text="Shape Steel ( Cross Sectional Area × L × SG )" isActive={isSpeaking && currentIndex === 4} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
-                  <img src={shapeSteelEx1Img} alt="Shape Steel Example 1" className="software-screenshot screenshot-wide" />
-                  <img src={shapeSteelEx2Img} alt="Shape Steel Example 2" className="software-screenshot screenshot-wide mt-4" />
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 150 × 75 × 9 - 530</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 30.59 cm²</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: C Channel</span></div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 30.59cm × 1cm</div>
+                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 0.3059m × 0.01m</div>
+                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 0.003059 m²</div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.003059m² × 0.53m × 7850kg/m³</div>
+                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 12.73 kg</div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 mt-4 text-black">
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 125 × 90 × 10 - 725</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 20.50 cm²</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: Unequal Side Angle Bar</span></div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.00205m² × 0.725m × 7850kg/m³</div>
+                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 11.67 kg</div>
+                  </div>
                   <div className="instruction-box mt-6">
                     <p className="p-flush"><strong>Notes:</strong></p>
                     <p className="p-flush">1. Cross sectional area refers from <strong>Japan Industrial Standard (JIS).</strong></p>
@@ -185,7 +215,14 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
                   <KaraokeLessonText as="span" className="step-label" text="Square / Rectangular Pipe ( Cross Sectional Area × L × SG )" isActive={isSpeaking && currentIndex === 5} currentCharIndex={currentCharIndex} />
                 </div>
                 <div className="step-description">
-                  <img src={pipeExImg} alt="Square Rectangular Pipe Computation Example" className="software-screenshot screenshot-wide" />
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 90 × 45 × 3.2 - 480</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 7.967 cm²</span></div>
+                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: STKR400 (rectangular pipe)</span></div>
+                    <div className="my-2"></div>
+                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.000796m² × 0.48m × 7850kg/m³</div>
+                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 3.00 kg</div>
+                  </div>
                 </div>
               </div>
 

@@ -1,5 +1,6 @@
 import { AlertTriangle,ChevronDown,Clock,Info,Megaphone,MessageSquare,Send,Trash2 } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
+import { useWebSocket } from '../../../context/WebSocketContext';
 import { adminService } from '../../../services/adminService';
 import '../../../styles/BroadcastCenter.css';
 
@@ -16,6 +17,7 @@ export const BroadcastCenter: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const dragStartRef = useRef({ x: 0, y: 0 });
     const hasMovedRef = useRef(false);
+    const { subscribe } = useWebSocket();
 
     // Global click listener for "Click Outside to Collapse"
     useEffect(() => {
@@ -89,6 +91,21 @@ export const BroadcastCenter: React.FC = () => {
             fetchBroadcasts();
         }
     }, [isExpanded]);
+
+    useEffect(() => {
+        const unsubCreated = subscribe('BROADCAST_CREATED', () => {
+            fetchBroadcasts();
+        });
+
+        const unsubDeleted = subscribe('BROADCAST_DELETED', () => {
+            fetchBroadcasts();
+        });
+
+        return () => {
+            unsubCreated();
+            unsubDeleted();
+        };
+    }, [subscribe]);
 
     const handleSend = async () => {
         if (!message.trim()) return;

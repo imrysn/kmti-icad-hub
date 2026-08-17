@@ -1,7 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import SessionLocal, get_db  # Import SessionLocal, get_db
-from ..models import User, UserActivity, TrainerTraineeMapping, Notification
+from ..models import User, UserActivity, TrainerTraineeMapping, Notification, Broadcast, BroadcastAcknowledgement
 from ..auth.security import decode_token
 from jose import JWTError
 from ..websocket_manager import notification_manager
@@ -9,6 +9,7 @@ from ..schemas import NotificationResponse
 from .auth import get_current_user
 import logging
 import json
+import asyncio
 from datetime import datetime, timezone
 from typing import List
 
@@ -151,6 +152,113 @@ def get_my_notifications(
     return db.query(Notification).filter(
         Notification.recipient_id == current_user.id
     ).order_by(Notification.created_at.desc()).all()
+
+
+@router.get("/broadcasts/active")
+def get_active_broadcasts_for_user(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get active broadcasts that the current user has not acknowledged yet."""
+    acknowledged_ids = db.query(BroadcastAcknowledgement.broadcast_id).filter(
+        BroadcastAcknowledgement.user_id == current_user.id
+    ).subquery()
+
+    broadcasts = db.query(Broadcast, User.full_name)\
+        .join(User, Broadcast.created_by == User.id)\
+        .filter(Broadcast.is_active == True)\
+        .filter(~Broadcast.id.in_(acknowledged_ids))\
+        .order_by(Broadcast.created_at.desc()).all()
+
+    return [
+        {
+            "id": b[0].id,
+            "message": b[0].message,
+            "level": b[0].level,
+            "created_at": b[0].created_at,
+            "sender_name": b[1]
+        } for b in broadcasts
+    ]
+
+
+@router.post("/broadcasts/{broadcast_id}/acknowledge")
+async def acknowledge_broadcast(
+    broadcast_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Mark a broadcast as acknowledged by the current user and notify admins."""
+    broadcast = db.query(Broadcast).filter(
+        Broadcast.id == broadcast_id,
+        Broadcast.is_active == True
+    ).first()
+
+    if not broadcast:
+        raise HTTPException(status_code=404, detail="Broadcast not found")
+
+    existing = db.query(BroadcastAcknowledgement).filter(
+        BroadcastAcknowledgement.broadcast_id == broadcast_id,
+        BroadcastAcknowledgement.user_id == current_user.id
+    ).first()
+
+    if not existing:
+        db.add(BroadcastAcknowledgement(
+            broadcast_id=broadcast_id,
+            user_id=current_user.id
+        ))
+
+    user_message = f"You acknowledged this broadcast: {broadcast.message}"
+    existing_user_notification = db.query(Notification).filter(
+        Notification.recipient_id == current_user.id,
+        Notification.type == "broadcast_acknowledged",
+        Notification.message == user_message
+    ).first()
+    if not existing_user_notification:
+        db.add(Notification(
+            recipient_id=current_user.id,
+            sender_id=current_user.id,
+            message=user_message,
+            type="broadcast_acknowledged",
+            is_read=True
+        ))
+
+    admin_users = db.query(User).filter(User.role == "admin", User.is_active == True).all()
+    admin_display_name = current_user.full_name or current_user.username
+    admin_message = f"{admin_display_name} has acknowledged the broadcast: {broadcast.message}"
+
+    created_admin_ids = []
+    for admin_user in admin_users:
+        db.add(Notification(
+            recipient_id=admin_user.id,
+            sender_id=current_user.id,
+            message=admin_message,
+            type="broadcast_acknowledged",
+            is_read=False
+        ))
+        created_admin_ids.append(admin_user.id)
+
+    db.commit()
+
+    async def _notify_admins():
+        payload = {
+            "event": "BROADCAST_ACKNOWLEDGED",
+            "broadcast_id": broadcast_id,
+            "broadcast_message": broadcast.message,
+            "user_id": current_user.id,
+            "username": current_user.username,
+            "full_name": current_user.full_name,
+            "message": admin_message
+        }
+        for admin_id in created_admin_ids:
+            await notification_manager.send_personal_message(payload, admin_id)
+
+    asyncio.create_task(_notify_admins())
+
+    return {
+        "status": "success",
+        "broadcast_id": broadcast_id,
+        "acknowledged_at": datetime.now(timezone.utc).isoformat()
+    }
 
 @router.post("/{notification_id}/read")
 def mark_notification_as_read(

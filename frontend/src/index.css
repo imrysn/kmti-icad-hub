@@ -356,6 +356,16 @@ button:hover:not(:disabled) {
   box-shadow: var(--shadow-card);
 }
 
+.view-breakdown-link:hover:not(:disabled),
+.ghost-btn:hover:not(:disabled),
+.global-modal-close-btn:hover:not(:disabled) {
+  background: transparent !important;
+  border-color: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
+}
+
 button:active:not(:disabled) {
   transform: translateY(0);
 }

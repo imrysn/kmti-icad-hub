@@ -134,6 +134,8 @@ def resolve_uploaded_file_path(stored_path: str) -> str:
         os.path.join(upload_root, *relative_parts),
         os.path.join(APP_PATH, "uploads", *relative_parts),
         os.path.join(os.path.dirname(APP_PATH), "uploads", *relative_parts),
+        os.path.join(r"\\kmti-nas\Shared\data\trainingApp\uploads", *relative_parts),
+        os.path.join(r"Z:\Training\trainingApp\uploads", *relative_parts)
     ]
     for candidate in candidates:
         if os.path.exists(candidate):
@@ -781,6 +783,7 @@ async def submit_quotation(
     )
     os.makedirs(upload_dir, exist_ok=True)
     file_path = os.path.join(upload_dir, safe_filename)
+    relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -799,19 +802,21 @@ async def submit_quotation(
     submission = pending_query.first()
     if submission:
         old_path = submission.submission_file_path
-        submission.submission_file_path = file_path
+        submission.submission_file_path = relative_path
         submission.submitted_at = datetime.now()
         submission.display_label = "Quotation"
-        if old_path and old_path != file_path and os.path.exists(old_path):
-            try:
-                os.remove(old_path)
-            except OSError:
-                pass
+        if old_path:
+            abs_old_path = os.path.join(base_upload_dir, old_path)
+            if os.path.exists(abs_old_path):
+                try:
+                    os.remove(abs_old_path)
+                except OSError:
+                    pass
     else:
         submission = AssessmentSubmission(
             user_id=current_user.id,
             task_id=anchor_task.id,
-            submission_file_path=file_path,
+            submission_file_path=relative_path,
             assessment_type=assessment_type,
             submission_kind="quotation",
             source_quotation_id=quotation_id,
@@ -888,6 +893,7 @@ async def submit_task(
 
     safe_filename = os.path.basename(file.filename) if file.filename else "submission"
     file_path = os.path.join(upload_dir, safe_filename)
+    relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -921,7 +927,7 @@ async def submit_task(
 
     if target_submission:
         # Update current pending submission
-        target_submission.submission_file_path = file_path
+        target_submission.submission_file_path = relative_path
         target_submission.submitted_at = datetime.now()
         target_submission.time_spent_seconds = time_spent_seconds
         submission = target_submission
@@ -930,7 +936,7 @@ async def submit_task(
         submission = AssessmentSubmission(
             user_id=current_user.id,
             task_id=task_id,
-            submission_file_path=file_path,
+            submission_file_path=relative_path,
             assessment_type=assessment_type,
             time_spent_seconds=time_spent_seconds,
             status="pending"
@@ -1155,7 +1161,7 @@ async def provide_feedback(
     submission.status = status
     submission.trainer_id = current_user.id
 
-    file_path = None
+    relative_path = None
     if file:
         base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
 
@@ -1169,6 +1175,7 @@ async def provide_feedback(
         os.makedirs(feedback_dir, exist_ok=True)
         safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"
         file_path = os.path.join(feedback_dir, f"feedback_{submission_id}_{safe_fb_filename}")
+        relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
 
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
@@ -1178,14 +1185,14 @@ async def provide_feedback(
         # Check if feedback already exists for this submission
         feedback = db.query(AssessmentFeedback).filter(AssessmentFeedback.submission_id == submission_id).first()
         if feedback:
-            if file_path:
-                feedback.checkback_file_path = file_path
+            if relative_path:
+                feedback.checkback_file_path = relative_path
             if comments:
                 feedback.comments = comments
         else:
             feedback = AssessmentFeedback(
                 submission_id=submission_id,
-                checkback_file_path=file_path,
+                checkback_file_path=relative_path,
                 comments=comments
             )
             db.add(feedback)

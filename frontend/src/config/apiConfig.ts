@@ -13,7 +13,7 @@ const resolveApiBaseUrl = (): string => {
     if (configuredUrl) return normalizeUrl(configuredUrl);
 
     if (typeof import.meta.env !== 'undefined' && import.meta.env.DEV) {
-        return `http://${getBrowserHost()}:8000`;
+        return `http://${getBrowserHost()}:3001`;
     }
 
     if (typeof window !== 'undefined' && /^https?:$/.test(window.location.protocol)) {

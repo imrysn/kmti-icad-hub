@@ -48,7 +48,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     "IMPORT",
     "Step 1: Select Import from the icon menu.",
     "Step 2: The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.",
-    "Step 3: Press OK after selecting the parasolid file then GO",
+    "Step 3: Press OK after selecting the parasolid file then Right Click",
     "The Name Change dialog box will appear then Pick Cancel",
     "All Part names of purchase parts must be release on the tree view.",
     "Step 4: Save the part",
@@ -64,7 +64,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
     "LIGHTEN B-REP SOLID",
     "Step 1: Select Lighten B-rep Solid from the icon menu.",
     "Step 2: A dialog box will appear. Select No form changes then OK",
-    "Step 3: Select the purchase part then GO",
+    "Step 3: Select the purchase part then Right Click",
     "Check the message pane to see if the process is successful.",
     "Step 4: Save the part",
     "Go to File then Save As then Use the Purchase part code as File name.",
@@ -219,7 +219,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <div className="step-label" style={{marginTop: "-1.5rem"}}>
                   <KaraokeLessonText
                     as="span"
-                    text="Press OK after selecting the parasolid file > GO"
+                    text="Press OK after selecting the parasolid file then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -229,7 +229,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                  <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="The Name Change dialog box will appear > Pick Cancel"
+                    text="The Name Change dialog box will appear then Pick Cancel"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -261,7 +261,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 <div className={`step-label ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Go to File > Save As > Use the Purchase part code as File name."
+                    text="Go to File then Save As then Use the Purchase part code as File name."
                     isActive={isSpeaking && currentIndex === 9}
                     currentCharIndex={currentCharIndex}
                   />
@@ -306,7 +306,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <div className={`step-label ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
-                    text="3.) Enter the comment for the specific part > Press OK"
+                    text="3.) Enter the comment for the specific part then Press OK"
                     isActive={isSpeaking && currentIndex === 14}
                     currentCharIndex={currentCharIndex}
                   />
@@ -350,7 +350,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="A dialog box will appear. Select No form changes > OK"
+                    text="A dialog box will appear. Select No form changes then OK"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -367,7 +367,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the purchase part > GO"
+                    text="Select the purchase part then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -400,7 +400,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                 <div className={`step-label ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Go to File > Save As > Use the Purchase part code as File name."
+                    text="Go to File then Save As then Use the Purchase part code as File name."
                     isActive={isSpeaking && currentIndex === 8}
                     currentCharIndex={currentCharIndex}
                   />
@@ -445,7 +445,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
                   <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
                   <KaraokeLessonText
                     as="p"
-                    text="3.) Enter the comment for the specific part > Press OK"
+                    text="3.) Enter the comment for the specific part then Press OK"
                     isActive={isSpeaking && currentIndex === 13}
                     currentCharIndex={currentCharIndex}
                   />

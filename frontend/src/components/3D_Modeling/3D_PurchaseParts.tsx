@@ -1,11 +1,11 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import "../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
-import uploadingFlowchart from "../../assets/3D_Image_File/3d_purchase.png";
+import uploadingFlowchart from "../../assets/3D_Image_File/e_3d_server_upload.png";
 import purchasePartsFlowchart from "../../assets/3D_Image_File/3d_purchase_parts.png";
 
 interface PurchasePartsLessonProps {
@@ -116,10 +116,10 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
             </div>
 
             <img
-                src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
-                alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
-                data-reading-index="2"
+              src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
+              alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
+              className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
+              data-reading-index="2"
             />
           </div>
 

@@ -14,6 +14,10 @@ On your Server PC, create a folder (e.g., `C:\KMTI_Server`) and place the follow
 - `kmti_icad.db` (The SQLite fallback database)
 
 ## 2. Configure the `.env` File
+
+> [!WARNING]
+> **CRITICAL:** The compiled server executable expects the `.env` file to be located in the exact same directory as the `.exe`. If you forget to include the `.env` file, the server will silently fail to connect to MySQL (KMTI-NAS), will not know the proper UPLOAD_DIR paths, and will blindly launch in SQLite fallback mode.
+
 Create a `.env` file in the same folder as the `.exe`. Use the following configuration:
 
 ```env
@@ -44,9 +48,11 @@ Simply double-click `KMTI_iCAD_Server.exe`. A command prompt will open with the 
 - **Local Fallback Mode (SQLite):** The server could not reach the NAS and is using the local `kmti_icad.db` file. Progress will be synced once the connection is restored.
 
 ## 4. Frontend Configuration
-When building the frontend for production, ensure you use the `.env.production` settings:
-1. Run `npm run build` in the `frontend` directory.
-2. The built Electron app will automatically target `http://192.168.200.105:8000`.
+Because this is an Electron desktop app, the frontend cannot automatically detect the server's network IP dynamically. You MUST hardcode the server's IP address when building for production.
+
+1. Open `frontend/.env.production` and set `VITE_API_URL=http://<YOUR_SERVER_IP>:8000` (e.g., `http://192.168.200.105:8000`).
+2. Run `npm run package` (or `npm run dist`) in the `frontend` directory to build the `.exe` installer.
+3. The built Electron app will now correctly route all requests to your deployed backend server instead of localhost.
 
 ## 5. Maintenance
 - **Logs:** The server console displays real-time logs.

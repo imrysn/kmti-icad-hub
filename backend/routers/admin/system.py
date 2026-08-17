@@ -10,6 +10,7 @@ from ...models import User, UserProgress, SystemLog, Broadcast
 from ...auth.dependencies import require_role
 from ...rag_engine import rag_engine
 from ...time_utils import utc_now
+from ...websocket_manager import notification_manager
 
 router = APIRouter()
 
@@ -78,7 +79,7 @@ def get_system_logs(
 
 
 @router.post("/broadcast")
-def create_broadcast(
+async def create_broadcast(
     message: str,
     level: str = "info",
     db: Session = Depends(get_db),
@@ -88,6 +89,19 @@ def create_broadcast(
     broadcast = Broadcast(message=message, level=level, created_by=admin.id)
     db.add(broadcast)
     db.commit()
+    db.refresh(broadcast)
+
+    await notification_manager.broadcast({
+        "event": "BROADCAST_CREATED",
+        "broadcast": {
+            "id": broadcast.id,
+            "message": broadcast.message,
+            "level": broadcast.level,
+            "created_at": broadcast.created_at.isoformat() if broadcast.created_at else None,
+            "created_by": broadcast.created_by
+        }
+    })
+
     return {"message": "Broadcast sent successfully"}
 
 
@@ -130,7 +144,7 @@ def get_training_heatmap(
 
 
 @router.delete("/broadcasts/{broadcast_id}")
-def delete_broadcast(
+async def delete_broadcast(
     broadcast_id: int,
     db: Session = Depends(get_db),
     admin: User = Depends(require_role("employee"))
@@ -142,6 +156,12 @@ def delete_broadcast(
 
     db.delete(broadcast)
     db.commit()
+
+    await notification_manager.broadcast({
+        "event": "BROADCAST_DELETED",
+        "broadcast_id": broadcast_id
+    })
+
     return {"message": "Broadcast deleted successfully"}
 
 

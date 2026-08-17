@@ -93,7 +93,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       steps: [
         "Put all the dimensions, symbols, and notes required in the drawing.",
         "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
-        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
+        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click Right Click to place the aligned chain."
       ]
     },
     '2d-dimensioning-2': {

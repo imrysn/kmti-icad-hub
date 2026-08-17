@@ -125,7 +125,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
 
@@ -247,8 +247,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "EXTRUDE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
     "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure > GO",
-    "Step 3: Specify the height of extrusion on the item entry then Press Enter then GO",
+    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure, then Right Click",
+    "Step 3: Specify the height of extrusion on the item entry, then Press Enter, then Right Click",
     "A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane. ",
     "Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.",
     "Select Cancel to keep the work plane together with all the 2D sketches.",
@@ -259,8 +259,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "REVOLVE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
     "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Pick the cross section to be revolved then GO. A hatch will appear to show that the sketch is an enclosed figure",
-    "Step 3: Select the axis of rotation then GO",
+    "Step 2: Pick the cross section to be revolved, then Right Click. A hatch will appear to show that the sketch is an enclosed figure",
+    "Step 3: Select the axis of rotation, then Right Click",
     "PROCESS OVERVIEW"
   ];
   const spiralSteps = [
@@ -268,9 +268,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "SPIRAL FORM",
     "Creates a 3D spiral form from a section form created on a 2D sketch.",
     "Step 1: First do the sketch",
-    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure then GO",
-    "Step 3: Specify the pitch of the spiral on the item entry then Press Enter then GO. Note: Pitch must be greater than Thickness",
-    "Step 4: Select the ends of the length of the spiral along the axis of rotation then GO",
+    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click",
+    "Step 3: Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click. Note: Pitch must be greater than Thickness",
+    "Step 4: Select the ends of the length of the spiral along the axis of rotation, then Right Click",
     "RESULT"
   ];
 
@@ -331,7 +331,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -414,7 +414,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text="A hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                    text="A hatch will appear to show that the sketch is an enclosed figure, then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -432,7 +432,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO"
+                    text="Specify the height of extrusion on the item entry, then Press Enter, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -537,7 +537,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ gap: '0px' }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Pick the cross section to be revolved &gt; GO"
+                    text="Pick the cross section to be revolved, then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -559,7 +559,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation &gt; GO"
+                    text="Select the axis of rotation, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -648,7 +648,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 as="p"
                 className="p-flush"
                 style={{ marginTop: "-1rem" }}
-                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click"
                 isActive={isSpeaking && currentIndex === 6}
                 currentCharIndex={currentCharIndex}
               />
@@ -660,7 +660,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
+                    text="Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -687,7 +687,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select the ends of the length of the spiral along the axis of rotation then GO"
+                  text="Select the ends of the length of the spiral along the axis of rotation, then Right Click"
                   isActive={isSpeaking && currentIndex === 8}
                   currentCharIndex={currentCharIndex}
                 />
@@ -754,3 +754,4 @@ const TwoDTo3DLesson: React.FC<TwoDTo3DLessonProps> = ({
 };
 
 export default TwoDTo3DLesson;
+

@@ -1,0 +1,2669 @@
+﻿diff --git a/DEPLOYMENT_SERVER.md b/DEPLOYMENT_SERVER.md
+index 2ec87c6..2fa6ea5 100644
+--- a/DEPLOYMENT_SERVER.md
++++ b/DEPLOYMENT_SERVER.md
+@@ -14,6 +14,10 @@ On your Server PC, create a folder (e.g., `C:\KMTI_Server`) and place the follow
+ - `kmti_icad.db` (The SQLite fallback database)
+ 
+ ## 2. Configure the `.env` File
++
++> [!WARNING]
++> **CRITICAL:** The compiled server executable expects the `.env` file to be located in the exact same directory as the `.exe`. If you forget to include the `.env` file, the server will silently fail to connect to MySQL (KMTI-NAS), will not know the proper UPLOAD_DIR paths, and will blindly launch in SQLite fallback mode.
++
+ Create a `.env` file in the same folder as the `.exe`. Use the following configuration:
+ 
+ ```env
+@@ -44,9 +48,11 @@ Simply double-click `KMTI_iCAD_Server.exe`. A command prompt will open with the
+ - **Local Fallback Mode (SQLite):** The server could not reach the NAS and is using the local `kmti_icad.db` file. Progress will be synced once the connection is restored.
+ 
+ ## 4. Frontend Configuration
+-When building the frontend for production, ensure you use the `.env.production` settings:
+-1. Run `npm run build` in the `frontend` directory.
+-2. The built Electron app will automatically target `http://192.168.200.105:8000`.
++Because this is an Electron desktop app, the frontend cannot automatically detect the server's network IP dynamically. You MUST hardcode the server's IP address when building for production.
++
++1. Open `frontend/.env.production` and set `VITE_API_URL=http://<YOUR_SERVER_IP>:8000` (e.g., `http://192.168.200.105:8000`).
++2. Run `npm run package` (or `npm run dist`) in the `frontend` directory to build the `.exe` installer.
++3. The built Electron app will now correctly route all requests to your deployed backend server instead of localhost.
+ 
+ ## 5. Maintenance
+ - **Logs:** The server console displays real-time logs.
+diff --git a/backend/database.py b/backend/database.py
+index 3913b33..b0a5eb0 100644
+--- a/backend/database.py
++++ b/backend/database.py
+@@ -36,6 +36,17 @@ def patch_schema(engine, is_mysql=False):
+                             logger.info(f"Schema patch custom_comments skipped or failed for {table}: {e}")
+         except Exception as e:
+             logger.warning(f"Schema patcher failed for {table}: {e}")
++            
++    # Additional patch for assessment_submissions
++    try:
++        with engine.begin() as conn:
++            try:
++                conn.execute(text("ALTER TABLE assessment_submissions ADD COLUMN time_spent_seconds INTEGER DEFAULT 0"))
++            except Exception as e:
++                if "Duplicate column name" not in str(e) and "duplicate column name" not in str(e).lower():
++                    logger.info(f"Schema patch time_spent_seconds skipped or failed for assessment_submissions: {e}")
++    except Exception as e:
++        logger.warning(f"Schema patcher failed for assessment_submissions: {e}")
+ 
+ # Path helper for PyInstaller
+ def get_app_path():
+diff --git a/backend/models.py b/backend/models.py
+index c3ab014..7a5821b 100644
+--- a/backend/models.py
++++ b/backend/models.py
+@@ -1,4 +1,4 @@
+-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON
++from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON, UniqueConstraint
+ from sqlalchemy.sql import func
+ from sqlalchemy.orm import relationship
+ try:
+@@ -110,6 +110,22 @@ class Broadcast(Base):
+     created_by = Column(Integer)  # Admin user ID
+ 
+ 
++class BroadcastAcknowledgement(Base):
++    """Tracks which users have acknowledged a specific broadcast"""
++    __tablename__ = "broadcast_acknowledgements"
++    __table_args__ = (
++        UniqueConstraint("broadcast_id", "user_id", name="uq_broadcast_acknowledgement"),
++    )
++
++    id = Column(Integer, primary_key=True, index=True)
++    broadcast_id = Column(Integer, ForeignKey("broadcasts.id", ondelete="CASCADE"), nullable=False, index=True)
++    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
++    acknowledged_at = Column(DateTime, default=func.now(), nullable=False)
++
++    broadcast = relationship("Broadcast")
++    user = relationship("User")
++
++
+ 
+ 
+ 
+diff --git a/backend/routers/admin/system.py b/backend/routers/admin/system.py
+index 947b0a6..395bc38 100644
+--- a/backend/routers/admin/system.py
++++ b/backend/routers/admin/system.py
+@@ -10,6 +10,7 @@ from ...models import User, UserProgress, SystemLog, Broadcast
+ from ...auth.dependencies import require_role
+ from ...rag_engine import rag_engine
+ from ...time_utils import utc_now
++from ...websocket_manager import notification_manager
+ 
+ router = APIRouter()
+ 
+@@ -78,7 +79,7 @@ def get_system_logs(
+ 
+ 
+ @router.post("/broadcast")
+-def create_broadcast(
++async def create_broadcast(
+     message: str,
+     level: str = "info",
+     db: Session = Depends(get_db),
+@@ -88,6 +89,19 @@ def create_broadcast(
+     broadcast = Broadcast(message=message, level=level, created_by=admin.id)
+     db.add(broadcast)
+     db.commit()
++    db.refresh(broadcast)
++
++    await notification_manager.broadcast({
++        "event": "BROADCAST_CREATED",
++        "broadcast": {
++            "id": broadcast.id,
++            "message": broadcast.message,
++            "level": broadcast.level,
++            "created_at": broadcast.created_at.isoformat() if broadcast.created_at else None,
++            "created_by": broadcast.created_by
++        }
++    })
++
+     return {"message": "Broadcast sent successfully"}
+ 
+ 
+@@ -130,7 +144,7 @@ def get_training_heatmap(
+ 
+ 
+ @router.delete("/broadcasts/{broadcast_id}")
+-def delete_broadcast(
++async def delete_broadcast(
+     broadcast_id: int,
+     db: Session = Depends(get_db),
+     admin: User = Depends(require_role("employee"))
+@@ -142,6 +156,12 @@ def delete_broadcast(
+ 
+     db.delete(broadcast)
+     db.commit()
++
++    await notification_manager.broadcast({
++        "event": "BROADCAST_DELETED",
++        "broadcast_id": broadcast_id
++    })
++
+     return {"message": "Broadcast deleted successfully"}
+ 
+ 
+diff --git a/backend/routers/assessments.py b/backend/routers/assessments.py
+index 4bed7c5..2358f1d 100644
+--- a/backend/routers/assessments.py
++++ b/backend/routers/assessments.py
+@@ -134,6 +134,8 @@ def resolve_uploaded_file_path(stored_path: str) -> str:
+         os.path.join(upload_root, *relative_parts),
+         os.path.join(APP_PATH, "uploads", *relative_parts),
+         os.path.join(os.path.dirname(APP_PATH), "uploads", *relative_parts),
++        os.path.join(r"\\kmti-nas\Shared\data\trainingApp\uploads", *relative_parts),
++        os.path.join(r"Z:\Training\trainingApp\uploads", *relative_parts)
+     ]
+     for candidate in candidates:
+         if os.path.exists(candidate):
+@@ -781,6 +783,7 @@ async def submit_quotation(
+     )
+     os.makedirs(upload_dir, exist_ok=True)
+     file_path = os.path.join(upload_dir, safe_filename)
++    relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
+     with open(file_path, "wb") as buffer:
+         shutil.copyfileobj(file.file, buffer)
+ 
+@@ -799,19 +802,21 @@ async def submit_quotation(
+     submission = pending_query.first()
+     if submission:
+         old_path = submission.submission_file_path
+-        submission.submission_file_path = file_path
++        submission.submission_file_path = relative_path
+         submission.submitted_at = datetime.now()
+         submission.display_label = "Quotation"
+-        if old_path and old_path != file_path and os.path.exists(old_path):
+-            try:
+-                os.remove(old_path)
+-            except OSError:
+-                pass
++        if old_path:
++            abs_old_path = os.path.join(base_upload_dir, old_path)
++            if os.path.exists(abs_old_path):
++                try:
++                    os.remove(abs_old_path)
++                except OSError:
++                    pass
+     else:
+         submission = AssessmentSubmission(
+             user_id=current_user.id,
+             task_id=anchor_task.id,
+-            submission_file_path=file_path,
++            submission_file_path=relative_path,
+             assessment_type=assessment_type,
+             submission_kind="quotation",
+             source_quotation_id=quotation_id,
+@@ -888,6 +893,7 @@ async def submit_task(
+ 
+     safe_filename = os.path.basename(file.filename) if file.filename else "submission"
+     file_path = os.path.join(upload_dir, safe_filename)
++    relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
+ 
+     with open(file_path, "wb") as buffer:
+         shutil.copyfileobj(file.file, buffer)
+@@ -921,7 +927,7 @@ async def submit_task(
+ 
+     if target_submission:
+         # Update current pending submission
+-        target_submission.submission_file_path = file_path
++        target_submission.submission_file_path = relative_path
+         target_submission.submitted_at = datetime.now()
+         target_submission.time_spent_seconds = time_spent_seconds
+         submission = target_submission
+@@ -930,7 +936,7 @@ async def submit_task(
+         submission = AssessmentSubmission(
+             user_id=current_user.id,
+             task_id=task_id,
+-            submission_file_path=file_path,
++            submission_file_path=relative_path,
+             assessment_type=assessment_type,
+             time_spent_seconds=time_spent_seconds,
+             status="pending"
+@@ -1155,7 +1161,7 @@ async def provide_feedback(
+     submission.status = status
+     submission.trainer_id = current_user.id
+ 
+-    file_path = None
++    relative_path = None
+     if file:
+         base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+ 
+@@ -1169,6 +1175,7 @@ async def provide_feedback(
+         os.makedirs(feedback_dir, exist_ok=True)
+         safe_fb_filename = os.path.basename(file.filename) if file.filename else "feedback"
+         file_path = os.path.join(feedback_dir, f"feedback_{submission_id}_{safe_fb_filename}")
++        relative_path = os.path.relpath(file_path, base_upload_dir).replace("\\", "/")
+ 
+         with open(file_path, "wb") as buffer:
+             shutil.copyfileobj(file.file, buffer)
+@@ -1178,14 +1185,14 @@ async def provide_feedback(
+         # Check if feedback already exists for this submission
+         feedback = db.query(AssessmentFeedback).filter(AssessmentFeedback.submission_id == submission_id).first()
+         if feedback:
+-            if file_path:
+-                feedback.checkback_file_path = file_path
++            if relative_path:
++                feedback.checkback_file_path = relative_path
+             if comments:
+                 feedback.comments = comments
+         else:
+             feedback = AssessmentFeedback(
+                 submission_id=submission_id,
+-                checkback_file_path=file_path,
++                checkback_file_path=relative_path,
+                 comments=comments
+             )
+             db.add(feedback)
+diff --git a/backend/routers/notifications.py b/backend/routers/notifications.py
+index 53bb746..cb08b67 100644
+--- a/backend/routers/notifications.py
++++ b/backend/routers/notifications.py
+@@ -1,7 +1,7 @@
+ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException
+ from sqlalchemy.orm import Session
+ from ..database import SessionLocal, get_db  # Import SessionLocal, get_db
+-from ..models import User, UserActivity, TrainerTraineeMapping, Notification
++from ..models import User, UserActivity, TrainerTraineeMapping, Notification, Broadcast, BroadcastAcknowledgement
+ from ..auth.security import decode_token
+ from jose import JWTError
+ from ..websocket_manager import notification_manager
+@@ -9,6 +9,7 @@ from ..schemas import NotificationResponse
+ from .auth import get_current_user
+ import logging
+ import json
++import asyncio
+ from datetime import datetime, timezone
+ from typing import List
+ 
+@@ -152,6 +153,113 @@ def get_my_notifications(
+         Notification.recipient_id == current_user.id
+     ).order_by(Notification.created_at.desc()).all()
+ 
++
++@router.get("/broadcasts/active")
++def get_active_broadcasts_for_user(
++    db: Session = Depends(get_db),
++    current_user: User = Depends(get_current_user)
++):
++    """Get active broadcasts that the current user has not acknowledged yet."""
++    acknowledged_ids = db.query(BroadcastAcknowledgement.broadcast_id).filter(
++        BroadcastAcknowledgement.user_id == current_user.id
++    ).subquery()
++
++    broadcasts = db.query(Broadcast, User.full_name)\
++        .join(User, Broadcast.created_by == User.id)\
++        .filter(Broadcast.is_active == True)\
++        .filter(~Broadcast.id.in_(acknowledged_ids))\
++        .order_by(Broadcast.created_at.desc()).all()
++
++    return [
++        {
++            "id": b[0].id,
++            "message": b[0].message,
++            "level": b[0].level,
++            "created_at": b[0].created_at,
++            "sender_name": b[1]
++        } for b in broadcasts
++    ]
++
++
++@router.post("/broadcasts/{broadcast_id}/acknowledge")
++async def acknowledge_broadcast(
++    broadcast_id: int,
++    db: Session = Depends(get_db),
++    current_user: User = Depends(get_current_user)
++):
++    """Mark a broadcast as acknowledged by the current user and notify admins."""
++    broadcast = db.query(Broadcast).filter(
++        Broadcast.id == broadcast_id,
++        Broadcast.is_active == True
++    ).first()
++
++    if not broadcast:
++        raise HTTPException(status_code=404, detail="Broadcast not found")
++
++    existing = db.query(BroadcastAcknowledgement).filter(
++        BroadcastAcknowledgement.broadcast_id == broadcast_id,
++        BroadcastAcknowledgement.user_id == current_user.id
++    ).first()
++
++    if not existing:
++        db.add(BroadcastAcknowledgement(
++            broadcast_id=broadcast_id,
++            user_id=current_user.id
++        ))
++
++    user_message = f"You acknowledged this broadcast: {broadcast.message}"
++    existing_user_notification = db.query(Notification).filter(
++        Notification.recipient_id == current_user.id,
++        Notification.type == "broadcast_acknowledged",
++        Notification.message == user_message
++    ).first()
++    if not existing_user_notification:
++        db.add(Notification(
++            recipient_id=current_user.id,
++            sender_id=current_user.id,
++            message=user_message,
++            type="broadcast_acknowledged",
++            is_read=True
++        ))
++
++    admin_users = db.query(User).filter(User.role == "admin", User.is_active == True).all()
++    admin_display_name = current_user.full_name or current_user.username
++    admin_message = f"{admin_display_name} has acknowledged the broadcast: {broadcast.message}"
++
++    created_admin_ids = []
++    for admin_user in admin_users:
++        db.add(Notification(
++            recipient_id=admin_user.id,
++            sender_id=current_user.id,
++            message=admin_message,
++            type="broadcast_acknowledged",
++            is_read=False
++        ))
++        created_admin_ids.append(admin_user.id)
++
++    db.commit()
++
++    async def _notify_admins():
++        payload = {
++            "event": "BROADCAST_ACKNOWLEDGED",
++            "broadcast_id": broadcast_id,
++            "broadcast_message": broadcast.message,
++            "user_id": current_user.id,
++            "username": current_user.username,
++            "full_name": current_user.full_name,
++            "message": admin_message
++        }
++        for admin_id in created_admin_ids:
++            await notification_manager.send_personal_message(payload, admin_id)
++
++    asyncio.create_task(_notify_admins())
++
++    return {
++        "status": "success",
++        "broadcast_id": broadcast_id,
++        "acknowledged_at": datetime.now(timezone.utc).isoformat()
++    }
++
+ @router.post("/{notification_id}/read")
+ def mark_notification_as_read(
+     notification_id: int,
+diff --git a/frontend/src/App.tsx b/frontend/src/App.tsx
+index 64c6b87..0d9f5f8 100644
+--- a/frontend/src/App.tsx
++++ b/frontend/src/App.tsx
+@@ -111,6 +111,14 @@ function AppContent() {
+         showNotification(data.message || `A new assessment set has been unlocked by your trainer.`, 'info', 0, '/mentor?mode=assessment');
+         window.dispatchEvent(new CustomEvent('kmti-refresh-my-submissions'));
+         notificationTriggered = true;
++      } else if (data.event === "BROADCAST_ACKNOWLEDGED" && role === 'admin') {
++        showNotification(
++          data.message || `${data.full_name || data.username || 'A user'} has acknowledged the broadcast.`,
++          'info',
++          0,
++          '/admin'
++        );
++        notificationTriggered = true;
+       } else if (data.event === "GLOBAL_REFRESH") {
+         window.dispatchEvent(new CustomEvent('kmti-global-refresh'));
+       }
+@@ -315,18 +323,17 @@ function AppContent() {
+                     <span style={{
+                       position: 'absolute',
+                       top: '-4px',
+-                      right: '-4px',
+-                      background: 'var(--accent-red, #ef4444)',
+-                      color: '#fff',
++                      right: '-8px',
++                      background: 'transparent',
++                      color: 'var(--accent-red, #ef4444)',
+                       borderRadius: '50%',
+                       width: '18px',
+                       height: '18px',
+-                      fontSize: '10px',
++                      fontSize: '11px',
+                       display: 'flex',
+                       alignItems: 'center',
+                       justifyContent: 'center',
+-                      fontWeight: 'bold',
+-                      border: '2px solid var(--bg-surface)'
++                      fontWeight: '900'
+                     }}>
+                       {unreadCount}
+                     </span>
+diff --git a/frontend/src/components/2D_Drawing/2D_Balloon.tsx b/frontend/src/components/2D_Drawing/2D_Balloon.tsx
+index de674f9..cc6b8de 100644
+--- a/frontend/src/components/2D_Drawing/2D_Balloon.tsx
++++ b/frontend/src/components/2D_Drawing/2D_Balloon.tsx
+@@ -7,7 +7,6 @@ import { KaraokeLessonText } from "../KaraokeLessonText";
+ import "../../styles/2D_Drawing/CourseLesson.css";
+ 
+ import balloonAssemblyMenuImg from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
+-import balloonAssemblyMenu2Img from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_2.png";
+ import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
+ 
+ interface BalloonLessonProps {
+@@ -30,9 +29,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
+     "If the details on the BOM are properly linked, part balloons are automatically displayed.",
+     "If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box.",
+     "Text should not change using edit characters.",
+-    "Assembly drawing",
+-    "Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together.",
+-    "Select the setup for Add Balloon. Click L1 of the part needed, then click P2 to place it beside the balloon where it will be attached."
++    "Assembly drawing"
+   ];
+   const tabsList = [{ id: '1' }];
+ 
+@@ -173,26 +170,6 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
+                     </div>
+                     <div className="step-description">
+                       <img src={balloonAssemblyMenuImg} alt="Assembly Add Balloon Settings" className="software-screenshot screenshot-wide" />
+-
+-                      <div className={`instruction-box mt-6 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
+-                        <KaraokeLessonText
+-                          className="p-flush"
+-                          text="Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together."
+-                          isActive={isSpeaking && currentIndex === 7}
+-                          currentCharIndex={currentCharIndex}
+-                        />
+-                      </div>
+-
+-                      <div className={`instruction-box mt-4 ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
+-                        <KaraokeLessonText
+-                          className="p-flush"
+-                          text="Select the setup for Add Balloon. Click L-1 of the part needed, then click P-2 to place it beside the balloon where it will be attached."
+-                          isActive={isSpeaking && currentIndex === 8}
+-                          currentCharIndex={currentCharIndex}
+-                        />
+-                      </div>
+-
+-                      <img src={balloonAssemblyMenu2Img} alt="Add Balloon Assembly Placement" className="software-screenshot screenshot-small mt-6" style={{ marginLeft: "26.5rem" }} />
+                     </div>
+                   </div>
+                 </div>
+diff --git a/frontend/src/components/2D_Drawing/2D_Dimensioning.tsx b/frontend/src/components/2D_Drawing/2D_Dimensioning.tsx
+index 421cc40..1454b59 100644
+--- a/frontend/src/components/2D_Drawing/2D_Dimensioning.tsx
++++ b/frontend/src/components/2D_Drawing/2D_Dimensioning.tsx
+@@ -93,7 +93,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
+       steps: [
+         "Put all the dimensions, symbols, and notes required in the drawing.",
+         "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
+-        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
++        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click Right Click to place the aligned chain."
+       ]
+     },
+     '2d-dimensioning-2': {
+diff --git a/frontend/src/components/2D_Drawing/2D_MachiningSymbol.tsx b/frontend/src/components/2D_Drawing/2D_MachiningSymbol.tsx
+index fbf9a9e..5322658 100644
+--- a/frontend/src/components/2D_Drawing/2D_MachiningSymbol.tsx
++++ b/frontend/src/components/2D_Drawing/2D_MachiningSymbol.tsx
+@@ -11,8 +11,6 @@ import "../../styles/2D_Drawing/CourseLesson.css";
+ import machiningSymbolMainImg from "../../assets/2D_Image_File/2D_machining_symbol.png";
+ 
+ 
+-import machiningSurfaceCondImg from "../../assets/2D_Image_File/2D_machining_symbol_machining_surface_condiiton.jpg";
+-
+ interface MachiningSymbolLessonProps {
+   nextLabel?: string;
+   onNextLesson?: () => void;
+diff --git a/frontend/src/components/2D_Drawing/2D_NormalMirrorParts.tsx b/frontend/src/components/2D_Drawing/2D_NormalMirrorParts.tsx
+index 04ce34e..fb3bebb 100644
+--- a/frontend/src/components/2D_Drawing/2D_NormalMirrorParts.tsx
++++ b/frontend/src/components/2D_Drawing/2D_NormalMirrorParts.tsx
+@@ -1,5 +1,5 @@
+-import { ChevronLeft,ChevronRight } from 'lucide-react';
+-import React,{ useEffect,useState } from "react";
++import { ChevronLeft, ChevronRight } from 'lucide-react';
++import React, { useEffect, useState } from "react";
+ import { useLessonCore } from "../../hooks/useLessonCore";
+ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+ import { KaraokeLessonText } from "../KaraokeLessonText";
+diff --git a/frontend/src/components/2D_Drawing/2D_OperalView.tsx b/frontend/src/components/2D_Drawing/2D_OperalView.tsx
+index ee392eb..a8772a9 100644
+--- a/frontend/src/components/2D_Drawing/2D_OperalView.tsx
++++ b/frontend/src/components/2D_Drawing/2D_OperalView.tsx
+@@ -87,7 +87,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
+       subtitle: 'Aligning projected views and deleting unnecessary views.',
+       steps: [
+         "View Alignment: If views are not aligned, use the create-three-view tool to adjust. Aligning lines will appear as guides to help you restore proper projection integrity.",
+-        "Delete View: Select any unnecessary views, click GO, and confirm in the dialog box to remove them from your drawing template."
++        "Delete View: Select any unnecessary views, click Right Click, and confirm in the dialog box to remove them from your drawing template."
+       ]
+     }
+   };
+@@ -248,7 +248,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
+                       <div className="flex-row gap-4 mt-4">
+                         <div className="instruction-box" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+-                            1. Click the unnecessary view, then GO.
++                            1. Click the unnecessary view, then Right Click.
+                           </p>
+                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
+                             2. Delete view dialog box display.
+diff --git a/frontend/src/components/2D_Drawing/2D_StandardLibrary.tsx b/frontend/src/components/2D_Drawing/2D_StandardLibrary.tsx
+index 5f927ad..44a5d3c 100644
+--- a/frontend/src/components/2D_Drawing/2D_StandardLibrary.tsx
++++ b/frontend/src/components/2D_Drawing/2D_StandardLibrary.tsx
+@@ -1,5 +1,5 @@
+ import { ChevronLeft, ChevronRight } from 'lucide-react';
+-import React,{ useEffect,useState } from "react";
++import React, { useEffect, useState } from "react";
+ import { useLessonCore } from "../../hooks/useLessonCore";
+ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+ import { KaraokeLessonText } from "../KaraokeLessonText";
+@@ -21,7 +21,7 @@ interface StandardLibraryLessonProps {
+ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
+   nextLabel,
+   onNextLesson,
+-  onPrevLesson}) => {
++  onPrevLesson }) => {
+   const TABS = [
+     { id: 'standard-library', label: 'Standard Part Library' }
+   ];
+@@ -208,7 +208,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
+                               5. Place on its designated location
+                             </p>
+                             <p className="p-flush" style={{ marginTop: "0.5rem" }}>
+-                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. (See Dimensioning tab)
++                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. See 2D Detailing course. Lesson 窶廛imensioning, b窶・
+                             </p>
+                           </div>
+                         </div>
+diff --git a/frontend/src/components/2D_Drawing/2D_StandardPart.tsx b/frontend/src/components/2D_Drawing/2D_StandardPart.tsx
+index 696a531..35e84f3 100644
+--- a/frontend/src/components/2D_Drawing/2D_StandardPart.tsx
++++ b/frontend/src/components/2D_Drawing/2D_StandardPart.tsx
+@@ -28,7 +28,7 @@ import collar2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_col
+ 
+ /* Importing assets for Standard Part Detail (6) */
+ import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
+-import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
++// import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
+ import reliefProcess1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
+ 
+ /* Importing assets for Standard Part Detail (7) */
+@@ -549,8 +549,37 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
+                       />
+                     </div>
+                     <div className="step-description">
+-                      <div className="mb-4">
+-                        <img src={scaleImg} alt="Standard Scales" className="software-screenshot screenshot-wide" />
++                      <div className="lesson-table-container mt-4">
++                        <table className="lesson-table">
++                          <thead>
++                            <tr>
++                              <th>TYPE</th>
++                              <th>SCALE JIS Z 8314</th>
++                            </tr>
++                          </thead>
++                          <tbody>
++                            <tr>
++                              <td>CURRENT MEASURE</td>
++                              <td>1:1</td>
++                            </tr>
++                            <tr>
++                              <td>Upsize (1)</td>
++                              <td>2:1, 5:1, 10:1, 20:1, 50:1</td>
++                            </tr>
++                            <tr>
++                              <td>Upsize (2)</td>
++                              <td>竏・:1, 2.5:1, 100:1</td>
++                            </tr>
++                            <tr>
++                              <td>Down Size (1)</td>
++                              <td>1:2, (1:3), (1:4), 1:5, 1:10, 1:20, 1:50</td>
++                            </tr>
++                            <tr>
++                              <td>Down Size (2)</td>
++                              <td>1:竏・, 1:2.5, 1:2竏・, 1:3, 1:4, 1:5竏・, 1:25, 1:250</td>
++                            </tr>
++                          </tbody>
++                        </table>
+                       </div>
+ 
+                       <div className="instruction-box mt-4 mb-4">
+diff --git a/frontend/src/components/2D_Drawing/2D_SurfaceCoating.tsx b/frontend/src/components/2D_Drawing/2D_SurfaceCoating.tsx
+index be57ebd..1098504 100644
+--- a/frontend/src/components/2D_Drawing/2D_SurfaceCoating.tsx
++++ b/frontend/src/components/2D_Drawing/2D_SurfaceCoating.tsx
+@@ -27,7 +27,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
+     "SURFACE COATING SIZE AND TOLERANCE",
+     "Review surface coating processes table including Hard Chromate, Chrome Plating, Nickel Plating, and Colored Plating.",
+     "Special Notes: Review the special notes indications in the drawing interface.",
+-    "Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity."
++    "Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then Right Click. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity."
+   ];
+   const tabsList = [{ id: 'default' }];
+   const activeTab = 'default';
+@@ -228,7 +228,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
+                 <div className="step-description">
+                   <img src={copyMoveImg} alt="Copy Move Commands" className="software-screenshot screenshot-wide" />
+                   <div className="instruction-box mt-6">
+-                    <KaraokeLessonText className="p-flush mb-4" text="Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity." isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
++                    <KaraokeLessonText className="p-flush mb-4" text="Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then Right Click. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity." isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
+                   </div>
+                 </div>
+               </div>
+diff --git a/frontend/src/components/2D_Drawing/2D_WeightComputation.tsx b/frontend/src/components/2D_Drawing/2D_WeightComputation.tsx
+index 0df4553..d322e4c 100644
+--- a/frontend/src/components/2D_Drawing/2D_WeightComputation.tsx
++++ b/frontend/src/components/2D_Drawing/2D_WeightComputation.tsx
+@@ -1,5 +1,5 @@
+-import { ChevronLeft,ChevronRight } from 'lucide-react';
+-import React,{ useEffect } from "react";
++import { ChevronLeft, ChevronRight } from 'lucide-react';
++import React, { useEffect } from "react";
+ import { useLessonCore } from "../../hooks/useLessonCore";
+ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+ import { KaraokeLessonText } from "../KaraokeLessonText";
+@@ -7,11 +7,11 @@ import { KaraokeLessonText } from "../KaraokeLessonText";
+ import "../../styles/2D_Drawing/CourseLesson.css";
+ 
+ /* Importing assets for Weight Computation */
+-import cylinderExImg from "../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg";
+-import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
+-import shapeSteelEx1Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg";
+-import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg";
+-import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
++// import cylinderExImg from "../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg";
++// import plateExImg from "../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg";
++// import shapeSteelEx1Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg";
++// import shapeSteelEx2Img from "../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg";
++// import pipeExImg from "../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg";
+ interface WeightComputationLessonProps {
+   nextLabel?: string;
+   onNextLesson?: () => void;
+@@ -83,7 +83,7 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
+             <div className="flex-col tab-content fade-in">
+ 
+               {/* === Section Header === */}
+-              <div className={`step-header ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-1rem", marginBottom:" -1rem" }}>
++              <div className={`step-header ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0" style={{ marginTop: "-1rem", marginBottom: " -1rem" }}>
+                 <span className="step-number">15</span>
+                 <KaraokeLessonText as="span" className="step-label" text="Material Weight Computation" isActive={isSpeaking && currentIndex === 0} currentCharIndex={currentCharIndex} />
+               </div>
+@@ -132,7 +132,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
+                   <KaraokeLessonText as="span" className="step-label" text="Plate ( L ﾃ・W ﾃ・H ﾃ・SG )" isActive={isSpeaking && currentIndex === 2} currentCharIndex={currentCharIndex} />
+                 </div>
+                 <div className="step-description">
+-                  <img src={plateExImg} alt="Plate Computation Example" className="software-screenshot screenshot-wide" />
++                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 16 ﾃ・90 ﾃ・120</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: SS400</span></div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.016m ﾃ・0.09m ﾃ・0.12m ﾃ・7850kg/mﾂｳ</div>
++                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 1.36 kg</div>
++                  </div>
+                   <div className="instruction-box mt-6">
+                     <p className="p-flush"><strong className="red-text">Note:</strong></p>
+                     <p className="p-flush">Dimension is always in millimeter.</p>
+@@ -149,7 +155,13 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
+                   <KaraokeLessonText as="span" className="step-label" text="Cylinder ( pi ﾃ・rﾂｲ ﾃ・L ﾃ・SG ) or [ ( pi ﾃ・dﾂｲ ﾃ・L ﾃ・SG ) / 4 ]" isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
+                 </div>
+                 <div className="step-description">
+-                  <img src={cylinderExImg} alt="Cylinder Computation Example" className="software-screenshot screenshot-wide" />
++                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: ﾏ・0 ﾃ・115</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: S45C</span></div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 3.1416 ﾃ・(0.03m)ﾂｲ ﾃ・0.115m ﾃ・7840kg/mﾂｳ</div>
++                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 2.55 kg</div>
++                  </div>
+                   <div className="instruction-box mt-6">
+                     <p className="p-flush"><strong className="red-text">Note:</strong></p>
+                     <p className="p-flush">Dimension is always in millimeter.</p>
+@@ -166,8 +178,26 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
+                   <KaraokeLessonText as="span" className="step-label" text="Shape Steel ( Cross Sectional Area ﾃ・L ﾃ・SG )" isActive={isSpeaking && currentIndex === 4} currentCharIndex={currentCharIndex} />
+                 </div>
+                 <div className="step-description">
+-                  <img src={shapeSteelEx1Img} alt="Shape Steel Example 1" className="software-screenshot screenshot-wide" />
+-                  <img src={shapeSteelEx2Img} alt="Shape Steel Example 2" className="software-screenshot screenshot-wide mt-4" />
++                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 150 ﾃ・75 ﾃ・9 - 530</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 30.59 cmﾂｲ</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: C Channel</span></div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 30.59cm ﾃ・1cm</div>
++                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 0.3059m ﾃ・0.01m</div>
++                    <div><span style={{ fontWeight: 'bold' }}>C.S A</span> = 0.003059 mﾂｲ</div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.003059mﾂｲ ﾃ・0.53m ﾃ・7850kg/mﾂｳ</div>
++                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 12.73 kg</div>
++                  </div>
++                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 mt-4 text-black">
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 125 ﾃ・90 ﾃ・10 - 725</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 20.50 cmﾂｲ</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: Unequal Side Angle Bar</span></div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.00205mﾂｲ ﾃ・0.725m ﾃ・7850kg/mﾂｳ</div>
++                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 11.67 kg</div>
++                  </div>
+                   <div className="instruction-box mt-6">
+                     <p className="p-flush"><strong>Notes:</strong></p>
+                     <p className="p-flush">1. Cross sectional area refers from <strong>Japan Industrial Standard (JIS).</strong></p>
+@@ -185,7 +215,14 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({
+                   <KaraokeLessonText as="span" className="step-label" text="Square / Rectangular Pipe ( Cross Sectional Area ﾃ・L ﾃ・SG )" isActive={isSpeaking && currentIndex === 5} currentCharIndex={currentCharIndex} />
+                 </div>
+                 <div className="step-description">
+-                  <img src={pipeExImg} alt="Square Rectangular Pipe Computation Example" className="software-screenshot screenshot-wide" />
++                  <div className="bg-gray-50 border border-gray-200 rounded p-4 font-mono text-sm shadow-sm w-fit mb-4 text-black">
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Dimension</span><span>: 90 ﾃ・45 ﾃ・3.2 - 480</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>C.S Area</span><span>: 7.967 cmﾂｲ</span></div>
++                    <div className="flex gap-4"><span className="w-24 text-gray-500" style={{ fontWeight: 'bold' }}>Material</span><span>: STKR400 (rectangular pipe)</span></div>
++                    <div className="my-2"></div>
++                    <div><span style={{ fontWeight: 'bold' }}>MW</span> = 0.000796mﾂｲ ﾃ・0.48m ﾃ・7850kg/mﾂｳ</div>
++                    <div className="text-lg mt-1" style={{ fontWeight: 'bold' }}>MW = 3.00 kg</div>
++                  </div>
+                 </div>
+               </div>
+ 
+diff --git a/frontend/src/components/3D_Modeling/3D_2Dto3D.tsx b/frontend/src/components/3D_Modeling/3D_2Dto3D.tsx
+index 18ab6ac..ed4ab20 100644
+--- a/frontend/src/components/3D_Modeling/3D_2Dto3D.tsx
++++ b/frontend/src/components/3D_Modeling/3D_2Dto3D.tsx
+@@ -125,7 +125,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+       </div>
+       <div className="lesson-tabs">
+-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
++        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
+       </div>
+ 
+ 
+@@ -247,8 +247,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+     "EXTRUDE",
+     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
+     "Step 1: Select Extrude from the icon menu.",
+-    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure > GO",
+-    "Step 3: Specify the height of extrusion on the item entry then Press Enter then GO",
++    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure, then Right Click",
++    "Step 3: Specify the height of extrusion on the item entry, then Press Enter, then Right Click",
+     "A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane. ",
+     "Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.",
+     "Select Cancel to keep the work plane together with all the 2D sketches.",
+@@ -259,8 +259,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+     "REVOLVE",
+     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
+     "Step 1: Select Revolve from the icon menu.",
+-    "Step 2: Pick the cross section to be revolved then GO. A hatch will appear to show that the sketch is an enclosed figure",
+-    "Step 3: Select the axis of rotation then GO",
++    "Step 2: Pick the cross section to be revolved, then Right Click. A hatch will appear to show that the sketch is an enclosed figure",
++    "Step 3: Select the axis of rotation, then Right Click",
+     "PROCESS OVERVIEW"
+   ];
+   const spiralSteps = [
+@@ -268,9 +268,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+     "SPIRAL FORM",
+     "Creates a 3D spiral form from a section form created on a 2D sketch.",
+     "Step 1: First do the sketch",
+-    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure then GO",
+-    "Step 3: Specify the pitch of the spiral on the item entry then Press Enter then GO. Note: Pitch must be greater than Thickness",
+-    "Step 4: Select the ends of the length of the spiral along the axis of rotation then GO",
++    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click",
++    "Step 3: Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click. Note: Pitch must be greater than Thickness",
++    "Step 4: Select the ends of the length of the spiral along the axis of rotation, then Right Click",
+     "RESULT"
+   ];
+ 
+@@ -331,7 +331,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+       </div>
+       <div className="lesson-tabs">
+-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
++        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
+       </div>
+ 
+       <section className="lesson-intro">
+@@ -414,7 +414,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                   <br />
+                   <KaraokeLessonText
+                     as="span"
+-                    text="A hatch will appear to show that the sketch is an enclosed figure &gt; GO"
++                    text="A hatch will appear to show that the sketch is an enclosed figure, then Right Click"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -432,7 +432,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO"
++                    text="Specify the height of extrusion on the item entry, then Press Enter, then Right Click"
+                     isActive={isSpeaking && currentIndex === 7}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -537,7 +537,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 <div className="step-label" style={{ gap: '0px' }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Pick the cross section to be revolved &gt; GO"
++                    text="Pick the cross section to be revolved, then Right Click"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -559,7 +559,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the axis of rotation &gt; GO"
++                    text="Select the axis of rotation, then Right Click"
+                     isActive={isSpeaking && currentIndex === 7}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -648,7 +648,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 as="p"
+                 className="p-flush"
+                 style={{ marginTop: "-1rem" }}
+-                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
++                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click"
+                 isActive={isSpeaking && currentIndex === 6}
+                 currentCharIndex={currentCharIndex}
+               />
+@@ -660,7 +660,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
++                    text="Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click"
+                     isActive={isSpeaking && currentIndex === 7}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -687,7 +687,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
+                 <KaraokeLessonText
+                   as="span"
+                   className="step-label"
+-                  text="Select the ends of the length of the spiral along the axis of rotation then GO"
++                  text="Select the ends of the length of the spiral along the axis of rotation, then Right Click"
+                   isActive={isSpeaking && currentIndex === 8}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -754,3 +754,4 @@ const TwoDTo3DLesson: React.FC<TwoDTo3DLessonProps> = ({
+ };
+ 
+ export default TwoDTo3DLesson;
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Annotation.tsx b/frontend/src/components/3D_Modeling/3D_Annotation.tsx
+index a4bc2fd..b6d47bb 100644
+--- a/frontend/src/components/3D_Modeling/3D_Annotation.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Annotation.tsx
+@@ -90,14 +90,14 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
+ 
+   const editsSteps = [
+     "EDITS DRAFTING ENTITY CHARACTERS",
+-    "Step 1: Select drafting entity, then click GO.",
++    "Step 1: Select drafting entity, then click Right Click.",
+     "Step 2: Edit Dimension Characters window will appear.",
+     "Step 3: After editing the dimension characters, Press OK."
+   ];
+ 
+   const attributesSteps = [
+     "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
+-    "Step 1: Select drafting entity, then click GO.",
++    "Step 1: Select drafting entity, then click Right Click.",
+     "Step 2: Change Properties window will appear.",
+     "Step 3: After changing the properties, Press OK."
+   ];
+@@ -517,7 +517,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
+                         <KaraokeLessonText
+                           as="span"
+                           className="step-label"
+-                          text="Select drafting entity, then click GO"
++                          text="Select drafting entity, then click Right Click"
+                           isActive={isSpeaking && currentIndex === 3}
+                           currentCharIndex={currentCharIndex}
+                         />
+@@ -573,7 +573,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
+                         <KaraokeLessonText
+                           as="span"
+                           className="step-label"
+-                          text="Select drafting entity, then click GO"
++                          text="Select drafting entity, then click Right Click"
+                           isActive={isSpeaking && currentIndex === 3}
+                           currentCharIndex={currentCharIndex}
+                         />
+diff --git a/frontend/src/components/3D_Modeling/3D_BasicOperation.tsx b/frontend/src/components/3D_Modeling/3D_BasicOperation.tsx
+index 91f2445..4b70e0a 100644
+--- a/frontend/src/components/3D_Modeling/3D_BasicOperation.tsx
++++ b/frontend/src/components/3D_Modeling/3D_BasicOperation.tsx
+@@ -287,14 +287,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+   const lessonSteps = React.useMemo(() => [
+     "Creating Basic Shapes",                                                         // 0 heading
+     "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.", // 1 overview
+-    "A Cylinder is a circular solid defined by its Diameter and Height 窶・ideal for shafts, pins, bosses, and round posts.", // 2 竊・cylinder tab
+-    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 竊・box tab
+-    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height 窶・useful for hexagonal bolts and multi-sided columns.", // 4 竊・polygon tab
+-    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 竊・cone tab
+-    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 竊・torus tab
+-    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 竊・back to cylinder, scroll to Before You Start
+-    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 竊・command menu step
+-    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 竊・scroll to video
++    "A Cylinder is a circular solid defined by its Diameter and Height 窶・ideal for shafts, pins, bosses, and round posts.", // 2 竊・cylinder tab
++    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 竊・box tab
++    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height 窶・useful for hexagonal bolts and multi-sided columns.", // 4 竊・polygon tab
++    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 竊・cone tab
++    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 竊・torus tab
++    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 竊・back to cylinder, scroll to Before You Start
++    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 竊・command menu step
++    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 竊・scroll to video
+   ], []);
+ 
+   // Auto-switch tabs as TTS progresses through the narrated tour
+@@ -383,7 +383,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+           />
+         </h3>
+ 
+-        {/* TTS index 1 窶・overview narration */}
++        {/* TTS index 1 窶・overview narration */}
+         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
+           <KaraokeLessonText
+             text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
+@@ -392,7 +392,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+           />
+         </div>
+ 
+-        {/* Shape intro 窶・tab-specific, shown here in the main intro card */}
++        {/* Shape intro 窶・tab-specific, shown here in the main intro card */}
+         {(() => {
+           const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
+           const idx = tabIntroIdx[activeTab] ?? 2;
+@@ -409,7 +409,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+       </section>
+ 
+       <div className="lesson-grid single-card">
+-        {/* Prerequisite steps card 窶・always visible, scrolled to at TTS step 7 */}
++        {/* Prerequisite steps card 窶・always visible, scrolled to at TTS step 7 */}
+         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
+           <div className="card-header">
+             <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
+@@ -442,7 +442,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+             </div>
+ 
+ 
+-            {/* Watch tutorial prompt 窶・shown at step 9 (closing message) */}
++            {/* Watch tutorial prompt 窶・shown at step 9 (closing message) */}
+             {currentIndex === 9 && isSpeaking && (
+               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
+                 <KaraokeLessonText
+@@ -557,26 +557,26 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+ 
+   const moveSteps = [
+     "Step 1: Select Move from the icon menu.",
+-    "Step 2: Left-click on the entity to be moved and click GO.",
++    "Step 2: Left-click on the entity to be moved and click Right Click.",
+     "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
+   ];
+ 
+   const rotateSteps = [
+     "Step 1: Select Rotate from the icon menu.",
+-    "Step 2: Left-click on the entity to be rotated and click GO.",
++    "Step 2: Left-click on the entity to be rotated and click Right Click.",
+     "Step 3: Select 2-points to set the axis of rotation.",
+     "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
+   ];
+ 
+   const mirrorSteps = [
+     "Step 1: Select Mirror from the icon menu.",
+-    "Step 2: Left-click on the entity to be mirrored and click GO.",
++    "Step 2: Left-click on the entity to be mirrored and click Right Click.",
+     "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
+   ];
+ 
+   const copySteps = [
+     "Step 1: Select Copy from the icon menu.",
+-    "Step 2: Left-click on the entity to be copied and click GO.",
++    "Step 2: Left-click on the entity to be copied and click Right Click.",
+     "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
+   ];
+ 
+@@ -763,7 +763,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Left-click on the entity to be moved > GO"
++                    text="Left-click on the entity to be moved then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -778,7 +778,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <KaraokeLessonText
+                   as="span"
+                   className="step-label"
+-                  text="Specify the movement distance on the X, Y and Z-axis on the item entry > Press Enter"
++                  text="Specify the movement distance on the X, Y and Z-axis on the item entry then Press Enter"
+                   isActive={isSpeaking && currentIndex === 5}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -841,7 +841,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Left-click on the entity to be rotated > GO"
++                    text="Left-click on the entity to be rotated then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -869,7 +869,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <KaraokeLessonText
+                   as="span"
+                   className="step-label"
+-                  text="Specify the desired angle of rotation on the item entry > Press Enter"
++                  text="Specify the desired angle of rotation on the item entry then Press Enter"
+                   isActive={isSpeaking && currentIndex === 6}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -925,7 +925,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Left-click on the entity to be mirrored > GO"
++                    text="Left-click on the entity to be mirrored then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -995,7 +995,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Left-click on the entity to be copied > GO"
++                    text="Left-click on the entity to be copied then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1010,7 +1010,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <KaraokeLessonText
+                   as="span"
+                   className="step-label"
+-                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed > Press Enter"
++                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed then Press Enter"
+                   isActive={isSpeaking && currentIndex === 5}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -1168,7 +1168,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+   const extrudeSteps = [
+     "EXTRUDE",
+     "Step 1: Select Extrude from the icon menu.",
+-    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
++    "Step 2: Select the perimeter of the sketch to be extrude then Right Click. A hatch will appear indicating the specified area to be extruded.",
+     "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
+     "Step 4: Press ENTER to finalize."
+   ];
+@@ -1176,8 +1176,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+   const revolveSteps = [
+     "REVOLVE",
+     "Step 1: Select Revolve from the icon menu.",
+-    "Step 2: Select the perimeter of the sketch to be revolve then GO",
+-    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
++    "Step 2: Select the perimeter of the sketch to be revolve then Right Click",
++    "Step 3: Select the axis of rotation (pick points or edge) then Right Click. A hatch will appear indicating the specified area to be revolved."
+   ];
+ 
+   const tabs = [
+@@ -1411,7 +1411,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the perimeter of the sketch to be extruded > GO"
++                    text="Select the perimeter of the sketch to be extruded then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1505,7 +1505,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the perimeter of the sketch to be revolved > GO"
++                    text="Select the perimeter of the sketch to be revolved then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1519,7 +1519,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the axis of rotation (pick points or edge) > GO"
++                    text="Select the axis of rotation (pick points or edge) then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1574,34 +1574,34 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+   const showHideSteps = [
+     "SHOW / HIDE ENTITY",
+     "Step 1: Select Show/Hide from the icon menu.",
+-    "Step 2: Select the entities for showing/hiding then GO",
++    "Step 2: Select the entities for showing/hiding then Right Click",
+     "SHOW/HIDE DRAFTING ENTITY",
+     "Step 1: Select Show/Hide Drafting Entity from the icon menu.",
+     "Step 2: Right-click to show/hide all drafting entities.",
+     "Drafting Entities include: Dimensions, Notes and Symbols.",
+     "HIDE UNSELECTED ENTITY",
+     "Step 1: Select Hide Unselected Entity from the icon menu.",
+-    "Step 2: Select all entities to be retain then GO",
++    "Step 2: Select all entities to be retain then Right Click",
+     "All unselected entities will be hidden."
+   ];
+ 
+   const stretchSteps = [
+     "STRETCH / SHAPE / CUT",
+     "Step 1: Select Stretch from the icon menu.",
+-    "Step 2: Select the face to be stretch then GO",
++    "Step 2: Select the face to be stretch then Right Click",
+     "Step 3: Specify the desired length of the solid entity on the item entry.",
+     "Also works for circular surfaces.",
+     "OR",
+-    "Select face then GO then Left-click on the 3D Space",
++    "Select face, then Right Click, then Left-click on the 3D Space",
+     "A linear scale will appear on the 3D Space",
+-    "Specify the additional length of stretch then Press Enter or Left-Click on the scale."
++    "Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
+   ];
+ 
+   const resizeSteps = [
+     "RESIZE",
+     "Step 1: Select Resize from the icon menu.",
+-    "Step 2: Select the entity for resizing then GO.",
+-    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
++    "Step 2: Select the entity for resizing then Right Click.",
++    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry then Left-click on the 3D Space."
+   ];
+ 
+   const tabs = [
+@@ -1743,7 +1743,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the entities for showing/hiding > GO"
++                    text="Select the entities for showing/hiding then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1863,7 +1863,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select all entities to be retain > GO"
++                    text="Select all entities to be retain then Right Click"
+                     isActive={isSpeaking && currentIndex === 11}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1919,7 +1919,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the face to be stretch &gt; GO"
++                    text="Select the face to be stretch then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -1962,14 +1962,14 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                   <div className="step-label">
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select face >  GO"
++                    text="Select face, then Right Click"
+                       isActive={isSpeaking && currentIndex === 8}
+                       currentCharIndex={currentCharIndex}
+                     />
+                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+                     <KaraokeLessonText
+                       as="span"
+-                      text=" > Left-click on the 3D Space"
++                    text=", then Left-click on the 3D Space"
+                       isActive={isSpeaking && currentIndex === 8}
+                       currentCharIndex={currentCharIndex - 17}
+                     />
+@@ -1987,7 +1987,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                   <p className={`p-flush mt-4 ${currentIndex === 10 ? "reading-active" : ""}`} data-reading-index="10" style={{ marginBottom: "2rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Specify the additional length of stretch > Press Enter or Left-Click on the scale."
++                    text="Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
+                       isActive={isSpeaking && currentIndex === 10}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -2041,7 +2041,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the entity for resizing > GO"
++                    text="Select the entity for resizing then Right Click"
+                     isActive={isSpeaking && currentIndex === 2}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -2057,7 +2057,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space"
++                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry, then Left-click on the 3D Space"
+                     isActive={isSpeaking && currentIndex === 3}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -2171,7 +2171,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson,
+                 <KaraokeLessonText
+                   as="span"
+                   className="step-label"
+-                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
++                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications then Press OK"
+                   isActive={isSpeaking && currentIndex === 4}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -2247,3 +2247,4 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
+ export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
+ export default BasicOperationLesson;
+ 
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Boolean.tsx b/frontend/src/components/3D_Modeling/3D_Boolean.tsx
+index b4a6dd1..4bee4e1 100644
+--- a/frontend/src/components/3D_Modeling/3D_Boolean.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Boolean.tsx
+@@ -57,7 +57,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+     "UNION",
+     "Tool for joining 3D entities into a single entity.",
+     "Step 1: Select Union from the icon menu.",
+-    "Step 2: Select all 3D entities for joining then GO",
++    "Step 2: Select all 3D entities for joining then Right Click",
+   ];
+ 
+   const subtractSteps = [
+@@ -65,7 +65,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+     "Tool for creating cutouts on 3D entities.",
+     "Step 1: Select Subtract from the icon menu.",
+     "Step 2: First, select the Target entity.",
+-    "Step 3: Select the tool entities then GO. Tool entities will disappear and become components after subtraction.",
++    "Step 3: Select the tool entities then Right Click. Tool entities will disappear and become components after subtraction.",
+     "This subtract tool will retain the tool entities after subtraction.",
+   ];
+ 
+@@ -73,7 +73,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+     "INTERSECT",
+     "Tool that creates entity of the product of two intersecting entities.",
+     "Step 1: Select Intersect from the icon menu.",
+-    "Step 2: Select the intersecting entities then GO",
++    "Step 2: Select the intersecting entities then Right Click",
+     "Intersecting entities will not disappear after the process.",
+   ];
+ 
+@@ -81,10 +81,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+     "SEPARATE ENTITY",
+     "Tool use to reverse boolean operations by creating CSG solid.",
+     "Component: By product of boolean operations (entities joined by union, cutout, holes). This tool is use to separate specified entities from the solid entity.",
+-    "Step 1: Select the desired components to be separated from the solid entity then GO",
++    "Step 1: Select the desired components to be separated from the solid entity then Right Click",
+     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK",
+     "This tool is use to separate all components from the solid entity.",
+-    "Step 1: Select the solid entity then GO",
++    "Step 1: Select the solid entity then Right Click",
+     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK"
+   ];
+ 
+@@ -232,7 +232,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select entities to join then GO"
++                      text="Select entities to join then Right Click"
+                       isActive={isSpeaking && currentIndex === 5}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -334,7 +334,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select the tool entities then GO"
++                      text="Select the tool entities then Right Click"
+                       isActive={isSpeaking && currentIndex === 6}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -455,7 +455,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select intersecting entities then GO"
++                      text="Select intersecting entities then Right Click"
+                       isActive={isSpeaking && currentIndex === 5}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -554,7 +554,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select the desired components to be separated from the solid entity &gt; GO"
++                      text="Select the desired components to be separated from the solid entity then Right Click"
+                       isActive={isSpeaking && currentIndex === 5}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -600,7 +600,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                     <KaraokeLessonText
+                       as="span"
+-                      text="Select the solid entity &gt; GO"
++                      text="Select the solid entity then Right Click"
+                       isActive={isSpeaking && currentIndex === 8}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -642,3 +642,4 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
+ };
+ 
+ export default BooleanLesson;
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Component.tsx b/frontend/src/components/3D_Modeling/3D_Component.tsx
+index a721c4b..18565eb 100644
+--- a/frontend/src/components/3D_Modeling/3D_Component.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Component.tsx
+@@ -65,14 +65,14 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+   const moveSteps = [
+     "MOVE COMPONENT",
+     "Step 1: Select Move Component from the icon menu.",
+-    "Select the component to move then GO",
++    "Select the component to move then Right Click",
+     "Specify the movement distance on the X,Y and Z-axis on the item entry. then Press Enter",
+     "RESULT"
+   ];
+   const copySteps =
+     ["COPY COMPONENT",
+       "Step 1: Select Copy Component from the icon menu.",
+-      "Select the component to copy then GO",
++      "Select the component to copy then Right Click",
+       "Specify the distance on the X,Y and Z-axis and the number of copies needed then Press Enter",
+       "RESULT"
+     ];
+@@ -80,7 +80,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+     "MIRROR COMPONENT",
+     "Use to move/relocate a component by mirror movement.",
+     "Step 1: Select Mirror Component from the icon menu.",
+-    "Select the components to be mirror then GO",
++    "Select the components to be mirror then Right Click",
+     "Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored.",
+     "RESULT"
+   ];
+@@ -88,7 +88,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+     "ROTATE COMPONENT",
+     "Use to move/relocate a component by rotating on an axis.",
+     "Step 1: Select Rotate Component from the icon menu.",
+-    "Select the component to rotate then GO",
++    "Select the component to rotate then Right Click",
+     "Select 2 points to set the axis of rotation.",
+     "Step 4: Specify the desired angle of rotation on the item entry then press Enter.",
+     "RESULT"
+@@ -102,7 +102,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+     "ROTATE COPY COMPONENT",
+     "Use to create a duplicate of a component by rotating on an axis.",
+     "Step 1: Select Rotate Component from the icon menu.",
+-    "Select the component to be rotated then GO",
++    "Select the component to be rotated then Right Click",
+     "Step 3: Select 2 points to set the axis of rotation.",
+     "Step 4: Specify the desired angle of rotation on the item entry then press Enter.",
+     "RESULT"
+@@ -281,7 +281,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the component to move &gt; GO"
++                    text="Select the component to move then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -366,7 +366,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the component to copy &gt; GO"
++                    text="Select the component to copy then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -381,7 +381,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label">
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Specify the distance on the X,Y and Z-axis and the number of copies needed &gt; Press Enter"
++                    text="Specify the distance on the X,Y and Z-axis and the number of copies needed then Press Enter"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -461,7 +461,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the components to be mirror &gt; GO"
++                    text="Select the components to be mirror then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -552,7 +552,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the component to rotate &gt; GO"
++                    text="Select the component to rotate then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -713,7 +713,7 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the component to be rotated &gt; GO"
++                    text="Select the component to be rotated then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -888,3 +888,4 @@ const ComponentLesson: React.FC<ComponentLessonProps> = ({ subLessonId, onNextLe
+ };
+ 
+ export default ComponentLesson;
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Fairing.tsx b/frontend/src/components/3D_Modeling/3D_Fairing.tsx
+index a9dc787..576cca3 100644
+--- a/frontend/src/components/3D_Modeling/3D_Fairing.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Fairing.tsx
+@@ -50,7 +50,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+     "Use for creating chamfer dimensions.",
+     "Step 1: Select Chamfer edge from the icon menu",
+     "Step 2: Specify chamfer length on the item entry",
+-    "Step 3: Select the edge of the entity to be chamfered > GO",
++    "Step 3: Select the edge of the entity to be chamfered then Right Click",
+     "Note: Several edges can be chamfered all at once.",
+     "RESULT"
+   ];
+@@ -60,7 +60,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+     "Use for rounding specified corners.",
+     "Step 1: Select Fillet edge from the icon menu.",
+     "Step 2: Specify the fillet radius on the item entry.",
+-    "Step 3: Select the edge of the entity to be fillet then click GO",
++    "Step 3: Select the edge of the entity to be fillet then click Right Click",
+     "Note: Several edges can be fillet all at once.",
+     "RESULT"
+   ];
+@@ -69,8 +69,8 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+     "SHELL",
+     "Use for hollowing solid entities using the specified wall thickness.",
+     "Step 1: Select Shell from the icon menu.",
+-    "Step 2: Select the two endfaces of the solid entity then click GO.",
+-    "Step 3: Specify the thickness on the item entry then click GO twice.",
++    "Step 2: Select the two endfaces of the solid entity then click Right Click.",
++    "Step 3: Specify the thickness on the item entry then click Right Click twice.",
+     "RESULT"
+   ];
+ 
+@@ -228,7 +228,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the edge of the entity to be chamfered > GO"
++                    text="Select the edge of the entity to be chamfered then Right Click"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -331,7 +331,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+                 <span className="step-label" style={{ marginTop: '-1.5rem' }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the edge of the entity to be fillet > GO"
++                    text="Select the edge of the entity to be fillet then Right Click"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -415,7 +415,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Select the two endfaces of the solid entity > GO"
++                    text="Select the two endfaces of the solid entity then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -433,7 +433,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
+                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Specify the desired thickness of the solid entity after shell on the item entry > double GO"
++                    text="Specify the desired thickness of the solid entity after shell on the item entry then double Right Click"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+diff --git a/frontend/src/components/3D_Modeling/3D_HoleDetails.tsx b/frontend/src/components/3D_Modeling/3D_HoleDetails.tsx
+index 038aec2..972a683 100644
+--- a/frontend/src/components/3D_Modeling/3D_HoleDetails.tsx
++++ b/frontend/src/components/3D_Modeling/3D_HoleDetails.tsx
+@@ -140,7 +140,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
+               <span className="step-label" style={{ marginTop: "-1.5rem" }}>
+                 <KaraokeLessonText
+                   as="span"
+-                  text="Click the location of the hole on the solid entity &gt; GO"
++                  text="Click the location of the hole on the solid entity then Right Click"
+                   isActive={isSpeaking && currentIndex === 6}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -178,3 +178,4 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
+ 
+ export default HoleDetailsLesson;
+ 
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Interference.tsx b/frontend/src/components/3D_Modeling/3D_Interference.tsx
+index b961183..66e61e6 100644
+--- a/frontend/src/components/3D_Modeling/3D_Interference.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Interference.tsx
+@@ -77,7 +77,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
+           <div className={`${getStepClass("i3")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom:"-2rem"}}>
+             <div className="step-header">
+               <span className="step-number">3 </span>
+-              <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences &gt; GO
++              <span className="step-label" style={{marginTop: "-1.5rem"}}>Select specific entities to check if there are interferences, then Right Click
+                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+               </span>
+             </div>
+@@ -108,7 +108,7 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
+           </div>
+           <div className={`step-header ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8" style={{marginTop: "2rem"}}>
+               <span className="step-number">1 </span>
+-              <span className="step-label" style={{marginTop: "-1.5rem"}} >Select the tool on the icon menu &gt; GO <strong className="text-highlight"></strong>
++              <span className="step-label" style={{marginTop: "-1.5rem"}} >Select the tool on the icon menu, then Right Click <strong className="text-highlight"></strong>
+                 <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
+               </span>
+             </div>
+@@ -137,3 +137,4 @@ const InterferenceLesson: React.FC<InterferenceLessonProps> = ({ onNextLesson, o
+ 
+ export default InterferenceLesson;
+ 
++
+diff --git a/frontend/src/components/3D_Modeling/3D_MaterialSetting.tsx b/frontend/src/components/3D_Modeling/3D_MaterialSetting.tsx
+index dedcc32..4d73c91 100644
+--- a/frontend/src/components/3D_Modeling/3D_MaterialSetting.tsx
++++ b/frontend/src/components/3D_Modeling/3D_MaterialSetting.tsx
+@@ -48,7 +48,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+   const material1Steps = [
+     "MATERIAL SETTING",
+     "Step 1: Select the Set Material from the icon menu.",
+-    "Step 2: Select the entity/entities then GO",
++    "Step 2: Select the entity/entities then Right Click",
+     "Step 3: The Material Setting Window will appear. Select the material from the list then Press OK",
+     "The list consists of the materials and their corresponding Notation, Specific Gravity and Color. However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE).",
+     "Step 4: After setting the material, a dialog box will appear then Select OK",
+@@ -208,7 +208,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="Select the entity/entities > GO"
++                    text="Select the entity/entities then Right Click"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -224,7 +224,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="The Material Setting Window will appear. Select the material from the list > Press OK"
++                    text="The Material Setting Window will appear. Select the material from the list then Press OK"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -247,7 +247,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="After setting the material, a dialog box will appear > Select OK"
++                    text="After setting the material, a dialog box will appear then Select OK"
+                     isActive={isSpeaking && currentIndex === 7}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -292,7 +292,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+               <div className="step-description">
+                 <KaraokeLessonText
+                   className="p-flush mb-4"
+-                  text="Select OK > Material Settings window will appear > Reselect new material for the part"
++                  text="Select OK then Material Settings window will appear then Reselect new material for the part"
+                   isActive={isSpeaking && currentIndex === 11}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -310,7 +310,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+               <div className="step-description" style={{ marginTop: "-1rem" }}>
+                 <KaraokeLessonText
+                   className="p-flush mb-4"
+-                  text="Select Cancel > No changes will be made"
++                  text="Select Cancel then No changes will be made"
+                   isActive={isSpeaking && currentIndex === 13}
+                   currentCharIndex={currentCharIndex}
+                 />
+@@ -392,7 +392,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
+                       </tr>
+                       <tr>
+                         <td>PVC</td>
+-                        <td>VP(蝪ｩ蛹悶ン繝九・繝ｫ邂｡)</td>
++                        <td>VP(蝪ｩ蛹悶ン繝九・繝ｫ邂｡)</td>
+                       </tr>
+                     </tbody>
+                   </table>
+diff --git a/frontend/src/components/3D_Modeling/3D_OperationSample.tsx b/frontend/src/components/3D_Modeling/3D_OperationSample.tsx
+index 6ff66e0..a4d5511 100644
+--- a/frontend/src/components/3D_Modeling/3D_OperationSample.tsx
++++ b/frontend/src/components/3D_Modeling/3D_OperationSample.tsx
+@@ -91,7 +91,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+     "PROCEDURE",
+     "Step 1: Open a new drawing",
+     "Step 2: In order to create this part, it must be done by segments. Segments must be attach together after modeling.",
+-    "Step 3: Join all segments > Use UNION",
++    "Step 3: Join all segments then Use UNION",
+     "Step 4: For Key Groove",
+     "Step 5: Subtract the tool entity",
+     "Step 6: Add all Fairings (Chamfer and Fillet)",
+@@ -189,9 +189,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <span className="step-number">1</span>
+                 <span className="step-label">Open a new drawing</span>
+               </div>
+-              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
++              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File then New</p>
+               <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
+-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
++              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save As then Use drawing number as File Name.</p>
+               <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Check if Normal or Mirror Part (See Mirrored Part lesson tab)</p>
+               <p className="p-flush" style={{ marginTop: "-1rem" }}>Press Save</p>
+             </div>
+@@ -241,7 +241,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                   <img src={centerTool} alt="Center Tool" style={{ height: '20px', margin: '0 0.5rem' }} />
+                 </div>
+                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+-                  <p className="p-flush">Left-click on the selected point &gt; GO </p>
++                  <p className="p-flush">Left-click on the selected point then Right Click </p>
+                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                 </div>
+                   <img src={opSample1} alt="Placed Hole" className="software-screenshot mt-4" style={{ height: '300px' }} />
+@@ -258,7 +258,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <div>
+                   <img src={moveTool} alt="Move Tool" className="software-screenshot mt-4 mb-4" style={{ height: '120px' }} />
+                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+-                    <p className="p-flush">Select the hole component &gt; GO </p>
++                    <p className="p-flush">Select the hole component then Right Click </p>
+                     <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                   </div>
+                   <p className="p-flush">INPUT: MOVELENGX = 0</p>
+@@ -299,7 +299,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                   <img src={filletTool} alt="Fillet Tool" className="software-screenshot mt-4 mb-4" style={{ height: '150px', marginBottom: "1rem" }} />
+                 <p className="p-flush">SetRadius = 7mm</p>
+                 <div style={{ display: 'flex', alignItems: 'center'}}>
+-                  <p className="p-flush">Pick all the edges to be filleted &gt; GO </p>
++                  <p className="p-flush">Pick all the edges to be filleted then Right Click </p>
+                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                 </div>
+                 <img src={filletResult} alt="Fillet Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
+@@ -328,7 +328,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                   <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
+                 <p className="p-flush">Set Chamfer Length = 20mm</p>
+                 <div style={{ display: 'flex', alignItems: 'center'}}>
+-                  <p className="p-flush">Select all edges to be chamfered &gt; GO </p>
++                  <p className="p-flush">Select all edges to be chamfered then Right Click </p>
+                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                 </div>
+                 <img src={chamferResult} alt="Chamfer Result" className="software-screenshot mt-4" style={{ height: '300px', marginTop: "1rem" }} />
+@@ -344,7 +344,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+               <div>
+                   <img src={createPartTool} alt="Create Part Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
+                 <div style={{ display: 'flex', alignItems: 'center'}}>
+-                  <p className="p-flush">Select the entity &gt; GO </p>
++                  <p className="p-flush">Select the entity then Right Click </p>
+                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
+                 </div>
+                 <p className="p-flush">Enter the 3D Part Name</p>
+@@ -381,14 +381,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <span className="step-label">Save the file</span>
+               </div>
+               <div>
+-                <p className="p-flush">File &gt; Save</p>
++                <p className="p-flush">File then Save</p>
+               </div>
+             </div>
+ 
+             <div className="lesson-navigation">
+               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+               <button className="nav-button next" onClick={handleNext}>
+-                {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
++                {'Next'} <ChevronRight size={18} />
+               </button>
+             </div>
+           </div>
+@@ -406,9 +406,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <span className="step-number">1</span>
+                 <span className="step-label">Open a new drawing</span>
+               </div>
+-              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
++              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File then New</p>
+               <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
+-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name &gt; Press Save</p>
++              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save As then Use drawing number as File Name then Press Save</p>
+               <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>*Check if Normal or Mirror Part(See Mirrored Part lesson tab)</p>
+             </div>
+ 
+@@ -425,7 +425,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <div style={{ flex: "1", marginBottom: "3rem"}}>
+                   <p className="p-flush" style={{ marginBottom: "1rem", color: "var(--text-main)"}}><u>SEGMENT A</u></p>
+                   <p className="p-flush red-text" style={{ marginTop: "1rem" }}>Use Arrange Cylinder</p>
+-                  <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove &gt; [UNION]</p>
++                  <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove then [UNION]</p>
+                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    Coordinates (0,0,0)</p>
+                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 2: Diameter = 19mm    Height= 1.35mm</p>
+                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 3: Diameter = 20mm    Height= 64.5mm</p>
+@@ -436,7 +436,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                   <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Use Arrange Cylinder</p>
+                   <p className="p-flush">INPUT: Diameter = 30mm</p>
+                   <p className="p-flush">Height = 22.25mm</p>
+-                  <p className="p-flush">Use Center tool &gt; Attach to Segment A</p>
++                  <p className="p-flush">Use Center tool then Attach to Segment A</p>
+                   <img src={segmentBResult} alt="Segment B" className="software-screenshot mt-4" style={{ width: "500px", height: "auto", marginTop: "1rem", marginBottom: "2rem"}} />
+                 </div>
+               </div>
+@@ -458,7 +458,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+             <div className={`${getStepClass('s2-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
+               <div className="step-header">
+                 <span className="step-number">3</span>
+-                <span className="step-label">Join all segments &gt; Use <span className="red-text">UNION</span></span>
++                <span className="step-label">Join all segments then Use <span className="red-text">UNION</span></span>
+               </div>
+             </div>
+ 
+@@ -524,7 +524,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+                 <span className="step-number">10</span>
+                 <span className="step-label">Save the file</span>
+               </div>
+-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save</p>
++              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save</p>
+             </div>
+             
+             <div className="lesson-navigation">
+@@ -542,3 +542,4 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
+ 
+ export default OperationSampleLesson;
+ 
++
+diff --git a/frontend/src/components/3D_Modeling/3D_Parasolid.tsx b/frontend/src/components/3D_Modeling/3D_Parasolid.tsx
+index dc6dca9..92d07ff 100644
+--- a/frontend/src/components/3D_Modeling/3D_Parasolid.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Parasolid.tsx
+@@ -48,7 +48,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+     "IMPORT",
+     "Step 1: Select Import from the icon menu.",
+     "Step 2: The Parasolid Link dialog box will appear. User will be able to browse folders which contain parasolid files to be imported on ICAD.",
+-    "Step 3: Press OK after selecting the parasolid file then GO",
++    "Step 3: Press OK after selecting the parasolid file then Right Click",
+     "The Name Change dialog box will appear then Pick Cancel",
+     "All Part names of purchase parts must be release on the tree view.",
+     "Step 4: Save the part",
+@@ -64,7 +64,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+     "LIGHTEN B-REP SOLID",
+     "Step 1: Select Lighten B-rep Solid from the icon menu.",
+     "Step 2: A dialog box will appear. Select No form changes then OK",
+-    "Step 3: Select the purchase part then GO",
++    "Step 3: Select the purchase part then Right Click",
+     "Check the message pane to see if the process is successful.",
+     "Step 4: Save the part",
+     "Go to File then Save As then Use the Purchase part code as File name.",
+@@ -219,7 +219,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                   <div className="step-label" style={{marginTop: "-1.5rem"}}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Press OK after selecting the parasolid file > GO"
++                    text="Press OK after selecting the parasolid file then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -229,7 +229,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                  <div className={`step-label ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="The Name Change dialog box will appear > Pick Cancel"
++                    text="The Name Change dialog box will appear then Pick Cancel"
+                     isActive={isSpeaking && currentIndex === 6}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -261,7 +261,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                 <div className={`step-label ${currentIndex === 9 ? 'reading-active' : ''}`} data-reading-index="9" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Go to File > Save As > Use the Purchase part code as File name."
++                    text="Go to File then Save As then Use the Purchase part code as File name."
+                     isActive={isSpeaking && currentIndex === 9}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -306,7 +306,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                   <div className={`step-label ${currentIndex === 14 ? 'reading-active' : ''}`} data-reading-index="14" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
+                   <KaraokeLessonText
+                     as="p"
+-                    text="3.) Enter the comment for the specific part > Press OK"
++                    text="3.) Enter the comment for the specific part then Press OK"
+                     isActive={isSpeaking && currentIndex === 14}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -350,7 +350,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="A dialog box will appear. Select No form changes > OK"
++                    text="A dialog box will appear. Select No form changes then OK"
+                     isActive={isSpeaking && currentIndex === 4}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -367,7 +367,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="Select the purchase part > GO"
++                    text="Select the purchase part then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -400,7 +400,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                 <div className={`step-label ${currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8" style={{ marginTop: "-1rem", marginLeft: "3rem" }}>
+                   <KaraokeLessonText
+                     as="span"
+-                    text="Go to File > Save As > Use the Purchase part code as File name."
++                    text="Go to File then Save As then Use the Purchase part code as File name."
+                     isActive={isSpeaking && currentIndex === 8}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -445,7 +445,7 @@ const ParasolidLesson: React.FC<ParasolidLessonProps> = ({ subLessonId = 'paraso
+                   <div className={`step-label ${currentIndex === 13 ? 'reading-active' : ''}`} data-reading-index="13" style={{ marginTop: "-1rem", marginLeft: "4rem" }}>
+                   <KaraokeLessonText
+                     as="p"
+-                    text="3.) Enter the comment for the specific part > Press OK"
++                    text="3.) Enter the comment for the specific part then Press OK"
+                     isActive={isSpeaking && currentIndex === 13}
+                     currentCharIndex={currentCharIndex}
+                   />
+diff --git a/frontend/src/components/3D_Modeling/3D_Part.tsx b/frontend/src/components/3D_Modeling/3D_Part.tsx
+index 82acdd6..6a0e988 100644
+--- a/frontend/src/components/3D_Modeling/3D_Part.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Part.tsx
+@@ -1,5 +1,5 @@
+-import { ChevronLeft,ChevronRight } from 'lucide-react';
+-import React,{ useEffect,useState } from 'react';
++import { ChevronLeft, ChevronRight } from 'lucide-react';
++import React, { useEffect, useState } from 'react';
+ import { useLessonCore } from "../../hooks/useLessonCore";
+ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+ import '../../styles/3D_Modeling/CourseLesson.css';
+@@ -9,7 +9,6 @@ import { KaraokeLessonText } from "../KaraokeLessonText";
+ import createPartIcon from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
+ import modalInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_3.png';
+ import treeViewInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_4.png';
+-import materialDescriptionImg from '../../assets/3D_Image_File/3d_part1_material_description.png';
+ import partMenu2 from '../../assets/3D_Image_File/3d_part2_change_3d_part_name.png';
+ import changePartIcon from '../../assets/3D_Image_File/3d_part2_change_3d_part_name_1.png';
+ import modalInfo2 from '../../assets/3D_Image_File/3d_part2_change_3d_part_name_3.png';
+@@ -49,7 +48,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
+     "CREATE 3D PART",
+     "Tool use to name 3D parts and provide information. 3D part name must always be set since it is a vital part for the 2D Detailing.",
+     "Step 1: Select Create 3D Part from the icon menu.",
+-    "Step 2: Select a single entity then GO",
++    "Step 2: Select a single entity then Right Click",
+     "Step 3: A window will appear showing the informations to fill-up.",
+     "Step 4: All created 3D Part will appear on the tree view.",
+     "Refer to the material description for notation and plate thickness standards."
+@@ -214,7 +213,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
+                   <KaraokeLessonText
+                     as="span"
+                     className="step-label"
+-                    text="Select a single entity > GO"
++                    text="Select a single entity then Right Click"
+                     isActive={isSpeaking && currentIndex === 5}
+                     currentCharIndex={currentCharIndex}
+                   />
+@@ -264,8 +263,101 @@ const PartLesson: React.FC<PartLessonProps> = ({
+                     currentCharIndex={currentCharIndex}
+                   />
+                 </div>
+-                <div className="step-description">
+-                  <img src={materialDescriptionImg} alt="Material Description" className="software-screenshot mt-4" style={{ width: '900px' }} />
++                <div className="step-description mt-4" style={{
++                  padding: '1.5rem',
++                  width: '900px',
++                  fontSize: '0.9rem',
++                  lineHeight: '1.4'
++                }}>
++                  <h4 style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.5rem', textAlign: 'left' }}>Material Description</h4>
++                  <ul style={{ listStyleType: 'none', paddingLeft: '0', marginBottom: '1.5rem', color: '#d32f2f', textAlign: 'left' }}>
++                    <li>*Use BATSU = &times;</li>
++                    <li>*In cases of round-shaped materials, use FAI &phi;</li>
++                  </ul>
++
++                  <div style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
++                    <div style={{ fontWeight: 'bold' }}>a.</div>
++                    <div style={{ display: 'grid', gridTemplateColumns: '80px 150px', gap: '4px', marginLeft: '1.5rem' }}>
++                      <div>S45C</div>
++                      <div>&phi;40&times;150</div>
++                      <div>SS400</div>
++                      <div>19&times;100&times;380</div>
++                    </div>
++                  </div>
++
++                  <div style={{ display: 'flex', gap: '3rem', marginBottom: '1.5rem', textAlign: 'left' }}>
++                    <div>
++                      <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>b. JIS Shaped Material</div>
++                      <table style={{ marginLeft: '1.5rem', borderCollapse: 'collapse', textAlign: 'left' }}>
++                        <tbody>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>C - Channel</td><td style={{ padding: '2px 12px 2px 0' }}>貅晏ｽ｢驪ｼ</td><td style={{ padding: '2px 0' }}>100&times;50&times;5-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>H - Beam</td><td style={{ padding: '2px 12px 2px 0' }}>H蠖｢驪ｼ</td><td style={{ padding: '2px 0' }}>100&times;100&times;5-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>I - Beam</td><td style={{ padding: '2px 12px 2px 0' }}>I蠖｢驪ｼ</td><td style={{ padding: '2px 0' }}>150&times;100&times;8-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Angle Bar</td><td style={{ padding: '2px 12px 2px 0' }}>螻ｱ蠖｢驪ｼ</td><td style={{ padding: '2px 0' }}>50&times;50&times;6-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Round Pipe</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>&phi;34&times;3.2-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Square Pipe</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>40&times;40&times;2.3-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Rectangular Pipe</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>75&times;45&times;3.2-1000</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Square Bar</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>&#9633;25&times;500</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Round Bar</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>&phi;30&times;500</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Flat Bar</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>6&times;50&times;100</td></tr>
++                          <tr><td style={{ padding: '2px 12px 2px 0' }}>Plate</td><td style={{ padding: '2px 12px 2px 0' }}></td><td style={{ padding: '2px 0' }}>9&times;55&times;320</td></tr>
++                        </tbody>
++                      </table>
++                    </div>
++
++                    <div style={{ alignSelf: 'flex-start', marginTop: '1.5rem' }}>
++                      <table style={{ borderCollapse: 'collapse', textAlign: 'center', width: '300px', border: '2px solid currentColor' }}>
++                        <thead>
++                          <tr>
++                            <th colSpan={4} style={{ borderBottom: '2px solid currentColor', padding: '8px', backgroundColor: 'rgba(128, 128, 128, 0.1)', fontWeight: 'bold' }}>
++                              AVAILABLE PLATE THICKNESS<br />(JIS)
++                            </th>
++                          </tr>
++                        </thead>
++                        <tbody>
++                          <tr>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>2.3mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>12mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>28mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>45mm</td>
++                          </tr>
++                          <tr>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>3.2mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>16mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>32mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>50mm</td>
++                          </tr>
++                          <tr>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>4.5mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>19mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>36mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>63mm</td>
++                          </tr>
++                          <tr>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>6mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>22mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>38mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}></td>
++                          </tr>
++                          <tr>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>9mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>25mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}>40mm</td>
++                            <td style={{ border: '1px solid currentColor', padding: '4px' }}></td>
++                          </tr>
++                        </tbody>
++                      </table>
++                    </div>
++                  </div>
++
++                  <div style={{ textAlign: 'left' }}>
++                    <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>c. Rubber</div>
++                    <div style={{ marginLeft: '1.5rem', fontFamily: 'monospace', whiteSpace: 'pre', lineHeight: '1.2', fontSize: '0.9rem' }}>
++                      <span>2 &times; &phi;17  ( Thickness &times; Size )</span><br />
++                      <span style={{ color: '#d32f2f' }}>&#9474;   &#9492;&#9472;&#9472;&#9472; Size</span><br />
++                      <span style={{ color: '#d32f2f' }}>&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; Thickness</span>
++                    </div>
++                  </div>
+                 </div>
+               </div>
+ 
+@@ -350,7 +442,7 @@ const PartLesson: React.FC<PartLessonProps> = ({
+                     as="span"
+                     className="step-label"
+                     style={{ marginTop: "2rem" }}
+-                    text="A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name > Select Yes"
++                    text="A dialog box will appear asking whether to change the 2D Part Name together with the 3D Part Name then Select Yes"
+                     isActive={isSpeaking && currentIndex === 7}
+                     currentCharIndex={currentCharIndex}
+                   />
+diff --git a/frontend/src/components/3D_Modeling/3D_Properties.tsx b/frontend/src/components/3D_Modeling/3D_Properties.tsx
+index f8eb1fa..c0687a6 100644
+--- a/frontend/src/components/3D_Modeling/3D_Properties.tsx
++++ b/frontend/src/components/3D_Modeling/3D_Properties.tsx
+@@ -56,7 +56,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+     "Entity. The entire solid entity will change its color.",
+     "Pick a color then select the solid entity",
+     "Face. Only selected faces or surfaces will change its color",
+-    "Pick a color then select surface to be changed then GO"
++    "Pick a color then select surface to be changed then Right Click"
+   ];
+ 
+   const layerSteps = [
+@@ -71,10 +71,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+     "INFORMATION",
+     "Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).",
+     "Displays coordinates of a point from the origin then Pick a point",
+-    "Measures the length of an edge then Pick an edge then GO",
++    "Measures the length of an edge then Pick an edge then Right Click",
+     "Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge",
+     "Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points",
+-    "Displays the informations about the selected entity then Pick the solid entity then GO"
++    "Displays the informations about the selected entity then Pick the solid entity then Right Click"
+   ];
+ 
+   const {
+@@ -224,7 +224,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       <KaraokeLessonText
+                         as="p"
+                         className="p-flush"
+-                        text="Pick a color > Select the solid entity"
++                        text="Pick a color then Select the solid entity"
+                         isActive={isSpeaking && currentIndex === 5}
+                         currentCharIndex={currentCharIndex}
+                       />
+@@ -257,7 +257,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       <p className="p-flush">
+                         <KaraokeLessonText
+                           as="span"
+-                          text="Pick a color > Select surface to be changed > GO"
++                          text="Pick a color then Select surface to be changed then Right Click"
+                           isActive={isSpeaking && currentIndex === 8}
+                           currentCharIndex={currentCharIndex}
+                         />
+@@ -276,7 +276,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+             <div className="lesson-navigation">
+               <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+               <button className="nav-button next" onClick={() => handleNext()}>
+-                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
++                {'Next'} <ChevronRight size={18} />
+               </button>
+             </div>
+           </div>
+@@ -431,7 +431,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+             <div className="lesson-navigation">
+               <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+               <button className="nav-button next" onClick={() => handleNext()}>
+-                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
++                {'Next'} <ChevronRight size={18} />
+               </button>
+             </div>
+           </div>
+@@ -469,7 +469,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       as="div"
+                       className="step-label"
+                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+-                      text="Displays coordinates of a point from the origin > Pick a point"
++                      text="Displays coordinates of a point from the origin then Pick a point"
+                       isActive={isSpeaking && currentIndex === 2}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -485,7 +485,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       as="div"
+                       className="step-label"
+                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+-                      text="Measures the length of an edge > Pick an edge > GO"
++                      text="Measures the length of an edge then Pick an edge then Right Click"
+                       isActive={isSpeaking && currentIndex === 3}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -501,7 +501,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       as="div"
+                       className="step-label"
+                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+-                      text="Measures the distance between two points or edges > Pick first point/edge > Pick second point/edge"
++                      text="Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge"
+                       isActive={isSpeaking && currentIndex === 4}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -519,7 +519,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       as="div"
+                       className="step-label"
+                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+-                      text="Measures the angle between two edges or three points > Pick 2 edges > Pick 3 Points "
++                      text="Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points "
+                       isActive={isSpeaking && currentIndex === 5}
+                       currentCharIndex={currentCharIndex}
+                     />
+@@ -535,7 +535,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
+                       as="div"
+                       className="step-label"
+                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
+-                      text="Displays the informations about the selected entity > Pick the solid entity > GO"
++                      text="Displays the informations about the selected entity then Pick the solid entity then Right Click"
+                       isActive={isSpeaking && currentIndex === 6}
+                       currentCharIndex={currentCharIndex}
+                     />
+diff --git a/frontend/src/components/3D_Modeling/3D_PurchaseParts.tsx b/frontend/src/components/3D_Modeling/3D_PurchaseParts.tsx
+index b49f34b..b958e3e 100644
+--- a/frontend/src/components/3D_Modeling/3D_PurchaseParts.tsx
++++ b/frontend/src/components/3D_Modeling/3D_PurchaseParts.tsx
+@@ -1,11 +1,11 @@
+-import { ChevronLeft,ChevronRight } from 'lucide-react';
+-import React,{ useEffect,useState } from "react";
++import { ChevronLeft, ChevronRight } from 'lucide-react';
++import React, { useEffect, useState } from "react";
+ import { useLessonCore } from "../../hooks/useLessonCore";
+ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
+ import "../../styles/3D_Modeling/CourseLesson.css";
+ 
+ /* Assets */
+-import uploadingFlowchart from "../../assets/3D_Image_File/3d_purchase.png";
++import uploadingFlowchart from "../../assets/3D_Image_File/e_3d_server_upload.png";
+ import purchasePartsFlowchart from "../../assets/3D_Image_File/3d_purchase_parts.png";
+ 
+ interface PurchasePartsLessonProps {
+@@ -116,10 +116,10 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
+             </div>
+ 
+             <img
+-                src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
+-                alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
+-                className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
+-                data-reading-index="2"
++              src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
++              alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
++              className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
++              data-reading-index="2"
+             />
+           </div>
+ 
+diff --git a/frontend/src/components/BroadcastBanner.tsx b/frontend/src/components/BroadcastBanner.tsx
+index 721bd25..c9ed616 100644
+--- a/frontend/src/components/BroadcastBanner.tsx
++++ b/frontend/src/components/BroadcastBanner.tsx
+@@ -1,5 +1,6 @@
+ import { AlertCircle,Info,Megaphone } from 'lucide-react';
+ import React,{ useEffect,useRef,useState } from 'react';
++import { useWebSocket } from '../context/WebSocketContext';
+ import { adminService } from '../services/adminService';
+ import '../styles/BroadcastBanner.css';
+ 
+@@ -16,7 +17,8 @@ const BannerCard: React.FC<{
+     broadcast: Broadcast;
+     index: number;
+     onDismiss: (id: number) => void;
+-}> = ({ broadcast, index, onDismiss }) => {
++    onAcknowledge: (id: number) => void;
++}> = ({ broadcast, index, onDismiss, onAcknowledge }) => {
+     const [isExpanded, setIsExpanded] = useState(false); const [canExpand, setCanExpand] = useState(false);
+     const messageRef = useRef<HTMLParagraphElement>(null);
+ 
+@@ -69,7 +71,16 @@ const BannerCard: React.FC<{
+                         <span>{category.label}</span>
+                     </div>
+                     <div className="header-actions">
+-                        <button className="dismiss-btn" onClick={() => onDismiss(broadcast.id)} aria-label="Dismiss">
++                        <button
++                            type="button"
++                            className="ack-btn"
++                            onClick={() => onAcknowledge(broadcast.id)}
++                            aria-label="Mark broadcast as read"
++                            title="Mark this broadcast as read"
++                        >
++                            Mark as read
++                        </button>
++                        <button type="button" className="dismiss-btn" onClick={() => onDismiss(broadcast.id)} aria-label="Dismiss">
+                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+                                 <path d="M18 6L6 18M6 6l12 12" />
+                             </svg>
+@@ -84,7 +95,7 @@ const BannerCard: React.FC<{
+                             {broadcast.sender_name}
+                         </div>
+                         {(canExpand || isExpanded) && (
+-                            <button className="expand-toggle-icon" onClick={(e) => {
++                            <button type="button" className="expand-toggle-icon" onClick={(e) => {
+                                 e.stopPropagation();
+                                 setIsExpanded(!isExpanded);
+                             }} aria-label={isExpanded ? 'Show Less' : 'View More'}>
+@@ -103,11 +114,12 @@ const BannerCard: React.FC<{
+ export const BroadcastBanner: React.FC = () => {
+     const [broadcasts, setBroadcasts] = useState<Broadcast[]>([]);
+     const [dismissedIds, setDismissedIds] = useState<number[]>(() => {
+-        const saved = localStorage.getItem('dismissed_broadcasts');
++        const saved = sessionStorage.getItem('dismissed_broadcasts');
+         return saved ? JSON.parse(saved) : [];
+     });
+ 
+     const lastAlertedId = useRef<number | null>(null);
++    const { subscribe } = useWebSocket();
+ 
+     // Audio synthesis
+     const playAlert = (type: string) => {
+@@ -141,7 +153,7 @@ export const BroadcastBanner: React.FC = () => {
+ 
+     const fetchBroadcasts = async () => {
+         try {
+-            const data = await adminService.getActiveBroadcasts();
++            const data = await adminService.getMyActiveBroadcasts();
+             setBroadcasts(data);
+         } catch (err) {
+             console.error('Failed to fetch broadcasts', err);
+@@ -152,6 +164,18 @@ export const BroadcastBanner: React.FC = () => {
+         fetchBroadcasts();
+         const interval = setInterval(fetchBroadcasts, 60000);
+ 
++        const unsubCreated = subscribe('BROADCAST_CREATED', () => {
++            fetchBroadcasts();
++        });
++
++        const unsubDeleted = subscribe('BROADCAST_DELETED', (data) => {
++            if (data?.broadcast_id != null) {
++                setBroadcasts(prev => prev.filter(b => b.id !== data.broadcast_id));
++            } else {
++                fetchBroadcasts();
++            }
++        });
++
+         const handleLocalBroadcast = (e: CustomEvent) => {
+             if (e.detail) {
+                 const newBroadcast: Broadcast = {
+@@ -169,18 +193,30 @@ export const BroadcastBanner: React.FC = () => {
+ 
+         return () => {
+             clearInterval(interval);
++            unsubCreated();
++            unsubDeleted();
+             window.removeEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);
+         };
+-    }, []);
++    }, [subscribe]);
+ 
+     const dismiss = (id: number) => {
+         setDismissedIds(prev => {
+             const updated = [...prev, id];
+-            localStorage.setItem('dismissed_broadcasts', JSON.stringify(updated));
++            sessionStorage.setItem('dismissed_broadcasts', JSON.stringify(updated));
+             return updated;
+         });
+     };
+ 
++    const acknowledge = async (id: number) => {
++        try {
++            await adminService.acknowledgeBroadcast(id);
++            setDismissedIds(prev => prev.filter(existingId => existingId !== id));
++            setBroadcasts(prev => prev.filter(b => b.id !== id));
++        } catch (err) {
++            console.error('Failed to acknowledge broadcast', err);
++        }
++    };
++
+     const activeBroadcasts = broadcasts.filter(b => !dismissedIds.includes(b.id));
+ 
+     // Handle arrival and alerts
+@@ -198,7 +234,7 @@ export const BroadcastBanner: React.FC = () => {
+     return (
+         <div className="broadcast-banner-container">
+             {activeBroadcasts.slice(0, 3).map((b, idx) => (
+-                <BannerCard key={b.id} broadcast={b} index={idx} onDismiss={dismiss} />
++                <BannerCard key={b.id} broadcast={b} index={idx} onDismiss={dismiss} onAcknowledge={acknowledge} />
+             ))}
+         </div>
+     );
+diff --git a/frontend/src/config/apiConfig.ts b/frontend/src/config/apiConfig.ts
+index 2f5bdee..f519693 100644
+--- a/frontend/src/config/apiConfig.ts
++++ b/frontend/src/config/apiConfig.ts
+@@ -13,7 +13,7 @@ const resolveApiBaseUrl = (): string => {
+     if (configuredUrl) return normalizeUrl(configuredUrl);
+ 
+     if (typeof import.meta.env !== 'undefined' && import.meta.env.DEV) {
+-        return `http://${getBrowserHost()}:8000`;
++        return `http://${getBrowserHost()}:3001`;
+     }
+ 
+     if (typeof window !== 'undefined' && /^https?:$/.test(window.location.protocol)) {
+diff --git a/frontend/src/index.css b/frontend/src/index.css
+index 3003e70..341d34f 100644
+--- a/frontend/src/index.css
++++ b/frontend/src/index.css
+@@ -356,6 +356,16 @@ button:hover:not(:disabled) {
+   box-shadow: var(--shadow-card);
+ }
+ 
++.view-breakdown-link:hover:not(:disabled),
++.ghost-btn:hover:not(:disabled),
++.global-modal-close-btn:hover:not(:disabled) {
++  background: transparent !important;
++  border-color: transparent !important;
++  transform: none !important;
++  box-shadow: none !important;
++  opacity: 0.8;
++}
++
+ button:active:not(:disabled) {
+   transform: translateY(0);
+ }
+diff --git a/frontend/src/services/adminService.ts b/frontend/src/services/adminService.ts
+index 20e0fdb..068d6dc 100644
+--- a/frontend/src/services/adminService.ts
++++ b/frontend/src/services/adminService.ts
+@@ -117,6 +117,16 @@ export const adminService = {
+         return response.data;
+     },
+ 
++    async getMyActiveBroadcasts(): Promise<any[]> {
++        const response = await api.get('/notifications/broadcasts/active');
++        return response.data;
++    },
++
++    async acknowledgeBroadcast(broadcastId: number): Promise<any> {
++        const response = await api.post(`/notifications/broadcasts/${broadcastId}/acknowledge`);
++        return response.data;
++    },
++
+     async deleteBroadcast(broadcastId: number): Promise<void> {
+         await api.delete(`/admin/broadcasts/${broadcastId}`);
+     },
+diff --git a/frontend/src/styles/BroadcastBanner.css b/frontend/src/styles/BroadcastBanner.css
+index 9ad7915..de11d2c 100644
+--- a/frontend/src/styles/BroadcastBanner.css
++++ b/frontend/src/styles/BroadcastBanner.css
+@@ -84,6 +84,7 @@
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
++    gap: 12px;
+ }
+ 
+ .category-tag {
+@@ -240,4 +241,25 @@
+     background: white;
+     transform: rotate(90deg);
+     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+-}
+\ No newline at end of file
++}
++
++.ack-btn {
++    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.28));
++    border: 1px solid rgba(59, 130, 246, 0.35);
++    color: var(--text-main);
++    cursor: pointer;
++    min-height: 30px;
++    padding: 0 12px;
++    border-radius: 999px;
++    font-size: 0.75rem;
++    font-weight: 800;
++    letter-spacing: 0.02em;
++    transition: all 0.2s ease;
++    white-space: nowrap;
++}
++
++.ack-btn:hover {
++    transform: translateY(-1px);
++    background: linear-gradient(135deg, rgba(59, 130, 246, 0.24), rgba(59, 130, 246, 0.34));
++    border-color: rgba(59, 130, 246, 0.45);
++}
+diff --git a/frontend/src/styles/mentor/PracticalTrainerDashboard.css b/frontend/src/styles/mentor/PracticalTrainerDashboard.css
+index 014737e..6e9197c 100644
+--- a/frontend/src/styles/mentor/PracticalTrainerDashboard.css
++++ b/frontend/src/styles/mentor/PracticalTrainerDashboard.css
+@@ -268,9 +268,58 @@
+ }
+ 
+ .status-badge.large {
+-    font-size: 0.9rem;
+-    padding: 0.6rem 1.25rem;
+-    border-radius: var(--radius-md);
++    font-size: 1.1rem;
++    font-weight: 800;
++    padding: 0.75rem 1rem;
++    border-radius: 8px;
++    text-align: center;
++    margin-top: 0.5rem;
++    width: 100%;
++    text-transform: uppercase;
++    letter-spacing: 2px;
++    justify-content: center;
++}
++
++.status-badge.large.approved {
++    background: transparent;
++    color: var(--color-success);
++    border: none;
++    box-shadow: none;
++}
++
++.status-badge.large.rejected {
++    background: transparent;
++    color: var(--color-error);
++    border: none;
++    box-shadow: none;
++}
++
++.status-badge.large.pending {
++    background: transparent;
++    color: var(--color-warning);
++    border: none;
++    box-shadow: none;
++}
++
++[data-theme='light'] .status-badge.large.approved {
++    background: transparent;
++    border: none;
++    color: #166534;
++    box-shadow: none;
++}
++
++[data-theme='light'] .status-badge.large.rejected {
++    background: transparent;
++    border: none;
++    color: #991b1b;
++    box-shadow: none;
++}
++
++[data-theme='light'] .status-badge.large.pending {
++    background: transparent;
++    border: none;
++    color: #92400e;
++    box-shadow: none;
+ }
+ 
+ .card-actions.compact-actions {
+@@ -1436,6 +1485,11 @@
+     box-shadow: 0 0 8px var(--color-primary);
+ }
+ 
++[data-theme='light'] .row-btn-primary:hover {
++    background: var(--color-primary-dark, #8b1278);
++    opacity: 1;
++}
++
+ /* New Dashboard Main Tabs Layout */
+ .dashboard-main-tabs {
+     display: flex;
+@@ -1624,4 +1678,3 @@
+   .trainer-dashboard .trainee-group-body {
+     padding: 1rem;
+   }
+-}
+diff --git a/frontend/src/views/admin/components/BroadcastCenter.tsx b/frontend/src/views/admin/components/BroadcastCenter.tsx
+index 2af19f9..0a50f9e 100644
+--- a/frontend/src/views/admin/components/BroadcastCenter.tsx
++++ b/frontend/src/views/admin/components/BroadcastCenter.tsx
+@@ -1,5 +1,6 @@
+ import { AlertTriangle,ChevronDown,Clock,Info,Megaphone,MessageSquare,Send,Trash2 } from 'lucide-react';
+ import React,{ useEffect,useRef,useState } from 'react';
++import { useWebSocket } from '../../../context/WebSocketContext';
+ import { adminService } from '../../../services/adminService';
+ import '../../../styles/BroadcastCenter.css';
+ 
+@@ -16,6 +17,7 @@ export const BroadcastCenter: React.FC = () => {
+     const containerRef = useRef<HTMLDivElement>(null);
+     const dragStartRef = useRef({ x: 0, y: 0 });
+     const hasMovedRef = useRef(false);
++    const { subscribe } = useWebSocket();
+ 
+     // Global click listener for "Click Outside to Collapse"
+     useEffect(() => {
+@@ -90,6 +92,21 @@ export const BroadcastCenter: React.FC = () => {
+         }
+     }, [isExpanded]);
+ 
++    useEffect(() => {
++        const unsubCreated = subscribe('BROADCAST_CREATED', () => {
++            fetchBroadcasts();
++        });
++
++        const unsubDeleted = subscribe('BROADCAST_DELETED', () => {
++            fetchBroadcasts();
++        });
++
++        return () => {
++            unsubCreated();
++            unsubDeleted();
++        };
++    }, [subscribe]);
++
+     const handleSend = async () => {
+         if (!message.trim()) return;
+ 
+diff --git a/frontend/src/views/mentor/components/LessonViewer.tsx b/frontend/src/views/mentor/components/LessonViewer.tsx
+index 472b16f..910f64d 100644
+--- a/frontend/src/views/mentor/components/LessonViewer.tsx
++++ b/frontend/src/views/mentor/components/LessonViewer.tsx
+@@ -310,7 +310,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+   const parentResult = findParentAndQuiz();
+   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
+   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
+-  const isLastLesson = currentLessonIndex === allLessonIdsLength - 1;
+   const willShowQuiz = hasQuiz && !isModuleCompleted && !isEmployeeSide;
+   const nextLabel = willShowQuiz ? 'ASSESSMENT QUIZ' : 'Next Lesson';
+ 
+@@ -489,7 +488,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+                           </div>
+                         ))}
+                       </div>
+-                      <div className="lesson-navigation" style={{ marginTop: '3rem', justifyContent: 'center', gap: '1.5rem' }}>
++                      <div className="lesson-navigation">
+                         <button className="nav-button" onClick={goToPrevLesson}>
+                           <ChevronLeft size={18} /> Previous Module
+                         </button>
+@@ -508,7 +507,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+                       <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
+                       <p className="content-2d-placeholder__text">Content will be available soon.</p>
+ 
+-                      <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
++                      <div className="lesson-navigation">
+                         <button className="nav-button" onClick={goToPrevLesson}>
+                           <ChevronLeft size={18} /> Previous
+                         </button>
+@@ -528,7 +527,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
+                       This area will host the instructional text, video demonstrations, and active testing prompts.
+                     </p>
+ 
+-                    <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
++                    <div className="lesson-navigation">
+                       <button className="nav-button" onClick={goToPrevLesson}>
+                         <ChevronLeft size={18} /> Previous
+                       </button>
+diff --git a/frontend/src/views/mentor/components/PracticalTrainerDashboard.tsx b/frontend/src/views/mentor/components/PracticalTrainerDashboard.tsx
+index f4f7b18..20737b9 100644
+--- a/frontend/src/views/mentor/components/PracticalTrainerDashboard.tsx
++++ b/frontend/src/views/mentor/components/PracticalTrainerDashboard.tsx
+@@ -545,7 +545,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
+ 
+             <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                 <button
+-                    className="quick-comment-btn add-custom"
++                    className="quick-comment-btn add-custom ghost-btn"
+                     style={{
+                         padding: '0',
+                         fontSize: '0.8rem',
+@@ -1284,21 +1284,24 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                 </h4>
+                                 <div className="history-timeline" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingLeft: '0.5rem' }}>
+                                     {selectedTaskSubmissions.map((sub, index) => {
+-                                        const isApproved = sub.status === 'approved';
+-                                        const isRejected = sub.status === 'rejected';
++                                        const displayStatus = (index > 0 && sub.status === 'pending') ? 'rejected' : sub.status;
++                                        const isApproved = displayStatus === 'approved';
++                                        const isRejected = displayStatus === 'rejected';
+                                         const statusColor = isApproved ? 'var(--color-success)' : isRejected ? 'var(--color-error)' : 'var(--color-warning)';
+-                                        return (
++                                                                        return (
+                                             <div key={sub.id} className="history-node" style={{ display: 'flex', gap: '1.5rem', marginBottom: '0.5rem' }}>
+                                                 <div className="node-marker" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.25rem' }}>
+                                                     <div className={`node-dot ${sub.status}`} style={{ width: '14px', height: '14px', borderRadius: '50%', background: statusColor, boxShadow: `0 0 12px ${statusColor}` }}></div>
+                                                     {index !== selectedTaskSubmissions.length - 1 && <div className="node-line" style={{ width: '2px', flex: 1, background: 'linear-gradient(to bottom, rgba(255,255,255,0.1), transparent)', marginTop: '8px', minHeight: '40px' }}></div>}
+                                                 </div>
+-                                                <div className="node-content" style={{ flex: 1, background: 'rgba(255,255,255,0.015)', borderRadius: '12px', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.3s ease' }}
+-                                                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'; }}
+-                                                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.015)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+-                                                >
++                                                <div className="node-content" style={{ flex: 1, background: 'rgba(255,255,255,0.015)', borderRadius: '12px', padding: '1.25rem', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.3s ease' }}>
+                                                     <div className="node-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+-                                                        <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
++                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
++                                                            <span className="node-title" style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Attempt {selectedTaskSubmissions.length - index}</span>
++                                                            <div className={`status-badge ${displayStatus}`} style={{ textTransform: 'uppercase', padding: '0.2rem 0.6rem', fontSize: '0.65rem' }}>
++                                                                {displayStatus}
++                                                            </div>
++                                                        </div>
+                                                         <span className="node-date" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-hover)', padding: '4px 10px', borderRadius: '20px' }}>{new Date(sub.submitted_at).toLocaleString()}</span>
+                                                     </div>
+                                                     <div className="node-file" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'var(--bg-hover)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '1.25rem' }}>
+@@ -1333,7 +1336,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                                     </div>
+ 
+                                                     {/* Chat / Feedback Section */}
+-                                                    <div style={{ background: 'rgba(0,0,0,0.15)', borderRadius: '10px', padding: '1rem', border: '1px solid rgba(255,255,255,0.02)' }}>
++                                                    <div style={{ borderRadius: '10px', padding: '1rem', border: '1px solid rgba(255,255,255,0.02)' }}>
+                                                         {sub.feedback && sub.feedback.length > 0 ? (
+                                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                                                 {sub.feedback.map(fb => (
+@@ -1381,12 +1384,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
+ 
+                             {/* Right Side: Action Form */}
+                             <div className="action-panel" style={{ flex: '0.8', minWidth: '340px', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px var(--bg-hover)' }}>
+-                                <div className="review-task-info" style={{ background: 'var(--bg-hover)', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.03)' }}>
+-                                    <span className="label" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '1px' }}>Current Status</span>
+-                                    <div className={`status-badge large ${selectedTaskSubmissions[0].status}`} style={{ fontSize: '1.1rem', fontWeight: 800, padding: '0.75rem 1rem', borderRadius: '8px', textAlign: 'center', marginTop: '0.5rem', width: '100%', textTransform: 'uppercase', letterSpacing: '2px', background: selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.15)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)', color: selectedTaskSubmissions[0].status === 'approved' ? 'var(--color-success)' : selectedTaskSubmissions[0].status === 'rejected' ? 'var(--color-error)' : 'var(--color-warning)', border: `1px solid ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.3)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, boxShadow: `0 0 15px ${selectedTaskSubmissions[0].status === 'approved' ? 'rgba(34, 197, 94, 0.1)' : selectedTaskSubmissions[0].status === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)'}` }}>
+-                                        {selectedTaskSubmissions[0].status}
+-                                    </div>
+-                                </div>
+ 
+                                 <div className="feedback-form-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
+                                     <h4 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-main)', margin: 0, borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>Provide Feedback</h4>
+@@ -1500,8 +1497,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                                                                 }}
+                                                                             />
+                                                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+-                                                                                <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+-                                                                                <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
++                                                                                <button className="ghost-btn" onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
++                                                                                <button className="ghost-btn" onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                             </div>
+                                                                         </>
+                                                                     ) : (
+@@ -1509,8 +1506,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                                                             <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                                 {comment}
+                                                                             </div>
+-                                                                            <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+-                                                                            <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
++                                                                            <button className="ghost-btn" onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
++                                                                            <button className="ghost-btn" onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                         </>
+                                                                     )}
+                                                                 </div>
+@@ -1776,8 +1773,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                                                             }}
+                                                                         />
+                                                                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+-                                                                            <button onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
+-                                                                            <button onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
++                                                                            <button className="ghost-btn" onClick={handleSaveEditCustomComment} style={{ background: 'transparent', color: 'var(--text-main)', fontWeight: 600, border: 'none', padding: '0', fontSize: '0.75rem', cursor: 'pointer' }}>Save</button>
++                                                                            <button className="ghost-btn" onClick={() => setEditingCommentIndex(null)} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', padding: '0', cursor: 'pointer', fontSize: '0.75rem' }}>Cancel</button>
+                                                                         </div>
+                                                                     </>
+                                                                 ) : (
+@@ -1785,8 +1782,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
+                                                                         <div style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                             {comment}
+                                                                         </div>
+-                                                                        <button onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
+-                                                                        <button onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
++                                                                        <button className="ghost-btn" onClick={() => { setEditingCommentIndex(idx); setEditCommentText(comment); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.2rem' }} title="Edit"><PenTool size={14} /></button>
++                                                                        <button className="ghost-btn" onClick={() => handleDeleteCustomComment(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--color-error)', cursor: 'pointer', padding: '0.2rem' }} title="Delete"><Trash2 size={14} /></button>
+                                                                     </>
+                                                                 )}
+                                                             </div>

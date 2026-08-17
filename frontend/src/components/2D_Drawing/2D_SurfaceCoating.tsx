@@ -27,7 +27,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
     "SURFACE COATING SIZE AND TOLERANCE",
     "Review surface coating processes table including Hard Chromate, Chrome Plating, Nickel Plating, and Colored Plating.",
     "Special Notes: Review the special notes indications in the drawing interface.",
-    "Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity."
+    "Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then Right Click. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity."
   ];
   const tabsList = [{ id: 'default' }];
   const activeTab = 'default';
@@ -228,7 +228,7 @@ const SurfaceCoatingLesson: React.FC<SurfaceCoatingLessonProps> = ({
                 <div className="step-description">
                   <img src={copyMoveImg} alt="Copy Move Commands" className="software-screenshot screenshot-wide" />
                   <div className="instruction-box mt-6">
-                    <KaraokeLessonText className="p-flush mb-4" text="Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then GO. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity." isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
+                    <KaraokeLessonText className="p-flush mb-4" text="Copy and move have the same procedure. The only difference is that copy will multiply its quantity while move will only change location. 1. Click copy command. Click P-1 then Right Click. 2. Click P-2 for reference. 3. Click P-3 for the new location of entity." isActive={isSpeaking && currentIndex === 3} currentCharIndex={currentCharIndex} />
                   </div>
                 </div>
               </div>

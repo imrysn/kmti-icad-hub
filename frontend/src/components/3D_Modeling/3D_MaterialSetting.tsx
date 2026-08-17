@@ -48,7 +48,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
   const material1Steps = [
     "MATERIAL SETTING",
     "Step 1: Select the Set Material from the icon menu.",
-    "Step 2: Select the entity/entities then GO",
+    "Step 2: Select the entity/entities then Right Click",
     "Step 3: The Material Setting Window will appear. Select the material from the list then Press OK",
     "The list consists of the materials and their corresponding Notation, Specific Gravity and Color. However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE).",
     "Step 4: After setting the material, a dialog box will appear then Select OK",
@@ -208,7 +208,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the entity/entities > GO"
+                    text="Select the entity/entities then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -224,7 +224,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="The Material Setting Window will appear. Select the material from the list > Press OK"
+                    text="The Material Setting Window will appear. Select the material from the list then Press OK"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -247,7 +247,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="After setting the material, a dialog box will appear > Select OK"
+                    text="After setting the material, a dialog box will appear then Select OK"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -292,7 +292,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description">
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select OK > Material Settings window will appear > Reselect new material for the part"
+                  text="Select OK then Material Settings window will appear then Reselect new material for the part"
                   isActive={isSpeaking && currentIndex === 11}
                   currentCharIndex={currentCharIndex}
                 />
@@ -310,7 +310,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description" style={{ marginTop: "-1rem" }}>
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select Cancel > No changes will be made"
+                  text="Select Cancel then No changes will be made"
                   isActive={isSpeaking && currentIndex === 13}
                   currentCharIndex={currentCharIndex}
                 />
@@ -392,7 +392,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                       </tr>
                       <tr>
                         <td>PVC</td>
-                        <td>VP(塩化ビニール管)</td>
+                        <td>VP(塩化ビニ�Eル管)</td>
                       </tr>
                     </tbody>
                   </table>

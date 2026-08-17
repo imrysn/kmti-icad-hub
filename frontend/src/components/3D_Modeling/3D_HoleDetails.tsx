@@ -140,7 +140,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
               <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                 <KaraokeLessonText
                   as="span"
-                  text="Click the location of the hole on the solid entity &gt; GO"
+                  text="Click the location of the hole on the solid entity then Right Click"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -177,4 +177,5 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 };
 
 export default HoleDetailsLesson;
+
 

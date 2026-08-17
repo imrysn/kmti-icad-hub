@@ -91,7 +91,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
     "PROCEDURE",
     "Step 1: Open a new drawing",
     "Step 2: In order to create this part, it must be done by segments. Segments must be attach together after modeling.",
-    "Step 3: Join all segments > Use UNION",
+    "Step 3: Join all segments then Use UNION",
     "Step 4: For Key Groove",
     "Step 5: Subtract the tool entity",
     "Step 6: Add all Fairings (Chamfer and Fillet)",
@@ -189,9 +189,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
               </div>
-              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File then New</p>
               <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name.</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save As then Use drawing number as File Name.</p>
               <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Check if Normal or Mirror Part (See Mirrored Part lesson tab)</p>
               <p className="p-flush" style={{ marginTop: "-1rem" }}>Press Save</p>
             </div>
@@ -241,7 +241,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <img src={centerTool} alt="Center Tool" style={{ height: '20px', margin: '0 0.5rem' }} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                  <p className="p-flush">Left-click on the selected point &gt; GO </p>
+                  <p className="p-flush">Left-click on the selected point then Right Click </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
                   <img src={opSample1} alt="Placed Hole" className="software-screenshot mt-4" style={{ height: '300px' }} />
@@ -258,7 +258,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div>
                   <img src={moveTool} alt="Move Tool" className="software-screenshot mt-4 mb-4" style={{ height: '120px' }} />
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-                    <p className="p-flush">Select the hole component &gt; GO </p>
+                    <p className="p-flush">Select the hole component then Right Click </p>
                     <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                   </div>
                   <p className="p-flush">INPUT: MOVELENGX = 0</p>
@@ -299,7 +299,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <img src={filletTool} alt="Fillet Tool" className="software-screenshot mt-4 mb-4" style={{ height: '150px', marginBottom: "1rem" }} />
                 <p className="p-flush">SetRadius = 7mm</p>
                 <div style={{ display: 'flex', alignItems: 'center'}}>
-                  <p className="p-flush">Pick all the edges to be filleted &gt; GO </p>
+                  <p className="p-flush">Pick all the edges to be filleted then Right Click </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
                 <img src={filletResult} alt="Fillet Result" className="software-screenshot mt-4" style={{ width: '900px', marginTop: "1rem" }} />
@@ -328,7 +328,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <img src={chamferTool} alt="Chamfer Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
                 <p className="p-flush">Set Chamfer Length = 20mm</p>
                 <div style={{ display: 'flex', alignItems: 'center'}}>
-                  <p className="p-flush">Select all edges to be chamfered &gt; GO </p>
+                  <p className="p-flush">Select all edges to be chamfered then Right Click </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
                 <img src={chamferResult} alt="Chamfer Result" className="software-screenshot mt-4" style={{ height: '300px', marginTop: "1rem" }} />
@@ -344,7 +344,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
               <div>
                   <img src={createPartTool} alt="Create Part Tool" className="software-screenshot mt-4 mb-4" style={{ height: '100px', marginBottom: "1rem" }} />
                 <div style={{ display: 'flex', alignItems: 'center'}}>
-                  <p className="p-flush">Select the entity &gt; GO </p>
+                  <p className="p-flush">Select the entity then Right Click </p>
                   <img src={leftClick} alt="Left Click" style={{ height: '30px', margin: '0 0.5rem' }} />
                 </div>
                 <p className="p-flush">Enter the 3D Part Name</p>
@@ -381,14 +381,14 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-label">Save the file</span>
               </div>
               <div>
-                <p className="p-flush">File &gt; Save</p>
+                <p className="p-flush">File then Save</p>
               </div>
             </div>
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={handleNext}>
-                {activeTab === 'sample2' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+                {'Next'} <ChevronRight size={18} />
               </button>
             </div>
           </div>
@@ -406,9 +406,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">1</span>
                 <span className="step-label">Open a new drawing</span>
               </div>
-              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File &gt; New</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>Go to File then New</p>
               <p className="p-flush" style={{ marginTop: "-1rem" }}>Save the drawing</p>
-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save As &gt; Use drawing number as File Name &gt; Press Save</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save As then Use drawing number as File Name then Press Save</p>
               <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>*Check if Normal or Mirror Part(See Mirrored Part lesson tab)</p>
             </div>
 
@@ -425,7 +425,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <div style={{ flex: "1", marginBottom: "3rem"}}>
                   <p className="p-flush" style={{ marginBottom: "1rem", color: "var(--text-main)"}}><u>SEGMENT A</u></p>
                   <p className="p-flush red-text" style={{ marginTop: "1rem" }}>Use Arrange Cylinder</p>
-                  <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove &gt; [UNION]</p>
+                  <p className="p-flush" style={{ marginTop: "0rem" }}>Create 3 cylinders to make the retainer ring groove then [UNION]</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 1: Diameter = 20mm    Height= 3.65mm    Coordinates (0,0,0)</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 2: Diameter = 19mm    Height= 1.35mm</p>
                   <p className="p-flush" style={{ marginTop: "0rem" }}>Cylinder 3: Diameter = 20mm    Height= 64.5mm</p>
@@ -436,7 +436,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                   <p className="p-flush red-text" style={{ marginTop: "-1rem" }}>Use Arrange Cylinder</p>
                   <p className="p-flush">INPUT: Diameter = 30mm</p>
                   <p className="p-flush">Height = 22.25mm</p>
-                  <p className="p-flush">Use Center tool &gt; Attach to Segment A</p>
+                  <p className="p-flush">Use Center tool then Attach to Segment A</p>
                   <img src={segmentBResult} alt="Segment B" className="software-screenshot mt-4" style={{ width: "500px", height: "auto", marginTop: "1rem", marginBottom: "2rem"}} />
                 </div>
               </div>
@@ -458,7 +458,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
             <div className={`${getStepClass('s2-3')} ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{marginTop: "-2rem"}}>
               <div className="step-header">
                 <span className="step-number">3</span>
-                <span className="step-label">Join all segments &gt; Use <span className="red-text">UNION</span></span>
+                <span className="step-label">Join all segments then Use <span className="red-text">UNION</span></span>
               </div>
             </div>
 
@@ -524,7 +524,7 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
                 <span className="step-number">10</span>
                 <span className="step-label">Save the file</span>
               </div>
-              <p className="p-flush" style={{ marginTop: "-1rem" }}>File &gt; Save</p>
+              <p className="p-flush" style={{ marginTop: "-1rem" }}>File then Save</p>
             </div>
             
             <div className="lesson-navigation">
@@ -541,4 +541,5 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
 };
 
 export default OperationSampleLesson;
+
 

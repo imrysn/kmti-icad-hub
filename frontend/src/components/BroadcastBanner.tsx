@@ -1,5 +1,6 @@
 import { AlertCircle,Info,Megaphone } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
+import { useWebSocket } from '../context/WebSocketContext';
 import { adminService } from '../services/adminService';
 import '../styles/BroadcastBanner.css';
 
@@ -16,7 +17,8 @@ const BannerCard: React.FC<{
     broadcast: Broadcast;
     index: number;
     onDismiss: (id: number) => void;
-}> = ({ broadcast, index, onDismiss }) => {
+    onAcknowledge: (id: number) => void;
+}> = ({ broadcast, index, onDismiss, onAcknowledge }) => {
     const [isExpanded, setIsExpanded] = useState(false); const [canExpand, setCanExpand] = useState(false);
     const messageRef = useRef<HTMLParagraphElement>(null);
 
@@ -69,7 +71,16 @@ const BannerCard: React.FC<{
                         <span>{category.label}</span>
                     </div>
                     <div className="header-actions">
-                        <button className="dismiss-btn" onClick={() => onDismiss(broadcast.id)} aria-label="Dismiss">
+                        <button
+                            type="button"
+                            className="ack-btn"
+                            onClick={() => onAcknowledge(broadcast.id)}
+                            aria-label="Mark broadcast as read"
+                            title="Mark this broadcast as read"
+                        >
+                            Mark as read
+                        </button>
+                        <button type="button" className="dismiss-btn" onClick={() => onDismiss(broadcast.id)} aria-label="Dismiss">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
                                 <path d="M18 6L6 18M6 6l12 12" />
                             </svg>
@@ -84,7 +95,7 @@ const BannerCard: React.FC<{
                             {broadcast.sender_name}
                         </div>
                         {(canExpand || isExpanded) && (
-                            <button className="expand-toggle-icon" onClick={(e) => {
+                            <button type="button" className="expand-toggle-icon" onClick={(e) => {
                                 e.stopPropagation();
                                 setIsExpanded(!isExpanded);
                             }} aria-label={isExpanded ? 'Show Less' : 'View More'}>
@@ -103,11 +114,12 @@ const BannerCard: React.FC<{
 export const BroadcastBanner: React.FC = () => {
     const [broadcasts, setBroadcasts] = useState<Broadcast[]>([]);
     const [dismissedIds, setDismissedIds] = useState<number[]>(() => {
-        const saved = localStorage.getItem('dismissed_broadcasts');
+        const saved = sessionStorage.getItem('dismissed_broadcasts');
         return saved ? JSON.parse(saved) : [];
     });
 
     const lastAlertedId = useRef<number | null>(null);
+    const { subscribe } = useWebSocket();
 
     // Audio synthesis
     const playAlert = (type: string) => {
@@ -141,7 +153,7 @@ export const BroadcastBanner: React.FC = () => {
 
     const fetchBroadcasts = async () => {
         try {
-            const data = await adminService.getActiveBroadcasts();
+            const data = await adminService.getMyActiveBroadcasts();
             setBroadcasts(data);
         } catch (err) {
             console.error('Failed to fetch broadcasts', err);
@@ -151,6 +163,18 @@ export const BroadcastBanner: React.FC = () => {
     useEffect(() => {
         fetchBroadcasts();
         const interval = setInterval(fetchBroadcasts, 60000);
+
+        const unsubCreated = subscribe('BROADCAST_CREATED', () => {
+            fetchBroadcasts();
+        });
+
+        const unsubDeleted = subscribe('BROADCAST_DELETED', (data) => {
+            if (data?.broadcast_id != null) {
+                setBroadcasts(prev => prev.filter(b => b.id !== data.broadcast_id));
+            } else {
+                fetchBroadcasts();
+            }
+        });
 
         const handleLocalBroadcast = (e: CustomEvent) => {
             if (e.detail) {
@@ -169,16 +193,28 @@ export const BroadcastBanner: React.FC = () => {
 
         return () => {
             clearInterval(interval);
+            unsubCreated();
+            unsubDeleted();
             window.removeEventListener('kmti-test-broadcast', handleLocalBroadcast as EventListener);
         };
-    }, []);
+    }, [subscribe]);
 
     const dismiss = (id: number) => {
         setDismissedIds(prev => {
             const updated = [...prev, id];
-            localStorage.setItem('dismissed_broadcasts', JSON.stringify(updated));
+            sessionStorage.setItem('dismissed_broadcasts', JSON.stringify(updated));
             return updated;
         });
+    };
+
+    const acknowledge = async (id: number) => {
+        try {
+            await adminService.acknowledgeBroadcast(id);
+            setDismissedIds(prev => prev.filter(existingId => existingId !== id));
+            setBroadcasts(prev => prev.filter(b => b.id !== id));
+        } catch (err) {
+            console.error('Failed to acknowledge broadcast', err);
+        }
     };
 
     const activeBroadcasts = broadcasts.filter(b => !dismissedIds.includes(b.id));
@@ -198,7 +234,7 @@ export const BroadcastBanner: React.FC = () => {
     return (
         <div className="broadcast-banner-container">
             {activeBroadcasts.slice(0, 3).map((b, idx) => (
-                <BannerCard key={b.id} broadcast={b} index={idx} onDismiss={dismiss} />
+                <BannerCard key={b.id} broadcast={b} index={idx} onDismiss={dismiss} onAcknowledge={acknowledge} />
             ))}
         </div>
     );

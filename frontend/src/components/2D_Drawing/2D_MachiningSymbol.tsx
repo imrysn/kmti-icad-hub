@@ -11,8 +11,6 @@ import "../../styles/2D_Drawing/CourseLesson.css";
 import machiningSymbolMainImg from "../../assets/2D_Image_File/2D_machining_symbol.png";
 
 
-import machiningSurfaceCondImg from "../../assets/2D_Image_File/2D_machining_symbol_machining_surface_condiiton.jpg";
-
 interface MachiningSymbolLessonProps {
   nextLabel?: string;
   onNextLesson?: () => void;

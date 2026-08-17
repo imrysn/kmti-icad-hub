@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
@@ -21,7 +21,7 @@ interface StandardLibraryLessonProps {
 const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
   nextLabel,
   onNextLesson,
-  onPrevLesson}) => {
+  onPrevLesson }) => {
   const TABS = [
     { id: 'standard-library', label: 'Standard Part Library' }
   ];
@@ -208,7 +208,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
                               5. Place on its designated location
                             </p>
                             <p className="p-flush" style={{ marginTop: "0.5rem" }}>
-                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. (See Dimensioning tab)
+                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. See 2D Detailing course. Lesson “Dimensioning, b”.
                             </p>
                           </div>
                         </div>

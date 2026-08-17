@@ -117,6 +117,16 @@ export const adminService = {
         return response.data;
     },
 
+    async getMyActiveBroadcasts(): Promise<any[]> {
+        const response = await api.get('/notifications/broadcasts/active');
+        return response.data;
+    },
+
+    async acknowledgeBroadcast(broadcastId: number): Promise<any> {
+        const response = await api.post(`/notifications/broadcasts/${broadcastId}/acknowledge`);
+        return response.data;
+    },
+
     async deleteBroadcast(broadcastId: number): Promise<void> {
         await api.delete(`/admin/broadcasts/${broadcastId}`);
     },

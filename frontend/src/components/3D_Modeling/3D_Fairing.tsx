@@ -50,7 +50,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "Use for creating chamfer dimensions.",
     "Step 1: Select Chamfer edge from the icon menu",
     "Step 2: Specify chamfer length on the item entry",
-    "Step 3: Select the edge of the entity to be chamfered > GO",
+    "Step 3: Select the edge of the entity to be chamfered then Right Click",
     "Note: Several edges can be chamfered all at once.",
     "RESULT"
   ];
@@ -60,7 +60,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "Use for rounding specified corners.",
     "Step 1: Select Fillet edge from the icon menu.",
     "Step 2: Specify the fillet radius on the item entry.",
-    "Step 3: Select the edge of the entity to be fillet then click GO",
+    "Step 3: Select the edge of the entity to be fillet then click Right Click",
     "Note: Several edges can be fillet all at once.",
     "RESULT"
   ];
@@ -69,8 +69,8 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "SHELL",
     "Use for hollowing solid entities using the specified wall thickness.",
     "Step 1: Select Shell from the icon menu.",
-    "Step 2: Select the two endfaces of the solid entity then click GO.",
-    "Step 3: Specify the thickness on the item entry then click GO twice.",
+    "Step 2: Select the two endfaces of the solid entity then click Right Click.",
+    "Step 3: Specify the thickness on the item entry then click Right Click twice.",
     "RESULT"
   ];
 
@@ -228,7 +228,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the edge of the entity to be chamfered > GO"
+                    text="Select the edge of the entity to be chamfered then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -331,7 +331,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <span className="step-label" style={{ marginTop: '-1.5rem' }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the edge of the entity to be fillet > GO"
+                    text="Select the edge of the entity to be fillet then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -415,7 +415,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the two endfaces of the solid entity > GO"
+                    text="Select the two endfaces of the solid entity then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -433,7 +433,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the desired thickness of the solid entity after shell on the item entry > double GO"
+                    text="Specify the desired thickness of the solid entity after shell on the item entry then double Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />

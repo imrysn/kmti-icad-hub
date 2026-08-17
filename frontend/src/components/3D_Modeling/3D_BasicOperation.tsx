@@ -287,14 +287,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const lessonSteps = React.useMemo(() => [
     "Creating Basic Shapes",                                                         // 0 heading
     "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.", // 1 overview
-    "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.", // 2 → cylinder tab
-    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 → box tab
-    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.", // 4 → polygon tab
-    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 → cone tab
-    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 → torus tab
-    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 → back to cylinder, scroll to Before You Start
-    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 → command menu step
-    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 → scroll to video
+    "A Cylinder is a circular solid defined by its Diameter and Height  Eideal for shafts, pins, bosses, and round posts.", // 2 ↁEcylinder tab
+    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 ↁEbox tab
+    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height  Euseful for hexagonal bolts and multi-sided columns.", // 4 ↁEpolygon tab
+    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 ↁEcone tab
+    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 ↁEtorus tab
+    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 ↁEback to cylinder, scroll to Before You Start
+    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 ↁEcommand menu step
+    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 ↁEscroll to video
   ], []);
 
   // Auto-switch tabs as TTS progresses through the narrated tour
@@ -383,7 +383,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </h3>
 
-        {/* TTS index 1 — overview narration */}
+        {/* TTS index 1  Eoverview narration */}
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
             text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
@@ -392,7 +392,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </div>
 
-        {/* Shape intro — tab-specific, shown here in the main intro card */}
+        {/* Shape intro  Etab-specific, shown here in the main intro card */}
         {(() => {
           const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
           const idx = tabIntroIdx[activeTab] ?? 2;
@@ -409,7 +409,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </section>
 
       <div className="lesson-grid single-card">
-        {/* Prerequisite steps card — always visible, scrolled to at TTS step 7 */}
+        {/* Prerequisite steps card  Ealways visible, scrolled to at TTS step 7 */}
         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
           <div className="card-header">
             <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
@@ -442,7 +442,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            {/* Watch tutorial prompt — shown at step 9 (closing message) */}
+            {/* Watch tutorial prompt  Eshown at step 9 (closing message) */}
             {currentIndex === 9 && isSpeaking && (
               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
@@ -557,26 +557,26 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   const moveSteps = [
     "Step 1: Select Move from the icon menu.",
-    "Step 2: Left-click on the entity to be moved and click GO.",
+    "Step 2: Left-click on the entity to be moved and click Right Click.",
     "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
   ];
 
   const rotateSteps = [
     "Step 1: Select Rotate from the icon menu.",
-    "Step 2: Left-click on the entity to be rotated and click GO.",
+    "Step 2: Left-click on the entity to be rotated and click Right Click.",
     "Step 3: Select 2-points to set the axis of rotation.",
     "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
   ];
 
   const mirrorSteps = [
     "Step 1: Select Mirror from the icon menu.",
-    "Step 2: Left-click on the entity to be mirrored and click GO.",
+    "Step 2: Left-click on the entity to be mirrored and click Right Click.",
     "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
   ];
 
   const copySteps = [
     "Step 1: Select Copy from the icon menu.",
-    "Step 2: Left-click on the entity to be copied and click GO.",
+    "Step 2: Left-click on the entity to be copied and click Right Click.",
     "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
   ];
 
@@ -763,7 +763,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be moved > GO"
+                    text="Left-click on the entity to be moved then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -778,7 +778,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the movement distance on the X, Y and Z-axis on the item entry > Press Enter"
+                  text="Specify the movement distance on the X, Y and Z-axis on the item entry then Press Enter"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -841,7 +841,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be rotated > GO"
+                    text="Left-click on the entity to be rotated then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -869,7 +869,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the desired angle of rotation on the item entry > Press Enter"
+                  text="Specify the desired angle of rotation on the item entry then Press Enter"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -925,7 +925,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be mirrored > GO"
+                    text="Left-click on the entity to be mirrored then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -995,7 +995,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be copied > GO"
+                    text="Left-click on the entity to be copied then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1010,7 +1010,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed > Press Enter"
+                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed then Press Enter"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1168,7 +1168,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const extrudeSteps = [
     "EXTRUDE",
     "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
+    "Step 2: Select the perimeter of the sketch to be extrude then Right Click. A hatch will appear indicating the specified area to be extruded.",
     "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
     "Step 4: Press ENTER to finalize."
   ];
@@ -1176,8 +1176,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const revolveSteps = [
     "REVOLVE",
     "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be revolve then GO",
-    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
+    "Step 2: Select the perimeter of the sketch to be revolve then Right Click",
+    "Step 3: Select the axis of rotation (pick points or edge) then Right Click. A hatch will appear indicating the specified area to be revolved."
   ];
 
   const tabs = [
@@ -1411,7 +1411,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be extruded > GO"
+                    text="Select the perimeter of the sketch to be extruded then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1505,7 +1505,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be revolved > GO"
+                    text="Select the perimeter of the sketch to be revolved then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1519,7 +1519,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation (pick points or edge) > GO"
+                    text="Select the axis of rotation (pick points or edge) then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1574,34 +1574,34 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const showHideSteps = [
     "SHOW / HIDE ENTITY",
     "Step 1: Select Show/Hide from the icon menu.",
-    "Step 2: Select the entities for showing/hiding then GO",
+    "Step 2: Select the entities for showing/hiding then Right Click",
     "SHOW/HIDE DRAFTING ENTITY",
     "Step 1: Select Show/Hide Drafting Entity from the icon menu.",
     "Step 2: Right-click to show/hide all drafting entities.",
     "Drafting Entities include: Dimensions, Notes and Symbols.",
     "HIDE UNSELECTED ENTITY",
     "Step 1: Select Hide Unselected Entity from the icon menu.",
-    "Step 2: Select all entities to be retain then GO",
+    "Step 2: Select all entities to be retain then Right Click",
     "All unselected entities will be hidden."
   ];
 
   const stretchSteps = [
     "STRETCH / SHAPE / CUT",
     "Step 1: Select Stretch from the icon menu.",
-    "Step 2: Select the face to be stretch then GO",
+    "Step 2: Select the face to be stretch then Right Click",
     "Step 3: Specify the desired length of the solid entity on the item entry.",
     "Also works for circular surfaces.",
     "OR",
-    "Select face then GO then Left-click on the 3D Space",
+    "Select face, then Right Click, then Left-click on the 3D Space",
     "A linear scale will appear on the 3D Space",
-    "Specify the additional length of stretch then Press Enter or Left-Click on the scale."
+    "Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
   ];
 
   const resizeSteps = [
     "RESIZE",
     "Step 1: Select Resize from the icon menu.",
-    "Step 2: Select the entity for resizing then GO.",
-    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
+    "Step 2: Select the entity for resizing then Right Click.",
+    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry then Left-click on the 3D Space."
   ];
 
   const tabs = [
@@ -1743,7 +1743,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entities for showing/hiding > GO"
+                    text="Select the entities for showing/hiding then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1863,7 +1863,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select all entities to be retain > GO"
+                    text="Select all entities to be retain then Right Click"
                     isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1919,7 +1919,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the face to be stretch &gt; GO"
+                    text="Select the face to be stretch then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1962,14 +1962,14 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <div className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select face >  GO"
+                    text="Select face, then Right Click"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                     <KaraokeLessonText
                       as="span"
-                      text=" > Left-click on the 3D Space"
+                    text=", then Left-click on the 3D Space"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex - 17}
                     />
@@ -1987,7 +1987,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <p className={`p-flush mt-4 ${currentIndex === 10 ? "reading-active" : ""}`} data-reading-index="10" style={{ marginBottom: "2rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Specify the additional length of stretch > Press Enter or Left-Click on the scale."
+                    text="Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
                       isActive={isSpeaking && currentIndex === 10}
                       currentCharIndex={currentCharIndex}
                     />
@@ -2041,7 +2041,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entity for resizing > GO"
+                    text="Select the entity for resizing then Right Click"
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2057,7 +2057,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space"
+                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry, then Left-click on the 3D Space"
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2171,7 +2171,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
+                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications then Press OK"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2246,4 +2246,5 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
 
 export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
 export default BasicOperationLesson;
+
 

@@ -90,14 +90,14 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
   const editsSteps = [
     "EDITS DRAFTING ENTITY CHARACTERS",
-    "Step 1: Select drafting entity, then click GO.",
+    "Step 1: Select drafting entity, then click Right Click.",
     "Step 2: Edit Dimension Characters window will appear.",
     "Step 3: After editing the dimension characters, Press OK."
   ];
 
   const attributesSteps = [
     "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
-    "Step 1: Select drafting entity, then click GO.",
+    "Step 1: Select drafting entity, then click Right Click.",
     "Step 2: Change Properties window will appear.",
     "Step 3: After changing the properties, Press OK."
   ];
@@ -517,7 +517,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text="Select drafting entity, then click Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
@@ -573,7 +573,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text="Select drafting entity, then click Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
