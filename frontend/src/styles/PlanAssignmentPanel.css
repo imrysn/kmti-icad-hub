@@ -21,5 +21,7 @@
 .plan-history strong { color: var(--text-main); font-size: .8rem; }
 .plan-history-status { padding: .18rem .45rem; border-radius: 999px; background: var(--bg-surface); color: var(--text-muted); font-size: .6rem; font-weight: 800; text-transform: uppercase; }
 .plan-history-status.active { color: var(--color-success); }.plan-history-status.scheduled { color: var(--primary); }.plan-history-status.expired,.plan-history-status.cancelled { color: var(--text-dim); }
+.plan-history-status.allow { color: var(--color-success); background: rgba(34,197,94,.08); }.plan-history-status.deny { color: var(--color-error); background: rgba(239,68,68,.08); }
 .plan-history p, .plan-history small, .plan-history-empty { margin: .25rem 0 0; color: var(--text-muted); font-size: .68rem; line-height: 1.45; }
+.revoke-exception { margin-top: .55rem; padding: .3rem .55rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-surface); color: var(--color-error); font-size: .65rem; font-weight: 700; cursor: pointer; }
 @media (max-width: 520px) { .plan-date-grid { grid-template-columns: 1fr; } }

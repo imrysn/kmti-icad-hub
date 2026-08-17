@@ -83,6 +83,11 @@ export interface PlanAssignment {
     id: number; user_id: number; plan_id: number; plan_code: string; plan_name: string;
     starts_at: string; ends_at?: string; status: 'active' | 'scheduled' | 'expired' | 'cancelled'; reason?: string; created_at: string;
 }
+export interface EntitlementOverride {
+    id: number; user_id: number; resource_type: 'course' | 'practical_set'; resource_id: string;
+    permission_code: string; effect: 'allow' | 'deny'; starts_at: string; ends_at: string;
+    reason: string; revoked_at?: string; created_at: string;
+}
 
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
@@ -164,6 +169,18 @@ export const adminService = {
 
     async assignUserPlan(userId: number, data: { plan_id: number; starts_at: string; ends_at?: string; reason: string }): Promise<PlanAssignment> {
         return (await api.post(`/admin/users/${userId}/plan-assignments`, data)).data;
+    },
+
+    async getUserEntitlementOverrides(userId: number): Promise<EntitlementOverride[]> {
+        return (await api.get(`/admin/users/${userId}/entitlement-overrides`)).data;
+    },
+
+    async createUserEntitlementOverride(userId: number, data: { resource_type: 'course' | 'practical_set'; resource_id: string; effect: 'allow' | 'deny'; starts_at: string; ends_at: string; reason: string }): Promise<EntitlementOverride> {
+        return (await api.post(`/admin/users/${userId}/entitlement-overrides`, data)).data;
+    },
+
+    async revokeUserEntitlementOverride(userId: number, overrideId: number): Promise<EntitlementOverride> {
+        return (await api.delete(`/admin/users/${userId}/entitlement-overrides/${overrideId}`)).data;
     },
 
     async getStats(): Promise<SystemStats> {

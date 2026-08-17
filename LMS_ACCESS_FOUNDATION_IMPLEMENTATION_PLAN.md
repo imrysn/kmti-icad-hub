@@ -748,7 +748,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Add access plans.
 - [x] Add plan entitlements.
 - [x] Add user plan assignments.
-- [ ] Add entitlement overrides.
+- [x] Add entitlement overrides.
 - [x] Add append-only audit events.
 - [x] Add initial indexes and role/area/effect constraints.
 - [x] Add seed migration for system roles/permissions.
@@ -815,7 +815,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Implement plan CRUD with archive rather than unsafe deletion.
 - [x] Implement entitlement configuration.
 - [x] Implement plan assignment/change/expiration.
-- [ ] Implement temporary entitlement overrides.
+- [x] Implement temporary entitlement overrides.
 - [x] Implement effective-entitlement calculation service.
 - [x] Enforce entitlement checks on course lists/details.
 - [x] Enforce entitlement checks on lessons and media metadata.
@@ -920,7 +920,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Unit-test legacy role mapping and independent Admin-area behavior.
 - [x] Unit-test effective permission allow/deny behavior.
 - [ ] Unit-test plan date boundaries and timezone behavior.
-- [~] Unit-test effective entitlements and overrides. (Dated plan entitlements covered; temporary overrides pending.)
+- [x] Unit-test effective entitlements and overrides.
 - [x] Integration-test registration and verification.
 - [ ] Integration-test approval/rejection/clarification. (Approval/rejection decisions and safe learner emails are tested; clarification follows.)
 - [x] Integration-test duplicate and concurrent decisions.

@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ...auth.dependencies import require_permission
 from ...database import get_db
-from ...models import AccessPlan, AssessmentTask, AuditEvent, Course, PlanEntitlement, User, UserPlanAssignment
-from ...schemas import AccessPlanCreate, AccessPlanResponse, AccessPlanUpdate, CourseResponse, PlanAssignmentCreate, PlanAssignmentResponse, PlanEntitlementInput
+from ...models import AccessPlan, AssessmentTask, AuditEvent, Course, PlanEntitlement, User, UserEntitlementOverride, UserPlanAssignment
+from ...schemas import AccessPlanCreate, AccessPlanResponse, AccessPlanUpdate, CourseResponse, EntitlementOverrideCreate, EntitlementOverrideResponse, PlanAssignmentCreate, PlanAssignmentResponse, PlanEntitlementInput
 from ...services.access_plan_service import serialize_plan
 from ...services.access_control_service import get_active_role_codes
 
@@ -111,3 +111,57 @@ def assign_plan(user_id: int, payload: PlanAssignmentCreate, db: Session = Depen
     _audit(db, admin, "plan.assigned", plan, {"user_id": user_id, "assignment_id": assignment.id, "starts_at": starts_at.isoformat(), "ends_at": ends_at.isoformat() if ends_at else None})
     db.commit(); db.refresh(assignment)
     return _serialize_assignment(db, assignment)
+
+
+def _learner_or_404(db: Session, user_id: int) -> User:
+    learner = db.query(User).filter(User.id == user_id).first()
+    if learner is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    if "learner" not in get_active_role_codes(db, learner):
+        raise HTTPException(status_code=422, detail="Entitlement exceptions can only be assigned to learners")
+    return learner
+
+
+def _validate_override_resource(db: Session, payload: EntitlementOverrideCreate) -> None:
+    if payload.resource_type == "course":
+        exists = db.query(Course.id).filter(Course.course_type == payload.resource_id).first()
+    else:
+        try:
+            kind, number = payload.resource_id.split(":", 1)
+            exists = db.query(AssessmentTask.id).filter(AssessmentTask.assessment_type == kind, AssessmentTask.set_number == int(number)).first()
+        except (ValueError, TypeError):
+            exists = None
+    if exists is None:
+        raise HTTPException(status_code=422, detail="The selected entitlement resource does not exist")
+
+
+@router.get("/users/{user_id}/entitlement-overrides", response_model=list[EntitlementOverrideResponse])
+def list_entitlement_overrides(user_id: int, db: Session = Depends(get_db), _: User = Depends(require_permission("plan.read"))):
+    _learner_or_404(db, user_id)
+    return db.query(UserEntitlementOverride).filter(UserEntitlementOverride.user_id == user_id).order_by(UserEntitlementOverride.created_at.desc(), UserEntitlementOverride.id.desc()).all()
+
+
+@router.post("/users/{user_id}/entitlement-overrides", response_model=EntitlementOverrideResponse, status_code=status.HTTP_201_CREATED)
+def create_entitlement_override(user_id: int, payload: EntitlementOverrideCreate, db: Session = Depends(get_db), admin: User = Depends(require_permission("plan.assign"))):
+    _learner_or_404(db, user_id); _validate_override_resource(db, payload)
+    row = UserEntitlementOverride(
+        user_id=user_id, resource_type=payload.resource_type, resource_id=payload.resource_id,
+        permission_code="view", effect=payload.effect, starts_at=payload.starts_at.replace(tzinfo=None),
+        ends_at=payload.ends_at.replace(tzinfo=None), granted_by_user_id=admin.id, reason=payload.reason,
+    )
+    db.add(row); db.flush()
+    db.add(AuditEvent(actor_user_id=admin.id, action="entitlement_override.created", target_type="user", target_id=str(user_id), result="success",
+                      metadata_json=json.dumps({"override_id": row.id, "resource_type": row.resource_type, "resource_id": row.resource_id, "effect": row.effect, "starts_at": row.starts_at.isoformat(), "ends_at": row.ends_at.isoformat()})))
+    db.commit(); db.refresh(row); return row
+
+
+@router.delete("/users/{user_id}/entitlement-overrides/{override_id}", response_model=EntitlementOverrideResponse)
+def revoke_entitlement_override(user_id: int, override_id: int, db: Session = Depends(get_db), admin: User = Depends(require_permission("plan.assign"))):
+    row = db.query(UserEntitlementOverride).filter(UserEntitlementOverride.id == override_id, UserEntitlementOverride.user_id == user_id).first()
+    if row is None:
+        raise HTTPException(status_code=404, detail="Entitlement exception not found")
+    if row.revoked_at is None:
+        row.revoked_at = datetime.utcnow(); row.revoked_by_user_id = admin.id
+        db.add(AuditEvent(actor_user_id=admin.id, action="entitlement_override.revoked", target_type="user", target_id=str(user_id), result="success", metadata_json=json.dumps({"override_id": row.id})))
+        db.commit(); db.refresh(row)
+    return row

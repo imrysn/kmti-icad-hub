@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from backend.models import AccessPlan, AssessmentTask, AuditEvent, Course, Lesson, PlanEntitlement, Quiz, UserPlanAssignment
+from backend.models import AccessPlan, AssessmentTask, AuditEvent, Course, Lesson, PlanEntitlement, Quiz, UserEntitlementOverride, UserPlanAssignment
 from backend.services.access_control_service import sync_legacy_user_access
 from backend.services.access_plan_service import seed_access_plans
 
@@ -160,3 +160,48 @@ def test_admin_can_list_practical_resources(client, db, admin_user, admin_token)
     response = client.get("/api/v1/admin/access-plan-resources/practical-sets", headers={"Authorization": f"Bearer {admin_token}"})
     assert response.status_code == 200
     assert {item["resource_id"] for item in response.json()} == {"3D:1", "3D:2", "2D:1"}
+
+
+def test_temporary_allow_grants_course_without_primary_plan(client, db, trainee_user, trainee_token):
+    _curriculum(db)
+    db.add(UserEntitlementOverride(
+        user_id=trainee_user.id, resource_type="course", resource_id="3D_Modeling", permission_code="view", effect="allow",
+        starts_at=datetime.utcnow() - timedelta(minutes=1), ends_at=datetime.utcnow() + timedelta(days=1),
+        granted_by_user_id=trainee_user.id, reason="temporary access",
+    )); db.commit()
+    response = client.get("/api/v1/courses/", headers={"Authorization": f"Bearer {trainee_token}"})
+    assert [item["course_type"] for item in response.json()["courses"]] == ["3D_Modeling"]
+    summary = client.get("/api/v1/auth/me/entitlements", headers={"Authorization": f"Bearer {trainee_token}"}).json()
+    assert summary["plan"] is None
+    assert summary["entitlements"][0]["source"] == "override"
+
+
+def test_temporary_deny_overrides_primary_plan_and_expired_deny_does_not(client, db, trainee_user, trainee_token):
+    _curriculum(db); _grant_course(db, trainee_user)
+    deny = UserEntitlementOverride(
+        user_id=trainee_user.id, resource_type="course", resource_id="3D_Modeling", permission_code="view", effect="deny",
+        starts_at=datetime.utcnow() - timedelta(minutes=1), ends_at=datetime.utcnow() + timedelta(days=1),
+        granted_by_user_id=trainee_user.id, reason="temporary block",
+    )
+    db.add(deny); db.commit(); headers = {"Authorization": f"Bearer {trainee_token}"}
+    assert client.get("/api/v1/courses/", headers=headers).json()["courses"] == []
+    deny.ends_at = datetime.utcnow() - timedelta(seconds=1); db.commit()
+    assert [item["course_type"] for item in client.get("/api/v1/courses/", headers=headers).json()["courses"]] == ["3D_Modeling"]
+
+
+def test_admin_can_create_and_revoke_audited_override(client, db, admin_user, admin_token, trainee_user):
+    sync_legacy_user_access(db, admin_user); course, _, _, _ = _curriculum(db); db.commit()
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    payload = {
+        "resource_type": "course", "resource_id": course.course_type, "effect": "allow",
+        "starts_at": (datetime.utcnow() - timedelta(minutes=1)).isoformat(),
+        "ends_at": (datetime.utcnow() + timedelta(days=2)).isoformat(), "reason": "Approved workshop access",
+    }
+    created = client.post(f"/api/v1/admin/users/{trainee_user.id}/entitlement-overrides", json=payload, headers=headers)
+    assert created.status_code == 201
+    listed = client.get(f"/api/v1/admin/users/{trainee_user.id}/entitlement-overrides", headers=headers)
+    assert listed.status_code == 200 and len(listed.json()) == 1
+    revoked = client.delete(f"/api/v1/admin/users/{trainee_user.id}/entitlement-overrides/{created.json()['id']}", headers=headers)
+    assert revoked.status_code == 200 and revoked.json()["revoked_at"] is not None
+    assert db.query(AuditEvent).filter(AuditEvent.action == "entitlement_override.created").count() == 1
+    assert db.query(AuditEvent).filter(AuditEvent.action == "entitlement_override.revoked").count() == 1

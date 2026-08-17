@@ -224,6 +224,29 @@ class UserPlanAssignment(Base):
     created_at = Column(DateTime, nullable=False, default=func.now())
 
 
+class UserEntitlementOverride(Base):
+    """Time-limited allow/deny exception layered over a learner's primary plan."""
+    __tablename__ = "user_entitlement_overrides"
+    __table_args__ = (
+        CheckConstraint("effect IN ('allow','deny')", name="ck_user_entitlement_override_effect"),
+        CheckConstraint("ends_at IS NULL OR ends_at > starts_at", name="ck_user_entitlement_override_dates"),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    resource_type = Column(String(50), nullable=False, index=True)
+    resource_id = Column(String(150), nullable=False)
+    permission_code = Column(String(100), nullable=False, default="view")
+    effect = Column(String(10), nullable=False)
+    starts_at = Column(DateTime, nullable=False, default=func.now())
+    ends_at = Column(DateTime, nullable=True, index=True)
+    granted_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    reason = Column(String(500), nullable=False)
+    revoked_at = Column(DateTime, nullable=True, index=True)
+    revoked_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+
+
 class RegistrationApplication(Base):
     """Public learner application reviewed by an Organization administrator."""
     __tablename__ = "registration_applications"

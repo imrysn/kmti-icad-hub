@@ -578,3 +578,37 @@ class EffectiveEntitlementResponse(BaseModel):
     ends_at: Optional[datetime] = None
     entitlements: List[dict] = Field(default_factory=list)
 
+
+class EntitlementOverrideCreate(BaseModel):
+    resource_type: Literal["course", "practical_set"]
+    resource_id: str = Field(min_length=1, max_length=150)
+    effect: Literal["allow", "deny"] = "allow"
+    starts_at: datetime
+    ends_at: datetime
+    reason: str = Field(min_length=1, max_length=500)
+
+    @field_validator("ends_at")
+    @classmethod
+    def valid_override_range(cls, value: datetime, info):
+        starts_at = info.data.get("starts_at")
+        if starts_at is not None and value <= starts_at:
+            raise ValueError("ends_at must be later than starts_at")
+        return value
+
+
+class EntitlementOverrideResponse(BaseModel):
+    id: int
+    user_id: int
+    resource_type: str
+    resource_id: str
+    permission_code: str
+    effect: str
+    starts_at: datetime
+    ends_at: Optional[datetime]
+    reason: str
+    revoked_at: Optional[datetime]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
