@@ -28,6 +28,30 @@ try:
         with db_engine.connect() as conn:
             inspector = inspect(db_engine)
             table_names = inspector.get_table_names()
+            if "users" in table_names:
+                user_columns = {c["name"] for c in inspector.get_columns("users")}
+                if "email_normalized" not in user_columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN email_normalized VARCHAR(255)"))
+                conn.execute(text(
+                    "UPDATE users SET email_normalized = LOWER(TRIM(email)) "
+                    "WHERE email_normalized IS NULL "
+                    "OR email_normalized <> LOWER(TRIM(email))"
+                ))
+                duplicate_email = conn.execute(text(
+                    "SELECT email_normalized FROM users "
+                    "GROUP BY email_normalized HAVING COUNT(*) > 1 LIMIT 1"
+                )).first()
+                if duplicate_email:
+                    raise RuntimeError(
+                        "Duplicate user emails differ only by capitalization. "
+                        "Resolve them before starting the LMS."
+                    )
+                user_indexes = {index["name"] for index in inspect(db_engine).get_indexes("users")}
+                if "ix_users_email_normalized" not in user_indexes:
+                    conn.execute(text(
+                        "CREATE UNIQUE INDEX ix_users_email_normalized "
+                        "ON users (email_normalized)"
+                    ))
             if "trainee_set_mappings" in table_names:
                 columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
                 if "assessment_type" not in columns:

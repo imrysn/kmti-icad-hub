@@ -15,6 +15,7 @@ from ..schemas import EmailVerificationRequest, RegistrationCreate, Registration
 from ..schemas import VerificationResendRequest
 from ..services.email_service import queue_verification_email
 from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
+from ..identity import normalize_email_address
 
 
 router = APIRouter(prefix="/registrations", tags=["Registrations"])
@@ -32,8 +33,8 @@ def submit_registration(payload: RegistrationCreate, request: Request, db: Sessi
     if not payload.privacy_accepted or not payload.terms_accepted:
         raise HTTPException(status_code=422, detail="Privacy policy and terms must be accepted")
 
-    email = str(payload.email).strip().lower()
-    duplicate = db.query(User).filter(or_(User.username == payload.username.strip(), User.email == email)).first()
+    email = normalize_email_address(str(payload.email))
+    duplicate = db.query(User).filter(or_(User.username == payload.username.strip(), User.email_normalized == email)).first()
     if duplicate:
         return RegistrationSubmissionResponse(message=GENERIC_SUBMISSION_MESSAGE)
 

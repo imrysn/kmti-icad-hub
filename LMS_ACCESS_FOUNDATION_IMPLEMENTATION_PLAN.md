@@ -762,14 +762,14 @@ Use this as the durable project tracker. Check an item only after implementation
 - [~] Replace single-role authorization with permission policies. (Normalized user role/area/status administration plus knowledge/content, analytics, audit, heatmap, and broadcast APIs migrated; remaining assessment/settings routes follow incrementally.)
 - [ ] Enforce account status during authentication and token refresh. (Sign-in and bearer authentication complete; refresh sessions are a later slice.)
 - [x] Implement short-lived access sessions and rotating refresh sessions.
-- [ ] Hash stored verification, reset, invitation, and refresh tokens.
+- [x] Hash stored verification, reset, invitation, and refresh tokens.
 - [x] Add session revocation and logout-all-devices.
 - [x] Add refresh-token reuse detection.
 - [x] Add generic public authentication/recovery responses.
 - [~] Add login and registration rate limits. (Single-instance protection complete; move counters to a shared store before multi-instance production.)
 - [~] Add verification/reset resend limits. (Single-instance protection complete; move counters to a shared store before multi-instance production.)
 - [~] Add CAPTCHA verification. (Provider-neutral backend verification and feature flags complete; production provider credentials and frontend widget follow.)
-- [ ] Add normalized email uniqueness.
+- [x] Add normalized email uniqueness.
 - [ ] Add MFA requirement for Admins with Platform-area access.
 - [ ] Add re-authentication for Admin role, area, and permission changes.
 - [ ] Prevent Admins from expanding their own access.

@@ -19,6 +19,7 @@ from ..services.entitlement_service import require_course_access, require_lesson
 from ..websocket_manager import notification_manager
 from ..services.email_service import queue_password_reset_email
 from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
+from ..identity import normalize_email_address
 import hashlib
 import os
 import secrets
@@ -64,8 +65,9 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         )
 
     # Check if email already exists
-    user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
-    existing_email = db.query(User).filter(User.email == user_email).first()
+    user_email = str(user_data.email) if user_data.email else f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
+    normalized_email = normalize_email_address(user_email)
+    existing_email = db.query(User).filter(User.email_normalized == normalized_email).first()
     if existing_email:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -75,7 +77,8 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     new_user = User(
         username=user_data.username,
-        email=user_email,
+        email=user_email.strip(),
+        email_normalized=normalized_email,
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,
@@ -191,9 +194,10 @@ async def forgot_password(payload: ForgotPasswordRequest, request: Request, db: 
     Queue a generic, rate-limited password recovery email when the account exists.
     """
     # Find user if possible (for logging context)
+    identifier = payload.username_or_email.strip()
     user = db.query(User).filter(
-        (User.username == payload.username_or_email) |
-        (User.email == payload.username_or_email)
+        (User.username == identifier) |
+        (User.email_normalized == normalize_email_address(identifier))
     ).first()
     enforce_rate_limit(client_key(request, "password-reset", payload.username_or_email), 3, 3600)
     verify_captcha(payload.captcha_token, request.client.host if request.client else "unknown")

@@ -10,6 +10,7 @@ from ..auth.security import hash_password
 from ..database import get_db
 from ..models import AccountInvitation, AccountInvitationPlan, AccountInvitationRole, AccessPlan, AdminAreaGrant, AuditEvent, Role, User, UserPlanAssignment, UserRole
 from ..schemas import InvitationAcceptRequest, InvitationValidateResponse
+from ..identity import normalize_email_address
 
 router = APIRouter(prefix="/invitations", tags=["Invitations"])
 
@@ -40,7 +41,7 @@ def accept_invitation(payload: InvitationAcceptRequest, db: Session = Depends(ge
     if not payload.privacy_accepted or not payload.terms_accepted:
         raise HTTPException(status_code=422, detail="Privacy policy and terms must be accepted")
     invitation, role, plan_row, plan = _invitation(db, payload.token)
-    if db.query(User).filter(or_(User.email == invitation.email_normalized, User.username == payload.username.strip())).first():
+    if db.query(User).filter(or_(User.email_normalized == normalize_email_address(invitation.email_normalized), User.username == payload.username.strip())).first():
         raise HTTPException(status_code=409, detail="The invitation cannot be accepted with these account details")
     now = datetime.now(timezone.utc)
     legacy_role = {"learner": "trainee", "instructor": "employee", "admin": "admin"}[role.code]

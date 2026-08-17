@@ -7,6 +7,7 @@ from ...models import AdminAreaGrant, AuditEvent, Role, User, UserRole, SystemLo
 from ...schemas import AdminUserAccessResponse, AdminUserAccessUpdate, UserCreateAdmin, UserUpdate, UserResponse
 from ...auth.dependencies import require_permission
 from ...auth.security import hash_password
+from ...identity import normalize_email_address
 from ...services.access_control_service import can_assign_platform_area, get_active_admin_areas, get_active_role_codes, seed_access_foundation, sync_legacy_user_access
 
 router = APIRouter()
@@ -115,13 +116,15 @@ def create_user_as_admin(
     # Check for existing user
     if db.query(User).filter(User.username == user_data.username).first():
         raise HTTPException(status_code=400, detail="Username already registered")
-    user_email = user_data.email or f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
-    if db.query(User).filter(User.email == user_email).first():
+    user_email = str(user_data.email) if user_data.email else f"{user_data.username.lower().replace(' ', '')}@kmtihub.local"
+    normalized_email = normalize_email_address(user_email)
+    if db.query(User).filter(User.email_normalized == normalized_email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
     new_user = User(
         username=user_data.username,
-        email=user_email,
+        email=user_email.strip(),
+        email_normalized=normalized_email,
         hashed_password=hash_password(user_data.password),
         full_name=user_data.full_name,
         role=user_data.role,
@@ -165,7 +168,15 @@ def update_user_as_admin(
             raise HTTPException(status_code=400, detail="Username already registered")
         user.username = user_update.username
     if user_update.email is not None:
-        user.email = user_update.email
+        normalized_email = normalize_email_address(str(user_update.email))
+        duplicate_email = db.query(User).filter(
+            User.email_normalized == normalized_email,
+            User.id != user.id,
+        ).first()
+        if duplicate_email:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        user.email = str(user_update.email).strip()
+        user.email_normalized = normalized_email
     if user_update.full_name is not None:
         user.full_name = user_update.full_name
     if user_update.role is not None and user_update.role != user.role:

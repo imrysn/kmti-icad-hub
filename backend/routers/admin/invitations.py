@@ -11,6 +11,7 @@ from ...auth.dependencies import require_permission
 from ...database import get_db
 from ...models import AccountInvitation, AccountInvitationPlan, AccountInvitationRole, AccessPlan, AuditEvent, Role, User
 from ...schemas import InvitationCreate, InvitationResponse
+from ...identity import normalize_email_address
 from ...services.access_control_service import can_assign_platform_area
 from ...services.email_service import queue_invitation_email
 
@@ -70,8 +71,8 @@ def list_invitations(db: Session = Depends(get_db), _: User = Depends(require_pe
 
 @router.post("/invitations", response_model=InvitationResponse, status_code=201)
 def create_invitation(payload: InvitationCreate, db: Session = Depends(get_db), admin: User = Depends(require_permission("invitation.manage"))):
-    email = str(payload.email).strip().lower()
-    if db.query(User).filter(User.email == email).first():
+    email = normalize_email_address(str(payload.email))
+    if db.query(User).filter(User.email_normalized == email).first():
         raise HTTPException(status_code=409, detail="An account already exists for this email")
     if db.query(AccountInvitation).filter(AccountInvitation.email_normalized == email, AccountInvitation.status == "pending").first():
         raise HTTPException(status_code=409, detail="A pending invitation already exists for this email")

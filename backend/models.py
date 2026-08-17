@@ -1,10 +1,12 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON, CheckConstraint, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey, Text, JSON, CheckConstraint, UniqueConstraint, event
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 try:
     from .database import Base
+    from .identity import normalize_email_address
 except ImportError:
     from database import Base
+    from identity import normalize_email_address
 
 class SystemSettings(Base):
     __tablename__ = "system_settings"
@@ -76,6 +78,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(100), unique=True, index=True, nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
+    email_normalized = Column(String(255), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(200))
     role = Column(String(50), default="trainee")  # "trainee", "employee", "admin"
@@ -91,6 +94,14 @@ class User(Base):
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     custom_comments = Column(JSON, default=list)
+
+
+@event.listens_for(User, "before_insert")
+@event.listens_for(User, "before_update")
+def normalize_user_email(_mapper, _connection, user: User) -> None:
+    """Keep display and canonical email values synchronized on every ORM write."""
+    user.email = user.email.strip()
+    user.email_normalized = normalize_email_address(user.email)
 
 
 class Role(Base):
