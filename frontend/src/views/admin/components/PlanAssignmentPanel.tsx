@@ -1,5 +1,6 @@
 import { CalendarClock, History, KeyRound, Loader2, X } from 'lucide-react';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { AccessPlan, adminService, CourseResource, EntitlementOverride, PlanAssignment, PracticalSetResource } from '../../../services/adminService';
 import { User } from '../../../services/authService';
 import '../../../styles/PlanAssignmentPanel.css';
@@ -72,7 +73,7 @@ export const PlanAssignmentPanel: React.FC<Props> = ({ user, onClose }) => {
         ? courses.map((item) => ({ id: item.course_type, label: item.title }))
         : practicalSets.map((item) => ({ id: item.resource_id, label: `${item.assessment_type} · ${item.name}` }));
 
-    return <div className="plan-panel-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    return createPortal(<div className="plan-panel-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
         <section className="plan-panel" role="dialog" aria-modal="true" aria-label={`Plan access for ${user.full_name}`}>
             <header><div><span>LEARNER ACCESS</span><h2>{user.full_name}</h2><p>{user.email}</p></div><button onClick={onClose} aria-label="Close"><X size={18} /></button></header>
             {error && <div className="plan-panel-error">{error}</div>}
@@ -105,5 +106,5 @@ export const PlanAssignmentPanel: React.FC<Props> = ({ user, onClose }) => {
                 <div className="plan-history"><h3><History size={17} /> Assignment history</h3>{history.length === 0 ? <p className="plan-history-empty">No plan has been assigned.</p> : history.map((item) => <article key={item.id}><div><strong>{item.plan_name}</strong><span className={`plan-history-status ${item.status}`}>{item.status}</span></div><p>{displayDate(item.starts_at)} → {displayDate(item.ends_at)}</p>{item.reason && <small>{item.reason}</small>}</article>)}</div>
             </>}
         </section>
-    </div>;
+    </div>, document.body);
 };
