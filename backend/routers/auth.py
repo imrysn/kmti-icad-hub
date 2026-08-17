@@ -11,10 +11,11 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
+from ..services.entitlement_service import require_course_access, require_lesson_access, serialize_effective_access
 from ..websocket_manager import notification_manager
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -201,6 +202,12 @@ def get_current_user_access(
         permissions=sorted(get_effective_permissions(db, current_user)),
     )
 
+
+@router.get("/me/entitlements", response_model=EffectiveEntitlementResponse)
+def get_current_user_entitlements(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Return the learner's currently effective dated plan and resource access."""
+    return serialize_effective_access(db, current_user)
+
 @router.put("/me/custom-comments", response_model=UserResponse)
 async def update_custom_comments(
     comments: List[str],
@@ -303,6 +310,7 @@ def get_course_progress(
     """
     Get all completed lessons and scores for a specific course for the current user.
     """
+    require_course_access(db, current_user, course_id)
     scores = db.query(QuizScore).filter(
         QuizScore.user_id == current_user.id,
         QuizScore.course_id == course_id
@@ -328,6 +336,8 @@ async def submit_quiz_score(
     Submit a quiz score for a lesson.
     If score >= 80%, the lesson is effectively marked as passed.
     """
+    require_course_access(db, current_user, submission.course_id)
+    require_lesson_access(db, current_user, submission.lesson_id)
     # Check if a score already exists for this lesson
     existing_score = db.query(QuizScore).filter(
         QuizScore.user_id == current_user.id,

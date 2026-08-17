@@ -5,6 +5,7 @@ from ..database import get_db
 from ..models import Quiz, Question, User
 from ..schemas import QuizResponse
 from ..auth.dependencies import get_current_user
+from ..services.entitlement_service import require_quiz_access
 
 router = APIRouter(prefix="/quizzes", tags=["Assessments"])
 
@@ -23,6 +24,7 @@ def get_quiz_by_slug(
     quiz = db.query(Quiz).filter(Quiz.slug == slug).first()
     if not quiz:
         raise HTTPException(status_code=404, detail="Assessment not found")
+    require_quiz_access(db, current_user, quiz)
 
     # Get questions
     questions = db.query(Question).filter(Question.quiz_id == quiz.id).order_by(Question.order).all()

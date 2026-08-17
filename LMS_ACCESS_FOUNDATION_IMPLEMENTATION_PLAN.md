@@ -814,12 +814,12 @@ Use this as the durable project tracker. Check an item only after implementation
 
 - [x] Implement plan CRUD with archive rather than unsafe deletion.
 - [x] Implement entitlement configuration.
-- [ ] Implement plan assignment/change/expiration.
+- [x] Implement plan assignment/change/expiration.
 - [ ] Implement temporary entitlement overrides.
-- [ ] Implement effective-entitlement calculation service.
-- [ ] Enforce entitlement checks on course lists/details.
-- [ ] Enforce entitlement checks on lessons and media metadata.
-- [ ] Enforce entitlement checks on quizzes.
+- [x] Implement effective-entitlement calculation service.
+- [x] Enforce entitlement checks on course lists/details.
+- [x] Enforce entitlement checks on lessons and media metadata.
+- [x] Enforce entitlement checks on quizzes.
 - [ ] Enforce entitlement checks on practical task lists/downloads.
 - [ ] Enforce entitlement checks on submissions and trainer services.
 - [ ] Preserve access history when a plan changes.
@@ -877,8 +877,8 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Hide ungranted Admin pages and show access denied on direct navigation.
 - [x] Add current-user roles, Admin areas, and effective-permissions API.
 - [x] Create access-plan management interface.
-- [ ] Create entitlement editor and effective-access preview.
-- [ ] Create learner plan assignment/history interface.
+- [~] Create entitlement editor and effective-access preview. (Course entitlement editor and current-user effective-access API complete; admin preview pending.)
+- [~] Create learner plan assignment/history interface. (Assignment/history API complete; dedicated user-panel controls pending.)
 - [ ] Create upgrade/downgrade/expiration flow.
 - [ ] Create temporary override flow.
 - [ ] Create invitation-center navigation and status badge. (Navigation complete; pending status badge follows.)
@@ -892,8 +892,8 @@ Use this as the durable project tracker. Check an item only after implementation
 
 ### Learner frontend
 
-- [ ] Show current plan and effective access dates.
-- [ ] Filter course catalog by server-provided entitlement.
+- [~] Show current plan and effective access dates. (Current-user API complete; learner dashboard presentation pending.)
+- [x] Filter course catalog by server-provided entitlement.
 - [ ] Show accessible locked-content explanation where appropriate.
 - [ ] Prevent protected content details from being embedded in unauthorized responses.
 - [ ] Show upcoming expiration notice.
@@ -920,13 +920,13 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Unit-test legacy role mapping and independent Admin-area behavior.
 - [x] Unit-test effective permission allow/deny behavior.
 - [ ] Unit-test plan date boundaries and timezone behavior.
-- [ ] Unit-test effective entitlements and overrides.
+- [~] Unit-test effective entitlements and overrides. (Dated plan entitlements covered; temporary overrides pending.)
 - [x] Integration-test registration and verification.
 - [ ] Integration-test approval/rejection/clarification. (Approval/rejection decisions and safe learner emails are tested; clarification follows.)
 - [x] Integration-test duplicate and concurrent decisions.
 - [ ] Integration-test role escalation prevention.
 - [ ] Integration-test plan CRUD and assignment history.
-- [ ] Integration-test direct API entitlement bypass attempts.
+- [x] Integration-test direct API entitlement bypass attempts.
 - [ ] Integration-test session refresh/revoke/reuse detection.
 - [ ] End-to-end test public registration to first sign-in.
 - [ ] End-to-end test invited learner acceptance to first sign-in.

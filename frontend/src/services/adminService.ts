@@ -71,6 +71,10 @@ export interface AccessPlan {
     entitlements: Array<{ id: number; plan_id: number; resource_type: string; resource_id: string; permission_code: string; limits_json?: string }>;
 }
 
+export interface CourseResource {
+    id: number; title: string; description?: string; course_type: string; order: number;
+}
+
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
     department?: string; job_title?: string; country_code?: string; reason_for_access?: string;
@@ -131,6 +135,14 @@ export const adminService = {
     async updateAccessPlan(planId: number, data: Partial<Pick<AccessPlan, 'name' | 'description' | 'display_order' | 'is_active' | 'is_publicly_requestable'>>): Promise<AccessPlan> {
         const response = await api.patch(`/admin/access-plans/${planId}`, data);
         return response.data;
+    },
+
+    async getAccessPlanCourseResources(): Promise<CourseResource[]> {
+        return (await api.get('/admin/access-plan-resources/courses')).data;
+    },
+
+    async replaceAccessPlanEntitlements(planId: number, entitlements: Array<{ resource_type: string; resource_id: string; permission_code: string; limits_json?: string }>): Promise<AccessPlan> {
+        return (await api.put(`/admin/access-plans/${planId}/entitlements`, entitlements)).data;
     },
 
     async getStats(): Promise<SystemStats> {

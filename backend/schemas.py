@@ -543,3 +543,38 @@ class AccessPlanResponse(AccessPlanCreate):
     class Config:
         from_attributes = True
 
+
+class PlanAssignmentCreate(BaseModel):
+    plan_id: int
+    starts_at: datetime
+    ends_at: Optional[datetime] = None
+    reason: str = Field(min_length=1, max_length=500)
+
+    @field_validator("ends_at")
+    @classmethod
+    def valid_assignment_range(cls, value: Optional[datetime], info):
+        starts_at = info.data.get("starts_at")
+        if value is not None and starts_at is not None and value <= starts_at:
+            raise ValueError("ends_at must be later than starts_at")
+        return value
+
+
+class PlanAssignmentResponse(BaseModel):
+    id: int
+    user_id: int
+    plan_id: int
+    plan_code: str
+    plan_name: str
+    starts_at: datetime
+    ends_at: Optional[datetime] = None
+    status: str
+    reason: Optional[str] = None
+    created_at: datetime
+
+
+class EffectiveEntitlementResponse(BaseModel):
+    plan: Optional[dict] = None
+    starts_at: Optional[datetime] = None
+    ends_at: Optional[datetime] = None
+    entitlements: List[dict] = Field(default_factory=list)
+

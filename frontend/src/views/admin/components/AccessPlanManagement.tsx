@@ -1,16 +1,21 @@
 import { BookOpen, Check, Layers, Loader2 } from 'lucide-react';
 import React from 'react';
-import { AccessPlan, adminService } from '../../../services/adminService';
+import { AccessPlan, adminService, CourseResource } from '../../../services/adminService';
 import '../../../styles/AccessPlanManagement.css';
 
 export const AccessPlanManagement: React.FC = () => {
     const [plans, setPlans] = React.useState<AccessPlan[]>([]);
+    const [courses, setCourses] = React.useState<CourseResource[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [savingId, setSavingId] = React.useState<number | null>(null);
     const [error, setError] = React.useState<string | null>(null);
 
     const load = React.useCallback(async () => {
-        try { setError(null); setPlans(await adminService.getAccessPlans()); }
+        try {
+            setError(null);
+            const [loadedPlans, loadedCourses] = await Promise.all([adminService.getAccessPlans(), adminService.getAccessPlanCourseResources()]);
+            setPlans(loadedPlans); setCourses(loadedCourses);
+        }
         catch { setError('Unable to load access plans.'); }
         finally { setLoading(false); }
     }, []);
@@ -22,6 +27,20 @@ export const AccessPlanManagement: React.FC = () => {
             const updated = await adminService.updateAccessPlan(plan.id, changes);
             setPlans((current) => current.map((item) => item.id === updated.id ? updated : item));
         } catch { setError('The access plan could not be updated.'); }
+        finally { setSavingId(null); }
+    };
+
+    const toggleCourse = async (plan: AccessPlan, courseType: string, included: boolean) => {
+        setSavingId(plan.id); setError(null);
+        try {
+            const other = plan.entitlements.filter((item) => item.resource_type !== 'course')
+                .map(({ resource_type, resource_id, permission_code, limits_json }) => ({ resource_type, resource_id, permission_code, limits_json }));
+            const selected = new Set(plan.entitlements.filter((item) => item.resource_type === 'course').map((item) => item.resource_id));
+            included ? selected.add(courseType) : selected.delete(courseType);
+            const courseEntitlements = Array.from(selected).map((resource_id) => ({ resource_type: 'course', resource_id, permission_code: 'view' }));
+            const updated = await adminService.replaceAccessPlanEntitlements(plan.id, [...other, ...courseEntitlements]);
+            setPlans((current) => current.map((item) => item.id === updated.id ? updated : item));
+        } catch { setError('Course access could not be saved.'); }
         finally { setSavingId(null); }
     };
 
@@ -43,6 +62,16 @@ export const AccessPlanManagement: React.FC = () => {
                 <h2>{plan.name}</h2>
                 <p>{plan.description}</p>
                 <div className="access-plan-entitlements"><Check size={15} /><span>{plan.entitlements.length} configured entitlements</span></div>
+                <fieldset className="access-plan-course-list" disabled={savingId === plan.id || !plan.is_active}>
+                    <legend>Included courses</legend>
+                    {courses.length === 0 && <span className="access-plan-empty">No curriculum courses are available yet.</span>}
+                    {courses.map((course) => <label key={course.id}>
+                        <input type="checkbox"
+                            checked={plan.entitlements.some((item) => item.resource_type === 'course' && item.resource_id === course.course_type)}
+                            onChange={(event) => toggleCourse(plan, course.course_type, event.target.checked)} />
+                        <span>{course.title}</span>
+                    </label>)}
+                </fieldset>
                 <div className="access-plan-controls">
                     <label><span>Plan active</span><input type="checkbox" checked={plan.is_active} disabled={savingId === plan.id} onChange={(event) => update(plan, { is_active: event.target.checked })} /></label>
                     <label><span>Available on registration</span><input type="checkbox" checked={plan.is_publicly_requestable} disabled={savingId === plan.id || !plan.is_active} onChange={(event) => update(plan, { is_publicly_requestable: event.target.checked })} /></label>
