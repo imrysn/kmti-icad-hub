@@ -128,10 +128,12 @@ class UserLogin(BaseModel):
     password: str
     remember_me: bool = False
     required_role: Optional[Literal["trainee", "employee", "admin", "user"]] = None
+    captcha_token: Optional[str] = None
 
 class ForgotPasswordRequest(BaseModel):
     """Schema for forgot password request"""
     username_or_email: str
+    captcha_token: Optional[str] = None
 
 class PasswordResetRequest(BaseModel):
     token: str = Field(min_length=20, max_length=500)
@@ -206,6 +208,7 @@ class RegistrationCreate(BaseModel):
     terms_version: str = Field(min_length=1, max_length=50)
     privacy_accepted: bool
     terms_accepted: bool
+    captcha_token: Optional[str] = None
 
 
 class RegistrationSubmissionResponse(BaseModel):
@@ -220,6 +223,7 @@ class EmailVerificationRequest(BaseModel):
 
 class VerificationResendRequest(BaseModel):
     email: EmailStr
+    captcha_token: Optional[str] = None
 
 
 class RegistrationReviewRequest(BaseModel):

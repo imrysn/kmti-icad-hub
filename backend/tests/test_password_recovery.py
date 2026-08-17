@@ -40,5 +40,5 @@ def test_expired_reset_token_is_rejected(client, db, trainee_user):
 def test_password_reset_requests_are_limited_per_hour(client, db, trainee_user):
     for _ in range(4):
         response = client.post("/api/v1/auth/forgot-password", json={"username_or_email": trainee_user.email})
-    assert response.status_code == 200 and "reset_token" not in response.json()
+    assert response.status_code == 429 and "Retry-After" in response.headers
     assert db.query(PasswordResetToken).filter(PasswordResetToken.user_id == trainee_user.id).count() == 3

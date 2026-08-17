@@ -83,7 +83,7 @@ class TestLogin:
             "password": "WrongPassword!",
         })
         assert response.status_code == 401
-        assert "incorrect password" in response.json()["detail"].lower()
+        assert response.json()["detail"] == "Incorrect username or password."
 
     def test_login_nonexistent_user(self, client):
         response = client.post(self.ENDPOINT, json={

@@ -23,6 +23,7 @@ from backend.database import Base, get_db
 from backend.main import app, api_app
 from backend.models import AccessPlan, Course, Lesson, PlanEntitlement, Question, Quiz, User, UserPlanAssignment
 from backend.auth.security import hash_password, create_access_token
+from backend.services.abuse_protection_service import clear_rate_limits
 
 # ── In-memory SQLite engine — isolated per test session ──────────────────────
 SQLALCHEMY_TEST_URL = "sqlite://"  # :memory:
@@ -63,6 +64,7 @@ def client(db):
         finally:
             pass
 
+    clear_rate_limits()
     api_app.dependency_overrides[get_db] = override_get_db
     with TestClient(app, raise_server_exceptions=True) as c:
         yield c

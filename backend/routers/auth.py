@@ -6,7 +6,7 @@ Handles user registration, login, and user management endpoints.
 
 from datetime import datetime, timedelta, timezone
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
@@ -18,6 +18,7 @@ from ..services.access_control_service import get_active_admin_areas, get_active
 from ..services.entitlement_service import require_course_access, require_lesson_access, serialize_effective_access
 from ..websocket_manager import notification_manager
 from ..services.email_service import queue_password_reset_email
+from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
 import hashlib
 import os
 import secrets
@@ -88,7 +89,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 @router.post("/login", response_model=Token)
-def login(login_data: UserLogin, db: Session = Depends(get_db)):
+def login(login_data: UserLogin, request: Request, db: Session = Depends(get_db)):
     """
     Login and receive access token.
 
@@ -102,20 +103,23 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If credentials are invalid
     """
+    identifier = login_data.username.strip().lower()
+    enforce_rate_limit(client_key(request, "login", identifier), 5, 300)
+    verify_captcha(login_data.captcha_token, request.client.host if request.client else "unknown")
     # Find user by username
     user = db.query(User).filter(User.username == login_data.username).first()
 
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Account with this email not found.",
+            detail="Incorrect username or password.",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     if not verify_password(login_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect password. Please try again.",
+            detail="Incorrect username or password.",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
@@ -182,15 +186,17 @@ def refresh_session(request: RefreshTokenRequest, db: Session = Depends(get_db))
     return {"access_token": access, "refresh_token": raw, "token_type": "bearer", "user": user}
 
 @router.post("/forgot-password")
-async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
+async def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Session = Depends(get_db)):
     """
     Queue a generic, rate-limited password recovery email when the account exists.
     """
     # Find user if possible (for logging context)
     user = db.query(User).filter(
-        (User.username == request.username_or_email) |
-        (User.email == request.username_or_email)
+        (User.username == payload.username_or_email) |
+        (User.email == payload.username_or_email)
     ).first()
+    enforce_rate_limit(client_key(request, "password-reset", payload.username_or_email), 3, 3600)
+    verify_captcha(payload.captcha_token, request.client.host if request.client else "unknown")
 
     raw_token = None
     if user and user.email:

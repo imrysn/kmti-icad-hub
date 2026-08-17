@@ -4,7 +4,7 @@ import os
 import secrets
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
@@ -14,6 +14,7 @@ from ..models import AccessPlan, AuditEvent, EmailVerificationToken, Registratio
 from ..schemas import EmailVerificationRequest, RegistrationCreate, RegistrationSubmissionResponse
 from ..schemas import VerificationResendRequest
 from ..services.email_service import queue_verification_email
+from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
 
 
 router = APIRouter(prefix="/registrations", tags=["Registrations"])
@@ -25,7 +26,9 @@ def _token_hash(token: str) -> str:
 
 
 @router.post("", response_model=RegistrationSubmissionResponse, status_code=status.HTTP_202_ACCEPTED)
-def submit_registration(payload: RegistrationCreate, db: Session = Depends(get_db)):
+def submit_registration(payload: RegistrationCreate, request: Request, db: Session = Depends(get_db)):
+    enforce_rate_limit(client_key(request, "registration", str(payload.email)), 5, 3600)
+    verify_captcha(payload.captcha_token, request.client.host if request.client else "unknown")
     if not payload.privacy_accepted or not payload.terms_accepted:
         raise HTTPException(status_code=422, detail="Privacy policy and terms must be accepted")
 
@@ -101,7 +104,9 @@ def submit_registration(payload: RegistrationCreate, db: Session = Depends(get_d
 
 
 @router.post("/resend-verification", response_model=RegistrationSubmissionResponse, status_code=status.HTTP_202_ACCEPTED)
-def resend_verification(payload: VerificationResendRequest, db: Session = Depends(get_db)):
+def resend_verification(payload: VerificationResendRequest, request: Request, db: Session = Depends(get_db)):
+    enforce_rate_limit(client_key(request, "verification-resend", str(payload.email)), 3, 3600)
+    verify_captcha(payload.captcha_token, request.client.host if request.client else "unknown")
     email = str(payload.email).strip().lower()
     application = db.query(RegistrationApplication).filter(
         RegistrationApplication.email_normalized == email,

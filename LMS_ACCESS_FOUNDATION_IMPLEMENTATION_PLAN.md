@@ -765,10 +765,10 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] Hash stored verification, reset, invitation, and refresh tokens.
 - [x] Add session revocation and logout-all-devices.
 - [x] Add refresh-token reuse detection.
-- [ ] Add generic public authentication/recovery responses.
-- [ ] Add login and registration rate limits.
-- [ ] Add verification/reset resend limits. (Verification resend is limited; password-reset limits follow.)
-- [ ] Add CAPTCHA verification.
+- [x] Add generic public authentication/recovery responses.
+- [~] Add login and registration rate limits. (Single-instance protection complete; move counters to a shared store before multi-instance production.)
+- [~] Add verification/reset resend limits. (Single-instance protection complete; move counters to a shared store before multi-instance production.)
+- [~] Add CAPTCHA verification. (Provider-neutral backend verification and feature flags complete; production provider credentials and frontend widget follow.)
 - [ ] Add normalized email uniqueness.
 - [ ] Add MFA requirement for Admins with Platform-area access.
 - [ ] Add re-authentication for Admin role, area, and permission changes.
@@ -937,7 +937,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [ ] End-to-end test privileged invitation and role restrictions.
 - [ ] End-to-end test password recovery.
 - [ ] Add accessibility automation and manual keyboard tests.
-- [ ] Add abuse/rate-limit tests.
+- [x] Add abuse/rate-limit tests.
 - [ ] Add email template/link tests.
 - [ ] Add migration and rollback rehearsal tests.
 
