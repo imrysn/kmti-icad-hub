@@ -740,7 +740,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Add user-role grant/revoke history.
 - [x] Add Admin area grant/revoke history.
 - [x] Add granular Admin permission allow/deny records.
-- [ ] Add refresh-session records.
+- [x] Add refresh-session records.
 - [x] Add email verification tokens.
 - [x] Add password reset tokens.
 - [x] Add account invitations, invited roles, and invited learner-plan records.
@@ -761,10 +761,10 @@ Use this as the durable project tracker. Check an item only after implementation
 
 - [~] Replace single-role authorization with permission policies. (Normalized user role/area/status administration plus knowledge/content, analytics, audit, heatmap, and broadcast APIs migrated; remaining assessment/settings routes follow incrementally.)
 - [ ] Enforce account status during authentication and token refresh. (Sign-in and bearer authentication complete; refresh sessions are a later slice.)
-- [ ] Implement short-lived access sessions and rotating refresh sessions.
+- [x] Implement short-lived access sessions and rotating refresh sessions.
 - [ ] Hash stored verification, reset, invitation, and refresh tokens.
-- [ ] Add session revocation and logout-all-devices.
-- [ ] Add refresh-token reuse detection.
+- [x] Add session revocation and logout-all-devices.
+- [x] Add refresh-token reuse detection.
 - [ ] Add generic public authentication/recovery responses.
 - [ ] Add login and registration rate limits.
 - [ ] Add verification/reset resend limits. (Verification resend is limited; password-reset limits follow.)

@@ -10,8 +10,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import AuditEvent, PasswordResetToken, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, PasswordResetRequest, QuizSubmission, LessonProgress
+from ..models import AuditEvent, PasswordResetToken, RefreshSession, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, LogoutRequest, PasswordResetRequest, RefreshTokenRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_permission, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
@@ -21,8 +21,23 @@ from ..services.email_service import queue_password_reset_email
 import hashlib
 import os
 import secrets
+import uuid
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+def _hash_session_token(token: str) -> str:
+    return hashlib.sha256(token.encode()).hexdigest()
+
+def _issue_session(db: Session, user: User, remember_me: bool, family_id: str | None = None):
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    raw = secrets.token_urlsafe(48)
+    session = RefreshSession(
+        user_id=user.id, family_id=family_id or str(uuid.uuid4()), token_hash=_hash_session_token(raw),
+        created_at=now, expires_at=now + timedelta(days=30 if remember_me else 1),
+    )
+    db.add(session); db.flush()
+    access = create_access_token({"sub": user.username, "role": user.role, "sid": session.id})
+    return access, raw, session
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
@@ -132,16 +147,7 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     user.last_login = datetime.now(timezone.utc)
     db.commit()
 
-    # Create access token with optional longer expiration
-    expires_delta = None
-    if login_data.remember_me:
-        # 30 days for Remember Me
-        expires_delta = timedelta(days=30)
-
-    access_token = create_access_token(
-        data={"sub": user.username, "role": user.role},
-        expires_delta=expires_delta
-    )
+    access_token, refresh_token, _ = _issue_session(db, user, login_data.remember_me)
 
     # Log the login
     log_entry = SystemLog(
@@ -153,7 +159,27 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
     db.add(log_entry)
     db.commit()
 
-    return {"access_token": access_token, "token_type": "bearer", "user": user}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "user": user}
+
+@router.post("/refresh", response_model=Token)
+def refresh_session(request: RefreshTokenRequest, db: Session = Depends(get_db)):
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    current = db.query(RefreshSession).filter(RefreshSession.token_hash == _hash_session_token(request.refresh_token)).first()
+    if current is None or current.expires_at <= now:
+        raise HTTPException(status_code=401, detail="Refresh session is invalid or expired")
+    if current.revoked_at is not None:
+        db.query(RefreshSession).filter(RefreshSession.family_id == current.family_id, RefreshSession.revoked_at.is_(None)).update({RefreshSession.revoked_at: now}, synchronize_session=False)
+        db.add(AuditEvent(actor_user_id=current.user_id, action="session.refresh_reuse_detected", target_type="refresh_session", target_id=str(current.id), result="blocked"))
+        db.commit()
+        raise HTTPException(status_code=401, detail="Refresh session reuse detected")
+    user = db.query(User).filter(User.id == current.user_id).first()
+    if user is None or not user.is_active or user.account_status != "active":
+        raise HTTPException(status_code=401, detail="Refresh session is unavailable")
+    remaining = current.expires_at - current.created_at
+    access, raw, replacement = _issue_session(db, user, remaining > timedelta(days=1), current.family_id)
+    current.revoked_at = now; current.last_used_at = now; current.replaced_by_id = replacement.id
+    db.commit()
+    return {"access_token": access, "refresh_token": raw, "token_type": "bearer", "user": user}
 
 @router.post("/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
@@ -214,6 +240,7 @@ def reset_password(request: PasswordResetRequest, db: Session = Depends(get_db))
         PasswordResetToken.user_id == user.id,
         PasswordResetToken.used_at.is_(None),
     ).update({PasswordResetToken.used_at: now}, synchronize_session=False)
+    db.query(RefreshSession).filter(RefreshSession.user_id == user.id, RefreshSession.revoked_at.is_(None)).update({RefreshSession.revoked_at: now}, synchronize_session=False)
     db.add(AuditEvent(actor_user_id=user.id, action="account.password_reset_completed", target_type="user", target_id=str(user.id)))
     db.commit()
     return {"message": "Your password has been reset. You can now sign in."}
@@ -265,14 +292,26 @@ async def update_custom_comments(
     return current_user
 
 @router.post("/logout")
-async def logout(current_user: User = Depends(get_current_user)):
+async def logout(request: LogoutRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Logout (client-side token removal).
 
     Note: JWT tokens are stateless, so logout is handled client-side
     by removing the token from storage.
     """
+    if request.refresh_token:
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        db.query(RefreshSession).filter(RefreshSession.user_id == current_user.id, RefreshSession.token_hash == _hash_session_token(request.refresh_token), RefreshSession.revoked_at.is_(None)).update({RefreshSession.revoked_at: now}, synchronize_session=False)
+        db.commit()
     return {"message": "Successfully logged out"}
+
+@router.post("/logout-all")
+def logout_all(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    count = db.query(RefreshSession).filter(RefreshSession.user_id == current_user.id, RefreshSession.revoked_at.is_(None)).update({RefreshSession.revoked_at: now}, synchronize_session=False)
+    db.add(AuditEvent(actor_user_id=current_user.id, action="session.logout_all", target_type="user", target_id=str(current_user.id), metadata_json=f'{{"sessions_revoked":{count}}}'))
+    db.commit()
+    return {"message": "All sessions have been signed out"}
 
 
 @router.get("/users", response_model=List[UserResponse])

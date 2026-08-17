@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../config/apiConfig';
+import { clearSessionStorage, refreshAccessToken } from './sessionService';
 
 export const API_BASE = API_BASE_URL;
 
@@ -50,7 +51,7 @@ api.interceptors.response.use(
         }
         return response;
     },
-    (error) => {
+    async (error) => {
         const method = error.config?.method?.toLowerCase();
         if (method && ['post', 'put', 'delete', 'patch'].includes(method)) {
             invalidateCache();
@@ -60,6 +61,11 @@ api.interceptors.response.use(
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
+        const original = error.config;
+        if (error.response?.status === 401 && !isLoginRequest && !original?.url?.includes('/auth/refresh') && !original?._retry && sessionStorage.getItem('refresh_token')) {
+            original._retry = true;
+            try { original.headers.Authorization = `Bearer ${await refreshAccessToken()}`; return api(original); } catch { /* expire below */ }
+        }
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
             console.warn('Authentication failure - token expired. Auto-logging out.');
             
@@ -69,8 +75,7 @@ api.interceptors.response.use(
                     localStorage.removeItem(key);
                 }
             });
-            sessionStorage.removeItem('access_token');
-            sessionStorage.removeItem('user');
+            clearSessionStorage();
             
             // Redirect to login
             window.location.hash = '#/login';

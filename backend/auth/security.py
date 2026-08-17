@@ -6,20 +6,21 @@ Handles password hashing, JWT token generation and validation.
 
 import os
 import bcrypt
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from dotenv import load_dotenv
 
-# Load environment variables from the project root
-env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+# Use the isolated LMS environment by default, matching database.py.
+env_path = os.getenv("ENV_FILE_PATH", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env.lms-development"))
 load_dotenv(env_path, override=True)
 # JWT configuration
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
     raise RuntimeError("CRITICAL CONFIGURATION ERROR: SECRET_KEY is not configured.")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "52560000"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "15"))
 
 def hash_password(password: str) -> str:
     """
@@ -70,7 +71,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc), "jti": str(uuid.uuid4())})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 

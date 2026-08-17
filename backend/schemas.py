@@ -137,6 +137,12 @@ class PasswordResetRequest(BaseModel):
     token: str = Field(min_length=20, max_length=500)
     password: str = Field(min_length=8, max_length=128)
 
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str = Field(min_length=20, max_length=500)
+
+class LogoutRequest(BaseModel):
+    refresh_token: Optional[str] = Field(default=None, min_length=20, max_length=500)
+
 class UserResponse(BaseModel):
     """Schema for user information response"""
     id: int
@@ -295,6 +301,7 @@ class InvitationAcceptRequest(BaseModel):
 class Token(BaseModel):
     """Schema for JWT token response"""
     access_token: str
+    refresh_token: Optional[str] = None
     token_type: str = "bearer"
     user: UserResponse
 

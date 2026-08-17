@@ -304,6 +304,19 @@ class PasswordResetToken(Base):
     created_at = Column(DateTime, nullable=False, default=func.now(), index=True)
 
 
+class RefreshSession(Base):
+    __tablename__ = "refresh_sessions"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    family_id = Column(String(36), nullable=False, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False, index=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    last_used_at = Column(DateTime, nullable=True)
+    revoked_at = Column(DateTime, nullable=True, index=True)
+    replaced_by_id = Column(Integer, ForeignKey("refresh_sessions.id"), nullable=True)
+
+
 class EmailOutbox(Base):
     """Transactional email queued in the same database transaction as its event."""
     __tablename__ = "email_outbox"

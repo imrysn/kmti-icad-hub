@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../config/apiConfig';
+import { clearSessionStorage, refreshAccessToken } from './sessionService';
 
 export interface LoginCredentials {
     username: string;
@@ -31,6 +32,7 @@ export interface User {
 
 export interface TokenResponse {
     access_token: string;
+    refresh_token?: string;
     token_type: string;
     user: User;
 }
@@ -90,14 +92,18 @@ authApi.interceptors.request.use((config) => {
 // Automatically clear auth state on 401 (expired / invalid token)
 authApi.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
         // Only log warning if NOT a login attempt AND not already on the login page.
         const isLoginRequest = error?.config?.url?.includes('login');
         const isAtLoginRoot = window.location.hash === '#/' || window.location.hash.startsWith('#/login');
 
+        const original = error.config;
+        if (error.response?.status === 401 && !isLoginRequest && !original?.url?.includes('/auth/refresh') && !original?._retry && sessionStorage.getItem('refresh_token')) {
+            original._retry = true;
+            try { original.headers.Authorization = `Bearer ${await refreshAccessToken()}`; return authApi(original); } catch { /* expire below */ }
+        }
         if (error.response?.status === 401 && !isLoginRequest && !isAtLoginRoot) {
-            console.warn('Authentication failure - token might be expired or invalid (auto-logout disabled)');
-            // Removed sessionStorage.removeItem and window.location.hash redirect
+            clearSessionStorage(); window.dispatchEvent(new Event('kmti-auth-expired'));
         }
         return Promise.reject(error);
     }
@@ -110,6 +116,7 @@ export const authService = {
     async login(credentials: LoginCredentials): Promise<TokenResponse> {
         const response = await authApi.post<TokenResponse>('/auth/login', credentials);
         sessionStorage.setItem('access_token', response.data.access_token);
+        if (response.data.refresh_token) sessionStorage.setItem('refresh_token', response.data.refresh_token);
         sessionStorage.setItem('user', JSON.stringify(response.data.user));
         return response.data;
     },
@@ -203,6 +210,9 @@ export const authService = {
      * Logout and clear local storage
      */
     logout() {
+        const accessToken = sessionStorage.getItem('access_token');
+        const refreshToken = sessionStorage.getItem('refresh_token');
+        if (accessToken) void axios.post(`${API_BASE_URL}/api/v1/auth/logout`, { refresh_token: refreshToken }, { headers: { Authorization: `Bearer ${accessToken}` } }).catch(() => undefined);
         // Clear session specific items from localStorage
         Object.keys(localStorage).forEach(key => {
             if (key.startsWith('kmti_') || key.startsWith('assistant-') || key.startsWith('properties-')) {
@@ -210,8 +220,7 @@ export const authService = {
             }
         });
         
-        sessionStorage.removeItem('access_token');
-        sessionStorage.removeItem('user');
+        clearSessionStorage();
     },
 
     /**

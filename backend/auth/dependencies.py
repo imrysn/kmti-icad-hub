@@ -10,7 +10,7 @@ from jose import JWTError
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import User
+from ..models import RefreshSession, User
 from .security import decode_token
 from ..services.access_control_service import user_has_admin_area, user_has_permission
 
@@ -55,6 +55,11 @@ async def get_current_user(
     
     if not user.is_active or user.account_status != "active":
         raise HTTPException(status_code=400, detail="Inactive user")
+    session_id = payload.get("sid")
+    if session_id is not None:
+        session = db.query(RefreshSession).filter(RefreshSession.id == session_id, RefreshSession.user_id == user.id, RefreshSession.revoked_at.is_(None)).first()
+        if session is None:
+            raise credentials_exception
     
     return user
 
