@@ -7,7 +7,6 @@ export interface LoginCredentials {
     password: string;
     remember_me?: boolean;
     required_role?: "trainee" | "employee" | "admin" | "user";
-    mfa_code?: string;
 }
 
 export interface RegisterData {
@@ -137,14 +136,6 @@ export const authService = {
         const response = await authApi.get<User>('/auth/me');
         sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
-    },
-
-    async enrollMfa(enrollmentToken: string): Promise<{secret:string; provisioning_uri:string}> {
-        return (await authApi.post('/auth/mfa/enroll', { enrollment_token: enrollmentToken })).data;
-    },
-
-    async confirmMfa(enrollmentToken: string, code: string): Promise<{message:string; recovery_codes:string[]}> {
-        return (await authApi.post('/auth/mfa/confirm', { enrollment_token: enrollmentToken, code })).data;
     },
 
     async getCurrentUserAccess(): Promise<UserAccess> {

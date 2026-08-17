@@ -52,10 +52,6 @@ try:
                         "CREATE UNIQUE INDEX ix_users_email_normalized "
                         "ON users (email_normalized)"
                     ))
-                if "mfa_enabled" not in user_columns:
-                    conn.execute(text("ALTER TABLE users ADD COLUMN mfa_enabled BOOLEAN NOT NULL DEFAULT 0"))
-                if "mfa_secret_encrypted" not in user_columns:
-                    conn.execute(text("ALTER TABLE users ADD COLUMN mfa_secret_encrypted TEXT"))
             if "trainee_set_mappings" in table_names:
                 columns = [c["name"] for c in inspector.get_columns("trainee_set_mappings")]
                 if "assessment_type" not in columns:
