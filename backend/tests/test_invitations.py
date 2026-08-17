@@ -1,4 +1,4 @@
-from backend.models import AccountInvitation, AdminAreaGrant, EmailOutbox, User, UserPlanAssignment
+from backend.models import AccountInvitation, AdminAreaGrant, EmailOutbox, Permission, User, UserPermissionGrant, UserPlanAssignment
 from backend.services.access_control_service import seed_access_foundation, sync_legacy_user_access
 from backend.services.access_plan_service import seed_access_plans
 
@@ -25,8 +25,17 @@ def test_admin_invites_learner_with_plan_and_recipient_accepts(client, db, admin
     assert client.post("/api/v1/invitations/accept", json={"token":token,"username":"again","password":"Invited@123","privacy_policy_version":"2026-08","terms_version":"2026-08","privacy_accepted":True,"terms_accepted":True}).status_code == 400
 
 
-def test_organization_admin_can_invite_first_platform_admin(client, db, admin_user, admin_token):
+def test_organization_admin_cannot_invite_first_platform_admin(client, db, admin_user, admin_token):
     _setup(db, admin_user)
+    response = client.post("/api/v1/admin/invitations", json={"email":"platform@example.com","full_name":"Platform Admin","role_code":"admin","preferred_language":"en","admin_areas":["platform"],"expires_in_days":7}, headers={"Authorization":f"Bearer {admin_token}"})
+    assert response.status_code == 403
+
+
+def test_explicit_platform_grant_permission_allows_platform_admin_invitation(client, db, admin_user, admin_token):
+    _setup(db, admin_user)
+    permission = db.query(Permission).filter(Permission.code == "admin.area.platform.assign").one()
+    db.add(UserPermissionGrant(user_id=admin_user.id, permission_id=permission.id, effect="allow", reason="Platform owner bootstrap"))
+    db.commit()
     response = client.post("/api/v1/admin/invitations", json={"email":"platform@example.com","full_name":"Platform Admin","role_code":"admin","preferred_language":"en","admin_areas":["platform"],"expires_in_days":7}, headers={"Authorization":f"Bearer {admin_token}"})
     assert response.status_code == 201
 

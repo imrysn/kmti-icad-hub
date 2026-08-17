@@ -771,9 +771,9 @@ Use this as the durable project tracker. Check an item only after implementation
 - [~] Add CAPTCHA verification. (Provider-neutral backend verification and feature flags complete; production provider credentials and frontend widget follow.)
 - [x] Add normalized email uniqueness.
 - [ ] Add MFA requirement for Admins with Platform-area access.
-- [ ] Add re-authentication for Admin role, area, and permission changes.
-- [ ] Prevent Admins from expanding their own access.
-- [ ] Prevent Organization-area Admins from granting Platform-area access.
+- [~] Add re-authentication for Admin role, area, and permission changes. (Role, area, and account-status changes require current-password verification; granular permission-management endpoints follow.)
+- [x] Prevent Admins from expanding their own access.
+- [x] Prevent Organization-area Admins from granting Platform-area access.
 - [ ] Add security event alerts.
 
 ### Registration backend

@@ -182,6 +182,7 @@ class AdminUserAccessUpdate(BaseModel):
     admin_areas: List[Literal["content", "organization", "platform"]] = Field(default_factory=list)
     account_status: Literal["active", "suspended", "deactivated"]
     reason: str = Field(min_length=3, max_length=500)
+    reauth_password: str = Field(min_length=1, max_length=128)
 
     @field_validator("admin_areas")
     @classmethod

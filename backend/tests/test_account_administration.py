@@ -14,7 +14,7 @@ def test_organization_admin_can_change_learner_to_instructor_with_audit(client, 
     _seed_admin(db, admin_user)
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "instructor", "admin_areas": [], "account_status": "active", "reason": "Promoted to instructor"},
+        json={"role_code": "instructor", "admin_areas": [], "account_status": "active", "reason": "Promoted to instructor", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
     assert response.status_code == 200
@@ -28,7 +28,7 @@ def test_suspension_blocks_authentication_without_deleting_access_history(client
     _seed_admin(db, admin_user); sync_legacy_user_access(db, trainee_user); db.commit()
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "learner", "admin_areas": [], "account_status": "suspended", "reason": "Temporary policy review"},
+        json={"role_code": "learner", "admin_areas": [], "account_status": "suspended", "reason": "Temporary policy review", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
     assert response.status_code == 200
@@ -42,21 +42,21 @@ def test_admin_cannot_change_own_access(client, db, admin_user, admin_token):
     _seed_admin(db, admin_user)
     response = client.put(
         f"/api/v1/admin/users/{admin_user.id}/access",
-        json={"role_code": "learner", "admin_areas": [], "account_status": "active", "reason": "Unsafe self change"},
+        json={"role_code": "learner", "admin_areas": [], "account_status": "active", "reason": "Unsafe self change", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
     assert response.status_code == 400
 
 
-def test_organization_admin_can_bootstrap_first_platform_admin(client, db, admin_user, admin_token, trainee_user):
+def test_organization_admin_cannot_bootstrap_first_platform_admin(client, db, admin_user, admin_token, trainee_user):
     _seed_admin(db, admin_user)
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "admin", "admin_areas": ["content", "platform"], "account_status": "active", "reason": "Bootstrap first platform administrator"},
+        json={"role_code": "admin", "admin_areas": ["content", "platform"], "account_status": "active", "reason": "Unsafe Platform bootstrap", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
-    assert response.status_code == 200
-    assert get_active_admin_areas(db, trainee_user) == {"content", "platform"}
+    assert response.status_code == 403
+    assert "platform" not in get_active_admin_areas(db, trainee_user)
 
 
 def test_authorized_platform_admin_can_grant_platform_area(client, db, admin_user, admin_token, trainee_user):
@@ -64,7 +64,7 @@ def test_authorized_platform_admin_can_grant_platform_area(client, db, admin_use
     db.add(AdminAreaGrant(user_id=admin_user.id, area_code="platform", reason="Existing platform owner")); db.commit()
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "admin", "admin_areas": ["platform"], "account_status": "active", "reason": "Platform operations assignment"},
+        json={"role_code": "admin", "admin_areas": ["platform"], "account_status": "active", "reason": "Platform operations assignment", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
     assert response.status_code == 200
@@ -80,7 +80,32 @@ def test_last_platform_admin_cannot_be_removed(client, db, admin_user, admin_tok
     trainee_user.role = "admin"; db.commit()
     response = client.put(
         f"/api/v1/admin/users/{trainee_user.id}/access",
-        json={"role_code": "admin", "admin_areas": ["content"], "account_status": "active", "reason": "Would remove final platform admin"},
+        json={"role_code": "admin", "admin_areas": ["content"], "account_status": "active", "reason": "Would remove final platform admin", "reauth_password": "Admin@12345"},
         headers=_headers(admin_token),
     )
     assert response.status_code == 409
+
+
+def test_access_change_requires_correct_admin_password(client, db, admin_user, admin_token, trainee_user):
+    _seed_admin(db, admin_user)
+    response = client.put(
+        f"/api/v1/admin/users/{trainee_user.id}/access",
+        json={"role_code": "instructor", "admin_areas": [], "account_status": "active", "reason": "Attempt with wrong password", "reauth_password": "WrongPassword"},
+        headers=_headers(admin_token),
+    )
+    assert response.status_code == 403
+    assert get_active_role_codes(db, trainee_user) == {"learner"}
+    assert db.query(AuditEvent).filter(
+        AuditEvent.action == "user.access_reauthentication_failed",
+        AuditEvent.actor_user_id == admin_user.id,
+    ).count() == 1
+
+
+def test_access_change_requires_reauthentication_field(client, db, admin_user, admin_token, trainee_user):
+    _seed_admin(db, admin_user)
+    response = client.put(
+        f"/api/v1/admin/users/{trainee_user.id}/access",
+        json={"role_code": "instructor", "admin_areas": [], "account_status": "active", "reason": "Missing password"},
+        headers=_headers(admin_token),
+    )
+    assert response.status_code == 422

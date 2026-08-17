@@ -192,7 +192,7 @@ export const adminService = {
         return (await api.get(`/admin/users/${userId}/access`)).data;
     },
 
-    async updateUserAccess(userId: number, data: { role_code: AdminUserAccess['role_code']; admin_areas: AdminUserAccess['admin_areas']; account_status: AdminUserAccess['account_status']; reason: string }): Promise<AdminUserAccess> {
+    async updateUserAccess(userId: number, data: { role_code: AdminUserAccess['role_code']; admin_areas: AdminUserAccess['admin_areas']; account_status: AdminUserAccess['account_status']; reason: string; reauth_password: string }): Promise<AdminUserAccess> {
         return (await api.put(`/admin/users/${userId}/access`, data)).data;
     },
 
