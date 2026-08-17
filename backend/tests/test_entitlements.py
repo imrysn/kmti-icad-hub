@@ -74,6 +74,35 @@ def test_admin_assignment_closes_previous_plan_and_preserves_history(client, db,
     assert db.query(AuditEvent).filter(AuditEvent.action == "plan.assigned").count() == 1
 
 
+def test_future_upgrade_keeps_current_plan_active_until_start(client, db, admin_user, admin_token, trainee_user):
+    sync_legacy_user_access(db, admin_user); seed_access_plans(db); db.commit()
+    old_plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+    new_plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-professional").one()
+    old = UserPlanAssignment(user_id=trainee_user.id, plan_id=old_plan.id, starts_at=datetime.utcnow() - timedelta(days=2), status="active", reason="initial")
+    db.add(old); db.commit()
+    future = datetime.utcnow() + timedelta(days=5)
+    response = client.post(
+        f"/api/v1/admin/users/{trainee_user.id}/plan-assignments",
+        json={"plan_id": new_plan.id, "starts_at": future.isoformat(), "reason": "scheduled upgrade"},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert response.status_code == 201 and response.json()["status"] == "scheduled"
+    db.refresh(old)
+    assert old.status == "active"
+    assert old.ends_at is not None and abs((old.ends_at - future).total_seconds()) < 1
+
+
+def test_plan_cannot_be_assigned_to_instructor(client, db, admin_user, admin_token, employee_user):
+    sync_legacy_user_access(db, admin_user); seed_access_plans(db); db.commit()
+    plan = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+    response = client.post(
+        f"/api/v1/admin/users/{employee_user.id}/plan-assignments",
+        json={"plan_id": plan.id, "starts_at": (datetime.utcnow() - timedelta(minutes=1)).isoformat(), "reason": "invalid"},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert response.status_code == 422
+
+
 def test_instructor_retains_curriculum_access_without_learner_plan(client, db, employee_token):
     allowed, _, _, _ = _curriculum(db)
     headers = {"Authorization": f"Bearer {employee_token}"}

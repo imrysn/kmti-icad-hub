@@ -5,7 +5,7 @@ import { useWebSocket } from '../../context/WebSocketContext';
 import { useCourses } from '../../hooks/useCourses';
 import { useLessons } from '../../hooks/useLessons';
 import { assessmentService } from '../../services/assessmentService';
-import { authService } from '../../services/authService';
+import { authService, EffectiveEntitlements } from '../../services/authService';
 import { Course } from '../../types';
 import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from './mentorConstants';
 
@@ -36,6 +36,17 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Data Hook
     const { courses, loading, error } = useCourses();
+    const [effectiveAccess, setEffectiveAccess] = useState<EffectiveEntitlements | null>(null);
+    const [planLoading, setPlanLoading] = useState(!isEmployeeSide);
+
+    useEffect(() => {
+        if (isEmployeeSide) { setPlanLoading(false); return; }
+        let mounted = true;
+        authService.getCurrentUserEntitlements()
+            .then((result) => mounted && setEffectiveAccess(result))
+            .finally(() => mounted && setPlanLoading(false));
+        return () => { mounted = false; };
+    }, [isEmployeeSide]);
 
     // Global State
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -609,6 +620,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 canBypass={canBypass}
                 is3DAssessmentCompleted={is3DAssessmentCompleted}
                 isEmployeeSide={isEmployeeSide}
+                effectiveAccess={effectiveAccess}
+                planLoading={planLoading}
             />
         );
     }

@@ -1,0 +1,25 @@
+.plan-panel-backdrop { position: fixed; inset: 0; z-index: 1000; display: flex; justify-content: flex-end; background: rgba(15,23,42,.42); backdrop-filter: blur(2px); }
+.plan-panel { width: min(520px, 100%); height: 100%; overflow-y: auto; padding: 1.25rem; background: var(--bg-surface); border-left: 1px solid var(--border-color); box-shadow: -16px 0 40px rgba(15,23,42,.16); }
+.plan-panel > header { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+.plan-panel header span { color: var(--primary); font-size: .65rem; font-weight: 800; letter-spacing: .1em; }
+.plan-panel header h2 { margin: .3rem 0 .15rem; color: var(--text-main); font-size: 1.2rem; }
+.plan-panel header p { margin: 0; color: var(--text-muted); font-size: .75rem; }
+.plan-panel header button { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--bg-card); color: var(--text-muted); cursor: pointer; }
+.plan-panel-error { margin-top: 1rem; padding: .7rem; border: 1px solid rgba(239,68,68,.25); border-radius: 7px; background: rgba(239,68,68,.07); color: var(--color-error); font-size: .75rem; }
+.plan-panel-loading { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: .5rem; color: var(--text-muted); }
+.plan-assignment-form, .plan-history { margin-top: 1rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: 9px; background: var(--bg-card); }
+.plan-assignment-form h3, .plan-history h3 { margin: 0 0 .9rem; display: flex; align-items: center; gap: .5rem; color: var(--text-main); font-size: .85rem; }
+.plan-assignment-form label { margin-bottom: .75rem; display: flex; flex-direction: column; gap: .35rem; }
+.plan-assignment-form label > span { color: var(--text-muted); font-size: .68rem; font-weight: 700; }
+.plan-assignment-form select, .plan-assignment-form input, .plan-assignment-form textarea { width: 100%; padding: .65rem .7rem; border: 1px solid var(--border-color); border-radius: 7px; background: var(--bg-surface); color: var(--text-main); font: inherit; font-size: .78rem; }
+.plan-assignment-form textarea { min-height: 72px; resize: vertical; }
+.plan-date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+.plan-save-button { width: 100%; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: .4rem; border: 0; border-radius: 7px; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
+.plan-save-button:disabled { opacity: .55; cursor: not-allowed; }
+.plan-history article { padding: .75rem 0; border-top: 1px solid var(--border-color); }
+.plan-history article > div { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.plan-history strong { color: var(--text-main); font-size: .8rem; }
+.plan-history-status { padding: .18rem .45rem; border-radius: 999px; background: var(--bg-surface); color: var(--text-muted); font-size: .6rem; font-weight: 800; text-transform: uppercase; }
+.plan-history-status.active { color: var(--color-success); }.plan-history-status.scheduled { color: var(--primary); }.plan-history-status.expired,.plan-history-status.cancelled { color: var(--text-dim); }
+.plan-history p, .plan-history small, .plan-history-empty { margin: .25rem 0 0; color: var(--text-muted); font-size: .68rem; line-height: 1.45; }
+@media (max-width: 520px) { .plan-date-grid { grid-template-columns: 1fr; } }

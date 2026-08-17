@@ -8,6 +8,7 @@ import uncoilerUrl from '../../../assets/uncoiler.glb';
 import { ModelViewer3D } from '../../../components/ModelViewer3D';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 import { Course } from '../../../types';
+import { EffectiveEntitlements } from '../../../services/authService';
 
 interface CourseSelectorProps {
     courses: Course[];
@@ -20,6 +21,8 @@ interface CourseSelectorProps {
     canBypass: boolean;
     is3DAssessmentCompleted: boolean;
     isEmployeeSide?: boolean;
+    effectiveAccess: EffectiveEntitlements | null;
+    planLoading: boolean;
 }
 
 export const CourseSelector: React.FC<CourseSelectorProps> = ({
@@ -31,11 +34,13 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     is2DCompleted,
     canBypass,
     is3DAssessmentCompleted,
-    isEmployeeSide = false
+    isEmployeeSide = false,
+    effectiveAccess,
+    planLoading
 }) => {
     const { t } = useTranslation();
 
-    if (loading) {
+    if (loading || planLoading) {
         return (
             <div className="mentor-mode">
                 <div className="mentor-header">
@@ -62,47 +67,51 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         return <div className="mentor-error">{error}</div>;
     }
 
-    const course3D = courses.find(c => c.id.toString() === '1') || {
+    const course3D = courses.find(c => c.id.toString() === '1') || (isEmployeeSide ? {
         id: '1',
         title: '3D Modeling',
         description: 'Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.',
         course_type: '3D_Modeling',
         order: 1
-    };
+    } : undefined);
 
-    const course2D = courses.find(c => c.id.toString() === '2') || {
+    const course2D = courses.find(c => c.id.toString() === '2') || (isEmployeeSide ? {
         id: '2',
         title: '2D Detailing',
         description: 'Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.',
         course_type: '2D_Drawing',
         order: 2
-    };
+    } : undefined);
+
+    const practicalIds = new Set((effectiveAccess?.entitlements || []).filter((item) => item.resource_type === 'practical_set').map((item) => item.resource_id));
+    const has3DPractical = isEmployeeSide || Array.from(practicalIds).some((id) => id === '*' || id.startsWith('3D:'));
+    const has2DPractical = isEmployeeSide || Array.from(practicalIds).some((id) => id === '*' || id.startsWith('2D:'));
 
     const activeCards = [
-        {
+        ...(course3D ? [{
             ...course3D,
             title: t('course.title_3d') || course3D.title,
             description: t('course.desc_3d') || course3D.description
-        },
-        ...(isEmployeeSide ? [] : [{
+        }] : []),
+        ...(!isEmployeeSide && has3DPractical ? [{
             id: 'practical-assessment',
             title: t('course.title_3d_prac') || '3D Practical Assessment',
             description: t('course.desc_3d_prac') || 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
             course_type: 'Practical',
             order: 1.5
-        }]),
-        {
+        }] : []),
+        ...(course2D ? [{
             ...course2D,
             title: t('course.title_2d') || course2D.title,
             description: t('course.desc_2d') || course2D.description
-        },
-        ...(isEmployeeSide ? [] : [{
+        }] : []),
+        ...(!isEmployeeSide && has2DPractical ? [{
             id: '2d-assessment',
             title: t('course.title_2d_assessment') || '2D Detailing Assessment',
             description: t('course.desc_2d_assessment') || 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
             course_type: 'Practical_2D',
             order: 2.5
-        }])
+        }] : [])
     ];
 
     const allCourses = [...activeCards];
@@ -114,8 +123,17 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                 <p>{t('course.welcome_subtitle') || 'Select your learning path to begin the deep dive'}</p>
             </div>
 
+            {!isEmployeeSide && <div className="learner-plan-summary">
+                <div><span>CURRENT ACCESS PLAN</span><strong>{effectiveAccess?.plan?.name || 'No active plan'}</strong></div>
+                {effectiveAccess?.plan ? <p>
+                    Active from {effectiveAccess.starts_at ? new Date(effectiveAccess.starts_at.endsWith('Z') ? effectiveAccess.starts_at : `${effectiveAccess.starts_at}Z`).toLocaleDateString() : 'now'}
+                    {' · '}{effectiveAccess.ends_at ? `Expires ${new Date(effectiveAccess.ends_at.endsWith('Z') ? effectiveAccess.ends_at : `${effectiveAccess.ends_at}Z`).toLocaleDateString()}` : 'No expiration'}
+                </p> : <p>Contact KMTI administration to activate training access.</p>}
+            </div>}
+
             <div className="course-selection">
                 <div className="course-grid">
+                    {allCourses.length === 0 && <div className="no-entitled-courses"><Lock size={28} /><h3>No training content is available</h3><p>Your account is active, but its access plan does not currently include any published courses or practical sets.</p></div>}
                     {allCourses.map((course) => {
                         const isPracticalLocked = !is3DCompleted && !canBypass;
                         const isCourse2Locked = !is3DAssessmentCompleted && !canBypass;

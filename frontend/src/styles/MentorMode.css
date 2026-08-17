@@ -1951,3 +1951,7 @@
     transition: none;
   }
 }
+.learner-plan-summary { width: min(1180px, calc(100% - 3rem)); margin: 0 auto 1rem; padding: .85rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid var(--border-color); border-radius: 9px; background: var(--bg-surface); }
+.learner-plan-summary div { display: flex; flex-direction: column; gap: .15rem; }.learner-plan-summary span { color: var(--primary); font-size: .62rem; font-weight: 800; letter-spacing: .09em; }.learner-plan-summary strong { color: var(--text-main); font-size: .95rem; }.learner-plan-summary p { margin: 0; color: var(--text-muted); font-size: .72rem; }
+.no-entitled-courses { grid-column: 1 / -1; min-height: 220px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--border-color); border-radius: 10px; color: var(--text-muted); background: var(--bg-surface); }.no-entitled-courses h3 { margin: .7rem 0 .3rem; color: var(--text-main); }.no-entitled-courses p { max-width: 520px; margin: 0; font-size: .78rem; line-height: 1.55; }
+@media (max-width: 700px) { .learner-plan-summary { align-items: flex-start; flex-direction: column; } }

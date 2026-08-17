@@ -42,6 +42,13 @@ export interface UserAccess {
     permissions: string[];
 }
 
+export interface EffectiveEntitlements {
+    plan: { id: number; code: string; name: string } | null;
+    starts_at: string | null;
+    ends_at: string | null;
+    entitlements: Array<{ resource_type: string; resource_id: string; permission_code: string }>;
+}
+
 // Shared Axios instance — reuses the same interceptors as api.ts so that
 // 401 handling, token injection, and base URL config are all in one place.
 const authApi = axios.create({
@@ -126,6 +133,10 @@ export const authService = {
     async getCurrentUserAccess(): Promise<UserAccess> {
         const response = await authApi.get<UserAccess>('/auth/me/access');
         return response.data;
+    },
+
+    async getCurrentUserEntitlements(): Promise<EffectiveEntitlements> {
+        return (await authApi.get<EffectiveEntitlements>('/auth/me/entitlements')).data;
     },
 
     /**

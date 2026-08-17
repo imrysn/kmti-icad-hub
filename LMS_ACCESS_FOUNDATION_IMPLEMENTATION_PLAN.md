@@ -878,7 +878,7 @@ Use this as the durable project tracker. Check an item only after implementation
 - [x] Add current-user roles, Admin areas, and effective-permissions API.
 - [x] Create access-plan management interface.
 - [~] Create entitlement editor and effective-access preview. (Course entitlement editor and current-user effective-access API complete; admin preview pending.)
-- [~] Create learner plan assignment/history interface. (Assignment/history API complete; dedicated user-panel controls pending.)
+- [x] Create learner plan assignment/history interface.
 - [ ] Create upgrade/downgrade/expiration flow.
 - [ ] Create temporary override flow.
 - [ ] Create invitation-center navigation and status badge. (Navigation complete; pending status badge follows.)
@@ -892,7 +892,7 @@ Use this as the durable project tracker. Check an item only after implementation
 
 ### Learner frontend
 
-- [~] Show current plan and effective access dates. (Current-user API complete; learner dashboard presentation pending.)
+- [x] Show current plan and effective access dates.
 - [x] Filter course catalog by server-provided entitlement.
 - [ ] Show accessible locked-content explanation where appropriate.
 - [ ] Prevent protected content details from being embedded in unauthorized responses.

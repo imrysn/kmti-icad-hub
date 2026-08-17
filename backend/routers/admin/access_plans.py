@@ -7,6 +7,7 @@ from ...database import get_db
 from ...models import AccessPlan, AssessmentTask, AuditEvent, Course, PlanEntitlement, User, UserPlanAssignment
 from ...schemas import AccessPlanCreate, AccessPlanResponse, AccessPlanUpdate, CourseResponse, PlanAssignmentCreate, PlanAssignmentResponse, PlanEntitlementInput
 from ...services.access_plan_service import serialize_plan
+from ...services.access_control_service import get_active_role_codes
 
 router = APIRouter()
 
@@ -82,6 +83,8 @@ def assign_plan(user_id: int, payload: PlanAssignmentCreate, db: Session = Depen
     learner = db.query(User).filter(User.id == user_id).first()
     if learner is None:
         raise HTTPException(status_code=404, detail="User not found")
+    if "learner" not in get_active_role_codes(db, learner):
+        raise HTTPException(status_code=422, detail="Access plans can only be assigned to learners")
     plan = _plan_or_404(db, payload.plan_id)
     if not plan.is_active:
         raise HTTPException(status_code=422, detail="Inactive access plans cannot be assigned")
@@ -92,8 +95,15 @@ def assign_plan(user_id: int, payload: PlanAssignmentCreate, db: Session = Depen
     # Preserve immutable history by closing, rather than overwriting, prior assignments.
     current = db.query(UserPlanAssignment).filter(UserPlanAssignment.user_id == user_id, UserPlanAssignment.status.in_(("active", "scheduled"))).all()
     for row in current:
-        row.status = "cancelled" if row.starts_at >= starts_at else "expired"
-        if row.starts_at < starts_at and (row.ends_at is None or row.ends_at > starts_at):
+        if row.status == "scheduled":
+            row.status = "cancelled"
+        elif starts_at > now:
+            # A scheduled upgrade keeps today's plan effective until the boundary.
+            if row.ends_at is None or row.ends_at > starts_at:
+                row.ends_at = starts_at
+        else:
+            row.status = "expired"
+        if row.status == "expired" and row.starts_at < starts_at and (row.ends_at is None or row.ends_at > starts_at):
             row.ends_at = starts_at
     assignment = UserPlanAssignment(user_id=user_id, plan_id=plan.id, starts_at=starts_at, ends_at=ends_at,
                                     status=new_status, assigned_by_user_id=admin.id, reason=payload.reason)

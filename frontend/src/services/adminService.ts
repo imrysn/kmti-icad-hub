@@ -79,6 +79,11 @@ export interface PracticalSetResource {
     resource_id: string; assessment_type: string; set_number: number; name: string;
 }
 
+export interface PlanAssignment {
+    id: number; user_id: number; plan_id: number; plan_code: string; plan_name: string;
+    starts_at: string; ends_at?: string; status: 'active' | 'scheduled' | 'expired' | 'cancelled'; reason?: string; created_at: string;
+}
+
 export interface RegistrationApplication {
     id: number; user_id: number; email: string; full_name: string; company_name?: string;
     department?: string; job_title?: string; country_code?: string; reason_for_access?: string;
@@ -151,6 +156,14 @@ export const adminService = {
 
     async replaceAccessPlanEntitlements(planId: number, entitlements: Array<{ resource_type: string; resource_id: string; permission_code: string; limits_json?: string }>): Promise<AccessPlan> {
         return (await api.put(`/admin/access-plans/${planId}/entitlements`, entitlements)).data;
+    },
+
+    async getUserPlanHistory(userId: number): Promise<PlanAssignment[]> {
+        return (await api.get(`/admin/users/${userId}/plan-history`)).data;
+    },
+
+    async assignUserPlan(userId: number, data: { plan_id: number; starts_at: string; ends_at?: string; reason: string }): Promise<PlanAssignment> {
+        return (await api.post(`/admin/users/${userId}/plan-assignments`, data)).data;
     },
 
     async getStats(): Promise<SystemStats> {

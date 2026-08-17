@@ -1,6 +1,7 @@
-import { Edit2,Filter,Search,Shield,Trash2,User as UserIcon,UserPlus } from 'lucide-react';
+import { CalendarClock,Edit2,Filter,Search,Shield,Trash2,User as UserIcon,UserPlus } from 'lucide-react';
 import React,{ useState } from 'react';
 import { User } from '../../../services/authService';
+import { PlanAssignmentPanel } from './PlanAssignmentPanel';
 
 interface UserManagementProps {
     users: User[];
@@ -24,6 +25,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
     onEditUser
 }) => {
     const [roleFilter, setRoleFilter] = useState<string>('All');
+    const [planUser, setPlanUser] = useState<User | null>(null);
 
     const filteredUsers = users.filter((u: User) => {
         const matchesSearch = u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -105,6 +107,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                                         >
                                             <Edit2 size={14} />
                                         </button>
+                                        {u.role === 'trainee' && <button className="action-icon-btn plan-btn" onClick={() => setPlanUser(u)} title="Manage access plan"><CalendarClock size={14} /></button>}
                                         <button className="action-icon-btn toggle-btn" onClick={() => handleToggleStatus(u.id)}
                                             disabled={u.id === currentUser?.id}
                                             title={u.is_active ? 'Deactivate' : 'Activate'}
@@ -124,6 +127,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({
                     </tbody>
                 </table>
             </div>
+            {planUser && <PlanAssignmentPanel user={planUser} onClose={() => setPlanUser(null)} />}
         </section>
     );
 };
