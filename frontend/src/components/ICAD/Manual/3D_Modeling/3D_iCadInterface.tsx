@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Layout, PlayCircle } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
-import VideoTutorialViewer from "./VideoTutorialViewer";
-import icadWindowStructure from "../../../../assets/3D_Image_File/icad_window_structure.png";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import VideoTutorialViewer from "./VideoTutorialViewer";
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
@@ -33,10 +31,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
   const {
     scrollProgress,
     containerRef,
-    isSpeaking,
-    currentIndex,
-    currentCharIndex
-  } = useLessonCore('interface', INTERFACE_STEPS);
+    currentIndex  } = useLessonCore('interface', INTERFACE_STEPS);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -55,8 +50,8 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

@@ -83,14 +83,14 @@
 /* --- Center Image Stage --- */
 .image-stage {
   padding: 1rem;
-  background: var(--bg-surface);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 [data-theme='light'] .image-stage {
-  background: #ffffff;
+  background: transparent;
 }
 
 .image-container-inner {

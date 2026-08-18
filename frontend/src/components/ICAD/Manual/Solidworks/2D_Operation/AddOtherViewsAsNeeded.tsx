@@ -208,7 +208,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                     )}
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "3rem" }}>
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={() => {
@@ -235,7 +235,7 @@ const AddOtherViewsAsNeeded: React.FC<AddOtherViewsAsNeededProps> = ({
                                 }
                             }}
                         >
-                            {activeTab === 'sectionView' ? 'Next' : (nextLabel || 'Next')} <ChevronRight size={18} />
+                            {activeTab === 'sectionView' ? 'Next' : (nextLabel || 'Next Lesson')} <ChevronRight size={18} />
                         </button>
                     </div>
 

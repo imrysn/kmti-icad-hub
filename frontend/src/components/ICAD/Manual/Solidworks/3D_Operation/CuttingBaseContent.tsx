@@ -22,10 +22,10 @@ const CuttingBaseContent: React.FC = () => (
                     <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px' }}>
                         <span className="step-number">2</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
-                            In <strong>Sketch</strong> tab, select <strong>Sketch</strong>{' '}
-                            <span className="image-wrapper-flush">
-                                <img src={sImg} alt="Sketch Tab" style={{ height: '50px', verticalAlign: 'middle' }} />
-                            </span>
+                            In <strong>Sketch</strong> tab, select <strong>Sketch</strong>
+                        </span>
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={sImg} alt="Sketch Tab" style={{ display: 'block', height: '50px', width: 'auto' }} />
                         </span>
                     </div>
                     <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px' }}>
@@ -67,10 +67,10 @@ const CuttingBaseContent: React.FC = () => (
                     <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">5</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
-                            In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>{' '}
-                            <span className="image-wrapper-flush">
-                                <img src={cutImg} alt="Extruded Cut" style={{ height: '50px', verticalAlign: 'middle' }} />
-                            </span>
+                            In <strong>Features</strong> tab, click <strong>Extruded Cut</strong>
+                        </span>
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={cutImg} alt="Extruded Cut" style={{ display: 'block', height: '50px', width: 'auto' }} />
                         </span>
                     </div>
                     <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
@@ -85,10 +85,10 @@ const CuttingBaseContent: React.FC = () => (
                     <div className="step-header" style={{ marginBottom: 0 , padding:'8px 0px'}}>
                         <span className="step-number">7</span>
                         <span className="step-label" style={{ fontWeight: 'normal', color: 'var(--text-muted)' }}>
-                            Click{' '}
-                            <span className="image-wrapper-flush">
-                                <img src={checkImg} alt="Check button" style={{ height: '28px', verticalAlign: 'middle' }} />
-                            </span>
+                            Click
+                        </span>
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={checkImg} alt="Check button" style={{ display: 'block', height: '28px', width: 'auto' }} />
                         </span>
                     </div>
                 </div>

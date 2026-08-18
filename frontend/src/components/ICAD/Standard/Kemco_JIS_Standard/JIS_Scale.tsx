@@ -83,8 +83,8 @@ const JISScale: React.FC<JISScaleProps> = ({
                         <table className="lesson-table" style={{ width: "100%" }}>
                             <thead>
                                 <tr>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', width: "30%", textAlign: "center" }}>TYPE</th>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>SCALE JIS Z 8314</th>
+                                    <th style={{ width: "30%" }}>TYPE</th>
+                                    <th>SCALE JIS Z 8314</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +105,7 @@ const JISScale: React.FC<JISScaleProps> = ({
                     </div>
 
                     {/* Page Navigation */}
-                    <div className="lesson-navigation mt-12">
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={handlePrev}

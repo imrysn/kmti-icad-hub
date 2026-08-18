@@ -56,13 +56,15 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
 
     const handleNext = () => {
         stop();
-        if (onNextLesson) onNextLesson();
+        if (activeTab === "keyplate") setActiveTab("oil groove");
+        else if (onNextLesson) onNextLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handlePrev = () => {
         stop();
-        if (onPrevLesson) onPrevLesson();
+        if (activeTab === "oil groove") setActiveTab("keyplate");
+        else if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -99,8 +101,8 @@ const KeyplateGroove: React.FC<KeyplateGrooveProps> = ({
                 showCounter={false}
                 onPrev={handlePrev}
                 onNext={handleNext}
-                nextLabel={nextLabel}
-                prevDisabled={!onPrevLesson}
+                nextLabel={activeTab === "keyplate" ? "Next" : (nextLabel || "Next Lesson")}
+                prevDisabled={activeTab === "keyplate" && !onPrevLesson}
             />
         </div>
     );

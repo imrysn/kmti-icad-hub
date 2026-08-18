@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
@@ -50,7 +50,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -65,7 +65,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -147,11 +147,11 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                     <div className="step-description">
                       <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
                         <strong className="red-text">Normal</strong><br />
-                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number</span> <span style={{ color: "#fff" }}>RTXXXXXN01</span>
+                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number</span> <span style={{ color: "var(--text-main)", fontWeight: "600" }}>RTXXXXXN01</span>
                       </p>
                       <p className="p-flush">
                         <strong className="red-text">Mirror parts</strong> are parts that are symmetrically the same.<br />
-                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "#fff" }}>RTXXXXXA01 & RTXXXXXB01</span>
+                        <span style={{ marginLeft: "6.1rem" }}>Example drawing number </span><span style={{ color: "var(--text-main)", fontWeight: "600" }}>RTXXXXXA01 & RTXXXXXB01</span>
                       </p>
                       <img src={img2} alt="Normal and Mirror parts drawing sheet" className="software-screenshot screenshot-wide mt-4" />
                     </div>
@@ -212,11 +212,11 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

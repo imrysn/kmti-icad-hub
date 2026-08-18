@@ -189,18 +189,13 @@ const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, cla
         position: 'relative',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 12px 36px rgba(0,0,0,0.4)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
         ...style
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'scale(1.015)';
-        e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.5)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'scale(1)';
-        e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.4)';
       }}
     >
       <video
@@ -209,7 +204,7 @@ const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, cla
         controls
         loop
         muted
-        style={{ width: '100%', height: '100%', display: 'block' }}
+        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'fill' }}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
@@ -796,7 +791,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '900px' }} />
+              <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -881,7 +876,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="card-header"><h4>RESULT</h4></div>
-            <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
+            <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block', marginBottom: "-3rem" }} />
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -950,7 +945,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '900px' }} />
+              <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1022,7 +1017,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '898px' }} />
+              <PremiumVideoPlayer src={vidCopy} className="mt-8" style={{ width: '898px', height: '505.13px', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">

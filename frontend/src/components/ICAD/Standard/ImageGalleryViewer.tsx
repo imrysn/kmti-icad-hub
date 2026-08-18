@@ -310,7 +310,7 @@ const ImageGalleryViewer: React.FC<ImageGalleryViewerProps> = ({
       </div>
 
       {/* Lesson navigation */}
-      <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0, flexShrink: 0 }}>
+      <div className="lesson-navigation">
         <button className="nav-button" onClick={onPrev} disabled={prevDisabled ?? !onPrev}>
           <ChevronLeft size={18} /> Previous
         </button>

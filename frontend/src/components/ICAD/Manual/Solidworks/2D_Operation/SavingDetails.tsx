@@ -78,7 +78,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                     </div>
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "3rem" }}>
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -89,7 +89,7 @@ const SavingDetails: React.FC<SavingDetailsProps> = ({
                             className="nav-button next"
                             onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                         >
-                            {nextLabel || 'Finish Module'} <ChevronRight size={18} />
+                            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
                         </button>
                     </div>
 

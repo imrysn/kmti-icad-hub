@@ -92,13 +92,15 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
 
     const handleNext = () => {
         stop();
-        if (onNextLesson) onNextLesson();
+        if (activeTab === "page1") setActiveTab("page2");
+        else if (onNextLesson) onNextLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handlePrev = () => {
         stop();
-        if (onPrevLesson) onPrevLesson();
+        if (activeTab === "page2") setActiveTab("page1");
+        else if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -129,8 +131,8 @@ const ShowaCatalog: React.FC<ShowaCatalogProps> = ({
                 showCounter={false}
                 onPrev={handlePrev}
                 onNext={handleNext}
-                nextLabel={nextLabel}
-                prevDisabled={!onPrevLesson}
+                nextLabel={activeTab === "page1" ? "Next" : (nextLabel || "Next Lesson")}
+                prevDisabled={activeTab === "page1" && !onPrevLesson}
             />
         </div>
     );

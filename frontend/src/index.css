@@ -40,6 +40,14 @@
   --error: var(--color-error);
   --warning: var(--color-warning);
 
+  /* Compatibility aliases used by legacy lessons. Keeping these mapped to
+     theme tokens prevents missing custom properties from hiding text. */
+  --text-primary: var(--text-main);
+  --text-color: var(--text-main);
+  --text-normal: var(--text-main);
+  --accent: var(--color-primary);
+  --accent-red: var(--color-error);
+
   /* ── Unit Code Colors (A = Assembly, P = Parts, E = Extra) ── */
   /* Dark → Light: A is heaviest, E is most subtle */
 

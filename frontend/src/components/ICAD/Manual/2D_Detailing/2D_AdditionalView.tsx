@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
@@ -29,7 +29,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     { id: 'cross-section', label: 'Additional View' },
     { id: 'partial-detail', label: 'Partial Section & Detail' },
     { id: 'isometric', label: 'Isometric & Cross Sectional' },
-    { id: 'trim', label: 'Trim View' } 
+    { id: 'trim', label: 'Trim View' }
   ];
 
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -47,7 +47,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     stop();
     if (!isAuto) {
       sessionStorage.setItem('tts-autoplay-active', 'false');
-    } 
+    }
 
     const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
     if (currentIndex < TABS.length - 1) {
@@ -55,7 +55,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -70,7 +70,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -301,11 +301,11 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

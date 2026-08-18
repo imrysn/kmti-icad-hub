@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 
@@ -26,7 +25,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     return localStorage.getItem('2d-heat-treatment-active-tab') || TABS[0].id;
   });
 
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(`2d-heat-treatment-${activeTab}`);
+  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, registerText } = useLessonCore(`2d-heat-treatment-${activeTab}`);
 
   const LESSON_DATA = {
     '1': {
@@ -71,7 +70,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -86,7 +85,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useTTSAutoplay(
@@ -171,7 +170,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                         <tr><td>Ion nitriding to HV400 UP</td><td>イオンナイト施工 硬度HV400 UP</td><td></td></tr>
                         <tr><td>Parsonite construction to HV400 UP</td><td>パルソナイト施工 硬度HV400 UP</td><td>Rev6</td></tr>
                         <tr><td>part(Upper and lower) Laser Hardening Hardness HRC50up (S45C-D)</td><td>歯(上下両面)レーザー焼入レ施工 硬度HRC50up</td><td></td></tr>
-                        
+
                         {/* S50C, S55C */}
                         <tr>
                           <td rowSpan={5}>S50C, S55C</td>
@@ -338,7 +337,7 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
                       { rev: "Rev11", text: "Describe thermal refining hardness for each material. It follows the standard of JIS." }
                     ].map((item, idx) => (
                       <div key={idx} className="flex-row" style={{ marginBottom: "0.25rem", alignItems: "flex-start" }}>
-                        <span className="red-text font-bold">{item.rev}:</span> 
+                        <span className="red-text font-bold">{item.rev}:</span>
                         <span style={{ lineHeight: "1.5" }}>{item.text}</span>
                       </div>
                     ))}
@@ -593,11 +592,11 @@ const HeatTreatmentLesson: React.FC<HeatTreatmentLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

@@ -474,7 +474,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Length */}
@@ -485,12 +485,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the length of an edge then Pick an edge then Right Click"
+                      text="Measures the length of an edge > Pick an edge then Right Click"
                       isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Distance */}
@@ -501,12 +501,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge"
+                      text="Measures the distance between two points or edges > Pick first point/edge > Pick second point/edge"
                       isActive={isSpeaking && currentIndex === 4}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
               </div>
 
@@ -519,12 +519,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points "
+                      text="Measures the angle between two edges or three points > Pick 2 edges > Pick 3 Points "
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Entity Info */}
@@ -535,12 +535,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Displays the informations about the selected entity then Pick the solid entity then Right Click"
+                      text="Displays the informations about the selected entity > Pick the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
               </div>
             </div>

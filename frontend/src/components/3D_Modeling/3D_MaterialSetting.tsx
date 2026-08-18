@@ -392,7 +392,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                       </tr>
                       <tr>
                         <td>PVC</td>
-                        <td>VP(塩化ビニ�Eル管)</td>
+                        <td>VP(塩化ビニール管)</td>
                       </tr>
                     </tbody>
                   </table>

@@ -68,7 +68,7 @@ const PartModelingContent: React.FC = () => (
                         <div className="instruction-box" style={{ marginTop: '1.5rem' }}>
                             <p className="p-flush red-text" style={{ lineHeight: '1.8' }}>
                                 ※ This{' '}
-                                <span className="image-wrapper-flush" style={{ background: 'white', padding: '2px', border: '1px solid #ddd', borderRadius: '2px', display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }}>
+                                <span className="image-wrapper-flush" style={{ display: 'inline-block', verticalAlign: 'middle', margin: '0 4px' }}>
                                     <img src={kmTechImg} alt="K M Tech" style={{ height: '28px', display: 'block' }} />
                                 </span>
                                 {' '}is where all the KMTI Standard Templates were saved.
@@ -82,7 +82,7 @@ const PartModelingContent: React.FC = () => (
                                 src={techImg}
                                 alt="K M Tech tab in New SolidWorks Document dialog"
                                 className="software-screenshot"
-                                style={{ maxWidth: '100%', height: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                style={{ maxWidth: '100%', height: 'auto' }}
                             />
                         </div>
                     </div>

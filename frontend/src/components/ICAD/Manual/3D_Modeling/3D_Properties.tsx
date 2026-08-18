@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* Properties (1) Assets */
+import acrylicPointerImg from "../../../../assets/3D_Image_File/acrylic_pointer.png";
 import changeColorIcon from "../../../../assets/3D_Image_File/change_color.png";
 import changeColorEntity from "../../../../assets/3D_Image_File/change_color_entity.png";
 import changeColorFace from "../../../../assets/3D_Image_File/change_color_face.png";
 import changeLayerIcon from "../../../../assets/3D_Image_File/change_layer.png";
+import isoniteManganeseImg from "../../../../assets/3D_Image_File/isonite_manganese.png";
 import itemEntryChangeLayer from "../../../../assets/3D_Image_File/item_entry_changelayer.png";
-import propertiesColorImg from "../../../../assets/3D_Image_File/properties_color.png";
 import layer1Img from "../../../../assets/3D_Image_File/layer1.png";
 import layer2Img from "../../../../assets/3D_Image_File/layer2.png";
 import layer3Img from "../../../../assets/3D_Image_File/layer3.png";
-import acrylicPointerImg from "../../../../assets/3D_Image_File/acrylic_pointer.png";
-import propertiesMaterialImg from "../../../../assets/3D_Image_File/properties_material.png";
-import isoniteManganeseImg from "../../../../assets/3D_Image_File/isonite_manganese.png";
 import leftClick from "../../../../assets/3D_Image_File/left_click.png";
+import propertiesColorImg from "../../../../assets/3D_Image_File/properties_color.png";
+import propertiesMaterialImg from "../../../../assets/3D_Image_File/properties_material.png";
 
 /* Properties (2) Assets */
 import information1 from "../../../../assets/3D_Image_File/information1.png";
@@ -26,12 +26,12 @@ import information2 from "../../../../assets/3D_Image_File/information2.png";
 import information3 from "../../../../assets/3D_Image_File/information3.png";
 import information4 from "../../../../assets/3D_Image_File/information4.png";
 import information5 from "../../../../assets/3D_Image_File/information5.png";
+import layerImg from "../../../../assets/3D_Image_File/layer.jpg";
+import infoAngleImg from "../../../../assets/3D_Image_File/properties2_information_angle.png";
+import infoEntityImg from "../../../../assets/3D_Image_File/properties2_information_entity.png";
 import infoPointImg from "../../../../assets/3D_Image_File/properties2_information_point.png";
 import infoEdgeImg from "../../../../assets/3D_Image_File/properties2_information_point_edge.png";
 import infoPointEdgeImg from "../../../../assets/3D_Image_File/properties2_information_point_edgeq.jpg";
-import infoAngleImg from "../../../../assets/3D_Image_File/properties2_information_angle.png";
-import infoEntityImg from "../../../../assets/3D_Image_File/properties2_information_entity.png";
-import layerImg from "../../../../assets/3D_Image_File/layer.jpg";
 
 interface PropertiesLessonProps {
   nextLabel?: string;
@@ -56,7 +56,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "Entity. The entire solid entity will change its color.",
     "Pick a color then select the solid entity",
     "Face. Only selected faces or surfaces will change its color",
-    "Pick a color then select surface to be changed then GO"
+    "Pick a color then select surface to be changed then Right Click"
   ];
 
   const layerSteps = [
@@ -71,10 +71,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     "INFORMATION",
     "Displays technical data about clicked entities (coordinates, length, distance, angle, and entity information).",
     "Displays coordinates of a point from the origin then Pick a point",
-    "Measures the length of an edge then Pick an edge then GO",
+    "Measures the length of an edge then Pick an edge then Right Click",
     "Measures the distance between two points or edges then Pick first point/edge then Pick second point/edge",
     "Measures the angle between two edges or three points then Pick 2 edges then Pick 3 Points",
-    "Displays the informations about the selected entity then Pick the solid entity then GO"
+    "Displays the informations about the selected entity then Pick the solid entity then Right Click"
   ];
 
   const {
@@ -96,7 +96,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     if (activeTab === "color") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("info");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -107,10 +107,10 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
     if (activeTab === "info") setActiveTab("layer");
     else if (activeTab === "layer") setActiveTab("color");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
   const tabs = [
     { id: "color", label: "Change Color" },
@@ -174,7 +174,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div style={{ flex: 1 }}>
                 <div className={`${getStepClass("color-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">1</span>
+                    <span className="step-number">1 </span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -190,7 +190,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("color-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ marginBottom: "2rem", alignItems: 'flex-start' }}>
-                    <span className="step-number">2</span>
+                    <span className="step-number">2 </span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -224,7 +224,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <KaraokeLessonText
                         as="p"
                         className="p-flush"
-                        text="Pick a color > Select the solid entity"
+                        text="Pick a color then Select the solid entity"
                         isActive={isSpeaking && currentIndex === 5}
                         currentCharIndex={currentCharIndex}
                       />
@@ -257,7 +257,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       <p className="p-flush">
                         <KaraokeLessonText
                           as="span"
-                          text="Pick a color > Select surface to be changed > GO"
+                          text="Pick a color then Select surface to be changed then Right Click"
                           isActive={isSpeaking && currentIndex === 8}
                           currentCharIndex={currentCharIndex}
                         />
@@ -271,6 +271,13 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               </div>
 
               <img src={propertiesColorImg} alt="Change Color Properties Dialog" className="software-screenshot mt-8" style={{ height: "400px", width: "auto" }} />
+            </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {'Next'} <ChevronRight size={18} />
+              </button>
             </div>
           </div>
         )}
@@ -292,7 +299,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
               <div style={{ flex: 1 }}>
                 <div className={`${getStepClass("layer-1")} ${currentIndex === 1 ? "reading-active" : ""}`} data-reading-index="1" style={{ marginBottom: "1rem" }}>
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">1</span>
+                    <span className="step-number">1 </span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -308,7 +315,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("layer-2")} ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">2</span>
+                    <span className="step-number">2 </span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -324,7 +331,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
 
                 <div className={`${getStepClass("layer-3")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                   <div className="step-header" style={{ alignItems: 'flex-start' }}>
-                    <span className="step-number">3</span>
+                    <span className="step-number">3 </span>
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
@@ -420,6 +427,13 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                 <img src={layer3Img} alt="Layer 3 Purchase Parts" className="software-screenshot mt-4 screenshot-wide" />
               </div>
             </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -455,12 +469,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Displays coordinates of a point from the origin > Pick a point"
+                      text="Displays coordinates of a point from the origin then Pick a point"
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoPointImg} alt="Coordinates" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Length */}
@@ -471,12 +485,12 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Measures the length of an edge > Pick an edge > GO"
+                      text="Measures the length of an edge > Pick an edge then Right Click"
                       isActive={isSpeaking && currentIndex === 3}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoEdgeImg} alt="Length" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Distance */}
@@ -492,7 +506,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoPointEdgeImg} alt="Distance" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
               </div>
 
@@ -510,7 +524,7 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoAngleImg} alt="Angle" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
 
                 {/* Entity Info */}
@@ -521,24 +535,24 @@ const PropertiesLesson: React.FC<PropertiesLessonProps> = ({ subLessonId = "prop
                       as="div"
                       className="step-label"
                       style={{ fontSize: '1rem', lineHeight: '1.4', fontWeight: '500' }}
-                      text="Displays the informations about the selected entity > Pick the solid entity > GO"
+                      text="Displays the informations about the selected entity > Pick the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
                   </div>
-                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%', background: 'white', padding: '10px', borderRadius: '8px' }} />
+                  <img src={infoEntityImg} alt="Entity Info" className="software-screenshot mt-4" style={{ width: '100%' }} />
                 </div>
               </div>
             </div>
+
+            <div className="lesson-navigation">
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>
+                {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
-
-        <div className="lesson-navigation">
-          <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={() => handleNext()}>
-            {activeTab === "info" ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
-          </button>
-        </div>
       </div>
     </div>
   );

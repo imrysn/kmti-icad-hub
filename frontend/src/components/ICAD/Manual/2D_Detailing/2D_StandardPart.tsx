@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Standard Part Detail (1) */
 import pcdImg from "../../../../assets/2D_Image_File/2D_tandard_part_detail(1)_pcd.png";
-import taperedThreadImg from "../../../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
 import standardPartDetailImg from "../../../../assets/2D_Image_File/2D_tandard_part_detail(1)_standard_parts.jpg";
+import taperedThreadImg from "../../../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
 
 /* Importing assets for Standard Part Detail (2) */
 import oilGroove1Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_1.png";
@@ -18,7 +17,6 @@ import oilGroove2Img from "../../../../assets/2D_Image_File/2D_tandard_part_deta
 
 /* Importing assets for Standard Part Detail (3) */
 import shaftKeyPlate1Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_1.png";
-import shaftKeyPlate2Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_2.jpg";
 import shaftKeyPlate3Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_3.png";
 
 /* Importing assets for Standard Part Detail (4) */
@@ -29,9 +27,9 @@ import collar1Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(
 import collar2Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_2.png";
 
 /* Importing assets for Standard Part Detail (6) */
-import scaleImg from "../../../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
-import reliefProcess1Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
 import reliefProcess2Img from "../../../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
+// import scaleImg from "../../../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
+import reliefProcess1Img from "../../../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
 
 /* Importing assets for Standard Part Detail (7) */
 import reliefWorkflowImg from "../../../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_3.png";
@@ -80,7 +78,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -95,7 +93,7 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -551,8 +549,37 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
                       />
                     </div>
                     <div className="step-description">
-                      <div className="mb-4">
-                        <img src={scaleImg} alt="Standard Scales" className="software-screenshot screenshot-wide" />
+                      <div className="lesson-table-container mt-4">
+                        <table className="lesson-table">
+                          <thead>
+                            <tr>
+                              <th>TYPE</th>
+                              <th>SCALE JIS Z 8314</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>CURRENT MEASURE</td>
+                              <td>1:1</td>
+                            </tr>
+                            <tr>
+                              <td>Upsize (1)</td>
+                              <td>2:1, 5:1, 10:1, 20:1, 50:1</td>
+                            </tr>
+                            <tr>
+                              <td>Upsize (2)</td>
+                              <td>√2:1, 2.5:1, 100:1</td>
+                            </tr>
+                            <tr>
+                              <td>Down Size (1)</td>
+                              <td>1:2, (1:3), (1:4), 1:5, 1:10, 1:20, 1:50</td>
+                            </tr>
+                            <tr>
+                              <td>Down Size (2)</td>
+                              <td>1:√2, 1:2.5, 1:2√2, 1:3, 1:4, 1:5√2, 1:25, 1:250</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
 
                       <div className="instruction-box mt-4 mb-4">
@@ -675,11 +702,11 @@ const StandardPartLesson: React.FC<StandardPartLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

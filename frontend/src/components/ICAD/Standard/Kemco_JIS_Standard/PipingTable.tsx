@@ -252,7 +252,7 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
             </div>
           </div>
 
-          <div className="lesson-navigation mt-12">
+          <div className="lesson-navigation">
             <button
               className="nav-button"
               onClick={handlePrev}

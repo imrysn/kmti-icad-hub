@@ -185,7 +185,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                     )}
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "3rem" }}>
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={() => {
@@ -212,7 +212,7 @@ const InsertingBalloons: React.FC<InsertingBalloonsProps> = ({
                                 }
                             }}
                         >
-                            {activeTab === 'insert' ? 'Next' : (nextLabel || 'Next')} <ChevronRight size={18} />
+                            {activeTab === 'insert' ? 'Next' : (nextLabel || 'Next Lesson')} <ChevronRight size={18} />
                         </button>
                     </div>
 

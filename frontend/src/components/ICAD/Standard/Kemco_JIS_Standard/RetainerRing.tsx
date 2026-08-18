@@ -62,13 +62,15 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
 
     const handleNext = () => {
         stop();
-        if (onNextLesson) onNextLesson();
+        if (isMain && activeTab === "external") setActiveTab("internal");
+        else if (onNextLesson) onNextLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handlePrev = () => {
         stop();
-        if (onPrevLesson) onPrevLesson();
+        if (isMain && activeTab === "internal") setActiveTab("external");
+        else if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -113,8 +115,8 @@ const RetainerRing: React.FC<RetainerRingProps> = ({
                 showCounter={true}
                 onPrev={handlePrev}
                 onNext={handleNext}
-                nextLabel={nextLabel}
-                prevDisabled={!onPrevLesson}
+                nextLabel={isMain && activeTab === "external" ? "Next" : (nextLabel || "Next Lesson")}
+                prevDisabled={!onPrevLesson && (!isMain || activeTab === "external")}
             />
         </div>
     );

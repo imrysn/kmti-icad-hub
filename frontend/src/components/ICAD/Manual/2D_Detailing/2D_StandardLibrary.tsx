@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Import images */
 import imgToolbar from "../../../../assets/2D_Image_File/2D_standard_part_library.png";
-import imgSafetyColor from "../../../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
 import imgRevHistory1 from "../../../../assets/2D_Image_File/2D_standard_part_library_revision_history_1.jpg";
 import imgRevHistory2 from "../../../../assets/2D_Image_File/2D_standard_part_library_revision_history_2.png";
+import imgSafetyColor from "../../../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
 
 interface StandardLibraryLessonProps {
   nextLabel?: string;
@@ -19,10 +19,9 @@ interface StandardLibraryLessonProps {
 }
 
 const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
+  nextLabel,
   onNextLesson,
-  onPrevLesson,
-  nextLabel
-}) => {
+  onPrevLesson }) => {
   const TABS = [
     { id: 'standard-library', label: 'Standard Part Library' }
   ];
@@ -50,7 +49,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -65,7 +64,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const currentTitle = "STANDARD PART LIBRARY";
@@ -209,7 +208,7 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
                               5. Place on its designated location
                             </p>
                             <p className="p-flush" style={{ marginTop: "0.5rem" }}>
-                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. (See Dimensioning tab)
+                              6. Edit the details on it based on the reference and instruction. Use <strong>"edit characters"</strong> command. See 2D Detailing course. Lesson “Dimensioning, b”.
                             </p>
                           </div>
                         </div>
@@ -230,11 +229,11 @@ const StandardLibraryLesson: React.FC<StandardLibraryLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {TABS.findIndex(tab => tab.id === activeTab) === TABS.length - 1 ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

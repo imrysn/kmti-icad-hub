@@ -56,13 +56,15 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
 
     const handleNext = () => {
         stop();
-        if (onNextLesson) onNextLesson();
+        if (activeTab === "bolt-hole") setActiveTab("bolt-length");
+        else if (onNextLesson) onNextLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handlePrev = () => {
         stop();
-        if (onPrevLesson) onPrevLesson();
+        if (activeTab === "bolt-length") setActiveTab("bolt-hole");
+        else if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
     
@@ -98,8 +100,8 @@ const BoltingKemcoStandard: React.FC<BoltingKemcoStandardProps> = ({
                 showCounter={false}
                 onPrev={handlePrev}
                 onNext={handleNext}
-                nextLabel={nextLabel}
-                prevDisabled={!onPrevLesson}
+                nextLabel={activeTab === "bolt-hole" ? "Next" : (nextLabel || "Next Lesson")}
+                prevDisabled={activeTab === "bolt-hole" && !onPrevLesson}
             />
         </div>
     );

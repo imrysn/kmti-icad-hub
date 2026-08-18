@@ -13,11 +13,14 @@ const BendedPlateContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header"  style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">1</span>
-                <span className="step-label">Click <strong>Spacebar</strong>, then select <strong>Front View</strong>.</span>
+                <span className="step-label">Select Front View</span>
             </div>
             <div className="step-description">
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    Press the <strong>Spacebar</strong>, then select <strong>Front View</strong>.
+                </p>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={fvImg} alt="Front View" className="software-screenshot screenshot-wide" />
                 </div>
@@ -26,34 +29,35 @@ const BendedPlateContent: React.FC = () => (
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header"  style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">2</span>
-                <span className="step-label">
-                    In the <strong>FeatureManager Design Tree</strong>, click{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={flatImg} alt="Flat-Pattern" style={{ height: '45px', verticalAlign: 'middle' }} />
-                    </span>
-                </span>
+                <span className="step-label">Locate Flat Pattern</span>
             </div>
             <div className="step-description">
-                <p className="p-flush" style={{ color: 'var(--text-muted)', marginTop: '0.75rem' }}>
-                    Then right-click on <strong>Flat-Pattern1</strong>.
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    In the <strong>FeatureManager Design Tree</strong>, click{' '}
+                    <span className="image-wrapper-flush">
+                        <img src={flatImg} alt="Flat-Pattern" style={{ height: '32px', verticalAlign: 'middle' }} />
+                    </span>
+                    {' '}and right-click on <strong>Flat-Pattern1</strong>.
                 </p>
             </div>
         </div>
 
         {/* Step 3 */}
         <div className="instruction-step">
-            <div className="step-header" style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">3</span>
-                <span className="step-label">
-                    Click <strong>Unsuppress</strong>{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={upImg} alt="Unsuppress" style={{ height: '50px', verticalAlign: 'middle' }} />
-                    </span>
-                </span>
+                <span className="step-label">Unsuppress Pattern</span>
             </div>
             <div className="step-description">
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    Click <strong>Unsuppress</strong>{' '}
+                    <span className="image-wrapper-flush">
+                        <img src={upImg} alt="Unsuppress" style={{ height: '32px', verticalAlign: 'middle' }} />
+                    </span>
+                    {' '}to flatten the part.
+                </p>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={p1Img} alt="Unsuppressed result" className="software-screenshot screenshot-wide" />
                 </div>
@@ -62,18 +66,18 @@ const BendedPlateContent: React.FC = () => (
 
         {/* Step 4 */}
         <div className="instruction-step">
-            <div className="step-header" style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">4</span>
-                <span className="step-label">
-                    In <strong>Evaluate</strong> Tab, click <strong>Measure</strong>{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={m1Img} alt="Measure" style={{ height: '45px', verticalAlign: 'middle' }} />
-                    </span>
-                    , or type <strong>"M"</strong>.
-                </span>
+                <span className="step-label">Measure Flat Edge</span>
             </div>
-             <div style={{ color: 'var(--text-muted)' }}>Then pick an edge of the part.</div>
             <div className="step-description">
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    In the <strong>Evaluate</strong> tab, click <strong>Measure</strong>{' '}
+                    <span className="image-wrapper-flush">
+                        <img src={m1Img} alt="Measure" style={{ height: '32px', verticalAlign: 'middle' }} />
+                    </span>
+                    {' '}(or press <strong>M</strong> on your keyboard), then select the edge of the part to view its total length.
+                </p>
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={measureImg} alt="Measure result" className="software-screenshot screenshot-wide" />
                 </div>
@@ -83,15 +87,15 @@ const BendedPlateContent: React.FC = () => (
         {/* Important Note */}
         <div className="instruction-step">
             <div className="step-description">
-                <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-                    <p className="p-flush red-text" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem', margin: 0 }}>
-                        <span>※ To bring the part back to its bended form, right-click <strong>Flat-Pattern1</strong>, click <strong>Suppress</strong></span>
-                        <span className="image-wrapper-flush" style={{ margin: 0 }}>
-                            <img src={downImg} alt="Suppress" style={{ height: '40px', display: 'block' }} />
+                <div className="instruction-box" style={{ marginTop: '1rem', marginBottom: '1.5rem' }}>
+                    <p className="p-flush red-text" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem' }}>
+                        <span>※ To restore the part back to its bended form, right-click <strong>Flat-Pattern1</strong> and click <strong>Suppress</strong></span>
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={downImg} alt="Suppress" style={{ height: '28px', display: 'block' }} />
                         </span>
-                        <span>or just click</span>
-                        <span className="image-wrapper-flush" style={{ margin: 0 }}>
-                            <img src={boxImg} alt="Flat-Pattern box" style={{ height: '40px', display: 'block' }} />
+                        <span>or simply click the flat pattern feature icon:</span>
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={boxImg} alt="Flat-Pattern box" style={{ height: '28px', display: 'block' }} />
                         </span>
                     </p>
                 </div>

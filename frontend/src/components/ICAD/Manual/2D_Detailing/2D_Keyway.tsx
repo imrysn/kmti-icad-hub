@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
@@ -63,7 +62,6 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
     currentTabSteps,
     0
   );
-  const currentSubtitle = "";
 
   return (
     <div className="course-lesson-container" ref={containerRef}>
@@ -118,7 +116,7 @@ const KeywayLesson: React.FC<KeywayLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

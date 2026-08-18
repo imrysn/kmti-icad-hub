@@ -1,53 +1,36 @@
 
 
-import React,
-{
-
-  useState,
-
-  useEffect, useRef
+import React, {
+  useEffect, useRef,
+  useState
 } from 'react';
 
 import {
-  MousePointer2,
-  Keyboard,
-  Box as BoxIcon,
-  Circle,
   ChevronLeft,
   ChevronRight,
-  ArrowDown,
-  ArrowRight,
-  Info,
-  Zap,
   Play
 } from 'lucide-react';
 import { useLessonCore } from '../../../../hooks/useLessonCore';
 
-import { ReadAloudButton } from '../../../ReadAloudButton';
+import '../../../../styles/3D_Modeling/CourseLesson.css';
 import { KaraokeLessonText } from '../../../KaraokeLessonText';
-import VideoTutorialViewer, { TutorialStep } from './VideoTutorialViewer';
 import {
-  cylinderTutorialSteps,
   boxTutorialSteps,
-  polygonTutorialSteps,
   coneTutorialSteps,
+  cylinderTutorialSteps,
+  polygonTutorialSteps,
   torusTutorialSteps
 } from './VideoTutorialData/basicOp1TutorialSteps';
-import '../../../../styles/3D_Modeling/CourseLesson.css';
+import VideoTutorialViewer from './VideoTutorialViewer';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../../../assets/3D_Image_File/left_click.png';
 
 // Video imports for replacing preview images
-import vidCylinder from '../../../../assets/3D_Video_Tutorial/basicOp_cylinder.mp4';
-import vidBox from '../../../../assets/3D_Video_Tutorial/basicOp_box.mp4';
-import vidPolygon from '../../../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
-import vidCone from '../../../../assets/3D_Video_Tutorial/basicOp_cone.mp4';
-import vidTorus from '../../../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
-import vidMove from '../../../../assets/3D_Video_Tutorial/basicOp_move.mp4';
-import vidRotate from '../../../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 import vidCopy from '../../../../assets/3D_Video_Tutorial/basicOp_copy.mp4';
 import vidMirror from '../../../../assets/3D_Video_Tutorial/basicOp_mirror.mp4';
+import vidMove from '../../../../assets/3D_Video_Tutorial/basicOp_move.mp4';
+import vidRotate from '../../../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (1)  ECREATING BASIC SHAPES */
 /* Lesson-item child ID: 'basic-op-1' */
@@ -58,38 +41,22 @@ import cmdMenu from '../../../../assets/3D_Image_File/basic_operation1_command_m
 
 import threeDView from '../../../../assets/3D_Image_File/basic_operation1_3d_view.png';
 
-import arrangeCylinder from '../../../../assets/3D_Image_File/basic_operation1_arrange_cylinder.png';
-
-import cylinderResult from '../../../../assets/3D_Image_File/basic_operation1_cylinder.png';
-
-import itemEntry from '../../../../assets/3D_Image_File/basic_operation1_item_entry.png';
-
-import keyEntry from '../../../../assets/3D_Image_File/basic_operation1_key_entry_area.png';
-
-import arrangeBox from '../../../../assets/3D_Image_File/basic_operation1_arrange_box.png';
-
-import itemEntryBox from '../../../../assets/3D_Image_File/basic_operation1_item_entry_box.png';
-
-import boxResult from '../../../../assets/3D_Image_File/box.png';
 
 
-import arrangePolygon from '../../../../assets/3D_Image_File/basic_operation1_arrange_polygon_prism.png';
 
-import polygonResult from '../../../../assets/3D_Image_File/polygon.png';
 
-import itemEntryPolygon from '../../../../assets/3D_Image_File/item_entry_polygon.png';
 
-import arrangeCone from '../../../../assets/3D_Image_File/basic_operation2_arrange_cone.png';
 
-import itemEntryCone from '../../../../assets/3D_Image_File/basic_operation2_item_entry_cone.png';
 
-import coneResult from '../../../../assets/3D_Image_File/cone.png';
 
-import arrangeTorus from '../../../../assets/3D_Image_File/basic_operation2_arrange_torus.png';
 
-import torusResult from '../../../../assets/3D_Image_File/torus.png';
 
-import itemEntryTorus from '../../../../assets/3D_Image_File/basic_operation2_item_entry_torus.png';
+
+
+
+
+
+
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (2)  EMOVE, ROTATE, COPY, MIRROR, DELETE */
 /* Lesson-item child ID: 'basic-op-2' */
@@ -102,23 +69,19 @@ import moveMenu from '../../../../assets/3D_Image_File/basic_operation2_move.png
 
 import itemEntryMove from '../../../../assets/3D_Image_File/basic_operation2_item_entry_box.png';
 
-import moveResult from '../../../../assets/3D_Image_File/basic_operation2_move_3.png';
 
 import rotateIcon from '../../../../assets/3D_Image_File/basic_operation3_rotate.png';
 
-import rotateAxis from '../../../../assets/3D_Image_File/basic_operation3_rotate_axis_rotation.png';
 
 import rotateEntry from '../../../../assets/3D_Image_File/basic_operation3_rotate_item_entry.png';
 
 import mirrorIcon from '../../../../assets/3D_Image_File/basic_operation3_mirror.png';
 
-import mirrorResult from '../../../../assets/3D_Image_File/basic_operation3_mirrored.png';
 
 import copyIcon from '../../../../assets/3D_Image_File/basic_operation3_copy.png';
 
 import copyDistance from '../../../../assets/3D_Image_File/basic_operation3_copy_distance.png';
 
-import copyResult from '../../../../assets/3D_Image_File/basic_operation3_copy_3.png';
 
 import rotateCopyIcon from '../../../../assets/3D_Image_File/basic_operation3_rotatecopy.png';
 
@@ -150,9 +113,7 @@ import extrudeBothSide from '../../../../assets/3D_Image_File/basic_operation4_e
 /* cspell:disable-line */
 
 import revolveIcon from '../../../../assets/3D_Image_File/basic_operation4_revolve.png';
-
 import revolveP1 from '../../../../assets/3D_Image_File/basic_operation4_revolve_p1.png';
-
 import revolveP2 from '../../../../assets/3D_Image_File/basic_operation4_revolve_p2.png';
 
 import showHideMenu from '../../../../assets/3D_Image_File/basic_operation4_show_hide.jpg';
@@ -166,8 +127,8 @@ import hideUnselectedEntity from '../../../../assets/3D_Image_File/basic_operati
 
 import hideUnselectedEntity1 from '../../../../assets/3D_Image_File/basic_operation4_hide_unselected_entity_1.png';
 
-import fairingChamferImg from '../../../../assets/3D_Image_File/fairing_chamfer.jpg';
 import stretchIcon from '../../../../assets/3D_Image_File/basic_operation5_stretch.png';
+import fairingChamferImg from '../../../../assets/3D_Image_File/fairing_chamfer.jpg';
 
 import stretchItemEntry from '../../../../assets/3D_Image_File/basic_operation5_item_entry_stretch.png';
 
@@ -228,18 +189,13 @@ const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, cla
         position: 'relative',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 12px 36px rgba(0,0,0,0.4)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
         ...style
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'scale(1.015)';
-        e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.5)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'scale(1)';
-        e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.4)';
       }}
     >
       <video
@@ -248,7 +204,7 @@ const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, cla
         controls
         loop
         muted
-        style={{ width: '100%', height: '100%', display: 'block' }}
+        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'fill' }}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
@@ -308,10 +264,13 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'cylinder' | 'box' | 'polygon' | 'cone' | 'torus'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'cylinder';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const videoSectionRef = useRef<HTMLDivElement>(null);
@@ -323,14 +282,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const lessonSteps = React.useMemo(() => [
     "Creating Basic Shapes",                                                         // 0 heading
     "In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus.", // 1 overview
-    "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.", // 2 → cylinder tab
-    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 → box tab
-    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.", // 4 → polygon tab
-    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 → cone tab
-    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 → torus tab
-    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 → back to cylinder, scroll to Before You Start
-    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 → command menu step
-    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 → scroll to video
+    "A Cylinder is a circular solid defined by its Diameter and Height  Eideal for shafts, pins, bosses, and round posts.", // 2 ↁEcylinder tab
+    "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.", // 3 ↁEbox tab
+    "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height  Euseful for hexagonal bolts and multi-sided columns.", // 4 ↁEpolygon tab
+    "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.", // 5 ↁEcone tab
+    "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.", // 6 ↁEtorus tab
+    "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.", // 7 ↁEback to cylinder, scroll to Before You Start
+    "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.", // 8 ↁEcommand menu step
+    "Now that you know the available shapes and the setup steps, watch the video tutorial to see a step-by-step demonstration of how each shape is created in iCAD." // 9 ↁEscroll to video
   ], []);
 
   // Auto-switch tabs as TTS progresses through the narrated tour
@@ -358,7 +317,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     registerText(lessonSteps, 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerText]);
 
 
@@ -379,7 +338,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -390,7 +349,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
 
@@ -419,7 +378,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </h3>
 
-        {/* TTS index 1 — overview narration */}
+        {/* TTS index 1  Eoverview narration */}
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
             text="In iCAD, there are many solid shapes available, but in this lesson we will cover five of the most commonly used ones: the Cylinder, the Box, the Polygon, the Cone, and the Torus."
@@ -428,7 +387,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </div>
 
-        {/* Shape intro — tab-specific, shown here in the main intro card */}
+        {/* Shape intro  Etab-specific, shown here in the main intro card */}
         {(() => {
           const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
           const idx = tabIntroIdx[activeTab] ?? 2;
@@ -445,7 +404,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </section>
 
       <div className="lesson-grid single-card">
-        {/* Prerequisite steps card — always visible, scrolled to at TTS step 7 */}
+        {/* Prerequisite steps card  Ealways visible, scrolled to at TTS step 7 */}
         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
           <div className="card-header">
             <h4 style={{ margin: 0 }}>BEFORE YOU START</h4>
@@ -478,7 +437,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            {/* Watch tutorial prompt — shown at step 9 (closing message) */}
+            {/* Watch tutorial prompt  Eshown at step 9 (closing message) */}
             {currentIndex === 9 && isSpeaking && (
               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
@@ -567,7 +526,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -586,30 +545,33 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const moveSteps = [
     "Step 1: Select Move from the icon menu.",
-    "Step 2: Left-click on the entity to be moved and click GO.",
+    "Step 2: Left-click on the entity to be moved and click Right Click.",
     "Step 3: Specify the movement distance on the X, Y, and Z-axis on the item entry. Press Enter. Or after step 2, select a point on the entity then left-click on the desired location."
   ];
 
   const rotateSteps = [
     "Step 1: Select Rotate from the icon menu.",
-    "Step 2: Left-click on the entity to be rotated and click GO.",
+    "Step 2: Left-click on the entity to be rotated and click Right Click.",
     "Step 3: Select 2-points to set the axis of rotation.",
     "Step 4: Specify the desired angle of rotation on the item entry and press Enter."
   ];
 
   const mirrorSteps = [
     "Step 1: Select Mirror from the icon menu.",
-    "Step 2: Left-click on the entity to be mirrored and click GO.",
+    "Step 2: Left-click on the entity to be mirrored and click Right Click.",
     "Step 3: Select 3-points to set the plane where the entity will be mirrored or left-click on the face where the entity will be mirrored."
   ];
 
   const copySteps = [
     "Step 1: Select Copy from the icon menu.",
-    "Step 2: Left-click on the entity to be copied and click GO.",
+    "Step 2: Left-click on the entity to be copied and click Right Click.",
     "Step 3: Specify the distance on the X, Y and Z-axis and the number of copies needed then press Enter."
   ];
 
@@ -660,7 +622,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -671,7 +633,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   useEffect(() => {
@@ -681,7 +643,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     const fullSteps = [introTitle, introDesc, activeTab.toUpperCase(), ...currentSteps];
     const startIdx = activeTab === 'move' ? 0 : 2;
     registerText(fullSteps, startIdx);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, registerText]);
 
   const wasSpeakingRef = React.useRef(false);
@@ -707,7 +669,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       }
     }
     wasSpeakingRef.current = isSpeaking;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSpeaking, activeTab]);
 
   const prevTabRef = React.useRef(activeTab);
@@ -748,7 +710,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -776,7 +738,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -792,11 +754,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be moved > GO"
+                    text="Left-click on the entity to be moved then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -807,11 +769,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the movement distance on the X, Y and Z-axis on the item entry > Press Enter"
+                  text="Specify the movement distance on the X, Y and Z-axis on the item entry then Press Enter"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -829,7 +791,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '900px' }} />
+              <PremiumVideoPlayer src={vidMove} className="software-screenshot screenshot-wide mt-8" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -854,7 +816,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -870,11 +832,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-4rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be rotated > GO"
+                    text="Left-click on the entity to be rotated then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -885,7 +847,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginBottom: "-3rem" }}>
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -898,11 +860,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">4</span>
+                <span className="step-number">4 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the desired angle of rotation on the item entry > Press Enter"
+                  text="Specify the desired angle of rotation on the item entry then Press Enter"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -914,7 +876,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
             <div className="card-header"><h4>RESULT</h4></div>
-            <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '900px', marginBottom: "-3rem" }} />
+            <PremiumVideoPlayer src={vidRotate} className="software-screenshot" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block', marginBottom: "-3rem" }} />
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
@@ -938,7 +900,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -954,11 +916,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-5rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be mirrored > GO"
+                    text="Left-click on the entity to be mirrored then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -969,7 +931,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -983,7 +945,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '900px' }} />
+              <PremiumVideoPlayer src={vidMirror} className="software-screenshot mt-8" style={{ width: '100%', maxWidth: '898px', aspectRatio: '898 / 505.13', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1008,7 +970,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1024,11 +986,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Left-click on the entity to be copied > GO"
+                    text="Left-click on the entity to be copied then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1039,11 +1001,11 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed > Press Enter"
+                  text="Specify the distance on the X, Y and Z-axis and the number of copies needed then Press Enter"
                   isActive={isSpeaking && currentIndex === 5}
                   currentCharIndex={currentCharIndex}
                 />
@@ -1055,7 +1017,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="card-header"><h4>RESULT</h4></div>
-              <PremiumVideoPlayer src={vidCopy} className="software-screenshot screenshot-large mt-8" style={{ maxWidth: '600px' }} />
+              <PremiumVideoPlayer src={vidCopy} className="mt-8" style={{ width: '898px', height: '505.13px', margin: '0 auto', display: 'block' }} />
             </div>
 
             <div className="lesson-navigation">
@@ -1141,7 +1103,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1155,7 +1117,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1171,7 +1133,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1188,6 +1150,9 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const sketchSteps = [
@@ -1198,7 +1163,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const extrudeSteps = [
     "EXTRUDE",
     "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be extrude then GO. A hatch will appear indicating the specified area to be extruded.",
+    "Step 2: Select the perimeter of the sketch to be extrude then Right Click. A hatch will appear indicating the specified area to be extruded.",
     "Step 3: Specify the height of extrusion. Can also be set on the item entry.",
     "Step 4: Press ENTER to finalize."
   ];
@@ -1206,8 +1171,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const revolveSteps = [
     "REVOLVE",
     "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Select the perimeter of the sketch to be revolve then GO",
-    "Step 3: Select the axis of rotation (pick points or edge) then GO. A hatch will appear indicating the specified area to be revolved."
+    "Step 2: Select the perimeter of the sketch to be revolve then Right Click",
+    "Step 3: Select the axis of rotation (pick points or edge) then Right Click. A hatch will appear indicating the specified area to be revolved."
   ];
 
   const tabs = [
@@ -1224,7 +1189,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -1235,7 +1200,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   useEffect(() => {
@@ -1264,8 +1229,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   useEffect(() => {
     if (!isSpeaking && wasSpeakingRef.current) {
-      const stepsLength = activeTab === 'sketch' 
-        ? 2 + sketchSteps.length 
+      const stepsLength = activeTab === 'sketch'
+        ? 2 + sketchSteps.length
         : 2 + (activeTab === 'extrude' ? extrudeSteps.length : revolveSteps.length);
       if (lastIndexRef.current === stepsLength - 1) {
         const i = tabs.findIndex(t => t.id === activeTab);
@@ -1324,7 +1289,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              
+
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1344,7 +1309,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                 isActive={isSpeaking && currentIndex === 0}
                 currentCharIndex={currentCharIndex}
               />
-              
+
             </h3>
             <KaraokeLessonText
               className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1412,7 +1377,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1437,11 +1402,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be extruded > GO"
+                    text="Select the perimeter of the sketch to be extruded then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1459,7 +1424,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1472,7 +1437,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">4</span>
+                <span className="step-number">4 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1486,7 +1451,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="card-header"><h4>PROCESS OVERVIEW</h4></div>
                 <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
-                  <img src={extrudeOneSide} alt="Extrude Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
+                  <img src={revolveP1} alt="Revolve Process Overview" className="software-screenshot" style={{ width: "900px", marginTop: "2rem" }} />
                 </div>
               </div>
             </div>
@@ -1515,7 +1480,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1531,11 +1496,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginBottom: "-2rem" }}>
               <div className="step-header" style={{ marginBottom: "2rem" }}>
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the perimeter of the sketch to be revolved > GO"
+                    text="Select the perimeter of the sketch to be revolved then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1545,11 +1510,11 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
               <div className={`step-header ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "0.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation (pick points or edge) > GO"
+                    text="Select the axis of rotation (pick points or edge) then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1576,7 +1541,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next'} <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1592,43 +1557,46 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const [activeTab, setActiveTab] = useState<'showHide' | 'stretch' | 'resize'>(() => {
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'showHide';
   });
-  const { scrollProgress, containerRef, speak, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, stop, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
   const showHideSteps = [
     "SHOW / HIDE ENTITY",
     "Step 1: Select Show/Hide from the icon menu.",
-    "Step 2: Select the entities for showing/hiding then GO",
+    "Step 2: Select the entities for showing/hiding then Right Click",
     "SHOW/HIDE DRAFTING ENTITY",
     "Step 1: Select Show/Hide Drafting Entity from the icon menu.",
     "Step 2: Right-click to show/hide all drafting entities.",
     "Drafting Entities include: Dimensions, Notes and Symbols.",
     "HIDE UNSELECTED ENTITY",
     "Step 1: Select Hide Unselected Entity from the icon menu.",
-    "Step 2: Select all entities to be retain then GO",
+    "Step 2: Select all entities to be retain then Right Click",
     "All unselected entities will be hidden."
   ];
 
   const stretchSteps = [
     "STRETCH / SHAPE / CUT",
     "Step 1: Select Stretch from the icon menu.",
-    "Step 2: Select the face to be stretch then GO",
+    "Step 2: Select the face to be stretch then Right Click",
     "Step 3: Specify the desired length of the solid entity on the item entry.",
     "Also works for circular surfaces.",
     "OR",
-    "Select face then GO then Left-click on the 3D Space",
+    "Select face, then Right Click, then Left-click on the 3D Space",
     "A linear scale will appear on the 3D Space",
-    "Specify the additional length of stretch then Press Enter or Left-Click on the scale."
+    "Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
   ];
 
   const resizeSteps = [
     "RESIZE",
     "Step 1: Select Resize from the icon menu.",
-    "Step 2: Select the entity for resizing then GO.",
-    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space."
+    "Step 2: Select the entity for resizing then Right Click.",
+    "Step 3: Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry then Left-click on the 3D Space."
   ];
 
   const tabs = [
@@ -1644,7 +1612,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i < tabs.length - 1) { setActiveTab(tabs[i + 1].id as any); } else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   const handlePrev = (eOrIsAuto?: boolean | React.MouseEvent | React.MouseEvent<HTMLButtonElement>) => {
@@ -1655,7 +1623,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     }
     const i = tabs.findIndex(t => t.id === activeTab);
     if (i > 0) { setActiveTab(tabs[i - 1].id as any); } else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    /* scroll handled by activeTab useEffect */
   };
 
   // Register TTS text per active tab so karaoke indices stay correct
@@ -1663,15 +1631,15 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   useEffect(() => {
     const introTitle = activeTab === 'showHide' ? "Show / Hide"
       : activeTab === 'stretch' ? "Stretch / Shape / Cut"
-      : "Resize";
+        : "Resize";
     const introDesc = activeTab === 'showHide'
       ? "Tools use to switch between displaying and hiding entities."
       : activeTab === 'stretch'
-      ? "Tools used to modify the length and form of solid entities."
-      : "Tool used to scale up or scale down a solid entity.";
+        ? "Tools used to modify the length and form of solid entities."
+        : "Tool used to scale up or scale down a solid entity.";
     const steps = activeTab === 'showHide' ? showHideSteps
       : activeTab === 'stretch' ? stretchSteps
-      : resizeSteps;
+        : resizeSteps;
     registerText([introTitle, introDesc, ...steps], 0);
   }, [activeTab, registerText]);
 
@@ -1694,7 +1662,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            
+
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1716,7 +1684,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 0}
               currentCharIndex={currentCharIndex}
             />
-            
+
           </h3>
           <KaraokeLessonText
             className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -1749,7 +1717,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1766,11 +1734,11 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entities for showing/hiding > GO"
+                    text="Select the entities for showing/hiding then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1792,7 +1760,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1809,7 +1777,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1869,7 +1837,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 10 ? 'reading-active' : ''}`} data-reading-index="10">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1886,11 +1854,11 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 11 ? 'reading-active' : ''}`} data-reading-index="11">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select all entities to be retain > GO"
+                    text="Select all entities to be retain then Right Click"
                     isActive={isSpeaking && currentIndex === 11}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1925,7 +1893,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1942,11 +1910,11 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the face to be stretch &gt; GO"
+                    text="Select the face to be stretch then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -1958,7 +1926,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -1989,14 +1957,14 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <div className="step-label">
                     <KaraokeLessonText
                       as="span"
-                      text="Select face >  GO"
+                    text="Select face, then Right Click"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
                     <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px' }} />
                     <KaraokeLessonText
                       as="span"
-                      text=" > Left-click on the 3D Space"
+                    text=", then Left-click on the 3D Space"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex - 17}
                     />
@@ -2014,7 +1982,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   <p className={`p-flush mt-4 ${currentIndex === 10 ? "reading-active" : ""}`} data-reading-index="10" style={{ marginBottom: "2rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Specify the additional length of stretch > Press Enter or Left-Click on the scale."
+                    text="Specify the additional length of stretch, then Press Enter or Left-Click on the scale."
                       isActive={isSpeaking && currentIndex === 10}
                       currentCharIndex={currentCharIndex}
                     />
@@ -2042,12 +2010,12 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              
+
             </div>
 
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2064,11 +2032,11 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ marginBottom: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the entity for resizing > GO"
+                    text="Select the entity for resizing then Right Click"
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2080,11 +2048,11 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginTop: "-4rem" }}>
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry > Left-click on the 3D Space"
+                    text="Using resize allows the user to scale up or scale down the size of the solid entity. Specify the scale on the item entry, then Left-click on the 3D Space"
                     isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
@@ -2100,7 +2068,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={handleNext}>Next Lesson <ChevronRight size={18} /></button>
+              <button className="nav-button next" onClick={handleNext}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -2114,18 +2082,15 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'shapeSteels';
   });
   // Note: speak and stop are not used in this component's single-tab layout.
-  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(subLessonId);
 
   useEffect(() => {
     localStorage.setItem(`${subLessonId}-tab`, activeTab);
+    setTimeout(() => {
+      document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 150);
   }, [subLessonId, activeTab]);
 
-  const shapeSteelsSteps = [
-    "Shape Steels Includes: C-CHANNEL, H-BEAM, I-BEAM, EQUAL ANGLE BAR, UNEQUAL ANGLE BAR, UNEQUAL SIDED ANGLE BAR",
-    "Step 1: Select Arrange Machine Part from the icon menu.",
-    "Step 2: The Arrange Machine Part window will appear. Select and provide the necessary specifications tehn Press OK",
-    "Step 3: In the Key Entry Area, enter the coordinates for the position (origin point)"
-  ];
 
   const tabs = [{ id: 'shapeSteels', label: 'Shape Steels' }];
 
@@ -2147,7 +2112,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -2181,7 +2146,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2197,11 +2162,11 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications &gt; Press OK"
+                  text="The Arrange Machine Part window will appear. Select and provide the necessary specifications then Press OK"
                   isActive={isSpeaking && currentIndex === 4}
                   currentCharIndex={currentCharIndex}
                 />
@@ -2213,7 +2178,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -2276,4 +2241,5 @@ const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId
 
 export { BasicOperation1, BasicOperation2, BasicOperation3, BasicOperation4, BasicOperation5, BasicOperationLesson };
 export default BasicOperationLesson;
+
 

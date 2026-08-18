@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 /* Importing assets for Dimensioning (1) */
-import diimensioningImg from "../../../../assets/2D_Image_File/2D_dimensioning(1)_diimensioning.png";
 import standardDimMenuImg from "../../../../assets/2D_Image_File/2D_dimensioning(1)_a.1_standard_dimension.png";
 import seriesDimMenuImg from "../../../../assets/2D_Image_File/2D_dimensioning(1)_a.2_series_dimension.png";
+import diimensioningImg from "../../../../assets/2D_Image_File/2D_dimensioning(1)_diimensioning.png";
 
 /* Importing assets for Dimensioning (2) */
 import editDimDrawingImg from "../../../../assets/2D_Image_File/2D_dimensioning_b.1_edit_dimension_charac.png";
-import toleranceImg from "../../../../assets/2D_Image_File/2D_dimensioning_tolerance.png";
 import chamferRadiusImg from "../../../../assets/2D_Image_File/2D_dimensioning_chamfer_radius.png";
+import toleranceImg from "../../../../assets/2D_Image_File/2D_dimensioning_tolerance.png";
 
 /* Importing assets for Dimensioning (3) */
-import polishedMaterialImg from "../../../../assets/2D_Image_File/2D_dimensioning_b.2_polished_material.png";
 import partNoteMenuImg from "../../../../assets/2D_Image_File/2D_dimensioning(3)_part_note.png";
+import polishedMaterialImg from "../../../../assets/2D_Image_File/2D_dimensioning_b.2_polished_material.png";
 
 /* Importing assets for Dimensioning (4) */
 import changePosition1Img from "../../../../assets/2D_Image_File/2D_dimensioning(4)_b.4_change_position_1 (1).png";
@@ -69,7 +68,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -84,7 +83,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -94,7 +93,7 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
       steps: [
         "Put all the dimensions, symbols, and notes required in the drawing.",
         "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
-        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain."
+        "Use this for continuous linear dimensions. Select multiple lines in sequence, then click Right Click to place the aligned chain."
       ]
     },
     '2d-dimensioning-2': {
@@ -481,11 +480,11 @@ const DimensioningLesson: React.FC<DimensioningLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

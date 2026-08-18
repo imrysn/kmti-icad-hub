@@ -1,34 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
+import React,{ useEffect,useState } from "react";
 
 import {
-  ChevronLeft,
-  ChevronRight,
-  ArrowRight,
-  Zap
+ChevronLeft,
+ChevronRight
 } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* 2D > 3D (1) Assets */
-import workPlaneImg from "../../../../assets/3D_Image_File/2d_3d_work_plane.png";
-import openWorkPlaneImg from "../../../../assets/3D_Image_File/2d_3d_open_work_plane1.png";
-import openWorkPlaneImg2 from "../../../../assets/3D_Image_File/2d_3d_open_work_plane.png";
+import commandMenu from "../../../../assets/3D_Image_File/2d_3d1_1.png";
+import extrudeDialog from "../../../../assets/3D_Image_File/2d_3d2_extrude1.png";
+import revolveSteps from "../../../../assets/3D_Image_File/2d_3d2spiral.png";
+import commandMenu2 from "../../../../assets/3D_Image_File/2d_3d_1_command_menu2.png";
 import extrudeIcon from "../../../../assets/3D_Image_File/2d_3d_1_extrude.png";
 import pickCrossSection from "../../../../assets/3D_Image_File/2d_3d_1_pick_cross_section.png";
-import commandMenu from "../../../../assets/3D_Image_File/2d_3d1_1.png";
-import commandMenu2 from "../../../../assets/3D_Image_File/2d_3d_1_command_menu2.png";
-import leftClick from "../../../../assets/3D_Image_File/left_click.png";
-import extrudeDialog from "../../../../assets/3D_Image_File/2d_3d2_extrude1.png";
 import revolveIcon from "../../../../assets/3D_Image_File/2d_3d_2_revolve.png";
-import revolveSteps from "../../../../assets/3D_Image_File/2d_3d2spiral.png";
 import spiralSketch from "../../../../assets/3D_Image_File/2d_3d_2_revolve_spiral_form_sketch.png";
 import spiralIcon from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form.png";
-import spiralItemEntry from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form_item_entry.png";
-import spiralRotation1 from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
 import spiralRotation from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation.png";
+import spiralRotation1 from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
+import spiralItemEntry from "../../../../assets/3D_Image_File/2d_3d_2_spiral_form_item_entry.png";
+import openWorkPlaneImg2 from "../../../../assets/3D_Image_File/2d_3d_open_work_plane.png";
+import openWorkPlaneImg from "../../../../assets/3D_Image_File/2d_3d_open_work_plane1.png";
+import workPlaneImg from "../../../../assets/3D_Image_File/2d_3d_work_plane.png";
+import leftClick from "../../../../assets/3D_Image_File/left_click.png";
 
 
 interface SubLessonProps {
@@ -86,7 +83,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -100,7 +97,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useEffect(() => {
@@ -128,7 +125,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
 
@@ -145,7 +142,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              
+
             </div>
             <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: "-3.4rem" }}>
               <KaraokeLessonText
@@ -170,8 +167,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev?.()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext?.()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -187,7 +184,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   currentCharIndex={currentCharIndex}
                 />
               </h4>
-              
+
             </div>
             <KaraokeLessonText
               as="p"
@@ -202,8 +199,8 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev?.()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext?.()}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -250,8 +247,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "EXTRUDE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing vertical projection.",
     "Step 1: Select Extrude from the icon menu.",
-    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure > GO",
-    "Step 3: Specify the height of extrusion on the item entry then Press Enter then GO",
+    "Step 2: Pick the cross-section to be extruded. A hatch will appear to show that the sketch is an enclosed figure, then Right Click",
+    "Step 3: Specify the height of extrusion on the item entry, then Press Enter, then Right Click",
     "A dialog box will appear asking if after extrusion, the work plane will be deleted or not. Select OK to delete the work plane. ",
     "Note: Deleting the work plane will delete all the sketch made on the plane. Be careful, this process cannot be undone.",
     "Select Cancel to keep the work plane together with all the 2D sketches.",
@@ -262,8 +259,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "REVOLVE",
     "Creates a solid entity from a section form created on a work plane or 2D drawing, by performing rotation projection.",
     "Step 1: Select Revolve from the icon menu.",
-    "Step 2: Pick the cross section to be revolved then GO. A hatch will appear to show that the sketch is an enclosed figure",
-    "Step 3: Select the axis of rotation then GO",
+    "Step 2: Pick the cross section to be revolved, then Right Click. A hatch will appear to show that the sketch is an enclosed figure",
+    "Step 3: Select the axis of rotation, then Right Click",
     "PROCESS OVERVIEW"
   ];
   const spiralSteps = [
@@ -271,9 +268,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     "SPIRAL FORM",
     "Creates a 3D spiral form from a section form created on a 2D sketch.",
     "Step 1: First do the sketch",
-    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure then GO",
-    "Step 3: Specify the pitch of the spiral on the item entry then Press Enter then GO. Note: Pitch must be greater than Thickness",
-    "Step 4: Select the ends of the length of the spiral along the axis of rotation then GO",
+    "Step 2: Select Spiral Form from the icon menu. Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click",
+    "Step 3: Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click. Note: Pitch must be greater than Thickness",
+    "Step 4: Select the ends of the length of the spiral along the axis of rotation, then Right Click",
     "RESULT"
   ];
 
@@ -289,7 +286,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
   const handlePrev = (isAuto = false) => {
     stop();
@@ -302,7 +299,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   useEffect(() => {
@@ -334,7 +331,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
       <div className="lesson-tabs">
-        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }} > {tab.label} </button>))}
+        {tabs.map((tab) => (<button key={tab.id} className={`tab-button ${activeTab === tab.id ? "active" : ""}`} onClick={() => { stop(); sessionStorage.setItem('tts-autoplay-active', 'false'); setActiveTab(tab.id as any); }}>{tab.label}</button>))}
       </div>
 
       <section className="lesson-intro">
@@ -345,7 +342,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -390,7 +387,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -417,7 +414,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   <br />
                   <KaraokeLessonText
                     as="span"
-                    text="A hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                    text="A hatch will appear to show that the sketch is an enclosed figure, then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -431,11 +428,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the height of extrusion on the item entry &gt; Press Enter &gt; GO"
+                    text="Specify the height of extrusion on the item entry, then Press Enter, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -489,8 +486,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev?.()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext?.()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -520,7 +517,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -536,11 +533,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <div className="step-label" style={{ gap: '0px' }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Pick the cross section to be revolved &gt; GO"
+                    text="Pick the cross section to be revolved, then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -558,11 +555,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the axis of rotation &gt; GO"
+                    text="Select the axis of rotation, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -588,8 +585,8 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev?.()}><ChevronLeft size={18} /> Previous</button>
-              <button className="nav-button next" onClick={() => handleNext?.()}>Next <ChevronRight size={18} /></button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button next" onClick={() => handleNext()}>Next <ChevronRight size={18} /></button>
             </div>
           </div>
         )}
@@ -619,7 +616,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -635,7 +632,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -651,7 +648,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                 as="p"
                 className="p-flush"
                 style={{ marginTop: "-1rem" }}
-                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure &gt; GO"
+                text="Pick the cross section to be revolved. Hatch will appear to show that the sketch is an enclosed figure, then Right Click"
                 isActive={isSpeaking && currentIndex === 6}
                 currentCharIndex={currentCharIndex}
               />
@@ -659,11 +656,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
               <div className="step-header" style={{ marginTop: "-1rem" }}>
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <div className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the pitch of the spiral on the item entry &gt; Press Enter &gt; GO"
+                    text="Specify the pitch of the spiral on the item entry, then Press Enter, then Right Click"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -686,11 +683,11 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
             <div className={`instruction-step ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
               <div className="step-header">
-                <span className="step-number">4</span>
+                <span className="step-number">4 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
-                  text="Select the ends of the length of the spiral along the axis of rotation then GO"
+                  text="Select the ends of the length of the spiral along the axis of rotation, then Right Click"
                   isActive={isSpeaking && currentIndex === 8}
                   currentCharIndex={currentCharIndex}
                 />
@@ -717,7 +714,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev?.()}><ChevronLeft size={18} /> Previous</button>
+              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> Previous</button>
               <button className="nav-button next" onClick={onNextLesson}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -757,3 +754,4 @@ const TwoDTo3DLesson: React.FC<TwoDTo3DLessonProps> = ({
 };
 
 export default TwoDTo3DLesson;
+

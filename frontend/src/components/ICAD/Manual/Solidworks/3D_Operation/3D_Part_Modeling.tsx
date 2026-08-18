@@ -108,7 +108,7 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
                     {subLessonId === 'sw-how-to-edit-matings' && <HowToEditMatingsContent />}
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "2rem" }}>
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -119,7 +119,7 @@ const PartModelingLesson: React.FC<PartModelingProps> = ({
                             className="nav-button next"
                             onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                         >
-                            {nextLabel || 'Next'} <ChevronRight size={18} />
+                            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
                         </button>
                     </div>
 

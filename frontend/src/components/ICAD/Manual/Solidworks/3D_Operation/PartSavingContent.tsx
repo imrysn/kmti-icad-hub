@@ -6,25 +6,32 @@ const PartSavingContent: React.FC = () => (
     <>
         {/* Step 1 */}
         <div className="instruction-step">
-            <div className="step-header"  style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">1</span>
-                <span className="step-label">
-                    In <strong>Menu Bar </strong>, click <strong>Save</strong>{' '}
+                <span className="step-label">Save File</span>
+            </div>
+            <div className="step-description">
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    In <strong>Menu Bar</strong>, click <strong>Save</strong>{' '}
                     <span className="image-wrapper-flush">
-                        <img src={csImg} alt="Save icon" style={{ height: '45px', verticalAlign: 'middle' }} />
+                        <img src={csImg} alt="Save icon" style={{ height: '32px', verticalAlign: 'middle' }} />
                     </span>
-                    {' '}or <strong>Ctrl + S</strong>   to save file.
-                </span>
+                    {' '}or press <strong>Ctrl + S</strong> on your keyboard to save the file.
+                </p>
             </div>
         </div>
 
         {/* Step 2 */}
         <div className="instruction-step">
-            <div className="step-header"  style={{padding:'8px 0px'}}>
+            <div className="step-header" style={{ padding: '8px 0px' }}>
                 <span className="step-number">2</span>
-                <span className="step-label">When this <strong>Dialog box</strong> appears, edit <strong>File Name</strong>. Click <strong>Save</strong>.</span>
+                <span className="step-label">Save As Dialog Box</span>
             </div>
             <div className="step-description">
+                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
+                    When the dialog box appears, edit the <strong>File Name</strong>, then click <strong>Save</strong>.
+                </p>
+                
                 <div className="image-wrapper" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <img src={saveImg} alt="Save Dialog Box" className="software-screenshot screenshot-wide" />
                 </div>

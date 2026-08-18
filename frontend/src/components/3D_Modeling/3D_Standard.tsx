@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import '../../styles/3D_Modeling/CourseLesson.css';
@@ -85,7 +85,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
       if (isValidFor1 || isValidFor4 || isValidFor6) {
         localStorage.setItem(`${subLessonId}-tab`, activeTab);
         setTimeout(() => {
-            document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+          document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
         }, 150);
       }
     }
@@ -632,14 +632,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 {activeTab === 'screw' && (
-                  <div className="lesson-table-container mt-4">
-                    <table className="lesson-table">
+                  <div className="lesson-table-container screw-code-table-container mt-4">
+                    <table className="lesson-table screw-code-table">
                       <thead>
                         <tr>
-                          <th style={{ width: '45%' }}>Types</th>
-                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
-                          <th style={{ width: '20%' }}>Japanese Name</th>
+                          <th style={{ width: '30%' }}>Types</th>
+                          <th style={{ width: '15%' }}>Code</th>
+                          <th style={{ width: '18%', whiteSpace: 'nowrap' }}>Size</th>
+                          <th style={{ width: '37%' }}>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -717,14 +717,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 )}
 
                 {activeTab === 'hardware' && (
-                  <div className="lesson-table-container mt-4">
-                    <table className="lesson-table">
+                  <div className="lesson-table-container hardware-code-table-container mt-4">
+                    <table className="lesson-table hardware-code-table">
                       <thead>
                         <tr>
-                          <th style={{ width: '45%' }}>Type</th>
-                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
-                          <th style={{ width: '20%' }}>Article (JIS)</th>
+                          <th style={{ width: '35%' }}>Type</th>
+                          <th style={{ width: '12%' }}>Code</th>
+                          <th style={{ width: '18%', whiteSpace: 'nowrap' }}>Size</th>
+                          <th style={{ width: '35%' }}>Article (JIS)</th>
                         </tr>
                       </thead>
                       <tbody>

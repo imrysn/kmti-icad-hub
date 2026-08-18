@@ -618,9 +618,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                           </div>
                         ))}
                       </div>
-                      <div className="lesson-navigation" style={{ marginTop: '3rem', justifyContent: 'center', gap: '1.5rem' }}>
+                      <div className="lesson-navigation">
                         <button className="nav-button" onClick={goToPrevLesson}>
-                          <ChevronLeft size={18} /> Previous Module
+                          <ChevronLeft size={18} /> Previous
                         </button>
                         <button className="nav-button next" onClick={handleNextAction}>
                           {nextLabel} <ChevronRight size={18} />
@@ -637,7 +637,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                       <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
                       <p className="content-2d-placeholder__text">Content will be available soon.</p>
 
-                      <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                      <div className="lesson-navigation">
                         <button className="nav-button" onClick={goToPrevLesson}>
                           <ChevronLeft size={18} /> Previous
                         </button>
@@ -670,7 +670,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                       This area will host the instructional text, images, and active testing prompts.
                     </p>
 
-                    <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                    <div className="lesson-navigation">
                       <button className="nav-button" onClick={goToPrevLesson}>
                         <ChevronLeft size={18} /> Previous
                       </button>

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
-import balloonPartMenuImg from "../../../../assets/2D_Image_File/2D_balloon_part_drawing.png";
 import balloonAssemblyMenuImg from "../../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
-import balloonAssemblyMenu2Img from "../../../../assets/2D_Image_File/2D_balloon_assembly_drawing_2.png";
+import balloonPartMenuImg from "../../../../assets/2D_Image_File/2D_balloon_part_drawing.png";
 
 interface BalloonLessonProps {
   nextLabel?: string;
@@ -30,9 +29,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
     "If the details on the BOM are properly linked, part balloons are automatically displayed.",
     "If part balloon is not displayed, the drawing and the BOM properties is not linked. Do not manually input the letters/numbers in item entry box.",
     "Text should not change using edit characters.",
-    "Assembly drawing",
-    "Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together.",
-    "Select the setup for Add Balloon. Click L1 of the part needed, then click P2 to place it beside the balloon where it will be attached."
+    "Assembly drawing"
   ];
   const tabsList = [{ id: '1' }];
 
@@ -173,26 +170,6 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
                     </div>
                     <div className="step-description">
                       <img src={balloonAssemblyMenuImg} alt="Assembly Add Balloon Settings" className="software-screenshot screenshot-wide" />
-                      
-                      <div className={`instruction-box mt-6 ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
-                        <KaraokeLessonText
-                          className="p-flush"
-                          text="Edit Balloon: The Add Balloon command is used to insert balloon into existing balloon to show that they are assembled together."
-                          isActive={isSpeaking && currentIndex === 7}
-                          currentCharIndex={currentCharIndex}
-                        />
-                      </div>
-
-                      <div className={`instruction-box mt-4 ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
-                        <KaraokeLessonText
-                          className="p-flush"
-                          text="Select the setup for Add Balloon. Click L-1 of the part needed, then click P-2 to place it beside the balloon where it will be attached."
-                          isActive={isSpeaking && currentIndex === 8}
-                          currentCharIndex={currentCharIndex}
-                        />
-                      </div>
-
-                      <img src={balloonAssemblyMenu2Img} alt="Add Balloon Assembly Placement" className="software-screenshot screenshot-small mt-6" style={{ marginLeft: "26.5rem" }} />
                     </div>
                   </div>
                 </div>
@@ -206,7 +183,7 @@ const BalloonLesson: React.FC<BalloonLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={onNextLesson}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

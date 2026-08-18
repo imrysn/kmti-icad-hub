@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
 
 /* Assets */
+import uploadingFlowchart from "../../../../assets/3D_Image_File/e_3d_server_upload.png";
 import purchasePartsFlowchart from "../../../../assets/3D_Image_File/3d_purchase_parts.png";
-import uploadingFlowchart from "../../../../assets/3D_Image_File/3d_purchase.png";
 
 interface PurchasePartsLessonProps {
   nextLabel?: string;
@@ -29,7 +27,6 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex,
     registerText
   } = useLessonCore(subLessonId);
 
@@ -44,7 +41,7 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = () => {
@@ -54,13 +51,9 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
-  const introTitle = activeTab === 'part1' ? "PURCHASE PARTS MODELING" : "SERVER UPLOAD PROTOCOL";
-  const introSubtitle = activeTab === 'part1' ? 
-    "Relationship between vendor data, ICAD formatting, and assembly integration." : 
-    "Protocol for synchronizing purchase parts with the central repository.";
 
 
   const part1Steps = [
@@ -123,12 +116,12 @@ const PurchasePartsLesson: React.FC<PurchasePartsLessonProps> = ({ subLessonId =
             </div>
 
             <img
-                src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
-                alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
-                className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
-                data-reading-index="2"
+              src={activeTab === 'part1' ? purchasePartsFlowchart : uploadingFlowchart}
+              alt={activeTab === 'part1' ? "Purchase Part 3D Modeling Flowchart" : "Sample Flow Chart for Uploading Purchase Parts on the Server"}
+              className={`software-screenshot screenshot-wide mt-12 ${currentIndex === 2 ? "reading-active" : ""}`}
+              data-reading-index="2"
             />
-          </div>  
+          </div>
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>

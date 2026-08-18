@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* Boolean (1) Assets */
 import booleanOpMenu from "../../../../assets/3D_Image_File/boolean1_boolean_operation.png";
-import unionIcon from "../../../../assets/3D_Image_File/boolean1_union.png";
+import booleanSubtract from "../../../../assets/3D_Image_File/boolean1_boolean_subtract.png";
 import select3D from "../../../../assets/3D_Image_File/boolean1_select3d.png";
 import subtractIcon from "../../../../assets/3D_Image_File/boolean1_subtract.png";
-import subtractEntity from "../../../../assets/3D_Image_File/boolean1_subtract_entity.png";
 import subtractAfter from "../../../../assets/3D_Image_File/boolean1_subtract_after_subtraction.png";
+import subtractEntity from "../../../../assets/3D_Image_File/boolean1_subtract_entity.png";
 import subtractRetain from "../../../../assets/3D_Image_File/boolean1_subtract_retain_entities.png";
-import booleanSubtract from "../../../../assets/3D_Image_File/boolean1_boolean_subtract.png";
+import unionIcon from "../../../../assets/3D_Image_File/boolean1_union.png";
 import leftClick from "../../../../assets/3D_Image_File/left_click.png";
 
 /* Boolean (2) Assets */
+import componentIcon from "../../../../assets/3D_Image_File/boolean2_component.png";
+import componentOk from "../../../../assets/3D_Image_File/boolean2_component_select_ok.png";
+import componentSeparate from "../../../../assets/3D_Image_File/boolean2_component_separate_all_components.png";
+import componentSeparated from "../../../../assets/3D_Image_File/boolean2_component_separated.png";
 import intersectIcon from "../../../../assets/3D_Image_File/boolean2_intersect.png";
 import intersectingEntities from "../../../../assets/3D_Image_File/boolean2_intersecting_entities.png";
 import selectEntity from "../../../../assets/3D_Image_File/boolean2_select_entity.png";
 import selectOk from "../../../../assets/3D_Image_File/boolean2_select_ok.png";
-import componentIcon from "../../../../assets/3D_Image_File/boolean2_component.png";
-import componentSeparate from "../../../../assets/3D_Image_File/boolean2_component_separate_all_components.png";
-import componentOk from "../../../../assets/3D_Image_File/boolean2_component_select_ok.png";
-import componentSeparated from "../../../../assets/3D_Image_File/boolean2_component_separated.png";
 
 interface BooleanLessonProps {
   nextLabel?: string;
@@ -58,7 +57,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "UNION",
     "Tool for joining 3D entities into a single entity.",
     "Step 1: Select Union from the icon menu.",
-    "Step 2: Select all 3D entities for joining then GO",
+    "Step 2: Select all 3D entities for joining then Right Click",
   ];
 
   const subtractSteps = [
@@ -66,7 +65,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "Tool for creating cutouts on 3D entities.",
     "Step 1: Select Subtract from the icon menu.",
     "Step 2: First, select the Target entity.",
-    "Step 3: Select the tool entities then GO. Tool entities will disappear and become components after subtraction.",
+    "Step 3: Select the tool entities then Right Click. Tool entities will disappear and become components after subtraction.",
     "This subtract tool will retain the tool entities after subtraction.",
   ];
 
@@ -74,7 +73,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "INTERSECT",
     "Tool that creates entity of the product of two intersecting entities.",
     "Step 1: Select Intersect from the icon menu.",
-    "Step 2: Select the intersecting entities then GO",
+    "Step 2: Select the intersecting entities then Right Click",
     "Intersecting entities will not disappear after the process.",
   ];
 
@@ -82,10 +81,10 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     "SEPARATE ENTITY",
     "Tool use to reverse boolean operations by creating CSG solid.",
     "Component: By product of boolean operations (entities joined by union, cutout, holes). This tool is use to separate specified entities from the solid entity.",
-    "Step 1: Select the desired components to be separated from the solid entity then GO",
+    "Step 1: Select the desired components to be separated from the solid entity then Right Click",
     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK",
     "This tool is use to separate all components from the solid entity.",
-    "Step 1: Select the solid entity then GO",
+    "Step 1: Select the solid entity then Right Click",
     "Step 2: Separated components will be displayed in a form of CSG solid. Then select OK"
   ];
 
@@ -105,7 +104,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     else if (activeTab === "subtract") setActiveTab("intersect");
     else if (activeTab === "intersect") setActiveTab("separate");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -117,7 +116,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
     else if (activeTab === "intersect") setActiveTab("subtract");
     else if (activeTab === "subtract") setActiveTab("union");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Boolean Operation";
@@ -174,7 +173,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -212,7 +211,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -229,11 +228,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select entities to join then GO"
+                      text="Select entities to join then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -289,7 +288,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -306,7 +305,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -331,11 +330,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
                 <div className="step-header">
-                  <span className="step-number">3</span>
+                  <span className="step-number">3 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the tool entities then GO"
+                      text="Select the tool entities then Right Click"
                       isActive={isSpeaking && currentIndex === 6}
                       currentCharIndex={currentCharIndex}
                     />
@@ -435,7 +434,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -452,11 +451,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select intersecting entities then GO"
+                      text="Select intersecting entities then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -551,11 +550,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the desired components to be separated from the solid entity &gt; GO"
+                      text="Select the desired components to be separated from the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 5}
                       currentCharIndex={currentCharIndex}
                     />
@@ -566,7 +565,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -597,11 +596,11 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 8 ? "reading-active" : ""}`} data-reading-index="8">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                     <KaraokeLessonText
                       as="span"
-                      text="Select the solid entity &gt; GO"
+                      text="Select the solid entity then Right Click"
                       isActive={isSpeaking && currentIndex === 8}
                       currentCharIndex={currentCharIndex}
                     />
@@ -612,7 +611,7 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 
               <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <span className="step-label">
                     <KaraokeLessonText
                       as="span"
@@ -643,3 +642,4 @@ const BooleanLesson: React.FC<BooleanLessonProps> = ({ subLessonId, onNextLesson
 };
 
 export default BooleanLesson;
+

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
@@ -50,7 +49,7 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -65,7 +64,7 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -73,14 +72,14 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for External C-Type Retaining Rings.',
       steps: [
-       
+
       ]
     },
     '2d-retaining-ring-internal': {
       title: 'RETAINING RING SIZE AND TOLERANCE',
       subtitle: 'Dimensional specifications and assembly standards for Internal C-Type Retaining Rings.',
       steps: [
-        
+
       ]
     }
   };
@@ -151,10 +150,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img 
-                    src={retaining1Img} 
-                    alt="External Retaining Ring Standards" 
-                    className="software-screenshot screenshot-wide" 
+                  <img
+                    src={retaining1Img}
+                    alt="External Retaining Ring Standards"
+                    className="software-screenshot screenshot-wide"
                   />
                 </>
               )}
@@ -177,10 +176,10 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
                     isActive={isSpeaking && currentIndex === 2}
                     currentCharIndex={currentCharIndex}
                   />
-                  <img 
-                    src={retaining2Img} 
-                    alt="Internal Retaining Ring Standards" 
-                    className="software-screenshot screenshot-wide" 
+                  <img
+                    src={retaining2Img}
+                    alt="Internal Retaining Ring Standards"
+                    className="software-screenshot screenshot-wide"
                   />
                 </>
               )}
@@ -188,11 +187,11 @@ const RetainingRingLesson: React.FC<RetainingRingLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

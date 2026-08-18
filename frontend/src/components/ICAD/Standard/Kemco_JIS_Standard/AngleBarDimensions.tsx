@@ -56,13 +56,15 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
 
     const handleNext = () => {
         stop();
-        if (onNextLesson) onNextLesson();
+        if (activeTab === "unequal") setActiveTab("equal");
+        else if (onNextLesson) onNextLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handlePrev = () => {
         stop();
-        if (onPrevLesson) onPrevLesson();
+        if (activeTab === "equal") setActiveTab("unequal");
+        else if (onPrevLesson) onPrevLesson();
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -99,8 +101,8 @@ const AngleBarDimensionsLesson: React.FC<AngleBarDimensionsLessonProps> = ({
                 showCounter={false}
                 onPrev={handlePrev}
                 onNext={handleNext}
-                nextLabel={nextLabel}
-                prevDisabled={!onPrevLesson}
+                nextLabel={activeTab === "unequal" ? "Next" : (nextLabel || "Next Lesson")}
+                prevDisabled={activeTab === "unequal" && !onPrevLesson}
             />
         </div>
     );

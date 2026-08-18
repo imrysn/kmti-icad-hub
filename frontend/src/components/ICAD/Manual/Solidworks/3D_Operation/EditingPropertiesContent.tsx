@@ -9,13 +9,10 @@ const EditingPropertiesContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header"   style={{padding:'8px 0px'}}>
                 <span className="step-number">1</span>
-                <span className="step-label"> In <strong>Menu Bar </strong>, Click File Properties{' '}
-
-                    <span className="image-wrapper-flush">
-                        <img src={fileImg} alt="File Properties" style={{ height: '45px', verticalAlign: 'middle' }} />
-                    </span>
+                <span className="step-label">In <strong>Menu Bar</strong>, click <strong>File Properties</strong></span>
+                <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                    <img src={fileImg} alt="File Properties" style={{ display: 'block', height: '45px', width: 'auto' }} />
                 </span>
-
             </div>
         </div>
 

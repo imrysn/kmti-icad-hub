@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 // --- Assets ---
 import originOverview from "../../../../assets/3D_Image_File/origin.png";
@@ -68,7 +68,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = () => {
@@ -77,7 +77,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
 
@@ -191,7 +191,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -208,7 +208,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
                 <div className="step-header" style={{ marginTop: "-1rem" }}>
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -222,7 +222,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                 <div className="step-header">
-                  <span className="step-number">3</span>
+                  <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -236,7 +236,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
                 <div className="step-header">
-                  <span className="step-number">4</span>
+                  <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -250,7 +250,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
                 <div className="step-header">
-                  <span className="step-number">5</span>
+                  <span className="step-number">5 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -278,7 +278,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
               <ChevronLeft size={18} /> Previous
             </button>
             <button className="nav-button next" onClick={() => handleNext()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+              {activeTab === 'layout' ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

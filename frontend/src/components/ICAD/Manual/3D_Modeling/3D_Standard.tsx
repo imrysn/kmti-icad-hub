@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import '../../../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 // --- Assets ---
 import scale2D from '../../../../assets/3D_Image_File/standard1_scale_2d.png';
@@ -14,8 +13,8 @@ import scalePointerVGroove from '../../../../assets/3D_Image_File/standard1_scal
 import gasDischarge from '../../../../assets/3D_Image_File/standard2_gas_discharge.png';
 import oilGroove from '../../../../assets/3D_Image_File/standard2_oil_groove.png';
 import sprocketNote from '../../../../assets/3D_Image_File/standard2_sprocket.png';
-import sprocketColoring from '../../../../assets/3D_Image_File/standard3_sprocket_3d.png';
 import sprocketKeywayLoc from '../../../../assets/3D_Image_File/standard3_location_of_sprocket_keyway.png';
+import sprocketColoring from '../../../../assets/3D_Image_File/standard3_sprocket_3d.png';
 import boltLengthCalc from '../../../../assets/3D_Image_File/standard6_bolt_length.png';
 import pillowBlock1 from '../../../../assets/3D_Image_File/standard6_pillow_block_1.png';
 import pillowBlock3 from '../../../../assets/3D_Image_File/standard6_pillow_block_3.png';
@@ -39,8 +38,8 @@ interface StandardLessonProps {
 const StandardLesson: React.FC<StandardLessonProps> = ({
   subLessonId = 'standard-1',
   onNextLesson,
-  onPrevLesson
-  , nextLabel }) => {
+  onPrevLesson,
+  nextLabel }) => {
   const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTIONS" | "sgp pipes">(() => {
     if (subLessonId === 'standard-4') {
       return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
@@ -85,12 +84,15 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
       if (isValidFor1 || isValidFor4 || isValidFor6) {
         localStorage.setItem(`${subLessonId}-tab`, activeTab);
+        setTimeout(() => {
+          document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 150);
       }
     }
   }, [subLessonId, activeTab]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   }, [activeTab]);
 
   const {
@@ -104,7 +106,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     registerText
   } = useLessonCore(subLessonId);
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
 
   const pointerSteps = [
     "SCALE POINTER",
@@ -192,7 +194,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+  };
+
+  const isLastTab = () => {
+    if (subLessonId === 'standard-1') return activeTab === 'sprocket';
+    if (subLessonId === 'standard-4') return activeTab === 'bolt';
+    if (subLessonId === 'standard-6') return activeTab === 'sgp pipes';
+    return true;
   };
 
   const handlePrev = () => {
@@ -217,7 +226,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   // --- Content Mapping ---
@@ -494,7 +503,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <KaraokeLessonText
                       as="div"
                       className='p-flush'
-                      text="Deformation may happen due to the presence of heat and gas at time of welding. 
+                      text="Deformation may happen due to the presence of heat and gas at time of welding.
                         <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
                       isActive={isSpeaking && currentIndex === 1}
                       currentCharIndex={currentCharIndex}
@@ -623,14 +632,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
               <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
                 {activeTab === 'screw' && (
-                  <div className="lesson-table-container mt-4">
-                    <table className="lesson-table">
+                  <div className="lesson-table-container screw-code-table-container mt-4">
+                    <table className="lesson-table screw-code-table">
                       <thead>
                         <tr>
-                          <th>Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Japanese Name</th>
+                          <th style={{ width: '30%' }}>Types</th>
+                          <th style={{ width: '15%' }}>Code</th>
+                          <th style={{ width: '18%', whiteSpace: 'nowrap' }}>Size</th>
+                          <th style={{ width: '37%' }}>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -680,10 +689,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                     <table className="lesson-table">
                       <thead>
                         <tr>
-                          <th>Stainless Types</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Japanese Name</th>
+                          <th style={{ width: '45%' }}>Stainless Types</th>
+                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
+                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
+                          <th style={{ width: '20%' }}>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -708,14 +717,14 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 )}
 
                 {activeTab === 'hardware' && (
-                  <div className="lesson-table-container mt-4">
-                    <table className="lesson-table">
+                  <div className="lesson-table-container hardware-code-table-container mt-4">
+                    <table className="lesson-table hardware-code-table">
                       <thead>
                         <tr>
-                          <th>Type</th>
-                          <th>Code</th>
-                          <th>Size</th>
-                          <th>Article (JIS)</th>
+                          <th style={{ width: '35%' }}>Type</th>
+                          <th style={{ width: '12%' }}>Code</th>
+                          <th style={{ width: '18%', whiteSpace: 'nowrap' }}>Size</th>
+                          <th style={{ width: '35%' }}>Article (JIS)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -815,7 +824,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text="Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm."
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
                         <table style={{ border: 'none', background: 'transparent' }}>
                           <tbody>
@@ -837,10 +846,10 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           </tbody>
                         </table>
                         <br />
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (8 x 1.5) + (2+9)</p>
-                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = 12 + 11</p>
-                        <p className="p-flush" style={{ color: "white" }}><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
+                        <p className="p-flush">Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
+                        <p className="p-flush">Bolt Length = (8 x 1.5) + (2+9)</p>
+                        <p className="p-flush">Bolt Length = 12 + 11</p>
+                        <p className="p-flush"><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
                         <br />
                       </div>
                       <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
@@ -901,9 +910,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: "white", marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>Bolting for Pillow Block:</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>Bolting for Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
                         <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
@@ -918,7 +927,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>For Flange-type Pillow Block:</p>
+                        <p className="p-flush" style={{ textDecoration: 'underline' }}>For Flange-type Pillow Block:</p>
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
 
@@ -973,9 +982,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />Slotted + Threaded Hole</p>
+                        <p className="p-flush"> <strong >CASE 1: </strong><br />Slotted + Threaded Hole</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
@@ -996,9 +1005,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 4}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />Slotted + Drill hole</p>
+                        <p className="p-flush"><strong >CASE 2: </strong><br />Slotted + Drill hole</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Flatwasher (FWH)</p>
@@ -1035,9 +1044,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                           text=""
                           isActive={isSpeaking && currentIndex === 1}
                           currentCharIndex={currentCharIndex}
-                          style={{ color: 'white', marginBottom: '1rem' }}
+                          style={{ marginBottom: '1rem' }}
                         />
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />On C-Channel</p>
+                        <p className="p-flush"> <strong >CASE 1: </strong><br />On C-Channel</p>
                         <br />
                         <p className="p-flush">Hexagonal Bolt (HB)</p>
                         <p className="p-flush">Taper washer (AW5)</p>
@@ -1055,7 +1064,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                   <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                     <div className="step-description">
                       <div className="mt-8">
-                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />Both Drill hole</p>
+                        <p className="p-flush"> <strong >CASE 2: </strong><br />Both Drill hole</p>
                         <br />
                         <p className="p-flush">Hex Sockethead Cap Screw (CS)</p>
                         <p className="p-flush">Spring Washer (SW)</p>
@@ -1124,15 +1133,7 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
-            <button className="nav-button next" onClick={handleNext}>
-              {(() => {
-                let isLast = true;
-                if (subLessonId === 'standard-1') isLast = activeTab === 'sprocket';
-                else if (subLessonId === 'standard-4') isLast = activeTab === 'bolt';
-                else if (subLessonId === 'standard-6') isLast = activeTab === 'sgp pipes';
-                return isLast ? (nextLabel || 'Next Lesson') : 'Next';
-              })()} <ChevronRight size={18} />
-            </button>
+            <button className="nav-button next" onClick={handleNext}>{isLastTab() ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>

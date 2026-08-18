@@ -318,14 +318,13 @@
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff;
-  /* White canvas background for document-style screenshots */
-  padding: 1.25rem;
+  background: transparent;
+  padding: 0;
   border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
+  border: none;
   display: inline-block;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   width: fit-content;
   max-width: 100%;
 }
@@ -338,34 +337,31 @@
 
 /* Flush version for smaller icon-based snippets like toolbars */
 .image-wrapper-flush {
-  background: #ffffff;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px;
-  /* Minimal padding for spacing */
+  border: none;
+  padding: 0;
   margin: 4px 0;
+  box-shadow: none;
 }
 
 [data-theme='light'] .image-wrapper,
 [data-theme='light'] .image-wrapper-flush {
-  background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
 [data-theme='dark'] .image-wrapper,
 [data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92);
-  /* Luminescent Indigo 50 tint */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  /* Match var(--primary) indigo */
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
 }
 
 .software-screenshot {
@@ -373,6 +369,7 @@
   max-width: 100%;
   height: auto;
   border-radius: var(--radius-md);
+  box-shadow: none;
   transition: transform 0.5s ease;
 }
 
@@ -380,7 +377,7 @@
   max-width: 320px !important;
   width: 100%;
   height: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: none;
   object-fit: contain;
 }
 
@@ -435,22 +432,34 @@
 
 .lesson-navigation {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 1000px);
+  margin: 3rem auto 0;
+  padding: 2rem 0 0;
   border-top: 1px solid var(--glass-border);
-  padding-top: 3rem;
-  margin-top: 2.5rem;
 }
 
 .nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
   background: var(--glass-bg);
-  color: var(--text-white);
+  color: var(--text-main);
   border: 1px solid var(--glass-border);
-  padding: 1rem 2rem;
+  border-radius: 10px;
+  padding: 0.8rem 1.35rem;
   font-family: var(--font-heading);
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: all 0.3s ease;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-button:hover:not(:disabled) {
@@ -463,7 +472,7 @@
 .nav-button.next {
   background: var(--primary);
   color: #ffffff;
-  border: none;
+  border: 1px solid var(--primary);
 }
 
 /* --- Instruction Box & Alerts --- */

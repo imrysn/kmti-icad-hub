@@ -171,7 +171,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                     </div>
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "2rem" }}>
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -182,7 +182,7 @@ const Page1Lesson: React.FC<Page1Props> = ({
                             className="nav-button next"
                             onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                         >
-                            {nextLabel || 'Next'} <ChevronRight size={18} />
+                            {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
                         </button>
                     </div>
 

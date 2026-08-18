@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* Assets */
-import linearIcon from "../../../../assets/3D_Image_File/annotation1_linear.png";
-import linearImage from "../../../../assets/3D_Image_File/annotation1_linear1.png";
-import diameterIcon from "../../../../assets/3D_Image_File/annotation1_circular.png";
-import diameterImage from "../../../../assets/3D_Image_File/dimaeter_dimension.jpg";
+import attrIcon from "../../../../assets/3D_Image_File/annotation11.png";
 import angularIcon from "../../../../assets/3D_Image_File/annotation1_angular.png";
 import angularImage from "../../../../assets/3D_Image_File/annotation1_angular1.png";
+import diameterIcon from "../../../../assets/3D_Image_File/annotation1_circular.png";
+import linearIcon from "../../../../assets/3D_Image_File/annotation1_linear.png";
+import linearImage from "../../../../assets/3D_Image_File/annotation1_linear1.png";
 import noteIcon from "../../../../assets/3D_Image_File/annotation1_note_string_entry.png";
-import noteWindow from "../../../../assets/3D_Image_File/note_string_entry_window.png";
+import annotation1NoteStringEntry1 from "../../../../assets/3D_Image_File/annotation1_note_string_entry1.png";
 import textIcon from "../../../../assets/3D_Image_File/annotation1_text_entry.png";
-import textWindow from "../../../../assets/3D_Image_File/text_entry_window.png";
 import textResult from "../../../../assets/3D_Image_File/annotation1_text_entry1.png";
+import annotationTop from "../../../../assets/3D_Image_File/annotation1_top.png";
 import editsIcon from "../../../../assets/3D_Image_File/annotation2_edits_drafting.png";
-import editsWindow from "../../../../assets/3D_Image_File/edit_dimension_characters_window.png";
-import attrIcon from "../../../../assets/3D_Image_File/annotation11.png";
 import attrWindow from "../../../../assets/3D_Image_File/change_properties_window.png";
 import positionIcon from "../../../../assets/3D_Image_File/changes_position_drafting_entities.png";
-import annotationTop from "../../../../assets/3D_Image_File/annotation1_top.png";
-import annotation1NoteStringEntry1 from "../../../../assets/3D_Image_File/annotation1_note_string_entry1.png";
+import diameterImage from "../../../../assets/3D_Image_File/dimaeter_dimension.jpg";
+import editsWindow from "../../../../assets/3D_Image_File/edit_dimension_characters_window.png";
 import leftClick from "../../../../assets/3D_Image_File/left_click.png";
+import noteWindow from "../../../../assets/3D_Image_File/note_string_entry_window.png";
+import textWindow from "../../../../assets/3D_Image_File/text_entry_window.png";
 
 type AnnotationTab = "linear" | "diameter" | "angular" | "notes" | "character" | "edits" | "attributes" | "position";
 
@@ -91,14 +90,14 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
   const editsSteps = [
     "EDITS DRAFTING ENTITY CHARACTERS",
-    "Step 1: Select drafting entity, then click GO.",
+    "Step 1: Select drafting entity, then Right Click.",
     "Step 2: Edit Dimension Characters window will appear.",
     "Step 3: After editing the dimension characters, Press OK."
   ];
 
   const attributesSteps = [
     "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
-    "Step 1: Select drafting entity, then click GO.",
+    "Step 1: Select drafting entity, then Right Click.",
     "Step 2: Change Properties window will appear.",
     "Step 3: After changing the properties, Press OK."
   ];
@@ -139,7 +138,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex < tabs.length - 1) {
       setActiveTab(tabs[currentIndex + 1]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
     } else {
       if (onNextLesson) onNextLesson();
     }
@@ -154,7 +153,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex > 0) {
       setActiveTab(tabs[currentIndex - 1]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
     } else {
       if (onPrevLesson) onPrevLesson();
     }
@@ -162,23 +161,23 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
   useEffect(() => {
     const steps = activeTab === 'linear' ? linearStepsTTS :
-                  activeTab === 'diameter' ? diameterStepsTTS :
-                  activeTab === 'angular' ? angularStepsTTS :
-                  activeTab === 'notes' ? notesStepsTTS :
-                  activeTab === 'character' ? characterStepsTTS :
-                  activeTab === 'edits' ? editsStepsTTS :
-                  activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+      activeTab === 'diameter' ? diameterStepsTTS :
+        activeTab === 'angular' ? angularStepsTTS :
+          activeTab === 'notes' ? notesStepsTTS :
+            activeTab === 'character' ? characterStepsTTS :
+              activeTab === 'edits' ? editsStepsTTS :
+                activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
     const startIdx = activeTab === 'linear' ? 0 : 2;
     registerText(steps, startIdx);
   }, [activeTab, registerText]);
 
   const currentTabSteps = activeTab === 'linear' ? linearStepsTTS :
-                          activeTab === 'diameter' ? diameterStepsTTS :
-                          activeTab === 'angular' ? angularStepsTTS :
-                          activeTab === 'notes' ? notesStepsTTS :
-                          activeTab === 'character' ? characterStepsTTS :
-                          activeTab === 'edits' ? editsStepsTTS :
-                          activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+    activeTab === 'diameter' ? diameterStepsTTS :
+      activeTab === 'angular' ? angularStepsTTS :
+        activeTab === 'notes' ? notesStepsTTS :
+          activeTab === 'character' ? characterStepsTTS :
+            activeTab === 'edits' ? editsStepsTTS :
+              activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
   const startIdx2 = activeTab === 'linear' ? 0 : 2;
   const tabsList = [
     { id: 'linear' }, { id: 'diameter' }, { id: 'angular' }, { id: 'notes' },
@@ -255,7 +254,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -265,7 +264,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -300,7 +299,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -310,7 +309,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -345,7 +344,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -355,7 +354,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -390,7 +389,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <span className="step-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                           <KaraokeLessonText
                             as="span"
@@ -402,7 +401,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         </span>
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -413,7 +412,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                       </div>
                       <img src={noteWindow} alt="Note String Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '400px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3</span>
+                        <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -423,7 +422,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">4</span>
+                        <span className="step-number">4 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -458,7 +457,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -469,7 +468,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                       </div>
                       <img src={textWindow} alt="Text Entry Window" className="software-screenshot mt-4 mb-4" style={{ width: '500px', marginBottom: "2rem" }} />
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -479,7 +478,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3</span>
+                        <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -514,18 +513,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text="Select drafting entity, then Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -535,7 +534,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3</span>
+                        <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -570,18 +569,18 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                   <div className="flex-row-wrap" style={{ gap: '2rem', alignItems: 'flex-start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div className={`step-header ${currentIndex === 3 ? "reading-active" : ""}`} style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">1</span>
+                        <span className="step-number">1 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click GO"
+                          text="Select drafting entity, then Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
                         <img src={leftClick} alt="Left click" className="screenshot-click--inline" style={{ width: '40px', margin: '0 8px', marginBottom: "2rem" }} />
                       </div>
                       <div className={`step-header ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
-                        <span className="step-number">2</span>
+                        <span className="step-number">2 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
@@ -591,7 +590,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         />
                       </div>
                       <div className={`step-header ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginBottom: "2rem" }}>
-                        <span className="step-number">3</span>
+                        <span className="step-number">3 </span>
                         <KaraokeLessonText
                           as="span"
                           className="step-label"

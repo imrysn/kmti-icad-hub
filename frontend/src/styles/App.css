@@ -302,16 +302,17 @@
 }
 
 .image-wrapper {
-  background: var(--bg-card);
-  padding: 1rem;
+  background: transparent;
+  padding: 0;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
+  border: none;
   display: inline-block;
   overflow: hidden;
+  box-shadow: none;
 }
 
 [data-theme='light'] .image-wrapper {
-  background: var(--bg-secondary);
+  background: transparent;
 }
 
 .mode-btn {

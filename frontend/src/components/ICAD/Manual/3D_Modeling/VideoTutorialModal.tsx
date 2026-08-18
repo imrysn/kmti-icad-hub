@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft,ChevronRight,GripHorizontal,Pause,Play,Square,X } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, X, Play, Pause, Square, GripHorizontal } from 'lucide-react';
-import './VideoTutorialModal.css';
 import { api } from '../../../../services/api';
+import './VideoTutorialModal.css';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -85,7 +85,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
     }
-    
+
     // Cleanup on unmount
     return () => {
       if (synthRef.current) synthRef.current.cancel();
@@ -198,12 +198,10 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     setIsPaused(false);
 
 
-    const title = steps[currentStep].title;
     const text = steps[currentStep].text;
 
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
-    const spokenTitle = sanitizeSpeech(title);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
     const isKokoro = savedVoice.startsWith('kokoro://');
@@ -212,9 +210,9 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
     if (isKokoro) {
       const voiceName = savedVoice.replace('kokoro://', '');
       const apiBase = api.defaults.baseURL || '';
-      
+
       const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
-      
+
       const textAudio = new Audio(textUrl);
       audioRef.current = textAudio;
 
@@ -226,14 +224,14 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({ isOpen, onClose
 
       textAudio.onplaying = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
-        
+
         setCurrentCharIndex(searchFrom);
-        const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
-          ? textAudio.duration 
+        const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration))
+          ? textAudio.duration
           : (estimatedDuration / 1000);
         const totalMs = durationSec * 1000;
         const msPerChar = totalMs / (text.length || 1);
-        
+
         const highlightNextWord = () => {
           if (!isPlaying) return;
           if (wordIdx < words.length) {

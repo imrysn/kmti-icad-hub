@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ReadAloudButton } from "../../../ReadAloudButton";
 
 /* Material Setting (1) Assets */
-import setMaterialIcon from "../../../../assets/3D_Image_File/material_setting1_set_material.png";
+import leftClick from "../../../../assets/3D_Image_File/left_click.png";
 import materialListImg from "../../../../assets/3D_Image_File/material_setting1_material_list.png";
+import materialSettingImg from "../../../../assets/3D_Image_File/material_setting1_material_setting.png";
 import step4ResultImg from "../../../../assets/3D_Image_File/material_setting1_material_setting_4.png";
 import step5DialogImg from "../../../../assets/3D_Image_File/material_setting1_material_setting_5.png";
-import materialSettingImg from "../../../../assets/3D_Image_File/material_setting1_material_setting.png";
-import leftClick from "../../../../assets/3D_Image_File/left_click.png";
+import setMaterialIcon from "../../../../assets/3D_Image_File/material_setting1_set_material.png";
 
 /* Material Setting (2) Assets */
 import mat2RefImg from "../../../../assets/3D_Image_File/material_setting2_material.png";
@@ -21,7 +21,7 @@ import mat2VerifyImg from "../../../../assets/3D_Image_File/material_setting2_ma
 interface MaterialSettingLessonProps {
   nextLabel?: string;
   subLessonId?: string;
-  onNextLesson?: () => void;
+  onNextLesson?: () => void; 
   onPrevLesson?: () => void;
 }
 
@@ -48,7 +48,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
   const material1Steps = [
     "MATERIAL SETTING",
     "Step 1: Select the Set Material from the icon menu.",
-    "Step 2: Select the entity/entities then GO",
+    "Step 2: Select the entity/entities then Right Click",
     "Step 3: The Material Setting Window will appear. Select the material from the list then Press OK",
     "The list consists of the materials and their corresponding Notation, Specific Gravity and Color. However, we follow the color base on the color codes. Materials that don't have color code must be machine color (WHITE).",
     "Step 4: After setting the material, a dialog box will appear then Select OK",
@@ -78,7 +78,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     }
     if (activeTab === "set") setActiveTab("unlisted");
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -88,7 +88,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
     }
     if (activeTab === "unlisted") setActiveTab("set");
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Material Setting";
@@ -186,7 +186,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 1 */}
               <div className={`instruction-step ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
                 <div className="step-header">
-                  <span className="step-number">1</span>
+                  <span className="step-number">1 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -204,11 +204,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 2 */}
               <div className={`instruction-step ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
                 <div className="step-header" style={{ marginTop: "-1rem" }}>
-                  <span className="step-number">2</span>
+                  <span className="step-number">2 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="Select the entity/entities > GO"
+                    text="Select the entity/entities then Right Click"
                     isActive={isSpeaking && currentIndex === 4}
                     currentCharIndex={currentCharIndex}
                   />
@@ -220,11 +220,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 3 */}
               <div className={`instruction-step ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5" style={{ marginTop: "-2rem" }}>
                 <div className="step-header">
-                  <span className="step-number">3</span>
+                  <span className="step-number">3 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="The Material Setting Window will appear. Select the material from the list > Press OK"
+                    text="The Material Setting Window will appear. Select the material from the list then Press OK"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -243,11 +243,11 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 4 */}
               <div className={`instruction-step ${currentIndex === 7 ? "reading-active" : ""}`} data-reading-index="7">
                 <div className="step-header">
-                  <span className="step-number">4</span>
+                  <span className="step-number">4 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
-                    text="After setting the material, a dialog box will appear > Select OK"
+                    text="After setting the material, a dialog box will appear then Select OK"
                     isActive={isSpeaking && currentIndex === 7}
                     currentCharIndex={currentCharIndex}
                   />
@@ -266,7 +266,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               {/* Step 5 */}
               <div className={`instruction-step ${currentIndex === 9 ? "reading-active" : ""}`} data-reading-index="9">
                 <div className="step-header">
-                  <span className="step-number">5</span>
+                  <span className="step-number">5 </span>
                   <KaraokeLessonText
                     as="span"
                     className="step-label"
@@ -292,7 +292,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description">
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select OK > Material Settings window will appear > Reselect new material for the part"
+                  text="Select OK then Material Settings window will appear then Reselect new material for the part"
                   isActive={isSpeaking && currentIndex === 11}
                   currentCharIndex={currentCharIndex}
                 />
@@ -310,7 +310,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
               <div className="step-description" style={{ marginTop: "-1rem" }}>
                 <KaraokeLessonText
                   className="p-flush mb-4"
-                  text="Select Cancel > No changes will be made"
+                  text="Select Cancel then No changes will be made"
                   isActive={isSpeaking && currentIndex === 13}
                   currentCharIndex={currentCharIndex}
                 />
@@ -392,7 +392,7 @@ const MaterialSettingLesson: React.FC<MaterialSettingLessonProps> = ({ subLesson
                       </tr>
                       <tr>
                         <td>PVC</td>
-                        <td>VP(塩化ビニ�Eル管)</td>
+                        <td>VP(塩化ビニール管)</td>
                       </tr>
                     </tbody>
                   </table>

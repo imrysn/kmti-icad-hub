@@ -347,10 +347,10 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
                                         <div className="lesson-table-container" style={{ width: '350px' }}>
                                             <table className="lesson-table">
-                                                <thead>
+                                                 <thead>
                                                     <tr>
-                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
-                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                        <th>Shortcut</th>
+                                                        <th>Command</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -374,8 +374,8 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                             <table className="lesson-table">
                                                 <thead>
                                                     <tr>
-                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
-                                                        <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                                        <th>Shortcut</th>
+                                                        <th>Command</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -589,7 +589,7 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                     )}
 
                     {/* Lesson Navigation */}
-                    <div className="lesson-navigation" style={{ marginTop: "2rem" }}>
+                    <div className="lesson-navigation">
                         {activeTab === 'page1' ? (
                             <>
                                 <button
@@ -602,7 +602,7 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                     className="nav-button next"
                                     onClick={() => { setActiveTab('page2'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 >
-                                    Next Page <ChevronRight size={18} />
+                                    Next <ChevronRight size={18} />
                                 </button>
                             </>
                         ) : (
@@ -611,13 +611,13 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                     className="nav-button"
                                     onClick={() => { setActiveTab('page1'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 >
-                                    <ChevronLeft size={18} /> Previous Page
+                                    <ChevronLeft size={18} /> Previous
                                 </button>
                                 <button
                                     className="nav-button next"
                                     onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                 >
-                                    {nextLabel || 'Next'} <ChevronRight size={18} />
+                                    {nextLabel || 'Next Lesson'} <ChevronRight size={18} />
                                 </button>
                             </>
                         )}

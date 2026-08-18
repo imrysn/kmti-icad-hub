@@ -689,7 +689,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   className="step-label"
                   text="Select the ends of the length of the spiral along the axis of rotation, then Right Click"
                   isActive={isSpeaking && currentIndex === 8}
-                  currentCharIndex={currentCharIndex}
+                  currentCharIndex={currentCharIndex}   
                 />
               </div>
               <div className="step-description">

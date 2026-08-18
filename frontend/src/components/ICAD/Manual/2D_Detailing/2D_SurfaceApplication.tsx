@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 
@@ -50,7 +50,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -65,7 +65,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -136,7 +136,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'shotblasting' && (
-                <div className="text-[15px] leading-relaxed text-gray-800" style={{ padding: "1rem" }}>
+                <div className="text-[15px] leading-relaxed" style={{ padding: "1rem", color: "var(--text-main)" }}>
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <p className="mb-4" style={{ textIndent: "3rem" }}>
                       Before the Application of Surface Treatment/ Coating, the black skin of the material must be removed first to the part. There are two (2) processes that we can apply on the part to remove the black skin; <br />
@@ -186,7 +186,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
               )}
 
               {activeTab === 'machining' && (
-                <div className="text-[15px] leading-relaxed text-gray-800" style={{ padding: "1rem" }}>
+                <div className="text-[15px] leading-relaxed" style={{ padding: "1rem", color: "var(--text-main)" }}>
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <p className="mb-4">
                       <strong style={{ color: 'red', marginLeft: "3rem" }}>2. Machining</strong> is any of varoius processes in which a piece of raw material is cut into a desired final shape and size by controlled material-removal process.
@@ -210,11 +210,11 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

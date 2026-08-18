@@ -1,5 +1,5 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import "../../styles/3D_Modeling/CourseLesson.css";
@@ -90,14 +90,14 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
   const editsSteps = [
     "EDITS DRAFTING ENTITY CHARACTERS",
-    "Step 1: Select drafting entity, then click Right Click.",
+    "Step 1: Select drafting entity, then Right Click.",
     "Step 2: Edit Dimension Characters window will appear.",
     "Step 3: After editing the dimension characters, Press OK."
   ];
 
   const attributesSteps = [
     "CHANGES THE ATTRIBUTES OF A DRAFTING ENTITY",
-    "Step 1: Select drafting entity, then click Right Click.",
+    "Step 1: Select drafting entity, then Right Click.",
     "Step 2: Change Properties window will appear.",
     "Step 3: After changing the properties, Press OK."
   ];
@@ -161,23 +161,23 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
 
   useEffect(() => {
     const steps = activeTab === 'linear' ? linearStepsTTS :
-                  activeTab === 'diameter' ? diameterStepsTTS :
-                  activeTab === 'angular' ? angularStepsTTS :
-                  activeTab === 'notes' ? notesStepsTTS :
-                  activeTab === 'character' ? characterStepsTTS :
-                  activeTab === 'edits' ? editsStepsTTS :
-                  activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+      activeTab === 'diameter' ? diameterStepsTTS :
+        activeTab === 'angular' ? angularStepsTTS :
+          activeTab === 'notes' ? notesStepsTTS :
+            activeTab === 'character' ? characterStepsTTS :
+              activeTab === 'edits' ? editsStepsTTS :
+                activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
     const startIdx = activeTab === 'linear' ? 0 : 2;
     registerText(steps, startIdx);
   }, [activeTab, registerText]);
 
   const currentTabSteps = activeTab === 'linear' ? linearStepsTTS :
-                          activeTab === 'diameter' ? diameterStepsTTS :
-                          activeTab === 'angular' ? angularStepsTTS :
-                          activeTab === 'notes' ? notesStepsTTS :
-                          activeTab === 'character' ? characterStepsTTS :
-                          activeTab === 'edits' ? editsStepsTTS :
-                          activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
+    activeTab === 'diameter' ? diameterStepsTTS :
+      activeTab === 'angular' ? angularStepsTTS :
+        activeTab === 'notes' ? notesStepsTTS :
+          activeTab === 'character' ? characterStepsTTS :
+            activeTab === 'edits' ? editsStepsTTS :
+              activeTab === 'attributes' ? attributesStepsTTS : positionStepsTTS;
   const startIdx2 = activeTab === 'linear' ? 0 : 2;
   const tabsList = [
     { id: 'linear' }, { id: 'diameter' }, { id: 'angular' }, { id: 'notes' },
@@ -517,7 +517,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click Right Click"
+                          text="Select drafting entity, then Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />
@@ -573,7 +573,7 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
                         <KaraokeLessonText
                           as="span"
                           className="step-label"
-                          text="Select drafting entity, then click Right Click"
+                          text="Select drafting entity, then Right Click"
                           isActive={isSpeaking && currentIndex === 3}
                           currentCharIndex={currentCharIndex}
                         />

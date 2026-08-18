@@ -83,7 +83,7 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                         <table className="lesson-table" style={{ width: "100%", textAlign: "center" }}>
                             <thead>
                                 <tr>
-                                    <th colSpan={4} style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', padding: "1rem" }}>
+                                    <th colSpan={4}>
                                         AVAILABLE PLATE THICKNESS<br />(JIS)
                                     </th>
                                 </tr>
@@ -109,7 +109,7 @@ const AvailablePlateThicknessJIS: React.FC<AvailablePlateThicknessJISProps> = ({
                     </div>
 
                     {/* Page Navigation */}
-                    <div className="lesson-navigation mt-12">
+                    <div className="lesson-navigation">
                         <button
                             className="nav-button"
                             onClick={handlePrev}

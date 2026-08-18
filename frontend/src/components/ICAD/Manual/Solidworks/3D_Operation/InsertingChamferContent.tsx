@@ -24,15 +24,10 @@ const InsertingChamferContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header"  style={{padding:'8px 0px'}}>
                 <span className="step-number">2</span>
-                <span className="step-label">In <strong>Features</strong> tab, under <strong>Fillet</strong>,</span>
-            </div>
-            <div className="step-description">
-                <p className="p-flush" style={{ color: 'var(--text-muted)' }}>
-                    Click{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={chamferImg} alt="Chamfer icon" style={{ height: '30px', verticalAlign: 'middle' }} />
-                    </span>
-                </p>
+                <span className="step-label">In <strong>Features</strong> tab, under <strong>Fillet</strong>, click</span>
+                <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                    <img src={chamferImg} alt="Chamfer icon" style={{ display: 'block', height: '30px', width: 'auto' }} />
+                </span>
             </div>
         </div>
 
@@ -53,10 +48,10 @@ const InsertingChamferContent: React.FC = () => (
             <div className="step-description">
                 <div className="instruction-box" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
                     <p className="p-flush red-text" style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Important Note:</p>
-                    <p className="p-flush red-text">
+                    <p className="p-flush red-text" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         ※ Selected edges and faces will be added to <strong>Selected Entities</strong>.
-                        <span className="image-wrapper-flush" style={{ marginLeft: '0.5rem' }}>
-                            <img src={edgeImg} alt="Selected edges" style={{ height: '35px', verticalAlign: 'middle' }} />
+                        <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                            <img src={edgeImg} alt="Selected edges" style={{ display: 'block', height: '35px', width: 'auto' }} />
                         </span>
                     </p>
                 </div>
@@ -70,11 +65,9 @@ const InsertingChamferContent: React.FC = () => (
         <div className="instruction-step">
             <div className="step-header" style={{padding:'8px 0px'}}>
                 <span className="step-number">5</span>
-                <span className="step-label">
-                    Click{' '}
-                    <span className="image-wrapper-flush">
-                        <img src={checkImg} alt="Check icon" style={{ height: '28px', verticalAlign: 'middle' }} />
-                    </span>
+                <span className="step-label">Click</span>
+                <span className="image-wrapper-flush" style={{ flex: '0 0 auto' }}>
+                    <img src={checkImg} alt="Check icon" style={{ display: 'block', height: '28px', width: 'auto' }} />
                 </span>
             </div>
         </div>

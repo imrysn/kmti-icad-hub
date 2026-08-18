@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from '../../../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import '../../../../styles/3D_Modeling/CourseLesson.css';
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* Fairing Assets */
 import chamferIcon from '../../../../assets/3D_Image_File/fairing_chamfer.jpg';
+import chamferResult2 from '../../../../assets/3D_Image_File/fairing_chamfer11.png';
 import chamferEntry from '../../../../assets/3D_Image_File/fairing_chamfer_1.png';
 import chamferResult from '../../../../assets/3D_Image_File/fairing_chamfer_2.png';
-import chamferResult2 from '../../../../assets/3D_Image_File/fairing_chamfer11.png';
 import filletIcon from '../../../../assets/3D_Image_File/fairing_fillet_1.png';
 import filletEntry from '../../../../assets/3D_Image_File/fairing_fillet_2.png';
 import filletResult from '../../../../assets/3D_Image_File/fairing_fillet_3.png';
 import shellIcon from '../../../../assets/3D_Image_File/fairing_shell_1.png';
 import shellFaces from '../../../../assets/3D_Image_File/fairing_shell_2.png';
-import shellEntry from '../../../../assets/3D_Image_File/fairing_shell_3.png';
 import shellResult from '../../../../assets/3D_Image_File/fairing_shell_3.1.png';
+import shellEntry from '../../../../assets/3D_Image_File/fairing_shell_3.png';
 import leftClick from '../../../../assets/3D_Image_File/left_click.png';
 
 interface FairingLessonProps {
@@ -51,7 +50,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "Use for creating chamfer dimensions.",
     "Step 1: Select Chamfer edge from the icon menu",
     "Step 2: Specify chamfer length on the item entry",
-    "Step 3: Select the edge of the entity to be chamfered > GO",
+    "Step 3: Select the edge of the entity to be chamfered then Right Click",
     "Note: Several edges can be chamfered all at once.",
     "RESULT"
   ];
@@ -61,7 +60,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "Use for rounding specified corners.",
     "Step 1: Select Fillet edge from the icon menu.",
     "Step 2: Specify the fillet radius on the item entry.",
-    "Step 3: Select the edge of the entity to be fillet then click GO",
+    "Step 3: Select the edge of the entity to be fillet then click Right Click",
     "Note: Several edges can be fillet all at once.",
     "RESULT"
   ];
@@ -70,8 +69,8 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     "SHELL",
     "Use for hollowing solid entities using the specified wall thickness.",
     "Step 1: Select Shell from the icon menu.",
-    "Step 2: Select the two endfaces of the solid entity then click GO.",
-    "Step 3: Specify the thickness on the item entry then click GO twice.",
+    "Step 2: Select the two endfaces of the solid entity then click Right Click.",
+    "Step 3: Specify the thickness on the item entry then click Right Click twice.",
     "RESULT"
   ];
 
@@ -83,7 +82,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     if (activeTab === 'chamfer') setActiveTab('fillet');
     else if (activeTab === 'fillet') setActiveTab('shell');
     else if (onNextLesson) onNextLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -94,7 +93,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
     if (activeTab === 'fillet') setActiveTab('chamfer');
     else if (activeTab === 'shell') setActiveTab('fillet');
     else if (onPrevLesson) onPrevLesson();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const introTitle = "Fairing";
@@ -154,7 +153,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -193,7 +192,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -209,7 +208,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -225,11 +224,11 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the edge of the entity to be chamfered > GO"
+                    text="Select the edge of the entity to be chamfered then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -294,7 +293,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -311,7 +310,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -328,11 +327,11 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: '-1.5rem' }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the edge of the entity to be fillet > GO"
+                    text="Select the edge of the entity to be fillet then Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />
@@ -396,7 +395,7 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
               <div className="step-header">
-                <span className="step-number">1</span>
+                <span className="step-number">1 </span>
                 <KaraokeLessonText
                   as="span"
                   className="step-label"
@@ -412,11 +411,11 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 5 ? 'reading-active' : ''}`} data-reading-index="5">
               <div className="step-header">
-                <span className="step-number">2</span>
+                <span className="step-number">2 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Select the two endfaces of the solid entity > GO"
+                    text="Select the two endfaces of the solid entity then Right Click"
                     isActive={isSpeaking && currentIndex === 5}
                     currentCharIndex={currentCharIndex}
                   />
@@ -430,11 +429,11 @@ const FairingLesson: React.FC<FairingLessonProps> = ({ onNextLesson, onPrevLesso
 
             <div className={`instruction-step ${currentIndex === 6 ? 'reading-active' : ''}`} data-reading-index="6">
               <div className="step-header">
-                <span className="step-number">3</span>
+                <span className="step-number">3 </span>
                 <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                   <KaraokeLessonText
                     as="span"
-                    text="Specify the desired thickness of the solid entity after shell on the item entry > double GO"
+                    text="Specify the desired thickness of the solid entity after shell on the item entry then double Right Click"
                     isActive={isSpeaking && currentIndex === 6}
                     currentCharIndex={currentCharIndex}
                   />

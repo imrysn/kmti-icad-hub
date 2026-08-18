@@ -1463,6 +1463,7 @@
 /* Canonical lesson navigation shared by every course family. */
 .lesson-scroll-area .lesson-navigation {
   display: flex;
+  box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -1470,6 +1471,7 @@
   margin: 3rem auto 0 !important;
   padding: 2rem 0 0 !important;
   border-top: 1px solid var(--glass-border) !important;
+  flex-shrink: 0;
 }
 
 .lesson-scroll-area .lesson-navigation .nav-button {
@@ -1974,6 +1976,72 @@
   gap: 0.75rem;
   pointer-events: auto;
   white-space: nowrap;
+}
+
+/* Keep screw dimensions readable as one value (for example, M10 x 20). */
+.lesson-scroll-area .screw-code-table-container {
+  overflow-x: hidden;
+}
+
+.lesson-scroll-area .screw-code-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.lesson-scroll-area .screw-code-table th:first-child,
+.lesson-scroll-area .screw-code-table td:first-child,
+.lesson-scroll-area .screw-code-table th:last-child,
+.lesson-scroll-area .screw-code-table td:last-child {
+  white-space: normal;
+}
+
+.lesson-scroll-area .screw-code-table th:last-child,
+.lesson-scroll-area .screw-code-table td:last-child {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.lesson-scroll-area .screw-code-table th:nth-child(3),
+.lesson-scroll-area .screw-code-table td:nth-child(3) {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+/* Hardware/JIS reference table: fit the card without horizontal scrolling. */
+.lesson-scroll-area .hardware-code-table-container {
+  overflow-x: hidden;
+}
+
+.lesson-scroll-area .hardware-code-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.lesson-scroll-area .hardware-code-table th:first-child,
+.lesson-scroll-area .hardware-code-table td:first-child,
+.lesson-scroll-area .hardware-code-table th:last-child,
+.lesson-scroll-area .hardware-code-table td:last-child {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.lesson-scroll-area .hardware-code-table th:nth-child(3),
+.lesson-scroll-area .hardware-code-table td:nth-child(3) {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+/* The sticky action row spans the lesson width. Keep its empty middle area
+   click-through so it cannot cover lesson tabs as the page scrolls. */
+.lesson-action-anchor > .lesson-action-cluster {
+  pointer-events: none;
+}
+
+.lesson-action-anchor > .lesson-action-cluster > * {
+  pointer-events: auto;
 }
 
 .lesson-action-cluster.tts-only {

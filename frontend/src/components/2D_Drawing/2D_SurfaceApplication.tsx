@@ -136,7 +136,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
 
             <div className="flex-col tab-content fade-in">
               {activeTab === 'shotblasting' && (
-                <div className="text-[15px] leading-relaxed text-gray-800" style={{ padding: "1rem" }}>
+                <div className="text-[15px] leading-relaxed" style={{ padding: "1rem", color: "var(--text-main)" }}>
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <p className="mb-4" style={{ textIndent: "3rem" }}>
                       Before the Application of Surface Treatment/ Coating, the black skin of the material must be removed first to the part. There are two (2) processes that we can apply on the part to remove the black skin; <br />
@@ -186,7 +186,7 @@ const SurfaceApplicationLesson: React.FC<SurfaceApplicationLessonProps> = ({
               )}
 
               {activeTab === 'machining' && (
-                <div className="text-[15px] leading-relaxed text-gray-800" style={{ padding: "1rem" }}>
+                <div className="text-[15px] leading-relaxed" style={{ padding: "1rem", color: "var(--text-main)" }}>
                   <div className={`instruction-step ${currentIndex === 2 ? "reading-active" : ""}`} data-reading-index="2">
                     <p className="mb-4">
                       <strong style={{ color: 'red', marginLeft: "3rem" }}>2. Machining</strong> is any of varoius processes in which a piece of raw material is cut into a desired final shape and size by controlled material-removal process.

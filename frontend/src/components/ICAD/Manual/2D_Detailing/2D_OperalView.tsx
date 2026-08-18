@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { ChevronLeft,ChevronRight } from 'lucide-react';
+import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
@@ -12,9 +12,9 @@ import operateView1ImgA1 from "../../../../assets/2D_Image_File/2D_operate_view(
 import operateView1ImgB2 from "../../../../assets/2D_Image_File/2D_operate_view(1)_b2.png";
 
 /* Importing assets for Operate View (2) */
+import operateView2ImgB3 from "../../../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
 import operateView2ImgB1 from "../../../../assets/2D_Image_File/2D_operate_view(2)_b_1.png";
 import operateView2ImgB2 from "../../../../assets/2D_Image_File/2D_operate_view(2)_b_2.jpg";
-import operateView2ImgB3 from "../../../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
 
 interface OperalViewLessonProps {
   nextLabel?: string;
@@ -55,7 +55,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     } else if (onNextLesson) {
       onNextLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const handlePrev = (isAuto = false) => {
@@ -70,7 +70,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     } else if (onPrevLesson) {
       onPrevLesson();
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
 
   const LESSON_DATA: Record<string, { title: string; subtitle: string; steps: string[] }> = {
@@ -87,7 +87,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
       subtitle: 'Aligning projected views and deleting unnecessary views.',
       steps: [
         "View Alignment: If views are not aligned, use the create-three-view tool to adjust. Aligning lines will appear as guides to help you restore proper projection integrity.",
-        "Delete View: Select any unnecessary views, click GO, and confirm in the dialog box to remove them from your drawing template."
+        "Delete View: Select any unnecessary views, click Right Click, and confirm in the dialog box to remove them from your drawing template."
       ]
     }
   };
@@ -248,7 +248,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <div className="flex-row gap-4 mt-4">
                         <div className="instruction-box" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
-                            1. Click the unnecessary view, then GO.
+                            1. Click the unnecessary view, then Right Click.
                           </p>
                           <p className="p-flush" style={{ marginBottom: "0.5rem" }}>
                             2. Delete view dialog box display.
@@ -269,11 +269,11 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev?.()}>
+            <button className="nav-button" onClick={() => handlePrev()}>
               <ChevronLeft size={18} /> Previous
             </button>
-            <button className="nav-button next" onClick={() => handleNext?.()}>
-              {nextLabel || 'Next'} <ChevronRight size={18} />
+            <button className="nav-button next" onClick={() => handleNext()}>
+              {activeTab === TABS[TABS.length - 1].id ? (nextLabel || 'Next Lesson') : 'Next'} <ChevronRight size={18} />
             </button>
           </div>
         </div>

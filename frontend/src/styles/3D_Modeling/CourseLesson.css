@@ -259,14 +259,13 @@
 /* --- Image Formatting --- */
 
 .image-wrapper {
-  background: #ffffff;
-  /* White canvas background for document-style screenshots */
-  padding: 1.25rem;
+  background: transparent;
+  padding: 0;
   border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
+  border: none;
   display: inline-block;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   width: fit-content;
   max-width: 100%;
 }
@@ -279,34 +278,31 @@
 
 /* Flush version for smaller icon-based snippets like toolbars */
 .image-wrapper-flush {
-  background: #ffffff;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px;
-  /* Minimal padding for spacing */
+  border: none;
+  padding: 0;
   margin: 4px 0;
+  box-shadow: none;
 }
 
 [data-theme='light'] .image-wrapper,
 [data-theme='light'] .image-wrapper-flush {
-  background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* Luminescent Indigo theme specifically for Dark Mode to match Midnight Aurora aesthetics */
 [data-theme='dark'] .image-wrapper,
 [data-theme='dark'] .image-wrapper-flush {
-  background: rgba(238, 242, 255, 0.92);
-  /* Luminescent Indigo 50 tint */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.35);
-  /* Match var(--primary) indigo */
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.1);
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
 }
 
 .software-screenshot {
@@ -314,6 +310,7 @@
   max-width: 100%;
   height: auto;
   border-radius: var(--radius-md);
+  box-shadow: none;
   transition: transform 0.5s ease;
 }
 
@@ -321,7 +318,7 @@
   max-width: 320px !important;
   width: 100%;
   height: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: none;
   object-fit: contain;
 }
 
@@ -393,21 +390,34 @@
 
 .lesson-navigation {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding-top: 3rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  width: min(100%, 1000px);
+  margin: 3rem auto 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--glass-border);
 }
 
 .nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
   background: var(--glass-bg);
-  color: var(--text-white);
+  color: var(--text-main);
   border: 1px solid var(--glass-border);
-  padding: 1rem 2rem;
+  border-radius: 10px;
+  padding: 0.8rem 1.35rem;
   font-family: var(--font-heading);
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: all 0.3s ease;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-button:hover:not(:disabled) {
@@ -420,7 +430,7 @@
 .nav-button.next {
   background: var(--primary);
   color: #ffffff;
-  border: none;
+  border: 1px solid var(--primary);
 }
 
 /* --- Instruction Box & Alerts --- */
@@ -666,100 +676,146 @@
 .lesson-table-container {
   width: 100%;
   overflow-x: auto;
-  margin: 0rem 0;
+  margin: 1.5rem 0;
   border-radius: var(--radius-md);
-  background: rgba(15, 23, 42, 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  box-shadow: none;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Piping reference data must fit the lesson card without horizontal scrolling. */
+.piping-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.piping-table-container .lesson-table.piping-table-compact {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.piping-table-container .lesson-table.piping-table-compact th,
+.piping-table-container .lesson-table.piping-table-compact td {
+  min-width: 0;
+  padding-inline: clamp(0.35rem, 0.8vw, 0.75rem);
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+@media (max-width: 760px) {
+  .piping-table-container .lesson-table.piping-table-compact th,
+  .piping-table-container .lesson-table.piping-table-compact td {
+    padding: 0.55rem 0.25rem;
+    font-size: 0.75rem !important;
+  }
+
+  .piping-table-container .lesson-table.piping-table-compact th {
+    font-size: 0.68rem !important;
+  }
 }
 
 [data-theme='light'] .lesson-table-container {
-  background: #ffffffd5;
+  background: #ffffff;
   border-color: rgba(99, 102, 241, 0.15);
-  box-shadow: none;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.05);
 }
 
 .lesson-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   overflow: hidden;
   font-size: 0.9rem;
   color: #E2E8F0;
   table-layout: auto;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .lesson-table th,
 .lesson-table td {
   padding: 1rem 1.25rem;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   vertical-align: middle;
-  line-height: 1.6;
+  line-height: 1.5;
+  transition: background 0.2s ease;
+}
+
+[data-theme='light'] .lesson-table th,
+[data-theme='light'] .lesson-table td {
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .lesson-table th {
-  text-align: center;
+  text-align: center !important;
   color: #F1F5F9;
-
 }
 
 .lesson-table td {
-  text-align: center;
+  text-align: center !important;
   color: #F1F5F9 !important;
 }
 
 /* Material Column - specific alignment & border */
 .lesson-table td:first-child {
-  text-align: center;
-  padding-left: 0.5rem;
-  background: none !important;
-  border-left: none;
+  text-align: center !important;
+  font-weight: 600;
   color: #F1F5F9 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
 }
 
 [data-theme='light'] .lesson-table td:first-child {
+  border-left-color: rgba(0, 0, 0, 0.15);
   background: none;
+  color: #334155 !important;
 }
 
 .lesson-table thead th {
-  background: none;
-  color: #6366F1;
+  background: rgba(221, 77, 250, 0.1);
+  color: #DD4DFA;
   font-family: var(--font-heading);
   font-weight: 800;
-  text-transform: none;
-  letter-spacing: 0.12em;
-  font-size: 0.9rem;
-  border-bottom: 3px solid #6365f1;
-  padding: 1rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  border-bottom: 2px solid #DD4DFA;
+  padding: 1.25rem 1rem;
+}
+
+.lesson-table thead th:not(:last-child) {
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 [data-theme='light'] .lesson-table thead th {
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(99, 102, 241, 0.05);
   color: #6366F1 !important;
-  border-bottom-color: #6365f1;
+  border-bottom: 2px solid #6366F1;
 }
 
-.lesson-table tbody tr:nth-child(even) {
-  background: none;
-  /* More visible zebra banding in dark */
+[data-theme='light'] .lesson-table thead th:not(:last-child) {
+  border-right: 2px solid rgba(99, 102, 241, 0.2);
 }
 
-[data-theme='light'] .lesson-table tbody tr:nth-child(even) {
-  background: none;
+.lesson-table tbody tr:hover {
+  background: rgba(221, 77, 250, 0.03);
 }
 
+[data-theme='light'] .lesson-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.03);
+}
 
 /* Color specific cells if needed */
 /* Rev column & text markers */
 .lesson-table td.text-center,
-.lesson-table th.text-center,
+.lesson-table th.text-center {
+  text-align: center;
+}
+
 .lesson-table td:last-child,
 .lesson-table th:last-child {
-  text-align: center;
   border-right: none;
 }
 
@@ -781,24 +837,15 @@
   border-bottom-right-radius: 16px;
 }
 
-.lesson-table tr:last-child td {
-  border-bottom: none;
-}
-
-[data-theme='light'] .lesson-table-container {
-  background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.15);
-}
-
 [data-theme='light'] .lesson-table th,
 [data-theme='light'] .lesson-table td {
   color: #334155 !important;
-  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .lesson-table td.highlight-cell-yellow {
   background-color: #facc15 !important;
   color: #000000 !important;
+  font-weight: 600;
 }
 /* --- Lesson Karaoke Highlighting --- */
 

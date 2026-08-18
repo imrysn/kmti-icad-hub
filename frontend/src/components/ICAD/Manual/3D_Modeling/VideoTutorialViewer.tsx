@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft,ChevronRight,GripHorizontal,Maximize,Minimize,Pause,Play,Square,X } from 'lucide-react';
+import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, Play, Pause, Square, GripHorizontal, Maximize, Minimize, X, LayoutGrid } from 'lucide-react';
-import './VideoTutorialViewer.css';
 import { api } from '../../../../services/api';
+import './VideoTutorialViewer.css';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -47,61 +47,28 @@ interface VideoTutorialViewerProps {
   showBrowser?: boolean;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc, browserTitle, showBrowser = false }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const safeStep = steps && steps.length > 0 ? (currentStep < steps.length ? currentStep : 0) : 0;
+  const currentData = steps && steps.length > 0 ? steps[safeStep] : null;
+
+  useEffect(() => {
+    if (steps && steps.length > 0 && currentStep >= steps.length) {
+      setCurrentStep(0);
+    }
+  }, [steps, currentStep]);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [showMoreContent, setShowMoreContent] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
-  const [isBrowserOpen, setIsBrowserOpen] = useState(false);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
-  const browserRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target &&
-        (target.closest('.theme-toggle-btn') ||
-         target.closest('.login-theme-wrapper') ||
-         target.closest('.theme-btn') ||
-         target.closest('[data-theme-toggle]') ||
-         target.closest('.theme-toggle-icon'))
-      ) {
-        return;
-      }
-      if (browserRef.current && !browserRef.current.contains(target)) {
-        setIsBrowserOpen(false);
-      }
-    };
-    if (isBrowserOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isBrowserOpen]);
-
-  const stepItems = steps
-    .map((step, actualIndex) => ({ step, actualIndex }))
-    .filter(item => item.step.title && item.step.title.trim() !== '');
-
-  const displayItems = stepItems.length > 0 
-    ? stepItems 
-    : steps.map((step, actualIndex) => ({ step, actualIndex }));
-
-  const handleSelectBrowserStep = (actualIdx: number) => {
-    setCurrentStep(actualIdx);
-    setCurrentCharIndex(0);
-    setIsBrowserOpen(false);
-  };
 
   const handlePointerDown = (e: React.PointerEvent) => {
     dragRef.current = {
@@ -134,7 +101,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
     }
-    
+
     // Cleanup on unmount
     return () => {
       if (synthRef.current) synthRef.current.cancel();
@@ -179,7 +146,6 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
     if (isPlaying) {
       speakCurrentStep();
     } else {
-      setShowMoreContent(false);
       if (synthRef.current) synthRef.current.cancel();
       if (audioRef.current) {
         audioRef.current.pause();
@@ -214,35 +180,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         video.play().catch(err => console.log("Video resume on step change failed:", err));
       }
     }
-    setShowMoreContent(false);
   }, [currentStep]);
-
-  // Preload next step's TTS audio to prevent generation delay
-  useEffect(() => {
-    if (currentStep < steps.length - 1) {
-      const nextStep = steps[currentStep + 1];
-      const title = nextStep.title;
-      const text = nextStep.text;
-      const fullTextToSpeak = `${title}. ${text}`;
-
-      const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
-      const spokenText = sanitizeSpeech(fullTextToSpeak);
-
-      const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
-      const isKokoro = savedVoice.startsWith('kokoro://');
-      const savedRate = parseFloat(localStorage.getItem('tts_rate') || '1.0');
-
-      if (isKokoro) {
-        const voiceName = savedVoice.replace('kokoro://', '');
-        const apiBase = api.defaults.baseURL || '';
-        const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
-        
-        const preloadAudio = new Audio();
-        preloadAudio.preload = "auto";
-        preloadAudio.src = textUrl;
-      }
-    }
-  }, [currentStep, steps]);
 
   // Keyboard navigation (only active when fullscreen or maybe always if focused, but let's just keep it)
   useEffect(() => {
@@ -283,12 +221,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
     setCurrentCharIndex(0);
     setIsPaused(false);
 
-    const title = steps[currentStep].title;
-    const text = steps[currentStep].text;
-    const fullTextToSpeak = `${title}. ${text}`;
+
+    if (!currentData) return;
+    const text = currentData.text;
+    const titleText = currentData.title ? `${currentData.title}. ` : '';
+    const fullTextForSpeech = titleText + text;
 
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
-    const spokenText = sanitizeSpeech(fullTextToSpeak);
+    const spokenText = sanitizeSpeech(fullTextForSpeech);
 
     const savedVoice = localStorage.getItem('tts_voice_uri') || 'kokoro://af_sarah';
     const isKokoro = savedVoice.startsWith('kokoro://');
@@ -297,29 +237,29 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
     if (isKokoro) {
       const voiceName = savedVoice.replace('kokoro://', '');
       const apiBase = api.defaults.baseURL || '';
-      
+
       const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${voiceName}&speed=${savedRate}`;
-      
+
       const textAudio = new Audio(textUrl);
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (fullTextToSpeak.length * 60) / savedRate;
+      const estimatedDuration = (fullTextForSpeech.length * 60) / savedRate;
 
       let wordIdx = 0;
       let searchFrom = 0;
 
       textAudio.onplaying = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
-        
-        setCurrentCharIndex(0);
-        const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration)) 
-          ? textAudio.duration 
+
+        setCurrentCharIndex(searchFrom);
+        const durationSec = (textAudio.duration && !isNaN(textAudio.duration) && isFinite(textAudio.duration))
+          ? textAudio.duration
           : (estimatedDuration / 1000);
         const totalMs = durationSec * 1000;
-        const msPerChar = totalMs / (fullTextToSpeak.length || 1);
+        const msPerChar = totalMs / (fullTextForSpeech.length || 1);
         
-        const titleDurationMs = (title.length + 2) * msPerChar; // account for title and ". "
+        const initialDelay = titleText.length * msPerChar;
 
         const highlightNextWord = () => {
           if (!isPlaying) return;
@@ -336,7 +276,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
           }
         };
         
-        activeIntervalRef.current = setTimeout(highlightNextWord, titleDurationMs);
+        activeIntervalRef.current = setTimeout(highlightNextWord, initialDelay);
       };
 
       textAudio.onpause = () => {
@@ -360,10 +300,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         }
         setCurrentCharIndex(0);
         if (currentStep < steps.length - 1) {
+          // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
           }, 400);
         } else {
+          // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
             handleStop();
           }
@@ -380,7 +322,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
       };
 
       textAudio.play().catch(err => {
-        console.error("Text audio play failed:", err);
+        if (err.name !== 'AbortError') {
+          console.error("Text audio play failed:", err);
+        }
         textAudio.onended?.(null as any);
       });
     } else {
@@ -391,26 +335,32 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
       textUtterance.rate = savedRate * 0.9;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
-      const estimatedDuration = (fullTextToSpeak.length * 60) / textUtterance.rate;
+      const estimatedDuration = (fullTextForSpeech.length * 60) / textUtterance.rate;
       let boundaryFired = false;
 
       const getOriginalIndex = (spokenIdx: number) => {
-        if (fullTextToSpeak.length === spokenText.length) return spokenIdx;
+        const sanitizedTitleLen = sanitizeSpeech(titleText).length;
+        if (spokenIdx < sanitizedTitleLen) {
+            return 0;
+        }
+        const adjustedSpokenIdx = spokenIdx - sanitizedTitleLen;
+
+        if (text.length === (spokenText.length - sanitizedTitleLen)) return adjustedSpokenIdx;
         const regex = /i\s*cad/ig;
         let match;
         let shift = 0;
         regex.lastIndex = 0;
-        while ((match = regex.exec(fullTextToSpeak)) !== null) {
+        while ((match = regex.exec(text)) !== null) {
           const matchIdx = match.index;
           const matchText = match[0];
           const diff = 7 - matchText.length;
-          if (matchIdx + shift < spokenIdx) {
+          if (matchIdx + shift < adjustedSpokenIdx) {
             shift += diff;
           } else {
             break;
           }
         }
-        return Math.max(0, spokenIdx - shift);
+        return Math.max(0, adjustedSpokenIdx - shift);
       };
 
       textUtterance.onstart = () => {
@@ -418,8 +368,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
           if (!boundaryFired && synthRef.current) {
             let wordIdx = 0;
             let searchFrom = 0;
-            const msPerChar = estimatedDuration / (fullTextToSpeak.length || 1);
-            const titleDurationMs = (title.length + 2) * msPerChar;
+            const msPerChar = estimatedDuration / (fullTextForSpeech.length || 1);
+            const initialDelay = titleText.length * msPerChar;
 
             const highlightNextWord = () => {
               if (wordIdx < words.length) {
@@ -434,7 +384,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
                 activeIntervalRef.current = setTimeout(highlightNextWord, delay);
               }
             };
-            activeIntervalRef.current = setTimeout(highlightNextWord, titleDurationMs);
+            activeIntervalRef.current = setTimeout(highlightNextWord, initialDelay);
           }
         }, 300);
       };
@@ -446,14 +396,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
             clearTimeout(activeIntervalRef.current);
             activeIntervalRef.current = null;
           }
-          const origIdx = getOriginalIndex(e.charIndex);
-          const titleOffset = title.length + 2; // For ". "
-          
-          if (origIdx >= titleOffset) {
-             setCurrentCharIndex(origIdx - titleOffset);
-          } else {
-             setCurrentCharIndex(0); // Still reading title
-          }
+          setCurrentCharIndex(getOriginalIndex(e.charIndex));
         }
       };
 
@@ -461,10 +404,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         setCurrentCharIndex(0);
         if (currentStep < steps.length - 1) {
+          // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
           }, 400);
         } else {
+          // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
             handleStop();
           }
@@ -622,12 +567,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
   const handleClose = () => {
     handleStop();
     setCurrentStep(0);
-    setShowMoreContent(false);
   };
 
-  if (!steps || steps.length === 0) return null;
-
-  const currentData = steps[currentStep];
+  if (!currentData) return null;
 
   const getActiveSpotlight = () => {
     if (currentCharIndex === 0 || !currentData.wordSpotlights) {
@@ -652,7 +594,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
 
     return matched ? matched.spotlight : currentData.spotlight;
   };
-  
+
   const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
 
   const viewerJSX = (
@@ -723,7 +665,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
                 display: 'block',
                 width: '100%',
                 height: '100%',
-                objectFit: 'fill'
+                objectFit: 'contain'
               }}
             />
           )}
@@ -741,37 +683,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
         isPlaying && (
           <div className="tutorial-subtitle-flat">
             <h2 className="tutorial-title">{currentData.title}</h2>
-            {showMoreContent && currentData.moreContentComponent ? (
-              <div style={{ marginTop: '1rem', pointerEvents: 'auto' }}>
-                {currentData.moreContentComponent}
-              </div>
-            ) : (
-              <>
-                {renderKaraokeText()}
-                {currentData.hasMoreContent && (
-                  <button 
-                    className="tutorial-more-btn" 
-                    onClick={() => setShowMoreContent(true)}
-                    style={{
-                      marginTop: '1rem',
-                      padding: '0.4rem 1rem',
-                      background: 'transparent',
-                      border: '1px solid var(--primary)',
-                      color: 'var(--primary)',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem',
-                      alignSelf: 'flex-end',
-                      display: 'block',
-                      marginLeft: 'auto',
-                      pointerEvents: 'auto'
-                    }}
-                  >
-                    More
-                  </button>
-                )}
-              </>
-            )}
+            {renderKaraokeText()}
           </div>
         )
       ) : (
@@ -783,63 +695,30 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
             left: 'auto',
             right: 'auto',
             transform: 'none',
-            ...(showMoreContent && currentData.expandedWidth ? { width: currentData.expandedWidth } : {}),
             ...currentData.subtitlePos
           }}
         >
           {currentStep > 0 && (
             <button
               className="tutorial-subtitle-close"
-              onClick={showMoreContent ? () => setShowMoreContent(false) : handleClose}
-              title={showMoreContent ? "Back to description" : "Close Step (Back to Intro)"}
+              onClick={handleClose}
+              title="Close Step (Back to Intro)"
             >
               <X size={18} />
             </button>
           )}
           <h2 className="tutorial-title">{currentData.title}</h2>
-          
-          {showMoreContent && currentData.moreContentComponent ? (
-            <div style={{ marginTop: '1rem', pointerEvents: 'auto' }}>
-              {currentData.moreContentComponent}
-            </div>
-          ) : (
-            <>
-              {renderKaraokeText()}
-              {currentData.hasMoreContent && (
-                <button 
-                  className="tutorial-more-btn" 
-                  onClick={() => setShowMoreContent(true)}
-                  style={{
-                    marginTop: '1rem',
-                    padding: '0.4rem 1rem',
-                    background: 'transparent',
-                    border: '1px solid var(--primary)',
-                    color: 'var(--primary)',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '0.9rem',
-                    alignSelf: 'flex-end',
-                    display: 'block',
-                    marginLeft: 'auto',
-                    pointerEvents: 'auto'
-                  }}
-                >
-                  More
-                </button>
-              )}
-            </>
-          )}
+          {renderKaraokeText()}
         </div>
       )}
 
       {/* Persistent Floating Control Panel */}
       <div
-        ref={browserRef}
-        className={`tutorial-control-card gallery-control-pill${showBrowser && isBrowserOpen ? ' is-browsing' : ''}`}
+        className="tutorial-control-card"
         style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
       >
         <div
-          className="drag-handle gallery-control-drag"
+          className="drag-handle"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -850,53 +729,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
           <GripHorizontal size={20} color="#888" />
         </div>
 
-        {/* Step Browser Popover */}
-        {showBrowser && isBrowserOpen && (
-          <div className="tutorial-browser-container fade-in">
-            <div className="tutorial-browser-card gallery-browse-dropdown">
-              <div className="tutorial-browser-header gallery-browse-header">
-                <span className="gallery-browse-title">{browserTitle || "SOLIDWORKS INTERFACE REFERENCE"}</span>
-                <button className="gallery-browse-close" onClick={() => setIsBrowserOpen(false)} aria-label="Close step list" title="Close step list">
-                  <X size={16} />
-                </button>
-              </div>
-
-              <div className="tutorial-browser-list">
-                {displayItems.map((item, displayIdx) => {
-                  const isActive = currentStep === item.actualIndex;
-                  return (
-                    <button
-                      key={item.step.id ?? displayIdx}
-                      className={`tutorial-browser-item gallery-browse-item${isActive ? ' active is-active' : ''}`}
-                      onClick={() => handleSelectBrowserStep(item.actualIndex)}
-                    >
-                      <span className={`tutorial-browser-badge gallery-browse-number ${isActive ? 'active' : ''}`}>
-                        {displayIdx + 1}
-                      </span>
-                      <span className="tutorial-browser-item-title">
-                        {item.step.title}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="tutorial-controls">
-          {/* Browser Button (only in solidworks interface when showBrowser is true) */}
-          {showBrowser && (
-            <button
-              className={`tutorial-btn browser-btn ${isBrowserOpen ? 'active' : ''}`}
-              onClick={() => setIsBrowserOpen(prev => !prev)}
-              title={isBrowserOpen ? "Close Steps" : "Browse Steps"}
-            >
-              {isBrowserOpen ? <X size={16} /> : <LayoutGrid size={16} />}
-              {isBrowserOpen ? "Close" : "Browse"}
-            </button>
-          )}
-
           {/* Live timestamp badge */}
           {currentData.videoSrc && (
             <span

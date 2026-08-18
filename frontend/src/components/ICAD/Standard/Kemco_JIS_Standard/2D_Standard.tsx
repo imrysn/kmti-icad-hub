@@ -45,10 +45,10 @@ const galleryImages = [
         <table className="lesson-table" style={{ width: "100%" }}>
           <thead>
             <tr>
-              <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center", fontSize: "1.2rem" }}>SPCC</th>
+              <th style={{ fontSize: "1.2rem" }}>SPCC</th>
             </tr>
             <tr>
-              <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA', textAlign: "center" }}>Thickness</th>
+              <th>Thickness</th>
             </tr>
           </thead>
           <tbody>
@@ -383,7 +383,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
               </div>
 
               {/* Page Navigation */}
-              <div className="lesson-navigation mt-12">
+              <div className="lesson-navigation">
                 <button
                   className="nav-button"
                   onClick={handlePrev}
@@ -762,7 +762,7 @@ const TwoDStandardLesson: React.FC<TwoDStandardLessonProps> = ({
           </div>
 
           {/* ── Bottom navigation: PREVIOUS | NEXT LESSON ── */}
-          <div className="lesson-navigation" style={{ maxWidth: "1000px", width: "100%", margin: "0 auto", borderTop: "none", paddingTop: "1.5rem", marginTop: 0, flexShrink: 0 }}>
+          <div className="lesson-navigation">
             <button
               className="nav-button"
               onClick={handlePrev}

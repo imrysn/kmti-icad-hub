@@ -16,8 +16,8 @@ const KeyboardShortcutsContent: React.FC = () => (
                         <table className="lesson-table">
                             <thead>
                                 <tr>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                    <th>Shortcut</th>
+                                    <th>Command</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,8 +41,8 @@ const KeyboardShortcutsContent: React.FC = () => (
                         <table className="lesson-table">
                             <thead>
                                 <tr>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Shortcut</th>
-                                    <th style={{ background: 'rgba(221, 77, 250, 0.1)', color: '#DD4DFA', borderBottom: '2px solid #DD4DFA' }}>Command</th>
+                                    <th>Shortcut</th>
+                                    <th>Command</th>
                                 </tr>
                             </thead>
                             <tbody>

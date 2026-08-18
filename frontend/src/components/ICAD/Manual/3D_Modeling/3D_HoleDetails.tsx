@@ -1,15 +1,14 @@
+import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
-import { ReadAloudButton } from "../../../ReadAloudButton";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/3D_Modeling/CourseLesson.css";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
 
 /* Asset Imports */
 import arrangeMachinePart from "../../../../assets/3D_Image_File/hole_details_arrange_machine_part.png";
-import partsPlacement from "../../../../assets/3D_Image_File/hole_details_parts_placement.png";
-import listTools from "../../../../assets/3D_Image_File/hole_details_list_tools.png";
 import holeResult from "../../../../assets/3D_Image_File/hole_details_hole.png";
+import listTools from "../../../../assets/3D_Image_File/hole_details_list_tools.png";
+import partsPlacement from "../../../../assets/3D_Image_File/hole_details_parts_placement.png";
 import tappedHoles from "../../../../assets/3D_Image_File/hole_details_tapped_holes.png";
 import leftClick from "../../../../assets/3D_Image_File/left_click.png";
 
@@ -23,23 +22,13 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
   const {
     scrollProgress,
     containerRef,
-    speak,
-    stop,
     isSpeaking,
     currentIndex,
     currentCharIndex
   } = useLessonCore('hole-details');
 
-  const holeSteps = [
-    "HOLE DETAILS",
-    "Step 1: Select Arrange Machine Part from the icon menu.",
-    "Step 2: A window will appear showing the list of available tools, such as drill holes and counterbores.",
-    "Step 3: After setting the specifications, click OK",
-    "Step 4: Click the location of the hole on the solid entity > GO",
-    "Note: Tapped holes must be painted green to indicate that those are threaded and to distinguish it from drill holes."
-  ];
 
-  const getStepClass = (stepId: string) => "instruction-step";
+  const getStepClass = (_stepId: string) => "instruction-step";
   const tabs = [{ id: "holeDetails", label: "Hole Details" }];
 
   const introTitle = "Creating Hole Details on Parts";
@@ -67,7 +56,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          
+
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}
@@ -94,7 +83,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-1")} ${currentIndex === 3 ? "reading-active" : ""}`} data-reading-index="3">
             <div className="step-header">
-              <span className="step-number">1</span>
+              <span className="step-number">1 </span>
               <KaraokeLessonText
                 as="span"
                 className="step-label"
@@ -112,7 +101,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-2")} ${currentIndex === 4 ? "reading-active" : ""}`} data-reading-index="4">
             <div className="step-header">
-              <span className="step-number">2</span>
+              <span className="step-number">2 </span>
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
@@ -131,7 +120,7 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-3")} ${currentIndex === 5 ? "reading-active" : ""}`} data-reading-index="5">
             <div className="step-header">
-              <span className="step-number">3</span>
+              <span className="step-number">3 </span>
               <span className="step-label">
                 <KaraokeLessonText
                   as="span"
@@ -147,11 +136,11 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 
           <div className={`${getStepClass("hole-4")} ${currentIndex === 6 ? "reading-active" : ""}`} data-reading-index="6">
             <div className="step-header">
-              <span className="step-number">4</span>
+              <span className="step-number">4 </span>
               <span className="step-label" style={{ marginTop: "-1.5rem" }}>
                 <KaraokeLessonText
                   as="span"
-                  text="Click the location of the hole on the solid entity &gt; GO"
+                  text="Click the location of the hole on the solid entity then Right Click"
                   isActive={isSpeaking && currentIndex === 6}
                   currentCharIndex={currentCharIndex}
                 />
@@ -175,11 +164,11 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
           <div className={`${currentIndex === 7 ? "reading-active" : ""}`}>
             <img src={tappedHoles} alt="Tapped Holes Examples" className="software-screenshot screenshot-wide mt-4" />
           </div>
-        </div>
 
-        <div className="lesson-navigation">
-          <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> Previous</button>
-          <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); setTimeout(() => document.querySelector('.lesson-scroll-area')?.scrollTo({ top: 0, behavior: 'smooth' }), 50); }}>{nextLabel || 'Next Lesson'} <ChevronRight size={18} /></button>
+          </div>
         </div>
       </div>
 
@@ -188,4 +177,5 @@ const HoleDetailsLesson: React.FC<HoleDetailsLessonProps> = ({ onNextLesson, onP
 };
 
 export default HoleDetailsLesson;
+
 
