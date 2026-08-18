@@ -10,13 +10,13 @@ import '../../styles/AssistantMode.css';
  */
 const AssistantMode: React.FC = () => {
     const location = useLocation();
-    const [activeTab, setActiveTab] = useState<'training' | 'assessment'>(() => {
+    const [activeTab, setActiveTab] = useState<string>(() => {
         const params = new URLSearchParams(window.location.search);
         const tabParam = params.get('tab');
-        if (tabParam === 'assessment' || tabParam === 'training') {
-            return tabParam as any;
+        if (tabParam) {
+            return tabParam;
         }
-        return (localStorage.getItem('assistant-active-tab') as any) || 'training';
+        return localStorage.getItem('assistant-active-tab') || 'training';
     });
 
     useEffect(() => {
@@ -26,20 +26,20 @@ const AssistantMode: React.FC = () => {
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const tabParam = params.get('tab');
-        if (tabParam === 'assessment' || tabParam === 'training') {
-            setActiveTab(tabParam as any);
+        if (tabParam) {
+            setActiveTab(tabParam);
         }
     }, [location.search]);
 
     return (
         <div className="assistant-mode-container">
             <div className="assistant-tab-content">
-                {activeTab === 'training' ? (
+                {activeTab === 'assessment' ? (
+                    <PracticalTrainerDashboard />
+                ) : (
                     <div className="assistant-training-wrapper">
                         <MentorMode isEmployeeSide={true} />
                     </div>
-                ) : (
-                    <PracticalTrainerDashboard />
                 )}
             </div>
         </div>

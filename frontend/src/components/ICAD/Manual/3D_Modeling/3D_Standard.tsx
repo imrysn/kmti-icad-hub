@@ -1,0 +1,1143 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Info, Play } from 'lucide-react';
+import { ReadAloudButton } from "../../../ReadAloudButton";
+import { KaraokeLessonText } from "../../../KaraokeLessonText";
+import { useLessonCore } from "../../../../hooks/useLessonCore";
+import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
+import '../../../../styles/3D_Modeling/CourseLesson.css';
+
+// --- Assets ---
+import scale2D from '../../../../assets/3D_Image_File/standard1_scale_2d.png';
+import scale3D from '../../../../assets/3D_Image_File/standard1_scale_3d.png';
+import scalePointer from '../../../../assets/3D_Image_File/standard1_scale_pointer.png';
+import scalePointerVGroove from '../../../../assets/3D_Image_File/standard1_scale_pointer_vgroove.png';
+import gasDischarge from '../../../../assets/3D_Image_File/standard2_gas_discharge.png';
+import oilGroove from '../../../../assets/3D_Image_File/standard2_oil_groove.png';
+import sprocketNote from '../../../../assets/3D_Image_File/standard2_sprocket.png';
+import sprocketColoring from '../../../../assets/3D_Image_File/standard3_sprocket_3d.png';
+import sprocketKeywayLoc from '../../../../assets/3D_Image_File/standard3_location_of_sprocket_keyway.png';
+import boltLengthCalc from '../../../../assets/3D_Image_File/standard6_bolt_length.png';
+import pillowBlock1 from '../../../../assets/3D_Image_File/standard6_pillow_block_1.png';
+import pillowBlock3 from '../../../../assets/3D_Image_File/standard6_pillow_block_3.png';
+import slottedThreaded from '../../../../assets/3D_Image_File/standard7_case1.png';
+import slottedDrill from '../../../../assets/3D_Image_File/standard7_case2.png';
+import connectionCChannel from '../../../../assets/3D_Image_File/standard7_connections_case1.png';
+import connectionBothDrill from '../../../../assets/3D_Image_File/standard7_connections_case2.png';
+import sgpPipesRed from '../../../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
+import sgpPipesYellow from '../../../../assets/3D_Image_File/standard8_SGP_pipes_yellow.png';
+
+
+
+interface StandardLessonProps {
+  nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;
+}
+
+/**
+ * StandardLesson component for KEMCO Standard Lessons 1-8.
+ * Refactored to use centralized useLessonCore hook for state and TTS.
+ */
+const StandardLesson: React.FC<StandardLessonProps> = ({
+  subLessonId = 'standard-1',
+  onNextLesson,
+  onPrevLesson
+  , nextLabel }) => {
+  const [activeTab, setActiveTab] = useState<"pointer" | "scale" | "gas" | "oil" | "sprocket" | "screw" | "stainless" | "hardware" | "bolt" | "bolt length" | "bolting setup" | "SLOTTED HOLE" | "CONNECTIONS" | "sgp pipes">(() => {
+    if (subLessonId === 'standard-4') {
+      return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'screw';
+    }
+    if (subLessonId === 'standard-6') {
+      return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'bolt length';
+    }
+    if (subLessonId !== 'standard-1') return 'pointer';
+    return (localStorage.getItem(`${subLessonId}-tab`) as any) || 'pointer';
+  });
+
+  useEffect(() => {
+    if (subLessonId === 'standard-1') {
+      const savedTab = localStorage.getItem(`${subLessonId}-tab`);
+      if (savedTab && ['pointer', 'scale', 'gas', 'oil', 'sprocket'].includes(savedTab)) {
+        setActiveTab(savedTab as any);
+      } else {
+        setActiveTab('pointer');
+      }
+    } else if (subLessonId === 'standard-4') {
+      const savedTab = localStorage.getItem(`${subLessonId}-tab`);
+      if (savedTab && ['screw', 'stainless', 'hardware', 'bolt'].includes(savedTab)) {
+        setActiveTab(savedTab as any);
+      } else {
+        setActiveTab('screw');
+      }
+    } else if (subLessonId === 'standard-6') {
+      const savedTab = localStorage.getItem(`${subLessonId}-tab`);
+      if (savedTab && ['bolt length', 'bolting setup', 'SLOTTED HOLE', 'CONNECTIONS', 'sgp pipes'].includes(savedTab)) {
+        setActiveTab(savedTab as any);
+      } else {
+        setActiveTab('bolt length');
+      }
+    }
+  }, [subLessonId]);
+
+  useEffect(() => {
+    if (subLessonId === 'standard-1' || subLessonId === 'standard-4' || subLessonId === 'standard-6') {
+      const isValidFor1 = subLessonId === 'standard-1' && ['pointer', 'scale', 'gas', 'oil', 'sprocket'].includes(activeTab);
+      const isValidFor4 = subLessonId === 'standard-4' && ['screw', 'stainless', 'hardware', 'bolt'].includes(activeTab);
+      const isValidFor6 = subLessonId === 'standard-6' && ['bolt length', 'bolting setup', 'SLOTTED HOLE', 'CONNECTIONS', 'sgp pipes'].includes(activeTab);
+
+      if (isValidFor1 || isValidFor4 || isValidFor6) {
+        localStorage.setItem(`${subLessonId}-tab`, activeTab);
+      }
+    }
+  }, [subLessonId, activeTab]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeTab]);
+
+  const {
+    scrollProgress,
+    containerRef,
+    speak,
+    stop,
+    isSpeaking,
+    currentIndex,
+    currentCharIndex,
+    registerText
+  } = useLessonCore(subLessonId);
+
+  const getStepClass = (stepId: string) => "instruction-step";
+
+  const pointerSteps = [
+    "SCALE POINTER",
+    "Based on the image. We must apply it on 3D Modeling and 2D Detailing",
+    "Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
+  ];
+
+  const scaleSteps = [
+    "SCALE",
+    "On 3D: Text and linear graduations of scale are Black. On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
+  ];
+
+  const gasSteps = [
+    "GAS DISCHARGE",
+    "Deformation may happen due to the presence of heat and gas at time of welding. Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
+  ];
+
+  const oilSteps = [
+    "OIL GROOVE",
+    "Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole.",
+    "Follow oil way standard of KEM. Depth of manufacturing should be 1.5mm. In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove."
+  ];
+
+  const sprocketSteps = [
+    "SPROCKET",
+    "In 2D detail of sprocket, there is a safety color note.",
+    "This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.",
+    "Location of Sprocket Keyway",
+    "Note: 1. Location of keyway always indicated on special notes. Key groove should be machined at the center of the tooth. 2. Purchase part with additional process. CORRECT."
+  ];
+
+  const boltLengthSteps = [
+    "BOLT LENGTH",
+    "Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm.",
+    "Note: 1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+  ];
+
+  const boltingSetupSteps = [
+    "BOLTING SETUP",
+    "Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup.",
+    "Note: Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas.",
+    "Bolting for Pillow Block: Hexagonal Bolt, Spring Washer, and Flat Washer (Hardening) Slotted.",
+    "For Flange-type Pillow Block: Hexagonal Bolt and Spring Washer."
+  ];
+
+  const slottedHoleSteps = [
+    "SLOTTED HOLE",
+    "For Parts that need adjustments.",
+    "Note: Slotted holes need Flat washer. For normal bolting, Spring Washer is enough.",
+    "CASE 1: Slotted plus Threaded Hole. Hexagonal Bolt, Spring Washer, Flat Washer.",
+    "CASE 2: Slotted plus Drill hole. Hexagonal Bolt, Flat washer, Spring Washer, Hex Nut."
+  ];
+
+  const connectionSteps = [
+    "CONNECTIONS",
+    "CASE 1: On C-Channel. Hexagonal Bolt, Taper washer, Flat washer (If slotted), Spring Washer, Hex Nut.",
+    "CASE 2: Both Drill hole. Hex Sockethead Cap Screw, Spring Washer, Hex Nut."
+  ];
+
+  const sgpPipeSteps = [
+    "SGP PIPES",
+    "a. SGP White: Apply for fluid (Oil, Air and Coolant). b. SGP Black: Apply for Structural Parts or Fabricated Parts.",
+    "These two types of SGP Pipes must be strictly applied on all drawings to avoid mistakes on purchasing. Red Colored Pipes are SGP White. Yellow Colored Pipes are SGP Black."
+  ];
+
+  const handleNext = () => {
+    stop();
+    if (subLessonId === 'standard-1') {
+      if (activeTab === 'pointer') setActiveTab('scale');
+      else if (activeTab === 'scale') setActiveTab('gas');
+      else if (activeTab === 'gas') setActiveTab('oil');
+      else if (activeTab === 'oil') setActiveTab('sprocket');
+      else if (onNextLesson) onNextLesson();
+    } else if (subLessonId === 'standard-4') {
+      if (activeTab === 'screw') setActiveTab('stainless');
+      else if (activeTab === 'stainless') setActiveTab('hardware');
+      else if (activeTab === 'hardware') setActiveTab('bolt');
+      else if (onNextLesson) onNextLesson();
+    } else if (subLessonId === 'standard-6') {
+      if (activeTab === 'bolt length') setActiveTab('bolting setup');
+      else if (activeTab === 'bolting setup') setActiveTab('SLOTTED HOLE');
+      else if (activeTab === 'SLOTTED HOLE') setActiveTab('CONNECTIONS');
+      else if (activeTab === 'CONNECTIONS') setActiveTab('sgp pipes');
+      else if (onNextLesson) onNextLesson();
+    } else if (onNextLesson) {
+      onNextLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    stop();
+    if (subLessonId === 'standard-1') {
+      if (activeTab === 'sprocket') setActiveTab('oil');
+      else if (activeTab === 'oil') setActiveTab('gas');
+      else if (activeTab === 'gas') setActiveTab('scale');
+      else if (activeTab === 'scale') setActiveTab('pointer');
+      else if (onPrevLesson) onPrevLesson();
+    } else if (subLessonId === 'standard-4') {
+      if (activeTab === 'bolt') setActiveTab('hardware');
+      else if (activeTab === 'hardware') setActiveTab('stainless');
+      else if (activeTab === 'stainless') setActiveTab('screw');
+      else if (onPrevLesson) onPrevLesson();
+    } else if (subLessonId === 'standard-6') {
+      if (activeTab === 'sgp pipes') setActiveTab('CONNECTIONS');
+      else if (activeTab === 'CONNECTIONS') setActiveTab('SLOTTED HOLE');
+      else if (activeTab === 'SLOTTED HOLE') setActiveTab('bolting setup');
+      else if (activeTab === 'bolting setup') setActiveTab('bolt length');
+      else if (onPrevLesson) onPrevLesson();
+    } else if (onPrevLesson) {
+      onPrevLesson();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // --- Content Mapping ---
+  const LESSON_DATA: Record<string, { title: string; steps: string[] }> = {
+    'standard-1': {
+      title: 'KEMCO STANDARDS',
+      steps: [
+        ...pointerSteps,
+        ...scaleSteps,
+        ...gasSteps,
+        ...oilSteps,
+        ...sprocketSteps
+      ]
+    },
+    'standard-4': { title: 'KUSAKABE STANDARD CODE FOR SCREW', steps: ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] },
+    'standard-5': { title: 'HARDWARE SYMBOLS & BOLT HOLES', steps: ["Hardware Symbols: Utilize these standard hardware symbols and refer to the bolt hole diameter table for precise modeling."] },
+    'standard-6': {
+      title: 'BOLT LENGTH & BOLTING SETUP', steps: [
+        "Bolt Length: Calculate length using the formula: Bolt size times 1.5 plus the sum of material thicknesses. Round up to the nearest standard length.",
+        "Bolting Setup: Standard setup varies. For pillow blocks, use a hexagonal bolt, spring washer, and flat washer. Use capscrews for tight spaces."
+      ]
+    },
+    'standard-7': {
+      title: 'SLOTTED HOLE', steps: [
+        "Slotted Hole: Use these for parts requiring adjustment. Remember that slotted holes always require a flat washer for proper fastening.",
+        "Connections: For C-channel connections, use taper washers and hex nuts. For dual drill holes, hex socket head capscrews are preferred."
+      ]
+    },
+    'standard-8': { title: 'SGP PIPES', steps: ["SGP Pipes: Distinguish between White SGP for fluids like oil and air, and Black SGP for structural parts. Use red for white pipes and yellow for black pipes in your models."] }
+  };
+
+  const currentLesson = LESSON_DATA[subLessonId] || { title: `STANDARD (${subLessonId})`, steps: [] };
+
+
+  // Register text dynamically on tab/activeTab changes
+  useEffect(() => {
+    let steps: string[] = [];
+    let startIdx = 0;
+    if (subLessonId === 'standard-1') {
+      steps = activeTab === 'pointer' ? pointerSteps :
+        activeTab === 'scale' ? scaleSteps :
+          activeTab === 'gas' ? gasSteps :
+            activeTab === 'oil' ? oilSteps : sprocketSteps;
+      startIdx = activeTab === 'pointer' ? 0 : 1; // standard intro bypass
+    } else if (subLessonId === 'standard-4') {
+      steps = activeTab === 'screw' ? ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] :
+        activeTab === 'stainless' ? ["Stainless Steel Parts: Always check chemical properties and standard grades when modeling stainless parts."] :
+          activeTab === 'hardware' ? (LESSON_DATA['standard-5']?.steps || []) :
+            (LESSON_DATA['standard-5']?.steps || []);
+    } else if (subLessonId === 'standard-6') {
+      steps = activeTab === 'bolt length' ? boltLengthSteps :
+        activeTab === 'bolting setup' ? boltingSetupSteps :
+          activeTab === 'SLOTTED HOLE' ? slottedHoleSteps :
+            activeTab === 'CONNECTIONS' ? connectionSteps : sgpPipeSteps;
+      startIdx = activeTab === 'bolt length' ? 0 : 1;
+    }
+    if (steps.length > 0) {
+      registerText(steps, startIdx);
+    }
+  }, [subLessonId, activeTab, registerText]);
+
+  // Autoplay hook integration
+  const currentTabSteps =
+    subLessonId === 'standard-1' ? (
+      activeTab === 'pointer' ? pointerSteps :
+        activeTab === 'scale' ? scaleSteps :
+          activeTab === 'gas' ? gasSteps :
+            activeTab === 'oil' ? oilSteps : sprocketSteps
+    ) : subLessonId === 'standard-4' ? (
+      activeTab === 'screw' ? ["Kusakabe Screw Codes: Follow these standard codes for screws, including specific designations for stainless steel parts."] :
+        activeTab === 'stainless' ? ["Stainless Steel Parts: Always check chemical properties and standard grades when modeling stainless parts."] :
+          activeTab === 'hardware' ? (LESSON_DATA['standard-5']?.steps || []) :
+            (LESSON_DATA['standard-5']?.steps || [])
+    ) : subLessonId === 'standard-6' ? (
+      activeTab === 'bolt length' ? boltLengthSteps :
+        activeTab === 'bolting setup' ? boltingSetupSteps :
+          activeTab === 'SLOTTED HOLE' ? slottedHoleSteps :
+            activeTab === 'CONNECTIONS' ? connectionSteps : sgpPipeSteps
+    ) : [];
+
+  const currentStartIdx =
+    subLessonId === 'standard-1' ? (activeTab === 'pointer' ? 0 : 1) :
+      subLessonId === 'standard-6' ? (activeTab === 'bolt length' ? 0 : 1) : 0;
+
+  const currentTabsList =
+    subLessonId === 'standard-1' ? [
+      { id: 'pointer' }, { id: 'scale' }, { id: 'gas' }, { id: 'oil' }, { id: 'sprocket' }
+    ] : subLessonId === 'standard-4' ? [
+      { id: 'screw' }, { id: 'stainless' }, { id: 'hardware' }, { id: 'bolt' }
+    ] : subLessonId === 'standard-6' ? [
+      { id: 'bolt length' }, { id: 'bolting setup' }, { id: 'SLOTTED HOLE' }, { id: 'CONNECTIONS' }, { id: 'sgp pipes' }
+    ] : [];
+
+  useTTSAutoplay(
+    isSpeaking,
+    currentIndex,
+    activeTab,
+    currentTabSteps.length,
+    currentTabsList,
+    handleNext,
+    speak,
+    currentTabSteps,
+    currentStartIdx
+  );
+
+  return (
+    <div className={`course-lesson-container ${isSpeaking ? 'is-reading' : ''}`} ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
+
+      {subLessonId !== 'standard-1' && subLessonId !== 'standard-4' && subLessonId !== 'standard-6' && (
+        <section className={`lesson-intro ${isSpeaking && currentIndex === -1 ? 'reading-active' : ''}`}>
+          <h3 className="section-title">
+            {currentLesson.title}
+
+          </h3>
+        </section>
+      )}
+
+      {subLessonId === 'standard-1' && (
+        <div className="lesson-tabs">
+          {[
+            { id: 'pointer', label: 'SCALE POINTER' },
+            { id: 'scale', label: 'SCALE' },
+            { id: 'gas', label: 'GAS DISCHARGE' },
+            { id: 'oil', label: 'OIL GROOVE' },
+            { id: 'sprocket', label: 'SPROCKET' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {subLessonId === 'standard-4' && (
+        <div className="lesson-tabs">
+          {[
+            { id: 'screw', label: 'SCREW' },
+            { id: 'stainless', label: 'STAINLESS STEEL' },
+            { id: 'hardware', label: 'HARDWARE' },
+            { id: 'bolt', label: 'BOLT' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {subLessonId === 'standard-6' && (
+        <div className="lesson-tabs">
+          {[
+            { id: 'bolt length', label: 'BOLT LENGTH' },
+            { id: 'bolting setup', label: 'BOLTING SETUP' },
+            { id: 'SLOTTED HOLE', label: 'SLOTTED HOLE' },
+            { id: 'CONNECTIONS', label: 'CONNECTIONS' },
+            { id: 'sgp pipes', label: 'SGP PIPES' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => { stop(); setActiveTab(tab.id as any); }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="lesson-grid single-card">
+        <div className={`lesson-card tab-content ${isSpeaking ? 'reading-active' : ''}`}>
+          {subLessonId === 'standard-1' && (
+            <div className="fade-in">
+              {activeTab === 'pointer' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SCALE POINTER"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+
+                  <div className={`${getStepClass("s1-1")} ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <div className="step-header">
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Based on the image. We must apply it on 3D Modeling and 2D Detailing"
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                      <img src={scalePointer} alt="Scale Pointer Detail" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                    </div>
+                  </div>
+
+
+                  <div className={`${getStepClass("s1-2")} ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-header">
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Another type of Scale Pointer is by putting V groove. We must also apply this on 3D and 2D"
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                      <img src={scalePointerVGroove} alt="V-groove Pointer Detail" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'scale' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SCALE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+
+                  <div className={`step-description ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <div className="info-box mb-8">
+                      <KaraokeLessonText
+                        as="div"
+                        text="On 3D: Text and linear graduations of scale are Black. <br />On 2D: Text must be Yellow #4, and linear graduations of scale must be Skin Color #15."
+                        isActive={isSpeaking && currentIndex === 1}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </div>
+                    <img src={scale2D} alt="Scale in 2D" className="software-screenshot mt-8" style={{ width: "900px" }} />
+                    <img src={scale3D} alt="Scale in 3D" className="software-screenshot mt-8" style={{ marginTop: "2rem", width: "900px" }} />
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'gas' && (
+                <div className="fade-in">
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="GAS DISCHARGE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="Deformation may happen due to the presence of heat and gas at time of welding. 
+                        <br /> Holes added to square pipes for gas discharge. One φ4 Drill hole per square pipe is enough."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+
+                  <div className="step-description">
+                    <img src={gasDischarge} alt="Gas Discharge Layout" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'oil' && (
+                <div className="fade-in">
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="OIL GROOVE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="Is a groove in the surface of a machine part that distributes lubricating oil injected through an oil hole."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`step-description ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                      <div className="flex-1">
+                        <ul className="list-flush">
+                          <li>Follow oil way standard of KEM</li>
+                          <li>Depth of manufacturing should be 1.5mm</li>
+                          <li>In case drill hole and tap hole reach to ditch, the diameter of hole should be smaller than width of groove.</li>
+                        </ul>
+                      </div>
+                      <img src={oilGroove} alt="Oil Groove Detail" className="software-screenshot mt-8" style={{ width: "900px" }} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'sprocket' && (
+                <div className="fade-in">
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SPROCKET"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="div"
+                      className='p-flush'
+                      text="In 2D detail of sprocket, there is a safety color note."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`step-description`}>
+                    <img src={sprocketNote} alt="Sprocket Safety Color Note" className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
+
+                    <div className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint."
+                        isActive={isSpeaking && currentIndex === 2}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={sprocketColoring} alt="Sprocket Coloring Standard" className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
+                    </div>
+
+                    <div className={`${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3" style={{ marginBottom: "2rem" }}>
+                      <KaraokeLessonText
+                        as="span"
+                        className="step-label"
+                        text="Location of Sprocket Keyway"
+                        isActive={isSpeaking && currentIndex === 3}
+                        currentCharIndex={currentCharIndex}
+                      />
+                      <img src={sprocketKeywayLoc} alt="Sprocket Keyway Location Standard" className="software-screenshot mt-4" style={{ marginTop: "1rem", width: "600px" }} />
+                      <div className={`instruction-box ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4" style={{ marginTop: "2rem" }}>
+                        <p className='p-flush'> <strong className='red-text'>Note:</strong></p>
+                        <KaraokeLessonText
+                          as="div"
+                          className='p-flush'
+                          text="1. Location of keyway always indicated on special notes <br /> キー溝は歯山部中心に合わせ加工すること (Key groove should be machined at the center of the tooth) <br /> 2. 本図ハ市販品ノ追加加工図デアル (Purchase part with additional process) <br /> 本図は市販品の追加加工図である (CORRECT)"
+                          isActive={isSpeaking && currentIndex === 4}
+                          currentCharIndex={currentCharIndex}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+
+
+
+
+          {subLessonId === 'standard-4' && (
+            <div className="fade-in">
+              <div className="card-header">
+                <h4>
+                  {activeTab === 'hardware' ? 'STANDARD OF SYMBOL OF HARDWARE' :
+                    activeTab === 'bolt' ? 'BOLT HOLE DIAMETER STANDARD' :
+                      'Kusakabe Standard Code for Screw, etc.'}
+                </h4>
+
+              </div>
+
+              <div className={`instruction-step ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                {activeTab === 'screw' && (
+                  <div className="lesson-table-container mt-4">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Types</th>
+                          <th>Code</th>
+                          <th>Size</th>
+                          <th>Japanese Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Hexagon Head Bolt</td><td>HB</td><td>M10 x 20</td><td>六角ボルト</td></tr>
+                        <tr><td>Hexagon Head Bolt (High Tension)</td><td>HBH</td><td>M10 x 20</td><td>六角ボルト（ハイテン10.9）</td></tr>
+                        <tr><td>Hexagon Socket Flat Head Bolt</td><td>FB</td><td>M10 x 20</td><td>六角穴付さらボルト</td></tr>
+                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS</td><td>M10 x 20</td><td>六角ボルト（全ネジ）</td></tr>
+                        <tr><td>Hexagon Head Bolt (Full Length High Tension)</td><td>HSH</td><td>M10 x 20</td><td>六角ボルト（全ネジハイテン）</td></tr>
+                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS</td><td>M10 x 20</td><td>六角穴付ボルト</td></tr>
+                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
+                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS</td><td>M10 x 20</td><td>六角穴付ボタンボルト</td></tr>
+                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1</td><td>M10</td><td>六角ナット（1種）</td></tr>
+                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2</td><td>M10</td><td>六角ナット（2種）</td></tr>
+                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3</td><td>M10</td><td>六角ナット（3種）</td></tr>
+                        <tr><td>Spring Lock Washer (#2)</td><td>SW</td><td>M10</td><td>ばね座金（2号）</td></tr>
+                        <tr><td>Spring Lock Washer (For Hexagon Socket head)</td><td>SWS</td><td>M10</td><td>方形ばね座金</td></tr>
+                        <tr><td>Conical Spring Washer (Class 1)</td><td>CW1</td><td>M10</td><td>さらばね座金（1種）</td></tr>
+                        <tr><td>Conical Spring Washer (Class 2)</td><td>CW2</td><td>M10</td><td>さらばね座金（2種）</td></tr>
+                        <tr><td>Plain Washer (Normal Series)</td><td>FW</td><td>M10</td><td>平座金（並丸）</td></tr>
+                        <tr><td>Plain Washer (Small Series)</td><td>FWS</td><td>M10</td><td>平座金（小並丸）</td></tr>
+                        <tr><td>Plain Washer (Quenched)</td><td>FWH</td><td>M10</td><td>平座金（焼入れ）</td></tr>
+                        <tr><td>Square Taper Washer (For U Section)</td><td>AW5</td><td>M10</td><td>傾斜座金（溝形鋼に適用）5°傾斜</td></tr>
+                        <tr><td>Square Taper Washer (For I Section)</td><td>AW8</td><td>M10</td><td>傾斜座金（I形鋼に適用）8°傾斜</td></tr>
+                        <tr><td>Cross Recessed Flat Head Screw</td><td>FS</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ</td></tr>
+                        <tr><td>Cross Recessed Flat Head Screw (Brass)</td><td>FSB</td><td>M8 x 20</td><td>十字穴付き 皿小ネジ (真鍮製)</td></tr>
+                        <tr><td>Cross Recessed Pan Head Screw</td><td>PS</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ</td></tr>
+                        <tr><td>Cross Recessed Pan Head Screw Unichrome Plated</td><td>PS-U</td><td>M8 x 20</td><td>十字穴付きなべ小ネジ (ユニクロメッキ)</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF</td><td>M10 x 20</td><td>六角穴付止めネジ（平先）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先）</td></tr>
+                        <tr><td>Spring Pin</td><td>SP</td><td>8 x 20</td><td>スプリングピン</td></tr>
+                        <tr><td>Split Lock</td><td>CP</td><td>4 x 20</td><td>割りピン</td></tr>
+                        <tr><td>Nord Lock</td><td>NL</td><td>M10</td><td>ノルトロック NOBEX 製</td></tr>
+                        <tr><td>Rivet</td><td>PR</td><td>3.51 x 4.8</td><td>打ち込み鋲（パーカー鋲） 目盛用・黄銅</td></tr>
+                        <tr><td>Taper Pin (With External Thread)</td><td>TPI</td><td>8 x 20</td><td>テーパーピン（おねじ付）</td></tr>
+                        <tr><td>Taper Pin (With Internal Thread)</td><td>TPE</td><td>8 x 20</td><td>テーパーピン（めねじ付）</td></tr>
+                        <tr><td>Straight Pin</td><td>PP</td><td>8 x 20</td><td>平行ピン</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {activeTab === 'stainless' && (
+                  <div className="lesson-table-container mt-4">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Stainless Types</th>
+                          <th>Code</th>
+                          <th>Size</th>
+                          <th>Japanese Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Hexagon Head Bolt</td><td>HB-S</td><td>M10 x 20</td><td>六角ボルト（SUS）</td></tr>
+                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS-S</td><td>M10 x 20</td><td>六角ボルト（全ネジSUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS-S</td><td>M10 x 20</td><td>六角穴付ボルト（SUS）</td></tr>
+                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL-S</td><td>M10 x 20</td><td>六角穴付ボルト（低頭）</td></tr>
+                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS-S</td><td>M10 x 20</td><td>六角穴付ボタンボルト（SUS）</td></tr>
+                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1-S</td><td>M10</td><td>六角ナット（1種）中H6（SUS）</td></tr>
+                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
+                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3-S</td><td>M10</td><td>六角ナット（2種）中H6（SUS）</td></tr>
+                        <tr><td>Spring Lock Washer (#2)</td><td>SW-S</td><td>M10</td><td>ばね座金（2号SUS）</td></tr>
+                        <tr><td>Plain Washer (Normal Series)</td><td>FW-S</td><td>M10</td><td>平座金（並丸SUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF-S</td><td>M10 x 20</td><td>六角穴付止めネジ（平先SUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC-S</td><td>M10 x 20</td><td>六角穴付止めネジ（とがり先SUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD-S</td><td>M10 x 20</td><td>六角穴付止めネジ（棒先SUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH-S</td><td>M10 x 20</td><td>六角穴付止めネジ（くぼみ先SUS）</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR-S</td><td>M10 x 20</td><td>六角穴付止めネジ（丸先SUS）</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {activeTab === 'hardware' && (
+                  <div className="lesson-table-container mt-4">
+                    <table className="lesson-table">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Code</th>
+                          <th>Size</th>
+                          <th>Article (JIS)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Hexagon Head Bolt</td><td>HB</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
+                        <tr><td>Hexagon Head Bolt (High Tension 10.9)</td><td>HBH</td><td>M10 x 20</td><td>JIS B 1186</td></tr>
+                        <tr><td>Hexagon Socket Flat Head Bolt</td><td>FB</td><td>M10 x 20</td><td>Japan Socket Screw工業協同組合</td></tr>
+                        <tr><td>Hexagon Head Screw (Full Length)</td><td>HS</td><td>M10 x 20</td><td>JIS B 1180</td></tr>
+                        <tr><td>Hexagon Head Bolt (Full Length High Tension)</td><td>HSH</td><td>M10 x 20</td><td>JIS B 1186 Added on 1999/11/29</td></tr>
+                        <tr><td>Hexagon Socket Head Cap Screw</td><td>CS</td><td>M10 x 20</td><td>JIS B 1176</td></tr>
+                        <tr><td>Hexagon Socket Low Head Cap Screw</td><td>CSL</td><td>M10 x 20</td><td>Added on 1999/11/29</td></tr>
+                        <tr><td>Hexagon Socket Button Head Screw</td><td>BS</td><td>M10 x 20</td><td>JIS B 1174</td></tr>
+                        <tr><td>Hexagon Nut 1 (Class 1)</td><td>HN1</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>Hexagon Nut 2 (Class 2)</td><td>HN2</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>Hexagon Nut 3 (Class 3)</td><td>HN3</td><td>M10</td><td>JIS B 1181</td></tr>
+                        <tr><td>Spring Lock Washer (#2)</td><td>SW</td><td>M10</td><td>JIS B 1251</td></tr>
+                        <tr><td>Spring Lock Washer (For Hexagon Socket head)</td><td>SWS</td><td>M10</td><td>DIN7980</td></tr>
+                        <tr><td>Conical Spring Washer (Class 1)</td><td>CW1</td><td>M10</td><td>JIS B 1152</td></tr>
+                        <tr><td>Conical Spring Washer (Class 2)</td><td>CW2</td><td>M10</td><td>JIS B 1152</td></tr>
+                        <tr><td>Plain Washer (Normal Series)</td><td>FW</td><td>M10</td><td>JIS B 1156</td></tr>
+                        <tr><td>Plain Washer (Small Series)</td><td>FWS</td><td>M10</td><td>JIS B 1156</td></tr>
+                        <tr><td>Plain Washer (Quenched)</td><td>FWH</td><td>M10</td><td>-</td></tr>
+                        <tr><td>Square Taper Washer (For U Section)</td><td>AW5</td><td>M10</td><td>Inclination 5°</td></tr>
+                        <tr><td>Square Taper Washer (For I Section)</td><td>AW8</td><td>M10</td><td>Inclination 8°</td></tr>
+                        <tr><td>Cross Recessed Flat Head Screw</td><td>FS</td><td>M8 x 20</td><td>JIS B 1111</td></tr>
+                        <tr><td>Cross Recessed Flat Head Screw (Brass)</td><td>FSB</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/6/30</td></tr>
+                        <tr><td>Cross Recessed Pan Head Screw</td><td>PS</td><td>M8 x 20</td><td>JIS B 1111 Added on 1999/11/29</td></tr>
+                        <tr><td>Cross Recessed Pan Head Screw Unichorme Plated</td><td>PS-U</td><td>M8 x 20</td><td>JIS B 1111 Added on 2013/12/19</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Flat Point)</td><td>SSF</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Truncated Cone Point)</td><td>SSC</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Long Dog Point)</td><td>SSD</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Cup Point)</td><td>SSH</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>Hexagon Socket Head Set Screw (Rounded Point)</td><td>SSR</td><td>M10 x 20</td><td>JIS B 1177</td></tr>
+                        <tr><td>Spring Pin</td><td>SP</td><td>8 x 20</td><td>JIS B 2808 Revised on 1999/9/3</td></tr>
+                        <tr><td>Split Pin</td><td>CP</td><td>4 x 20</td><td>JIS B 1351 Revised on 1999/9/3</td></tr>
+                        <tr><td>Nord Lock</td><td>NL</td><td>M10</td><td>NOBEX Added on 1999/6/30</td></tr>
+                        <tr><td>Rivet</td><td>PR</td><td>3.51 x 4.8</td><td>For Measure - Chalcopyrite Added on 1999/12/7</td></tr>
+                        <tr><td>Taper Pin (With External Thread)</td><td>TPI</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
+                        <tr><td>Taper Pin (With Internal Thread)</td><td>TPE</td><td>8 x 20</td><td>JIS B 1352 Added on 2000/6/9</td></tr>
+                        <tr><td>Straight Pin</td><td>PP</td><td>8 x 20</td><td>JIS B 1354 Added on 2000/6/9</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {activeTab === 'bolt' && (
+                  <div className="lesson-table-container mt-4">
+                    <table className="lesson-table highlight-table">
+                      <thead>
+                        <tr>
+                          <th>BOLT SIZE</th>
+                          <th>CLASS 2 (MACHINE)</th>
+                          <th>CLASS 3 (WELD)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>M6</td><td>7</td><td>φ7</td></tr>
+                        <tr><td>M8</td><td>9</td><td>10</td></tr>
+                        <tr><td>M10</td><td>11</td><td>12</td></tr>
+                        <tr><td>M12</td><td>14</td><td>15</td></tr>
+                        <tr><td>M14</td><td>16</td><td>17</td></tr>
+                        <tr><td>M16</td><td>18</td><td>19</td></tr>
+                        <tr><td>M20</td><td>22</td><td>24</td></tr>
+                        <tr><td>M24</td><td>26</td><td>28</td></tr>
+                        <tr><td>M30</td><td>33</td><td>35</td></tr>
+                        <tr><td>M36</td><td>39</td><td>42</td></tr>
+                        <tr><td>M42</td><td>45</td><td>48</td></tr>
+                        <tr><td>M48</td><td>52</td><td>56</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {subLessonId === 'standard-6' && (
+            <div className="fade-in">
+              {activeTab === 'bolt length' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="BOLT LENGTH"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <div className="step-description">
+                      <div className="info-box">
+                        <KaraokeLessonText
+                          as="div"
+                          text="Bolt Length = (Bolt size x 1.5) + (Σ of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm."
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
+                        <table style={{ border: 'none', background: 'transparent' }}>
+                          <tbody>
+                            <tr>
+                              <td style={{ paddingRight: '20px' }}>Example:</td>
+                              <td style={{ paddingRight: '20px' }}>Bolt size</td>
+                              <td style={{ paddingLeft: '20px' }}>M8</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Washer thickness</td>
+                              <td style={{ paddingLeft: '20px' }}>2mm</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>Material thickness</td>
+                              <td style={{ paddingLeft: '20px' }}>9mm</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <br />
+                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (Bolt size x 1.5) + (Σ of thickness)</p>
+                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = (8 x 1.5) + (2+9)</p>
+                        <p className="p-flush" style={{ color: "white" }}>Bolt Length = 12 + 11</p>
+                        <p className="p-flush" style={{ color: "white" }}><strong>Bolt Length = 23mm ≈ <span style={{ textDecoration: 'underline' }}>25mm</span></strong></p>
+                        <br />
+                      </div>
+                      <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginBottom: "2rem" }}>
+                        <p className="p-flush"><strong className="red-text">Note: </strong> </p>
+                        <KaraokeLessonText
+                          as="div"
+                          text="1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. <br /> 2. In case the result is not standard, it will round up to the nearest standard bolt length."
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                          style={{ paddingLeft: '40px' }}
+                        />
+                      </div>
+                      <img src={boltLengthCalc} alt="Bolt Length Visualization" className="software-screenshot mt-4" style={{ width: "900px" }} />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'bolting setup' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="BOLTING SETUP"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="span"
+                      text="Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+
+                  <div className={`instruction-box ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2" style={{ marginTop: "1rem", marginBottom: "2rem" }}>
+                    <p className="p-flush"><strong className="red-text">Note: </strong> </p>
+                    <KaraokeLessonText
+                      as="div"
+                      text="Hexagonal Bolt can be change to Capscrew if there will be problems at installation like tight spaces for tools or hard to reach areas."
+                      isActive={isSpeaking && currentIndex === 2}
+                      currentCharIndex={currentCharIndex}
+                      style={{ paddingLeft: '40px' }}
+                    />
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <h4 style={{ marginBottom: '10px' }}>Pillow Block</h4>
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: "white", marginBottom: '1rem' }}
+                        />
+                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>Bolting for Pillow Block:</p>
+                        <p className="p-flush">Hexagonal Bolt (HB)</p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush">Flat Washer (Hardening) - <strong className="red-text">SLOTTED</strong></p>
+
+                        <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginTop: "2rem" }}>
+                          <img src={pillowBlock1} alt="Pillow Block Setup 1" className="software-screenshot mt-8" style={{ width: "900px", marginBottom: "2rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <p className="p-flush" style={{ textDecoration: 'underline', color: "white" }}>For Flange-type Pillow Block:</p>
+                        <p className="p-flush">Hexagonal Bolt (HB)</p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+
+                        <img src={pillowBlock3} alt="Flange Setup" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem" }} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'SLOTTED HOLE' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SLOTTED HOLE"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`p-flush ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <KaraokeLessonText
+                      as="span"
+                      text="For Parts that need adjustments."
+                      isActive={isSpeaking && currentIndex === 1}
+                      currentCharIndex={currentCharIndex}
+                    />
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-description">
+                      <div className='instruction-box' style={{ marginTop: "1rem", marginBottom: "2rem" }}>
+                        <p className="p-flush"><strong className="red-text">Note: </strong> </p>
+                        <KaraokeLessonText
+                          as="div"
+                          text="Slotted holes need Flat washer. For normal bolting, Spring Washer is enough."
+                          isActive={isSpeaking && currentIndex === 2}
+                          currentCharIndex={currentCharIndex}
+                          style={{ paddingLeft: '1rem' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 3}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />Slotted + Threaded Hole</p>
+                        <br />
+                        <p className="p-flush">Hexagonal Bolt (HB)</p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush">FlatWasher (Hardening)</p>
+
+                        <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
+                          <img src={slottedThreaded} alt="Slotted Threaded Case" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 4 ? 'reading-active' : ''}`} data-reading-index="4">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 4}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
+                        <p className="p-flush"><strong style={{ color: "white" }}>CASE 2: </strong><br />Slotted + Drill hole</p>
+                        <br />
+                        <p className="p-flush">Hexagonal Bolt (HB)</p>
+                        <p className="p-flush">Flatwasher (FWH)</p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush">Hex Nut (HN1)</p>
+
+                        <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                          <img src={slottedDrill} alt="Slotted Drill Case" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'CONNECTIONS' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="CONNECTIONS"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <KaraokeLessonText
+                          as="div"
+                          text=""
+                          isActive={isSpeaking && currentIndex === 1}
+                          currentCharIndex={currentCharIndex}
+                          style={{ color: 'white', marginBottom: '1rem' }}
+                        />
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 1: </strong><br />On C-Channel</p>
+                        <br />
+                        <p className="p-flush">Hexagonal Bolt (HB)</p>
+                        <p className="p-flush">Taper washer (AW5)</p>
+                        <p className="p-flush">Flatwasher (FWH) - <strong className="red-text">IF SLOTTED</strong></p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush">Hex Nut (HN1)</p>
+
+                        <div className="flex-row-wrap mt-4" style={{ gap: '2rem', marginBottom: '2rem' }}>
+                          <img src={connectionCChannel} alt="C-Channel Connection" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <p className="p-flush"> <strong style={{ color: "white" }}>CASE 2: </strong><br />Both Drill hole</p>
+                        <br />
+                        <p className="p-flush">Hex Sockethead Cap Screw (CS)</p>
+                        <p className="p-flush">Spring Washer (SW)</p>
+                        <p className="p-flush">Hex Nut (HN1)</p>
+
+                        <div className="flex-row-wrap mt-4" style={{ gap: '2rem' }}>
+                          <img src={connectionBothDrill} alt="Dual Drill Connection" className="software-screenshot mt-8" style={{ width: "900px", marginTop: "2rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'sgp pipes' && (
+                <>
+                  <div className={`card-header ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
+                    <h4>
+                      <KaraokeLessonText
+                        as="span"
+                        text="SGP PIPES"
+                        isActive={isSpeaking && currentIndex === 0}
+                        currentCharIndex={currentCharIndex}
+                      />
+                    </h4>
+
+                  </div>
+                  <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <div>
+                          <p className="p-flush">a. <strong className="red-text">SGP (White)</strong></p>
+                          <p className="p-flush">Apply for fluid(Oil, Air and Coolant)</p>
+                          <p className="p-flush mt-2">b. <strong className="red-text">SGP (Black)</strong></p>
+                          <p className="p-flush">Apply for Structural Parts/Fabricated Parts.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
+                    <div className="step-description">
+                      <div className="mt-8">
+                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>These two types of SGP Pipes will be added on Icad Material List and must be strictly applied on all the drawings to avoid mistakes on purchasing of pipes. This means, we need to identify the 2 types of pipes separately. We will apply it on 3D modeling and 2D detailing of parts.</p>
+                        <p className="p-flush mt-4" style={{ marginTop: "1rem", textIndent: "2rem" }}>Inspite of having distinction of White and Black, it does not mean that we also apply it on the 3D Modeling. The color that we will apply on SGP Pipes will based on its usage and application. We must not be confused about the color of SGP Pipes.</p>
+
+                        <div className="flex-row-wrap mt-8" style={{ gap: '2rem' }}>
+                          <div className="flex-1">
+                            <img src={sgpPipesRed} alt="SGP White Pipes" className="software-screenshot mt-8" style={{ width: "500px", marginTop: "2rem", marginBottom: "1rem" }} />
+                            <p className="p-flush mt-2">Red Colored Pipes are <strong className="red-text">SGP (White) Pipes</strong>.</p>
+                            <p className="p-flush">ex. Pipes for Outfitting</p>
+                          </div>
+                          <div className="flex-1">
+                            <img src={sgpPipesYellow} alt="SGP Black Pipes" className="software-screenshot mt-8" style={{ width: "300px", marginTop: "2rem", marginBottom: "1rem" }} />
+                            <p className="p-flush mt-2">Yellow Colored Pipes are <strong className="red-text">SGP (Black) Pipes</strong>.</p>
+                            <p className="p-flush">ex. Hand Rails</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          <div className="lesson-navigation">
+            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> Previous</button>
+            <button className="nav-button next" onClick={handleNext}>
+              {(() => {
+                let isLast = true;
+                if (subLessonId === 'standard-1') isLast = activeTab === 'sprocket';
+                else if (subLessonId === 'standard-4') isLast = activeTab === 'bolt';
+                else if (subLessonId === 'standard-6') isLast = activeTab === 'sgp pipes';
+                return isLast ? (nextLabel || 'Next Lesson') : 'Next';
+              })()} <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StandardLesson;

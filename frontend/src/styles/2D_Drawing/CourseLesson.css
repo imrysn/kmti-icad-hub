@@ -733,6 +733,40 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* Piping reference data must fit the lesson card without horizontal scrolling. */
+.piping-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.piping-table-container .lesson-table.piping-table-compact {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.piping-table-container .lesson-table.piping-table-compact th,
+.piping-table-container .lesson-table.piping-table-compact td {
+  min-width: 0;
+  padding-inline: clamp(0.35rem, 0.8vw, 0.75rem);
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+@media (max-width: 760px) {
+  .piping-table-container .lesson-table.piping-table-compact th,
+  .piping-table-container .lesson-table.piping-table-compact td {
+    padding: 0.55rem 0.25rem;
+    font-size: 0.75rem !important;
+  }
+
+  .piping-table-container .lesson-table.piping-table-compact th {
+    font-size: 0.68rem !important;
+  }
+}
+
 [data-theme='light'] .lesson-table-container {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(99, 102, 241, 0.1);

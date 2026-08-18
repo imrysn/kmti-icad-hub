@@ -1,19 +1,26 @@
-import { Lock } from 'lucide-react';
-import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
-import { useWebSocket } from '../../context/WebSocketContext';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCourses } from '../../hooks/useCourses';
-import { useLessons } from '../../hooks/useLessons';
-import { assessmentService } from '../../services/assessmentService';
-import { authService } from '../../services/authService';
 import { Course } from '../../types';
-import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from './mentorConstants';
+import { useLessons } from '../../hooks/useLessons';
+
+import { Lesson, ICAD_3D_LESSONS, ICAD_2D_LESSONS, ICAD_KEMCO_LESSONS, SOLIDWORKS_INTRO_LESSONS, SOLIDWORKS_3D_OPERATION_LESSONS, SOLIDWORKS_2D_OPERATION_LESSONS } from './mentorConstants';
+
+import { authService } from '../../services/authService';
+import { assessmentService } from '../../services/assessmentService';
+import { useWebSocket } from '../../context/WebSocketContext';
 
 // Extracted Components
-import { CourseSelector } from './components/CourseSelector';
-import { LessonViewer } from './components/LessonViewer';
+import { CourseSelector } from './components/CourseSelector'; // Force compiler cache refresh
 import { MentorSidebar } from './components/MentorSidebar';
+import { LessonViewer } from './components/LessonViewer';
 import { PracticalAssessment } from './components/PracticalAssessment';
+
+// New Imports
+import { ICADStandardView } from './components/ICADStandardView';
+import { ICADCommandView } from './components/ICADCommandView';
+import { SolidworksManualView } from './components/SolidworksManualView';
+import { Lock } from 'lucide-react';
 
 import '../../styles/MentorMode.css';
 
@@ -34,6 +41,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Parse the view parameter from the URL
+    const searchParams = new URLSearchParams(location.search);
+    const currentView = searchParams.get('view') || searchParams.get('tab') || '';
+
     // Data Hook
     const { courses, loading, error } = useCourses();
 
@@ -41,8 +52,9 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const is2DDrawingCourse = selectedCourse?.id?.toString() === '2' || selectedCourse?.course_type === '2D_Drawing';
 
-    // UI/Interaction State
+    // UI/Interaction State 
     const [activeLessonId, setActiveLessonId] = useState<string>('');
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
     const [averageScore, setAverageScore] = useState(0);
@@ -90,15 +102,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         const params = new URLSearchParams(location.search);
         const mode = params.get('mode');
 
-        if (mode === 'assessment' && selectedCourse?.id !== 'practical-assessment' && selectedCourse?.id !== '2d-assessment') {
-            const is2D = selectedCourse?.id?.toString() === '2';
-            const assessmentCourse: Course = is2D ? {
-                id: '2d-assessment',
-                title: '2D Detailing Assessment',
-                description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
-                course_type: 'Practical_2D',
-                order: 2.5
-            } : {
+        if (mode === 'assessment' && selectedCourse?.id !== 'practical-assessment') {
+            const assessmentCourse: Course = {
                 id: 'practical-assessment',
                 title: 'Practical Assessment',
                 description: 'Sequential 7-set drafting tasks in iJCAD.',
@@ -106,18 +111,49 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 order: 99
             };
             setSelectedCourse(assessmentCourse);
-        } else if (mode === 'manual' && (selectedCourse?.id === 'practical-assessment' || selectedCourse?.id === '2d-assessment')) {
+        } else if (mode === 'manual' && selectedCourse?.id === 'practical-assessment') {
             setSelectedCourse(null);
         }
-    }, [location.search]);
+    }, [location.search, selectedCourse]);
+
+    // Handle course reset from global navigation tabs
+    useEffect(() => {
+        const handleReset = () => {
+            setSelectedCourse(null);
+        };
+        window.addEventListener('resetCourseView', handleReset);
+        return () => window.removeEventListener('resetCourseView', handleReset);
+    }, []);
 
     // Derived stable state
-    const { lessons: dbLessons, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
+    const { lessons: dbLessons, loading: lessonsLoading, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
 
     const currentLessons = useMemo(() => {
-        if (!selectedCourse) return [];
+        const course = selectedCourse;
+        if (!course) return [];
+        if (course.id === 'mock-icad-kemco') {
+            return ICAD_KEMCO_LESSONS;
+        }
+        if (course.id === 'mock-sw-intro') {
+            return SOLIDWORKS_INTRO_LESSONS;
+        }
+        if (course.id === 'mock-sw-3d') {
+            return SOLIDWORKS_3D_OPERATION_LESSONS;
+        }
+        if (course.id === 'mock-sw-2d') {
+            return SOLIDWORKS_2D_OPERATION_LESSONS;
+        }
+        if (course.id.toString().startsWith('mock-')) {
+            return [{
+                id: 'mock-lesson-1',
+                title: 'Content Coming Soon',
+                type: 'text',
+                content: 'This module is currently under development.',
+                isCategory: false
+            }] as any[];
+        }
         if (is2DDrawingCourse) return ICAD_2D_LESSONS;
-        if (selectedCourse.id.toString() === '1') return ICAD_3D_LESSONS;
+        if (course.id.toString() === '1') return ICAD_3D_LESSONS;
         return dbLessons;
     }, [selectedCourse, is2DDrawingCourse, dbLessons]);
 
@@ -151,9 +187,14 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Initial Session Restoration (once courses are available)
     useEffect(() => {
         if (!loading && courses.length > 0 && !isRestored) {
+            if (['icad_standard', 'icad_command', 'solidworks_manual'].includes(currentView)) {
+                setIsRestored(true);
+                return;
+            }
             const savedCourseId = localStorage.getItem(authService.getStorageKey('selectedCourseId'));
             const savedLessonId = localStorage.getItem(authService.getStorageKey('activeLessonId'));
             const savedExpanded = localStorage.getItem(authService.getStorageKey('expandedIds'));
+            const savedSidebar = localStorage.getItem(authService.getStorageKey('sidebarOpen'));
 
             if (savedCourseId) {
                 console.log('Restoring course from storage:', savedCourseId);
@@ -174,6 +215,32 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         course_type: 'Practical_2D',
                         order: 100
                     };
+                } else if (savedCourseId.toString().startsWith('mock-')) {
+                    let title = 'Mock Course';
+                    let course_type = 'Mock';
+                    if (savedCourseId === 'mock-icad-commands') {
+                        title = 'iCAD Commands';
+                        course_type = 'Command';
+                    } else if (savedCourseId === 'mock-icad-kemco') {
+                        title = 'KEMCO JIS Standards';
+                        course_type = 'Standard';
+                    } else if (savedCourseId === 'mock-sw-intro') {
+                        title = 'Solidworks Introduction';
+                        course_type = 'Solidworks';
+                    } else if (savedCourseId === 'mock-sw-3d') {
+                        title = 'Solidworks 3D Operation';
+                        course_type = 'Solidworks';
+                    } else if (savedCourseId === 'mock-sw-2d') {
+                        title = 'Solidworks 2D Operation';
+                        course_type = 'Solidworks';
+                    }
+                    course = {
+                        id: savedCourseId,
+                        title: title,
+                        description: 'Placeholder for future content.',
+                        course_type: course_type,
+                        order: 99
+                    };
                 } else {
                     course = courses.find(c => c.id.toString() == savedCourseId.toString());
                 }
@@ -186,6 +253,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         setActiveLessonId(savedLessonId);
                     }
                     if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
+                    if (savedSidebar) setSidebarOpen(savedSidebar === 'true');
                 } else {
                     console.warn('Could not find course in list for ID:', savedCourseId);
                 }
@@ -266,7 +334,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (authService.isAuthenticated()) {
             checkPrereq();
         }
-    // Re-run when memo counts settle (Fix #1: completable counts are dependencies)
+        // Re-run when memo counts settle (Fix #1: completable counts are dependencies)
     }, [completable3DCount, completable2DCount, canBypass]);
 
     // Fix #9: Stable string fingerprint from expandedIds — prevents Set reference re-renders
@@ -274,41 +342,46 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Session Persistence Sync (Save to LocalStorage)
     useEffect(() => {
+        const course = selectedCourse;
         if (isRestored) {
-            if (selectedCourse) {
-                localStorage.setItem(authService.getStorageKey('selectedCourseId'), selectedCourse.id);
+            if (course) {
+                localStorage.setItem(authService.getStorageKey('selectedCourseId'), course.id);
                 localStorage.setItem(authService.getStorageKey('activeLessonId'), activeLessonId);
                 localStorage.setItem(authService.getStorageKey('expandedIds'), JSON.stringify(Array.from(expandedIds)));
+                localStorage.setItem(authService.getStorageKey('sidebarOpen'), sidebarOpen.toString());
             } else {
                 // Clear persistence if we manually return to course selector
                 localStorage.removeItem(authService.getStorageKey('selectedCourseId'));
                 localStorage.removeItem(authService.getStorageKey('activeLessonId'));
                 localStorage.removeItem(authService.getStorageKey('expandedIds'));
+                localStorage.removeItem(authService.getStorageKey('sidebarOpen'));
             }
         }
-    // Fix #9: Use expandedIdsKey (stable string) instead of expandedIds (Set reference)
-    }, [selectedCourse, activeLessonId, expandedIdsKey, isRestored]);
+        // Fix #9: Use expandedIdsKey (stable string) instead of expandedIds (Set reference)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedCourse, activeLessonId, expandedIdsKey, sidebarOpen, isRestored]);
 
     // Filter completions to only include valid modules for this specific course
     const relevantCompletedCount = useMemo(() =>
         completedLessons.filter(id => completableModuleIds.includes(id)).length,
-    [completedLessons, completableModuleIds]);
+        [completedLessons, completableModuleIds]);
 
 
     // Detect Course Switch or Exit and Reset Lesson State
     useEffect(() => {
-        if (!selectedCourse) {
+        const course = selectedCourse;
+        if (!course) {
             // Exit to Hub: Clear lesson state immediately so the next course starts fresh
             setActiveLessonId('');
             setExpandedIds(new Set());
             lastCourseIdRef.current = null;
-        } else if (lastCourseIdRef.current !== selectedCourse.id) {
+        } else if (lastCourseIdRef.current !== course.id) {
             // Course Switch: If we came from another course, clear the state
             if (lastCourseIdRef.current !== null) {
                 setActiveLessonId('');
                 setExpandedIds(new Set());
             }
-            lastCourseIdRef.current = selectedCourse.id;
+            lastCourseIdRef.current = course.id;
         }
     }, [selectedCourse, isRestored]);
 
@@ -316,7 +389,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Fetch Progress from Backend
     const fetchProgress = useCallback(async (newCompletedId?: string) => {
-        if (!selectedCourse) return;
+        const course = selectedCourse;
+        if (!course) return;
 
         // Optimistic UI: Update local state immediately if a new ID is provided
         if (newCompletedId) {
@@ -328,7 +402,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
         setIsLoadingProgress(true);
         try {
-            const progress = await authService.getLessonProgress(selectedCourse.id);
+            const progress = await authService.getLessonProgress(course.id);
             // Only count as completed if score is >= 80
             const ids = progress.filter((p: any) => p.is_completed).map((p: any) => p.lesson_id);
 
@@ -341,7 +415,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             setCompletedLessons(ids);
 
             // If we are currently loading progress for Course '1', update isAnnotationCompleted as well
-            if (selectedCourse.id.toString() === '1') {
+            if (course.id.toString() === '1') {
                 const annotationDone = ids.includes('annotation');
                 setIsAnnotationCompleted(annotationDone);
                 localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
@@ -372,13 +446,29 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (!selectedCourse || activeLessonId) return;
 
         if (is2DDrawingCourse) {
-            setActiveLessonId('2d-orthographic');
+            setActiveLessonId('2d-orthographic-1');
+            setExpandedIds(new Set(['2d-orthographic']));
+        } else if (selectedCourse.course_type === 'Standard' || selectedCourse.id === 'mock-icad-kemco') {
+            // KEMCO/JIS Standards: default to Lesson 1 (3D Standard)
+            setActiveLessonId('3d');
+            setExpandedIds(new Set());
+        } else if (selectedCourse.id === 'mock-sw-intro') {
+            // SolidWorks Introduction: default to the first sub-lesson
+            setActiveLessonId('sw-interface');
+            setExpandedIds(new Set(['sw-interface-main']));
+        } else if (selectedCourse.id === 'mock-sw-3d') {
+            // SolidWorks 3D Operation: default to the first sub-lesson
+            setActiveLessonId('sw-part-modeling');
+            setExpandedIds(new Set(['sw-part-modeling-main']));
+        } else if (selectedCourse.id === 'mock-sw-2d') {
+            // SolidWorks 2D Operation: default to the first lesson
+            setActiveLessonId('sw-2d-operation-page1');
             setExpandedIds(new Set());
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
         }
-    }, [selectedCourse?.id, is2DDrawingCourse, activeLessonId]);
+    }, [selectedCourse, is2DDrawingCourse, activeLessonId]);
 
     useEffect(() => {
         const viewer = document.querySelector('.lesson-scroll-area');
@@ -521,6 +611,34 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, []);
 
     const goToNextLesson = useCallback(() => {
+        if (activeLessonId === 'sw-keyboard-shortcuts') {
+            // Cross-module: Introduction → 3D Operation (3D Part Modeling)
+            const sw3dCourse: Course = {
+                id: 'mock-sw-3d',
+                title: '3D Operation',
+                description: 'Master 3D modeling operations and assemblies in SOLIDWORKS.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw3dCourse);
+            setActiveLessonId('sw-part-modeling');
+            setExpandedIds(new Set(['sw-part-modeling-main']));
+            return;
+        }
+
+        if (activeLessonId === 'sw-how-to-edit-matings') {
+            // Cross-module: 3D Operation → 2D Operation (Insert Components in the Part)
+            const sw2dCourse: Course = {
+                id: 'mock-sw-2d',
+                title: '2D Operation',
+                description: 'Create detailed 2D manufacturing drawings from your 3D models.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw2dCourse);
+            setActiveLessonId('sw-2d-operation-page1');
+            setExpandedIds(new Set());
+            return;
+        }
+
         if (activeLessonId === 'annotation') {
             // Fix #12: demoted to debug-level logging
             console.debug('Annotation quiz completed. Routing to Practical Assessment.');
@@ -568,47 +686,38 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             });
         } else {
             console.debug('Cannot go to next lesson: already at end of course.');
-            
-            if (courses && courses.length > 0 && selectedCourse) {
-                const course3D = courses.find(c => c.id.toString() === '1');
-                const course2D = courses.find(c => c.id.toString() === '2');
-
-                const activeCards = [
-                    ...(course3D ? [course3D] : []),
-                    ...(isEmployeeSide ? [] : [{
-                        id: 'practical-assessment',
-                        title: '3D Practical Assessment',
-                        description: 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
-                        course_type: 'Practical',
-                        order: 1.5
-                    }]),
-                    ...(course2D ? [course2D] : []),
-                    ...(isEmployeeSide ? [] : [{
-                        id: '2d-assessment',
-                        title: '2D Detailing Assessment',
-                        description: 'Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.',
-                        course_type: 'Practical_2D',
-                        order: 2.5
-                    }])
-                ] as Course[];
-
-                const courseIndex = activeCards.findIndex(c => c.id === selectedCourse.id);
-                if (courseIndex !== -1 && courseIndex < activeCards.length - 1) {
-                    const nextCourse = activeCards[courseIndex + 1];
-                    console.log('Routing to Next Course:', nextCourse.title);
-                    
-                    localStorage.removeItem(authService.getStorageKey('activeLessonId'));
-                    setSelectedCourse(nextCourse);
-
-                    if (nextCourse.id === 'practical-assessment' || nextCourse.id === '2d-assessment') {
-                        navigate('/mentor?mode=assessment');
-                    }
-                }
-            }
         }
-    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons, courses, selectedCourse, navigate, isEmployeeSide]);
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
 
     const goToPrevLesson = useCallback(() => {
+        if (activeLessonId === 'sw-part-modeling') {
+            // Cross-module: 3D Operation → Introduction (Keyboard Shortcuts)
+            const swIntroCourse: Course = {
+                id: 'mock-sw-intro',
+                title: 'SolidWorks Introduction',
+                description: 'Learn the fundamentals of the SOLIDWORKS interface.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(swIntroCourse);
+            setActiveLessonId('sw-keyboard-shortcuts');
+            setExpandedIds(new Set(['sw-keyboard-shortcuts-main']));
+            return;
+        }
+
+        if (activeLessonId === 'sw-2d-operation-page1') {
+            // Cross-module: 2D Operation → 3D Operation (How to Edit Matings)
+            const sw3dCourse: Course = {
+                id: 'mock-sw-3d',
+                title: '3D Operation',
+                description: 'Master 3D modeling operations and assemblies in SOLIDWORKS.',
+                course_type: 'Manual'
+            };
+            setSelectedCourse(sw3dCourse);
+            setActiveLessonId('sw-how-to-edit-matings');
+            setExpandedIds(new Set(['sw-how-to-edit-matings-main']));
+            return;
+        }
+
         if (currentLessonIndex > 0) {
             const prevId = allLessonIds[currentLessonIndex - 1];
             setActiveLessonId(prevId);
@@ -636,9 +745,23 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         return 'Select a Lesson';
     };
 
-    // Render Composition
-    // Only show CourseSelector/Loader if we don't have courses loaded yet, or if no course is selected
-    if ((loading && courses.length === 0) || error || !selectedCourse) {
+    // Render subview components based on URL view parameter
+    if (currentView === 'icad_standard' && !selectedCourse) {
+        return <ICADStandardView setSelectedCourse={setSelectedCourse} />;
+    }
+    if (currentView === 'icad_command') {
+        return <ICADCommandView setSelectedCourse={setSelectedCourse} />;
+    }
+    if (currentView === 'solidworks_manual' && !selectedCourse) {
+        return <SolidworksManualView setSelectedCourse={setSelectedCourse} />;
+    }
+
+    if (!selectedCourse) {
+        // Fall through to CourseSelector when no course is selected
+    }
+
+    // Render CourseSelector (or loading/error) when no course is selected and not in a special subview
+    if ((loading && courses.length === 0) || error || (!selectedCourse && !['icad_standard', 'icad_command', 'icad_guide', 'icad_menu_setup', 'solidworks_manual'].includes(currentView))) {
         return (
             <CourseSelector
                 courses={courses}
@@ -655,12 +778,21 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         );
     }
 
+    if (!selectedCourse) {
+        return null;
+    }
+
+    const course = selectedCourse;
+    const showsCourseSidebar = course.id !== 'practical-assessment'
+        && course.id !== '2d-assessment'
+        && course.id !== 'mock-sw-intro';
+
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
-                {selectedCourse.id !== 'practical-assessment' && selectedCourse.id !== '2d-assessment' && (
+                {showsCourseSidebar && (
                     <MentorSidebar
-                        selectedCourse={selectedCourse}
+                        selectedCourse={course}
                         is2DDrawingCourse={is2DDrawingCourse}
                         sidebarOpen={true}
                         activeLessonId={activeLessonId}
@@ -678,8 +810,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     />
                 )}
 
-                {selectedCourse.id === 'practical-assessment' || selectedCourse.id === '2d-assessment' ? (
-                    (selectedCourse.id === 'practical-assessment' && !canBypass && !is3DCompleted) ? (
+                {course.id === 'practical-assessment' || course.id === '2d-assessment' ? (
+                    (course.id === 'practical-assessment' && !canBypass && !is3DCompleted) ? (
                         <div className="locked-assessment-container animate-fade-in">
                             <div className="locked-assessment-card">
                                 <div className="lock-badge-large">
@@ -701,7 +833,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                                 </button>
                             </div>
                         </div>
-                    ) : (selectedCourse.id === '2d-assessment' && !canBypass && !is2DCompleted) ? (
+                    ) : (course.id === '2d-assessment' && !canBypass && !is2DCompleted) ? (
                         <div className="locked-assessment-container animate-fade-in">
                             <div className="locked-assessment-card">
                                 <div className="lock-badge-large">
@@ -726,7 +858,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     ) : (
                         <PracticalAssessment
                             is3DCompleted={is3DCompleted}
-                            assessmentType={selectedCourse.id === '2d-assessment' ? '2D' : '3D'}
+                            assessmentType={course.id === '2d-assessment' ? '2D' : '3D'}
                             onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}
                         />
                     )
@@ -738,11 +870,16 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         allLessonIdsLength={allLessonIds.length}
                         goToNextLesson={goToNextLesson}
                         goToPrevLesson={goToPrevLesson}
+                        sidebarOpen={true}
+                        setSidebarOpen={() => undefined}
+                        setSelectedCourse={setSelectedCourse}
                         getActiveLessonTitle={getActiveLessonTitle}
                         lessons={currentLessons}
                         completedLessons={completedLessons}
                         onLessonComplete={fetchProgress}
                         isEmployeeSide={isEmployeeSide}
+                        setActiveLessonId={setActiveLessonId}
+                        showExitCourse={!showsCourseSidebar}
                     />
                 )}
             </div>

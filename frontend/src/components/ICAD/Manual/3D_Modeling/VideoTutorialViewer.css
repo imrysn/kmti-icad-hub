@@ -1,0 +1,562 @@
+.tutorial-viewer-container.inline {
+  position: relative;
+  width: 100%;
+  margin-top: -2rem;
+  /* Shrink-wrap the container to the image height so there is no vertical gap */
+  height: auto;
+  background-color: transparent;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.tutorial-viewer-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.tutorial-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.tutorial-image-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: calc(100vh - 200px);
+  aspect-ratio: 16 / 9;
+  min-width: 0;
+  min-height: 0;
+}
+
+.tutorial-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* For fullscreen, we can allow 100vw / 100vh maxes */
+.tutorial-viewer-container.fullscreen .tutorial-image-container {
+  max-height: 100vh;
+}
+
+.tutorial-spotlight-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tutorial-spotlight-cutout {
+  position: absolute;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+  border: 3px solid var(--color-primary);
+  border-radius: 4px;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+/* Floating Subtitle Box that moves near the highlight */
+.tutorial-subtitle-box {
+  position: absolute;
+  width: 400px;
+  background: rgba(20, 20, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  z-index: 25;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.tutorial-step-indicator {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.tutorial-title {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.tutorial-description {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+.tutorial-control-card {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(20, 20, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  padding: 8px 16px;
+  color: #fff;
+  z-index: 30;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  animation: slideUpFade 0.5s ease-out;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tutorial-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tutorial-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.tutorial-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tutorial-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tutorial-btn.primary {
+  background: var(--color-primary);
+}
+
+.tutorial-btn.primary:hover:not(:disabled) {
+  background: #b83ce0;
+}
+
+.tutorial-btn.expand {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 10px;
+}
+
+.tutorial-btn.expand:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.tutorial-btn.exit {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 6px 12px;
+}
+
+.tutorial-btn.exit:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.tutorial-time-badge {
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: rgba(221, 77, 250, 0.08);
+  border: 1px solid rgba(221, 77, 250, 0.25);
+  border-radius: 20px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  user-select: none;
+}
+
+/* Tutorial Placeholder when closed */
+.tutorial-viewer-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, rgba(20, 20, 25, 0.9) 0%, rgba(10, 10, 15, 0.95) 100%);
+  border: 1px dashed rgba(221, 77, 250, 0.3);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  max-width: 450px;
+}
+
+.play-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(221, 77, 250, 0.1);
+  border: 1px solid rgba(221, 77, 250, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(221, 77, 250, 0.2);
+  transition: all 0.3s ease;
+}
+
+.play-icon-wrapper:hover {
+  transform: scale(1.05);
+  background: rgba(221, 77, 250, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 30px rgba(221, 77, 250, 0.4);
+}
+
+.tutorial-viewer-placeholder h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.tutorial-viewer-placeholder p {
+  font-size: 0.95rem;
+  color: #9ca3af;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.start-tutorial-btn {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #bd2dfa 100%);
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(221, 77, 250, 0.3);
+  transition: all 0.2s ease;
+}
+
+.start-tutorial-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(221, 77, 250, 0.5);
+}
+
+.start-tutorial-btn:active {
+  transform: translateY(0);
+}
+
+.tutorial-subtitle-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  color: #a1a1aa !important;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justifyContent: center;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  width: 28px;
+  height: 28px;
+  z-index: 10;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.tutorial-subtitle-close:hover:not(:disabled) {
+  color: #ef4444 !important;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Flat simple subtitle styling for Intro/Outro (Movie Subtitle Style) */
+.tutorial-subtitle-flat {
+  position: absolute;
+  bottom: 120px; /* Kept above the floating controls panel (which is bottom: 30px) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 750px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  padding: 0 !important;
+  text-align: center;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.tutorial-subtitle-flat .tutorial-title {
+  display: none !important; /* Hide title on movie subtitles */
+}
+
+.tutorial-subtitle-flat .tutorial-description {
+  margin: 0;
+  font-size: 1.35rem !important;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff !important;
+}
+
+/* Classic movie subtitle outline shadow on all parts for perfect readability */
+.tutorial-subtitle-flat .tutorial-description span {
+  text-shadow: 
+    -1.5px -1.5px 0 #000,  
+     1.5px -1.5px 0 #000,
+    -1.5px  1.5px 0 #000,
+     1.5px  1.5px 0 #000,
+     0px 2px 4px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Step Browser Popover (Exact 2D Standard Reference Styling) */
+.tutorial-browser-container {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  animation: popoverFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tutorial-browser-close-pill {
+  background: #DD4DFA;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 0 18px rgba(221, 77, 250, 0.5);
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.tutorial-browser-close-pill:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 24px rgba(221, 77, 250, 0.75);
+}
+
+.tutorial-browser-card {
+  width: max-content;
+  min-width: 300px;
+  max-width: 420px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(221, 77, 250, 0.4);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.tutorial-browser-header {
+  padding: 0.65rem 1rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #DD4DFA;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.25rem;
+  user-select: none;
+}
+
+.tutorial-browser-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for Browser List (Matching 2D Standard) */
+.tutorial-browser-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.tutorial-browser-list::-webkit-scrollbar-track {
+  background: rgba(221, 77, 250, 0.05);
+  border-radius: 10px;
+}
+
+.tutorial-browser-list::-webkit-scrollbar-thumb {
+  background: rgba(221, 77, 250, 0.4);
+  border-radius: 10px;
+}
+
+.tutorial-browser-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.tutorial-browser-item:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-main);
+}
+
+.tutorial-browser-item.active {
+  background: rgba(221, 77, 250, 0.18);
+  border-left: 3px solid #DD4DFA;
+  color: #DD4DFA;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.tutorial-browser-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: var(--bg-hover);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  transition: all 0.15s ease;
+}
+
+.tutorial-browser-badge.active {
+  background: rgba(221, 77, 250, 0.3);
+  color: #DD4DFA;
+}
+
+.tutorial-browser-item-title {
+  color: var(--text-main);
+  line-height: 1.4;
+  flex: 1;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tutorial-browser-item.active .tutorial-browser-item-title {
+  color: #DD4DFA;
+  font-weight: 700;
+}
+
+.tutorial-btn.browser-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.tutorial-btn.browser-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.tutorial-btn.browser-btn.active {
+  background: #DD4DFA !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(221, 77, 250, 0.5) !important;
+}

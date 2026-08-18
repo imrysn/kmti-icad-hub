@@ -1,4 +1,4 @@
-import { Bell,Briefcase,ClipboardList,GraduationCap,LogOut,Settings,User as UserIcon,WifiOff } from 'lucide-react';
+import { Bell,Box,Briefcase,ChevronDown,ClipboardList,GraduationCap,LogOut,Settings,User as UserIcon,WifiOff } from 'lucide-react';
 import { useEffect,useRef,useState } from 'react';
 import { Navigate,Route,Routes,useLocation,useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,21 @@ function AppContent() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [hasTrainees, setHasTrainees] = useState<boolean | null>(null); // null = not yet checked
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [icadDropdownOpen, setIcadDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const closeNavigationMenu = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('.assistant-dropdown-container')) {
+        setIcadDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', closeNavigationMenu);
+    return () => document.removeEventListener('click', closeNavigationMenu);
+  }, []);
+
+  const resetCourseView = () => {
+    window.dispatchEvent(new CustomEvent('resetCourseView'));
+  };
 
   const fetchUnreadCount = async () => {
     if (!isAuthenticated) return;
@@ -265,9 +280,23 @@ function AppContent() {
             <div className="header-center">
               {user?.role === 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none', ...(location.pathname.startsWith('/assistant') ? { marginRight: '1.5rem' } : {}) }}>
-                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')}>
-                    <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                  <div className="assistant-dropdown-container">
+                    <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') && !location.search.includes('solidworks') ? 'active' : ''}`} onClick={(event) => { event.stopPropagation(); setIcadDropdownOpen(open => !open); }}>
+                      <GraduationCap size={18} />
+                      <span>iCAD</span>
+                      <ChevronDown size={14} />
+                    </button>
+                    {icadDropdownOpen && (
+                      <div className="assistant-dropdown-menu">
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor'); setIcadDropdownOpen(false); }}>Manual</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_command'); setIcadDropdownOpen(false); }}>Command</div>
+                      </div>
+                    )}
+                  </div>
+                  <button className={`assistant-tab-btn ${location.search.includes('solidworks') ? 'active' : ''}`} onClick={() => { resetCourseView(); navigate('/mentor?view=solidworks_manual'); }}>
+                    <Box size={18} />
+                    <span>SOLIDWORKS</span>
                   </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/admin') ? 'active' : ''}`} onClick={() => navigate('/admin')}>
                     <Settings size={18} />
@@ -275,23 +304,53 @@ function AppContent() {
                   </button>
                 </nav>
               )}
-              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && hasTrainees && (
+              {location.pathname.startsWith('/assistant') && user?.role !== 'admin' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${currentTab === 'training' ? 'active' : ''}`} onClick={() => handleTabChange('training')} title="iCAD Manuals and Standard">
-                    <GraduationCap size={18} />
-                    <span>iCAD Manuals and Standard</span>
+                  <div className="assistant-dropdown-container">
+                    <button className={`assistant-tab-btn ${currentTab === 'training' || currentTab.includes('icad') ? 'active' : ''}`} onClick={(event) => { event.stopPropagation(); setIcadDropdownOpen(open => !open); }}>
+                      <GraduationCap size={18} />
+                      <span>iCAD</span>
+                      <ChevronDown size={14} />
+                    </button>
+                    {icadDropdownOpen && (
+                      <div className="assistant-dropdown-menu">
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('training'); setIcadDropdownOpen(false); }}>Manual</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); handleTabChange('icad_command'); setIcadDropdownOpen(false); }}>Command</div>
+                      </div>
+                    )}
+                  </div>
+                  <button className={`assistant-tab-btn ${currentTab.includes('solidworks') ? 'active' : ''}`} onClick={() => { resetCourseView(); handleTabChange('solidworks_manual'); }}>
+                    <Box size={18} />
+                    <span>SOLIDWORKS</span>
                   </button>
-                  <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
-                    <ClipboardList size={18} />
-                    <span>Trainee Overview</span>
-                  </button>
+                  {hasTrainees && (
+                    <button className={`assistant-tab-btn ${currentTab === 'assessment' ? 'active' : ''}`} onClick={() => handleTabChange('assessment')} title="Trainee Overview">
+                      <ClipboardList size={18} />
+                      <span>Trainee Overview</span>
+                    </button>
+                  )}
                 </nav>
               )}
               {(location.pathname.startsWith('/mentor') || location.pathname.startsWith('/quotation')) && user?.role !== 'admin' && user?.role !== 'employee' && (
                 <nav className="assistant-tabs" style={{ marginBottom: 0, padding: 0, borderBottom: 'none' }}>
-                  <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') ? 'active' : ''}`} onClick={() => navigate('/mentor')} title="iCAD Manuals and Standard">
-                    <GraduationCap size={18} />
-                    <span>iCAD Manuals</span>
+                  <div className="assistant-dropdown-container">
+                    <button className={`assistant-tab-btn ${location.pathname.startsWith('/mentor') && !location.search.includes('solidworks') ? 'active' : ''}`} onClick={(event) => { event.stopPropagation(); setIcadDropdownOpen(open => !open); }}>
+                      <GraduationCap size={18} />
+                      <span>iCAD</span>
+                      <ChevronDown size={14} />
+                    </button>
+                    {icadDropdownOpen && (
+                      <div className="assistant-dropdown-menu">
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor'); setIcadDropdownOpen(false); }}>Manual</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_standard'); setIcadDropdownOpen(false); }}>Standard</div>
+                        <div className="assistant-dropdown-item" onClick={() => { resetCourseView(); navigate('/mentor?view=icad_command'); setIcadDropdownOpen(false); }}>Command</div>
+                      </div>
+                    )}
+                  </div>
+                  <button className={`assistant-tab-btn ${location.search.includes('solidworks') ? 'active' : ''}`} onClick={() => { resetCourseView(); navigate('/mentor?view=solidworks_manual'); }}>
+                    <Box size={18} />
+                    <span>SOLIDWORKS</span>
                   </button>
                   <button className={`assistant-tab-btn ${location.pathname.startsWith('/quotation') ? 'active' : ''}`} onClick={() => navigate('/quotation')} title="Quotation">
                     <Briefcase size={18} />
