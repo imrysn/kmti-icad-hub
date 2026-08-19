@@ -25,6 +25,7 @@ import Quotation from './views/trainee/components/Quotation/Quotation';
 
 import kmtiLogo from './assets/kmti-training-hub.png';
 import './styles/App.css';
+import './styles/CourseLessonShared.css';
 
 function AppContent() {
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();

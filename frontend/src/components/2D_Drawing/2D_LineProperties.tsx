@@ -17,7 +17,7 @@ import lineProp3ImgA from "../../assets/2D_Image_File/2D_line_properties_(2)_add
 import lineProp3ImgB from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline_spline.png";
 
 /* Importing assets for Line Properties (4) */
-import lineProp4Img from "../../assets/2D_Image_File/2D_line_properties_(3)_additional_lines_a_spline.png.png";
+import lineProp4Img from "../../assets/2D_Image_File/2D_line_properties_(3)_additional_lines_a_spline.png";
 import lineProp5Img from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line_1.png";
 import lineProp6Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_1.png";
 import lineProp7Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_3.png";

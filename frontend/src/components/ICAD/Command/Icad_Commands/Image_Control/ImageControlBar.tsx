@@ -12,6 +12,7 @@ import {
     LayoutGrid,
     X
 } from "lucide-react";
+import "./Image_Control_Theme/ImageControlBar.css";
 
 export interface ReferenceItem {
     label: string;
@@ -257,362 +258,328 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                 transform: `translate(${navPos.x}px, ${navPos.y}px)`
             }}
         >
-            {/* Reference / Browse Floating Modal */}
-            {isBrowseOpen && (
-                <div
-                    className="tutorial-browser-card icb-browse-panel"
-                    onClick={(e) => e.stopPropagation()}
-                    style={{
-                        position: "absolute",
-                        bottom: "calc(100% + 14px)",
-                        right: "0px",
-                        width: "280px",
-                        height: "440.42px",
-                        boxSizing: "border-box",
-                        maxWidth: "calc(100vw - 36px)",
-                        backgroundColor: isLight ? "#FFFFFF" : "#000000",
-                        backdropFilter: "blur(var(--glass-blur))",
-                        borderRadius: "20px",
-                        border: "1px solid #DD4DFA",
-                        boxShadow: isLight
-                            ? "var(--shadow-card)"
-                            : "var(--shadow-card), 0 0 25px rgba(221, 77, 250, 0.35)",
-                        padding: "16px 0px",
-                        zIndex: 1010,
-                        fontFamily: "var(--font-main)",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}
-                >
-                    {/* Header — title becomes a select-style dropdown when there are multiple sections */}
-                    <div
-                        className="tutorial-browser-header icb-browse-header"
-                        style={{
-                            position: "relative",
-                            width: "278px",
-                            height: "38.42px",
-                            boxSizing: "border-box",
-                            paddingTop: "0px",
-                            paddingBottom: "8px",
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            marginBottom: "6px",
-                            borderBottom: "1px solid color-mix(in srgb, var(--text-muted) 40%, transparent)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between"
-                        }}
-                    >
-                        {canSwitchSections ? (
-                            <div
-                                onClick={() => setIsTitleDropdownOpen(prev => !prev)}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter" || e.key === " ") {
-                                        e.preventDefault();
-                                        setIsTitleDropdownOpen(prev => !prev);
-                                    }
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = "transparent";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = "transparent";
-                                }}
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    width: "100%",
-                                    background: "none",
-                                    backgroundColor: "transparent",
-                                    border: "none",
-                                    padding: 9,
-                                    cursor: "default",
-                                    fontSize: "11px",
-                                    fontWeight: "700",
-                                    color: "#DD4DFA",
-                                    letterSpacing: "0.4px",
-                                    textTransform: "uppercase",
-                                    fontFamily: "var(--font-heading)",
-                                    outline: "none",
-                                }}
-                            >
-                                <span>{activeSection ? activeSection.title : referenceTitle}</span>
-                                <ChevronDown
-                                    size={13}
-                                    style={{
-                                        transform: isTitleDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
-                                        transition: "transform 0.2s ease"
-                                    }}
-                                />
-                            </div>
-                        ) : (
-                            <span style={{
-                                fontSize: "11px",
-                                fontWeight: "700",
-                                color: "#DD4DFA",
-                                letterSpacing: "0.4px",
-                                textTransform: "uppercase",
-                                fontFamily: "var(--font-heading)"
-                            }}>
-                                {activeSection ? activeSection.title : referenceTitle}
-                            </span>
-                        )}
-
-                        <button
-                            className="icb-close-btn"
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                toggleBrowse();
-                            }}
-                            aria-label="Close image list"
-                            title="Close image list"
-                        >
-                            <X size={16} />
-                        </button>
-
-                        {/* Section-switcher dropdown, anchored under the title */}
-                        {canSwitchSections && isTitleDropdownOpen && (
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    top: "calc(100% + 6px)",
-                                    left: 0,
-                                    minWidth: "190px",
-                                    backgroundColor: isLight ? "var(--glass-bg)" : "#1c1c22",
-                                    border: "1px solid var(--glass-border)",
-                                    borderRadius: "10px",
-
-                                    overflow: "hidden",
-                                    zIndex: 30
-                                }}
-                            >
-                                {referenceSections!.map((section, idx) => {
-                                    const isSelected = idx === activeSectionIndex;
-                                    return (
-                                        <button
-                                            key={section.title}
-                                            onClick={() => {
-                                                setActiveSectionIndex(idx);
-                                                setIsTitleDropdownOpen(false);
-                                            }}
-                                            style={{
-                                                display: "block",
-                                                width: "100%",
-                                                textAlign: "left",
-                                                padding: "10px 14px",
-                                                border: "none",
-                                                cursor: "pointer",
-                                                fontSize: "11px",
-                                                fontWeight: "700",
-                                                letterSpacing: "0.8px",
-                                                textTransform: "uppercase",
-                                                fontFamily: "var(--font-main)",
-                                                backgroundColor: isSelected
-                                                    ? "rgba(221, 77, 250, 0.1)"
-                                                    : "transparent",
-                                                color: isSelected
-                                                    ? "#DD4DFA"
-                                                    : "var(--text-muted)"
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                if (!isSelected) e.currentTarget.style.backgroundColor = "rgba(221, 77, 250, 0.05)";
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
-                                            }}
-                                        >
-                                            {section.title}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* List of items for the currently selected section (or flat items when no sections) */}
-                    <div
-                        style={{
-                            flex: 1,
-                            minHeight: 0,
-                            overflowY: "auto",
-                            overflowX: 'hidden',
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "3px",
-                        }}
-                    >
-                        {itemsToRender.map((item, idx) => {
-                            const label = typeof item === "string" ? item : item.label;
-                            const localIdx = typeof item === "string" ? idx : (item.index !== undefined ? item.index : idx);
-                            const itemIndex = activeIndexOffset + localIdx;
-                            const isActive = currentStepIndex === itemIndex;
-                            const isHovered = hoveredItemIndex === itemIndex;
-                            const isHighlighted = isActive || isHovered;
-
-                            return (
-                                <div
-                                    key={idx}
-                                    className={`tutorial-browser-item${isActive ? " active" : ""}`}
-                                    onClick={() => { if (onSelectStep) onSelectStep(itemIndex); }}
-                                    onMouseEnter={() => setHoveredItemIndex(itemIndex)}
-                                    onMouseLeave={() => setHoveredItemIndex(null)}
-                                    style={{
-                                        position: "relative", display: "flex", alignItems: "center",
-                                        width: "278px", height: "38px", boxSizing: "border-box",
-                                        flexShrink: 0,
-                                        gap: "12px", padding: "8px 18px", borderRadius: "10px",
-                                        cursor: "pointer",
-                                        backgroundColor: isActive
-                                            ? "#DD4DFA2E"
-                                            : isHovered
-                                                ? (isLight ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.13)")
-                                                : "transparent",
-                                        borderTop: "1px solid transparent",
-                                        borderRight: "1px solid transparent",
-                                        borderBottom: "1px solid transparent",
-                                        borderLeft: isActive
-                                            ? "4px solid #DD4DFA"
-                                            : isHovered
-                                                ? (isLight ? "3px solid #9CA3AF" : "4px solid #DD4DFA")
-                                                : "1px solid transparent",
-                                        transition: "all 0.15s ease"
-                                    }}
-                                >
-                                    <div style={{
-                                        width: "24px", height: "24px", borderRadius: "6px", flexShrink: 0,
-                                        backgroundColor: isActive ? "rgba(221, 77, 250, 0.25)" : (isLight ? "#0000000D" : "rgba(255, 255, 255, 0.1)"),
-                                        color: isActive ? "#DD4DFA" : isHovered ? "var(--text-primary)" : "var(--text-muted)",
-                                        fontSize: "11px", fontWeight: "700",
-                                        display: "flex", alignItems: "center", justifyContent: "center",
-                                        transition: "all 0.15s ease"
-                                    }}>
-                                        {localIdx + 1}
-                                    </div>
-                                    <span style={{
-                                        fontSize: "13px", fontWeight: isHighlighted ? "700" : "600",
-                                        color: isActive ? "#DD4DFA" : (isLight ? "#1F2328" : "#E6EDF3"),
-                                        fontFamily: "var(--font-main)",
-                                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                                        transition: "all 0.15s ease"
-                                    }}>
-                                        {label}
-                                    </span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            )}
-
-            {/* Floating Control Pill Bar */}
+            {/* Floating Tutorial Control Card */}
             <div
-                className="icb-pill"
+                className={`gallery-control-pill${isBrowseOpen ? ' is-browsing' : ''}`}
                 style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "6px",
-                    backgroundColor: "#141419F2",
-                    backdropFilter: "blur(12px)",
+                    gap: "10px",
+                    background: "rgba(20, 20, 25, 0.95)",
+                    backdropFilter: "blur(10px)",
+                    borderRadius: "40px",
                     padding: "8px 16px",
-                    borderRadius: "32px",
-                    boxShadow: "var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.1)",
-                    userSelect: "none"
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                    color: "#fff",
                 }}
             >
                 {/* Grip Handle - Draggable */}
                 <div
+                    className="gallery-control-drag"
                     onPointerDown={handlePointerDown}
                     onPointerMove={handlePointerMove}
                     onPointerUp={handlePointerUp}
                     onPointerCancel={handlePointerUp}
                     title="Drag control bar"
                     style={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "rgba(255, 255, 255, 0.6)",
-                        paddingRight: "2px",
                         cursor: "grab",
-                        touchAction: "none"
+                        padding: "8px",
+                        marginRight: "4px",
+                        borderRadius: "4px",
+                        display: "flex",
+                        alignItems: "center"
                     }}
                 >
-                    <GripHorizontal size={11} color="#636262cb" strokeWidth={2} />
+                    <GripHorizontal size={20} color="#888" />
                 </div>
 
                 {/* Browse / Close Button */}
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleBrowse();
-                    }}
-                    title="Toggle Interface Reference (B)"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "7px",
-                        background: isBrowseOpen
-                            ? "#DD4DFA"
-                            : "rgba(12, 12, 12, 0.13)",
-                        color: "#FFFFFF",
-                        border: isBrowseOpen ? "none" : "1px solid rgba(255, 255, 255, 0.12)",
-                        borderRadius: "20px",
-                        padding: "6px 14px",
-                        fontSize: "12.8px",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                        fontFamily: "var(--font-main)",
-                        boxShadow: isBrowseOpen
-                            ? "0 2px 8px rgba(221, 77, 250, 0.4)"
-                            : "none"
-                    }}
-                    onMouseEnter={(e) => {
-                        if (!isBrowseOpen) e.currentTarget.style.background = "rgba(255, 255, 255, 0.22)";
-                        else e.currentTarget.style.opacity = "0.9";
-                    }}
-                    onMouseLeave={(e) => {
-                        if (!isBrowseOpen) e.currentTarget.style.background = "rgba(255, 255, 255, 0.13)";
-                        else e.currentTarget.style.opacity = "1";
-                    }}
-                >
-                    {isBrowseOpen ? (
-                        <>
-                            <X size={15} color="#ffffff" strokeWidth={2.5} />
-                            <span>Close</span>
-                        </>
-                    ) : (
-                        <>
-                            <LayoutGrid size={14} color="#ffffff" strokeWidth={2} />
-                            <span>Browse</span>
-                        </>
+                <div className="gallery-browse-anchor" style={{ position: "relative" }}>
+                    <button
+                        className={`gallery-browse-button${isBrowseOpen ? ' is-open' : ''}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleBrowse();
+                        }}
+                        title="Toggle Interface Reference (B)"
+                        style={{
+                            background: isBrowseOpen ? "#DD4DFA" : "rgba(255,255,255,0.1)",
+                            border: "none",
+                            color: "#fff",
+                            padding: "6px 12px",
+                            borderRadius: "20px",
+                            fontSize: "0.8rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            fontWeight: 500,
+                            boxShadow: isBrowseOpen ? "0 0 18px rgba(221,77,250,0.5)" : "none",
+                        }}
+                    >
+                        {isBrowseOpen ? (
+                            <>
+                                <X size={15} color="#ffffff" strokeWidth={2.5} />
+                                <span>Close</span>
+                            </>
+                        ) : (
+                            <>
+                                <LayoutGrid size={15} color="#ffffff" strokeWidth={2} />
+                                <span>Browse</span>
+                            </>
+                        )}
+                    </button>
+
+                    {isBrowseOpen && (
+                        <div
+                            className="gallery-browse-dropdown"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                position: "absolute",
+                                bottom: "calc(100% + 10px)",
+                                right: 0,
+                                width: "280px",
+                                background: "var(--bg-surface, #0a0a12)",
+                                border: "1px solid rgba(221,77,250,0.4)",
+                                borderRadius: "14px",
+                                boxShadow: "var(--shadow-card, 0 24px 60px rgba(0,0,0,0.9), 0 0 24px rgba(221,77,250,0.2))",
+                                zIndex: 1000,
+                                maxHeight: "440px",
+                                overflowY: "auto",
+                                padding: "0.5rem 0",
+                            }}
+                        >
+                            {/* Header */}
+                            <div
+                                className="gallery-browse-header"
+                                style={{
+                                    padding: "0.65rem 1rem",
+                                    fontSize: "0.65rem",
+                                    fontWeight: 800,
+                                    letterSpacing: "0.12em",
+                                    textTransform: "uppercase",
+                                    color: "#DD4DFA",
+                                    borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.07))",
+                                    marginBottom: "0.25rem",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    position: "relative"
+                                }}
+                            >
+                                {canSwitchSections ? (
+                                    <div
+                                        onClick={() => setIsTitleDropdownOpen(prev => !prev)}
+                                        role="button"
+                                        tabIndex={0}
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "4px",
+                                            cursor: "pointer",
+                                            flex: 1,
+                                            minWidth: 0,
+                                            overflow: "hidden"
+                                        }}
+                                    >
+                                        <span className="gallery-browse-title" style={{ display: "block", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>
+                                            {activeSection ? activeSection.title : referenceTitle}
+                                        </span>
+                                        <ChevronDown
+                                            size={12}
+                                            style={{
+                                                flexShrink: 0,
+                                                transform: isTitleDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                                                transition: "transform 0.2s ease"
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <span className="gallery-browse-title" style={{ display: "block", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 }}>
+                                        {activeSection ? activeSection.title : referenceTitle}
+                                    </span>
+                                )}
+
+                                <button
+                                    className="gallery-browse-close"
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        toggleBrowse();
+                                    }}
+                                    aria-label="Close image list"
+                                    title="Close image list"
+                                    style={{
+                                        background: "transparent",
+                                        border: "none",
+                                        color: "var(--text-muted, rgba(255,255,255,0.75))",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        padding: 0,
+                                        flexShrink: 0,
+                                        marginLeft: "8px"
+                                    }}
+                                >
+                                    <X size={16} />
+                                </button>
+
+                                {/* Section-switcher dropdown, anchored under the title */}
+                                {canSwitchSections && isTitleDropdownOpen && (
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            top: "100%",
+                                            left: "1rem",
+                                            minWidth: "190px",
+                                            background: "var(--bg-surface, #0a0a12)",
+                                            border: "1px solid rgba(221,77,250,0.4)",
+                                            borderRadius: "10px",
+                                            boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+                                            overflow: "hidden",
+                                            zIndex: 30,
+                                            marginTop: "4px"
+                                        }}
+                                    >
+                                        {referenceSections!.map((section, idx) => {
+                                            const isSelected = idx === activeSectionIndex;
+                                            return (
+                                                <button
+                                                    key={section.title}
+                                                    onClick={() => {
+                                                        setActiveSectionIndex(idx);
+                                                        setIsTitleDropdownOpen(false);
+                                                    }}
+                                                    style={{
+                                                        display: "block",
+                                                        width: "100%",
+                                                        textAlign: "left",
+                                                        padding: "10px 14px",
+                                                        border: "none",
+                                                        cursor: "pointer",
+                                                        fontSize: "0.65rem",
+                                                        fontWeight: 800,
+                                                        letterSpacing: "0.1em",
+                                                        textTransform: "uppercase",
+                                                        background: isSelected ? "rgba(221, 77, 250, 0.15)" : "transparent",
+                                                        color: isSelected ? "#DD4DFA" : "var(--text-muted, rgba(255,255,255,0.75))"
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!isSelected) e.currentTarget.style.background = "var(--bg-hover, rgba(255,255,255,0.07))";
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (!isSelected) e.currentTarget.style.background = "transparent";
+                                                    }}
+                                                >
+                                                    {section.title}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+
+                            {itemsToRender.map((item, idx) => {
+                                const label = typeof item === "string" ? item : item.label;
+                                const localIdx = typeof item === "string" ? idx : (item.index !== undefined ? item.index : idx);
+                                const itemIndex = activeIndexOffset + localIdx;
+                                const isActive = currentStepIndex === itemIndex;
+
+                                return (
+                                    <button
+                                        key={idx}
+                                        className={`gallery-browse-item${isActive ? ' is-active' : ''}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (onSelectStep) onSelectStep(itemIndex);
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            background: isActive ? "rgba(221,77,250,0.18)" : "transparent",
+                                            border: "none",
+                                            borderLeft: isActive ? "3px solid #DD4DFA" : "3px solid transparent",
+                                            padding: "0.6rem 1rem",
+                                            textAlign: "left",
+                                            cursor: "pointer",
+                                            color: isActive ? "#DD4DFA" : "var(--text-muted, rgba(255,255,255,0.75))",
+                                            fontSize: "0.82rem",
+                                            fontWeight: isActive ? 700 : 400,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "0.65rem",
+                                            transition: "all 0.15s ease",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (!isActive) {
+                                                (e.currentTarget as HTMLButtonElement).style.background = "var(--bg-hover, rgba(255,255,255,0.04))";
+                                                (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main, #fff)";
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (!isActive) {
+                                                (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                                                (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted, rgba(255,255,255,0.75))";
+                                            }
+                                        }}
+                                    >
+                                        <span
+                                            className="gallery-browse-number"
+                                            style={{
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                width: "22px",
+                                                height: "22px",
+                                                borderRadius: "6px",
+                                                flexShrink: 0,
+                                                background: isActive ? "rgba(221,77,250,0.3)" : "var(--bg-hover, rgba(255,255,255,0.07))",
+                                                fontSize: "0.68rem",
+                                                fontWeight: 800,
+                                                color: isActive ? "#DD4DFA" : "var(--text-dim, rgba(255,255,255,0.4))",
+                                            }}
+                                        >
+                                            {localIdx + 1}
+                                        </span>
+                                        <span
+                                            style={{
+                                                color: isActive ? "#DD4DFA" : "var(--text-main, rgba(255,255,255,0.85))",
+                                                lineHeight: 1.4,
+                                                flex: 1,
+                                                fontSize: "0.82rem"
+                                            }}
+                                        >
+                                            {label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
                     )}
-                </button>
+                </div>
 
                 {/* Play/Pause Pill Button */}
                 <button
+                    className="gallery-browse-button"
                     onClick={(e) => {
                         e.stopPropagation();
                         onTogglePlay();
                     }}
                     style={{
+                        background: isPlaying ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.1)",
+                        border: "none",
+                        color: "#fff",
+                        padding: "6px 12px",
+                        borderRadius: "20px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
                         display: "flex",
                         alignItems: "center",
-                        gap: "7px",
-                        backgroundColor: "rgba(255, 255, 255, 0.16)",
-                        color: "#FFFFFF",
-                        border: "none",
-                        borderRadius: "20px",
-                        padding: "6px 14px",
-                        fontSize: "12.8px",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        fontFamily: "var(--font-main)"
+                        gap: "6px",
+                        fontWeight: 500,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.26)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.16)")}
                 >
                     {isPlaying ? (
                         <>
@@ -636,24 +603,16 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                         }}
                         title="Stop"
                         style={{
-                            width: "36px",
-                            height: "36px",
-                            padding: "6px 12px",
-                            borderRadius: "50%",
-                            backgroundColor: "rgba(255, 255, 255, 0.12)",
-                            backdropFilter: "blur(8px)",
-                            color: "#FFFFFF",
-                            border: "1px solid rgba(255, 255, 255, 0.12)",
+                            background: "transparent",
+                            border: "none",
+                            color: "#fff",
+                            padding: "6px",
+                            cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease"
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
                     >
-                        <Square size={14} color="#FFFFFF" strokeWidth={2.2} />
+                        <Square size={16} color="#FFFFFF" strokeWidth={2.2} />
                     </button>
                 )}
 
@@ -666,26 +625,14 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     disabled={!canGoPrev}
                     title={canGoPrev ? "Previous Step (Left Arrow)" : "Already at the first step"}
                     style={{
-                        width: "36px",
-                        height: "36px",
-                        padding: "6px 12px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.12)",
-                        backdropFilter: "blur(8px)",
-                        color: "#FFFFFF",
-                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        background: "transparent",
+                        border: "none",
+                        color: "#fff",
+                        padding: "6px",
+                        cursor: canGoPrev ? "pointer" : "not-allowed",
+                        opacity: canGoPrev ? 1 : 0.5,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        cursor: canGoPrev ? "pointer" : "not-allowed",
-                        opacity: canGoPrev ? 1 : 0.35,
-                        transition: "all 0.2s ease"
-                    }}
-                    onMouseEnter={(e) => {
-                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
-                    }}
-                    onMouseLeave={(e) => {
-                        if (canGoPrev) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
                     }}
                 >
                     <ChevronLeft size={18} color="#FFFFFF" strokeWidth={2.2} />
@@ -700,26 +647,14 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     disabled={!canGoNext}
                     title={canGoNext ? "Next Step (Right Arrow)" : "Already at the last step"}
                     style={{
-                        width: "36px",
-                        height: "36px",
-                        padding: "6px 12px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.12)",
-                        backdropFilter: "blur(8px)",
-                        color: "#FFFFFF",
-                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        background: "transparent",
+                        border: "none",
+                        color: "#fff",
+                        padding: "6px",
+                        cursor: canGoNext ? "pointer" : "not-allowed",
+                        opacity: canGoNext ? 1 : 0.5,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        cursor: canGoNext ? "pointer" : "not-allowed",
-                        opacity: canGoNext ? 1 : 0.35,
-                        transition: "all 0.2s ease"
-                    }}
-                    onMouseEnter={(e) => {
-                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)";
-                    }}
-                    onMouseLeave={(e) => {
-                        if (canGoNext) e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)";
                     }}
                 >
                     <ChevronRight size={18} color="#FFFFFF" strokeWidth={2.2} />
@@ -733,22 +668,15 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
                     }}
                     title={isFullscreen ? "Exit Fullscreen (F)" : "Fullscreen (F)"}
                     style={{
-                        width: "36px",
-                        height: "36px",
-                        padding: "0px 20px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(255, 255, 255, 0.12)",
-                        backdropFilter: "blur(8px)",
-                        color: "#FFFFFF",
-                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        background: "transparent",
+                        border: "none",
+                        color: "#fff",
+                        padding: "6px",
+                        cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease"
+                        marginLeft: "4px"
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.18)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.12)")}
                 >
                     {isFullscreen ? (
                         <Minimize size={17} color="#FFFFFF" strokeWidth={2.2} style={{ display: "block", flexShrink: 0 }} />

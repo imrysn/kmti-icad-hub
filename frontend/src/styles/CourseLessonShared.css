@@ -1,0 +1,246 @@
+/* ============================================================
+   CourseLessonShared.css
+   Shared styles for ALL four course families:
+   - 3D Modeling
+   - 2D Detailing
+   - Kemco JIS Standard
+   - iCAD Command
+   ============================================================ */
+
+/* ?? 1. Lesson Header Banner ?????????????????????????????????? */
+
+.lesson-header-banner {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 48px 32px 40px;
+  position: relative;
+  text-align: center;
+}
+
+.lesson-indicator {
+  font-family: var(--font-heading);
+  letter-spacing: 0.2em;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.lesson-banner-title {
+  font-family: var(--font-heading) !important;
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  color: var(--text-main);
+  margin: 0 0 0.5rem !important;
+  line-height: 1.15;
+}
+
+[data-theme='light'] .lesson-banner-title {
+  color: var(--text-main);
+}
+
+.lesson-banner-subtitle {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+}
+
+.lesson-banner-divider {
+  width: calc(100% - 2.5rem);
+  max-width: 1200px;
+  height: 1px;
+  margin: 3rem auto 0;
+  background: var(--border-color);
+}
+
+.lesson-action-sentinel {
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  width: 1px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.lesson-header-actions {
+  top: 50%;
+  left: 2rem;
+  right: 2rem;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 1024px) {
+  .lesson-header-banner {
+    padding: 4.5rem 1rem 2rem;
+  }
+  .lesson-header-actions {
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+  }
+}
+
+/* ?? 2. Lesson Tabs + Glowing Halo (::before) ????????????????? */
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shine {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.lesson-tabs {
+  display: flex;
+  position: relative;
+  overflow: visible;
+  max-width: 100%;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  width: fit-content;
+  align-self: center;
+  margin: 0 auto 2.5rem;
+  backdrop-filter: blur(var(--glass-blur));
+  z-index: 100;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    0 0 20px var(--color-primary-glow);
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.lesson-tabs::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% auto;
+  border-radius: var(--radius-md);
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: shine 6s linear infinite;
+}
+
+[data-theme='light'] .lesson-tabs {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.1);
+}
+
+.tab-button {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-button:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-white);
+  transform: none !important;
+}
+
+[data-theme='light'] .tab-button:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.04);
+  color: #DD4DFA;
+}
+
+.tab-button.active {
+  background: #DD4DFA !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px var(--color-primary-glow);
+  transform: none !important;
+}
+
+.tab-button.active:hover {
+  filter: brightness(1.1);
+  transform: none !important;
+}
+
+/* ?? 3. Lesson Navigation ????????????????????????????????????? */
+
+.lesson-navigation {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 1000px);
+  margin: 3rem auto 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.lesson-navigation .nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.8rem 1.35rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-bg);
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.lesson-navigation .nav-button:hover:not(:disabled) {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--glass-bg));
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--glass-border));
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--primary) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.lesson-navigation .nav-button.next {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.lesson-navigation .nav-button.next:hover:not(:disabled) {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--primary) 88%, #000000);
+  border-color: color-mix(in srgb, var(--primary) 88%, #000000);
+}
+
+.lesson-navigation .nav-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  outline-offset: 3px;
+}
+
+.lesson-navigation .nav-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

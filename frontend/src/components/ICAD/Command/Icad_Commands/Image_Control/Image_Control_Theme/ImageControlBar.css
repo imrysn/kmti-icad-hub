@@ -180,6 +180,7 @@
     box-shadow: 0 0 10px var(--color-primary-glow);
     opacity: 0;
     transition: opacity 0.15s ease;
+    pointer-events: none;
 }
 
 .icb-item:hover .icb-item-accent,
@@ -232,18 +233,7 @@
     font-weight: 700;
 }
 
-/* --- Floating control pill --- */
-.icb-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #141419f2;
-    backdrop-filter: blur(12px);
-    padding: 8px 16px;
-    border-radius: 32px;
-    box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.1);
-    user-select: none;
-}
+
 
 .icb-grip {
     display: flex;
@@ -316,7 +306,9 @@
 }
 
 /* Shared gallery visual language for the iCAD image controls. */
-.icb-pill-wrapper .icb-pill {
+.icb-pill-wrapper .gallery-control-pill {
+    display: flex !important;
+    align-items: center !important;
     height: 44px !important;
     box-sizing: border-box;
     gap: 4px !important;
@@ -326,15 +318,18 @@
     background: rgba(15, 23, 42, 0.75) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
     backdrop-filter: blur(12px) !important;
+    user-select: none;
 }
 
-.icb-pill-wrapper .icb-pill > button,
-.icb-pill-wrapper .icb-pill > div {
+.icb-pill-wrapper .gallery-control-pill > button,
+.icb-pill-wrapper .gallery-control-pill > div,
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button,
+.icb-pill-wrapper .gallery-control-pill .gallery-control-drag {
     min-width: 38px !important;
     min-height: 38px !important;
     height: 38px !important;
     margin: 0 !important;
-    padding: 0 10px !important;
+    padding: 0 !important;
     border: 0 !important;
     border-radius: 20px !important;
     background: transparent !important;
@@ -344,75 +339,411 @@
     align-items: center !important;
     justify-content: center !important;
     gap: 7px !important;
+    transition: color 0.2s ease, background-color 0.2s ease !important;
 }
 
-.icb-pill-wrapper .icb-pill > div:first-child {
-    width: 38px !important;
-    padding: 0 !important;
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button {
+    width: auto !important;
+    padding-inline: 12px !important;
+    gap: 7px !important;
 }
 
-.icb-pill-wrapper .icb-pill > button:hover:not(:disabled),
-.icb-pill-wrapper .icb-pill > div:hover {
+.icb-pill-wrapper .gallery-control-pill > button:hover:not(:disabled),
+.icb-pill-wrapper .gallery-control-pill > div:hover,
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button:hover,
+.icb-pill-wrapper .gallery-control-pill .gallery-control-drag:hover {
     background: transparent !important;
     color: #f1f5f9 !important;
 }
 
-.icb-pill-wrapper.is-browsing {
-    right: 0 !important;
-    bottom: 0 !important;
-    transform: none !important;
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button.is-open {
+    color: #f1f5f9 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
 }
 
-.icb-pill-wrapper.is-browsing .icb-pill {
-    display: none !important;
 }
 
-.icb-pill-wrapper.is-browsing .icb-browse-panel {
-    right: 0 !important;
-    bottom: 0 !important;
-    left: auto !important;
-    width: 280px !important;
-    max-width: 100% !important;
+.icb-item-accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--color-primary-glow);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+}
+
+.icb-item:hover .icb-item-accent,
+.icb-item.is-active .icb-item-accent {
+    opacity: 1;
+}
+
+.icb-item-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.icb-item:hover .icb-item-badge {
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--text-white);
+}
+
+.icb-item.is-active .icb-item-badge {
+    background: var(--primary);
+    color: #fff;
+}
+
+.icb-item-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.15s ease;
+}
+
+.icb-item:hover .icb-item-label {
+    color: var(--text-white);
+    font-weight: 700;
+}
+
+.icb-item.is-active .icb-item-label {
+    color: var(--text-white);
+    font-weight: 700;
+}
+
+
+
+.icb-grip {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding-right: 2px;
+    cursor: grab;
+    touch-action: none;
+}
+
+.icb-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-white);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icb-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.icb-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+}
+
+.icb-pill-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text-white);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: var(--font-main);
+    font-size: 12.8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.13);
+    border: none;
+}
+
+.icb-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.icb-browse-btn {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.icb-browse-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.icb-browse-btn.is-active {
+    background: linear-gradient(135deg, #c026d3 0%, var(--primary) 100%);
+    border: none;
+    box-shadow: 0 0 16px var(--color-primary-glow), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.icb-browse-btn.is-active:hover {
+    opacity: 0.9;
+}
+
+/* Shared gallery visual language for the iCAD image controls. */
+.icb-pill-wrapper .gallery-control-pill {
+    display: flex !important;
+    align-items: center !important;
+    height: 44px !important;
+    box-sizing: border-box;
+    gap: 4px !important;
+    padding: 2px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 24px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(12px) !important;
+    user-select: none;
+}
+
+.icb-pill-wrapper .gallery-control-pill > button,
+.icb-pill-wrapper .gallery-control-pill > div,
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button,
+.icb-pill-wrapper .gallery-control-pill .gallery-control-drag {
+    min-width: 38px !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    color: #cbd5e1 !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    transition: color 0.2s ease, background-color 0.2s ease !important;
+}
+
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button {
+    width: auto !important;
+    padding-inline: 12px !important;
+    gap: 7px !important;
+}
+
+.icb-pill-wrapper .gallery-control-pill > button:hover:not(:disabled),
+.icb-pill-wrapper .gallery-control-pill > div:hover,
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button:hover,
+.icb-pill-wrapper .gallery-control-pill .gallery-control-drag:hover {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+.icb-pill-wrapper .gallery-control-pill .gallery-browse-button.is-open {
+    color: #f1f5f9 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ==========================================================================
+   Exact Mimic of 2D Standard Reference Docking Behavior
+   (Bypasses .lesson-scroll-area restriction by applying to .icb-pill-wrapper)
+   ========================================================================== */
+
+.icb-pill-wrapper .gallery-browse-dropdown {
+    width: min(280px, 100cqw) !important;
+    min-width: min(240px, 100cqw) !important;
+    max-width: 100cqw !important;
+    max-height: calc(100vh - 40px) !important;
+    padding: 6px !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-right: 0 !important;
-    border-bottom: 0 !important;
-    border-radius: 10px 0 8px 0 !important;
+    border-radius: 14px !important;
     background: #0f172a !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
 }
 
-.icb-pill-wrapper .icb-browse-header {
-    color: #B5179E !important;
-    padding-right: 42px !important;
+.icb-pill-wrapper.is-browsing .gallery-control-pill {
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
 }
 
-.icb-pill-wrapper .icb-browse-header > span,
-.icb-pill-wrapper .icb-browse-header > [role='button'] {
+.icb-pill-wrapper.is-browsing .gallery-control-pill > .gallery-control-drag,
+.icb-pill-wrapper.is-browsing .gallery-control-pill > button,
+.icb-pill-wrapper.is-browsing .gallery-control-pill .gallery-browse-button {
+    display: none !important;
+}
+
+.icb-pill-wrapper.is-browsing .gallery-control-pill .gallery-browse-anchor {
+    width: 0;
+    height: 100%;
+}
+
+/* Header styles */
+.icb-pill-wrapper .gallery-browse-header {
+    position: sticky;
+    top: -6px;
+    z-index: 1;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 0 4px !important;
+    padding: 10px 12px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(15, 23, 42, 0.96) !important;
+    color: #94a3b8 !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.08em !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.icb-pill-wrapper .gallery-browse-header .gallery-browse-title {
     color: #B5179E !important;
     font-size: 13.6px !important;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.icb-pill-wrapper .icb-browse-header .icb-close-btn {
-    position: absolute;
-    top: 0;
-    right: 10px;
+.icb-pill-wrapper .gallery-browse-header > div,
+.icb-pill-wrapper .gallery-browse-header > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.icb-pill-wrapper .gallery-browse-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 28px;
     height: 28px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #94a3b8;
-    z-index: 2;
+    flex: 0 0 28px;
+    margin: -4px -4px -4px 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
 }
 
-.icb-pill-wrapper .icb-browse-header .icb-close-btn:hover {
-    background: transparent;
-    color: #ef4444;
+.icb-pill-wrapper .gallery-browse-close:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    color: #ef4444 !important;
 }
 
-[data-theme='light'] .icb-pill-wrapper.is-browsing .icb-browse-panel {
+/* Match the item styles when docked */
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item {
+    width: 100% !important;
+    min-height: 40px;
+    padding: 8px 10px !important;
+    border: 0 !important;
+    border-left: 2px solid transparent !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    color: #cbd5e1 !important;
+    font-size: 12.48px !important;
+    align-items: flex-start !important;
+    text-align: left;
+}
+
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #f1f5f9 !important;
+}
+
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item.is-active {
+    border-left-color: #B5179E !important;
+    background: rgba(181, 23, 158, 0.1) !important;
+    color: #B5179E !important;
+}
+
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-number {
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: #94a3b8 !important;
+    transform: translateY(-2px);
+}
+
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item.is-active .gallery-browse-number {
+    background: rgba(181, 23, 158, 0.16) !important;
+    color: #B5179E !important;
+}
+
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item > span:last-child {
+    color: inherit !important;
+    font-size: 12.48px !important;
+}
+
+/* ==========================================================================
+   Light Mode Overrides
+   ========================================================================== */
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown {
     border-color: rgba(15, 23, 42, 0.14) !important;
     background: #ffffff !important;
     color: #334155 !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-header {
+    border-bottom-color: rgba(15, 23, 42, 0.1) !important;
+    background: #ffffff !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item {
+    color: #475569 !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item:hover {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item.is-active {
+    border-left-color: #B5179E !important;
+    background: rgba(181, 23, 158, 0.08) !important;
+    color: #B5179E !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-number {
+    background: #f1f5f9 !important;
+    color: #64748b !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item.is-active .gallery-browse-number {
+    background: rgba(181, 23, 158, 0.12) !important;
+    color: #B5179E !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-close {
+    color: #64748b !important;
+}
+
+[data-theme='light'] .icb-pill-wrapper .gallery-browse-close:hover {
+    color: #dc2626 !important;
 }

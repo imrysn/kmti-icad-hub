@@ -1,8 +1,8 @@
-import React,{ useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
-ChevronLeft,
-ChevronRight
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
@@ -48,7 +48,7 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     isSpeaking,
     currentIndex,
     currentCharIndex
-,
+    ,
     registerText
   } = useLessonCore("2d-3d-1");
 
@@ -224,7 +224,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
     isSpeaking,
     currentIndex,
     currentCharIndex
-,
+    ,
     registerText
   } = useLessonCore("2d-3d-2");
 
@@ -304,13 +304,13 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
 
   useEffect(() => {
     const steps = activeTab === 'extrude' ? extrudeSteps :
-                  activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+      activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
     const startIdx = activeTab === 'extrude' ? 0 : 3;
     registerText(steps, startIdx);
   }, [activeTab, registerText]);
 
   const currentTabSteps2 = activeTab === 'extrude' ? extrudeSteps :
-                           activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
+    activeTab === 'revolve' ? revolveStepsTTS : spiralSteps;
   const tabsList2 = [{ id: 'extrude' }, { id: 'revolve' }, { id: 'spiral' }];
   const startIdx2 = activeTab === 'extrude' ? 0 : 3;
 
@@ -689,7 +689,7 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
                   className="step-label"
                   text="Select the ends of the length of the spiral along the axis of rotation, then Right Click"
                   isActive={isSpeaking && currentIndex === 8}
-                  currentCharIndex={currentCharIndex}   
+                  currentCharIndex={currentCharIndex}
                 />
               </div>
               <div className="step-description">

@@ -86,7 +86,7 @@ function Interface_Lesson({ onExit, lessonNumber = 1, totalLessons = 1 }: Interf
     }, [obscuredHeight]);
 
     return (
-        <div style={{ width: "100%", minHeight: "100%", height: "auto", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-dark)", fontFamily: "var(--font-main)", overflowY: "auto", paddingBottom: "140px", position: "relative" }}>
+        <div style={{ width: "100%", minHeight: "100%", height: "auto", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-surface)", fontFamily: "var(--font-main)", overflowY: "auto", paddingBottom: "140px", position: "relative" }}>
 
             {/* Scoped color rule for the lesson counter — swap the media query for your
                 app's actual theme selector if you toggle via a class/data-attribute
@@ -101,10 +101,8 @@ function Interface_Lesson({ onExit, lessonNumber = 1, totalLessons = 1 }: Interf
             word-spacing: 0.25em;
             letter-spacing: normal;
         }
-        @media (prefers-color-scheme: light) {
-            .icad-lesson-counter {
-                color: #B5179E;
-            }
+        [data-theme='light'] .icad-lesson-counter {
+            color: #B5179E;
         }
         `}</style>
 

@@ -5,6 +5,8 @@ import { useTTSContext } from "../../../../context/TTSContext";
 import ExitCourseButton from "../Exit_Course_Button/ExitCourseButton";
 import { LessonHeaderBanner } from "../../../LessonHeaderBanner";
 
+import "../../../../styles/2D_Drawing/CourseLesson.css";
+
 type Category = keyof typeof menuData;
 
 const FALLBACK_NAVBAR_HEIGHT = 60;
@@ -145,48 +147,13 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
         [data-theme='light'] .icad-lesson-counter {
             color: #B5179E;
         }
-        .menu-setup-tab {
-            border-color: transparent;
-            padding: 16px 14px;
-            font-size: 14.4px;
-            font-family: Inter, system-ui, -apple-system, sans-serif;
-            text-align: center;
-        }
-        .menu-setup-tab:not(.active) {
-            color: var(--text-muted);
-            background: #21262D;
-        }
-        [data-theme='light'] .menu-setup-tab:not(.active) {
-            background: #F1F2F4;
-        }
-        .menu-setup-tab.active {
-            background: #DD4DFA;
-            color: #fff;
-        }
-        .menu-setup-tab.active:hover {
-            background: color-mix(in srgb, #DD4DFA 80%, black);
-        }
-        .menu-setup-tab:not(.active):hover {
-            background: transparent;
-            color: #fff;
-            border-width: 1px;
-            border-color: #DD4DFA;
-        }
-        [data-theme='light'] .menu-setup-tab:not(.active):hover {
-            color: #DD4DFA;
-            border-width: 1px;
-            border-color: #94A3B8;
-        }
-        .icad-tablist {
-            background: #21262D;
-        }
-        [data-theme='light'] .icad-tablist {
-            background: #F1F2F4;
-        }
-        .icad-lesson-card {
+
+
+        .lesson-card.tab-content.fade-in {
             background: #111827;
+            display: block;
         }
-        [data-theme='light'] .icad-lesson-card {
+        [data-theme='light'] .lesson-card.tab-content.fade-in {
             background: #fff;
         }
         .icad-th {
@@ -255,14 +222,13 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                     }}>
                         <div
                             role="tablist"
-                            className="icad-tablist"
+                            className="lesson-tabs"
                             style={{
                                 display: "inline-flex",
                                 gap: "4px",
-                                border: "1px solid var(--border-color)",
-                                borderRadius: "var(--radius-lg)",
                                 padding: "6px",
-                                boxShadow: "var(--shadow-card)",
+                                position: "relative",
+                                borderRadius: "var(--radius-md)",
                             }}
                         >
                             {categories.map((category) => {
@@ -272,7 +238,7 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                                         key={category}
                                         role="tab"
                                         aria-selected={isActive}
-                                        className={isActive ? "menu-setup-tab active" : "menu-setup-tab"}
+                                        className={isActive ? "tab-button active" : "tab-button"}
                                         onClick={() => setSelected(category)}
                                     >
                                         {category}
@@ -285,14 +251,13 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                 <div
                     ref={tabMenuRef}
                     role="tablist"
-                    className="icad-tablist"
+                    className="lesson-tabs"
                     style={{
                         display: "inline-flex",
                         gap: "4px",
-                        border: "1px solid var(--border-color)",
-                        borderRadius: "var(--radius-lg)",
                         padding: "6px",
-                        boxShadow: "var(--shadow-card)",
+                        position: "relative",
+                        borderRadius: "var(--radius-md)",
                         visibility: isTabMenuStuck ? "hidden" : "visible",
                     }}
                 >
@@ -303,7 +268,7 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                                 key={category}
                                 role="tab"
                                 aria-selected={isActive}
-                                className={isActive ? "menu-setup-tab active" : "menu-setup-tab"}
+                                className={isActive ? "tab-button active" : "tab-button"}
                                 onClick={() => setSelected(category)}
                             >
                                 {category}
@@ -315,10 +280,9 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                 {/* Lesson card — sizes its width to the table's natural content
                     width (up to the available container), and its height always
                     grows to fit the full table (no collapse/expand). */}
-                <div className="icad-lesson-card" style={{
-                    width: "fit-content",
+                <div className="lesson-card tab-content fade-in" style={{
+                    width: "1000px",
                     maxWidth: "100%",
-                    minWidth: "min(600px, 100%)",
                     marginTop: "8rem",
                     border: "1px solid var(--border-color)",
                     borderRadius: "var(--radius-lg)",
@@ -351,7 +315,7 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                     </div>
 
                     <div style={{ width: "100%", overflowX: "auto" }}>
-                        <table style={{ width: "max-content", minWidth: "100%", borderCollapse: "collapse", border: "1px solid var(--border-color)", color: "var(--text-main)", fontFamily: "Outfit, sans-serif" }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid var(--border-color)", color: "var(--text-main)", fontFamily: "Outfit, sans-serif" }}>
                             <thead>
                                 <tr>
                                     <th className="icad-th" style={{
@@ -434,7 +398,7 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                                                 textAlign: "center",
                                                 borderBottom: "1px solid var(--border-color)",
                                                 fontSize: "14.4px",
-                                                whiteSpace: "nowrap",
+                                                wordBreak: "break-all",
                                             }}>
                                                 {shortcut.command}
                                             </td>

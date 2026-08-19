@@ -531,7 +531,7 @@ function Command_Menu_Japanese_Tutorial({ onExit, lessonNumber = 1, totalLessons
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "var(--bg-dark)",
+            backgroundColor: "var(--bg-surface)",
             fontFamily: "var(--font-main)",
             overflowY: "auto",
             paddingBottom: "140px",
@@ -551,10 +551,8 @@ function Command_Menu_Japanese_Tutorial({ onExit, lessonNumber = 1, totalLessons
             word-spacing: 0.25em;
             letter-spacing: normal;
         }
-        @media (prefers-color-scheme: light) {
-            .icad-lesson-counter {
-                color: #B5179E;
-            }
+        [data-theme='light'] .icad-lesson-counter {
+            color: #B5179E;
         }
         `}</style>
 
