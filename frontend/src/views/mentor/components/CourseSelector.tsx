@@ -1,12 +1,11 @@
 import { Lock,PlayCircle } from 'lucide-react';
 import React from 'react';
-import drawing2DUrl from '../../../assets/2D.png';
-import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
-import practical3DImgUrl from '../../../assets/froming4.webp';
-import uncoilerUrl from '../../../assets/uncoiler.glb';
-import { ModelViewer3D } from '../../../components/ModelViewer3D';
 import { CourseCardSkeleton } from '../../../components/SkeletonComponents';
 import { Course } from '../../../types';
+import img3dModeling from '../../../assets/icad_card_image/3d_modeling.png';
+import img2dDetailing from '../../../assets/icad_card_image/2d_detailing.png';
+import img3dPractical from '../../../assets/icad_card_image/3d_practical_assessment.png';
+import img2dAssessment from '../../../assets/icad_card_image/2d_detailing_assessment.png';
 
 interface CourseSelectorProps {
     courses: Course[];
@@ -143,20 +142,20 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                 <p>{course.description}</p>
 
                                 {course.id.toString() === '1' ? (
-                                    <div className="card-graphic-container">
-                                        <ModelViewer3D glbUrl={uncoilerUrl} />
+                                    <div className="card-graphic-container card-2d-graphic-container">
+                                        <img src={img3dModeling} alt="3D Modeling" className="card-2d-image" />
                                     </div>
                                 ) : course.id.toString() === '2' ? (
                                     <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={drawing2DUrl} alt="2D Drawing" className="card-2d-image" />
+                                        <img src={img2dDetailing} alt="2D Detailing" className="card-2d-image" />
                                     </div>
                                 ) : course.id.toString() === 'practical-assessment' ? (
                                     <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={practical3DImgUrl} alt="3D Practical" className="card-2d-image" />
+                                        <img src={img3dPractical} alt="3D Practical" className="card-2d-image" />
                                     </div>
                                 ) : (
                                     <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={drawing2DAssessmentUrl} alt="2D Assessment" className="card-2d-image" />
+                                        <img src={img2dAssessment} alt="2D Assessment" className="card-2d-image" />
                                     </div>
                                 )}
 

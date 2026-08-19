@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PlayCircle } from 'lucide-react';
+import img3d from '../../../../assets/Solidworks/card-image/3d.png';
 
 interface Props {
     setSelectedCourse: (course: any) => void;
@@ -14,9 +15,13 @@ export const Solidworks3DOperation: React.FC<Props> = ({ setSelectedCourse }) =>
             </div>
             <p>Master 3D modeling operations and assemblies in SOLIDWORKS.</p>
             <div className="card-graphic-container card-2d-graphic-container">
-                <div className="card-2d-image" style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
-                    Graphic Placeholder
-                </div>
+                <div className="card-2d-image" style={{ 
+                    height: '100%', 
+                    width: '100%', 
+                    backgroundImage: `url(${img3d})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }} />
             </div>
             <button 
                 className="primary" 

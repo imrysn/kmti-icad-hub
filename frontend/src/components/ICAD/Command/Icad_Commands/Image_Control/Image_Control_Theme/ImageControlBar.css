@@ -321,8 +321,8 @@
     user-select: none;
 }
 
-.icb-pill-wrapper .gallery-control-pill > button,
-.icb-pill-wrapper .gallery-control-pill > div,
+.icb-pill-wrapper .gallery-control-pill>button,
+.icb-pill-wrapper .gallery-control-pill>div,
 .icb-pill-wrapper .gallery-control-pill .gallery-browse-button,
 .icb-pill-wrapper .gallery-control-pill .gallery-control-drag {
     min-width: 38px !important;
@@ -348,8 +348,8 @@
     gap: 7px !important;
 }
 
-.icb-pill-wrapper .gallery-control-pill > button:hover:not(:disabled),
-.icb-pill-wrapper .gallery-control-pill > div:hover,
+.icb-pill-wrapper .gallery-control-pill>button:hover:not(:disabled),
+.icb-pill-wrapper .gallery-control-pill>div:hover,
 .icb-pill-wrapper .gallery-control-pill .gallery-browse-button:hover,
 .icb-pill-wrapper .gallery-control-pill .gallery-control-drag:hover {
     background: transparent !important;
@@ -516,8 +516,8 @@
     user-select: none;
 }
 
-.icb-pill-wrapper .gallery-control-pill > button,
-.icb-pill-wrapper .gallery-control-pill > div,
+.icb-pill-wrapper .gallery-control-pill>button,
+.icb-pill-wrapper .gallery-control-pill>div,
 .icb-pill-wrapper .gallery-control-pill .gallery-browse-button,
 .icb-pill-wrapper .gallery-control-pill .gallery-control-drag {
     min-width: 38px !important;
@@ -543,8 +543,8 @@
     gap: 7px !important;
 }
 
-.icb-pill-wrapper .gallery-control-pill > button:hover:not(:disabled),
-.icb-pill-wrapper .gallery-control-pill > div:hover,
+.icb-pill-wrapper .gallery-control-pill>button:hover:not(:disabled),
+.icb-pill-wrapper .gallery-control-pill>div:hover,
 .icb-pill-wrapper .gallery-control-pill .gallery-browse-button:hover,
 .icb-pill-wrapper .gallery-control-pill .gallery-control-drag:hover {
     background: transparent !important;
@@ -586,8 +586,8 @@
     backdrop-filter: none !important;
 }
 
-.icb-pill-wrapper.is-browsing .gallery-control-pill > .gallery-control-drag,
-.icb-pill-wrapper.is-browsing .gallery-control-pill > button,
+.icb-pill-wrapper.is-browsing .gallery-control-pill>.gallery-control-drag,
+.icb-pill-wrapper.is-browsing .gallery-control-pill>button,
 .icb-pill-wrapper.is-browsing .gallery-control-pill .gallery-browse-button {
     display: none !important;
 }
@@ -626,8 +626,8 @@
     white-space: nowrap;
 }
 
-.icb-pill-wrapper .gallery-browse-header > div,
-.icb-pill-wrapper .gallery-browse-header > span {
+.icb-pill-wrapper .gallery-browse-header>div,
+.icb-pill-wrapper .gallery-browse-header>span {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -695,7 +695,7 @@
     color: #B5179E !important;
 }
 
-.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item > span:last-child {
+.icb-pill-wrapper .gallery-browse-dropdown .gallery-browse-item>span:last-child {
     color: inherit !important;
     font-size: 12.48px !important;
 }

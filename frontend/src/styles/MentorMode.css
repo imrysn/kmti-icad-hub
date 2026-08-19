@@ -77,7 +77,6 @@
 .course-card {
   background: var(--bg-surface);
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-md);
   padding: 2.5rem;
   cursor: default;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -267,18 +266,6 @@
 .course-card.card-practical p {
   color: rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.98);
-}
-
-.course-card.card-practical-3d .card-2d-image {
-  object-fit: contain;
-  transform: scale(0.9);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease, opacity 0.5s ease;
-}
-
-.course-card.card-practical-3d:hover:not(.locked) .card-2d-image {
-  transform: scale(0.95);
-  filter: blur(0) grayscale(0) brightness(0.9);
-  opacity: 0.95;
 }
 
 
