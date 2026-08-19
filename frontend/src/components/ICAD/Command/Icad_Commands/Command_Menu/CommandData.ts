@@ -3,6 +3,8 @@ import { TorusGeometry } from "three";
 export interface MenuItem {
     label: string;
     shortcut?: string;
+    description?: string;  // What this command does (1–2 sentences for Engineering)
+    tip?: string;          // Optional usage tip shown below the description
     hasSubmenu?: boolean;
     isDivider?: boolean;
     children?: MenuItem[];
@@ -33,16 +35,50 @@ export interface SpotlightConfig {
 
 export const DRAW_ITEMS: MenuItem[] = [
 
-    { label: "Basic Lines" },
-    { label: "Parallel and Perpendicular" },
-    { label: "Horizontal Lines" },
-    { label: "Vertical Lines" },
-    { label: "Angle Lines" },
-    { label: "Free Curves" },
-    { label: "Circles with Center Points" },
-    { label: "Circles Through Points" },
+    {
+        label: "Basic Lines",
+        description: "Draws a straight line between any two points on the canvas.",
+        tip: "The most-used drawing tool. Start here for part outlines, centerlines, and construction geometry.",
+    },
+    {
+        label: "Parallel and Perpendicular",
+        description: "Draws a line exactly parallel or perpendicular to an existing line at a specified distance.",
+        tip: "Use this instead of Basic Lines when you need precise geometric relationships to existing edges.",
+    },
+    {
+        label: "Horizontal Lines",
+        description: "Draws a perfectly horizontal line (locked to 0°) between two points.",
+        tip: "Useful for baseline references and horizontal features where the angle must be exact.",
+    },
+    {
+        label: "Vertical Lines",
+        description: "Draws a perfectly vertical line (locked to 90°) between two points.",
+        tip: "Use for vertical centerlines, wall edges, and any feature that must be exactly plumb.",
+    },
+    {
+        label: "Angle Lines",
+        description: "Draws a line at a specified angle. You enter the angle value and the line is locked to it.",
+        tip: "Ideal for inclined surfaces, chamfer lead-in lines, and angled reference geometry.",
+    },
+    {
+        label: "Free Curves",
+        description: "Draws smooth curved lines by placing a series of points that the curve passes through.",
+        tip: "Use for organic shapes, cam profiles, and freeform contours that cannot be expressed as simple arcs.",
+    },
+    {
+        label: "Circles with Center Points",
+        description: "Draws a circle by specifying its center point and radius.",
+        tip: "The standard method for holes, bosses, and round features. Fastest when you know the center location.",
+    },
+    {
+        label: "Circles Through Points",
+        description: "Draws a circle that passes through 2 or 3 specified points, calculating the center automatically.",
+        tip: "Use when you know the boundary of the circle but not the center — common for bolt-circle references.",
+    },
     {
         label: "Text Input", hasSubmenu: true,
+        description: "Adds annotation text or dimension labels to the drawing.",
+        tip: "Choose Frame Layout for text inside a defined box, or Point Layout for free-floating text.",
         children: [
             {
                 label: "Frame Layout", hasSubmenu: true,
@@ -138,17 +174,55 @@ export const DRAW_ITEMS: MenuItem[] = [
 
         ]
     },
-    { label: "Advanced Drawing" },
-    { label: "Cut and Join" },
-    { label: "Offset" },
-    { label: "Roundness" },
-    { label: "Chamfer" },
-    { label: "Shape Extraction" },
-    { label: "Stretch and Shrink" },
-    { label: "Advanced Editing" },
-    { label: "Variable" },
+    {
+        label: "Advanced Drawing",
+        description: "Access advanced line and shape drawing tools beyond basic geometry, such as splines and complex curves.",
+        tip: "Use when Basic Lines, circles, and angles are not enough to describe complex part geometry.",
+    },
+    {
+        label: "Cut and Join",
+        description: "Trims two lines to meet at their intersection point, or joins two separate line segments into one.",
+        tip: "Essential for cleaning up intersecting geometry. Use Cut to remove overhanging ends, Join to merge gaps.",
+    },
+    {
+        label: "Offset",
+        description: "Creates a new line or curve parallel to and at a fixed distance from an existing element.",
+        tip: "Quickly generates wall thickness, slot widths, and tolerance boundaries without recalculating coordinates.",
+    },
+    {
+        label: "Roundness",
+        description: "Adds a smooth arc (fillet) between two intersecting lines at a specified radius.",
+        tip: "Use on inside corners to reduce stress concentration and on outside corners for machining clearance.",
+    },
+    {
+        label: "Chamfer",
+        description: "Replaces a sharp corner with a straight angled cut at a specified distance or angle.",
+        tip: "Use for deburring edges on machined parts. Chamfers are preferred over fillets on bolt-entry holes.",
+    },
+    {
+        label: "Shape Extraction",
+        description: "Extracts the outline of a closed region as a standalone shape element.",
+        tip: "Useful for hatching areas, calculating areas, or isolating a region for further editing.",
+    },
+    {
+        label: "Stretch and Shrink",
+        description: "Scales part of a drawing by stretching or compressing it along one axis.",
+        tip: "Adjust length dimensions without redrawing. Select a region and drag to resize proportionally.",
+    },
+    {
+        label: "Advanced Editing",
+        description: "Access advanced element editing tools such as break, split, and partial deletion.",
+        tip: "Use when standard cut/join operations are not precise enough for complex editing tasks.",
+    },
+    {
+        label: "Variable",
+        description: "Defines parametric variables that can drive dimensions and geometry across the drawing.",
+        tip: "Set up variables for frequently-changed dimensions (e.g. hole size, plate thickness) to enable quick design updates.",
+    },
     {
         label: "Move", hasSubmenu: true,
+        description: "Moves selected drawing elements to a new location using Translation, Rotation, Mirror, or Scaling.",
+        tip: "Use Translation to shift by XY distance, Rotation to spin around a point, Mirror for symmetric features.",
         children: [
             {
                 label: "Translation", hasSubmenu: true,
@@ -188,6 +262,8 @@ export const DRAW_ITEMS: MenuItem[] = [
     },
     {
         label: "Copy", hasSubmenu: true,
+        description: "Duplicates selected elements using Parallel, Rotate, Mirror, or Scale Copy methods.",
+        tip: "Use Mirror Copy for symmetric parts to save half the drawing effort. Scale Copy for enlarged details.",
         children: [
             {
                 label: "Parallel Copy", hasSubmenu: true,
@@ -257,6 +333,8 @@ export const DRAW_ITEMS: MenuItem[] = [
     },
     {
         label: "Change Attributes", hasSubmenu: true,
+        description: "Modifies properties of existing elements such as line type, line weight, color, and layer.",
+        tip: "Use to standardize line styles across the drawing without redrawing. Select by element type for batch changes.",
         children: [
             {
                 label: "Arbitrary Elements", hasSubmenu: true,
@@ -337,6 +415,8 @@ export const DRAW_ITEMS: MenuItem[] = [
 export const DRAFTING_ITEMS: MenuItem[] = [
     {
         label: "Length Dimensions", hasSubmenu: true,
+        description: "Adds linear dimension annotations to measure straight distances between two points.",
+        tip: "Use Standard for normal dimensions. Use Centerline for center-to-center measurements.",
         children: [
             {
                 label: "Standard", hasSubmenu: true,
@@ -519,6 +599,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
                     { label: "Add" },
                     {
                         label: "Delete", hasSubmenu: true,
+        description: "Removes selected drafting annotations such as dimensions, notes, or symbols from the drawing.",
+        tip: "Check Dimension Value Tracking option to also remove associated values when deleting.",
                         children: [
                             { label: "Delete Some" },
                             { label: "Delete All" },
@@ -603,6 +685,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Diameter Dimensions", hasSubmenu: true,
+        description: "Annotates the diameter of circles and arcs with a Ø symbol and value.",
+        tip: "Use Diameter for full circles, Radius for arcs. Place on the view that best shows the feature.",
         children: [
             {
                 label: "Diameter", hasSubmenu: true,
@@ -826,6 +910,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Angle Dimensions", hasSubmenu: true,
+        description: "Annotates the angle between two lines or the sweep of an arc in degrees.",
+        tip: "Use Standard for general angles, Horizontal or Vertical when the angle is referenced to a specific axis.",
         children: [
             {
                 label: "Standard", hasSubmenu: true,
@@ -875,6 +961,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Chamfer Dimensions", hasSubmenu: true,
+        description: "Adds a chamfer annotation showing the distance × distance or distance × angle format.",
+        tip: "Match the annotation style to the drawing standard (e.g., JIS, ISO) being followed.",
         children: [
             {
                 label: "Display Dimensions", hasSubmenu: true,
@@ -892,6 +980,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Application Dimensions", hasSubmenu: true,
+        description: "Provides specialized dimension tools for specific features: sides, corners, holes, ovals, and arcs.",
+        tip: "Use these instead of manual dimensions for complex features to ensure consistent formatting.",
         children: [
             {
                 label: "Side Dimensions", hasSubmenu: true,
@@ -969,6 +1059,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Note Scale", hasSubmenu: true,
+        description: "Attaches a scale ratio note to a detail view, indicating how much the view is magnified or reduced.",
+        tip: "Always add a Note Scale when a detail view is drawn at a different scale from the main drawing.",
         children: [
             { label: "Error Display" },
             {
@@ -989,6 +1081,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Drawing Editing", hasSubmenu: true,
+        description: "Edits existing dimension annotations — move dimension text, change leader lines, or modify text content.",
+        tip: "Use Change Position to relocate dimensions without deleting and redrawing them.",
         children: [
             {
                 label: "Change Position", hasSubmenu: true,
@@ -1215,6 +1309,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Alignment Editing", hasSubmenu: true,
+        description: "Aligns multiple dimension annotations to a common reference line for a cleaner, more readable layout.",
+        tip: "Run Align by Position after placing a group of dimensions to standardize their spacing.",
         children: [
             {
                 label: "Align by Position", hasSubmenu: true,
@@ -1334,6 +1430,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Annotations", hasSubmenu: true,
+        description: "Adds balloon or flag notes that reference part numbers or assembly callouts with leader lines.",
+        tip: "Use for BOM callouts, operation notes, and revision markers in assembly drawings.",
         children: [
             {
                 label: "Created", hasSubmenu: true,
@@ -1404,6 +1502,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Callouts", hasSubmenu: true,
+        description: "Creates part number balloons or reference callouts typically used in assembly drawings.",
+        tip: "Link callouts to a BOM table so numbers update automatically when items are renumbered.",
         children: [
             {
                 label: "Created by", hasSubmenu: true,
@@ -1485,6 +1585,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Welding Symbols", hasSubmenu: true,
+        description: "Places standard welding symbols (fillet, groove, plug, etc.) on joint lines with proper notation.",
+        tip: "Follow JIS or AWS symbol conventions. Always specify weld size, length, and pitch where required.",
         children: [
             { label: "With Dimension Lines" },
             { label: "Without Screen Lines" },
@@ -1621,6 +1723,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Geometric Tolerances", hasSubmenu: true,
+        description: "Adds GD&T (Geometric Dimensioning and Tolerancing) feature control frames to the drawing.",
+        tip: "Specify the characteristic symbol, tolerance value, and datum references. Use Datums to define reference planes first.",
         children: [
             {
                 label: "Tolerances", hasSubmenu: true,
@@ -1802,6 +1906,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Surface Roughness", hasSubmenu: true,
+        description: "Places surface finish symbols (Ra, Rz) on part surfaces to specify machining requirements.",
+        tip: "Use Simplified Symbols for quick placement. Always specify the Ra or Rz value and machining direction if critical.",
         children: [
             {
                 label: "Simplified Symbols", hasSubmenu: true,
@@ -1845,6 +1951,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Applied Drafting", hasSubmenu: true,
+        description: "Adds view-specific annotations such as section arrows, cut lines, and view symbols.",
+        tip: "Use Cut Line and Arrow tools to define section cuts, then link to the section view automatically.",
         children: [
             {
                 label: "Arrow's-eye view", hasSubmenu: true,
@@ -1936,10 +2044,12 @@ export const DRAFTING_ITEMS: MenuItem[] = [
             },
         ]
     },
-    { label: "Hatching" },
-    { label: "Dimension Line Conversion" },
+    { label: "Hatching", description: "Fills a closed region with a hatch pattern to indicate cross-sections or material types.", tip: "Select the correct pattern for the material (e.g., diagonal lines for metal, dots for non-metallic)." },
+    { label: "Dimension Line Conversion", description: "Converts existing dimension lines between different styles or standards (e.g., JIS to ISO format).", tip: "Use when adapting a drawing from one international standard to another without redrawing dimensions." },
     {
         label: "Automatic Drafting", hasSubmenu: true,
+        description: "Automatically generates and arranges balloon callouts across the drawing with consistent spacing.",
+        tip: "Run Automatic Balloon Configuration after placing all part references to layout balloons evenly.",
         children: [
             { label: "Automatic Balloon Configuration" },
             {
@@ -1964,6 +2074,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Move", hasSubmenu: true,
+        description: "Moves selected drafting annotations (dimensions, notes, symbols) to a new position.",
+        tip: "Use Translation for simple repositioning. Use Rotation to reorient dimension lines.",
         children: [
             {
                 label: "Translation", hasSubmenu: true,
@@ -1980,6 +2092,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Copy", hasSubmenu: true,
+        description: "Duplicates drafting annotations such as dimensions and symbols to another location.",
+        tip: "Useful when the same note or symbol appears in multiple places. Keeps formatting consistent.",
         children: [
             { label: "Sequential Placement" },
             { label: "Component Elements" },
@@ -1988,6 +2102,8 @@ export const DRAFTING_ITEMS: MenuItem[] = [
     },
     {
         label: "Change Attributes", hasSubmenu: true,
+        description: "Modifies the visual properties of existing drafting elements such as line style and color.",
+        tip: "Use to batch-update dimension styles without redrawing individual annotations.",
         children: [
             { label: "Parts Components" },
             { label: "Hole-Shaft Search" },

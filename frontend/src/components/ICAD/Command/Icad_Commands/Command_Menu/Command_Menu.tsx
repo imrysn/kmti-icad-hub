@@ -43,12 +43,15 @@ function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: num
 
     const rows = Math.ceil(items.length / columns);
 
+    // Track numbering separately — dividers don't count
+    let itemCounter = 0;
+
     return (
         <ul style={{
             listStyle: "none",
             margin: 0,
-            padding: "2px 0",
-            minWidth: columns > 1 ? `${160 * columns}px` : "160px",
+            padding: "4px 0",
+            minWidth: columns > 1 ? `${200 * columns}px` : "200px",
             fontSize: "11px",
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             color: "#333",
@@ -71,27 +74,81 @@ function DropdownMenu({ items, columns = 2 }: { items: MenuItem[]; columns?: num
 
                 const hasChildren = !!(item.children && item.children.length > 0);
                 const isHovered = hoveredIndex === index;
+                const hasDescription = !!item.description;
+                const badgeNumber = ++itemCounter;
 
                 return (
                     <li
                         key={index}
                         style={{
-                            padding: "4px 24px 4px 12px",
+                            padding: hasDescription ? "6px 24px 6px 8px" : "4px 24px 4px 12px",
                             display: "flex",
                             justifyContent: "space-between",
-                            alignItems: "center",
+                            alignItems: hasDescription ? "flex-start" : "center",
                             cursor: "default",
                             position: "relative",
                             backgroundColor: isHovered ? "rgba(0, 120, 215, 0.1)" : "transparent",
                             color: isHovered ? "#000" : "#333",
+                            borderLeft: isHovered ? "3px solid #0078d4" : "3px solid transparent",
+                            transition: "background-color 0.1s ease, border-color 0.1s ease",
                         }}
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                     >
-                        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            {item.label}
+                        {/* Left side: badge + label + description */}
+                        <span style={{ display: "flex", alignItems: "flex-start", gap: "8px", flex: 1, minWidth: 0 }}>
+                            {/* Number badge */}
+                            <span style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                minWidth: "18px",
+                                height: "18px",
+                                borderRadius: "4px",
+                                backgroundColor: isHovered ? "#0078d4" : "#e8e8e8",
+                                color: isHovered ? "#fff" : "#555",
+                                fontSize: "9px",
+                                fontWeight: 700,
+                                flexShrink: 0,
+                                marginTop: "1px",
+                                transition: "background-color 0.1s ease, color 0.1s ease",
+                            }}>
+                                {badgeNumber}
+                            </span>
+
+                            {/* Label + optional description + tip */}
+                            <span style={{ display: "flex", flexDirection: "column", gap: "2px", minWidth: 0 }}>
+                                <span style={{ fontWeight: hasDescription ? 600 : 400, whiteSpace: "nowrap" }}>
+                                    {item.label}
+                                </span>
+                                {hasDescription && (
+                                    <span style={{
+                                        fontSize: "10px",
+                                        color: isHovered ? "#444" : "#666",
+                                        lineHeight: "1.35",
+                                        whiteSpace: "normal",
+                                        maxWidth: "240px",
+                                    }}>
+                                        {item.description}
+                                    </span>
+                                )}
+                                {item.tip && (
+                                    <span style={{
+                                        fontSize: "9.5px",
+                                        color: isHovered ? "#0078d4" : "#888",
+                                        fontStyle: "italic",
+                                        lineHeight: "1.3",
+                                        whiteSpace: "normal",
+                                        maxWidth: "240px",
+                                    }}>
+                                        💡 {item.tip}
+                                    </span>
+                                )}
+                            </span>
                         </span>
-                        <span style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666" }}>
+
+                        {/* Right side: shortcut + submenu arrow */}
+                        <span style={{ display: "flex", alignItems: "center", gap: "8px", color: "#666", flexShrink: 0, marginLeft: "8px" }}>
                             {item.shortcut && <span>{item.shortcut}</span>}
                             {(item.hasSubmenu || hasChildren) && (
                                 <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
