@@ -7,9 +7,10 @@ import { authService } from '../services/authService';
 import '../styles/LoginView.css';
 import { parseBackendError } from '../utils/errorUtils';
 import { useTranslation } from '../context/LanguageContext';
+import platform from '../services/platformService';
 
 export const LoginView: React.FC = () => {
-    const isDesktopApp = Boolean(window.electronAPI);
+    const isDesktopApp = platform.isDesktopApp;
     const { t } = useTranslation();
     const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
@@ -67,8 +68,8 @@ export const LoginView: React.FC = () => {
                 remember_me: rememberMe
             });
             // Explicitly navigate to home to trigger role-based redirect in App.tsx
-            if (window.electronAPI) {
-                window.electronAPI.maximize();
+            if (platform.isDesktopApp) {
+                platform.maximize();
             }
             navigate('/');
         } catch (err: any) {
@@ -115,7 +116,7 @@ export const LoginView: React.FC = () => {
                 <button
                     type="button"
                     className="login-close-btn"
-                    onClick={() => window.electronAPI.close()}
+                    onClick={() => platform.close()}
                     title="Close Application"
                 >
                     <X size={20} />

@@ -30,6 +30,14 @@ export const RegistrationView: React.FC = () => {
     }
     registrationService.getPlans().then(result => {
       setPlans(result);
+      const planParam = params.get('plan');
+      if (planParam) {
+        const matchingPlan = result.find(p => p.code.toLowerCase() === planParam.toLowerCase());
+        if (matchingPlan) {
+          setForm(current => ({ ...current, requested_plan_id: matchingPlan.id }));
+          return;
+        }
+      }
       if (result[0]) setForm(current => ({ ...current, requested_plan_id: result[0].id }));
     }).catch(() => setError('Access plans are temporarily unavailable.'));
   }, [verificationToken]);

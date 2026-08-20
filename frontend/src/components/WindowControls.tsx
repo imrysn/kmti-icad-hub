@@ -2,22 +2,27 @@ import { Minus,Square,X } from 'lucide-react';
 import React from 'react';
 import kmtiLogo from '../assets/logo/kmti-training-hub.png';
 import '../styles/WindowControls.css';
+import platform from '../services/platformService';
 
 interface WindowControlsProps {
   buttonsOnly?: boolean;
 }
 
 const WindowControls: React.FC<WindowControlsProps> = ({ buttonsOnly = false }) => {
+  if (!platform.isDesktopApp) {
+    return null;
+  }
+
   const handleMinimize = () => {
-    if (window.electronAPI) window.electronAPI.minimize();
+    platform.minimize();
   };
 
   const handleMaximize = () => {
-    if (window.electronAPI) window.electronAPI.maximize();
+    platform.maximize();
   };
 
   const handleClose = () => {
-    if (window.electronAPI) window.electronAPI.close();
+    platform.close();
   };
 
   if (buttonsOnly) {

@@ -9,6 +9,7 @@ import { useBulkDownload } from '../../../hooks/useBulkDownload';
 import { usePracticalTasks } from '../../../hooks/usePracticalTasks';
 import { AssessmentTask } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
+import platform from '../../../services/platformService';
 import '../../../styles/3D_Modeling/CourseLesson.css';
 import '../../../styles/mentor/PracticalAssessment.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
@@ -23,7 +24,7 @@ interface PracticalAssessmentProps {
 
 
 export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack, is3DCompleted = false, assessmentType = '3D' }) => {
-    const isDesktopApp = Boolean(window.electronAPI);
+    const isDesktopApp = platform.isDesktopApp;
     const location = useLocation();
     const { t } = useTranslation();
     const [showInstructions, setShowInstructions] = useState<boolean>(() => {

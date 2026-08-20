@@ -7,7 +7,7 @@ import { useLessons } from '../../hooks/useLessons';
 import { assessmentService } from '../../services/assessmentService';
 import { authService, EffectiveEntitlements } from '../../services/authService';
 import { Course } from '../../types';
-import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from './mentorConstants';
+import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,ICAD_FOUNDATIONS_LESSONS,Lesson } from './mentorConstants';
 
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector';
@@ -51,6 +51,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Global State
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const is2DDrawingCourse = selectedCourse?.id?.toString() === '2' || selectedCourse?.course_type === '2D_Drawing';
+    const isFoundationsCourse = selectedCourse?.course_type === 'iCAD_Foundations';
 
     // UI/Interaction State
     const [activeLessonId, setActiveLessonId] = useState<string>('');
@@ -122,10 +123,11 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     const currentLessons = useMemo(() => {
         if (!selectedCourse) return [];
-        if (is2DDrawingCourse) return ICAD_2D_LESSONS;
-        if (selectedCourse.id.toString() === '1') return ICAD_3D_LESSONS;
+        if (selectedCourse.course_type === '2D_Drawing') return ICAD_2D_LESSONS;
+        if (selectedCourse.course_type === '3D_Modeling') return ICAD_3D_LESSONS;
+        if (selectedCourse.course_type === 'iCAD_Foundations') return ICAD_FOUNDATIONS_LESSONS;
         return dbLessons;
-    }, [selectedCourse, is2DDrawingCourse, dbLessons]);
+    }, [selectedCourse, dbLessons]);
 
     const allLessonIds = useMemo(() => {
         const ids: string[] = [];
@@ -218,17 +220,29 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             }
 
             try {
-                const progress3D = await authService.getLessonProgress('3D_Modeling');
-                const completedCount3D = progress3D.filter((p: any) => p.is_completed).length;
+                const has3DCourse = courses.some(c => c.course_type === '3D_Modeling');
+                const has2DCourse = courses.some(c => c.course_type === '2D_Drawing');
 
-                // Mark as completed if all quizzes are passed
-                setIs3DCompleted(completedCount3D >= completable3DCount);
+                if (has3DCourse) {
+                    try {
+                        const progress3D = await authService.getLessonProgress('3D_Modeling');
+                        const completedCount3D = progress3D.filter((p: any) => p.is_completed).length;
+                        setIs3DCompleted(completedCount3D >= completable3DCount);
 
-                // Check specifically for annotation quiz
-                const annotationProgress = progress3D.find((p: any) => p.lesson_id === 'annotation');
-                const annotationDone = !!annotationProgress?.is_completed;
-                setIsAnnotationCompleted(annotationDone);
-                localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
+                        const annotationProgress = progress3D.find((p: any) => p.lesson_id === 'annotation');
+                        const annotationDone = !!annotationProgress?.is_completed;
+                        setIsAnnotationCompleted(annotationDone);
+                        localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
+                    } catch (err: any) {
+                        if (err?.response?.status === 404) {
+                            setIs3DCompleted(false);
+                            setIsAnnotationCompleted(false);
+                        } else throw err;
+                    }
+                } else {
+                    setIs3DCompleted(false);
+                    setIsAnnotationCompleted(false);
+                }
 
                 // Check 3D Practical Assessment Completion
                 try {
@@ -237,10 +251,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         assessmentService.getMySubmissions()
                     ]);
 
-                    // Group tasks by set_number to see which sets the user is mapped to
                     const requiredSets = new Set(tasksData.map((t: any) => t.set_number));
-
-                    // A set is completed if ANY task within that set has an approved 3D submission
                     const isPracticalCompleted = requiredSets.size > 0 && Array.from(requiredSets).every(setNum => {
                         const tasksInSet = tasksData.filter((t: any) => t.set_number === setNum);
                         return tasksInSet.some((task: any) =>
@@ -257,10 +268,19 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     console.error('Failed to check 3D practical assessment prerequisite:', e);
                 }
 
-                // Course ID '2' is 2D Drawing
-                const progress2D = await authService.getLessonProgress('2D_Drawing');
-                const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
-                setIs2DCompleted(completedCount2D >= completable2DCount);
+                if (has2DCourse) {
+                    try {
+                        const progress2D = await authService.getLessonProgress('2D_Drawing');
+                        const completedCount2D = progress2D.filter((p: any) => p.is_completed).length;
+                        setIs2DCompleted(completedCount2D >= completable2DCount);
+                    } catch (err: any) {
+                        if (err?.response?.status === 404) {
+                            setIs2DCompleted(false);
+                        } else throw err;
+                    }
+                } else {
+                    setIs2DCompleted(false);
+                }
             } catch (err) {
                 console.error('Failed to check prerequisites:', err);
             } finally {
@@ -376,14 +396,17 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     useEffect(() => {
         if (!selectedCourse || activeLessonId) return;
 
-        if (is2DDrawingCourse) {
+        if (isFoundationsCourse) {
+            setActiveLessonId('lesson-1-1');
+            setExpandedIds(new Set(['module-1']));
+        } else if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
         } else {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
         }
-    }, [selectedCourse?.id, is2DDrawingCourse, activeLessonId]);
+    }, [selectedCourse?.id, is2DDrawingCourse, isFoundationsCourse, activeLessonId]);
 
     useEffect(() => {
         const viewer = document.querySelector('.lesson-scroll-area');

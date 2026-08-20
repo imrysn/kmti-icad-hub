@@ -1,11 +1,15 @@
-import { BookOpen,ChevronLeft,ChevronRight,Loader2,Video } from 'lucide-react';
-import React,{ lazy,Suspense,useCallback,useEffect,useRef,useState } from 'react';
+import { BookOpen, ChevronLeft, ChevronRight, Loader2, Video } from 'lucide-react';
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTranslation } from '../../../context/LanguageContext';
 import api from '../../../services/api';
 import { authService } from '../../../services/authService';
 import { Lesson } from '../mentorConstants';
 import { QuizModal } from './QuizModal';
+
+// Foundations Lesson Imports
+const DynamicFoundationsLesson = lazy(() => import('../../../components/PublicCourses/Foundations/DynamicFoundationsLesson'));
+
 
 // 3D Lesson Imports (Lazy Loaded)
 const IcadInterfaceLesson = lazy(() => import('../../../components/3D_Modeling/3D_iCadInterface'));
@@ -86,9 +90,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const { t } = useTranslation();
   const lessonTitleKey = `lesson.title.${activeLessonId}`;
   const translatedLessonTitle = t(lessonTitleKey);
-  const activeLessonTitle = translatedLessonTitle === lessonTitleKey
+  let activeLessonTitle = translatedLessonTitle === lessonTitleKey
     ? getActiveLessonTitle(lessons, activeLessonId)
     : translatedLessonTitle;
+
+  // Remove "Lesson X.Y — " or "Lesson X.Y - " prefix
+  activeLessonTitle = activeLessonTitle.replace(/^Lesson\s+[\d\.]+\s*(—|-)\s*/i, '');
   const lessonIndicator = t('lesson.indicator')
     .replace('{current}', String(currentLessonIndex + 1))
     .replace('{total}', String(allLessonIdsLength));
@@ -110,14 +117,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }, []);
 
   const handleStop = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'lesson-2-1') {
       window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
     }
     stop();
   }, [activeLessonId, stop]);
 
   const speakCurrent = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars') {
+    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'lesson-2-1') {
       window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
       return;
     }
@@ -301,7 +308,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     };
   }, [isSpeaking, currentIndex, activeParagraphText, activeLessonId, setCurrentIndex]);
 
-    // Use the passed lessons prop
+  // Use the passed lessons prop
   const findParentAndQuiz = (): { parent: Lesson; isLastSub: boolean } | null => {
     for (const lesson of lessons) {
       if (lesson.id === activeLessonId) {
@@ -426,6 +433,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               {(() => {
                 const registry: Record<string, () => React.ReactNode> = {
                   'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'lesson-2-1': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'origin': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
@@ -474,6 +482,21 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
                 if (exactMatch) return exactMatch();
+
+                // Check for dynamic foundation lesson
+                if (activeLessonId && activeLessonId.startsWith('lesson-')) {
+                  let foundLesson: any = null;
+                  for (const mod of lessons) {
+                    if (mod.id === activeLessonId) foundLesson = mod;
+                    if (mod.children) {
+                      const child = mod.children.find(c => c.id === activeLessonId);
+                      if (child) foundLesson = child;
+                    }
+                  }
+                  if (foundLesson && foundLesson.content) {
+                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                  }
+                }
 
                 // Try exact match in prefixRegistry first (for lessons with dashes in name but no sub-lesson suffix)
                 if (activeLessonId && typeof prefixRegistry[activeLessonId] === 'function') {

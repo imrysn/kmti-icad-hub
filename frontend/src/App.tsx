@@ -17,6 +17,7 @@ import { useAuth } from './hooks/useAuth';
 import { api,getSystemStatus } from './services/api';
 import { assessmentService } from './services/assessmentService';
 import { authService } from './services/authService';
+import { LandingView } from './views/LandingView';
 import { LoginView } from './views/LoginView';
 import { RegistrationView } from './views/RegistrationView';
 import { PasswordResetView } from './views/PasswordResetView';
@@ -25,12 +26,13 @@ import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
 import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTelemetrySidebar';
+import platform from './services/platformService';
 
 import kmtiTrainingHubLogo from './assets/logo/kmti-training-hub.png';
 import './styles/App.css';
 
 function AppContent() {
-  const isDesktopApp = Boolean(window.electronAPI);
+  const isDesktopApp = platform.isDesktopApp;
   const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
   const { showNotification } = useNotification();
   const { isTelemetryOpen, toggleTelemetry } = useUI();
@@ -121,9 +123,7 @@ function AppContent() {
       }
       if (notificationTriggered) {
         fetchUnreadCount();
-        if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
-          window.electronAPI.flashWindow();
-        }
+        platform.flashWindow();
       }
     });
 
@@ -185,16 +185,10 @@ function AppContent() {
   useEffect(() => {
     if (!isInitialLoading) {
       if (!isAuthenticated) {
-        // App is definitely in logged-out state -> Switch to compact login size
-        if (window.electronAPI) {
-          window.electronAPI.setWindowSize(440, 550, false);
-        }
+        platform.setWindowSize(440, 550, false);
       } else {
-        // App is authenticated (either on startup or after login) -> Set to maximized/full screen
-        if (window.electronAPI) {
-          window.electronAPI.setWindowSize(1280, 720, true);
-          window.electronAPI.maximize();
-        }
+        platform.setWindowSize(1280, 720, true);
+        platform.maximize();
       }
       // Update ref for next state change
       prevAuthRef.current = isAuthenticated;
@@ -217,11 +211,12 @@ function AppContent() {
         <main className="app-content app-content-login">
 
           <Routes>
+            <Route path="/" element={<LandingView />} />
             <Route path="/login" element={<LoginView />} />
             <Route path="/register" element={<RegistrationView />} />
             <Route path="/password/reset" element={<PasswordResetView />} />
             <Route path="/invitation/accept" element={<InvitationAcceptanceView />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
       ) : (
@@ -362,7 +357,7 @@ function AppContent() {
 
                 <button
                   onClick={() => {
-                    if (window.electronAPI) window.electronAPI.setWindowSize(440, 550, false);
+                    platform.setWindowSize(440, 550, false);
                     logout();
                   }}
                   className="theme-toggle-btn logout-btn-icon"

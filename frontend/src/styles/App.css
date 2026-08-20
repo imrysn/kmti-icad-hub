@@ -19,6 +19,10 @@
   /* Stay above aurora */
 }
 
+.app-content-login {
+  overflow-y: auto;
+}
+
 /* ── Header ─────────────────────────────────────────────────── */
 
 .app-header {

@@ -11,6 +11,7 @@ import { TraineeProgress } from '../../../services/adminService';
 import { api } from '../../../services/api';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
+import platform from '../../../services/platformService';
 import '../../../styles/mentor/PracticalTrainerDashboard.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 import { getFileOperationErrorMessage } from '../../../utils/fileOperationErrors';
@@ -417,9 +418,6 @@ export const PracticalTrainerDashboard: React.FC = () => {
             if (data?.message) {
                 if (data?.event === 'ASSESSMENT_UNLOCKED' || data?.event === 'ASSESSMENT_REVIEWED') return;
                 showNotification(data.message, 'info');
-                if (window.electronAPI && typeof window.electronAPI.flashWindow === 'function') {
-                    window.electronAPI.flashWindow();
-                }
             }
         });
 
@@ -626,20 +624,22 @@ export const PracticalTrainerDashboard: React.FC = () => {
         });
         if (!confirmed) return;
 
-        if (window.electronAPI && window.electronAPI.downloadAndOpen) {
-            try {
-                const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
-                const token = authService.getToken() || '';
+        try {
+            const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
+            const token = authService.getToken() || '';
 
-                showNotification(`Opening ${attachedFilename} in ${targetApplication}...`, 'info');
-                await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName });
-                showNotification(`Submission opened.`, 'success');
-            } catch (err) {
-                console.error('Failed to open in CAD:', err);
-                showNotification(getFileOperationErrorMessage(err, 'open', targetApplication), 'error');
+            showNotification(`Opening ${attachedFilename} in ${targetApplication}...`, 'info');
+            await platform.downloadAndOpen({ url, filename: attachedFilename, token, appName });
+            showNotification(`Submission opened.`, 'success');
+        } catch (err: any) {
+            console.error('Download and Open Error:', err);
+            
+            if (err.code === 'OPERATION_IN_PROGRESS') {
+                showNotification('File is already downloading or open.', 'info');
+            } else if (err.code !== 'APP_LAUNCH_FAILED' && err.code !== 'WRITE_ERROR') {
+                showNotification('Failed to download and open file.', 'error');
             }
-        } else {
-            // Fallback to regular download if not in Electron or IPC missing
+            // Fallback to regular download
             handleDownloadTraineeFile(submission);
         }
     };

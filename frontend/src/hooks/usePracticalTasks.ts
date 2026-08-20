@@ -1,9 +1,10 @@
-import { useCallback,useEffect,useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNotification } from '../context/NotificationContext';
-import { api,invalidateCache } from '../services/api';
-import { assessmentService,AssessmentSubmission,AssessmentTask } from '../services/assessmentService';
+import { api, invalidateCache } from '../services/api';
+import { assessmentService, AssessmentSubmission, AssessmentTask } from '../services/assessmentService';
 import { authService } from '../services/authService';
 import { getFileOperationErrorMessage } from '../utils/fileOperationErrors';
+import platform from '../services/platformService';
 
 // Fix #7: confirmFn is injected by the parent component so the hook can
 // use the app's styled ConfirmationModal instead of window.confirm().
@@ -95,14 +96,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         ? task.master_file_path.split(/[\\/]/).pop() || `Set${task.set_number}_${task.task_code}_Master.dwg`
         : `Set${task.set_number}_${task.task_code}_Master.dwg`;
 
-      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+      if (platform.isDesktopApp && platform.downloadBulkFiles) {
         const url = assessmentService.getDownloadUrl(task.id);
         const token = authService.getToken();
         if (!token) {
           showNotification('Session expired. Please login again.', 'error');
           return;
         }
-        const result = await window.electronAPI.downloadBulkFiles({
+        const result = await platform.downloadBulkFiles({
           tasks: [{ id: task.id, url, target_relative_path: originalFilename }],
           token
         });
@@ -127,7 +128,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       console.error('Download error:', err);
       showNotification(getFileOperationErrorMessage(err), 'error');
     }
-  }, [showNotification]);
+  }, [showNotification, confirm]);
 
   const handleOpenInIJCAD = useCallback(async (task: AssessmentTask) => {
     const confirmed = await confirm({
@@ -138,7 +139,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
 
-    if (window.electronAPI && window.electronAPI.downloadAndOpen) {
+    if (platform.isDesktopApp && platform.downloadAndOpen) {
       try {
         const url = assessmentService.getDownloadUrl(task.id);
         const originalFilename = task.master_file_path
@@ -152,7 +153,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         }
 
         showNotification(`Preparing ${task.title}...`, 'info');
-        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token });
+        await platform.downloadAndOpen({ url, filename: originalFilename, token });
         showNotification(`${task.title} opened in iJCAD.`, 'success');
       } catch (err) {
         console.error('Failed to open in iJCAD:', err);
@@ -163,7 +164,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       showNotification('iJCAD desktop integration is not available here. Downloading the file instead...', 'info');
       await handleDownloadTask(task);
     }
-  }, [showNotification, handleDownloadTask]);
+  }, [showNotification, handleDownloadTask, confirm]);
 
   const handleDownloadFeedback = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
     const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
@@ -180,14 +181,14 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       showNotification('Preparing download...', 'info');
       const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
 
-      if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+      if (platform.isDesktopApp && platform.downloadBulkFiles) {
         const url = `${api.defaults.baseURL || ''}/api/v1/assessments/feedback/${feedback.id}/download`;
         const token = authService.getToken();
         if (!token) {
           showNotification('Session expired. Please login again.', 'error');
           return;
         }
-        const result = await window.electronAPI.downloadBulkFiles({
+        const result = await platform.downloadBulkFiles({
           tasks: [{ id: feedback.id, url, target_relative_path: filename }],
           token
         });
@@ -214,7 +215,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
       console.error('Download error:', err);
       showNotification(getFileOperationErrorMessage(err), 'error');
     }
-  }, [showNotification]);
+  }, [showNotification, confirm]);
 
   const handleOpenFeedbackExcel = useCallback(async (submission: AssessmentSubmission, feedbackItem?: any) => {
     const feedback = feedbackItem || (submission.feedback && submission.feedback[0]);
@@ -227,7 +228,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     });
     if (!confirmed) return;
 
-    if (window.electronAPI && window.electronAPI.downloadAndOpen) {
+    if (platform.isDesktopApp && platform.downloadAndOpen) {
       try {
         const url = assessmentService.getFeedbackDownloadUrl(feedback.id);
         const filename = `Checkback_${submission.user?.username}_${submission.task?.task_code}.xlsx`;
@@ -236,7 +237,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         if (!token) return;
 
         showNotification('Opening checkback file...', 'info');
-        await window.electronAPI.downloadAndOpen({ url, filename, token });
+        await platform.downloadAndOpen({ url, filename, token });
       } catch (err) {
         console.error('Failed to open Excel:', err);
         showNotification(getFileOperationErrorMessage(err, 'open', 'Excel'), 'error');
@@ -244,7 +245,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
     } else {
       handleDownloadFeedback(submission, feedback);
     }
-  }, [showNotification, handleDownloadFeedback]);
+  }, [showNotification, handleDownloadFeedback, confirm]);
 
   const uploadTaskFile = useCallback(async (file: File, task: AssessmentTask, assessmentType: '3D' | '2D' = '3D', skipConfirm = false, timeSpentSeconds = 0) => {
     if (!skipConfirm) {

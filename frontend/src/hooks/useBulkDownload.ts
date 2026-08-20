@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { assessmentService } from '../services/assessmentService';
 import { authService } from '../services/authService';
 import { getBulkDownloadErrorMessage } from '../utils/fileOperationErrors';
+import platform from '../services/platformService';
 
 /** Trigger a single blob download in the browser */
 const triggerBlobDownload = (blob: Blob, filename: string) => {
@@ -38,7 +39,7 @@ export const useBulkDownload = () => {
         }
 
         // ── Electron path ────────────────────────────────────────────────────────
-        if (window.electronAPI && window.electronAPI.downloadBulkFiles) {
+        if (platform.downloadBulkFiles) {
             setIsDownloading(true);
             try {
                 const payload = items.map(item => {
@@ -83,7 +84,7 @@ export const useBulkDownload = () => {
                     return { id: item.id, target_relative_path: relativePath, url };
                 });
 
-                const result = await window.electronAPI.downloadBulkFiles({ tasks: payload, token });
+                const result = await platform.downloadBulkFiles({ tasks: payload, token });
 
                 if (result.canceled) {
                     showNotification('Bulk download canceled.', 'info');

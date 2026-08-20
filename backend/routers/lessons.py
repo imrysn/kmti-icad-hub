@@ -20,7 +20,7 @@ def get_courses(db: Session = Depends(get_db), current_user: User = Depends(get_
     result = course_service.get_available_courses(db, lang=lang)
     if is_learning_operator(db, current_user):
         return result
-    result.courses = [course for course in result.courses if has_entitlement(db, current_user, "course", course.course_type)]
+    result.courses = [course for course in result.courses if has_entitlement(db, current_user, "course", course.course_type) or has_entitlement(db, current_user, "course", str(course.id))]
     return result
 
 @router.get("/{course_id}/progress/{user_id}", response_model=CourseProgress)

@@ -19,7 +19,389 @@ export type Lesson = {
   children?: Lesson[];
   quiz?: Quiz;
   content?: string[];
+  videoId?: string;
 };
+
+export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
+  {
+    id: 'module-1',
+    title: 'Module 1 - Getting Started with iCAD SX',
+    children: [
+      {
+        id: 'lesson-1-1',
+        title: 'Lesson 1.1 — What is iCAD SX?',
+        content: [
+          'Learning Objective: By the end of this lesson, you should understand what iCAD SX is and how it is used in engineering design.',
+          'What is iCAD SX?',
+          'iCAD SX is a mechanical CAD system used to create and manage engineering designs.',
+          'Engineers can use iCAD SX to: Create 2D geometry, Create 3D mechanical parts, Build assemblies, Produce engineering drawings, Add dimensions and annotations, Modify existing designs, Review machine and component designs.',
+          'Typical Workflow: A basic engineering workflow may look like: Create/Open Drawing → Create Geometry → Build 3D Model → Create Assembly → Prepare 2D Drawing → Review → Save.',
+          'You will learn these processes gradually throughout the iCAD training courses.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-2',
+    title: 'Module 2 - Understanding the iCAD SX Screen',
+    children: [
+      {
+        id: 'lesson-2-1',
+        title: 'Lesson 2.1 — Identify the Main Interface',
+        content: [
+          'Learning Objective: Identify the important areas of the iCAD SX interface.',
+          'Step 1: Open iCAD SX: Launch iCAD SX on your computer. Wait until the main workspace is fully displayed.',
+          'Step 2: Look at the Main Screen: Before clicking anything, familiarize yourself with the interface.',
+          'Menu / Command Area: This contains commands used to create and modify your design.',
+          'Graphics Area: This is the large working area where your 2D drawings and 3D models are displayed.',
+          'View Controls: These allow you to change how you are looking at your model.',
+          'Information / Guidance Area: During an operation, iCAD SX may display instructions telling you what action is required next.',
+          'Try It Yourself: Without starting a modeling command, locate: Main menu, Graphics area, View controls, Coordinate/origin indicator, Command or guidance area.',
+          'Do not worry about memorizing every button. The goal is simply to become familiar with the workspace.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-3',
+    title: 'Mouse Controls and Model Navigation',
+    children: [
+      {
+        id: 'lesson-3-1',
+        title: 'Lesson 3.1 — Zoom In and Zoom Out',
+        videoId: 'zoomin_out',
+        content: [
+          'What Does Zoom Do?',
+          'Zoom changes how close or far away the model appears on your screen. It does not change the actual dimensions of the model.'
+        ]
+      },
+      {
+        id: 'lesson-3-2',
+        title: 'Lesson 3.2 — Pan',
+        videoId: 'pan',
+        content: [
+          'Learning Objective: Move your view to another area without moving the actual model.',
+          'What is Pan?',
+          'Pan moves your viewpoint across the drawing or model. Imagine looking at a large drawing through a small window. Panning moves the window to another area. The actual drawing remains in the same location.',
+          'How to Pan in iCAD SX.',
+          'Step 1: Move the mouse pointer into the Workspace.',
+          'Step 2: Press and hold the middle mouse button (scroll wheel).',
+          'Step 3: Drag the mouse to move the view (Left, Right, Up, Down).',
+          'Step 4: Release the scroll wheel when the desired area is visible.',
+          'What Should Happen?',
+          'The model should move across your screen, but its actual CAD position should remain unchanged.',
+          'Important: Do not confuse Pan with Move. Pan = Model position unchanged, Your view moved. Move Command = Model position changed.'
+        ]
+      },
+      {
+        id: 'lesson-3-3',
+        title: 'Lesson 3.3 — Rotate the 3D View',
+        videoId: 'scroll',
+        content: [
+          'Learning Objective: Rotate your viewpoint around a 3D model.',
+          'What is View Rotation?',
+          'View Rotation allows you to inspect the model from different angles. This is particularly useful when checking: Front geometry, Rear geometry, Holes, Side features, Bottom features, Connections between components.',
+          'How to Rotate the View.',
+          'Step 1: Position your mouse cursor over the 3D model.',
+          'Step 2: Press and hold the middle mouse button (scroll wheel), and the right mouse button simultaneously.',
+          'Step 3: Alternatively, you can hold the Alt key and left-click.',
+          'Step 4: Move your mouse slowly to rotate the view.',
+          'Step 5: Release the mouse buttons when you reach the desired viewing angle.',
+          'Important: There is a major difference between Rotate View and Rotate Component. Rotate View: You are changing where you are looking from. The actual model remains unchanged. Rotate Component: You are changing the actual orientation of the component.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-4',
+    title: 'Module 4 - Standard Views',
+    children: [
+      {
+        id: 'lesson-4-1',
+        title: 'Lesson 4.1 — Standard Views',
+        videoId: 'lesson4.1',
+        content: [
+          'Learning Objective:',
+          'Display a model from standard engineering viewing directions. Standard views make it easier to understand and inspect engineering geometry.'
+        ]
+      },
+      {
+        id: 'lesson-4-2',
+        title: 'Lesson 4.2 — Isometric View',
+        videoId: 'lesson4.2',
+        content: [
+          'An Isometric View displays multiple sides of a 3D object at the same time. This is usually easier for understanding the overall shape of a component.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-5',
+    title: 'Module 5 - Understanding the Origin and Coordinates',
+    children: [
+      {
+        id: 'lesson-5-1',
+        title: 'Lesson 5.1 — The Origin & Axes',
+        videoId: 'module5',
+        content: [
+          'The Origin: Every CAD model requires a reference location. The main reference point is called the Origin. The origin is: X = 0, Y = 0, Z = 0. Therefore: Origin = (0, 0, 0).',
+          'X, Y, and Z: A 3D model uses three main directions. X-Axis: Generally represents one horizontal direction. Y-Axis: Represents the second direction on the working plane. Z-Axis: Provides the third dimension.',
+          'Together: X + Y + Z = Position in 3D Space',
+          'Try It Yourself.',
+          'Step 1: Open the training workspace.',
+          'Step 2: Locate the coordinate/origin indicator.',
+          'Step 3: Identify: X, Y, Z.',
+          'Step 4: Rotate the view.',
+          'Step 5: Observe how the coordinate reference helps you understand the model orientation.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-6',
+    title: 'Module 6 - Selecting Geometry',
+    children: [
+      {
+        id: 'lesson-6-1',
+        title: 'Lesson 6.1 — Basic Selection',
+        content: [
+          'Learning Objective: Correctly select geometry before performing an operation.',
+          'How to Select an Object.',
+          'Step 1: Move your mouse pointer over the desired object.',
+          'Step 2: Confirm that the pointer is over the correct geometry.',
+          'Step 3: Left-click the object.',
+          'Step 4: Observe the selection/highlight.',
+          'Before Continuing: Ask yourself: "Is this the object I actually want to modify?" Only continue when the correct geometry is selected.',
+          'Selecting Faces: A Face is a surface of a 3D object. Practice.',
+          'Step 1: Open the provided 3D block.',
+          'Step 2: Move your mouse over the top surface.',
+          'Step 3: Select the top face.',
+          'Step 4: Observe the selection.',
+          'Step 5: Select a side face.',
+          'Step 6: Select another face.',
+          'Selecting Edges: An Edge is the boundary where surfaces meet. Practice.',
+          'Step 1: Move your pointer over one edge of the training block.',
+          'Step 2: Select the edge.',
+          'Step 3: Observe how the selection differs from selecting an entire face.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-7',
+    title: 'Module 7 - Basic 2D Geometry',
+    children: [
+      {
+        id: 'lesson-7-1',
+        title: 'Lesson 7.1 — Create a Line',
+        content: [
+          'Learning Objective: Create your first simple 2D geometry.',
+          'Procedure.',
+          'Step 1: Open the appropriate 2D operation/workspace.',
+          'Step 2: Locate the Line command.',
+          'Step 3: Click Line.',
+          'Step 4: Move your pointer into the Graphics Area.',
+          'Step 5: Specify the starting point.',
+          'Step 6: Move your pointer to the desired ending position.',
+          'Step 7: Specify the ending point.',
+          'Step 8: Finish/confirm the command according to the command guidance displayed by iCAD SX.',
+          'Expected Result: A line should appear between your selected start and end points.'
+        ]
+      },
+      {
+        id: 'lesson-7-2',
+        title: 'Lesson 7.2 — Create a Circle & Rectangle',
+        content: [
+          'Circle Procedure.',
+          'Step 1: Locate the Circle command.',
+          'Step 2: Click Circle.',
+          'Step 3: Specify the center point.',
+          'Step 4: Define the radius or diameter as requested by iCAD SX.',
+          'Step 5: Confirm the operation. Expected Result: A circle should appear in the Graphics Area.',
+          'Rectangle Procedure.',
+          'Step 1: Select the appropriate rectangle/rectangular geometry command.',
+          'Step 2: Specify the first corner.',
+          'Step 3: Move the pointer diagonally.',
+          'Step 4: Specify the opposite corner or enter the required dimensions.',
+          'Step 5: Confirm the geometry.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-8',
+    title: 'Module 8 - Introduction to 3D',
+    children: [
+      {
+        id: 'lesson-8-1',
+        title: 'Lesson 8.1 — Your First 3D Model',
+        content: [
+          'Training Exercise: Create a basic rectangular block. Use: Length: 100 mm, Width: 60 mm, Height: 20 mm.',
+          'Part 1 — Prepare the Profile.',
+          'Step 1: Start the appropriate 2D profile operation.',
+          'Step 2: Create a rectangular profile.',
+          'Step 3: Define the required dimensions: 100 mm × 60 mm.',
+          'Step 4: Confirm the profile.',
+          'Part 2 — Create the 3D Shape.',
+          'Step 1: Select the completed profile.',
+          'Step 2: Start the appropriate 3D creation/extrusion operation used in your iCAD SX environment.',
+          'Step 3: Enter: Height = 20 mm.',
+          'Step 4: Preview the result.',
+          'Step 5: Confirm the operation.',
+          'Expected Result: You should now have a rectangular 3D block: 100 × 60 × 20 mm.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-9',
+    title: 'Module 9 - Inspect Your First Model',
+    children: [
+      {
+        id: 'lesson-9-1',
+        title: 'Lesson 9.1 — Inspection Practice',
+        content: [
+          'Now use the navigation skills you learned earlier.',
+          'Step 1: Zoom into the block.',
+          'Step 2: Zoom back out.',
+          'Step 3: Pan around the workspace.',
+          'Step 4: Rotate the view.',
+          'Step 5: Display Front View.',
+          'Step 6: Display Top View.',
+          'Step 7: Display Side View.',
+          'Step 8: Return to Isometric View.',
+          'Step 9: Select the top face.',
+          'Step 10: Select one edge.',
+          'If you can complete all ten operations comfortably, you are beginning to develop the navigation skills needed for 3D modeling.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-10',
+    title: 'Module 10 - Saving Your Work',
+    children: [
+      {
+        id: 'lesson-10-1',
+        title: 'Lesson 10.1 — Save Your Training File',
+        content: [
+          'Saving regularly is an essential CAD habit.',
+          'Procedure.',
+          'Step 1: Open the File menu or corresponding file-management control.',
+          'Step 2: Select Save or Save As.',
+          'Step 3: Select the required training folder.',
+          'Step 4: Enter the required filename. Example: ICAD_FOUNDATION_PRACTICE_01.',
+          'Step 5: Confirm Save.',
+          'Important: When working with actual company drawings, always follow the company\'s: File naming convention, Folder structure, Revision procedure, Drawing management rules.',
+          'Never overwrite an official engineering file unless the required procedure allows it.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-11',
+    title: 'Module 11 - Beginner Troubleshooting',
+    children: [
+      {
+        id: 'lesson-11-1',
+        title: 'Lesson 11.1 — Common Issues',
+        content: [
+          '"My model disappeared." Possible reason: You may have zoomed or panned away from it. Try: Use Fit / Fit to Screen.',
+          '"I can\'t rotate the model." Check that: You are inside the correct graphics/model area. No conflicting command is active. You are using the configured View Rotate control.',
+          '"The wrong object changed." You may have selected the wrong geometry. Use Undo, then carefully select the intended object.',
+          '"I clicked something and iCAD is waiting." Look at the command guidance/information area. The active command may be asking you to: Select Object → Specify Point → Enter Value → Confirm. Follow the displayed instruction before clicking elsewhere.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'module-12',
+    title: 'Module 12 - Final Guided Exercise',
+    children: [
+      {
+        id: 'lesson-12-1',
+        title: 'Lesson 12.1 — Navigation Challenge',
+        content: [
+          'iCAD Navigation Challenge: Open the provided training model and complete the following without assistance.',
+          'Navigation: Zoom In, Zoom Out, Pan Left, Pan Right, Rotate View, Fit Model to Screen.',
+          'Standard Views: Front, Top, Side, Isometric.',
+          'Selection: Select one component, Select one face, Select one edge.',
+          'Basic Geometry: Create a line, Create a circle, Create a rectangular profile.',
+          '3D: Create the assigned simple 3D block, Inspect the completed block from different views.',
+          'File Management: Save the completed exercise using the required filename.'
+        ]
+      }
+    ],
+    quiz: {
+      title: 'Final Knowledge Check',
+      description: 'A brief assessment of fundamental iCAD navigation and workflow concepts.',
+      questions: [
+        {
+          id: 'fkc-1',
+          text: 'What happens when you Zoom In?',
+          options: ['The actual model becomes larger.', 'Your view becomes closer to the model.', 'The component dimensions increase.', 'The component moves.'],
+          correctAnswer: 1,
+          explanation: 'Zooming in brings your view closer to the model without altering the physical dimensions.'
+        },
+        {
+          id: 'fkc-2',
+          text: 'What is the purpose of Pan?',
+          options: ['Move the actual component.', 'Rotate a component.', 'Move your viewing area without changing the model\'s actual position.', 'Resize the component.'],
+          correctAnswer: 2,
+          explanation: 'Panning shifts the viewport across the model without changing the model\'s physical coordinates.'
+        },
+        {
+          id: 'fkc-3',
+          text: 'What should you do if you lose the model after zooming or panning?',
+          options: ['Delete the drawing.', 'Restart iCAD.', 'Use Fit / Fit to Screen.', 'Create another model.'],
+          correctAnswer: 2,
+          explanation: 'Fit to Screen automatically scales and centers the entire model back into the viewport.'
+        },
+        {
+          id: 'fkc-4',
+          text: 'What is the global origin?',
+          options: ['(1,1,1)', '(0,0,0)', '(X,X,X)', '(100,100,100)'],
+          correctAnswer: 1,
+          explanation: 'The origin is the absolute center of the coordinate system at X=0, Y=0, Z=0.'
+        },
+        {
+          id: 'fkc-5',
+          text: 'Which operation changes only how you are looking at the model?',
+          options: ['Move Component', 'View Rotate', 'Delete', 'Copy'],
+          correctAnswer: 1,
+          explanation: 'View Rotate orbits the camera around the model without changing its physical orientation in space.'
+        },
+        {
+          id: 'fkc-6',
+          text: 'What should you verify before modifying geometry?',
+          options: ['The computer time.', 'The screen brightness.', 'The correct object is selected.', 'The filename length.'],
+          correctAnswer: 2,
+          explanation: 'Always ensure the correct geometry is selected to prevent unintended modifications.'
+        }
+      ]
+    }
+  },
+  {
+    id: 'module-13',
+    title: 'Practical Assessment',
+    children: [
+      {
+        id: 'lesson-13-1',
+        title: 'iCAD Foundations Practical Assessment',
+        content: [
+          'Objective: Demonstrate that you can independently navigate the iCAD environment and perform basic operations.',
+          'Assessment Task: Create a new training file and demonstrate the following skills:',
+          'Part A — Interface: Identify the major areas of the iCAD workspace.',
+          'Part B — Navigation: Successfully demonstrate: Zoom, Pan, Rotate View, Front View, Top View, Side View, Isometric View.',
+          'Part C — Geometry: Create: Line, Circle, Rectangle.',
+          'Part D — 3D: Create a simple rectangular block using the dimensions provided by the instructor.',
+          'Part E — Inspection: Inspect the completed model using standard and isometric views.',
+          'Part F — File Management: Save the completed exercise using the required filename.'
+        ]
+      }
+    ]
+  }
+];
 
 export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
@@ -441,7 +823,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
   {
     id: 'standard',
     title: 'Standard',
-    children: [ 
+    children: [
       { id: 'standard-1', title: 'Scale Pointer' },
       { id: 'standard-4', title: 'Screw' },
       { id: 'standard-6', title: 'Bolt Length ' },

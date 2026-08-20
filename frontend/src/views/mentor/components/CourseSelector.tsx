@@ -67,7 +67,9 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         return <div className="mentor-error">{error}</div>;
     }
 
-    const course3D = courses.find(c => c.id.toString() === '1') || (isEmployeeSide ? {
+    const courseFoundations = courses.find(c => c.course_type === 'iCAD_Foundations');
+
+    const course3D = courses.find(c => c.course_type === '3D_Modeling') || (isEmployeeSide ? {
         id: '1',
         title: '3D Modeling',
         description: 'Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.',
@@ -75,7 +77,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         order: 1
     } : undefined);
 
-    const course2D = courses.find(c => c.id.toString() === '2') || (isEmployeeSide ? {
+    const course2D = courses.find(c => c.course_type === '2D_Drawing') || (isEmployeeSide ? {
         id: '2',
         title: '2D Detailing',
         description: 'Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.',
@@ -88,6 +90,11 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     const has2DPractical = isEmployeeSide || Array.from(practicalIds).some((id) => id === '*' || id.startsWith('2D:'));
 
     const activeCards = [
+        ...(courseFoundations ? [{
+            ...courseFoundations,
+            title: courseFoundations.title,
+            description: courseFoundations.description
+        }] : []),
         ...(course3D ? [{
             ...course3D,
             title: t('course.title_3d') || course3D.title,

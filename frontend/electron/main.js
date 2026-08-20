@@ -193,52 +193,9 @@ function serializeDownloadError(error) {
     };
 }
 
-ipcMain.handle('print-document', async (event, options = {}) => {
-    const win = BrowserWindow.fromWebContents(event.sender);
-    if (!win) return { success: false, error: 'Unable to find the active window.' };
 
-    return new Promise((resolve) => {
-        win.webContents.print(options, (success, failureReason) => {
-            if (success) {
-                resolve({ success: true });
-                return;
-            }
 
-            const reason = failureReason || 'Printing failed.';
-            const canceled = /cancel(?:ed|led)?/i.test(reason);
-            resolve(canceled
-                ? { success: false, canceled: true }
-                : { success: false, error: reason });
-        });
-    });
-});
 
-ipcMain.handle('save-pdf', async (event, options = {}) => {
-    const win = BrowserWindow.fromWebContents(event.sender);
-    if (!win) return { success: false, error: 'Unable to find the active window.' };
-
-    const safeDefaultName = path.basename(options.defaultName || 'Quotation.pdf')
-        .replace(/[^a-zA-Z0-9._-]/g, '_');
-    const { canceled, filePath } = await electron.dialog.showSaveDialog(win, {
-        title: 'Save PDF',
-        defaultPath: path.join(app.getPath('documents'), safeDefaultName),
-        filters: [{ name: 'PDF Files', extensions: ['pdf'] }],
-    });
-    if (canceled || !filePath) return { success: false, canceled: true };
-
-    try {
-        const pdf = await win.webContents.printToPDF({
-            printBackground: true,
-            pageSize: 'A4',
-            landscape: false,
-            marginsType: 1,
-        });
-        await fs.promises.writeFile(filePath, pdf);
-        return { success: true, filePath };
-    } catch (error) {
-        return { success: false, error: error.message || String(error) };
-    }
-});
 
 // Enable hardware acceleration for smooth rendering performance.
 // (Only disable if running in headless environments or VMs lacking DirectX runtimes)

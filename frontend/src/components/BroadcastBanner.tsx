@@ -1,6 +1,7 @@
 import { AlertCircle,Info,Megaphone } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
 import { adminService } from '../services/adminService';
+import platform from '../services/platformService';
 import '../styles/BroadcastBanner.css';
 
 interface Broadcast {
@@ -134,9 +135,7 @@ export const BroadcastBanner: React.FC = () => {
     };
 
     const triggerFlash = () => {
-        if ((window as any).electronAPI?.flashWindow) {
-            (window as any).electronAPI.flashWindow();
-        }
+        platform.flashWindow();
     };
 
     const fetchBroadcasts = async () => {

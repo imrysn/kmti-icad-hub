@@ -6,21 +6,26 @@ const getBrowserHost = (): string => {
 };
 
 const resolveApiBaseUrl = (): string => {
+    // 1. Explicitly configured URL takes highest priority
     const configuredUrl = typeof import.meta.env !== 'undefined'
         ? import.meta.env.VITE_API_URL?.trim()
         : '';
 
     if (configuredUrl) return normalizeUrl(configuredUrl);
 
+    // 2. Local development fallback
     if (typeof import.meta.env !== 'undefined' && import.meta.env.DEV) {
         return `http://${getBrowserHost()}:3002`;
     }
 
+    // 3. Production browser environment (relative to current domain)
     if (typeof window !== 'undefined' && /^https?:$/.test(window.location.protocol)) {
         return normalizeUrl(window.location.origin);
     }
 
-    return 'http://127.0.0.1:3002';
+    // 4. Ultimate fallback for production (prevents hardcoded local IPs in public builds)
+    console.warn("API base URL is not configured. Falling back to relative path '/'.");
+    return '';
 };
 
 export const API_BASE_URL = resolveApiBaseUrl();
