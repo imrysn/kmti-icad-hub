@@ -1,5 +1,5 @@
 import {
-    Activity, Archive, BookOpen, ClipboardCheck, Database, FileSearch, Gauge,
+    Activity, Archive, BookOpen, Bug, ClipboardCheck, Database, FileSearch, Gauge,
     ChevronDown, Languages, Mail, Send, Settings, Shield, UserCheck, UserPlus, Users,
 } from 'lucide-react';
 import React from 'react';
@@ -34,6 +34,7 @@ export const AREA_NAV = {
         items: [
             { id: 'system-health', icon: Activity, label: 'System health' },
             { id: 'audit-records', icon: FileSearch, label: 'Audit records' },
+            { id: 'bug-reports', icon: Bug, label: 'Bug reports' },
             { id: 'security', icon: Shield, label: 'Security' },
             { id: 'email-integrations', icon: Mail, label: 'Email and integrations' },
             { id: 'storage-backups', icon: Archive, label: 'Storage and backups' },

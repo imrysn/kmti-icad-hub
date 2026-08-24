@@ -140,6 +140,30 @@ export const useTTS = () => {
     }
   }, []);
 
+  const pause = useCallback(() => {
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+    if (window.speechSynthesis?.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+    }
+    if (activeIntervalRef.current) {
+      clearInterval(activeIntervalRef.current);
+      activeIntervalRef.current = null;
+    }
+  }, []);
+
+  const resume = useCallback(() => {
+    if (audioRef.current?.paused) {
+      audioRef.current.play().catch((error) => {
+        console.error('Unable to resume narration audio:', error);
+      });
+    }
+    if (window.speechSynthesis?.paused) {
+      window.speechSynthesis.resume();
+    }
+  }, []);
+
   const getTeacherVoice = useCallback((): TTSVoice | null => {
     // Prioritize natural/professional sounding browser voices
     const selectedVoice =
@@ -185,6 +209,63 @@ export const useTTS = () => {
 
     if (isBackendVoice) {
       const voiceName = selectedVoiceURI!.replace('kokoro://', '').replace('openai://', '');
+      let browserFallbackStarted = false;
+
+      const playBrowserFallback = () => {
+        if (browserFallbackStarted || !window.speechSynthesis) return;
+        browserFallbackStarted = true;
+
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current = null;
+        }
+        if (preloadedAudioRef.current) {
+          preloadedAudioRef.current.audio.pause();
+          preloadedAudioRef.current = null;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(item.normalizedText);
+        const teacherVoice = getTeacherVoice();
+        if (teacherVoice) {
+          const nativeVoice = window.speechSynthesis.getVoices()
+            .find((candidate) => candidate.voiceURI === teacherVoice.voiceURI);
+          if (nativeVoice) utterance.voice = nativeVoice;
+        }
+        utterance.rate = rate;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        if (typeof window !== 'undefined') {
+          (window as any)._activeUtterance = utterance;
+        }
+
+        utterance.onstart = () => {
+          setCurrentIndex(item.paragraphIndex);
+          setCurrentSentenceIndex(item.sentenceIndex);
+          setActiveParagraphText(item.paragraphText);
+          setCurrentCharIndex(item.offset);
+        };
+        utterance.onboundary = (event) => {
+          if (event.name === 'word') setCurrentCharIndex(item.offset + event.charIndex);
+        };
+        utterance.onend = () => {
+          setCurrentCharIndex(item.offset + item.text.length);
+          sentenceTimeoutRef.current = setTimeout(() => {
+            if (currentSentenceRef.current === index) speakSentence(index + 1);
+          }, 500);
+        };
+        utterance.onerror = (error) => {
+          console.error('Browser TTS fallback failed:', error);
+          setIsSpeaking(false);
+          setCurrentIndex(-1);
+          setCurrentSentenceIndex(-1);
+          setActiveParagraphText('');
+        };
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.resume();
+        window.speechSynthesis.speak(utterance);
+      };
 
       let audio: HTMLAudioElement;
       if (preloadedAudioRef.current && preloadedAudioRef.current.index === index) {
@@ -291,9 +372,7 @@ export const useTTS = () => {
           clearInterval(activeIntervalRef.current);
           activeIntervalRef.current = null;
         }
-        setIsSpeaking(false);
-        setCurrentIndex(-1);
-        setActiveParagraphText('');
+        playBrowserFallback();
       };
 
       audio.play().catch(err => {
@@ -304,9 +383,7 @@ export const useTTS = () => {
         }
         console.error("Audio play failed:", err);
         if (audioRef.current === audio) {
-          setIsSpeaking(false);
-          setCurrentIndex(-1);
-          setActiveParagraphText('');
+          playBrowserFallback();
         }
       });
     } else {
@@ -507,6 +584,8 @@ export const useTTS = () => {
   return {
     speak,
     stop,
+    pause,
+    resume,
     isSpeaking,
     currentIndex,
     setCurrentIndex,

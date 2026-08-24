@@ -10,6 +10,7 @@ interface AuthContextType {
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -89,6 +90,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     window.location.hash = '#/login';
   };
 
+  const refreshUser = async () => {
+    const userData = await authService.getCurrentUser();
+    setUser(userData);
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -98,7 +104,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       isLoggingIn,
       error,
       login,
-      logout
+      logout,
+      refreshUser
     }}>
       {children}
     </AuthContext.Provider>

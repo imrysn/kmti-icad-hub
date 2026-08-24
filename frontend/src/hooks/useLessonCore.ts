@@ -11,7 +11,7 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // TTS integration using global shared context
-  const { speak: speakRaw, stop, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex, registerText: registerTextRaw } = useTTSContext();
+  const { speak: speakRaw, stop, pause, resume, isSpeaking, currentIndex, currentSentenceIndex, currentCharIndex, registerText: registerTextRaw } = useTTSContext();
   const { language, translateContent } = useTranslation();
   const translateSteps = useCallback(
     (steps: string[]) => steps.map(translateContent),
@@ -134,6 +134,8 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
     containerRef,
     speak,
     stop,
+    pause,
+    resume,
     isSpeaking,
     currentIndex,
     currentSentenceIndex,

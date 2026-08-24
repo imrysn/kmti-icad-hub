@@ -9,6 +9,7 @@ import { QuizModal } from './QuizModal';
 
 // Foundations Lesson Imports
 const DynamicFoundationsLesson = lazy(() => import('../../../components/PublicCourses/Foundations/DynamicFoundationsLesson'));
+const ZoomInOutInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/ZoomInOutInteractiveLesson'));
 
 
 // 3D Lesson Imports (Lazy Loaded)
@@ -62,6 +63,8 @@ import { useTTSContext } from '../../../context/TTSContext';
 
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
+  isFoundationsCourse?: boolean;
+  courseId: string;
   activeLessonId: string;
   currentLessonIndex: number;
   allLessonIdsLength: number;
@@ -76,6 +79,8 @@ interface LessonViewerProps {
 
 export const LessonViewer: React.FC<LessonViewerProps> = ({
   is2DDrawingCourse,
+  isFoundationsCourse = false,
+  courseId,
   activeLessonId,
   currentLessonIndex,
   allLessonIdsLength,
@@ -172,7 +177,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
-      if (!activeLessonId) return;
+      if (!activeLessonId || isFoundationsCourse) return;
 
       setIsDbLoading(true);
       try {
@@ -185,7 +190,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       }
     };
 
-    if (activeLessonId) {
+    if (activeLessonId && !isFoundationsCourse) {
       fetchDbContent();
     }
 
@@ -229,7 +234,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     setTimeout(performScrollReset, 10);
     setTimeout(performScrollReset, 100); // Second pass for slow rendering
-  }, [activeLessonId]);
+  }, [activeLessonId, isFoundationsCourse]);
 
   // Persist showQuiz state
   const activeLessonIdRef = useRef(activeLessonId);
@@ -328,16 +333,18 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
   const isLastLesson = currentLessonIndex === allLessonIdsLength - 1;
-  // Keep the lesson footer predictable: ordinary lessons advance with “Next”,
-  // while only the final lesson is labelled “Next Lesson”.
-  const nextLabel = isLastLesson ? t('lesson.next_lesson') : t('common.next');
+  // Foundations pages are individual lessons, so their footer always describes
+  // the cross-lesson action. Other course families retain their existing labels.
+  const nextLabel = isFoundationsCourse || isLastLesson
+    ? t('lesson.next_lesson')
+    : t('common.next');
 
   const handleQuizComplete = async (score: number, detailedAnswers?: any[]) => {
     if (!parentResult?.parent) return;
     const lessonIdToClear = parentResult.parent.id;
     try {
       await api.post('/auth/submit-quiz', {
-        course_id: is2DDrawingCourse ? '2' : '1',
+        course_id: courseId,
         lesson_id: lessonIdToClear,
         score: score,
         answers: detailedAnswers
@@ -368,6 +375,16 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     setShowQuiz(false);
     goToNextLesson();
   };
+
+  const handleInteractiveLessonComplete = useCallback(async () => {
+    await api.post('/auth/submit-quiz', {
+      course_id: courseId,
+      lesson_id: activeLessonId,
+      score: 100,
+      answers: [],
+    });
+    onLessonComplete(activeLessonId);
+  }, [activeLessonId, courseId, onLessonComplete]);
 
   const handleNextAction = async () => {
     if (hasQuiz && !isModuleCompleted && !isEmployeeSide) {
@@ -433,7 +450,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
               {(() => {
                 const registry: Record<string, () => React.ReactNode> = {
                   'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'lesson-2-1': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
                   'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'origin': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
@@ -480,11 +498,13 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                 };
 
+                // Preserve explicitly mapped interactive lessons, including the
+                // existing Foundations Module 2 iCAD Interface experience.
                 const exactMatch = activeLessonId ? registry[activeLessonId] : null;
                 if (exactMatch) return exactMatch();
 
                 // Check for dynamic foundation lesson
-                if (activeLessonId && activeLessonId.startsWith('lesson-')) {
+                if (isFoundationsCourse && activeLessonId && activeLessonId.startsWith('lesson-')) {
                   let foundLesson: any = null;
                   for (const mod of lessons) {
                     if (mod.id === activeLessonId) foundLesson = mod;
@@ -494,7 +514,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     }
                   }
                   if (foundLesson && foundLesson.content) {
-                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />;
+                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />;
                   }
                 }
 

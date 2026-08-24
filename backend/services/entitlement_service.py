@@ -97,7 +97,10 @@ def require_course_access(db: Session, user: User, course_reference: str) -> Cou
         if legacy_code and (is_learning_operator(db, user) or has_entitlement(db, user, "course", legacy_code)):
             return None
         raise HTTPException(status_code=404, detail="Course not found")
-    if not has_entitlement(db, user, "course", course.course_type):
+    if not (
+        has_entitlement(db, user, "course", course.course_type)
+        or has_entitlement(db, user, "course", str(course.id))
+    ):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this course")
     return course
 
@@ -108,13 +111,14 @@ def require_lesson_access(db: Session, user: User, lesson_slug: str):
     if lesson is None:
         raise HTTPException(status_code=404, detail="Lesson not found")
     course = resolve_course(db, str(lesson.course_id))
-    if has_entitlement(db, user, "lesson", lesson_slug) or (course and has_entitlement(db, user, "course", course.course_type)) or is_learning_operator(db, user):
+    if has_entitlement(db, user, "lesson", lesson_slug) or (course and (has_entitlement(db, user, "course", course.course_type) or has_entitlement(db, user, "course", str(course.id)))) or is_learning_operator(db, user):
         return lesson
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this lesson")
 
 
 def require_quiz_access(db: Session, user: User, quiz: Quiz) -> None:
-    if has_entitlement(db, user, "quiz", quiz.slug) or has_entitlement(db, user, "course", quiz.course_type) or is_learning_operator(db, user):
+    course = resolve_course(db, quiz.course_type)
+    if has_entitlement(db, user, "quiz", quiz.slug) or has_entitlement(db, user, "course", quiz.course_type) or (course and has_entitlement(db, user, "course", str(course.id))) or is_learning_operator(db, user):
         return
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Your access plan does not include this assessment")
 

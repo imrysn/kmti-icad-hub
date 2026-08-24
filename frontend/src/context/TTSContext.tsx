@@ -22,6 +22,8 @@ interface TTSContextType {
   registerText: (text: string[], startIndex?: number) => void;
   speak: (text: string[], startIndex?: number) => void;
   stop: () => void;
+  pause: () => void;
+  resume: () => void;
   rate: number;
   setRate: (rate: number) => void;
   voices: TTSVoice[];
@@ -40,12 +42,20 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     if (!tts.voices || tts.voices.length === 0) return;
     const targetLang = language === 'ja' ? 'ja-JP' : 'en-US';
-    const matchingVoice = tts.voices.find(v => v.lang.toLowerCase().startsWith(targetLang.toLowerCase().split('-')[0]))
+    const languageCode = targetLang.toLowerCase().split('-')[0];
+    const currentVoice = tts.voices.find(v => v.voiceURI === tts.selectedVoiceURI);
+    if (currentVoice?.lang.toLowerCase().startsWith(languageCode)) return;
+
+    const preferredVoice = language === 'en'
+      ? tts.voices.find(v => v.voiceURI === 'openai://nova')
+      : undefined;
+    const matchingVoice = preferredVoice
+      || tts.voices.find(v => v.lang.toLowerCase().startsWith(languageCode))
       || tts.voices.find(v => v.lang.toLowerCase().includes(targetLang.toLowerCase().split('-')[0]));
     if (matchingVoice) {
       tts.setSelectedVoiceURI(matchingVoice.voiceURI);
     }
-  }, [language, tts.voices]);
+  }, [language, tts.selectedVoiceURI, tts.setSelectedVoiceURI, tts.voices]);
 
   const registerText = useCallback((text: string[], startIndex: number = 0) => {
     setCurrentText(text);
@@ -66,6 +76,8 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         registerText,
         speak: tts.speak,
         stop: tts.stop,
+        pause: tts.pause,
+        resume: tts.resume,
         rate: tts.rate,
         setRate: tts.setRate,
         voices: tts.voices,

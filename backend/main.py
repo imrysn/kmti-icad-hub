@@ -30,6 +30,22 @@ try:
             table_names = inspector.get_table_names()
             if "users" in table_names:
                 user_columns = {c["name"] for c in inspector.get_columns("users")}
+                if "avatar_code" not in user_columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN avatar_code VARCHAR(50) NULL"))
+                if "avatar_path" not in user_columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN avatar_path VARCHAR(500) NULL"))
+                billing_columns = {
+                    "billing_name": "VARCHAR(200)",
+                    "billing_country": "VARCHAR(100)",
+                    "billing_address_line1": "VARCHAR(300)",
+                    "billing_address_line2": "VARCHAR(300)",
+                    "billing_city": "VARCHAR(100)",
+                    "billing_postal_code": "VARCHAR(30)",
+                    "billing_province": "VARCHAR(100)",
+                }
+                for column_name, column_type in billing_columns.items():
+                    if column_name not in user_columns:
+                        conn.execute(text(f"ALTER TABLE users ADD COLUMN {column_name} {column_type} NULL"))
                 if "email_normalized" not in user_columns:
                     conn.execute(text("ALTER TABLE users ADD COLUMN email_normalized VARCHAR(255)"))
                 conn.execute(text(
@@ -68,6 +84,16 @@ try:
                         conn.execute(text(
                             f"ALTER TABLE assessment_submissions ADD COLUMN {column_name} {column_definition}"
                         ))
+            if "access_plans" in table_names:
+                access_plan_columns = {c["name"] for c in inspector.get_columns("access_plans")}
+                access_plan_migrations = {
+                    "price_minor_units": "INTEGER NULL",
+                    "currency_code": "VARCHAR(3) NOT NULL DEFAULT 'USD'",
+                    "billing_interval": "VARCHAR(20) NOT NULL DEFAULT 'month'",
+                }
+                for column_name, column_definition in access_plan_migrations.items():
+                    if column_name not in access_plan_columns:
+                        conn.execute(text(f"ALTER TABLE access_plans ADD COLUMN {column_name} {column_definition}"))
             
             # Bilingual translation fields migrations
             migrations_map = {
@@ -105,6 +131,15 @@ try:
                         if col_name not in existing:
                             conn.execute(text(f"ALTER TABLE {tbl} ADD COLUMN {col_name} {col_def}"))
             conn.commit()
+        if "access_plans" in table_names:
+            from sqlalchemy.orm import sessionmaker
+            from .services.access_plan_service import canonicalize_access_plans
+            compatibility_session = sessionmaker(bind=db_engine)()
+            try:
+                canonicalize_access_plans(compatibility_session)
+                compatibility_session.commit()
+            finally:
+                compatibility_session.close()
 except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
 
@@ -205,7 +240,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, plans, registrations, invitations
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, plans, registrations, invitations, account_support
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -220,6 +255,14 @@ app.include_router(tts.router, prefix="/api/v1")
 app.include_router(plans.router, prefix="/api/v1")
 app.include_router(registrations.router, prefix="/api/v1")
 app.include_router(invitations.router, prefix="/api/v1")
+app.include_router(account_support.router, prefix="/api/v1")
+
+support_upload_path = os.path.join(backend_dir, "uploads", "bug_reports")
+os.makedirs(support_upload_path, exist_ok=True)
+app.mount("/uploads/bug-reports", StaticFiles(directory=support_upload_path), name="bug-report-uploads")
+avatar_upload_path = os.path.join(backend_dir, "uploads", "avatars")
+os.makedirs(avatar_upload_path, exist_ok=True)
+app.mount("/uploads/avatars", StaticFiles(directory=avatar_upload_path), name="avatar-uploads")
 
 @app.get("/")
 def read_root():

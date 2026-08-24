@@ -22,12 +22,22 @@ export interface User {
     username: string;
     email: string;
     full_name: string;
+    avatar_code?: string | null;
+    avatar_url?: string | null;
     role: string;
     is_active: boolean;
     created_at?: string;
     last_login?: string;
     custom_comments?: string[];
     account_status?: 'active' | 'suspended' | 'deactivated' | string;
+}
+
+export interface ProfileUpdate {
+    full_name?: string;
+    username?: string;
+    avatar_code?: string;
+    current_password?: string;
+    new_password?: string;
 }
 
 export interface TokenResponse {
@@ -134,6 +144,12 @@ export const authService = {
      */
     async getCurrentUser(): Promise<User> {
         const response = await authApi.get<User>('/auth/me');
+        sessionStorage.setItem('user', JSON.stringify(response.data));
+        return response.data;
+    },
+
+    async updateCurrentUserProfile(data: ProfileUpdate): Promise<User> {
+        const response = await authApi.put<User>('/auth/me/profile', data);
         sessionStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     },

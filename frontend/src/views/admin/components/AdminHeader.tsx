@@ -30,6 +30,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ activeTab, stats, sele
         'reports-broadcasts': ['Reports and broadcasts', 'Review learner performance, export reports, and send announcements'],
         'system-health': ['System health', `${stats?.users.total || '0'} active users monitored`],
         'audit-records': ['Audit records', 'Review important administrative and system activity'],
+        'bug-reports': ['Bug reports', 'Review issues and screenshots submitted by learners'],
         security: ['Security', 'Control administrative permissions and account protection'],
         'email-integrations': ['Email and integrations', 'Configure communication and connected services'],
         'storage-backups': ['Storage and backups', 'Manage data retention, backups, and recovery'],

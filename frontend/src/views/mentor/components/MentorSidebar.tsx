@@ -1,10 +1,13 @@
-import { BookOpen,CheckCircle2,ChevronDown,ChevronRight,Lock,LogOut,Search,X,Zap } from 'lucide-react';
+import { BookOpen,Bug,CheckCircle2,ChevronDown,ChevronRight,CreditCard,FileText,HelpCircle,Lock,LogOut,Moon,PanelLeftClose,PanelLeftOpen,Search,Settings,Sparkles,Sun,User as UserIcon,X } from 'lucide-react';
 import React,{ useEffect,useMemo,useRef,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
+import { useAuth } from '../../../context/AuthContext';
 import { useTranslation } from '../../../context/LanguageContext';
 import { useUI } from '../../../context/UIContext';
+import { API_BASE_URL } from '../../../config/apiConfig';
 import { Course } from '../../../types';
 import { Lesson } from '../mentorConstants';
-import { AnalyticsCard } from './AnalyticsCard';
 
 const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?: number; className?: string }> = ({
     percentage,
@@ -46,45 +49,49 @@ const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?
     );
 };
 
+const formatSidebarLessonTitle = (title: string) =>
+    title.replace(/^(?:module|lesson)\s+\d+(?:\.\d+)*\s*(?:[-–—:]\s*)?/i, '').trim();
+
 interface MentorSidebarProps {
     selectedCourse: Course;
     is2DDrawingCourse: boolean;
     sidebarOpen: boolean;
+    onToggleSidebar: () => void;
     activeLessonId: string;
     setActiveLessonId: (id: string) => void;
     expandedIds: Set<string>;
     toggleExpand: (id: string) => void;
     setSelectedCourse: (course: Course | null) => void;
     completedLessons: string[];
-    isLoadingProgress: boolean;
     isEmployeeSide?: boolean;
-    totalLessons: number;
-    completedLessonsCount: number;
-    averageScore: number;
     lessons: Lesson[];
 }
 
 export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     selectedCourse,
     sidebarOpen,
+    onToggleSidebar,
     activeLessonId,
     setActiveLessonId,
     expandedIds,
     toggleExpand,
     setSelectedCourse,
     completedLessons,
-    isLoadingProgress,
     isEmployeeSide = false,
-    totalLessons,
-    completedLessonsCount,
-    averageScore,
     lessons
 }) => {
     // Search State
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const { requestConfirmation } = useUI();
     const [isSearchOpen, setIsSearchOpen] = useState(false); const [searchTerm, setSearchTerm] = useState('');
+    const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+    const [activeTheme, setActiveTheme] = useState<'light'|'dark'>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const avatarUrl = user?.avatar_url ? `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}${user.avatar_url}` : null;
 
     const handleExitCourse = async () => {
         const confirmed = await requestConfirmation({
@@ -94,6 +101,16 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
             type: 'danger'
         });
         if (confirmed) setSelectedCourse(null);
+    };
+
+    const handleLogout = async () => {
+        const confirmed = await requestConfirmation({
+            title: 'Log out?',
+            message: 'You will need to sign in again to continue your training.',
+            confirmText: 'Log out',
+            type: 'danger'
+        });
+        if (confirmed) logout();
     };
 
     // Lessons list based on course type
@@ -165,55 +182,37 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
         <aside
             className={`course-sidebar ${sidebarOpen ? 'open' : ''}`}
         >
-            <div className="sidebar-inner-container">
-                <div className="sidebar-course-header">
-                    <div className="sidebar-course-meta">
-                        {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
-                        <div className="sidebar-header-actions">
-                            <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
-                                {isSearchOpen && (
-                                    <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Escape') setIsSearchOpen(false);
-                                        }}
-                                    />
-                                )}
-                                <button className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)}
-                                    title={isSearchOpen ? "Close Search" : "Search Lessons"}
-                                >
-                                    {isSearchOpen ? <X size={18} /> : <Search size={18} />}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {!sidebarOpen ? (
-                        <div className="sidebar-collapsed-dashboard">
-                            <Zap size={14} className="collapsed-zap-icon" />
-                            <div className="collapsed-progress-track">
-                                <div
-                                    className="collapsed-progress-fill"
-                                    style={{ width: `${(completedLessonsCount / totalLessons) * 100}%` }}
-                                />
-                            </div>
-                            <div className="collapsed-stats-pill">
-                                {Math.round((completedLessonsCount / totalLessons) * 100)}%
-                            </div>
-                        </div>
-                    ) : null}
-
-                    {!isLoadingProgress && !isEmployeeSide && sidebarOpen && (
-                        <div className="sidebar-analytics-wrapper">
-                            <AnalyticsCard
-                                completionPercentage={Math.min(100, (completedLessonsCount / totalLessons) * 100)}
-                                averageScore={averageScore}
-                                lessonsCompleted={completedLessonsCount}
-                                totalLessons={totalLessons}
+            <div className="learner-sidebar-brand">
+                {!isSearchOpen && <img src={kmtiTrainingHubLogo} alt="KMTI Training Hub" draggable={false} />}
+                {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
+                <div className="learner-sidebar-brand-actions">
+                    <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
+                        {isSearchOpen && (
+                            <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Escape') setIsSearchOpen(false);
+                                }}
                             />
-                        </div>
+                        )}
+                        <button type="button" className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)} title={isSearchOpen ? 'Close Search' : 'Search Lessons'} aria-label={isSearchOpen ? 'Close lesson search' : 'Search lessons'}>
+                            {isSearchOpen ? <X size={18} /> : <Search size={18} />}
+                        </button>
+                    </div>
+                    {!isSearchOpen && (
+                        <button
+                            type="button"
+                            className="close-sidebar-btn"
+                            onClick={onToggleSidebar}
+                            title={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+                            aria-label={sidebarOpen ? 'Close lesson sidebar' : 'Open lesson sidebar'}
+                        >
+                            {!sidebarOpen && <img className="collapsed-sidebar-logo" src={kmtiTrainingHubLogo} alt="" aria-hidden="true" />}
+                            {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+                        </button>
                     )}
                 </div>
-
+            </div>
+            <div className="sidebar-inner-container">
                 <div className="lesson-list">
                     {filteredLessons.length > 0 ? (
                         filteredLessons.map((lesson: Lesson) => {
@@ -265,7 +264,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 }
                                             }
                                         }}
-                                        title={!sidebarOpen ? (t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)) : ""}
+                                        aria-label={!sidebarOpen ? (t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)) : undefined}
                                     >
                                         <div className="lesson-item-title">
                                             <div className="lesson-icon-wrapper">
@@ -288,7 +287,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 </div>
                                             </div>
                                             <div className="lesson-title-text-group">
-                                                <span>{t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)}</span>
+                                                <span>{formatSidebarLessonTitle(t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id))}</span>
                                                 {searchTerms.length > 0 &&
                                                  !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) &&
                                                  searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t)) || lesson.quiz?.title.toLowerCase().includes(t) || lesson.quiz?.description.toLowerCase().includes(t) || lesson.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
@@ -318,7 +317,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                            setActiveLessonId(child.id);
                                                        }
                                                     }}
-                                                    title={!sidebarOpen ? child.title : ""}
+                                                    aria-label={!sidebarOpen ? child.title : undefined}
                                                 >
                                                     <div className="sub-lesson-connector" />
                                                     {!sidebarOpen ? (
@@ -331,7 +330,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                                 <BookOpen size={14} className={`sub-lesson-icon ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                             )}
                                                             <div className="lesson-title-text-group">
-                                                                <span>{t('lesson.title.' + child.id) === 'lesson.title.' + child.id ? child.title : t('lesson.title.' + child.id)}</span>
+                                                                <span>{formatSidebarLessonTitle(t('lesson.title.' + child.id) === 'lesson.title.' + child.id ? child.title : t('lesson.title.' + child.id))}</span>
                                                                 {searchTerms.length > 0 &&
                                                                  !searchTerms.every(t => child.title.toLowerCase().includes(t)) &&
                                                                  searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t)) || child.quiz?.title.toLowerCase().includes(t) || child.quiz?.description.toLowerCase().includes(t) || child.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
@@ -361,13 +360,77 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                 </div>
             </div>
             <div className="sidebar-course-footer">
-                <button
+                {isEmployeeSide && <button
                     className="exit-course-btn sidebar-exit-course-btn"
                     onClick={handleExitCourse}
                     title={t('lesson.exit_course')}
                 >
                     <LogOut size={16} aria-hidden="true" />
                     <span>{t('lesson.exit_course')}</span>
+                </button>}
+                {sidebarOpen && isAccountMenuOpen && (
+                    <div className="learner-account-menu">
+                        <div className="learner-account-menu-summary">
+                            <span className={`learner-account-avatar avatar-${user?.avatar_code || 'blue'}`}>{avatarUrl ? <img src={avatarUrl} alt="" /> : (user?.full_name || user?.username || 'U').trim().charAt(0).toUpperCase()}</span>
+                            <div><strong>{user?.full_name || user?.username}</strong></div>
+                        </div>
+
+                        <div className="learner-account-menu-divider" />
+
+                        <button type="button" className="learner-account-menu-item plan-item" onClick={() => navigate('/plans')}>
+                            <Sparkles size={17} />
+                            <span><strong>Upgrade Plan</strong></span>
+                        </button>
+                        <button type="button" className="learner-account-menu-item" onClick={() => { setIsAccountMenuOpen(false); window.dispatchEvent(new CustomEvent('kmti-open-profile-settings')); }}>
+                            <UserIcon size={17} /><span><strong>Profile</strong></span>
+                        </button>
+                        <button type="button" className="learner-account-menu-item" onClick={() => { setIsSettingsOpen(open => !open); setIsHelpOpen(false); }}>
+                            <Settings size={17} /><span><strong>Settings</strong></span><ChevronRight size={15} className={isSettingsOpen ? 'rotated' : ''} />
+                        </button>
+
+                        {isSettingsOpen && <div className="learner-account-settings">
+                            <div className="learner-settings-label">Appearance</div>
+                            <div className="learner-theme-options">
+                                <button type="button" className={activeTheme==='light'?'active':''} aria-pressed={activeTheme==='light'} onClick={() => {setActiveTheme('light');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'light' }));}}><Sun size={15} /> Light</button>
+                                <button type="button" className={activeTheme==='dark'?'active':''} aria-pressed={activeTheme==='dark'} onClick={() => {setActiveTheme('dark');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'dark' }));}}><Moon size={15} /> Dark</button>
+                            </div>
+                            <button type="button" className="learner-billing-summary" onClick={() => navigate('/billing')}><CreditCard size={15} /><span><strong>Billing</strong></span><ChevronRight size={14}/></button>
+                        </div>}
+
+                        <div className="learner-account-menu-divider" />
+
+                        <button type="button" className="learner-account-menu-item" onClick={() => { setIsHelpOpen(open => !open); setIsSettingsOpen(false); }}>
+                            <HelpCircle size={17} /><span><strong>Help</strong></span><ChevronRight size={15} className={isHelpOpen ? 'rotated' : ''} />
+                        </button>
+                        {isHelpOpen && <div className="learner-help-flyout">
+                            <button type="button" onClick={() => navigate('/help')}><HelpCircle size={17} /><span>Help center</span></button>
+                            <div className="learner-account-menu-divider" />
+                            <button type="button" onClick={() => navigate('/terms')}><FileText size={17} /><span>Terms of Service</span></button>
+                            <button type="button" onClick={() => navigate('/privacy')}><FileText size={17} /><span>Privacy Policy</span></button>
+                            <button type="button" className="report-bug" onClick={() => window.dispatchEvent(new CustomEvent('kmti-open-bug-report'))}><Bug size={17} /><span>Report a bug</span></button>
+                        </div>}
+                        <button type="button" className="learner-account-menu-item learner-logout-menu-item" onClick={handleLogout}>
+                            <LogOut size={17} /><span><strong>Log out</strong></span>
+                        </button>
+                    </div>
+                )}
+
+                <button
+                    className="learner-sidebar-account"
+                    type="button"
+                    onClick={() => {
+                        if (!sidebarOpen) onToggleSidebar();
+                        setIsAccountMenuOpen(open => !open);
+                    }}
+                    title="Account menu"
+                >
+                    <span className={`learner-account-avatar avatar-${user?.avatar_code || 'blue'}`}>
+                        {avatarUrl ? <img src={avatarUrl} alt="" /> : (user?.full_name || user?.username || 'U').trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span className="learner-account-copy">
+                        <strong>{user?.full_name || user?.username}</strong>
+                        <small>{user?.role}</small>
+                    </span>
                 </button>
             </div>
         </aside>

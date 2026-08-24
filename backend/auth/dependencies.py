@@ -49,17 +49,20 @@ async def get_current_user(
     except JWTError:
         raise credentials_exception
     
-    user = db.query(User).filter(User.username == username).first()
-    if user is None:
-        raise credentials_exception
-    
-    if not user.is_active or user.account_status != "active":
-        raise HTTPException(status_code=400, detail="Inactive user")
     session_id = payload.get("sid")
     if session_id is not None:
-        session = db.query(RefreshSession).filter(RefreshSession.id == session_id, RefreshSession.user_id == user.id, RefreshSession.revoked_at.is_(None)).first()
+        session = db.query(RefreshSession).filter(RefreshSession.id == session_id, RefreshSession.revoked_at.is_(None)).first()
         if session is None:
             raise credentials_exception
+        user = db.query(User).filter(User.id == session.user_id).first()
+    else:
+        user = db.query(User).filter(User.username == username).first()
+
+    if user is None:
+        raise credentials_exception
+
+    if not user.is_active or user.account_status != "active":
+        raise HTTPException(status_code=400, detail="Inactive user")
     
     return user
 

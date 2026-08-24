@@ -1,0 +1,128 @@
+.foundations-lesson {
+  width: min(100% - 2rem, 1000px);
+  margin: 2rem auto 0;
+}
+
+.foundations-lesson-grid {
+  width: 100%;
+  margin: 0 auto 3rem;
+}
+
+.foundations-lesson-card {
+  overflow: visible;
+}
+
+.foundations-lesson-content {
+  min-width: 0;
+}
+
+.foundations-content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.foundations-text-block {
+  padding-block: 0.75rem;
+}
+
+.foundations-lead {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.foundations-callout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  border-left: 4px solid var(--primary);
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.foundations-callout-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.foundations-callout h4,
+.foundations-callout p {
+  margin: 0;
+}
+
+.foundations-callout h4 {
+  margin-bottom: 0.35rem;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.foundations-callout p {
+  color: #334155;
+  line-height: 1.65;
+}
+
+.foundations-emphasis,
+.foundations-practice-text,
+.foundations-result-text {
+  font-weight: 650;
+}
+
+.foundations-emphasis { color: #2563eb; }
+.foundations-practice-text { color: #047857; }
+.foundations-result-text { color: #0f766e; }
+
+.foundations-video-section {
+  margin-top: 1.5rem;
+}
+
+.foundations-video-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+}
+
+.foundations-video {
+  width: min(100%, 900px);
+  background: #020617;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.16);
+}
+
+[data-theme='dark'] .foundations-lead,
+[data-theme='dark'] .foundations-callout p {
+  color: #dbeafe;
+}
+
+[data-theme='dark'] .foundations-callout {
+  border-color: rgba(96, 165, 250, 0.28);
+  background: rgba(30, 64, 175, 0.13);
+}
+
+@media (max-width: 640px) {
+  .foundations-lesson {
+    width: min(100% - 1rem, 1000px);
+    margin-top: 1rem;
+  }
+
+  .foundations-lesson-card {
+    padding: 1.25rem;
+  }
+
+  .foundations-callout {
+    padding: 1rem;
+  }
+}

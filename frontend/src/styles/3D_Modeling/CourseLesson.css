@@ -927,6 +927,37 @@
   border: none;
 }
 
+.foundations-interface-objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, var(--border-color));
+  border-left: 3px solid var(--color-primary);
+  border-radius: 12px;
+  color: var(--text-main);
+  background: color-mix(in srgb, var(--color-primary) 5%, var(--bg-card));
+}
+
+.foundations-interface-objective > svg {
+  flex: 0 0 auto;
+  margin-top: 0.12rem;
+  color: var(--color-primary);
+}
+
+.foundations-interface-objective p { margin: 0; line-height: 1.55; }
+
+.foundations-interface-eyebrow {
+  margin: 0 0 0.35rem !important;
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+
 [data-theme='dark'] .interactive-stage-container {
   background: transparent;
   border-color: transparent;

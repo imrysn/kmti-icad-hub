@@ -3,7 +3,16 @@ import { API_BASE_URL } from '../config/apiConfig';
 
 const publicApi = axios.create({ baseURL: `${API_BASE_URL.replace(/\/$/, '')}/api/v1`, timeout: 10000 });
 
-export interface PublicAccessPlan { id: number; code: string; name: string; description?: string; }
+export interface PublicAccessPlan {
+  id: number;
+  code: string;
+  name: string;
+  description?: string;
+  price_minor_units?: number | null;
+  currency_code: string;
+  billing_interval: 'month' | 'year' | 'one_time';
+  display_order: number;
+}
 export interface RegistrationPayload {
   username: string; email: string; password: string; full_name: string; requested_plan_id: number;
   company_name?: string; department?: string; job_title?: string; country_code?: string;

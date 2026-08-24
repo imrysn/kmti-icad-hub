@@ -154,6 +154,8 @@ class UserResponse(BaseModel):
     username: str
     email: str
     full_name: str
+    avatar_code: Optional[str] = None
+    avatar_url: Optional[str] = None
     role: str
     is_active: bool
     created_at: Optional[datetime] = None
@@ -165,11 +167,61 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
+class UserProfileUpdate(BaseModel):
+    """Fields an authenticated user may safely change on their own account."""
+    full_name: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    username: Optional[str] = Field(default=None, min_length=2, max_length=100)
+    avatar_code: Optional[str] = Field(default=None, max_length=50)
+    current_password: Optional[str] = Field(default=None, min_length=1, max_length=128)
+    new_password: Optional[str] = Field(default=None, min_length=8, max_length=128)
+
+    @field_validator("full_name")
+    @classmethod
+    def profile_name_not_empty(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("Full name cannot be empty")
+        return cleaned
+
+    @field_validator("username")
+    @classmethod
+    def profile_username_not_empty(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
+        cleaned = value.strip()
+        if len(cleaned) < 2:
+            raise ValueError("Username must be at least 2 characters")
+        return cleaned
+
+
 class UserAccessResponse(BaseModel):
     """Effective authorization data used to construct protected navigation."""
     roles: List[str]
     admin_areas: List[str]
     permissions: List[str]
+
+
+class BillingProfile(BaseModel):
+    billing_email: str
+    full_name: Optional[str] = Field(default=None, max_length=200)
+    country: Optional[str] = Field(default=None, max_length=100)
+    address_line1: Optional[str] = Field(default=None, max_length=300)
+    address_line2: Optional[str] = Field(default=None, max_length=300)
+    city: Optional[str] = Field(default=None, max_length=100)
+    postal_code: Optional[str] = Field(default=None, max_length=30)
+    province: Optional[str] = Field(default=None, max_length=100)
+
+
+class BillingProfileUpdate(BaseModel):
+    full_name: Optional[str] = Field(default=None, max_length=200)
+    country: Optional[str] = Field(default=None, max_length=100)
+    address_line1: Optional[str] = Field(default=None, max_length=300)
+    address_line2: Optional[str] = Field(default=None, max_length=300)
+    city: Optional[str] = Field(default=None, max_length=100)
+    postal_code: Optional[str] = Field(default=None, max_length=30)
+    province: Optional[str] = Field(default=None, max_length=100)
 
 
 class AdminUserAccessResponse(BaseModel):
@@ -635,6 +687,9 @@ class AccessPlanCreate(BaseModel):
     code: str
     name: str
     description: Optional[str] = None
+    price_minor_units: Optional[int] = Field(default=None, ge=0)
+    currency_code: str = Field(default="USD", min_length=3, max_length=3)
+    billing_interval: Literal["month", "year", "one_time"] = "month"
     display_order: int = 0
     is_active: bool = True
     is_publicly_requestable: bool = True
@@ -643,6 +698,9 @@ class AccessPlanCreate(BaseModel):
 class AccessPlanUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+    price_minor_units: Optional[int] = Field(default=None, ge=0)
+    currency_code: Optional[str] = Field(default=None, min_length=3, max_length=3)
+    billing_interval: Optional[Literal["month", "year", "one_time"]] = None
     display_order: Optional[int] = None
     is_active: Optional[bool] = None
     is_publicly_requestable: Optional[bool] = None

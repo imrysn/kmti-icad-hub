@@ -78,6 +78,15 @@ export const AccessPlanManagement: React.FC = () => {
                 <span className="access-plan-code">{plan.code}</span>
                 <h2>{plan.name}</h2>
                 <p>{plan.description}</p>
+                <div className="access-plan-pricing-controls">
+                    <label><span>Public price</span><input key={`${plan.id}-${plan.price_minor_units}`} type="number" min="0" step="0.01" defaultValue={plan.price_minor_units == null ? '' : plan.price_minor_units / 100} disabled={savingId === plan.id} onBlur={(event) => {
+                        const value = event.currentTarget.value.trim();
+                        const nextPrice = value === '' ? null : Math.round(Number(value) * 100);
+                        if ((nextPrice == null || Number.isFinite(nextPrice)) && nextPrice !== plan.price_minor_units) update(plan, { price_minor_units: nextPrice });
+                    }} /></label>
+                    <label><span>Currency</span><select value={plan.currency_code} disabled={savingId === plan.id} onChange={(event) => update(plan, { currency_code: event.target.value })}><option value="USD">USD</option><option value="PHP">PHP</option></select></label>
+                    <label><span>Billing period</span><select value={plan.billing_interval} disabled={savingId === plan.id} onChange={(event) => update(plan, { billing_interval: event.target.value as AccessPlan['billing_interval'] })}><option value="month">Monthly</option><option value="year">Yearly</option><option value="one_time">One time</option></select></label>
+                </div>
                 <div className="access-plan-entitlements"><Check size={15} /><span>{plan.entitlements.length} configured entitlements</span></div>
                 <fieldset className="access-plan-course-list" disabled={savingId === plan.id || !plan.is_active}>
                     <legend>Included courses</legend>

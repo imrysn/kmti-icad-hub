@@ -81,6 +81,15 @@ class User(Base):
     email_normalized = Column(String(255), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(200))
+    avatar_code = Column(String(50), nullable=True)
+    avatar_path = Column(String(500), nullable=True)
+    billing_name = Column(String(200), nullable=True)
+    billing_country = Column(String(100), nullable=True)
+    billing_address_line1 = Column(String(300), nullable=True)
+    billing_address_line2 = Column(String(300), nullable=True)
+    billing_city = Column(String(100), nullable=True)
+    billing_postal_code = Column(String(30), nullable=True)
+    billing_province = Column(String(100), nullable=True)
     role = Column(String(50), default="trainee")  # "trainee", "employee", "admin"
     is_active = Column(Boolean, default=True)
     # LMS access-foundation fields. The legacy role/is_active columns remain
@@ -94,6 +103,13 @@ class User(Base):
     created_at = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     custom_comments = Column(JSON, default=list)
+
+    @property
+    def avatar_url(self):
+        if not self.avatar_path:
+            return None
+        import os
+        return f"/uploads/avatars/{os.path.basename(self.avatar_path)}"
 
 
 @event.listens_for(User, "before_insert")
@@ -196,6 +212,9 @@ class AccessPlan(Base):
     code = Column(String(50), unique=True, nullable=False, index=True)
     name = Column(String(150), nullable=False)
     description = Column(String(1000), nullable=True)
+    price_minor_units = Column(Integer, nullable=True)
+    currency_code = Column(String(3), nullable=False, default="USD")
+    billing_interval = Column(String(20), nullable=False, default="month")
     display_order = Column(Integer, nullable=False, default=0)
     is_active = Column(Boolean, nullable=False, default=True, index=True)
     is_publicly_requestable = Column(Boolean, nullable=False, default=True)
@@ -658,6 +677,24 @@ class Notification(Base):
 
     recipient = relationship("User", foreign_keys=[recipient_id])
     sender = relationship("User", foreign_keys=[sender_id])
+
+
+class BugReport(Base):
+    """Learner-submitted support issue reviewed by platform administrators."""
+    __tablename__ = "bug_reports"
+
+    id = Column(Integer, primary_key=True, index=True)
+    reporter_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    description = Column(Text, nullable=False)
+    page_url = Column(String(1000), nullable=True)
+    screenshot_path = Column(String(500), nullable=True)
+    status = Column(String(30), nullable=False, default="open", index=True)
+    admin_notes = Column(Text, nullable=True)
+    reviewed_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    reviewed_at = Column(DateTime, nullable=True)
+
+    reporter = relationship("User", foreign_keys=[reporter_user_id])
 
 
 class QueryCache(Base):

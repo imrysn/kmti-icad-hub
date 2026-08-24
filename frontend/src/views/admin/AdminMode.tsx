@@ -21,6 +21,7 @@ import { TraineeDetail } from './components/TraineeDetail';
 import { UserManagement } from './components/UserManagement';
 import { UserModal } from './components/UserModal';
 import { AdminAccessDenied } from './components/AdminAccessDenied';
+import { BugReportManagement } from './components/BugReportManagement';
 import { RegistrationApprovalManagement } from './components/RegistrationApprovalManagement';
 import { InvitationManagement } from './components/InvitationManagement';
 import { CurriculumManagement } from './components/CurriculumManagement';
@@ -30,7 +31,7 @@ import { AdminArea, authService, UserAccess } from '../../services/authService';
 export type AdminTab =
     | 'curriculum' | 'assessments' | 'knowledge-base' | 'media-translations'
     | 'registration-approvals' | 'invitations' | 'users' | 'instructors' | 'access-plans' | 'reports-broadcasts'
-    | 'system-health' | 'audit-records' | 'security' | 'email-integrations' | 'storage-backups' | 'technical-settings'
+    | 'system-health' | 'audit-records' | 'bug-reports' | 'security' | 'email-integrations' | 'storage-backups' | 'technical-settings'
     | 'overview' | 'progress' | 'practical' | 'logs' | 'trainees';
 
 const AREA_DEFAULT_TAB: Record<AdminArea, AdminTab> = {
@@ -54,6 +55,7 @@ const TAB_AREA: Partial<Record<AdminTab, AdminArea>> = {
     progress: 'organization',
     'system-health': 'platform',
     'audit-records': 'platform',
+    'bug-reports': 'platform',
     security: 'platform',
     'email-integrations': 'platform',
     'storage-backups': 'platform',
@@ -238,6 +240,7 @@ export const AdminMode: React.FC = () => {
                     {activeTab === 'invitations' && <InvitationManagement />}
                     {activeTab === 'instructors' && <CourseDeliveryManagement />}
                     {activeTab === 'access-plans' && <AccessPlanManagement />}
+                    {activeTab === 'bug-reports' && <BugReportManagement />}
                     {activeTab === 'security' && <AdminComingSoon title="Security" description="Review administrative permissions, session policies, and account-protection settings." available={['Area-based admin permissions and protected routes']} />}
                     {activeTab === 'email-integrations' && <AdminComingSoon title="Email and integrations" description="Configure registration, invitation, notification, and external-service providers." />}
                     {activeTab === 'storage-backups' && <AdminComingSoon title="Storage and backups" description="Monitor file storage and manage backup, retention, and recovery policies." />}

@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import AuditEvent, PasswordResetToken, RefreshSession, User, SystemLog, QuizScore, QuestionAttempt, Quiz, TrainerTraineeMapping, Notification
-from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, LogoutRequest, PasswordResetRequest, RefreshTokenRequest, QuizSubmission, LessonProgress
+from ..schemas import UserCreate, UserLogin, Token, UserResponse, UserProfileUpdate, UserAccessResponse, EffectiveEntitlementResponse, ForgotPasswordRequest, LogoutRequest, PasswordResetRequest, RefreshTokenRequest, QuizSubmission, LessonProgress
 from ..auth.security import hash_password, verify_password, create_access_token
 from ..auth.dependencies import get_current_user, require_permission, require_role
 from ..services.access_control_service import get_active_admin_areas, get_active_role_codes, get_effective_permissions
@@ -21,7 +21,9 @@ from ..services.email_service import queue_password_reset_email
 from ..services.abuse_protection_service import client_key, enforce_rate_limit, verify_captcha
 from ..identity import normalize_email_address
 import hashlib
+import json
 import os
+import re
 import secrets
 import uuid
 
@@ -269,6 +271,58 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
     return current_user
 
 
+@router.put("/me/profile", response_model=UserResponse)
+def update_current_user_profile(
+    payload: UserProfileUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update only the profile fields controlled by the signed-in user."""
+    changed_fields: list[str] = []
+
+    if payload.full_name is not None and payload.full_name != current_user.full_name:
+        current_user.full_name = payload.full_name
+        changed_fields.append("full_name")
+
+    if payload.username is not None and payload.username != current_user.username:
+        username_exists = db.query(User).filter(
+            User.username == payload.username,
+            User.id != current_user.id,
+        ).first()
+        if username_exists:
+            raise HTTPException(status_code=409, detail="That username is already in use")
+        current_user.username = payload.username
+        changed_fields.append("username")
+
+    if payload.avatar_code is not None and payload.avatar_code != current_user.avatar_code:
+        allowed_avatars = {"blue", "violet", "emerald", "amber", "rose", "slate"}
+        if payload.avatar_code not in allowed_avatars:
+            raise HTTPException(status_code=400, detail="Invalid avatar selection")
+        current_user.avatar_code = payload.avatar_code
+        changed_fields.append("avatar")
+
+    if payload.new_password is not None:
+        if not payload.current_password or not verify_password(payload.current_password, current_user.hashed_password):
+            raise HTTPException(status_code=400, detail="The current password is incorrect")
+        if verify_password(payload.new_password, current_user.hashed_password):
+            raise HTTPException(status_code=400, detail="The new password must be different from the current password")
+        current_user.hashed_password = hash_password(payload.new_password)
+        changed_fields.append("password")
+
+    if changed_fields:
+        db.add(AuditEvent(
+            actor_user_id=current_user.id,
+            action="account.profile_updated",
+            target_type="user",
+            target_id=str(current_user.id),
+            metadata_json=json.dumps({"fields": changed_fields}),
+        ))
+        db.commit()
+        db.refresh(current_user)
+
+    return current_user
+
+
 @router.get("/me/access", response_model=UserAccessResponse)
 def get_current_user_access(
     current_user: User = Depends(get_current_user),
@@ -407,8 +461,20 @@ async def submit_quiz_score(
     Submit a quiz score for a lesson.
     If score >= 80%, the lesson is effectively marked as passed.
     """
-    require_course_access(db, current_user, submission.course_id)
-    require_lesson_access(db, current_user, submission.lesson_id)
+    course = require_course_access(db, current_user, submission.course_id)
+    try:
+        require_lesson_access(db, current_user, submission.lesson_id)
+    except HTTPException as exc:
+        # Foundations is a frontend-configured curriculum. Its stable lesson
+        # slugs still use the existing QuizScore progress flow even when an
+        # administrator has not created matching Lesson rows in the database.
+        is_foundations_lesson = bool(
+            course
+            and course.course_type == "iCAD_Foundations"
+            and re.fullmatch(r"lesson-\d+-\d+", submission.lesson_id)
+        )
+        if exc.status_code != status.HTTP_404_NOT_FOUND or not is_foundations_lesson:
+            raise
     # Check if a score already exists for this lesson
     existing_score = db.query(QuizScore).filter(
         QuizScore.user_id == current_user.id,

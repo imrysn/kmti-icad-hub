@@ -655,3 +655,59 @@ textarea:disabled {
   background: var(--bg-card);
   color: var(--text-dim);
 }
+
+/* Application-wide hover policy: clickable controls only change text/icon color. */
+:where(
+  button,
+  a,
+  summary,
+  [role='button'],
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'],
+  label[for],
+  label:has(input[type='file']),
+  .lesson-item,
+  .sub-lesson-item,
+  .course-card,
+  .quiz-card,
+  .trainee-stat-card,
+  .trainee-group-header,
+  .set-group-header,
+  .chat-attachment,
+  .instructions-header,
+  .feedback-header-row
+):not(.learner-logout-menu-item):not(:disabled):not([aria-disabled='true']):hover:hover:hover {
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--primary, var(--color-primary, #087ee6)) !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+:where(
+  button,
+  a,
+  summary,
+  [role='button'],
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'],
+  label[for],
+  label:has(input[type='file']),
+  .lesson-item,
+  .sub-lesson-item,
+  .course-card,
+  .quiz-card,
+  .trainee-stat-card,
+  .trainee-group-header,
+  .set-group-header,
+  .chat-attachment,
+  .instructions-header,
+  .feedback-header-row
+):not(.learner-logout-menu-item):not(:disabled):not([aria-disabled='true']):hover:hover:hover :where(span, strong, small, svg) {
+  color: inherit !important;
+}

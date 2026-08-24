@@ -65,6 +65,9 @@ export interface AccessPlan {
     code: string;
     name: string;
     description?: string;
+    price_minor_units?: number | null;
+    currency_code: string;
+    billing_interval: 'month'|'year'|'one_time';
     display_order: number;
     is_active: boolean;
     is_publicly_requestable: boolean;
@@ -167,7 +170,7 @@ export const adminService = {
         return response.data;
     },
 
-    async updateAccessPlan(planId: number, data: Partial<Pick<AccessPlan, 'name' | 'description' | 'display_order' | 'is_active' | 'is_publicly_requestable'>>): Promise<AccessPlan> {
+    async updateAccessPlan(planId: number, data: Partial<Pick<AccessPlan, 'name' | 'description' | 'price_minor_units' | 'currency_code' | 'billing_interval' | 'display_order' | 'is_active' | 'is_publicly_requestable'>>): Promise<AccessPlan> {
         const response = await api.patch(`/admin/access-plans/${planId}`, data);
         return response.data;
     },

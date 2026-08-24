@@ -55,12 +55,9 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // UI/Interaction State
     const [activeLessonId, setActiveLessonId] = useState<string>('');
-    // Lesson navigation is always available while studying either course.
-    const sidebarOpen = true;
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-    const [averageScore, setAverageScore] = useState(0);
-    const [isLoadingProgress, setIsLoadingProgress] = useState(true);
     const [isRestored, setIsRestored] = useState(false);
     const lastCourseIdRef = useRef<string | null>(null);
 
@@ -69,6 +66,11 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const [is2DCompleted, setIs2DCompleted] = useState(false);
     const [isAnnotationCompleted, setIsAnnotationCompleted] = useState(false);
     const [isCheckingPrereq, setIsCheckingPrereq] = useState(true);
+
+    useEffect(() => {
+        document.body.classList.add('learner-course-shell-active');
+        return () => document.body.classList.remove('learner-course-shell-active');
+    }, []);
 
     // Count completable 3D modules once
     const completable3DCount = useMemo(() => {
@@ -119,7 +121,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, [location.search]);
 
     // Derived stable state
-    const { lessons: dbLessons, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
+    const { lessons: dbLessons, allLessonIds: dbLessonIds } = useLessons(selectedCourse?.id);
 
     const currentLessons = useMemo(() => {
         if (!selectedCourse) return [];
@@ -143,18 +145,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         traverse(currentLessons);
         return ids.length > 0 ? ids : dbLessonIds;
     }, [currentLessons, dbLessonIds]);
-
-    const completableModuleIds = useMemo(() => {
-        const ids: string[] = [];
-        const traverse = (list: Lesson[]) => {
-            list.forEach(l => {
-                if (l.quiz) ids.push(l.id);
-                if (l.children && l.children.length > 0) traverse(l.children);
-            });
-        };
-        traverse(currentLessons);
-        return ids.length > 0 ? ids : dbCompletableIds;
-    }, [currentLessons, dbCompletableIds]);
 
     // Initial Session Restoration (once courses are available)
     useEffect(() => {
@@ -196,11 +186,20 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
                 } else {
                     console.warn('Could not find course in list for ID:', savedCourseId);
+                    if (!isEmployeeSide) {
+                        const defaultCourse = courses.find(item => item.course_type === 'iCAD_Foundations') || courses[0];
+                        if (defaultCourse) setSelectedCourse(defaultCourse);
+                    }
+                }
+            } else if (!isEmployeeSide) {
+                const defaultCourse = courses.find(course => course.course_type === 'iCAD_Foundations') || courses[0];
+                if (defaultCourse) {
+                    setSelectedCourse(defaultCourse);
                 }
             }
             setIsRestored(true);
         }
-    }, [courses, loading, isRestored]);
+    }, [courses, loading, isRestored, isEmployeeSide]);
 
     // Prerequisite Check (3D Completion)
     useEffect(() => {
@@ -314,12 +313,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     // Fix #9: Use expandedIdsKey (stable string) instead of expandedIds (Set reference)
     }, [selectedCourse, activeLessonId, expandedIdsKey, isRestored]);
 
-    // Filter completions to only include valid modules for this specific course
-    const relevantCompletedCount = useMemo(() =>
-        completedLessons.filter(id => completableModuleIds.includes(id)).length,
-    [completedLessons, completableModuleIds]);
-
-
     // Detect Course Switch or Exit and Reset Lesson State
     useEffect(() => {
         if (!selectedCourse) {
@@ -351,7 +344,6 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             });
         }
 
-        setIsLoadingProgress(true);
         try {
             const progress = await authService.getLessonProgress(selectedCourse.course_type || selectedCourse.id);
             // Only count as completed if score is >= 80
@@ -372,18 +364,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
             }
 
-            // Calculate average score
-            const quizLessons = progress.filter((p: any) => p.score > 0);
-            if (quizLessons.length > 0) {
-                const total = quizLessons.reduce((acc: number, p: any) => acc + p.score, 0);
-                setAverageScore(total / quizLessons.length);
-            } else {
-                setAverageScore(0);
-            }
         } catch (err) {
             console.error('Failed to fetch progress:', err);
-        } finally {
-            setIsLoadingProgress(false);
         }
     }, [selectedCourse]);
 
@@ -629,7 +611,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Render Composition
     // Only show CourseSelector/Loader if we don't have courses loaded yet, or if no course is selected
-    if ((loading && courses.length === 0) || error || !selectedCourse) {
+    if ((loading && courses.length === 0) || error || (!selectedCourse && isEmployeeSide)) {
         return (
             <CourseSelector
                 courses={courses}
@@ -648,6 +630,15 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         );
     }
 
+    if (!selectedCourse) {
+        return (
+            <div className="mentor-mode learner-course-loading" role="status" aria-live="polite">
+                <div className="learner-course-loading-mark">KMTI Training Hub</div>
+                <p>Preparing your first module…</p>
+            </div>
+        );
+    }
+
     return (
         <div className="mentor-mode">
             <div className="course-view-container">
@@ -656,17 +647,14 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                         selectedCourse={selectedCourse}
                         is2DDrawingCourse={is2DDrawingCourse}
                         sidebarOpen={sidebarOpen}
+                        onToggleSidebar={() => setSidebarOpen(open => !open)}
                         activeLessonId={activeLessonId}
                         setActiveLessonId={setActiveLessonId}
                         expandedIds={expandedIds}
                         toggleExpand={toggleExpand}
                         setSelectedCourse={setSelectedCourse}
                         completedLessons={completedLessons}
-                        isLoadingProgress={isLoadingProgress}
                         isEmployeeSide={isEmployeeSide}
-                        totalLessons={completableModuleIds.length}
-                        completedLessonsCount={relevantCompletedCount}
-                        averageScore={averageScore}
                         lessons={currentLessons}
                     />
                 )}
@@ -726,6 +714,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 ) : (
                     <LessonViewer
                         is2DDrawingCourse={is2DDrawingCourse}
+                        isFoundationsCourse={isFoundationsCourse}
+                        courseId={selectedCourse.id.toString()}
                         activeLessonId={activeLessonId}
                         currentLessonIndex={currentLessonIndex}
                         allLessonIdsLength={allLessonIds.length}

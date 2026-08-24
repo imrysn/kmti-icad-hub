@@ -113,6 +113,10 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     ]
   },
   {
+    id: 'toolbars',
+    title: 'Tool Bars'
+  },
+  {
     id: 'module-4',
     title: 'Module 4 - Standard Views',
     children: [

@@ -1,21 +1,25 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React from "react";
+import { ChevronLeft,ChevronRight,Info,Monitor } from 'lucide-react';
+import React,{ useState } from "react";
+import LessonIntroPanel from '../LessonIntroPanel';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import "../../styles/3D_Modeling/CourseLesson.css";
+import "../../styles/LessonIntroPanel.css";
 import VideoTutorialViewer from "./VideoTutorialViewer";
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
+  showFoundationsIntro?: boolean;
 }
 
 import { useTranslation } from '../../context/LanguageContext';
 
 import { TUTORIAL_STEPS } from "./VideoTutorialData/iCadInterfaceTutorial";
 
-const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, showFoundationsIntro = false }) => {
   const { t } = useTranslation();
+  const [hasStarted, setHasStarted] = useState(!showFoundationsIntro);
 
   const INTERFACE_STEPS = React.useMemo(() => [
     t('icad.step0'),
@@ -43,19 +47,43 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      {showFoundationsIntro && (
+        <section className="foundations-interface-objective" aria-labelledby="foundations-interface-objective-title">
+          <Info size={20} aria-hidden="true" />
+          <div>
+            <p className="foundations-interface-eyebrow">Learning objective</p>
+            <p id="foundations-interface-objective-title">
+              Identify the main areas of the iCAD SX screen and understand how each area supports navigation, commands, and modeling work.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">
         <div className={`lesson-card tab-content fade-in ${currentIndex >= 0 ? 'reading-active' : ''}`}
           data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
-          <div className="interactive-stage-container">
-            <VideoTutorialViewer steps={TUTORIAL_STEPS.map(s => ({
-              ...s,
-              title: t(`tutorial.icad.${s.id}.title`),
-              text: t(`tutorial.icad.${s.id}.text`)
-            }))} />
-          </div>
+          {!hasStarted ? (
+            <div className="lesson-intro-shell">
+              <LessonIntroPanel
+                icon={Monitor}
+                eyebrow="Interactive screen tour"
+                title="Explore the iCAD SX Screen"
+                description="Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
+                onStart={() => setHasStarted(true)}
+              />
+            </div>
+          ) : (
+            <div className="interactive-stage-container">
+              <VideoTutorialViewer steps={TUTORIAL_STEPS.map(s => ({
+                ...s,
+                title: t(`tutorial.icad.${s.id}.title`),
+                text: t(`tutorial.icad.${s.id}.text`)
+              }))} />
+            </div>
+          )}
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>

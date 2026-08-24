@@ -1,6 +1,6 @@
 from backend.models import AccessPlan, AuditEvent, PlanEntitlement
 from backend.services.access_control_service import sync_legacy_user_access
-from backend.services.access_plan_service import seed_access_plans
+from backend.services.access_plan_service import canonicalize_access_plans, seed_access_plans
 
 
 def test_default_access_plans_are_seeded_idempotently(db):
@@ -10,6 +10,24 @@ def test_default_access_plans_are_seeded_idempotently(db):
     ]
 
 
+def test_legacy_plan_is_merged_without_losing_assignment_or_entitlement(db, trainee_user):
+    seed_access_plans(db); db.flush()
+    canonical = db.query(AccessPlan).filter(AccessPlan.code == "icad-foundations").one()
+    legacy = AccessPlan(code="foundations", name="iCAD Foundations", is_active=True, is_publicly_requestable=True)
+    db.add(legacy); db.flush()
+    db.add(PlanEntitlement(plan_id=legacy.id, resource_type="course", resource_id="legacy-foundations", permission_code="view"))
+    from backend.models import UserPlanAssignment
+    assignment = UserPlanAssignment(user_id=trainee_user.id, plan_id=legacy.id, reason="Legacy assignment")
+    db.add(assignment); db.flush()
+
+    canonicalize_access_plans(db); db.flush()
+    db.refresh(assignment)
+
+    assert db.query(AccessPlan).filter(AccessPlan.code == "foundations").count() == 0
+    assert assignment.plan_id == canonical.id
+    assert db.query(PlanEntitlement).filter(PlanEntitlement.plan_id == canonical.id, PlanEntitlement.resource_id == "legacy-foundations").count() == 1
+
+
 def test_public_plan_list_needs_no_auth_and_only_returns_public_active(client, db):
     seed_access_plans(db); db.flush()
     hidden = db.query(AccessPlan).filter(AccessPlan.code == "icad-professional").one()
@@ -17,6 +35,9 @@ def test_public_plan_list_needs_no_auth_and_only_returns_public_active(client, d
     response = client.get("/api/v1/public/access-plans")
     assert response.status_code == 200
     assert [item["code"] for item in response.json()] == ["icad-foundations", "icad-complete"]
+    assert response.json()[0]["price_minor_units"] == 2900
+    assert response.json()[0]["currency_code"] == "USD"
+    assert response.json()[0]["billing_interval"] == "month"
 
 
 def test_learner_cannot_list_admin_access_plans(client, trainee_token):

@@ -7,6 +7,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { LoadingScreen } from './components/LoadingScreen';
 import { NotificationSystem } from './components/NotificationSystem';
 import { NotificationsModal } from './components/NotificationsModal';
+import { ProfileSettingsModal } from './components/ProfileSettingsModal';
+import { BugReportModal } from './components/BugReportModal';
 import ThemeToggle from './components/ThemeToggle';
 import WindowControls from './components/WindowControls';
 import { useNotification } from './context/NotificationContext';
@@ -17,11 +19,12 @@ import { useAuth } from './hooks/useAuth';
 import { api,getSystemStatus } from './services/api';
 import { assessmentService } from './services/assessmentService';
 import { authService } from './services/authService';
-import { LandingView } from './views/LandingView';
+import { LandingView, PublicPolicyView } from './views/LandingView';
 import { LoginView } from './views/LoginView';
 import { RegistrationView } from './views/RegistrationView';
 import { PasswordResetView } from './views/PasswordResetView';
 import { InvitationAcceptanceView } from './views/InvitationAcceptanceView';
+import { AccountCenterView } from './views/AccountCenterView';
 import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
@@ -33,12 +36,13 @@ import './styles/App.css';
 
 function AppContent() {
   const isDesktopApp = platform.isDesktopApp;
-  const { user, isAuthenticated, isInitialLoading, logout } = useAuth();
+  const { user, isAuthenticated, isInitialLoading, logout, refreshUser } = useAuth();
   const { showNotification } = useNotification();
   const { isTelemetryOpen, toggleTelemetry } = useUI();
   const { language, setLanguage, t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const isPublicPolicyRoute = location.pathname === '/help' || location.pathname === '/terms' || location.pathname === '/privacy';
 
   // Derived state for current tab
   const params = new URLSearchParams(location.search);
@@ -53,6 +57,8 @@ function AppContent() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [hasTrainees, setHasTrainees] = useState<boolean | null>(null); // null = not yet checked
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isProfileSettingsOpen, setIsProfileSettingsOpen] = useState(false);
+  const [isBugReportOpen, setIsBugReportOpen] = useState(false);
 
   const fetchUnreadCount = async () => {
     if (!isAuthenticated) return;
@@ -183,6 +189,23 @@ function AppContent() {
   const prevAuthRef = useRef<boolean | null>(null);
 
   useEffect(() => {
+    const openProfileSettings = () => setIsProfileSettingsOpen(true);
+    const openBugReport = () => setIsBugReportOpen(true);
+    const setLearnerTheme = (event: Event) => {
+      const requestedTheme = (event as CustomEvent<'light' | 'dark'>).detail;
+      if (requestedTheme === 'light' || requestedTheme === 'dark') setTheme(requestedTheme);
+    };
+    window.addEventListener('kmti-open-profile-settings', openProfileSettings);
+    window.addEventListener('kmti-open-bug-report', openBugReport);
+    window.addEventListener('kmti-set-theme', setLearnerTheme);
+    return () => {
+      window.removeEventListener('kmti-open-profile-settings', openProfileSettings);
+      window.removeEventListener('kmti-open-bug-report', openBugReport);
+      window.removeEventListener('kmti-set-theme', setLearnerTheme);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isInitialLoading) {
       if (!isAuthenticated) {
         platform.setWindowSize(440, 550, false);
@@ -198,7 +221,7 @@ function AppContent() {
   return (
     <div className="app-container frameless">
       {/* Background Aurora Elements - Restored per user request */}
-      {isAuthenticated && (
+      {isAuthenticated && !isPublicPolicyRoute && (
         <div className="aurora-bg">
           <div className="aurora-blob aurora-1"></div>
           <div className="aurora-blob aurora-2"></div>
@@ -207,6 +230,14 @@ function AppContent() {
 
       {isInitialLoading ? (
         <LoadingScreen />
+      ) : isPublicPolicyRoute ? (
+        <main className="app-content app-content-login">
+          <Routes>
+            <Route path="/terms" element={<PublicPolicyView page="terms" />} />
+            <Route path="/privacy" element={<PublicPolicyView page="privacy" />} />
+            <Route path="/help" element={<PublicPolicyView page="help" />} />
+          </Routes>
+        </main>
       ) : !isAuthenticated ? (
         <main className="app-content app-content-login">
 
@@ -224,6 +255,16 @@ function AppContent() {
           <BroadcastBanner />
           <NotificationSystem />
           <NotificationsModal isOpen={isNotificationsOpen} onClose={() => setIsNotificationsOpen(false)} />
+          {user && <ProfileSettingsModal
+            isOpen={isProfileSettingsOpen}
+            user={user}
+            onClose={() => setIsProfileSettingsOpen(false)}
+            onSaved={async () => {
+              await refreshUser();
+              showNotification('Your profile has been updated.', 'success');
+            }}
+          />}
+          <BugReportModal isOpen={isBugReportOpen} onClose={() => setIsBugReportOpen(false)} onSent={() => showNotification('Your bug report was sent to the administrators.', 'success')} />
 
           {/* Header with Categorized Zones */}
           <header className="app-header animate-fade-in">
@@ -328,6 +369,15 @@ function AppContent() {
                   )}
                 </button>
 
+                <button
+                  onClick={() => setIsProfileSettingsOpen(true)}
+                  className="theme-toggle-btn"
+                  title="Profile settings"
+                  aria-label="Open profile settings"
+                >
+                  <UserIcon size={20} className="theme-toggle-icon" />
+                </button>
+
                 {(user?.role === 'admin' || user?.role === 'employee') && (
                   <button
                     onClick={toggleTelemetry}
@@ -379,6 +429,9 @@ function AppContent() {
               <ErrorBoundary>
                 <Routes>
                   <Route path="/mentor" element={<MentorMode isEmployeeSide={user?.role?.toLowerCase() !== 'trainee'} />} />
+                  <Route path="/plans" element={<AccountCenterView page="plans" />} />
+                  <Route path="/billing" element={<AccountCenterView page="billing" />} />
+                  <Route path="/help" element={<AccountCenterView page="help" />} />
                   <Route path="/assistant" element={<AssistantMode />} />
                   <Route path="/admin/*" element={<AdminMode />} />
                   <Route path="/" element={<Navigate to={user?.role === 'admin' ? "/admin" : (user?.role === 'employee' ? "/assistant" : "/mentor")} replace />} />

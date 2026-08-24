@@ -1,10 +1,11 @@
 import { useTranslation } from '../../../context/LanguageContext';
 import React, { useEffect, useState, useMemo } from "react";
-import { ChevronRight, ChevronLeft, Info, Play, CheckCircle } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Info, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
 import "../../../styles/3D_Modeling/CourseLesson.css";
+import "./FoundationsLesson.css";
 import zoomInOutVideo from '../../../assets/3D_INTERACTIVE/zoomin_out.mp4';
 import panVideo from '../../../assets/3D_INTERACTIVE/pan.mp4';
 import scrollVideo from '../../../assets/3D_INTERACTIVE/scroll.mp4';
@@ -29,6 +30,7 @@ interface DynamicLessonProps {
   onPrevLesson?: () => void;
   onNextLesson?: () => void;
   nextLabel?: string;
+  isFirstLesson?: boolean;
 }
 
 const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
@@ -39,6 +41,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   onPrevLesson,
   onNextLesson,
   nextLabel,
+  isFirstLesson = false,
 }) => {
   const [activeTab] = useState("content");
   const { t } = useTranslation();
@@ -78,20 +81,33 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   );
 
   return (
-    <div className="course-lesson-container bg-slate-50 min-h-full" ref={containerRef}>
-      <div className="lesson-progress-container fixed top-0 left-0 w-full h-1 z-50">
-        <div className="lesson-progress-bar h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-300" style={{ width: `${scrollProgress}%` }} />
+    <div className="course-lesson-container foundations-lesson" ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <div className="lesson-grid single-card max-w-4xl mx-auto mt-6 mb-12 px-4">
-        <div className="lesson-card tab-content bg-white/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden border border-white/40 ring-1 ring-slate-900/5">
-          <div className="fade-in p-8 sm:p-10">
-            <div className="space-y-6">
+      <div className="lesson-grid single-card foundations-lesson-grid">
+        <div className="lesson-card tab-content foundations-lesson-card">
+          <div className="fade-in foundations-lesson-content">
+            <div className="foundations-content-stack">
               {content.map((step, idx) => {
                 const stepIndex = idx + 1; // offset by 1 because title is at index 0
 
-                // Custom styling for "What is..." or "What Does..." or "Learning Objective"
-                if (step.startsWith("What") || step.startsWith("Learning Objective:")) {
+                if (step.startsWith("Learning Objective:")) {
+                  const objective = step.replace(/^Learning Objective:\s*/i, '');
+                  return (
+                    <div key={stepIndex} className={`foundations-callout foundations-objective ${currentIndex === stepIndex ? 'reading-active' : ''}`}>
+                      <div className="foundations-callout-icon" aria-hidden="true"><Info size={20} /></div>
+                      <div>
+                        <h4>Learning objective</h4>
+                        <KaraokeLessonText as="p" text={objective} isActive={isSpeaking && currentIndex === stepIndex} currentCharIndex={currentCharIndex} />
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Custom styling for concept questions.
+                if (step.startsWith("What")) {
                   return (
                     <div key={stepIndex} className={`instruction-step ${currentIndex === stepIndex ? 'reading-active' : ''}`}>
                       <div className="card-header">
@@ -103,12 +119,12 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                   );
                 }
 
-                // If this is the answer body for a "What..." or "Learning Objective:" question
-                if (idx > 0 && (content[idx - 1].startsWith("What") || content[idx - 1].startsWith("Learning Objective:"))) {
+                // If this is the answer body for a concept question.
+                if (idx > 0 && content[idx - 1].startsWith("What")) {
                   return (
                     <div key={stepIndex}>
                       <div className={`instruction-step step-description ${currentIndex === stepIndex ? 'reading-active' : ''}`}>
-                        <p className="p-flush text-slate-700 text-lg leading-relaxed">
+                        <p className="p-flush foundations-lead">
                           <KaraokeLessonText as="span" text={step} isActive={isSpeaking && currentIndex === stepIndex} currentCharIndex={currentCharIndex} />
                         </p>
                       </div>
@@ -134,7 +150,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                     <div key={stepIndex} className={`instruction-step ${currentIndex === stepIndex ? 'reading-active' : ''}`}>
                       <div className="step-header">
                         <span className="step-number">{stepMatch[1]}</span>
-                        <KaraokeLessonText as="span" className="step-label" text={step} isActive={isSpeaking && currentIndex === stepIndex} currentCharIndex={currentCharIndex} />
+                        <KaraokeLessonText as="span" className="step-label" text={stepMatch[2]} isActive={isSpeaking && currentIndex === stepIndex} currentCharIndex={currentCharIndex} />
                       </div>
                     </div>
                   );
@@ -142,14 +158,16 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
                 // Generic blocks
                 let textStyle = "p-flush";
-                let blockStyle = "mt-2";
+                let blockStyle = "foundations-text-block";
 
                 if (step.startsWith("Learning Objective") || step.startsWith("Goal")) {
-                  textStyle = "p-flush font-semibold text-blue-600";
+                  textStyle = "p-flush foundations-emphasis";
                 } else if (step.startsWith("Try It Yourself") || step.startsWith("Practice")) {
-                  textStyle = "p-flush font-semibold text-emerald-600";
+                  textStyle = "p-flush foundations-practice-text";
                 } else if (step.startsWith("Important") || step.startsWith("Warning") || step.startsWith("Note")) {
                   textStyle = "p-flush red-text font-medium";
+                } else if (step.startsWith("Expected Result")) {
+                  textStyle = "p-flush foundations-result-text";
                 }
 
                 return (
@@ -169,19 +187,20 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
               {/* Render Video at the bottom of the lesson */}
               {videoId && videoMap[videoId] && (
-                <div className="instruction-step mt-8">
+                <div className="instruction-step foundations-video-section">
                   <div className="card-header">
                     <h4 className="section-title">
-                      <span>HOW IT WORKS</span>
+                      <Play size={20} aria-hidden="true" />
+                      <span>How it works</span>
                     </h4>
                   </div>
-                  <div className="flex-row-wrap mt-8" style={{ gap: '2rem', justifyContent: 'center' }}>
+                  <div className="foundations-video-frame">
                     <video 
                       src={videoMap[videoId]} 
                       controls 
-                      className="software-screenshot mt-8"
-                      style={{ width: '900px', maxWidth: '100%' }}
+                      className="software-screenshot foundations-video"
                       preload="metadata"
+                      aria-label={`${title} demonstration video`}
                     />
                   </div>
                 </div>
@@ -189,8 +208,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
             </div>
           </div>
 
-                    <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+          <div className="lesson-navigation">
+            <button className="nav-button" disabled={isFirstLesson} onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
             <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>

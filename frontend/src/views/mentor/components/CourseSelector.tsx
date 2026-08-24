@@ -1,5 +1,7 @@
-import { Lock,PlayCircle } from 'lucide-react';
+import { BookOpen,Lock,PlayCircle,Settings } from 'lucide-react';
 import React from 'react';
+import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
+import { useAuth } from '../../../context/AuthContext';
 import { useTranslation } from '../../../context/LanguageContext';
 import drawing2DUrl from '../../../assets/2D.png';
 import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
@@ -39,6 +41,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     planLoading
 }) => {
     const { t } = useTranslation();
+    const { user } = useAuth();
 
     if (loading || planLoading) {
         return (
@@ -122,35 +125,69 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     ];
 
     const allCourses = [...activeCards];
+    const isCourseLocked = (course: Course) => {
+        const isPracticalLocked = !is3DCompleted && !canBypass;
+        const isCourse2Locked = !is3DAssessmentCompleted && !canBypass;
+        const is2DAssessmentLocked = !is2DCompleted && !canBypass;
+        const id = course.id.toString();
+        return id === 'practical-assessment' ? isPracticalLocked
+            : id === '2' ? (isPracticalLocked || isCourse2Locked)
+                : id === '2d-assessment' ? (isPracticalLocked || isCourse2Locked || is2DAssessmentLocked)
+                    : false;
+    };
 
     return (
         <div className="mentor-mode course-selector-view animate-fade-in">
-            <div className="mentor-header">
-                <h1>{t('course.welcome_title') || 'Welcome to iCAD Training'}</h1>
-                <p>{t('course.welcome_subtitle') || 'Select your learning path to begin the deep dive'}</p>
-            </div>
+            <aside className="course-home-sidebar">
+                <div className="learner-sidebar-brand">
+                    <img src={kmtiTrainingHubLogo} alt="KMTI Training Hub" draggable={false} />
+                    <span>KMTI Training Hub</span>
+                </div>
 
-            {!isEmployeeSide && <div className="learner-plan-summary">
-                <div><span>CURRENT ACCESS PLAN</span><strong>{effectiveAccess?.plan?.name || 'No active plan'}</strong></div>
-                {effectiveAccess?.plan ? <p>
-                    Active from {effectiveAccess.starts_at ? new Date(effectiveAccess.starts_at.endsWith('Z') ? effectiveAccess.starts_at : `${effectiveAccess.starts_at}Z`).toLocaleDateString() : 'now'}
-                    {' · '}{effectiveAccess.ends_at ? `Expires ${new Date(effectiveAccess.ends_at.endsWith('Z') ? effectiveAccess.ends_at : `${effectiveAccess.ends_at}Z`).toLocaleDateString()}` : 'No expiration'}
-                </p> : <p>Contact KMTI administration to activate training access.</p>}
-            </div>}
+                <div className="course-home-navigation">
+                    <div className="course-home-nav-heading">Courses</div>
+                    {allCourses.map((course) => (
+                        <button key={course.id} type="button" disabled={isCourseLocked(course as Course)} onClick={() => setSelectedCourse(course as Course)}>
+                            {isCourseLocked(course as Course) ? <Lock size={16} /> : <BookOpen size={16} />}
+                            <span>{course.title}</span>
+                        </button>
+                    ))}
+                </div>
 
-            <div className="course-selection">
+                {!isEmployeeSide && <div className="learner-plan-summary course-home-plan">
+                    <div><span>CURRENT ACCESS PLAN</span><strong>{effectiveAccess?.plan?.name || 'No active plan'}</strong></div>
+                    {effectiveAccess?.plan ? <p>
+                        Active from {effectiveAccess.starts_at ? new Date(effectiveAccess.starts_at.endsWith('Z') ? effectiveAccess.starts_at : `${effectiveAccess.starts_at}Z`).toLocaleDateString() : 'now'}
+                        {' · '}{effectiveAccess.ends_at ? `Expires ${new Date(effectiveAccess.ends_at.endsWith('Z') ? effectiveAccess.ends_at : `${effectiveAccess.ends_at}Z`).toLocaleDateString()}` : 'No expiration'}
+                    </p> : <p>Contact KMTI administration to activate training access.</p>}
+                </div>}
+
+                <div className="course-home-sidebar-footer">
+                    <button
+                        className="learner-sidebar-account"
+                        type="button"
+                        onClick={() => window.dispatchEvent(new CustomEvent('kmti-open-profile-settings'))}
+                    >
+                        <span className="learner-account-avatar">{(user?.full_name || user?.username || 'U').trim().charAt(0).toUpperCase()}</span>
+                        <span className="learner-account-copy"><strong>{user?.full_name || user?.username}</strong><small>{user?.role}</small></span>
+                        <Settings size={16} />
+                    </button>
+                </div>
+            </aside>
+
+            <div className="course-home-main">
+                <div className={`course-selector-hero ${isEmployeeSide ? 'without-plan' : ''}`}>
+                    <div className="mentor-header">
+                        <h1>{t('course.welcome_title') || 'Welcome to iCAD Training'}</h1>
+                        <p>{t('course.welcome_subtitle') || 'Select your learning path to begin the deep dive'}</p>
+                    </div>
+                </div>
+
+                <div className="course-selection">
                 <div className="course-grid">
                     {allCourses.length === 0 && <div className="no-entitled-courses"><Lock size={28} /><h3>No training content is available</h3><p>Your account is active, but its access plan does not currently include any published courses or practical sets.</p></div>}
                     {allCourses.map((course) => {
-                        const isPracticalLocked = !is3DCompleted && !canBypass;
-                        const isCourse2Locked = !is3DAssessmentCompleted && !canBypass;
-                        const is2DAssessmentLocked = !is2DCompleted && !canBypass;
-
-                        const isLocked =
-                            course.id.toString() === 'practical-assessment' ? isPracticalLocked :
-                            course.id.toString() === '2' ? (isPracticalLocked || isCourse2Locked) :
-                            course.id.toString() === '2d-assessment' ? (isPracticalLocked || isCourse2Locked || is2DAssessmentLocked) :
-                            false;
+                        const isLocked = isCourseLocked(course as Course);
 
                         return (
                             <div
@@ -209,6 +246,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                             </div>
                         );
                     })}
+                </div>
                 </div>
             </div>
         </div>
