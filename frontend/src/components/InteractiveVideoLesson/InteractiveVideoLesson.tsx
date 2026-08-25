@@ -1,9 +1,10 @@
-import { CheckCircle2, ChevronLeft, ChevronRight, GripHorizontal, Info, Mouse, Pause, Play, RefreshCcw, RotateCcw } from 'lucide-react';
+import { CheckCircle2, ChevronLeft, ChevronRight, GripHorizontal, Mouse, Pause, Play, RotateCcw } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import LessonIntroPanel from '../LessonIntroPanel';
+import LessonQuestionPanel from '../LessonQuestionPanel';
+import LessonVideoSubtitle from '../LessonVideoSubtitle';
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from '../../hooks/useLessonCore';
-import { splitIntoSentences } from '../../utils/sentenceUtils';
 import type { InteractiveVideoLessonConfig, InteractiveVideoQuestion } from './types';
 import '../../styles/LessonIntroPanel.css';
 import './InteractiveVideoLesson.css';
@@ -43,6 +44,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   const [answerChecked, setAnswerChecked] = useState(false);
   const [overlayLabel, setOverlayLabel] = useState('');
   const [narrationParts, setNarrationParts] = useState<string[]>([config.introNarration]);
+  const [showNarrationSubtitle, setShowNarrationSubtitle] = useState(true);
   const [completionError, setCompletionError] = useState('');
   const [isSavingCompletion, setIsSavingCompletion] = useState(false);
   const [isVideoPaused, setIsVideoPaused] = useState(true);
@@ -58,7 +60,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     resume,
     isSpeaking,
     currentIndex,
-    currentSentenceIndex,
+    currentCharIndex,
     registerText,
   } = useLessonCore(`interactive-video-${config.id}`);
 
@@ -70,9 +72,10 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   const selectedAnswer = activeQuestion?.choices.find((choice) => choice.id === selectedChoice);
   const isAnswerCorrect = Boolean(selectedAnswer?.isCorrect);
 
-  const beginNarration = useCallback((text: string | string[], after?: () => void) => {
+  const beginNarration = useCallback((text: string | string[], after?: () => void, showSubtitle = true) => {
     const narration = Array.isArray(text) ? text : [text];
     stop();
+    setShowNarrationSubtitle(showSubtitle);
     setNarrationParts(narration);
     registerText(narration, 0);
     narrationAfterRef.current = after || null;
@@ -131,12 +134,33 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     const introNarrationEventId = 'video-intro-narration';
     if (time >= 0.01 && !firedEventsRef.current.has(introNarrationEventId)) {
       firedEventsRef.current.add(introNarrationEventId);
-      beginNarration(config.introNarration);
+      keepNarrationPlayingOnPauseRef.current = true;
+      video.pause();
+      beginNarration(config.introNarration, playVideo);
+      return;
     }
 
     for (const segment of config.segments) {
+      const dueCue = segment.narrationCues?.find((cue) => {
+        const cueEventId = `${segment.id}-cue-${cue.at}`;
+        return time >= cue.at && !firedEventsRef.current.has(cueEventId);
+      });
+
+      if (dueCue) {
+        firedEventsRef.current.add(`${segment.id}-cue-${dueCue.at}`);
+        if (dueCue.overlayText) showOverlay(dueCue.overlayText);
+        if (dueCue.pauseVideo === false) {
+          beginNarration(dueCue.narration, undefined, dueCue.showSubtitle !== false);
+        } else {
+          keepNarrationPlayingOnPauseRef.current = true;
+          video.pause();
+          beginNarration(dueCue.narration, playVideo, dueCue.showSubtitle !== false);
+        }
+        return;
+      }
+
       const narrationEventId = `${segment.id}-narration`;
-      if (time >= segment.startAt && !firedEventsRef.current.has(narrationEventId)) {
+      if (!segment.narrationCues?.length && time >= segment.startAt && !firedEventsRef.current.has(narrationEventId)) {
         firedEventsRef.current.add(narrationEventId);
         if (isSpeaking) {
           keepNarrationPlayingOnPauseRef.current = true;
@@ -169,18 +193,29 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     }
   }, [beginNarration, config.introNarration, config.segments, isSpeaking, openQuestion, phase, playVideo, showOverlay]);
 
+  useEffect(() => {
+    if (phase !== 'video') return undefined;
+
+    let animationFrameId = 0;
+    const checkMediaClock = () => {
+      if (videoRef.current && !videoRef.current.paused) {
+        processTimeline();
+      }
+      animationFrameId = window.requestAnimationFrame(checkMediaClock);
+    };
+
+    animationFrameId = window.requestAnimationFrame(checkMediaClock);
+    return () => window.cancelAnimationFrame(animationFrameId);
+  }, [phase, processTimeline]);
+
   const handleTimeUpdate = useCallback(() => {
     setVideoTime(videoRef.current?.currentTime || 0);
-    processTimeline();
-  }, [processTimeline]);
+  }, []);
 
   const activeSubtitle = useMemo(() => {
-    if (!isSpeaking || currentIndex < 0) return '';
-    const paragraph = narrationParts[currentIndex];
-    if (!paragraph) return '';
-    const sentences = splitIntoSentences(paragraph);
-    return sentences[currentSentenceIndex] || paragraph;
-  }, [currentIndex, currentSentenceIndex, isSpeaking, narrationParts]);
+    if (!showNarrationSubtitle || !isSpeaking || currentIndex < 0) return '';
+    return narrationParts[currentIndex] || '';
+  }, [currentIndex, isSpeaking, narrationParts, showNarrationSubtitle]);
 
   const handleSeeking = useCallback(() => {
     const video = videoRef.current;
@@ -191,12 +226,10 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     if (nextRequired && video.currentTime > nextRequired.endAt) {
       keepNarrationPlayingOnPauseRef.current = true;
       video.pause();
-      video.currentTime = nextRequired.startAt;
-      firedEventsRef.current.add(`${nextRequired.id}-narration`);
-      showOverlay(nextRequired.overlayText);
-      beginNarration(nextRequired.narration, playVideo);
+      video.currentTime = Math.max(0, nextRequired.startAt - 0.05);
+      playVideo();
     }
-  }, [beginNarration, config.segments, playVideo, showOverlay]);
+  }, [config.segments, playVideo]);
 
   const handleVideoPause = useCallback(() => {
     setIsVideoPaused(true);
@@ -292,14 +325,6 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="ivl-objective" aria-labelledby={`${config.id}-objective`}>
-        <Info size={20} aria-hidden="true" />
-        <div>
-          <p className="ivl-eyebrow">Learning objective</p>
-          <p id={`${config.id}-objective`}>{config.objective}</p>
-        </div>
-      </section>
-
       <section className="ivl-player-card" aria-label={config.videoLabel}>
         <div className="ivl-video-shell lesson-intro-shell">
           <video
@@ -324,10 +349,8 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
             </div>
           )}
 
-          {activeSubtitle && (
-            <div className="ivl-subtitle" role="status" aria-live="polite">
-              <span>{activeSubtitle}</span>
-            </div>
+          {phase === 'video' && activeSubtitle && (
+            <LessonVideoSubtitle text={activeSubtitle} currentCharIndex={currentCharIndex} />
           )}
 
           {phase === 'video' && (
@@ -351,57 +374,22 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
             <LessonIntroPanel
               icon={Mouse}
               eyebrow="Interactive navigation lesson"
-              title="Zoom In and Zoom Out"
+              title={config.title}
               description={config.introSupportingText}
               onStart={startIntro}
             />
           )}
 
           {phase === 'question' && activeQuestion && (
-            <div className="ivl-stage-panel ivl-question-panel" role="dialog" aria-modal="true" aria-labelledby={`${activeQuestion.id}-title`}>
-              <p className="ivl-eyebrow">Knowledge check</p>
-              <h3 id={`${activeQuestion.id}-title`}>{activeQuestion.prompt}</h3>
-              <fieldset className="ivl-options">
-                <legend className="sr-only">Choose one answer</legend>
-                {activeQuestion.choices.map((choice) => (
-                  <label key={choice.id} className={`ivl-option ${selectedChoice === choice.id ? 'selected' : ''}`}>
-                    <input
-                      type="radio"
-                      name={activeQuestion.id}
-                      value={choice.id}
-                      checked={selectedChoice === choice.id}
-                      disabled={answerChecked}
-                      onChange={() => setSelectedChoice(choice.id)}
-                    />
-                    <span>{choice.label}</span>
-                  </label>
-                ))}
-              </fieldset>
-
-              {answerChecked && (
-                <div className={`ivl-feedback ${isAnswerCorrect ? 'correct' : 'incorrect'}`} role="status">
-                  {selectedAnswer?.feedback}
-                </div>
-              )}
-
-              <div className="ivl-question-actions">
-                {!answerChecked && (
-                  <button className="ivl-primary-button" disabled={!selectedChoice} onClick={() => setAnswerChecked(true)}>
-                    Check Answer
-                  </button>
-                )}
-                {answerChecked && !isAnswerCorrect && (
-                  <button className="ivl-secondary-button" onClick={() => { setSelectedChoice(''); setAnswerChecked(false); }}>
-                    <RefreshCcw size={17} aria-hidden="true" /> Retry
-                  </button>
-                )}
-                {answerChecked && isAnswerCorrect && (
-                  <button className="ivl-primary-button" onClick={handleQuestionContinue}>
-                    Continue Lesson <ChevronRight size={17} aria-hidden="true" />
-                  </button>
-                )}
-              </div>
-            </div>
+            <LessonQuestionPanel
+              question={activeQuestion}
+              selectedChoice={selectedChoice}
+              answerChecked={answerChecked}
+              onSelectChoice={setSelectedChoice}
+              onCheckAnswer={() => setAnswerChecked(true)}
+              onRetry={() => { setSelectedChoice(''); setAnswerChecked(false); }}
+              onContinue={handleQuestionContinue}
+            />
           )}
 
           {phase === 'recap' && (

@@ -22,6 +22,27 @@ export type Lesson = {
   videoId?: string;
 };
 
+export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
+  'lesson-1-1': 'By the end of this lesson, you should understand what iCAD SX is and how it is used in engineering design.',
+  'lesson-2-1': 'Identify the important areas of the iCAD SX interface and understand their purpose.',
+  'lesson-3-1': 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD SX.',
+  'lesson-3-2': 'Move your view to another area without moving the actual model.',
+  'lesson-3-3': 'Rotate your viewpoint around a 3D model without changing the model itself.',
+  'toolbars': 'Identify the primary iCAD SX toolbars and understand how they support common modeling operations.',
+  'lesson-4-1': 'Display a model from standard engineering viewing directions to make its geometry easier to understand and inspect.',
+  'lesson-4-2': 'Use an isometric view to inspect multiple sides of a 3D object at the same time.',
+  'lesson-5-1': 'Identify the origin and the X, Y, and Z axes used to locate and orient geometry in 3D space.',
+  'lesson-6-1': 'Correctly select geometry before performing an operation.',
+  'lesson-7-1': 'Create your first simple 2D line geometry in iCAD SX.',
+  'lesson-7-2': 'Create basic circle and rectangle geometry using the appropriate iCAD SX commands.',
+  'lesson-8-1': 'Create a basic rectangular 3D block from a dimensioned 2D profile.',
+  'lesson-9-1': 'Apply navigation, standard-view, and selection skills while inspecting a 3D model.',
+  'lesson-10-1': 'Save training work using the correct location, filename, and file-management procedure.',
+  'lesson-11-1': 'Recognize and resolve common beginner issues involving navigation, selection, and active commands.',
+  'lesson-12-1': 'Apply foundational navigation, selection, geometry, modeling, and file-management skills in a guided challenge.',
+  'lesson-13-1': 'Demonstrate that you can independently navigate the iCAD environment and perform its fundamental operations.',
+};
+
 export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   {
     id: 'module-1',

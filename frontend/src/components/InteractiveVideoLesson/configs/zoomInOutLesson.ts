@@ -13,8 +13,8 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
     {
       id: 'zoom-in',
       label: 'Zoom In',
-      startAt: 5.5,
-      endAt: 10.5,
+      startAt: 3,
+      endAt: 11,
       narration: [
         "First, let's look at Zoom In. Position the mouse pointer over the area of the model that you want to inspect.",
         'Scroll the mouse wheel forward to zoom in.',
@@ -22,6 +22,30 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
         'Zoom In is useful when you need to inspect smaller features or details more closely.',
       ],
       overlayText: 'Mouse Wheel Forward ↑ = Zoom In',
+      narrationCues: [
+        {
+          at: 3,
+          narration: "First, let's look at Zoom In.",
+        },
+        {
+          at: 6,
+          narration: 'Position the mouse pointer over the area of the model that you want to inspect.',
+        },
+        {
+          at: 7,
+          narration: 'Scroll the mouse wheel forward to zoom in.',
+          overlayText: 'Mouse Wheel Forward ↑ = Zoom In',
+        },
+        {
+          at: 8,
+          narration: 'Notice how the model becomes larger as the view moves closer.',
+          showSubtitle: false,
+        },
+        {
+          at: 11,
+          narration: 'Zoom In is useful when you need to inspect smaller features or details more closely.',
+        },
+      ],
       checkpoint: {
         id: 'zoom-in-check',
         prompt: 'How do you zoom in on the model in iCAD SX?',
@@ -35,8 +59,8 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
     {
       id: 'zoom-out',
       label: 'Zoom Out',
-      startAt: 15.5,
-      endAt: 21.55,
+      startAt: 13,
+      endAt: 18,
       narration: [
         "Now let's look at Zoom Out.",
         'Scroll the mouse wheel backward to move away from the model and see a larger area of the workspace.',
@@ -44,6 +68,26 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
         'Zoom Out is useful when you need a wider view of your drawing or model.',
       ],
       overlayText: 'Mouse Wheel Backward ↓ = Zoom Out',
+      narrationCues: [
+        {
+          at: 13,
+          narration: "Now let's look at Zoom Out.",
+        },
+        {
+          at: 15,
+          narration: 'Scroll the mouse wheel backward to move away from the model and see a larger area of the workspace.',
+          overlayText: 'Mouse Wheel Backward ↓ = Zoom Out',
+        },
+        {
+          at: 16,
+          narration: 'Notice how the model becomes smaller and more of the workspace becomes visible.',
+          showSubtitle: false,
+        },
+        {
+          at: 18,
+          narration: 'Zoom Out is useful when you need a wider view of your drawing or model.',
+        },
+      ],
       checkpoint: {
         id: 'zoom-out-check',
         prompt: 'What should you do to zoom out in iCAD SX?',

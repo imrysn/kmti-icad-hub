@@ -10,6 +10,8 @@ import { QuizModal } from './QuizModal';
 // Foundations Lesson Imports
 const DynamicFoundationsLesson = lazy(() => import('../../../components/PublicCourses/Foundations/DynamicFoundationsLesson'));
 const ZoomInOutInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/ZoomInOutInteractiveLesson'));
+const PanInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/PanInteractiveLesson'));
+const RotateViewInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/RotateViewInteractiveLesson'));
 
 
 // 3D Lesson Imports (Lazy Loaded)
@@ -59,7 +61,9 @@ const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_
 const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
+import LessonObjective from '../../../components/LessonObjective';
 import { useTTSContext } from '../../../context/TTSContext';
+import { ICAD_FOUNDATIONS_OBJECTIVES } from '../mentorConstants';
 
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
@@ -261,7 +265,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     const validElements: HTMLElement[] = [];
     elements.forEach(el => {
       const text = el.textContent?.trim();
-      if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button')) {
+      if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button') && !el.closest('.lesson-video-subtitle')) {
         if (!paragraphs.includes(text)) {
           paragraphs.push(text);
           validElements.push(el as HTMLElement);
@@ -439,6 +443,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
 
           <div className="lesson-content-body">
+            {isFoundationsCourse && ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId] && (
+              <LessonObjective>{ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId]}</LessonObjective>
+            )}
             <Suspense fallback={
               <div className="lesson-loading-fallback" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', width: '100%' }}>
                 <div className="fallback-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-dim)' }}>
@@ -452,6 +459,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                  'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                  'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
                   'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'origin': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,

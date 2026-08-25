@@ -280,7 +280,6 @@ export const useTTS = () => {
 
       audioRef.current = audio;
 
-      const words = item.normalizedText.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (item.normalizedText.length * 60) / rate;
 
       // Preload next sentence in background while this one plays
@@ -292,36 +291,57 @@ export const useTTS = () => {
         preloadedAudioRef.current = { index: index + 1, audio: nextAudio };
       }
 
-      let wordIdx = 0;
-      let lastOffset = 0;
+      const timedWords = Array.from(item.normalizedText.matchAll(/\S+/g)).map((match) => {
+        const value = match[0];
+        const lexicalLength = value.replace(/[^\p{L}\p{N}]/gu, '').length || 1;
+        const punctuationPause = /[.!?]$/.test(value)
+          ? 1.25
+          : /[,;:]$/.test(value)
+            ? 0.55
+            : 0;
+
+        return {
+          start: match.index || 0,
+          weight: Math.max(1, Math.pow(lexicalLength, 0.72)) + punctuationPause,
+        };
+      });
+      const totalWordWeight = timedWords.reduce((total, word) => total + word.weight, 0) || 1;
 
       const startHighlightTimer = () => {
         if (activeIntervalRef.current) clearInterval(activeIntervalRef.current);
 
-        setCurrentCharIndex(item.offset + lastOffset);
         const durationSec = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration))
           ? audio.duration
           : (estimatedDuration / 1000);
 
-        const totalMs = durationSec * 1000;
-        const msPerChar = totalMs / (item.normalizedText.length || 1);
+        // OpenAI/Kokoro audio does not include word timestamps. Follow the
+        // real media clock and distribute its duration using speech-aware
+        // word weights so highlighting cannot drift after buffering or pause.
+        const leadingSilence = Math.min(0.12, durationSec * 0.025);
+        const trailingSilence = Math.min(0.1, durationSec * 0.02);
+        const spokenDuration = Math.max(0.1, durationSec - leadingSilence - trailingSilence);
+
+        const syncHighlight = () => {
+          const spokenTime = Math.max(0, audio.currentTime - leadingSilence);
+          const targetWeight = Math.min(1, spokenTime / spokenDuration) * totalWordWeight;
+          let accumulatedWeight = 0;
+          let activeWord = timedWords[0];
+
+          for (const word of timedWords) {
+            activeWord = word;
+            accumulatedWeight += word.weight;
+            if (targetWeight < accumulatedWeight) break;
+          }
+
+          setCurrentCharIndex(item.offset + (activeWord?.start || 0));
+        };
+
+        syncHighlight();
 
         activeIntervalRef.current = setInterval(() => {
-          if (wordIdx < words.length) {
-            const currentWord = words[wordIdx];
-            const wordStart = item.normalizedText.indexOf(currentWord, lastOffset);
-            if (wordStart !== -1) {
-              setCurrentCharIndex(item.offset + wordStart);
-              lastOffset = wordStart + currentWord.length;
-            }
-            wordIdx++;
-          } else {
-            if (activeIntervalRef.current) {
-              clearInterval(activeIntervalRef.current);
-              activeIntervalRef.current = null;
-            }
-          }
-        }, (item.normalizedText.length / (words.length || 1)) * msPerChar);
+          if (audio.paused || audio.ended || audioRef.current !== audio) return;
+          syncHighlight();
+        }, 40);
       };
 
       audio.onloadedmetadata = () => {

@@ -11,6 +11,14 @@ export interface InteractiveVideoQuestion {
   choices: InteractiveVideoChoice[];
 }
 
+export interface InteractiveVideoNarrationCue {
+  at: number;
+  narration: string;
+  overlayText?: string;
+  pauseVideo?: boolean;
+  showSubtitle?: boolean;
+}
+
 export interface InteractiveVideoSegment {
   id: string;
   label: string;
@@ -18,6 +26,7 @@ export interface InteractiveVideoSegment {
   endAt: number;
   narration: string[];
   overlayText: string;
+  narrationCues?: InteractiveVideoNarrationCue[];
   checkpoint: InteractiveVideoQuestion;
 }
 

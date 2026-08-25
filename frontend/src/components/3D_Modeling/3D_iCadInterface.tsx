@@ -1,4 +1,4 @@
-import { ChevronLeft,ChevronRight,Info,Monitor } from 'lucide-react';
+import { ChevronLeft,ChevronRight,Monitor } from 'lucide-react';
 import React,{ useState } from "react";
 import LessonIntroPanel from '../LessonIntroPanel';
 import { useLessonCore } from "../../hooks/useLessonCore";
@@ -46,18 +46,6 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
-
-      {showFoundationsIntro && (
-        <section className="foundations-interface-objective" aria-labelledby="foundations-interface-objective-title">
-          <Info size={20} aria-hidden="true" />
-          <div>
-            <p className="foundations-interface-eyebrow">Learning objective</p>
-            <p id="foundations-interface-objective-title">
-              Identify the main areas of the iCAD SX screen and understand how each area supports navigation, commands, and modeling work.
-            </p>
-          </div>
-        </section>
-      )}
 
       {/* Main Interactive Stage */}
       <div className="lesson-grid interactive-layout single-card">

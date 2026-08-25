@@ -1,0 +1,52 @@
+.lesson-video-subtitle {
+  position: absolute;
+  right: clamp(2.5rem, 8vw, 5rem);
+  bottom: clamp(2.85rem, 5vw, 3.55rem);
+  left: clamp(0.75rem, 3vw, 2rem);
+  z-index: 7;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.lesson-video-subtitle__text {
+  width: fit-content;
+  max-width: 750px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lesson-video-subtitle .tts-active-highlight {
+  padding: 0 !important;
+  border: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.lesson-video-subtitle__text span {
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.lesson-video-subtitle__spoken { color: #fff; }
+.lesson-video-subtitle__active { color: var(--color-primary); font-weight: 800; text-shadow: 0 0 8px var(--color-primary-glow), -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000; }
+.lesson-video-subtitle__upcoming { color: #a3a3a3; }
+
+@media (max-width: 720px) {
+  .lesson-video-subtitle { right: 2.2rem; bottom: 3.05rem; left: 0.5rem; }
+  .lesson-video-subtitle__text { max-width: 92%; font-size: 0.78rem; }
+}

@@ -1,6 +1,6 @@
 import { useTranslation } from '../../../context/LanguageContext';
 import React, { useEffect, useState, useMemo } from "react";
-import { ChevronRight, ChevronLeft, Info, Play } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
@@ -93,17 +93,12 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
               {content.map((step, idx) => {
                 const stepIndex = idx + 1; // offset by 1 because title is at index 0
 
-                if (step.startsWith("Learning Objective:")) {
-                  const objective = step.replace(/^Learning Objective:\s*/i, '');
-                  return (
-                    <div key={stepIndex} className={`foundations-callout foundations-objective ${currentIndex === stepIndex ? 'reading-active' : ''}`}>
-                      <div className="foundations-callout-icon" aria-hidden="true"><Info size={20} /></div>
-                      <div>
-                        <h4>Learning objective</h4>
-                        <KaraokeLessonText as="p" text={objective} isActive={isSpeaking && currentIndex === stepIndex} currentCharIndex={currentCharIndex} />
-                      </div>
-                    </div>
-                  );
+                if (/^(Learning Objective|Objective):/i.test(step)) {
+                  return null;
+                }
+
+                if (idx > 0 && content[idx - 1].trim().toLowerCase() === 'learning objective:') {
+                  return null;
                 }
 
                 // Custom styling for concept questions.
