@@ -1,1 +1,0 @@
-{"detail": [{"type": "literal_error", "loc": ["body", "role"], "msg": "Input should be 'trainee' or 'employee'", "input": "admin", "ctx": {"expected": "'trainee' or 'employee'"}}], "body": "{'username': 'hacker', 'email': 'hacker@test.kmti', 'password': 'NewUser@123', 'full_name': 'New User', 'role': 'admin'}"}
