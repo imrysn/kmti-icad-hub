@@ -11,7 +11,7 @@ import { beforeEach,describe,expect,it } from 'vitest';
 import { server } from '../../test/mocks/server';
 import { assessmentService } from '../assessmentService';
 
-const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3001';
+const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3002';
 const API = API_BASE.replace(/\/$/, '');
 
 beforeEach(() => {

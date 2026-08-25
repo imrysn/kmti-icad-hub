@@ -4,13 +4,13 @@ import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from '../../hooks/useTTSAutoplay';
 import { KaraokeLessonText } from '../KaraokeLessonText';
-import '../../styles/2D_Drawing/CourseLesson.css';
+import './CourseLesson.css';
 
-import cylinderExImg from '../../assets/2D_Image_File/2D_material_weight_computation_cylinder.jpg';
-import plateExImg from '../../assets/2D_Image_File/2D_material_weight_computation_plate.jpg';
-import shapeSteelEx1Img from '../../assets/2D_Image_File/2D_material_weight_computation_shape_steel.jpg';
-import shapeSteelEx2Img from '../../assets/2D_Image_File/2D_material_weight_computation_shape_steel_ex2.jpg';
-import pipeExImg from '../../assets/2D_Image_File/2D_material_weight_computation_square_rectangular_pipe.jpg';
+import cylinderExImg from '../../assets/2d-images/2D_material_weight_computation_cylinder.jpg';
+import plateExImg from '../../assets/2d-images/2D_material_weight_computation_plate.jpg';
+import shapeSteelEx1Img from '../../assets/2d-images/2D_material_weight_computation_shape_steel.jpg';
+import shapeSteelEx2Img from '../../assets/2d-images/2D_material_weight_computation_shape_steel_ex2.jpg';
+import pipeExImg from '../../assets/2d-images/2D_material_weight_computation_square_rectangular_pipe.jpg';
 
 interface WeightComputationLessonProps {
   nextLabel?: string;

@@ -6,7 +6,7 @@ import { Modal } from '../../../components/Modal';
 import { useTranslation } from '../../../context/LanguageContext';
 import { useUI } from '../../../context/UIContext';
 import { authService } from '../../../services/authService';
-import '../../../styles/mentor/QuizModal.css';
+import './QuizModal.css';
 import { Quiz } from '../mentorConstants';
 
 

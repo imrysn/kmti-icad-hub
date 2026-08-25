@@ -3,11 +3,11 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Assets */
-import uploadingFlowchart from "../../assets/3D_Image_File/3d_purchase.png";
-import purchasePartsFlowchart from "../../assets/3D_Image_File/3d_purchase_parts.png";
+import uploadingFlowchart from "../../assets/3d-images/3d_purchase.png";
+import purchasePartsFlowchart from "../../assets/3d-images/3d_purchase_parts.png";
 
 interface PurchasePartsLessonProps {
   nextLabel?: string;

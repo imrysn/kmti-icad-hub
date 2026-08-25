@@ -2,7 +2,7 @@ import { Target,Volume2 } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useTTS } from '../../hooks/useTTS';
 import { useTranslation } from '../../context/LanguageContext';
-import "../../styles/3D_Modeling/InteractiveImageMap.css";
+import './InteractiveImageMap.css';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 
 interface Hotspot {

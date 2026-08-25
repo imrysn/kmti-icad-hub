@@ -2,7 +2,7 @@ import { CalendarDays, Loader2, Plus, Users } from 'lucide-react';
 import React from 'react';
 import { adminService, Cohort, CourseRun, CurriculumCourse } from '../../../services/adminService';
 import { authService, User } from '../../../services/authService';
-import '../../../styles/CourseDeliveryManagement.css';
+import './CourseDeliveryManagement.css';
 
 export const CourseDeliveryManagement:React.FC=()=>{
  const [cohorts,setCohorts]=React.useState<Cohort[]>([]),[runs,setRuns]=React.useState<CourseRun[]>([]),[courses,setCourses]=React.useState<CurriculumCourse[]>([]),[users,setUsers]=React.useState<User[]>([]);

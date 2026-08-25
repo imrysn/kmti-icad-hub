@@ -5,18 +5,18 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Bill of Material */
-import bomAfterInsertImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_after_inserting_on_icad.png";
-import bomEditAttrImg from "../../assets/2D_Image_File/2D_bill_of_material_(4)_edit_attribute.png";
-import bomAdditionalInfoImg from "../../assets/2D_Image_File/2D_bill_of_material_additional_information.png";
-import bomAssemblyDrawingImg from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing.jpg";
-import bomAssemblyDrawing2Img from "../../assets/2D_Image_File/2D_bill_of_material_assembly_drawing_2.png";
-import bomPartDrawingImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing.png";
-import bomPartDrawingBImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_b.png";
-import bomPartDrawingCImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_c.png";
-import bomPartDrawingDImg from "../../assets/2D_Image_File/2D_bill_of_material_part_drawing_d.png";
+import bomAfterInsertImg from "../../assets/2d-images/2D_bill_of_material_(4)_after_inserting_on_icad.png";
+import bomEditAttrImg from "../../assets/2d-images/2D_bill_of_material_(4)_edit_attribute.png";
+import bomAdditionalInfoImg from "../../assets/2d-images/2D_bill_of_material_additional_information.png";
+import bomAssemblyDrawingImg from "../../assets/2d-images/2D_bill_of_material_assembly_drawing.jpg";
+import bomAssemblyDrawing2Img from "../../assets/2d-images/2D_bill_of_material_assembly_drawing_2.png";
+import bomPartDrawingImg from "../../assets/2d-images/2D_bill_of_material_part_drawing.png";
+import bomPartDrawingBImg from "../../assets/2d-images/2D_bill_of_material_part_drawing_b.png";
+import bomPartDrawingCImg from "../../assets/2d-images/2D_bill_of_material_part_drawing_c.png";
+import bomPartDrawingDImg from "../../assets/2d-images/2D_bill_of_material_part_drawing_d.png";
 
 interface BillOfMaterialLessonProps {
   nextLabel?: string;

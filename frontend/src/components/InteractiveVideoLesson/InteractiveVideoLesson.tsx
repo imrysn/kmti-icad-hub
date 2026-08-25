@@ -6,7 +6,7 @@ import LessonVideoSubtitle from '../LessonVideoSubtitle';
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import type { InteractiveVideoLessonConfig, InteractiveVideoQuestion } from './types';
-import '../../styles/LessonIntroPanel.css';
+import '../LessonIntroPanel.css';
 import './InteractiveVideoLesson.css';
 
 interface InteractiveVideoLessonProps {

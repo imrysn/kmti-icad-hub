@@ -1,7 +1,9 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React from "react";
+import { ChevronLeft, ChevronRight, Wrench } from 'lucide-react';
+import React, { useState } from "react";
+import LessonIntroPanel from '../LessonIntroPanel';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
+import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
 
 /* Toolbar image imports */
@@ -20,6 +22,7 @@ interface ToolBarsLessonProps {
 
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const { t } = useTranslation();
+  const [hasStarted, setHasStarted] = useState(false);
   const {
     scrollProgress,
     containerRef  } = useLessonCore('toolbars');
@@ -40,14 +43,25 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
       <div className="lesson-grid interactive-layout single-card">
         <div className="lesson-card tab-content fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
-
-          <div className="interactive-stage-container">
-            <VideoTutorialViewer steps={TOOLBAR_TUTORIAL_STEPS.map(s => ({
-              ...s,
-              title: t(`tutorial.toolbars.${s.id}.title`),
-              text: t(`tutorial.toolbars.${s.id}.text`)
-            }))} />
-          </div>
+          {!hasStarted ? (
+            <div className="lesson-intro-shell">
+              <LessonIntroPanel
+                icon={Wrench}
+                eyebrow="Interactive tool tour"
+                title="Explore the iCAD Tool Bars"
+                description="Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
+                onStart={() => setHasStarted(true)}
+              />
+            </div>
+          ) : (
+            <div className="interactive-stage-container">
+              <VideoTutorialViewer steps={TOOLBAR_TUTORIAL_STEPS.map(s => ({
+                ...s,
+                title: t(`tutorial.toolbars.${s.id}.title`),
+                text: t(`tutorial.toolbars.${s.id}.text`)
+              }))} />
+            </div>
+          )}
 
           <div className="lesson-navigation">
             <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>

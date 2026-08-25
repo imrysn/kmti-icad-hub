@@ -3,7 +3,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { AccessPlan, adminService, CourseResource, EntitlementOverride, PlanAssignment, PracticalSetResource } from '../../../services/adminService';
 import { User } from '../../../services/authService';
-import '../../../styles/PlanAssignmentPanel.css';
+import './PlanAssignmentPanel.css';
 
 interface Props { user: User; onClose: () => void; }
 

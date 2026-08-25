@@ -9,7 +9,7 @@ Zap
 } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from "react";
 import { useTTS } from "../../hooks/useTTS";
-import "../../styles/3D_Modeling/ToolbarExplorer.css";
+import './ToolbarExplorer.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 interface ToolbarItem {

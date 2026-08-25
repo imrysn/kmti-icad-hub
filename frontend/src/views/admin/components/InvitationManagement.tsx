@@ -1,7 +1,7 @@
 import React from 'react';
 import { Copy, RefreshCw, Send, X } from 'lucide-react';
 import { AccessPlan, AccountInvitation, adminService } from '../../../services/adminService';
-import '../../../styles/InvitationManagement.css';
+import './InvitationManagement.css';
 
 export const InvitationManagement:React.FC=()=>{
  const [items,setItems]=React.useState<AccountInvitation[]>([]); const [plans,setPlans]=React.useState<AccessPlan[]>([]); const [error,setError]=React.useState(''); const [devLink,setDevLink]=React.useState(''); const [busy,setBusy]=React.useState(false);

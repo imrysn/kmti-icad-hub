@@ -3,19 +3,19 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 // --- Assets ---
-import createPartIcon from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
-import modalInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_3.png';
-import treeViewInfo1 from '../../assets/3D_Image_File/3d_part1_creating_3d_part_4.png';
-import materialDescriptionImg from '../../assets/3D_Image_File/3d_part1_material_description.png';
-import partMenu2 from '../../assets/3D_Image_File/3d_part2_change_3d_part_name.png';
-import changePartIcon from '../../assets/3D_Image_File/3d_part2_change_3d_part_name_1.png';
-import modalInfo2 from '../../assets/3D_Image_File/3d_part2_change_3d_part_name_3.png';
-import treeViewInfo2 from '../../assets/3D_Image_File/3d_part2_change_3d_part_name_4.png';
-import leftClick from '../../assets/3D_Image_File/left_click.png';
+import createPartIcon from '../../assets/3d-images/3d_part1_create_3d_part.png';
+import modalInfo1 from '../../assets/3d-images/3d_part1_creating_3d_part_3.png';
+import treeViewInfo1 from '../../assets/3d-images/3d_part1_creating_3d_part_4.png';
+import materialDescriptionImg from '../../assets/3d-images/3d_part1_material_description.png';
+import partMenu2 from '../../assets/3d-images/3d_part2_change_3d_part_name.png';
+import changePartIcon from '../../assets/3d-images/3d_part2_change_3d_part_name_1.png';
+import modalInfo2 from '../../assets/3d-images/3d_part2_change_3d_part_name_3.png';
+import treeViewInfo2 from '../../assets/3d-images/3d_part2_change_3d_part_name_4.png';
+import leftClick from '../../assets/3d-images/left_click.png';
 
 interface PartLessonProps {
   nextLabel?: string; subLessonId?: string; onNextLesson?: () => void; onPrevLesson?: () => void;

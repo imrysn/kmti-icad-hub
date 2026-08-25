@@ -5,11 +5,11 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Retaining Ring */
-import retaining1Img from "../../assets/2D_Image_File/2D_retaining_ring_(1).jpg";
-import retaining2Img from "../../assets/2D_Image_File/2D_retaining_ring_(2).jpg";
+import retaining1Img from "../../assets/2d-images/2D_retaining_ring_(1).jpg";
+import retaining2Img from "../../assets/2d-images/2D_retaining_ring_(2).jpg";
 
 interface RetainingRingLessonProps {
   nextLabel?: string;

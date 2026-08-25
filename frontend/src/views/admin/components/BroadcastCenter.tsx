@@ -1,7 +1,7 @@
 import { AlertTriangle,ChevronDown,Clock,Info,Megaphone,MessageSquare,Send,Trash2 } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
 import { adminService } from '../../../services/adminService';
-import '../../../styles/BroadcastCenter.css';
+import './BroadcastCenter.css';
 
 export const BroadcastCenter: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);

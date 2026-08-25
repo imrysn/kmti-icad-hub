@@ -5,14 +5,14 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Import images */
-import img1 from "../../assets/2D_Image_File/2D_revision_code.png";
-import imgA1 from "../../assets/2D_Image_File/2D_revision_code_a1.png";
-import imgA2 from "../../assets/2D_Image_File/2D_revision_code_a2.png";
-import imgA3 from "../../assets/2D_Image_File/2D_revision_code_a3.png";
-import imgB from "../../assets/2D_Image_File/2D_revision_code_b.png";
+import img1 from "../../assets/2d-images/2D_revision_code.png";
+import imgA1 from "../../assets/2d-images/2D_revision_code_a1.png";
+import imgA2 from "../../assets/2d-images/2D_revision_code_a2.png";
+import imgA3 from "../../assets/2d-images/2D_revision_code_a3.png";
+import imgB from "../../assets/2d-images/2D_revision_code_b.png";
 
 interface RevisionCodeLessonProps {
   nextLabel?: string;

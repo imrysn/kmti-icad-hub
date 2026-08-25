@@ -4,7 +4,7 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
-import "../../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 
 interface LessonProps {
   onPrevLesson?: () => void;

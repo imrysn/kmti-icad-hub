@@ -9,7 +9,8 @@ export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-0",
     title: "Arrange Cylinder",
-    text: "To create a cylinder, follow these steps.",
+    text: "",
+    customText: "To create a cylinder, follow these steps.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -21,50 +22,107 @@ export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-1",
     title: "Arrange Cylinder",
-    text: "Select the Cylinder tool from the Icon Menu.",
+    text: "",
+    customText: "First, click Shape Placement. Next, click Place Cylinder. Next, select Front View.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
     videoStart: 2,
-    videoEnd: 7
+    videoEnd: 9,
+    overlays: [
+      { id: "shape-placement", type: "highlight", startTime: 2, endTime: 3.5, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
+      { id: "place-cylinder", type: "highlight", startTime: 3.3, endTime: 5.3, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Cylinder", labelPosition: "bottom" },
+      { id: "front-view", type: "highlight", startTime: 7.5, endTime: 9.5, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
   },
   {
     id: "cyl-2",
     title: "Arrange Cylinder",
-    text: "Navigate to the Item Entry area on the bottom-left. Specify the Cylinder's diameter and height, then confirm your parameters.",
+    text: "",
+    customText: "In the Command Menu, confirm that Cylinder, Placement, and Diameter Specification are active. Then select Y Orientation.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 7,
-    videoEnd: 10.2
+    videoStart: 9,
+    videoEnd: 12,
+    overlays: [
+      { id: "opt-cylinder", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Cylinder", labelPosition: "right" },
+      { id: "opt-placement", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
+      { id: "opt-dia", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Diameter Specification", labelPosition: "right" },
+      { id: "opt-y-orient", type: "highlight", startTime: 10.5, endTime: 12, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" }
+    ]
   },
   {
     id: "cyl-3",
     title: "Arrange Cylinder",
-    text: "Move to the Key Entry Area, input the placement coordinates for the origin point, and place the Cylinder on the workplane.",
+    text: "",
+    customText: "Next, use the Item Entry area at the bottom-left of the window. Enter the required diameter, then press Enter. Next, enter the required height, then press Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 10.2,
-    videoEnd: 15
+    videoStart: 12,
+    videoEnd: 15.5,
+    overlays: [
+      { id: "input-dia", type: "highlight", startTime: 12.5, endTime: 14, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Diameter" },
+      { id: "input-height", type: "highlight", startTime: 14, endTime: 15.5, target: { x: 0.167, y: 0.948, width: 0.053, height: 0.028 }, animation: "pulse", label: "Height" }
+    ]
   },
   {
     id: "cyl-4",
     title: "Arrange Cylinder",
-    text: "Confirming the coordinates renders the completed Cylinder on the workspace.",
+    text: "",
+    customText: "Finally, enter the coordinates for the cylinder's position. Enter zero, zero, zero to place the cylinder at the origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 15,
-    videoEnd: 20
+    videoStart: 15.5,
+    videoEnd: 20,
+    overlays: [
+      { id: "input-coords", type: "highlight", startTime: 16, endTime: 18, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Coordinates" }
+    ]
+  },
+  {
+    id: "cyl-5",
+    title: "Arrange Cylinder",
+    text: "",
+    customText: "The diameter, or 直径, is the distance across the circular face of the cylinder. The height, or 高さ, is the vertical distance from the bottom of the cylinder to the top.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCylinder,
+    videoStart: 20,
+    videoEnd: 24,
+    overlays: [
+      {
+        id: "dim-dia",
+        type: "dimensionAnnotation",
+        startTime: 20,
+        endTime: 24,
+        label: "Diameter (直径)",
+        labelOffset: { x: 0, y: -5 },
+        dimensionType: "horizontal",
+        line: { start: { x: 0.448, y: 0.29 }, end: { x: 0.64, y: 0.29 } }
+      },
+      {
+        id: "dim-height",
+        type: "dimensionAnnotation",
+        startTime: 22,
+        endTime: 24,
+        label: "Height (高さ)",
+        labelOffset: { x: 55, y: 0 },
+        dimensionType: "vertical",
+        line: { start: { x: 0.64, y: 0.32 }, end: { x: 0.64, y: 0.75 } }
+      }
+    ]
   }
 ];
 

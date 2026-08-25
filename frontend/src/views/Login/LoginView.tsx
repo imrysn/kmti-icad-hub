@@ -1,13 +1,13 @@
 import { Eye, EyeOff, Lock, User as UserIcon, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Modal } from '../components/Modal';
-import { useAuth } from '../hooks/useAuth';
-import { authService } from '../services/authService';
-import '../styles/LoginView.css';
-import { parseBackendError } from '../utils/errorUtils';
-import { useTranslation } from '../context/LanguageContext';
-import platform from '../services/platformService';
+import { Modal } from '../../components/Modal';
+import { useAuth } from '../../hooks/useAuth';
+import { authService } from '../../services/authService';
+import './LoginView.css';
+import { parseBackendError } from '../../utils/errorUtils';
+import { useTranslation } from '../../context/LanguageContext';
+import platform from '../../services/platformService';
 
 export const LoginView: React.FC = () => {
     const isDesktopApp = platform.isDesktopApp;

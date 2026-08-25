@@ -3,21 +3,21 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { ReadAloudButton } from "../ReadAloudButton";
 
 /* Material Setting (1) Assets */
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-import materialListImg from "../../assets/3D_Image_File/material_setting1_material_list.png";
-import materialSettingImg from "../../assets/3D_Image_File/material_setting1_material_setting.png";
-import step4ResultImg from "../../assets/3D_Image_File/material_setting1_material_setting_4.png";
-import step5DialogImg from "../../assets/3D_Image_File/material_setting1_material_setting_5.png";
-import setMaterialIcon from "../../assets/3D_Image_File/material_setting1_set_material.png";
+import leftClick from "../../assets/3d-images/left_click.png";
+import materialListImg from "../../assets/3d-images/material_setting1_material_list.png";
+import materialSettingImg from "../../assets/3d-images/material_setting1_material_setting.png";
+import step4ResultImg from "../../assets/3d-images/material_setting1_material_setting_4.png";
+import step5DialogImg from "../../assets/3d-images/material_setting1_material_setting_5.png";
+import setMaterialIcon from "../../assets/3d-images/material_setting1_set_material.png";
 
 /* Material Setting (2) Assets */
-import mat2RefImg from "../../assets/3D_Image_File/material_setting2_material.png";
-import mat2VerifyImg from "../../assets/3D_Image_File/material_setting2_material_not_included.png";
+import mat2RefImg from "../../assets/3d-images/material_setting2_material.png";
+import mat2VerifyImg from "../../assets/3d-images/material_setting2_material_not_included.png";
 
 interface MaterialSettingLessonProps {
   nextLabel?: string;

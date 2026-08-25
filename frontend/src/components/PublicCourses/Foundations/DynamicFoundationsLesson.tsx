@@ -4,7 +4,7 @@ import { ChevronRight, ChevronLeft, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
-import "../../../styles/3D_Modeling/CourseLesson.css";
+import '../../2D_Drawing/CourseLesson.css';
 import "./FoundationsLesson.css";
 import zoomInOutVideo from '../../../assets/3D_INTERACTIVE/zoomin_out.mp4';
 import panVideo from '../../../assets/3D_INTERACTIVE/pan.mp4';

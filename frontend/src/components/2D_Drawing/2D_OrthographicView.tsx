@@ -5,15 +5,15 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Orthographic View */
-import drawingTemplateImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_1.png";
-import createViewImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_a.png";
-import scalingImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(1)_b.png";
-import hiddenLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_c.2.png";
-import tangentLineDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(2)_d.2.png";
-import highPrecisionDialogImg from "../../assets/2D_Image_File/2D_create_orthographic_view_(3)_e1.png";
+import drawingTemplateImg from "../../assets/2d-images/2D_create_orthographic_view_(1)_1.png";
+import createViewImg from "../../assets/2d-images/2D_create_orthographic_view_(1)_a.png";
+import scalingImg from "../../assets/2d-images/2D_create_orthographic_view_(1)_b.png";
+import hiddenLineDialogImg from "../../assets/2d-images/2D_create_orthographic_view_(2)_c.2.png";
+import tangentLineDialogImg from "../../assets/2d-images/2D_create_orthographic_view_(2)_d.2.png";
+import highPrecisionDialogImg from "../../assets/2d-images/2D_create_orthographic_view_(3)_e1.png";
 
 interface OrthographicViewLessonProps {
   nextLabel?: string;

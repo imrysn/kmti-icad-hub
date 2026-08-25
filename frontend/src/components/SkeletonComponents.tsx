@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Skeleton.css';
+import './Skeleton.css';
 
 /**
  * Skeleton for a Course Card in Mentor Mode

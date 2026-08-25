@@ -4,11 +4,11 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Surface Coating */
-import copyMoveImg from "../../assets/2D_Image_File/2D_surface_coating_copy_move.png";
-import specialNotesImg from "../../assets/2D_Image_File/2D_surface_coating_special_notes.png";
+import copyMoveImg from "../../assets/2d-images/2D_surface_coating_copy_move.png";
+import specialNotesImg from "../../assets/2d-images/2D_surface_coating_special_notes.png";
 
 interface SurfaceCoatingLessonProps {
   nextLabel?: string;

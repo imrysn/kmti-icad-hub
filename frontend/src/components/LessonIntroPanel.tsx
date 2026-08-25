@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Play } from 'lucide-react';
 import React, { useId } from 'react';
-import '../styles/LessonIntroPanel.css';
+import './LessonIntroPanel.css';
 
 interface LessonIntroPanelProps {
   icon: LucideIcon;

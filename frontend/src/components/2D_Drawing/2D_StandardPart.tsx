@@ -5,36 +5,36 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Standard Part Detail (1) */
-import pcdImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_pcd.png";
-import standardPartDetailImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_standard_parts.jpg";
-import taperedThreadImg from "../../assets/2D_Image_File/2D_tandard_part_detail(1)_tapered_thread.png";
+import pcdImg from "../../assets/2d-images/2D_tandard_part_detail(1)_pcd.png";
+import standardPartDetailImg from "../../assets/2d-images/2D_tandard_part_detail(1)_standard_parts.jpg";
+import taperedThreadImg from "../../assets/2d-images/2D_tandard_part_detail(1)_tapered_thread.png";
 
 /* Importing assets for Standard Part Detail (2) */
-import oilGroove1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_1.png";
-import oilGroove2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(2)_oil_groove_2.png";
+import oilGroove1Img from "../../assets/2d-images/2D_tandard_part_detail(2)_oil_groove_1.png";
+import oilGroove2Img from "../../assets/2d-images/2D_tandard_part_detail(2)_oil_groove_2.png";
 
 /* Importing assets for Standard Part Detail (3) */
-import shaftKeyPlate1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_1.png";
-import shaftKeyPlate3Img from "../../assets/2D_Image_File/2D_tandard_part_detail(3)_shaft_key_plate_3.png";
+import shaftKeyPlate1Img from "../../assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_1.png";
+import shaftKeyPlate3Img from "../../assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_3.png";
 
 /* Importing assets for Standard Part Detail (4) */
-import collarImg from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar.png";
+import collarImg from "../../assets/2d-images/2D_tandard_part_detail(4)_collar.png";
 
 /* Importing assets for Standard Part Detail (5) */
-import collar1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_1.png";
-import collar2Img from "../../assets/2D_Image_File/2D_tandard_part_detail(4)_collar_2.png";
+import collar1Img from "../../assets/2d-images/2D_tandard_part_detail(4)_collar_1.png";
+import collar2Img from "../../assets/2d-images/2D_tandard_part_detail(4)_collar_2.png";
 
 /* Importing assets for Standard Part Detail (6) */
-import reliefProcess2Img from "../../assets/2D_Image_File/2D_standard_part_detail(6)_relief_process_2.jpg";
-import scaleImg from "../../assets/2D_Image_File/2D_standard_part_detail(6)_scale.jpg";
-import reliefProcess1Img from "../../assets/2D_Image_File/2D_tandard_part_detail(6)_relief_process_1.png";
+import reliefProcess2Img from "../../assets/2d-images/2D_standard_part_detail(6)_relief_process_2.jpg";
+import scaleImg from "../../assets/2d-images/2D_standard_part_detail(6)_scale.jpg";
+import reliefProcess1Img from "../../assets/2d-images/2D_tandard_part_detail(6)_relief_process_1.png";
 
 /* Importing assets for Standard Part Detail (7) */
-import reliefWorkflowImg from "../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_3.png";
-import reliefDialogImg from "../../assets/2D_Image_File/2D_tandard_part_detail(7)_relief_process_4.jpg";
+import reliefWorkflowImg from "../../assets/2d-images/2D_tandard_part_detail(7)_relief_process_3.png";
+import reliefDialogImg from "../../assets/2d-images/2D_tandard_part_detail(7)_relief_process_4.jpg";
 
 interface StandardPartLessonProps {
   nextLabel?: string;

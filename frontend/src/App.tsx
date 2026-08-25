@@ -19,12 +19,12 @@ import { useAuth } from './hooks/useAuth';
 import { api,getSystemStatus } from './services/api';
 import { assessmentService } from './services/assessmentService';
 import { authService } from './services/authService';
-import { LandingView, PublicPolicyView } from './views/LandingView';
-import { LoginView } from './views/LoginView';
-import { RegistrationView } from './views/RegistrationView';
-import { PasswordResetView } from './views/PasswordResetView';
-import { InvitationAcceptanceView } from './views/InvitationAcceptanceView';
-import { AccountCenterView } from './views/AccountCenterView';
+import { LandingView, PublicPolicyView } from './views/Landing/LandingView';
+import { LoginView } from './views/Login/LoginView';
+import { RegistrationView } from './views/Registration/RegistrationView';
+import { PasswordResetView } from './views/PasswordReset/PasswordResetView';
+import { InvitationAcceptanceView } from './views/InvitationAcceptance/InvitationAcceptanceView';
+import { AccountCenterView } from './views/AccountCenter/AccountCenterView';
 import { AdminMode } from './views/admin/AdminMode';
 import AssistantMode from './views/assistant/AssistantMode';
 import MentorMode from './views/mentor/MentorMode';
@@ -32,7 +32,7 @@ import { TraineeTelemetrySidebar } from './views/mentor/components/TraineeTeleme
 import platform from './services/platformService';
 
 import kmtiTrainingHubLogo from './assets/logo/kmti-training-hub.png';
-import './styles/App.css';
+import './App.css';
 
 function AppContent() {
   const isDesktopApp = platform.isDesktopApp;

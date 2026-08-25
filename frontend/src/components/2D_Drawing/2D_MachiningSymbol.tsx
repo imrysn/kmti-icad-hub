@@ -6,10 +6,10 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 /* Importing assets for Machining Symbol */
 
-import machiningSymbolMainImg from "../../assets/2D_Image_File/2D_machining_symbol.png";
+import machiningSymbolMainImg from "../../assets/2d-images/2D_machining_symbol.png";
 
 
 interface MachiningSymbolLessonProps {

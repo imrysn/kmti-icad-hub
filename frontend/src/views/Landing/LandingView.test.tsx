@@ -15,7 +15,7 @@ vi.mock('../../services/registrationService', () => ({
   registrationService: { getPlans: (...args: unknown[]) => mockGetPlans(...args) },
 }));
 
-import { LandingView } from '../LandingView';
+import { LandingView } from './LandingView';
 
 const plans = [
   { id: 1, code: 'icad-foundations', name: 'iCAD Foundations', price_minor_units: 2900, currency_code: 'USD', billing_interval: 'month', display_order: 1 },

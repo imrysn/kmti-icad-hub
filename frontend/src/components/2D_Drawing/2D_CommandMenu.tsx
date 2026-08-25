@@ -5,14 +5,14 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Command Menu */
-import commandMenu1ImgA from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu.png";
-import commandMenu1ImgB from "../../assets/2D_Image_File/2D_command_menu_(1)_command_menu_2.png";
-import linePropsImg from "../../assets/2D_Image_File/2D_command_menu_(1)_selectable_and_unselectable_line.png";
-import activeViewImg from "../../assets/2D_Image_File/2D_command_menu_(2)_active_view.png";
-import componentHighlightedImg from "../../assets/2D_Image_File/2D_command_menu_(3)_component_highlighled_1.png";
+import commandMenu1ImgA from "../../assets/2d-images/2D_command_menu_(1)_command_menu.png";
+import commandMenu1ImgB from "../../assets/2d-images/2D_command_menu_(1)_command_menu_2.png";
+import linePropsImg from "../../assets/2d-images/2D_command_menu_(1)_selectable_and_unselectable_line.png";
+import activeViewImg from "../../assets/2d-images/2D_command_menu_(2)_active_view.png";
+import componentHighlightedImg from "../../assets/2d-images/2D_command_menu_(3)_component_highlighled_1.png";
 
 interface CommandMenuLessonProps {
   nextLabel?: string;

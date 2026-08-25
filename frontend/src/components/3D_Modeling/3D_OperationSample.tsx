@@ -5,45 +5,45 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 
 /* Shared Assets */
-import leftClick from '../../assets/3D_Image_File/left_click.png';
+import leftClick from '../../assets/3d-images/left_click.png';
 // press_q.png removed  Easset deleted in current HEAD
-import booleanSubtractIcon from '../../assets/3D_Image_File/boolean1_subtract.png';
-import centerTool from '../../assets/3D_Image_File/center_tool.png';
+import booleanSubtractIcon from '../../assets/3d-images/boolean1_subtract.png';
+import centerTool from '../../assets/3d-images/center_tool.png';
 
 /* Operation Sample (1) Assets */
-import createPartTool from '../../assets/3D_Image_File/3d_part1_create_3d_part.png';
-import propertiesWindow from '../../assets/3D_Image_File/3d_properties.png';
-import arrangeBoxTool from '../../assets/3D_Image_File/arrange_box_operation_sample1.png';
-import chamferTool from '../../assets/3D_Image_File/chamfer_edge.png';
-import chamferResult from '../../assets/3D_Image_File/chamfered.png';
-import copyTool from '../../assets/3D_Image_File/component1_copy.png';
-import moveTool from '../../assets/3D_Image_File/component1_move.png';
-import copyResult from '../../assets/3D_Image_File/copy_component.png';
-import enterPartName from '../../assets/3D_Image_File/enter_3d_part_name.png';
-import filletTool from '../../assets/3D_Image_File/fillet_edge.png';
-import filletResult from '../../assets/3D_Image_File/filleted.png';
-import layerInfo from '../../assets/3D_Image_File/materials_layer.png';
-import opSample1 from '../../assets/3D_Image_File/operation_sample1.png';
-import opSample1Move from '../../assets/3D_Image_File/operation_sample11.png';
-import mainDrawing from '../../assets/3D_Image_File/sample_3d_modeling_parts.png';
-import machinePartTool from '../../assets/3D_Image_File/select_and_arrange_machine_part.png';
-import subtractResult from '../../assets/3D_Image_File/subtract_operation_sample2.png';
+import createPartTool from '../../assets/3d-images/3d_part1_create_3d_part.png';
+import propertiesWindow from '../../assets/3d-images/3d_properties.png';
+import arrangeBoxTool from '../../assets/3d-images/arrange_box_operation_sample1.png';
+import chamferTool from '../../assets/3d-images/chamfer_edge.png';
+import chamferResult from '../../assets/3d-images/chamfered.png';
+import copyTool from '../../assets/3d-images/component1_copy.png';
+import moveTool from '../../assets/3d-images/component1_move.png';
+import copyResult from '../../assets/3d-images/copy_component.png';
+import enterPartName from '../../assets/3d-images/enter_3d_part_name.png';
+import filletTool from '../../assets/3d-images/fillet_edge.png';
+import filletResult from '../../assets/3d-images/filleted.png';
+import layerInfo from '../../assets/3d-images/materials_layer.png';
+import opSample1 from '../../assets/3d-images/operation_sample1.png';
+import opSample1Move from '../../assets/3d-images/operation_sample11.png';
+import mainDrawing from '../../assets/3d-images/sample_3d_modeling_parts.png';
+import machinePartTool from '../../assets/3d-images/select_and_arrange_machine_part.png';
+import subtractResult from '../../assets/3d-images/subtract_operation_sample2.png';
 
 /* Operation Sample (2-5) Assets */
 // operation_sample_2.jpg removed  Easset deleted in current HEAD
-import mainDrawing3 from '../../assets/3D_Image_File/operation_sample3.png';
-import segmentOverview from '../../assets/3D_Image_File/operation_sample3_segment.png';
-import segmentAResult from '../../assets/3D_Image_File/operation_sample3_segment_a.png';
-import segmentBResult from '../../assets/3D_Image_File/operation_sample3_segment_b.png';
-import keyGrooveBox from '../../assets/3D_Image_File/operation_sample4_4.png';
-import revolveImg from '../../assets/3D_Image_File/operation_sample4_revolve.png';
-import workPlaneImg from '../../assets/3D_Image_File/operation_sample4_work_plane.png';
-import keyGrooveSubtractResult from '../../assets/3D_Image_File/operation_sample5_4_subtract_tool.png';
-import finalPartFairing from '../../assets/3D_Image_File/operation_sample5_6.png';
-import keyGrooveFilletResult from '../../assets/3D_Image_File/operation_sample_2.jpg';
+import mainDrawing3 from '../../assets/3d-images/operation_sample3.png';
+import segmentOverview from '../../assets/3d-images/operation_sample3_segment.png';
+import segmentAResult from '../../assets/3d-images/operation_sample3_segment_a.png';
+import segmentBResult from '../../assets/3d-images/operation_sample3_segment_b.png';
+import keyGrooveBox from '../../assets/3d-images/operation_sample4_4.png';
+import revolveImg from '../../assets/3d-images/operation_sample4_revolve.png';
+import workPlaneImg from '../../assets/3d-images/operation_sample4_work_plane.png';
+import keyGrooveSubtractResult from '../../assets/3d-images/operation_sample5_4_subtract_tool.png';
+import finalPartFairing from '../../assets/3d-images/operation_sample5_6.png';
+import keyGrooveFilletResult from '../../assets/3d-images/operation_sample_2.jpg';
 
 interface OperationSampleLessonProps {
   nextLabel?: string;

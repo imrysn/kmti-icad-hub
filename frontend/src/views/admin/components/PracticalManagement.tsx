@@ -5,7 +5,7 @@ import { Modal } from '../../../components/Modal';
 import { useNotification } from '../../../context/NotificationContext';
 import { assessmentService,AssessmentTask } from '../../../services/assessmentService';
 import { authService,User } from '../../../services/authService';
-import '../../../styles/admin/PracticalManagement.css';
+import './PracticalManagement.css';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';
 import { FileManagerModal } from './FileManagerModal';
 

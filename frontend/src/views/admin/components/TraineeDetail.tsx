@@ -4,7 +4,7 @@ import { Modal } from '../../../components/Modal';
 import { useUI } from '../../../context/UIContext';
 import { useLessons } from '../../../hooks/useLessons';
 import { TraineeProgress,adminService } from '../../../services/adminService';
-import '../../../styles/AssessmentManagement.css';
+import './AssessmentManagement.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from '../../mentor/mentorConstants';
 import { ProgressReportPrint } from './ProgressReportPrint';

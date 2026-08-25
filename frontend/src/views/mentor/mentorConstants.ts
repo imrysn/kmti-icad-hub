@@ -179,6 +179,11 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 4: Rotate the view.',
           'Step 5: Observe how the coordinate reference helps you understand the model orientation.'
         ]
+      },
+      {
+        id: 'basic-op-1',
+        title: 'Lesson 5.2 — Creating Basic Shape',
+        content: []
       }
     ]
   },

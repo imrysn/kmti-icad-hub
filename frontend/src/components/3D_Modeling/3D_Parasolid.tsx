@@ -3,20 +3,20 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Assets */
-import brepDialogImg from '../../assets/3D_Image_File/dialog_box_brep.png';
-import leftClick from '../../assets/3D_Image_File/left_click.png';
-import lightenBrepIcon from '../../assets/3D_Image_File/lighten_brep_solid.png';
-import loadingParasolidImg from '../../assets/3D_Image_File/loading_parasolid.png';
-import messagePaneImg from '../../assets/3D_Image_File/message_pane_brep.png';
-import nameChangeDialogImg from '../../assets/3D_Image_File/name_change_dialog.png';
-import otherInfoImg from '../../assets/3D_Image_File/other_info_parasolid.png';
-import parasolid43Img from '../../assets/3D_Image_File/parasolid4.3.png';
-import importIcon from '../../assets/3D_Image_File/parasolid_import.png';
-import linkDialogImg from '../../assets/3D_Image_File/parasolid_link_dialog.png';
+import brepDialogImg from '../../assets/3d-images/dialog_box_brep.png';
+import leftClick from '../../assets/3d-images/left_click.png';
+import lightenBrepIcon from '../../assets/3d-images/lighten_brep_solid.png';
+import loadingParasolidImg from '../../assets/3d-images/loading_parasolid.png';
+import messagePaneImg from '../../assets/3d-images/message_pane_brep.png';
+import nameChangeDialogImg from '../../assets/3d-images/name_change_dialog.png';
+import otherInfoImg from '../../assets/3d-images/other_info_parasolid.png';
+import parasolid43Img from '../../assets/3d-images/parasolid4.3.png';
+import importIcon from '../../assets/3d-images/parasolid_import.png';
+import linkDialogImg from '../../assets/3d-images/parasolid_link_dialog.png';
 
 interface ParasolidLessonProps {
   nextLabel?: string;

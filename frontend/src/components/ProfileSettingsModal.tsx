@@ -6,7 +6,7 @@ import { api } from '../services/api';
 import { API_BASE_URL } from '../config/apiConfig';
 import { parseBackendError } from '../utils/errorUtils';
 import { Modal } from './Modal';
-import '../styles/ProfileSettings.css';
+import './ProfileSettings.css';
 
 interface ProfileSettingsModalProps {
   isOpen: boolean;

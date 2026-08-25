@@ -4,16 +4,16 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Assets */
-import interfCheckIcon from "../../assets/3D_Image_File/interf_check.png";
-import interfCommandMenu from "../../assets/3D_Image_File/interf_command_menu.png";
-import interferenceResult from "../../assets/3D_Image_File/interference.png";
-import interferenceCheckImg from "../../assets/3D_Image_File/interference_check.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-import listInterfIcon from "../../assets/3D_Image_File/list_all_detected_interf.png";
-import listDisplayWindow from "../../assets/3D_Image_File/list_display_window.png";
+import interfCheckIcon from "../../assets/3d-images/interf_check.png";
+import interfCommandMenu from "../../assets/3d-images/interf_command_menu.png";
+import interferenceResult from "../../assets/3d-images/interference.png";
+import interferenceCheckImg from "../../assets/3d-images/interference_check.png";
+import leftClick from "../../assets/3d-images/left_click.png";
+import listInterfIcon from "../../assets/3d-images/list_all_detected_interf.png";
+import listDisplayWindow from "../../assets/3d-images/list_display_window.png";
 
 interface InterferenceLessonProps {
   nextLabel?: string;

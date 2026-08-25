@@ -1,7 +1,7 @@
 import React from 'react';
 import { Check, RefreshCw, X } from 'lucide-react';
 import { AccessPlan, adminService, RegistrationApplication } from '../../../services/adminService';
-import '../../../styles/RegistrationApprovalManagement.css';
+import './RegistrationApprovalManagement.css';
 
 export const RegistrationApprovalManagement: React.FC = () => {
   const [applications, setApplications] = React.useState<RegistrationApplication[]>([]);

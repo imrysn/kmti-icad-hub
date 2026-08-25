@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { invitationService, InvitationPreview } from '../services/invitationService';
-import '../styles/InvitationAcceptance.css';
+import { invitationService, InvitationPreview } from '../../services/invitationService';
+import './InvitationAcceptance.css';
 
 export const InvitationAcceptanceView:React.FC=()=>{
   const [params]=useSearchParams(); const token=params.get('token')||'';

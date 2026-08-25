@@ -5,23 +5,23 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Line Properties (1) */
-import lineProp1Img from "../../assets/2D_Image_File/2D_line_properties_(1).png";
+import lineProp1Img from "../../assets/2d-images/2D_line_properties_(1).png";
 
 /* Importing assets for Line Properties (2) */
-import lineProp2Img from "../../assets/2D_Image_File/2D_line_properties_(2)_6_changing_line_color.png";
+import lineProp2Img from "../../assets/2d-images/2D_line_properties_(2)_6_changing_line_color.png";
 
 /* Importing assets for Line Properties (3) */
-import lineProp3ImgA from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline1.png";
-import lineProp3ImgB from "../../assets/2D_Image_File/2D_line_properties_(2)_additional_lines_a_spline_spline.png";
+import lineProp3ImgA from "../../assets/2d-images/2D_line_properties_(2)_additional_lines_a_spline1.png";
+import lineProp3ImgB from "../../assets/2d-images/2D_line_properties_(2)_additional_lines_a_spline_spline.png";
 
 /* Importing assets for Line Properties (4) */
-import lineProp4Img from "../../assets/2D_Image_File/2D_line_properties_(3)_additional_lines_a_spline.png.png";
-import lineProp5Img from "../../assets/2D_Image_File/2D_line_properties_(3)_c_piping_center_line_1.png";
-import lineProp6Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_1.png";
-import lineProp7Img from "../../assets/2D_Image_File/2D_line_properties_(4)_d_change_representation_parts_3.png";
+import lineProp4Img from "../../assets/2d-images/2D_line_properties_(3)_additional_lines_a_spline.png.png";
+import lineProp5Img from "../../assets/2d-images/2D_line_properties_(3)_c_piping_center_line_1.png";
+import lineProp6Img from "../../assets/2d-images/2D_line_properties_(4)_d_change_representation_parts_1.png";
+import lineProp7Img from "../../assets/2d-images/2D_line_properties_(4)_d_change_representation_parts_3.png";
 
 interface LinePropertiesLessonProps {
   nextLabel?: string;

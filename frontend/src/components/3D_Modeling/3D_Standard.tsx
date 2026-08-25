@@ -3,28 +3,28 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from 'react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 // --- Assets ---
-import scale2D from '../../assets/3D_Image_File/standard1_scale_2d.png';
-import scale3D from '../../assets/3D_Image_File/standard1_scale_3d.png';
-import scalePointer from '../../assets/3D_Image_File/standard1_scale_pointer.png';
-import scalePointerVGroove from '../../assets/3D_Image_File/standard1_scale_pointer_vgroove.png';
-import gasDischarge from '../../assets/3D_Image_File/standard2_gas_discharge.png';
-import oilGroove from '../../assets/3D_Image_File/standard2_oil_groove.png';
-import sprocketNote from '../../assets/3D_Image_File/standard2_sprocket.png';
-import sprocketKeywayLoc from '../../assets/3D_Image_File/standard3_location_of_sprocket_keyway.png';
-import sprocketColoring from '../../assets/3D_Image_File/standard3_sprocket_3d.png';
-import boltLengthCalc from '../../assets/3D_Image_File/standard6_bolt_length.png';
-import pillowBlock1 from '../../assets/3D_Image_File/standard6_pillow_block_1.png';
-import pillowBlock3 from '../../assets/3D_Image_File/standard6_pillow_block_3.png';
-import slottedThreaded from '../../assets/3D_Image_File/standard7_case1.png';
-import slottedDrill from '../../assets/3D_Image_File/standard7_case2.png';
-import connectionCChannel from '../../assets/3D_Image_File/standard7_connections_case1.png';
-import connectionBothDrill from '../../assets/3D_Image_File/standard7_connections_case2.png';
-import sgpPipesRed from '../../assets/3D_Image_File/standard8_SGP_pipes_red.png';
-import sgpPipesYellow from '../../assets/3D_Image_File/standard8_SGP_pipes_yellow.png';
+import scale2D from '../../assets/3d-images/standard1_scale_2d.png';
+import scale3D from '../../assets/3d-images/standard1_scale_3d.png';
+import scalePointer from '../../assets/3d-images/standard1_scale_pointer.png';
+import scalePointerVGroove from '../../assets/3d-images/standard1_scale_pointer_vgroove.png';
+import gasDischarge from '../../assets/3d-images/standard2_gas_discharge.png';
+import oilGroove from '../../assets/3d-images/standard2_oil_groove.png';
+import sprocketNote from '../../assets/3d-images/standard2_sprocket.png';
+import sprocketKeywayLoc from '../../assets/3d-images/standard3_location_of_sprocket_keyway.png';
+import sprocketColoring from '../../assets/3d-images/standard3_sprocket_3d.png';
+import boltLengthCalc from '../../assets/3d-images/standard6_bolt_length.png';
+import pillowBlock1 from '../../assets/3d-images/standard6_pillow_block_1.png';
+import pillowBlock3 from '../../assets/3d-images/standard6_pillow_block_3.png';
+import slottedThreaded from '../../assets/3d-images/standard7_case1.png';
+import slottedDrill from '../../assets/3d-images/standard7_case2.png';
+import connectionCChannel from '../../assets/3d-images/standard7_connections_case1.png';
+import connectionBothDrill from '../../assets/3d-images/standard7_connections_case2.png';
+import sgpPipesRed from '../../assets/3d-images/standard8_SGP_pipes_red.png';
+import sgpPipesYellow from '../../assets/3d-images/standard8_SGP_pipes_yellow.png';
 
 
 

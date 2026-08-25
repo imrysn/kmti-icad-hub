@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, BookOpen, MessageCircle, PlayCircle, ShieldCheck, ChevronRight, Sparkles, Target, UserCheck, Award, Lock, Menu, X } from 'lucide-react';
-import { PublicAccessPlan, registrationService } from '../services/registrationService';
-import icadInterfacePreview from '../assets/3D_INTERACTIVE/icad_interface.jpg';
-import kmtiLogo from '../assets/logo/kmti_logo.png';
-import kmtiTrainingHubLogo from '../assets/logo/kmti-training-hub.png';
-import '../styles/LandingView.css';
+import { PublicAccessPlan, registrationService } from '../../services/registrationService';
+import icadInterfacePreview from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
+import kmtiLogo from '../../assets/logo/kmti_logo.png';
+import kmtiTrainingHubLogo from '../../assets/logo/kmti-training-hub.png';
+import './LandingView.css';
 
 const PLAN_MARKETING: Record<string, { outcome: string; features: string[]; popular?: boolean }> = {
   'icad-foundations': {

@@ -3,19 +3,19 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { ReadAloudButton } from "../ReadAloudButton";
 
 /* Shared Assets */
-import mirrorNotes from "../../assets/3D_Image_File/mirrored_notes.png";
-import mirrorCopyTool from "../../assets/3D_Image_File/mirrored_part1_mirror_copy_tool.jpg";
-import mirrorPartA from "../../assets/3D_Image_File/mirrored_part1_mirror_part.png";
-import normalPartA from "../../assets/3D_Image_File/mirrored_part1_normal_part.png";
-import originLocation from "../../assets/3D_Image_File/mirrored_part2_location_of_origin.png";
-import mirrorTool from "../../assets/3D_Image_File/mirrored_part2_mirror.png";
-import pick3Points from "../../assets/3D_Image_File/mirrored_part2_pick3_points.png";
-import pick3PointsPartA from "../../assets/3D_Image_File/mirrored_part2_pick3_points_part_a.png";
+import mirrorNotes from "../../assets/3d-images/mirrored_notes.png";
+import mirrorCopyTool from "../../assets/3d-images/mirrored_part1_mirror_copy_tool.jpg";
+import mirrorPartA from "../../assets/3d-images/mirrored_part1_mirror_part.png";
+import normalPartA from "../../assets/3d-images/mirrored_part1_normal_part.png";
+import originLocation from "../../assets/3d-images/mirrored_part2_location_of_origin.png";
+import mirrorTool from "../../assets/3d-images/mirrored_part2_mirror.png";
+import pick3Points from "../../assets/3d-images/mirrored_part2_pick3_points.png";
+import pick3PointsPartA from "../../assets/3d-images/mirrored_part2_pick3_points_part_a.png";
 
 interface MirroredPartLessonProps {
   nextLabel?: string;

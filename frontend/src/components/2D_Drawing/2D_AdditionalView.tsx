@@ -5,15 +5,15 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets */
-import additionalView1Img1 from "../../assets/2D_Image_File/2D_additional_view(1)_a.png";
-import additionalView2ImgB from "../../assets/2D_Image_File/2D_additional_view(2)_b.png";
-import additionalView2ImgC from "../../assets/2D_Image_File/2D_additional_view(2)_c.png";
-import additionalView3ImgD from "../../assets/2D_Image_File/2D_additional_view(3)_d.png";
-import additionalView3ImgE from "../../assets/2D_Image_File/2D_additional_view(3)_e.png";
-import additionalView4ImgF from "../../assets/2D_Image_File/2D_additional_view(4)_f.png";
+import additionalView1Img1 from "../../assets/2d-images/2D_additional_view(1)_a.png";
+import additionalView2ImgB from "../../assets/2d-images/2D_additional_view(2)_b.png";
+import additionalView2ImgC from "../../assets/2d-images/2D_additional_view(2)_c.png";
+import additionalView3ImgD from "../../assets/2d-images/2D_additional_view(3)_d.png";
+import additionalView3ImgE from "../../assets/2d-images/2D_additional_view(3)_e.png";
+import additionalView4ImgF from "../../assets/2d-images/2D_additional_view(4)_f.png";
 
 interface AdditionalViewLessonProps {
   nextLabel?: string;

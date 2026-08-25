@@ -2,7 +2,7 @@ import { AlertCircle,Info,Megaphone } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
 import { adminService } from '../services/adminService';
 import platform from '../services/platformService';
-import '../styles/BroadcastBanner.css';
+import './BroadcastBanner.css';
 
 interface Broadcast {
     id: number;

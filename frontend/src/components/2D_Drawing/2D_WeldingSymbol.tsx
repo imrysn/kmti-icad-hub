@@ -5,12 +5,12 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Welding Symbol and Notes */
-import weldingSymbolMainImg from "../../assets/2D_Image_File/2D_welding_symbol.png";
-import weldingSymbolNotesImg from "../../assets/2D_Image_File/2D_welding_symbol_notes.jpg";
-import standardNotesImg from "../../assets/2D_Image_File/2D_welding_symbol_standard_notes.jpg";
+import weldingSymbolMainImg from "../../assets/2d-images/2D_welding_symbol.png";
+import weldingSymbolNotesImg from "../../assets/2d-images/2D_welding_symbol_notes.jpg";
+import standardNotesImg from "../../assets/2d-images/2D_welding_symbol_standard_notes.jpg";
 
 interface WeldingSymbolLessonProps {
   nextLabel?: string;

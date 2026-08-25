@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 import { useTranslation } from '../../context/LanguageContext';
 import {
@@ -25,7 +25,7 @@ import {
 import VideoTutorialViewer from './VideoTutorialViewer';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
-import leftClick from '../../assets/3D_Image_File/left_click.png';
+import leftClick from '../../assets/3d-images/left_click.png';
 
 // Video imports for replacing preview images
 import vidCopy from '../../assets/3D_Video_Tutorial/basicOp_copy.mp4';
@@ -38,9 +38,9 @@ import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 /* Tabs: Cylinder | Box | Polygon | Cone | Torus */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import cmdMenu from '../../assets/3D_Image_File/basic_operation1_command_menu.png';
+import cmdMenu from '../../assets/3d-images/basic_operation1_command_menu.png';
 
-import threeDView from '../../assets/3D_Image_File/basic_operation1_3d_view.png';
+import threeDView from '../../assets/3d-images/basic_operation1_3d_view.png';
 
 
 
@@ -64,102 +64,102 @@ import threeDView from '../../assets/3D_Image_File/basic_operation1_3d_view.png'
 /* Tabs: Move | Rotate | Mirror | Copy | Rotate Copy | Mirror Copy | Delete */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import operationsMenu from '../../assets/3D_Image_File/basic_operation1_move_rotate_copy_mirror_delete.png';
+import operationsMenu from '../../assets/3d-images/basic_operation1_move_rotate_copy_mirror_delete.png';
 
-import moveMenu from '../../assets/3D_Image_File/basic_operation2_move.png';
+import moveMenu from '../../assets/3d-images/basic_operation2_move.png';
 
-import itemEntryMove from '../../assets/3D_Image_File/basic_operation2_item_entry_box.png';
-
-
-import rotateIcon from '../../assets/3D_Image_File/basic_operation3_rotate.png';
+import itemEntryMove from '../../assets/3d-images/basic_operation2_item_entry_box.png';
 
 
-import rotateEntry from '../../assets/3D_Image_File/basic_operation3_rotate_item_entry.png';
-
-import mirrorIcon from '../../assets/3D_Image_File/basic_operation3_mirror.png';
+import rotateIcon from '../../assets/3d-images/basic_operation3_rotate.png';
 
 
-import copyIcon from '../../assets/3D_Image_File/basic_operation3_copy.png';
+import rotateEntry from '../../assets/3d-images/basic_operation3_rotate_item_entry.png';
 
-import copyDistance from '../../assets/3D_Image_File/basic_operation3_copy_distance.png';
+import mirrorIcon from '../../assets/3d-images/basic_operation3_mirror.png';
 
 
-import rotateCopyIcon from '../../assets/3D_Image_File/basic_operation3_rotatecopy.png';
+import copyIcon from '../../assets/3d-images/basic_operation3_copy.png';
 
-import rotateCopyAxis from '../../assets/3D_Image_File/basic_operation3_rotate_copy.png';
+import copyDistance from '../../assets/3d-images/basic_operation3_copy_distance.png';
 
-import mirrorCopyIcon from '../../assets/3D_Image_File/basic_operation3_mirror_copy.png';
 
-import mirrorCopyResult from '../../assets/3D_Image_File/basic_operation3_mirrorcopy.png';
+import rotateCopyIcon from '../../assets/3d-images/basic_operation3_rotatecopy.png';
 
-import deleteIcon from '../../assets/3D_Image_File/basic_operation3_delete.png';
+import rotateCopyAxis from '../../assets/3d-images/basic_operation3_rotate_copy.png';
+
+import mirrorCopyIcon from '../../assets/3d-images/basic_operation3_mirror_copy.png';
+
+import mirrorCopyResult from '../../assets/3d-images/basic_operation3_mirrorcopy.png';
+
+import deleteIcon from '../../assets/3d-images/basic_operation3_delete.png';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (3)  ESKETCH / EXTRUDE / REVOLVE / SHOW-HIDE / STRETCH / RESIZE */
 /* Lesson-item child ID: 'basic-op-3' */
 /* Tabs: Sketch/Extrude/Revolve | Show/Hide | Stretch | Resize */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import sketchIcon from '../../assets/3D_Image_File/basic_operation4_sketch.jpg';
+import sketchIcon from '../../assets/3d-images/basic_operation4_sketch.jpg';
 
-import sketchResultImg from '../../assets/3D_Image_File/basic_operation4_sketch1.jpg';
+import sketchResultImg from '../../assets/3d-images/basic_operation4_sketch1.jpg';
 
-import sketchIntroImg from '../../assets/3D_Image_File/basic_operation_(3)_sketch.jpg';
+import sketchIntroImg from '../../assets/3d-images/basic_operation_(3)_sketch.jpg';
 
-import extrudeRevolveMenu from '../../assets/3D_Image_File/basic_operation4_extrude_revolve.png';
+import extrudeRevolveMenu from '../../assets/3d-images/basic_operation4_extrude_revolve.png';
 
-import extrudeOneSide from '../../assets/3D_Image_File/basic_operation4_extrusion_oneside.png';
+import extrudeOneSide from '../../assets/3d-images/basic_operation4_extrusion_oneside.png';
 /* cspell:disable-line */
 
-import extrudeBothSide from '../../assets/3D_Image_File/basic_operation4_extrusion_bothside.png';
+import extrudeBothSide from '../../assets/3d-images/basic_operation4_extrusion_bothside.png';
 /* cspell:disable-line */
 
-import revolveIcon from '../../assets/3D_Image_File/basic_operation4_revolve.png';
+import revolveIcon from '../../assets/3d-images/basic_operation4_revolve.png';
 
 
-import revolveP2 from '../../assets/3D_Image_File/basic_operation4_revolve_p2.png';
+import revolveP2 from '../../assets/3d-images/basic_operation4_revolve_p2.png';
 
-import showHideMenu from '../../assets/3D_Image_File/basic_operation4_show_hide.jpg';
+import showHideMenu from '../../assets/3d-images/basic_operation4_show_hide.jpg';
 
-import showHideEntity from '../../assets/3D_Image_File/basic_operation4_show_hide_entity.png';
+import showHideEntity from '../../assets/3d-images/basic_operation4_show_hide_entity.png';
 
-import showHideDraftingEntity from '../../assets/3D_Image_File/basic_operation4_showhide_drafting_entity.png';
+import showHideDraftingEntity from '../../assets/3d-images/basic_operation4_showhide_drafting_entity.png';
 /* cspell:disable-line */
 
-import hideUnselectedEntity from '../../assets/3D_Image_File/basic_operation4_hide_unselected_entity.png';
+import hideUnselectedEntity from '../../assets/3d-images/basic_operation4_hide_unselected_entity.png';
 
-import hideUnselectedEntity1 from '../../assets/3D_Image_File/basic_operation4_hide_unselected_entity_1.png';
+import hideUnselectedEntity1 from '../../assets/3d-images/basic_operation4_hide_unselected_entity_1.png';
 
-import stretchIcon from '../../assets/3D_Image_File/basic_operation5_stretch.png';
-import fairingChamferImg from '../../assets/3D_Image_File/fairing_chamfer.jpg';
+import stretchIcon from '../../assets/3d-images/basic_operation5_stretch.png';
+import fairingChamferImg from '../../assets/3d-images/fairing_chamfer.jpg';
 
-import stretchItemEntry from '../../assets/3D_Image_File/basic_operation5_item_entry_stretch.png';
+import stretchItemEntry from '../../assets/3d-images/basic_operation5_item_entry_stretch.png';
 
-import stretchImg1 from '../../assets/3D_Image_File/basic_operation5_stretch1.png';
+import stretchImg1 from '../../assets/3d-images/basic_operation5_stretch1.png';
 
-import stretchImg2 from '../../assets/3D_Image_File/basic_operation5_stretch2.png';
+import stretchImg2 from '../../assets/3d-images/basic_operation5_stretch2.png';
 
-import resizeIcon from '../../assets/3D_Image_File/basic_operation5_resize.png';
+import resizeIcon from '../../assets/3d-images/basic_operation5_resize.png';
 
-import resizeItemEntry from '../../assets/3D_Image_File/basic_operation5_item_entry_resize.png';
+import resizeItemEntry from '../../assets/3d-images/basic_operation5_item_entry_resize.png';
 
-import resize3_2 from '../../assets/3D_Image_File/basic_operation5_resize3_2.png';
+import resize3_2 from '../../assets/3d-images/basic_operation5_resize3_2.png';
 /* ══════════════════════════════════════════════════════════════════════════ */
 /* Basic Operation (4)  EARRANGE MACHINE PART / SHAPE STEELS */
 /* Lesson-item child ID: 'basic-op-4' */
 /* Tabs: Shape Steels */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import arrangeMachinePartMenu from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part.png';
+import arrangeMachinePartMenu from '../../assets/3d-images/basic_operation6_arrange_machine_part.png';
 
-import arrangeMachinePartWindow from '../../assets/3D_Image_File/basic_operation6_arrange_machine_part_window.png';
+import arrangeMachinePartWindow from '../../assets/3d-images/basic_operation6_arrange_machine_part_window.png';
 
-import shapeSteelsTypes from '../../assets/3D_Image_File/basic_operation6_shape_steels.png';
+import shapeSteelsTypes from '../../assets/3d-images/basic_operation6_shape_steels.png';
 
-import shapeSteels1 from '../../assets/3D_Image_File/basic_operation6_shape_steels1.png';
+import shapeSteels1 from '../../assets/3d-images/basic_operation6_shape_steels1.png';
 
-import shapeSteels2 from '../../assets/3D_Image_File/basic_operation6_shape_steels2.png';
+import shapeSteels2 from '../../assets/3d-images/basic_operation6_shape_steels2.png';
 
-import keyEntryArea from '../../assets/3D_Image_File/basic_operation1_key_entry_area.png';
+import keyEntryArea from '../../assets/3d-images/basic_operation1_key_entry_area.png';
 /* ────────────────────────────────────────────────────────────────────────── */
 /* Sub-lesson components */
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -282,7 +282,11 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     return steps.map(s => {
       const stepNum = s.id.split('-')[1];
       const stepKey = stepNum === '0' ? 'intro' : (stepNum === (steps.length - 1).toString() ? 'outro' : `step${stepNum}`);
-      return { ...s, title: t(`basicOp.${shapeId}.title`), text: t(`basicOp.${shapeId}.${stepKey}`) };
+      return { 
+        ...s, 
+        title: s.customTitle || t(`basicOp.${shapeId}.title`), 
+        text: s.customText || t(`basicOp.${shapeId}.${stepKey}`) 
+      };
     });
   }, [t]);
 

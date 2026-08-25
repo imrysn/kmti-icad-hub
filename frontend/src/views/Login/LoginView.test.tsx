@@ -48,7 +48,7 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-import { LoginView } from '../LoginView';
+import { LoginView } from './LoginView';
 
 const renderLogin = () =>
   render(
@@ -83,9 +83,9 @@ describe('LoginView — rendering', () => {
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
-  it('renders KMTI brand logos', () => {
+  it('renders the KMTI brand heading', () => {
     renderLogin();
-    expect(screen.getAllByRole('img', { name: 'KMTI' })).toHaveLength(1);
+    expect(screen.getByRole('heading', { name: 'KMTI' })).toBeInTheDocument();
   });
 });
 // Validation
@@ -222,23 +222,9 @@ describe('LoginView — Remember Me checkbox', () => {
 });
 // Close button
 describe('LoginView — Top-Right Control Buttons', () => {
-  it('renders close button and calls window.electronAPI.close on click', async () => {
-    const mockClose = vi.fn();
-    // @ts-ignore
-    window.electronAPI = { close: mockClose };
-
-    const user = userEvent.setup();
+  it('does not render the desktop close button in the browser', () => {
     renderLogin();
-
-    const closeBtn = screen.getByTitle(/close application/i);
-    expect(closeBtn).toBeInTheDocument();
-
-    await user.click(closeBtn);
-    expect(mockClose).toHaveBeenCalled();
-
-    // Clean up mock
-    // @ts-ignore
-    delete window.electronAPI;
+    expect(screen.queryByTitle(/close application/i)).not.toBeInTheDocument();
   });
 
   it('does not expose manual API server configuration', () => {

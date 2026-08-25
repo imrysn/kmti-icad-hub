@@ -186,7 +186,7 @@
   "2d.command_menu_1": "コマンドメニュー",
   "2d.active_view_1": "アクティブビュー",
   "2d.component_highlighted_unhighlighted": "コンポーネントの強調表示/非強調表示",
-  "2d.assets_2d_image_file_2d_dimensioning_4_b": "../../assets/2D_Image_File/2D_dimensioning(4)_b.4_change_position_1 (1).png",
+  "2d.assets_2d_image_file_2d_dimensioning_4_b": "../../assets/2d-images/2D_dimensioning(4)_b.4_change_position_1 (1).png",
   "2d.put_all_the_dimensions_symbols_and_notes": "必要な寸法、記号、注記をすべて図面に記入します。",
   "2d.this_is_the_basic_command_for_adding_dim": "これは、寸法を 1 つずつ追加するための基本的なコマンドです。 Line 1 と Line 2 を選択し、目的の位置までドラッグします。",
   "2d.use_this_for_continuous_linear_dimension": "これは連続直線寸法に使用します。複数の線を順番に選択し、「GO」をクリックして整列したチェーンを配置します。",

@@ -2,16 +2,16 @@ import { useTranslation } from '../../context/LanguageContext';
 import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Asset Imports */
-import arrangeMachinePart from "../../assets/3D_Image_File/hole_details_arrange_machine_part.png";
-import holeResult from "../../assets/3D_Image_File/hole_details_hole.png";
-import listTools from "../../assets/3D_Image_File/hole_details_list_tools.png";
-import partsPlacement from "../../assets/3D_Image_File/hole_details_parts_placement.png";
-import tappedHoles from "../../assets/3D_Image_File/hole_details_tapped_holes.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
+import arrangeMachinePart from "../../assets/3d-images/hole_details_arrange_machine_part.png";
+import holeResult from "../../assets/3d-images/hole_details_hole.png";
+import listTools from "../../assets/3d-images/hole_details_list_tools.png";
+import partsPlacement from "../../assets/3d-images/hole_details_parts_placement.png";
+import tappedHoles from "../../assets/3d-images/hole_details_tapped_holes.png";
+import leftClick from "../../assets/3d-images/left_click.png";
 
 interface HoleDetailsLessonProps {
   onNextLesson?: () => void;

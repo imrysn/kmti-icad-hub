@@ -1,7 +1,7 @@
 import { AlertTriangle,CheckCircle2,Info } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from '../context/LanguageContext';
-import '../styles/ConfirmationModal.css';
+import './ConfirmationModal.css';
 import { Modal } from './Modal';
 
 export interface ConfirmationModalProps {

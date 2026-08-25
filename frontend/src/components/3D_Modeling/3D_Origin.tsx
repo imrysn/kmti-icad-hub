@@ -3,13 +3,13 @@ import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from '../../context/LanguageContext';
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 // --- Assets ---
-import originOverview from "../../assets/3D_Image_File/origin.png";
-import toolSelection from "../../assets/3D_Image_File/origin_change_3d_part_layout.png";
-import interactionSteps from "../../assets/3D_Image_File/origin_change_3d_part_layout_2345.png";
+import originOverview from "../../assets/3d-images/origin.png";
+import toolSelection from "../../assets/3d-images/origin_change_3d_part_layout.png";
+import interactionSteps from "../../assets/3d-images/origin_change_3d_part_layout_2345.png";
 
 interface OriginLessonProps {
   onNextLesson?: () => void;

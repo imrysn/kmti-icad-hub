@@ -7,11 +7,48 @@ import './VideoTutorialViewer.css';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
+import { KaraokeLessonText } from '../KaraokeLessonText';
+
+export type TutorialOverlayType =
+  | 'highlight'
+  | 'callout'
+  | 'dimensionAnnotation';
+
+export interface NormalizedPoint {
+  x: number;
+  y: number;
+}
+
+export interface NormalizedRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface TutorialOverlay {
+  id: string;
+  type: TutorialOverlayType;
+  startTime: number;
+  endTime: number;
+  target?: NormalizedRect;
+  label?: string;
+  labelPosition?: 'top' | 'bottom' | 'left' | 'right';
+  labelOffset?: { x: number, y: number };
+  animation?: 'none' | 'pulse' | 'flash';
+  line?: {
+    start: NormalizedPoint;
+    end: NormalizedPoint;
+  };
+  dimensionType?: 'horizontal' | 'vertical';
+}
 
 export interface TutorialStep {
   id: string | number;
   title: string;
   text: string;
+  customText?: string;
+  customTitle?: string;
   zoom: string;
   origin: string;
   spotlight: {
@@ -35,6 +72,7 @@ export interface TutorialStep {
   videoSrc?: string;
   videoStart?: number;
   videoEnd?: number;
+  overlays?: TutorialOverlay[];
 }
 
 interface VideoTutorialViewerProps {
@@ -50,11 +88,53 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
+  const [videoRect, setVideoRect] = useState({ left: 0, top: 0, width: 0, height: 0 });
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
+
+  // Handle precise video rendering area for overlays
+  useEffect(() => {
+    const video = tutorialVideoRef.current;
+    if (!video) return;
+
+    const updateRect = () => {
+      if (!video.videoWidth || !video.clientWidth) return;
+      
+      const vRatio = video.videoWidth / video.videoHeight;
+      const cRatio = video.clientWidth / video.clientHeight;
+      
+      let w, h, x = 0, y = 0;
+      
+      if (cRatio > vRatio) {
+        // Container is wider than video
+        h = video.clientHeight;
+        w = h * vRatio;
+        x = (video.clientWidth - w) / 2;
+      } else {
+        // Container is taller than video
+        w = video.clientWidth;
+        h = w / vRatio;
+        y = (video.clientHeight - h) / 2;
+      }
+      setVideoRect({ left: x, top: y, width: w, height: h });
+    };
+
+    updateRect();
+    
+    const observer = new ResizeObserver(() => updateRect());
+    observer.observe(video);
+    
+    // Also update on loadedmetadata when videoWidth becomes available
+    video.addEventListener('loadedmetadata', updateRect);
+    
+    return () => {
+      observer.disconnect();
+      video.removeEventListener('loadedmetadata', updateRect);
+    };
+  }, [currentStep, isFullscreen]);
 
   useEffect(() => {
     const syncFullscreenState = () => {
@@ -405,33 +485,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     }
   };
 
-  const renderKaraokeText = () => {
-    const text = steps[currentStep].text;
-    if (!isPlaying || currentCharIndex === 0) {
-      return <p className="tutorial-description">{text}</p>;
-    }
 
-    let startIdx = currentCharIndex;
-    // Skip spaces
-    while (startIdx < text.length && text[startIdx] === ' ') {
-      startIdx++;
-    }
-
-    let nextSpace = text.indexOf(' ', startIdx);
-    if (nextSpace === -1) nextSpace = text.length;
-
-    const pre = text.substring(0, startIdx);
-    const current = text.substring(startIdx, nextSpace);
-    const post = text.substring(nextSpace);
-
-    return (
-      <p className="tutorial-description" style={{ lineHeight: '1.5' }}>
-        <span style={{ color: '#fff' }}>{pre}</span>
-        <span style={{ color: 'var(--primary)', textShadow: '0 0 8px var(--color-primary-glow)', fontWeight: 'bold' }}>{current}</span>
-        <span style={{ color: '#888' }}>{post}</span>
-      </p>
-    );
-  };
 
   const getSubHighlightIndices = () => {
     if (!currentData || !currentData.wordSpotlights) return [];
@@ -665,12 +719,133 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
               }}
             />
           )}
+          
           <div className="tutorial-spotlight-overlay">
             <div
               className="tutorial-spotlight-cutout"
               style={getActiveSpotlight()}
             />
           </div>
+
+          {/* New Optional Overlays */}
+          {currentData.overlays && videoRect.width > 0 && (
+            <div className="tutorial-interactive-overlays" style={{
+              position: 'absolute',
+              top: 0, left: 0, width: '100%', height: '100%',
+              pointerEvents: 'none',
+              overflow: 'hidden'
+            }}>
+              {currentData.overlays.map(overlay => {
+                if (videoTime < overlay.startTime || videoTime > overlay.endTime) return null;
+                
+                if (overlay.type === 'highlight' && overlay.target) {
+                  const left = videoRect.left + overlay.target.x * videoRect.width;
+                  const top = videoRect.top + overlay.target.y * videoRect.height;
+                  const width = overlay.target.width * videoRect.width;
+                  const height = overlay.target.height * videoRect.height;
+                  
+                  return (
+                    <div key={overlay.id} className={`overlay-highlight ${overlay.animation || 'none'}`} style={{
+                      position: 'absolute',
+                      left: `${left}px`,
+                      top: `${top}px`,
+                      width: `${width}px`,
+                      height: `${height}px`,
+                      border: '2px solid rgba(255, 0, 0, 0.8)',
+                      borderRadius: '4px',
+                      boxShadow: '0 0 8px rgba(255, 0, 0, 0.5)',
+                      pointerEvents: 'none',
+                      zIndex: 10
+                    }}>
+                      {overlay.label && (() => {
+                        const labelPos = overlay.labelPosition || 'top';
+                        let labelStyle: React.CSSProperties = {
+                          position: 'absolute',
+                          background: 'rgba(0,0,0,0.7)',
+                          color: 'white',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          whiteSpace: 'nowrap'
+                        };
+                        
+                        if (labelPos === 'top') {
+                          labelStyle.bottom = '100%';
+                          labelStyle.left = '50%';
+                          labelStyle.transform = 'translateX(-50%)';
+                          labelStyle.marginBottom = '4px';
+                        } else if (labelPos === 'bottom') {
+                          labelStyle.top = '100%';
+                          labelStyle.left = '50%';
+                          labelStyle.transform = 'translateX(-50%)';
+                          labelStyle.marginTop = '4px';
+                        } else if (labelPos === 'left') {
+                          labelStyle.right = '100%';
+                          labelStyle.top = '50%';
+                          labelStyle.transform = 'translateY(-50%)';
+                          labelStyle.marginRight = '4px';
+                        } else if (labelPos === 'right') {
+                          labelStyle.left = '100%';
+                          labelStyle.top = '50%';
+                          labelStyle.transform = 'translateY(-50%)';
+                          labelStyle.marginLeft = '4px';
+                        }
+                        
+                        return (
+                          <div style={labelStyle}>
+                            {overlay.label}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }
+                
+                if (overlay.type === 'dimensionAnnotation' && overlay.line) {
+                  const x1 = videoRect.left + overlay.line.start.x * videoRect.width;
+                  const y1 = videoRect.top + overlay.line.start.y * videoRect.height;
+                  const x2 = videoRect.left + overlay.line.end.x * videoRect.width;
+                  const y2 = videoRect.top + overlay.line.end.y * videoRect.height;
+                  
+                  return (
+                    <svg key={overlay.id} style={{
+                      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10
+                    }}>
+                      <defs>
+                        <marker id={`arrow-${overlay.id}-start`} markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto-start-reverse">
+                          <path d="M0,0 L0,6 L9,3 z" fill="rgba(255,0,0,0.9)" />
+                        </marker>
+                        <marker id={`arrow-${overlay.id}-end`} markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                          <path d="M0,0 L0,6 L9,3 z" fill="rgba(255,0,0,0.9)" />
+                        </marker>
+                      </defs>
+                      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,0,0,0.9)" strokeWidth="2" markerStart={`url(#arrow-${overlay.id}-start)`} markerEnd={`url(#arrow-${overlay.id}-end)`} />
+                      {overlay.label && (() => {
+                        const defaultX = (x1 + x2) / 2;
+                        const defaultY = (y1 + y2) / 2 - (overlay.dimensionType === 'horizontal' ? 8 : 0);
+                        const offsetX = overlay.labelOffset?.x || 0;
+                        const offsetY = overlay.labelOffset?.y || 0;
+                        const finalX = defaultX + offsetX;
+                        const finalY = defaultY + offsetY;
+
+                        return (
+                          <text x={finalX} y={finalY} 
+                                fill="white" fontSize="14" fontWeight="bold" 
+                                textAnchor="middle" alignmentBaseline={overlay.dimensionType === 'vertical' ? 'middle' : 'auto'}
+                                transform={overlay.dimensionType === 'vertical' && !overlay.labelOffset ? `translate(20, 0)` : ''}
+                                style={{ textShadow: '1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black' }}>
+                            {overlay.label}
+                          </text>
+                        );
+                      })()}
+                    </svg>
+                  );
+                }
+                
+                return null;
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -679,7 +854,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         isPlaying && (
           <div className="tutorial-subtitle-flat">
             <h2 className="tutorial-title">{currentData.title}</h2>
-            {renderKaraokeText()}
+            <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
           </div>
         )
       ) : (
@@ -704,7 +879,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
             </button>
           )}
           <h2 className="tutorial-title">{currentData.title}</h2>
-          {renderKaraokeText()}
+          <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
         </div>
       )}
 

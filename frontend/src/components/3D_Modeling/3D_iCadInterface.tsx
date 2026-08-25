@@ -2,8 +2,8 @@ import { ChevronLeft,ChevronRight,Monitor } from 'lucide-react';
 import React,{ useState } from "react";
 import LessonIntroPanel from '../LessonIntroPanel';
 import { useLessonCore } from "../../hooks/useLessonCore";
-import "../../styles/3D_Modeling/CourseLesson.css";
-import "../../styles/LessonIntroPanel.css";
+import './CourseLesson.css';
+import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
 
 interface IcadInterfaceLessonProps {

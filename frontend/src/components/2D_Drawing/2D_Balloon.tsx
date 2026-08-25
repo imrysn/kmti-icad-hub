@@ -5,11 +5,11 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
-import balloonAssemblyMenuImg from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png";
-import balloonAssemblyMenu2Img from "../../assets/2D_Image_File/2D_balloon_assembly_drawing_2.png";
-import balloonPartMenuImg from "../../assets/2D_Image_File/2D_balloon_part_drawing.png";
+import balloonAssemblyMenuImg from "../../assets/2d-images/2D_balloon_assembly_drawing_1.png";
+import balloonAssemblyMenu2Img from "../../assets/2d-images/2D_balloon_assembly_drawing_2.png";
+import balloonPartMenuImg from "../../assets/2d-images/2D_balloon_part_drawing.png";
 
 interface BalloonLessonProps {
   nextLabel?: string;

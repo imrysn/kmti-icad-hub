@@ -12,7 +12,7 @@ import { api } from '../../../services/api';
 import { assessmentService, AssessmentSubmission } from '../../../services/assessmentService';
 import { authService } from '../../../services/authService';
 import platform from '../../../services/platformService';
-import '../../../styles/mentor/PracticalTrainerDashboard.css';
+import './PracticalTrainerDashboard.css';
 import { getAvatarColor } from '../../../utils/avatarUtils';
 import { getFileOperationErrorMessage } from '../../../utils/fileOperationErrors';
 import { getUnitCodeBadgeClass } from '../../../utils/unitCodeUtils';

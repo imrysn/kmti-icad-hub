@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { parseBackendError } from '../utils/errorUtils';
-import '../styles/RegistrationView.css';
+import { authService } from '../../services/authService';
+import { parseBackendError } from '../../utils/errorUtils';
+import '../Registration/RegistrationView.css';
 
 export const PasswordResetView: React.FC = () => {
   const [params] = useSearchParams();

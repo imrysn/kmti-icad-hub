@@ -3,6 +3,7 @@ import { useTranslation } from '../../context/LanguageContext';
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
+import { KaraokeLessonText } from '../KaraokeLessonText';
 import './VideoTutorialModal.css';
 
 // We import the specific image for this tutorial
@@ -365,33 +366,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
     }
   };
 
-  const renderKaraokeText = () => {
-    const text = steps[currentStep].text;
-    if (!isPlaying || currentCharIndex === 0) {
-      return <p className="tutorial-description">{text}</p>;
-    }
 
-    let startIdx = currentCharIndex;
-    // Skip spaces
-    while (startIdx < text.length && text[startIdx] === ' ') {
-      startIdx++;
-    }
-
-    let nextSpace = text.indexOf(' ', startIdx);
-    if (nextSpace === -1) nextSpace = text.length;
-
-    const pre = text.substring(0, startIdx);
-    const current = text.substring(startIdx, nextSpace);
-    const post = text.substring(nextSpace);
-
-    return (
-      <p className="tutorial-description" style={{ lineHeight: '1.5' }}>
-        <span style={{ color: '#fff' }}>{pre}</span>
-        <span style={{ color: 'var(--primary)', textShadow: '0 0 8px var(--color-primary-glow)', fontWeight: 'bold' }}>{current}</span>
-        <span style={{ color: '#888' }}>{post}</span>
-      </p>
-    );
-  };
 
   const getSubHighlightIndices = () => {
     if (!currentData || !currentData.wordSpotlights) return [];
@@ -613,7 +588,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
         isPlaying && (
           <div className="tutorial-subtitle-flat">
             <h2 className="tutorial-title">{currentData.title}</h2>
-            {renderKaraokeText()}
+            <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
           </div>
         )
       ) : (
@@ -629,7 +604,7 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
           }}
         >
           <h2 className="tutorial-title">{currentData.title}</h2>
-          {renderKaraokeText()}
+          <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
         </div>
       )}
 

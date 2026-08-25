@@ -6,27 +6,27 @@ ChevronRight
 } from 'lucide-react';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
 /* 2D > 3D (1) Assets */
-import commandMenu from "../../assets/3D_Image_File/2d_3d1_1.png";
-import extrudeDialog from "../../assets/3D_Image_File/2d_3d2_extrude1.png";
-import revolveSteps from "../../assets/3D_Image_File/2d_3d2spiral.png";
-import commandMenu2 from "../../assets/3D_Image_File/2d_3d_1_command_menu2.png";
-import extrudeIcon from "../../assets/3D_Image_File/2d_3d_1_extrude.png";
-import pickCrossSection from "../../assets/3D_Image_File/2d_3d_1_pick_cross_section.png";
-import revolveIcon from "../../assets/3D_Image_File/2d_3d_2_revolve.png";
-import spiralSketch from "../../assets/3D_Image_File/2d_3d_2_revolve_spiral_form_sketch.png";
-import spiralIcon from "../../assets/3D_Image_File/2d_3d_2_spiral_form.png";
-import spiralRotation from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation.png";
-import spiralRotation1 from "../../assets/3D_Image_File/2d_3d_2_spiral_form_axis_rotation1.png";
-import spiralItemEntry from "../../assets/3D_Image_File/2d_3d_2_spiral_form_item_entry.png";
-import openWorkPlaneImg2 from "../../assets/3D_Image_File/2d_3d_open_work_plane.png";
-import openWorkPlaneImg from "../../assets/3D_Image_File/2d_3d_open_work_plane1.png";
-import workPlaneImg from "../../assets/3D_Image_File/2d_3d_work_plane.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
+import commandMenu from "../../assets/3d-images/2d_3d1_1.png";
+import extrudeDialog from "../../assets/3d-images/2d_3d2_extrude1.png";
+import revolveSteps from "../../assets/3d-images/2d_3d2spiral.png";
+import commandMenu2 from "../../assets/3d-images/2d_3d_1_command_menu2.png";
+import extrudeIcon from "../../assets/3d-images/2d_3d_1_extrude.png";
+import pickCrossSection from "../../assets/3d-images/2d_3d_1_pick_cross_section.png";
+import revolveIcon from "../../assets/3d-images/2d_3d_2_revolve.png";
+import spiralSketch from "../../assets/3d-images/2d_3d_2_revolve_spiral_form_sketch.png";
+import spiralIcon from "../../assets/3d-images/2d_3d_2_spiral_form.png";
+import spiralRotation from "../../assets/3d-images/2d_3d_2_spiral_form_axis_rotation.png";
+import spiralRotation1 from "../../assets/3d-images/2d_3d_2_spiral_form_axis_rotation1.png";
+import spiralItemEntry from "../../assets/3d-images/2d_3d_2_spiral_form_item_entry.png";
+import openWorkPlaneImg2 from "../../assets/3d-images/2d_3d_open_work_plane.png";
+import openWorkPlaneImg from "../../assets/3d-images/2d_3d_open_work_plane1.png";
+import workPlaneImg from "../../assets/3d-images/2d_3d_work_plane.png";
+import leftClick from "../../assets/3d-images/left_click.png";
 
 
 interface SubLessonProps {

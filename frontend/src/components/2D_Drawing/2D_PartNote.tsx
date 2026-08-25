@@ -4,12 +4,12 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets */
-import partNoteImg1 from "../../assets/2D_Image_File/2D_part_note_1.png";
-import partNoteImg2 from "../../assets/2D_Image_File/2D_part_note_2.png";
-import textNoteImg from "../../assets/2D_Image_File/2D_part_note_text.png";
+import partNoteImg1 from "../../assets/2d-images/2D_part_note_1.png";
+import partNoteImg2 from "../../assets/2d-images/2D_part_note_2.png";
+import textNoteImg from "../../assets/2d-images/2D_part_note_text.png";
 
 interface PartNoteLessonProps {
   nextLabel?: string;

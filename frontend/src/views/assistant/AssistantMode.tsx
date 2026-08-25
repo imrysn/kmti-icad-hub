@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MentorMode from '../mentor/MentorMode';
 import { PracticalTrainerDashboard } from '../mentor/components/PracticalTrainerDashboard';
 
-import '../../styles/AssistantMode.css';
+import './AssistantMode.css';
 
 /**
  * Assistant Mode: Workspace for employees housing training review and assessments

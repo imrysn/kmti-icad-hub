@@ -15,7 +15,7 @@ import { LessonViewer } from './components/LessonViewer';
 import { MentorSidebar } from './components/MentorSidebar';
 import { PracticalAssessment } from './components/PracticalAssessment';
 
-import '../../styles/MentorMode.css';
+import './MentorMode.css';
 
 /**
  * MentorMode.tsx

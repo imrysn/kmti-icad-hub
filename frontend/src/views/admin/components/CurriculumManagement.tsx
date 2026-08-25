@@ -2,7 +2,7 @@ import { Archive, BookOpen, CheckCircle2, Loader2, Plus, Send, Undo2 } from 'luc
 import React from 'react';
 import { adminService, CurriculumCourse } from '../../../services/adminService';
 import { authService } from '../../../services/authService';
-import '../../../styles/CurriculumManagement.css';
+import './CurriculumManagement.css';
 
 const NEXT:Record<CurriculumCourse['lifecycle_status'],Array<{status:CurriculumCourse['lifecycle_status'];label:string;icon:React.ReactNode}>> = {
     draft:[{status:'in_review',label:'Send for review',icon:<Send size={15}/>},{status:'archived',label:'Archive',icon:<Archive size={15}/>}],

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { registrationService, PublicAccessPlan, RegistrationPayload } from '../services/registrationService';
-import '../styles/RegistrationView.css';
-import '../styles/RegistrationVerification.css';
+import { registrationService, PublicAccessPlan, RegistrationPayload } from '../../services/registrationService';
+import './RegistrationView.css';
+import './RegistrationVerification.css';
 
 const initialForm: RegistrationPayload = {
   username: '', email: '', password: '', full_name: '', requested_plan_id: 0,

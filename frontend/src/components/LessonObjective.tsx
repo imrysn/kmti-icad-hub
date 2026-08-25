@@ -1,6 +1,6 @@
 import { Info } from 'lucide-react';
 import React, { useId } from 'react';
-import '../styles/LessonObjective.css';
+import './LessonObjective.css';
 
 interface LessonObjectiveProps {
   children: React.ReactNode;

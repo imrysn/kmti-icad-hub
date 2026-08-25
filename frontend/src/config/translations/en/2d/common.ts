@@ -172,7 +172,7 @@
   "2d.command_menu_1": "COMMAND MENU",
   "2d.active_view_1": "ACTIVE VIEW",
   "2d.component_highlighted_unhighlighted": "Component highlighted / unhighlighted",
-  "2d.assets_2d_image_file_2d_dimensioning_4_b": "../../assets/2D_Image_File/2D_dimensioning(4)_b.4_change_position_1 (1).png",
+  "2d.assets_2d_image_file_2d_dimensioning_4_b": "../../assets/2d-images/2D_dimensioning(4)_b.4_change_position_1 (1).png",
   "2d.put_all_the_dimensions_symbols_and_notes": "Put all the dimensions, symbols, and notes required in the drawing.",
   "2d.this_is_the_basic_command_for_adding_dim": "This is the basic command for adding dimensions one by one. Select Line 1 and Line 2, then drag to the desired location.",
   "2d.use_this_for_continuous_linear_dimension": "Use this for continuous linear dimensions. Select multiple lines in sequence, then click GO to place the aligned chain.",

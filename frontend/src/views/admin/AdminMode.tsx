@@ -2,7 +2,7 @@ import { XCircle } from 'lucide-react';
 import React from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useAdminDashboard } from '../../hooks/useAdminDashboard';
-import '../../styles/AdminMode.css';
+import './AdminMode.css';
 
 // Components
 import ErrorBoundary from '../../components/ErrorBoundary';

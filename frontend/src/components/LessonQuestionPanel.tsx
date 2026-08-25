@@ -1,7 +1,7 @@
 import { ChevronRight, RefreshCcw } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 import type { InteractiveVideoQuestion } from './InteractiveVideoLesson/types';
-import '../styles/LessonQuestionPanel.css';
+import './LessonQuestionPanel.css';
 
 interface LessonQuestionPanelProps {
   question: InteractiveVideoQuestion;

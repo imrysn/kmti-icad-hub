@@ -18,6 +18,14 @@ from sqlalchemy.orm import sessionmaker
 # ── Set a dummy SECRET_KEY so security.py doesn't raise on import ─────────────
 os.environ.setdefault("SECRET_KEY", "test-secret-key-for-pytest-do-not-use-in-production")
 os.environ.setdefault("USE_MYSQL", "false")
+# RAG is initialized while backend.main is imported. Keep its persistent test
+# state outside the application/runtime database and the source tree.
+_test_runtime_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".pytest-runtime"))
+os.makedirs(_test_runtime_dir, exist_ok=True)
+# Prevent application imports from loading and overriding the developer's
+# local environment file during test collection.
+os.environ["ENV_FILE_PATH"] = os.path.join(_test_runtime_dir, "isolated-test.env")
+os.environ["VECTOR_DB_PATH"] = os.path.join(_test_runtime_dir, "vector_db")
 
 from backend.database import Base, get_db
 from backend.main import app, api_app

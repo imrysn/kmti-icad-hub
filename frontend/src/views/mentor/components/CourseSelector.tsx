@@ -4,7 +4,7 @@ import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
 import { useAuth } from '../../../context/AuthContext';
 import { useTranslation } from '../../../context/LanguageContext';
 import drawing2DUrl from '../../../assets/2D.png';
-import drawing2DAssessmentUrl from '../../../assets/2D_Image_File/2D_balloon_assembly_drawing_1.png';
+import drawing2DAssessmentUrl from '../../../assets/2d-images/2D_balloon_assembly_drawing_1.png';
 import practical3DImgUrl from '../../../assets/froming4.webp';
 import uncoilerUrl from '../../../assets/uncoiler.glb';
 import { ModelViewer3D } from '../../../components/ModelViewer3D';

@@ -8,33 +8,33 @@ import React, { useEffect, useState } from 'react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from '../../context/LanguageContext';
-import '../../styles/3D_Modeling/CourseLesson.css';
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Component (1) Assets */
-import copyIcon from '../../assets/3D_Image_File/component1_copy.png';
-import copyDistance from '../../assets/3D_Image_File/component1_copy_2.png';
-import copyFinal from '../../assets/3D_Image_File/component1_copy_3.png';
-import mirrorIcon from '../../assets/3D_Image_File/component1_mirror.png';
-import mirrorResult from '../../assets/3D_Image_File/component1_mirror_3.png';
-import moveIcon from '../../assets/3D_Image_File/component1_move.png';
-import moveResult from '../../assets/3D_Image_File/component1_move_2.png';
-import componentMenu from '../../assets/3D_Image_File/component1_move_copy_delete.png';
-import moveEntry from '../../assets/3D_Image_File/component1_move_entry.png';
-import rotateIcon from '../../assets/3D_Image_File/component1_rotate.png';
-import rotateResult from '../../assets/3D_Image_File/component1_rotate_3.png';
-import rotateEntry from '../../assets/3D_Image_File/component1_rotate_4.png';
-import leftClick from '../../assets/3D_Image_File/left_click.png';
+import copyIcon from '../../assets/3d-images/component1_copy.png';
+import copyDistance from '../../assets/3d-images/component1_copy_2.png';
+import copyFinal from '../../assets/3d-images/component1_copy_3.png';
+import mirrorIcon from '../../assets/3d-images/component1_mirror.png';
+import mirrorResult from '../../assets/3d-images/component1_mirror_3.png';
+import moveIcon from '../../assets/3d-images/component1_move.png';
+import moveResult from '../../assets/3d-images/component1_move_2.png';
+import componentMenu from '../../assets/3d-images/component1_move_copy_delete.png';
+import moveEntry from '../../assets/3d-images/component1_move_entry.png';
+import rotateIcon from '../../assets/3d-images/component1_rotate.png';
+import rotateResult from '../../assets/3d-images/component1_rotate_3.png';
+import rotateEntry from '../../assets/3d-images/component1_rotate_4.png';
+import leftClick from '../../assets/3d-images/left_click.png';
 
 /* Component (2) Assets */
-import deleteIcon from '../../assets/3D_Image_File/component2_delete.png';
-import mirrorCopyIcon from '../../assets/3D_Image_File/component2_mirror_copy.png';
-import mirrorCopyResult from '../../assets/3D_Image_File/component2_mirror_copy_2.png';
-import repeatCopyIcon from '../../assets/3D_Image_File/component2_repeat_copy.png';
-import repeatCopyResult from '../../assets/3D_Image_File/component2_repeat_copy2.png';
-import rotateCopyIcon from '../../assets/3D_Image_File/component2_rotate_copy.png';
-import rotateCopyPoints from '../../assets/3D_Image_File/component2_rotate_copy_3.png';
-import rotateCopyEntry from '../../assets/3D_Image_File/component2_rotate_copy_4.png';
+import deleteIcon from '../../assets/3d-images/component2_delete.png';
+import mirrorCopyIcon from '../../assets/3d-images/component2_mirror_copy.png';
+import mirrorCopyResult from '../../assets/3d-images/component2_mirror_copy_2.png';
+import repeatCopyIcon from '../../assets/3d-images/component2_repeat_copy.png';
+import repeatCopyResult from '../../assets/3d-images/component2_repeat_copy2.png';
+import rotateCopyIcon from '../../assets/3d-images/component2_rotate_copy.png';
+import rotateCopyPoints from '../../assets/3d-images/component2_rotate_copy_3.png';
+import rotateCopyEntry from '../../assets/3d-images/component2_rotate_copy_4.png';
 
 interface ComponentLessonProps {
   subLessonId: string;

@@ -5,12 +5,12 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Geometric Tolerance */
-import geoTolMainImg from "../../assets/2D_Image_File/2D_geometric_tolerance(1).png";
-import geoTolAddImg from "../../assets/2D_Image_File/2D_geometric_tolerance(2)_4.png";
-import datumImg from "../../assets/2D_Image_File/D_geometric_tolerance(2)_datum_1.png";
+import geoTolMainImg from "../../assets/2d-images/2D_geometric_tolerance(1).png";
+import geoTolAddImg from "../../assets/2d-images/2D_geometric_tolerance(2)_4.png";
+import datumImg from "../../assets/2d-images/D_geometric_tolerance(2)_datum_1.png";
 
 interface GeometricToleranceLessonProps {
   nextLabel?: string;

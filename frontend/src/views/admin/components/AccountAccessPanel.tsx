@@ -2,7 +2,7 @@ import { Loader2, ShieldCheck, X } from 'lucide-react';
 import React from 'react';
 import { AdminPermissionItem, AdminUserAccess, adminService } from '../../../services/adminService';
 import { User } from '../../../services/authService';
-import '../../../styles/AccountAccessPanel.css';
+import './AccountAccessPanel.css';
 
 interface Props { user: User; onClose: () => void; onSaved: () => Promise<void>; }
 const AREA_LABELS = { content: 'Content Editor', organization: 'Organization', platform: 'Platform' } as const;

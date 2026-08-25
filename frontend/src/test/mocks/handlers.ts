@@ -10,7 +10,8 @@
 
 import { http,HttpResponse } from 'msw';
 
-const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3001';
+// Keep this fallback aligned with apiConfig.ts's local-development port.
+const API_BASE = (typeof import.meta.env !== 'undefined' && import.meta.env.VITE_API_URL) || 'http://127.0.0.1:3002';
 const API = `${API_BASE.replace(/\/$/, '')}/api/v1`;
 
 // ── Shared test data ──────────────────────────────────────────────

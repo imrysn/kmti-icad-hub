@@ -6,7 +6,7 @@ import { useNotification } from '../../../context/NotificationContext';
 import { useUI } from '../../../context/UIContext';
 import { useLessons } from '../../../hooks/useLessons';
 import { adminService,Question,Quiz } from '../../../services/adminService';
-import '../../../styles/AssessmentManagement.css';
+import './AssessmentManagement.css';
 import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from '../../mentor/mentorConstants';
 
 export const AssessmentManagement: React.FC = () => {

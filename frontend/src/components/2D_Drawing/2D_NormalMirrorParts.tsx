@@ -4,12 +4,12 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Import images */
-import img2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(1)_2.png";
-import imgA1 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_1.png";
-import imgA2 from "../../assets/2D_Image_File/2D_normal_and_mirror_parts(2)_a_2.png";
+import img2 from "../../assets/2d-images/2D_normal_and_mirror_parts(1)_2.png";
+import imgA1 from "../../assets/2d-images/2D_normal_and_mirror_parts(2)_a_1.png";
+import imgA2 from "../../assets/2d-images/2D_normal_and_mirror_parts(2)_a_2.png";
 
 interface NormalMirrorPartsLessonProps {
   nextLabel?: string;

@@ -3,29 +3,29 @@ import React,{ useEffect,useState } from "react";
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Boolean (1) Assets */
-import booleanOpMenu from "../../assets/3D_Image_File/boolean1_boolean_operation.png";
-import booleanSubtract from "../../assets/3D_Image_File/boolean1_boolean_subtract.png";
-import select3D from "../../assets/3D_Image_File/boolean1_select3d.png";
-import subtractIcon from "../../assets/3D_Image_File/boolean1_subtract.png";
-import subtractAfter from "../../assets/3D_Image_File/boolean1_subtract_after_subtraction.png";
-import subtractEntity from "../../assets/3D_Image_File/boolean1_subtract_entity.png";
-import subtractRetain from "../../assets/3D_Image_File/boolean1_subtract_retain_entities.png";
-import unionIcon from "../../assets/3D_Image_File/boolean1_union.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
+import booleanOpMenu from "../../assets/3d-images/boolean1_boolean_operation.png";
+import booleanSubtract from "../../assets/3d-images/boolean1_boolean_subtract.png";
+import select3D from "../../assets/3d-images/boolean1_select3d.png";
+import subtractIcon from "../../assets/3d-images/boolean1_subtract.png";
+import subtractAfter from "../../assets/3d-images/boolean1_subtract_after_subtraction.png";
+import subtractEntity from "../../assets/3d-images/boolean1_subtract_entity.png";
+import subtractRetain from "../../assets/3d-images/boolean1_subtract_retain_entities.png";
+import unionIcon from "../../assets/3d-images/boolean1_union.png";
+import leftClick from "../../assets/3d-images/left_click.png";
 
 /* Boolean (2) Assets */
-import componentIcon from "../../assets/3D_Image_File/boolean2_component.png";
-import componentOk from "../../assets/3D_Image_File/boolean2_component_select_ok.png";
-import componentSeparate from "../../assets/3D_Image_File/boolean2_component_separate_all_components.png";
-import componentSeparated from "../../assets/3D_Image_File/boolean2_component_separated.png";
-import intersectIcon from "../../assets/3D_Image_File/boolean2_intersect.png";
-import intersectingEntities from "../../assets/3D_Image_File/boolean2_intersecting_entities.png";
-import selectEntity from "../../assets/3D_Image_File/boolean2_select_entity.png";
-import selectOk from "../../assets/3D_Image_File/boolean2_select_ok.png";
+import componentIcon from "../../assets/3d-images/boolean2_component.png";
+import componentOk from "../../assets/3d-images/boolean2_component_select_ok.png";
+import componentSeparate from "../../assets/3d-images/boolean2_component_separate_all_components.png";
+import componentSeparated from "../../assets/3d-images/boolean2_component_separated.png";
+import intersectIcon from "../../assets/3d-images/boolean2_intersect.png";
+import intersectingEntities from "../../assets/3d-images/boolean2_intersecting_entities.png";
+import selectEntity from "../../assets/3d-images/boolean2_select_entity.png";
+import selectOk from "../../assets/3d-images/boolean2_select_ok.png";
 
 interface BooleanLessonProps {
   nextLabel?: string;

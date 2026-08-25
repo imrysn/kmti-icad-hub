@@ -5,10 +5,10 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Keyway */
-import keywayImg from "../../assets/2D_Image_File/2D_keyway.jpg";
+import keywayImg from "../../assets/2d-images/2D_keyway.jpg";
 
 interface KeywayLessonProps {
   nextLabel?: string;

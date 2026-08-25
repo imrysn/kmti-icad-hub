@@ -1,7 +1,7 @@
 import { BookOpen, Check, Layers, Loader2 } from 'lucide-react';
 import React from 'react';
 import { AccessPlan, adminService, CourseResource, PracticalSetResource } from '../../../services/adminService';
-import '../../../styles/AccessPlanManagement.css';
+import './AccessPlanManagement.css';
 
 export const AccessPlanManagement: React.FC = () => {
     const [plans, setPlans] = React.useState<AccessPlan[]>([]);

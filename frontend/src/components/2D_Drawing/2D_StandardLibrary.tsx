@@ -4,13 +4,13 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Import images */
-import imgToolbar from "../../assets/2D_Image_File/2D_standard_part_library.png";
-import imgRevHistory1 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_1.jpg";
-import imgRevHistory2 from "../../assets/2D_Image_File/2D_standard_part_library_revision_history_2.png";
-import imgSafetyColor from "../../assets/2D_Image_File/2D_standard_part_library_safety_color.png";
+import imgToolbar from "../../assets/2d-images/2D_standard_part_library.png";
+import imgRevHistory1 from "../../assets/2d-images/2D_standard_part_library_revision_history_1.jpg";
+import imgRevHistory2 from "../../assets/2d-images/2D_standard_part_library_revision_history_2.png";
+import imgSafetyColor from "../../assets/2d-images/2D_standard_part_library_safety_color.png";
 
 interface StandardLibraryLessonProps {
   nextLabel?: string;

@@ -5,17 +5,17 @@ import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets for Operate View (1) */
-import operateView1ImgA from "../../assets/2D_Image_File/2D_operate_view(1)_a.png";
-import operateView1ImgA1 from "../../assets/2D_Image_File/2D_operate_view(1)_a1.png";
-import operateView1ImgB2 from "../../assets/2D_Image_File/2D_operate_view(1)_b2.png";
+import operateView1ImgA from "../../assets/2d-images/2D_operate_view(1)_a.png";
+import operateView1ImgA1 from "../../assets/2d-images/2D_operate_view(1)_a1.png";
+import operateView1ImgB2 from "../../assets/2d-images/2D_operate_view(1)_b2.png";
 
 /* Importing assets for Operate View (2) */
-import operateView2ImgB3 from "../../assets/2D_Image_File/2D_operate_view(2)_b2_3.jpg";
-import operateView2ImgB1 from "../../assets/2D_Image_File/2D_operate_view(2)_b_1.png";
-import operateView2ImgB2 from "../../assets/2D_Image_File/2D_operate_view(2)_b_2.jpg";
+import operateView2ImgB3 from "../../assets/2d-images/2D_operate_view(2)_b2_3.jpg";
+import operateView2ImgB1 from "../../assets/2d-images/2D_operate_view(2)_b_1.png";
+import operateView2ImgB2 from "../../assets/2d-images/2D_operate_view(2)_b_2.jpg";
 
 interface OperalViewLessonProps {
   nextLabel?: string;

@@ -3,36 +3,36 @@ import { ChevronLeft,ChevronRight } from 'lucide-react';
 import React,{ useEffect,useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
-import "../../styles/3D_Modeling/CourseLesson.css";
+import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
 
 /* Properties (1) Assets */
-import acrylicPointerImg from "../../assets/3D_Image_File/acrylic_pointer.png";
-import changeColorIcon from "../../assets/3D_Image_File/change_color.png";
-import changeColorEntity from "../../assets/3D_Image_File/change_color_entity.png";
-import changeColorFace from "../../assets/3D_Image_File/change_color_face.png";
-import changeLayerIcon from "../../assets/3D_Image_File/change_layer.png";
-import isoniteManganeseImg from "../../assets/3D_Image_File/isonite_manganese.png";
-import itemEntryChangeLayer from "../../assets/3D_Image_File/item_entry_changelayer.png";
-import layer1Img from "../../assets/3D_Image_File/layer1.png";
-import layer2Img from "../../assets/3D_Image_File/layer2.png";
-import layer3Img from "../../assets/3D_Image_File/layer3.png";
-import leftClick from "../../assets/3D_Image_File/left_click.png";
-import propertiesColorImg from "../../assets/3D_Image_File/properties_color.png";
-import propertiesMaterialImg from "../../assets/3D_Image_File/properties_material.png";
+import acrylicPointerImg from "../../assets/3d-images/acrylic_pointer.png";
+import changeColorIcon from "../../assets/3d-images/change_color.png";
+import changeColorEntity from "../../assets/3d-images/change_color_entity.png";
+import changeColorFace from "../../assets/3d-images/change_color_face.png";
+import changeLayerIcon from "../../assets/3d-images/change_layer.png";
+import isoniteManganeseImg from "../../assets/3d-images/isonite_manganese.png";
+import itemEntryChangeLayer from "../../assets/3d-images/item_entry_changelayer.png";
+import layer1Img from "../../assets/3d-images/layer1.png";
+import layer2Img from "../../assets/3d-images/layer2.png";
+import layer3Img from "../../assets/3d-images/layer3.png";
+import leftClick from "../../assets/3d-images/left_click.png";
+import propertiesColorImg from "../../assets/3d-images/properties_color.png";
+import propertiesMaterialImg from "../../assets/3d-images/properties_material.png";
 
 /* Properties (2) Assets */
-import information1 from "../../assets/3D_Image_File/information1.png";
-import information2 from "../../assets/3D_Image_File/information2.png";
-import information3 from "../../assets/3D_Image_File/information3.png";
-import information4 from "../../assets/3D_Image_File/information4.png";
-import information5 from "../../assets/3D_Image_File/information5.png";
-import layerImg from "../../assets/3D_Image_File/layer.jpg";
-import infoAngleImg from "../../assets/3D_Image_File/properties2_information_angle.png";
-import infoEntityImg from "../../assets/3D_Image_File/properties2_information_entity.png";
-import infoPointImg from "../../assets/3D_Image_File/properties2_information_point.png";
-import infoEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edge.png";
-import infoPointEdgeImg from "../../assets/3D_Image_File/properties2_information_point_edgeq.jpg";
+import information1 from "../../assets/3d-images/information1.png";
+import information2 from "../../assets/3d-images/information2.png";
+import information3 from "../../assets/3d-images/information3.png";
+import information4 from "../../assets/3d-images/information4.png";
+import information5 from "../../assets/3d-images/information5.png";
+import layerImg from "../../assets/3d-images/layer.jpg";
+import infoAngleImg from "../../assets/3d-images/properties2_information_angle.png";
+import infoEntityImg from "../../assets/3d-images/properties2_information_entity.png";
+import infoPointImg from "../../assets/3d-images/properties2_information_point.png";
+import infoEdgeImg from "../../assets/3d-images/properties2_information_point_edge.png";
+import infoPointEdgeImg from "../../assets/3d-images/properties2_information_point_edgeq.jpg";
 
 interface PropertiesLessonProps {
   nextLabel?: string;

@@ -4,13 +4,13 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from "../../context/LanguageContext";
 
-import "../../styles/2D_Drawing/CourseLesson.css";
+import './CourseLesson.css';
 
 /* Importing assets */
-import shotblast1Img from "../../assets/2D_Image_File/2D_application_surface((1)_application_surface_1.png";
-import shotblast2Img from "../../assets/2D_Image_File/2D_application_surface((1)_application_surface_2.png";
-import machiningImg from "../../assets/2D_Image_File/2D_application_surface((2)_machining.png";
-import machining2Img from "../../assets/2D_Image_File/2D_application_surface((2)_machining_2.png";
+import shotblast1Img from "../../assets/2d-images/2D_application_surface((1)_application_surface_1.png";
+import shotblast2Img from "../../assets/2d-images/2D_application_surface((1)_application_surface_2.png";
+import machiningImg from "../../assets/2d-images/2D_application_surface((2)_machining.png";
+import machining2Img from "../../assets/2d-images/2D_application_surface((2)_machining_2.png";
 
 interface SurfaceApplicationLessonProps {
   nextLabel?: string;

@@ -1,12 +1,12 @@
 import { ArrowLeft, Check, CreditCard, Pencil, Plus, Smartphone, Target, WalletCards, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { api } from '../services/api';
-import { authService, EffectiveEntitlements } from '../services/authService';
-import '../styles/AccountCenter.css';
-import '../styles/BillingModal.css';
-import '../styles/UpgradePlan.css';
+import { useAuth } from '../../hooks/useAuth';
+import { api } from '../../services/api';
+import { authService, EffectiveEntitlements } from '../../services/authService';
+import './AccountCenter.css';
+import './BillingModal.css';
+import './UpgradePlan.css';
 
 type Page = 'plans' | 'billing' | 'help' | 'terms' | 'privacy';
 
