@@ -29,6 +29,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
 }) => {
   const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const playerCardRef = useRef<HTMLElement>(null);
   const firedEventsRef = useRef(new Set<string>());
   const passedQuestionsRef = useRef(new Set<string>());
   const narrationStartedRef = useRef(false);
@@ -97,11 +98,6 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
       // The visible Play button remains available when browser autoplay is blocked.
     });
   }, []);
-
-  const startIntro = useCallback(() => {
-    void toggleFullscreen();
-    playVideo();
-  }, [playVideo, toggleFullscreen]);
 
   useEffect(() => {
     if (isSpeaking) {
@@ -299,7 +295,9 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     
     try {
       if (shouldOpen) {
-        await document.documentElement.requestFullscreen();
+        if (playerCardRef.current) {
+          await playerCardRef.current.requestFullscreen();
+        }
       } else if (document.fullscreenElement) {
         await document.exitFullscreen();
       }
@@ -307,6 +305,11 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
       // Ignored
     }
   }, [isFullscreen]);
+
+  const startIntro = useCallback(() => {
+    void toggleFullscreen();
+    playVideo();
+  }, [playVideo, toggleFullscreen]);
 
   const finishLesson = useCallback(async () => {
     if (completionStartedRef.current) return;
@@ -377,7 +380,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <section className="ivl-player-card" aria-label={config.videoLabel}>
+      <section className="ivl-player-card" aria-label={config.videoLabel} ref={playerCardRef}>
         <div className="ivl-video-shell lesson-intro-shell">
           <video
             ref={videoRef}

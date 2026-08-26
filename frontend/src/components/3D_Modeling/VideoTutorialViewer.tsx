@@ -126,6 +126,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Handle precise video rendering area for overlays
   useEffect(() => {
@@ -647,7 +648,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
     try {
       if (shouldOpen) {
-        await document.documentElement.requestFullscreen();
+        if (containerRef.current) {
+          await containerRef.current.requestFullscreen();
+        }
       } else if (document.fullscreenElement) {
         await document.exitFullscreen();
       }
@@ -692,10 +695,30 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
 
   const viewerJSX = (
-    <div className={containerClass}>
-      <div className="tutorial-viewport">
-        <div
-          className="tutorial-image-container"
+    <div className={containerClass} ref={containerRef}>
+      {!hasStarted && introPanel ? (
+        <div className="lesson-intro-shell" style={{ padding: '2rem', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <LessonIntroPanel
+            icon={introPanel.icon}
+            eyebrow={introPanel.eyebrow}
+            title={introPanel.title}
+            description={introPanel.description}
+            startLabel={introPanel.startLabel}
+            onStart={() => {
+              void toggleFullscreen();
+              setHasStarted(true);
+              setTimeout(() => {
+                setIsPlaying(true);
+                setIsPaused(false);
+              }, 100);
+            }}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="tutorial-viewport">
+            <div
+              className="tutorial-image-container"
           style={{
             transform: currentData.zoom,
             transformOrigin: currentData.origin,
@@ -714,12 +737,6 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
               ref={tutorialVideoRef}
               src={currentData.videoSrc}
               className="tutorial-image"
-              style={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain'
-              }}
               playsInline
               muted={isMuted}
               onTimeUpdate={(e) => {
@@ -771,12 +788,6 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
               src={icadInterfaceImg}
               alt={t('common.icad_interface')}
               className="tutorial-image"
-              style={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain'
-              }}
             />
           )}
           
@@ -1089,40 +1100,16 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
         <button onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
           {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
         </button>
-        {currentStep > 0 && (
-          <button onClick={handleClose} title="Close Tutorial">
-            <X size={20} />
-          </button>
-        )}
-      </div>
+          {currentStep > 0 && (
+            <button onClick={handleClose} title="Close Tutorial">
+              <X size={20} />
+            </button>
+          )}
+        </div>
+        </>
+      )}
     </div>
   );
-
-  if (!hasStarted && introPanel) {
-    return (
-      <div className="lesson-intro-shell" style={{ padding: '2rem' }}>
-        <LessonIntroPanel
-          icon={introPanel.icon}
-          eyebrow={introPanel.eyebrow}
-          title={introPanel.title}
-          description={introPanel.description}
-          startLabel={introPanel.startLabel}
-          onStart={() => {
-            void toggleFullscreen();
-            setHasStarted(true);
-            setTimeout(() => {
-              setIsPlaying(true);
-              setIsPaused(false);
-            }, 100);
-          }}
-        />
-      </div>
-    );
-  }
-
-  if (isFullscreen) {
-    return createPortal(viewerJSX, document.body);
-  }
 
   return viewerJSX;
 };
