@@ -1,9 +1,10 @@
 import { useTranslation } from '../../../context/LanguageContext';
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { ChevronRight, ChevronLeft, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
+import VideoTutorialViewer from "../../3D_Modeling/VideoTutorialViewer";
 import '../../2D_Drawing/CourseLesson.css';
 import "./FoundationsLesson.css";
 import zoomInOutVideo from '../../../assets/3D_INTERACTIVE/zoomin_out.mp4';
@@ -30,7 +31,6 @@ interface DynamicLessonProps {
   onPrevLesson?: () => void;
   onNextLesson?: () => void;
   nextLabel?: string;
-  isFirstLesson?: boolean;
 }
 
 const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
@@ -41,9 +41,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   onPrevLesson,
   onNextLesson,
   nextLabel,
-  isFirstLesson = false,
 }) => {
-  const [activeTab] = useState("content");
   const { t } = useTranslation();
 
   const {
@@ -71,7 +69,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   useTTSAutoplay(
     isSpeaking,
     currentIndex,
-    activeTab,
+    "content",
     fullSteps.length,
     [{ id: 'content' }],
     () => { if (onNextLesson) onNextLesson(); },
@@ -182,29 +180,33 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
               {/* Render Video at the bottom of the lesson */}
               {videoId && videoMap[videoId] && (
-                <div className="instruction-step foundations-video-section">
-                  <div className="card-header">
-                    <h4 className="section-title">
-                      <Play size={20} aria-hidden="true" />
-                      <span>How it works</span>
-                    </h4>
-                  </div>
-                  <div className="foundations-video-frame">
-                    <video 
-                      src={videoMap[videoId]} 
-                      controls 
-                      className="software-screenshot foundations-video"
-                      preload="metadata"
-                      aria-label={`${title} demonstration video`}
-                    />
-                  </div>
+                <div className="instruction-step foundations-video-section" style={{ height: '600px', position: 'relative' }}>
+                  <VideoTutorialViewer 
+                    steps={[{
+                      id: '1',
+                      title: title,
+                      text: '',
+                      zoom: '', origin: '', 
+                      spotlight: { top: '0', left: '0', width: '0', height: '0', opacity: 0 },
+                      subtitlePos: { bottom: '20px' },
+                      videoSrc: videoMap[videoId]
+                    }]}
+                    introPanel={{
+                      icon: Play,
+                      eyebrow: "Interactive Video",
+                      title: "Watch Video Demonstration",
+                      description: "See this tool in action in the workspace."
+                    }}
+                  />
                 </div>
               )}
             </div>
           </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" disabled={isFirstLesson} onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            {onPrevLesson && (
+              <button className="nav-button" onClick={() => { onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
             <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>

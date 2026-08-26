@@ -1,6 +1,5 @@
 import { ChevronLeft,ChevronRight,Monitor } from 'lucide-react';
-import React,{ useState } from "react";
-import LessonIntroPanel from '../LessonIntroPanel';
+import React from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import './CourseLesson.css';
 import '../LessonIntroPanel.css';
@@ -19,7 +18,6 @@ import { TUTORIAL_STEPS } from "./VideoTutorialData/iCadInterfaceTutorial";
 
 const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, showFoundationsIntro = false }) => {
   const { t } = useTranslation();
-  const [hasStarted, setHasStarted] = useState(!showFoundationsIntro);
 
   const INTERFACE_STEPS = React.useMemo(() => [
     t('icad.step0'),
@@ -53,28 +51,26 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
-          {!hasStarted ? (
-            <div className="lesson-intro-shell">
-              <LessonIntroPanel
-                icon={Monitor}
-                eyebrow="Interactive screen tour"
-                title="Explore the iCAD SX Screen"
-                description="Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
-                onStart={() => setHasStarted(true)}
-              />
-            </div>
-          ) : (
-            <div className="interactive-stage-container">
-              <VideoTutorialViewer steps={TUTORIAL_STEPS.map(s => ({
+          <div className="interactive-stage-container">
+            <VideoTutorialViewer 
+              steps={TUTORIAL_STEPS.map(s => ({
                 ...s,
                 title: t(`tutorial.icad.${s.id}.title`),
                 text: t(`tutorial.icad.${s.id}.text`)
-              }))} />
-            </div>
-          )}
+              }))}
+              introPanel={showFoundationsIntro ? {
+                icon: Monitor,
+                eyebrow: "Interactive screen tour",
+                title: "Explore the iCAD SX Screen",
+                description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
+              } : undefined}
+            />
+          </div>
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            {onPrevLesson && (
+  <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+)}
             <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>

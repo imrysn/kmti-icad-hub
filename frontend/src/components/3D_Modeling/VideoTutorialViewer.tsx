@@ -1,9 +1,10 @@
-import { ChevronLeft,ChevronRight,GripHorizontal,Maximize,Minimize,Pause,Play,Square,X } from 'lucide-react';
+import { LucideIcon, Maximize, Minimize, Pause, Play, X, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
 import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
+import LessonIntroPanel from '../LessonIntroPanel';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -75,17 +76,27 @@ export interface TutorialStep {
   overlays?: TutorialOverlay[];
 }
 
-interface VideoTutorialViewerProps {
-  steps: TutorialStep[];
+export interface IntroPanelData {
+  icon: LucideIcon;
+  eyebrow: string;
+  title: string;
+  description: string;
+  startLabel?: string;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
+interface VideoTutorialViewerProps {
+  steps: TutorialStep[];
+  introPanel?: IntroPanelData;
+}
+
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel }) => {
   const { t } = useTranslation();
+  const [hasStarted, setHasStarted] = useState(!introPanel);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
-  const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [videoRect, setVideoRect] = useState({ left: 0, top: 0, width: 0, height: 0 });
@@ -93,7 +104,6 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
 
   // Handle precise video rendering area for overlays
   useEffect(() => {
@@ -145,31 +155,22 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
     return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
   }, []);
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    dragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      startNavX: navPos.x,
-      startNavY: navPos.y
-    };
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    setNavPos({
-      x: dragRef.current.startNavX + dx,
-      y: dragRef.current.startNavY + dy
-    });
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (dragRef.current) {
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-      dragRef.current = null;
+  const toggleMute = () => {
+    const newMute = !isMuted;
+    setIsMuted(newMute);
+    if (audioRef.current) {
+      audioRef.current.muted = newMute;
     }
+    if (tutorialVideoRef.current) {
+      tutorialVideoRef.current.muted = newMute;
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    if (isNaN(seconds) || !isFinite(seconds)) return "0:00";
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   useEffect(() => {
@@ -315,6 +316,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
       const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
 
       const textAudio = new Audio(textUrl);
+      textAudio.muted = isMuted;
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
@@ -598,7 +600,6 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
   const toggleFullscreen = async () => {
     const shouldOpen = !isFullscreen;
     setIsFullscreen(shouldOpen);
-    setNavPos({ x: 0, y: 0 }); // reset control position when switching modes
 
     try {
       if (shouldOpen) {
@@ -676,7 +677,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
                 objectFit: 'contain'
               }}
               playsInline
-              muted
+              muted={isMuted}
               onTimeUpdate={(e) => {
                 const video = e.currentTarget;
                 const time = video.currentTime;
@@ -883,93 +884,73 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps }) => {
         </div>
       )}
 
-      {/* Persistent Floating Control Panel */}
-      <div
-        className="tutorial-control-card"
-        style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
-      >
-        <div
-          className="drag-handle"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          title="Drag to move panel"
-          style={{ cursor: 'grab', padding: '8px', marginRight: '4px', borderRadius: '4px', display: 'flex' }}
-        >
-          <GripHorizontal size={20} color="#888" />
+      {/* Native-Style Bottom Control Bar */}
+      <div className="kmti-native-video-controls">
+        <button onClick={togglePlayback} title={isPlaying && !isPaused ? "Pause" : "Play"}>
+          {isPlaying && !isPaused ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+        </button>
+        <button onClick={handlePrev} disabled={currentStep === 0} title="Previous Step">
+          <SkipBack size={18} fill="currentColor" />
+        </button>
+        <button onClick={currentStep === steps.length - 1 ? handleClose : handleNext} title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}>
+          <SkipForward size={18} fill="currentColor" />
+        </button>
+
+        <div className="kmti-progress-container">
+          <div 
+            className="kmti-progress-filled" 
+            style={{ 
+              width: currentData.videoSrc 
+                ? `${(videoTime / (currentData.videoEnd || Math.max(videoTime, 1))) * 100}%`
+                : `${((currentStep + 1) / steps.length) * 100}%`
+            }} 
+          />
         </div>
 
-        <div className="tutorial-controls">
-          {/* Live timestamp badge */}
-          {currentData.videoSrc && (
-            <span
-              className="tutorial-time-badge"
-              title={`Step ${currentStep + 1}/${steps.length} · videoStart:${currentData.videoStart ?? 0}s, videoEnd:${currentData.videoEnd ?? '?'}s`}
-            >
-              ▶ {videoTime.toFixed(1)}s
-              <span style={{ opacity: 0.55, marginLeft: '2px' }}>
-                / {currentData.videoEnd ?? '?'}s
-              </span>
-            </span>
-          )}
-          {!isPlaying ? (
-            <button
-              className="tutorial-btn"
-              onClick={togglePlayback}
-              title="Play Narration"
-            >
-              <Play size={16} /> Play
-            </button>
+        <button onClick={toggleMute} title={isMuted ? "Unmute" : "Mute"}>
+          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+        </button>
+        
+        <div className="kmti-time-indicator" style={{ fontSize: '13px', whiteSpace: 'nowrap', opacity: 0.8 }}>
+          {currentData.videoSrc ? (
+            `${formatTime(videoTime)} / ${formatTime(currentData.videoEnd || videoTime)}`
           ) : (
-            <>
-              <button
-                className="tutorial-btn"
-                onClick={togglePlayback}
-                title={isPaused ? "Resume Narration" : "Pause Narration"}
-              >
-                {isPaused ? <Play size={16} /> : <Pause size={16} />}
-                {isPaused ? "Resume" : "Pause"}
-              </button>
-              <button
-                className="tutorial-btn"
-                onClick={handleStop}
-                title="Stop Narration"
-              >
-                <Square size={16} /> Stop
-              </button>
-            </>
-          )}
-
-          <button
-            className="tutorial-btn"
-            onClick={handlePrev}
-            disabled={currentStep === 0}
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <button
-            className="tutorial-btn"
-            onClick={currentStep === steps.length - 1 ? handleClose : handleNext}
-            title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}
-          >
-            <ChevronRight size={18} />
-          </button>
-
-          <button className="tutorial-btn expand" onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
-            {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-          </button>
-
-          {currentStep > 0 && (
-            <button className="tutorial-btn exit" onClick={handleClose} title="Close Step (Back to Intro)">
-              <X size={18} /> Close
-            </button>
+            `Step ${currentStep + 1} / ${steps.length}`
           )}
         </div>
+
+        <button onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+          {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+        </button>
+        {currentStep > 0 && (
+          <button onClick={handleClose} title="Close Tutorial">
+            <X size={20} />
+          </button>
+        )}
       </div>
     </div>
   );
+
+  if (!hasStarted && introPanel) {
+    return (
+      <div className="lesson-intro-shell" style={{ padding: '2rem' }}>
+        <LessonIntroPanel
+          icon={introPanel.icon}
+          eyebrow={introPanel.eyebrow}
+          title={introPanel.title}
+          description={introPanel.description}
+          startLabel={introPanel.startLabel}
+          onStart={() => {
+            setHasStarted(true);
+            setTimeout(() => {
+              setIsPlaying(true);
+              setIsPaused(false);
+            }, 100);
+          }}
+        />
+      </div>
+    );
+  }
 
   if (isFullscreen) {
     return createPortal(viewerJSX, document.body);

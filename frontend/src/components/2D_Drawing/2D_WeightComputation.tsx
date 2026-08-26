@@ -85,7 +85,9 @@ const WeightComputationLesson: React.FC<WeightComputationLessonProps> = ({ onNex
           <div className="step-description"><img src={pipeExImg} alt="Square or rectangular pipe computation example" className="software-screenshot screenshot-wide" /></div>
         </div>
       </div></div>
-      <div className="lesson-navigation"><button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('2d.previous')}</button><button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('2d.next')} <ChevronRight size={18} /></button></div>
+      <div className="lesson-navigation">{onPrevLesson && (
+  <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('2d.previous')}</button>
+)}<button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('2d.next')} <ChevronRight size={18} /></button></div>
       </div></div></div>
   );
 };

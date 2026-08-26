@@ -165,7 +165,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     title: 'Module 5 - Understanding the Origin and Coordinates',
     children: [
       {
-        id: 'lesson-5-1',
+        id: 'origin-projections',
         title: 'Lesson 5.1 — The Origin & Axes',
         videoId: 'module5',
         content: [
@@ -181,10 +181,21 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         ]
       },
       {
-        id: 'basic-op-1',
-        title: 'Lesson 5.2 — Creating Basic Shape',
+        id: 'origin-layout',
+        title: 'Lesson 5.2 — Change 3D Part Layout',
         content: []
       }
+    ]
+  },
+  {
+    id: 'module-basic-shapes',
+    title: 'Creating Basic Shapes',
+    children: [
+      { id: 'basic-op-cylinder', title: 'Create Cylinder', content: [] },
+      { id: 'basic-op-box', title: 'Create Box', content: [] },
+      { id: 'basic-op-polygon', title: 'Create Polygon', content: [] },
+      { id: 'basic-op-cone', title: 'Create Cone', content: [] },
+      { id: 'basic-op-torus', title: 'Create Torus', content: [] }
     ]
   },
   {
@@ -511,11 +522,20 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Basic Operation',
     content: ['Creating Basic Shapes', 'Move', 'Rotate', 'Copy', 'Mirror', 'Delete', 'Cylinder', 'Box', 'Polygon', 'Cone', 'Torus', 'prism', 'coordinate entry', 'angle of rotation', 'mirror plane'],
     children: [
-      { id: 'basic-op-1', title: 'Basic Shapes', content: ['Cylinder', 'Box', 'Polygon', 'Cone', 'Torus'] },
-      { id: 'basic-op-2', title: 'Move, Rotate, Copy, Mirror, Delete', content: ['Move', 'Rotate', 'Mirror', 'Copy', 'Rotate Copy', 'Mirror Copy', 'Delete'] },
-      { id: 'basic-op-3', title: 'Sketch, Extrude/Revolve', content: ['Sketch', 'Extrude', 'Revolve'] },
-      { id: 'basic-op-4', title: 'Show/Hide, Stretch, Resize', content: ['Show/Hide', 'Stretch', 'Resize'] },
-      { id: 'basic-op-5', title: 'Shape Steels', content: ['Shape Steels'] },
+      { id: 'basic-op-move', title: 'Move', content: [] },
+      { id: 'basic-op-rotate', title: 'Rotate', content: [] },
+      { id: 'basic-op-mirror', title: 'Mirror', content: [] },
+      { id: 'basic-op-copy', title: 'Copy', content: [] },
+      { id: 'basic-op-rotateCopy', title: 'Rotate Copy', content: [] },
+      { id: 'basic-op-mirrorCopy', title: 'Mirror Copy', content: [] },
+      { id: 'basic-op-delete', title: 'Delete', content: [] },
+      { id: 'basic-op-sketch', title: 'Sketch', content: [] },
+      { id: 'basic-op-extrude', title: 'Extrude', content: [] },
+      { id: 'basic-op-revolve', title: 'Revolve', content: [] },
+      { id: 'basic-op-showHide', title: 'Show/Hide Entity', content: [] },
+      { id: 'basic-op-stretch', title: 'Stretch', content: [] },
+      { id: 'basic-op-resize', title: 'Resize', content: [] },
+      { id: 'basic-op-shapeSteels', title: 'Shape Steels', content: [] }
     ],
     quiz: {
       title: 'Basic iCAD Operations',

@@ -1,5 +1,5 @@
 import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import React,{ useEffect } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from '../../context/LanguageContext';
@@ -12,19 +12,19 @@ import toolSelection from "../../assets/3d-images/origin_change_3d_part_layout.p
 import interactionSteps from "../../assets/3d-images/origin_change_3d_part_layout_2345.png";
 
 interface OriginLessonProps {
+  subLessonId?: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
 }
 
 const OriginLesson: React.FC<OriginLessonProps> = ({
+  subLessonId,
   onNextLesson,
   onPrevLesson,
   nextLabel,
 }) => {
-  const [activeTab, setActiveTab] = useState<"projections" | "layout">(() => {
-    return (localStorage.getItem('3d-origin-active-tab') as any) || "projections";
-  });
+  const activeTab = subLessonId === 'origin-layout' ? 'layout' : 'projections';
   const { t } = useTranslation();
 
   const {
@@ -39,7 +39,6 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   } = useLessonCore("3d-origin");
 
   useEffect(() => {
-    localStorage.setItem('3d-origin-active-tab', activeTab);
     stop();
   }, [activeTab, stop]);
 
@@ -65,20 +64,12 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   const currentLesson = activeTab === 'projections' ? LESSON_DATA.projections : LESSON_DATA.layout;
 
   const handleNext = () => {
-    if (activeTab === "projections") {
-      setActiveTab("layout");
-    } else if (onNextLesson) {
-      onNextLesson();
-    }
+    if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
-    if (activeTab === "layout") {
-      setActiveTab("projections");
-    } else if (onPrevLesson) {
-      onPrevLesson();
-    }
+    if (onPrevLesson) onPrevLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -120,18 +111,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <div className="lesson-tabs">
-        <button className={`tab-button ${activeTab === "projections" ? "active" : ""}`} onClick={() => setActiveTab("projections")}>
-          {t('origin.title')}
-        </button>
-        <button className={`tab-button ${activeTab === "layout" ? "active" : ""}`} onClick={() => setActiveTab("layout")}>
-          {t('origin.layout.title')}
-        </button>
-      </div>
-
-
-
-      <div className="lesson-grid single-card">
+      <div className="lesson-grid single-card mt-8">
         <div className="lesson-card tab-content">
           {activeTab === "projections" ? (
             <div className="fade-in">
@@ -276,9 +256,11 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev()} disabled={!onPrevLesson && activeTab === 'projections'}>
-              <ChevronLeft size={18} /> Previous
-            </button>
+            {onPrevLesson && (
+              <button className="nav-button" onClick={() => handlePrev()}>
+                <ChevronLeft size={18} /> {t('common.previous')}
+              </button>
+            )}
             <button className="nav-button next" onClick={() => handleNext()}>
               {nextLabel || t('common.next')} <ChevronRight size={18} />
             </button>

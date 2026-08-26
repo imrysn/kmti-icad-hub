@@ -514,7 +514,9 @@ const OperationSampleLesson: React.FC<OperationSampleLessonProps> = ({ subLesson
         )}
 
         <div className="lesson-navigation">
-          <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+          {onPrevLesson && (
+  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+)}
           <button className="nav-button next" onClick={handleNext}>
             {activeTab === 'sample2' ? (nextLabel || t('common.next')) : t('common.next')} <ChevronRight size={18} />
           </button>

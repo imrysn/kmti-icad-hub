@@ -631,7 +631,9 @@ const AnnotationLesson: React.FC<AnnotationLessonProps> = ({ onNextLesson, onPre
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+)}
             <button className="nav-button next" onClick={() => handleNext()}>{activeTab === 'position' ? nextLabel || t('common.next') : 'Next'} <ChevronRight size={18} /></button>
           </div>
         </div>

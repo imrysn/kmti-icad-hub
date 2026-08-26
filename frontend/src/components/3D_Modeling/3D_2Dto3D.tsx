@@ -169,7 +169,9 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+)}
               <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -201,7 +203,9 @@ const TwoDTo3D1: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+)}
               <button className="nav-button next" onClick={() => handleNext()}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -489,7 +493,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+)}
               <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -588,7 +594,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+)}
               <button className="nav-button next" onClick={() => handleNext()}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -717,7 +725,9 @@ const TwoDTo3D2: React.FC<SubLessonProps> = ({ onNextLesson, onPrevLesson, nextL
             </div>
 
             <div className="lesson-navigation">
-              <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+              {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} />{t('common.previous')}</button>
+)}
               <button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>

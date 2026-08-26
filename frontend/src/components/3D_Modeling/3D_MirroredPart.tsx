@@ -350,7 +350,9 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            {onPrevLesson && (
+  <button className="nav-button" onClick={() => handlePrev()}><ChevronLeft size={18} /> {t('common.previous')}</button>
+)}
             <button className="nav-button next" onClick={() => handleNext()}>{activeTab === '3d-modeling' ? nextLabel || t('common.next') : t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>

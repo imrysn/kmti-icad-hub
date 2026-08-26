@@ -337,9 +337,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const hasQuiz = !!(parentResult?.parent?.quiz && parentResult.isLastSub);
   const isModuleCompleted = parentResult?.parent ? completedLessons.includes(parentResult.parent.id) : false;
   const isLastLesson = currentLessonIndex === allLessonIdsLength - 1;
-  // Foundations pages are individual lessons, so their footer always describes
-  // the cross-lesson action. Other course families retain their existing labels.
-  const nextLabel = isFoundationsCourse || isLastLesson
+  const nextLabel = (isLastLesson || parentResult?.isLastSub || !parentResult?.parent?.children)
     ? t('lesson.next_lesson')
     : t('common.next');
 
@@ -410,6 +408,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     }
   };
 
+  // Only pass onPrevLesson if there is a previous lesson
+  const handlePrevAction = currentLessonIndex > 0 ? goToPrevLesson : undefined;
+
   return (
     <main className="main-content-viewer">
       <div className="lesson-split-layout">
@@ -456,56 +457,55 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             }>
               {(() => {
                 const registry: Record<string, () => React.ReactNode> = {
-                  'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'origin': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'lesson-5-1': () => <OriginLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                  'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                  'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                  'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
                 };
 
                 const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
-                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  'origin': (id) => <OriginLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
                 };
 
                 // Preserve explicitly mapped interactive lessons, including the
@@ -524,7 +524,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     }
                   }
                   if (foundLesson && foundLesson.content) {
-                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />;
+                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
                   }
                 }
 

@@ -711,3 +711,63 @@ textarea:disabled {
 ):not(.learner-logout-menu-item):not(:disabled):not([aria-disabled='true']):hover:hover:hover :where(span, strong, small, svg) {
   color: inherit !important;
 }
+
+/* Global Shared Styles for Native-like Video Controls */
+.kmti-native-video-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  z-index: 100;
+  color: white;
+  font-family: sans-serif;
+  transition: opacity 0.3s ease;
+}
+
+.kmti-native-video-controls button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.kmti-native-video-controls button:hover {
+  opacity: 0.8;
+}
+
+.kmti-native-video-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.kmti-progress-container {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.kmti-progress-filled {
+  height: 100%;
+  background: white;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.kmti-time-indicator {
+  font-size: 13px;
+  font-family: monospace;
+  white-space: nowrap;
+}

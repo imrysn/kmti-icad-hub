@@ -1125,7 +1125,9 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
           )}
 
           <div className="lesson-navigation">
-            <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            {onPrevLesson && (
+  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+)}
             <button className="nav-button next" onClick={handleNext}>
               {(subLessonId === 'standard-1' && activeTab === 'sprocket') ||
                (subLessonId === 'standard-4' && activeTab === 'bolt') ||

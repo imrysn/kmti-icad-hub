@@ -26,7 +26,6 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   onNextLesson,
   onComplete,
   nextLabel,
-  isFirstLesson = false,
 }) => {
   const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -436,14 +435,14 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
       </section>
 
       <div className="lesson-navigation ivl-navigation">
-        <button className="nav-button" disabled={isFirstLesson} onClick={onPrevLesson}>
-          <ChevronLeft size={18} /> {t('common.previous')}
-        </button>
-        {phase === 'complete' && (
-          <button className="nav-button next" onClick={onNextLesson}>
-            {nextLabel || t('lesson.next_lesson')} <ChevronRight size={18} />
+        {onPrevLesson && (
+          <button className="nav-button" onClick={onPrevLesson}>
+            <ChevronLeft size={18} /> {t('common.previous')}
           </button>
         )}
+        <button className="nav-button next" onClick={onNextLesson}>
+          {nextLabel || t('lesson.next_lesson')} <ChevronRight size={18} />
+        </button>
       </div>
     </div>
   );
