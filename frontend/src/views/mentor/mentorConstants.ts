@@ -20,6 +20,7 @@ export type Lesson = {
   quiz?: Quiz;
   content?: string[];
   videoId?: string;
+  videoOverlays?: any[];
 };
 
 export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
@@ -148,6 +149,34 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         content: [
           'Learning Objective:',
           'Display a model from standard engineering viewing directions. Standard views make it easier to understand and inspect engineering geometry.'
+        ],
+        videoOverlays: [
+          {
+            id: 'quiz-sv-1',
+            type: 'quiz',
+            startTime: 14,
+            endTime: 15,
+            quizData: {
+              question: 'Which tool section allows you to change to Top, Front, or Isometric views?',
+              options: [
+                { text: '3D View Menu', isCorrect: true, feedback: 'Correct!' },
+                { text: 'Screen Operations', isCorrect: false, feedback: 'Screen operations are for zoom/pan.' }
+              ]
+            }
+          },
+          {
+            id: 'recap-sv',
+            type: 'recap',
+            startTime: 19,
+            endTime: 20,
+            recapData: {
+              title: 'Standard Views',
+              items: [
+                'Use the 3D View toolbar to change standard orientations.',
+                'This helps inspect geometry from different angles.'
+              ]
+            }
+          }
         ]
       },
       {
@@ -156,6 +185,21 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         videoId: 'lesson4.2',
         content: [
           'An Isometric View displays multiple sides of a 3D object at the same time. This is usually easier for understanding the overall shape of a component.'
+        ],
+        videoOverlays: [
+          {
+            id: 'quiz-iso-1',
+            type: 'quiz',
+            startTime: 8,
+            endTime: 9,
+            quizData: {
+              question: 'What is the main benefit of an Isometric View?',
+              options: [
+                { text: 'It displays multiple sides of an object simultaneously.', isCorrect: true, feedback: 'Correct!' },
+                { text: 'It removes all shading.', isCorrect: false, feedback: 'Incorrect.' }
+              ]
+            }
+          }
         ]
       }
     ]

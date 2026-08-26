@@ -147,5 +147,57 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     origin: "50% 50%",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { bottom: "10%", left: "50%", transform: "translateX(-50%)" }
+  },
+  {
+    id: 13,
+    title: "Knowledge Check",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { bottom: "10%", left: "50%", transform: "translateX(-50%)" },
+    quizData: {
+      question: "Where do you enter precise coordinates manually?",
+      options: [
+        { text: "Item Entry", isCorrect: false, feedback: "Item entry is for specific values and characters." },
+        { text: "Key Entry Area", isCorrect: true, feedback: "Correct! The Key Entry Area is for precise coordinates." },
+        { text: "Command Menu", isCorrect: false, feedback: "Command menu is for selecting operations." }
+      ]
+    }
+  },
+  {
+    id: 14,
+    title: "Knowledge Check",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { bottom: "10%", left: "50%", transform: "translateX(-50%)" },
+    quizData: {
+      question: "Which pane organizes all 3D parts into a hierarchical structure?",
+      options: [
+        { text: "Tree View", isCorrect: true, feedback: "Correct!" },
+        { text: "Message Pane", isCorrect: false, feedback: "The Message Pane displays operational messages." },
+        { text: "Workspace", isCorrect: false, feedback: "The Workspace is the main 3D modeling area." }
+      ]
+    }
+  },
+  {
+    id: 15,
+    title: "Review",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { bottom: "10%", left: "50%", transform: "translateX(-50%)" },
+    recapData: {
+      title: "Interface Overview Complete",
+      items: [
+        "The Command Menu and Icon Menu provide tools.",
+        "The Workspace is where 3D modeling takes place.",
+        "The Tree View organizes parts hierarchically.",
+        "Item Entry and Key Entry accept your numeric inputs."
+      ]
+    }
   }
 ];

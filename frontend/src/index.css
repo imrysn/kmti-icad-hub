@@ -800,3 +800,39 @@ textarea:disabled {
   font-family: monospace;
   white-space: nowrap;
 }
+
+/* Step-by-Step variant for Video Controls */
+.kmti-native-video-controls.step-by-step {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  left: auto;
+  width: auto;
+  height: auto;
+  background: rgba(20, 20, 25, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  padding: 8px 16px;
+  color: #fff;
+  z-index: 30;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  gap: 10px;
+  animation: slideUpFade 0.5s ease-out;
+}
+
+.kmti-native-video-controls.step-by-step button {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin: 0 2px;
+}
+
+.kmti-native-video-controls.step-by-step button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.kmti-native-video-controls.step-by-step .kmti-progress-container,
+.kmti-native-video-controls.step-by-step .kmti-time-indicator {
+  display: none;
+}

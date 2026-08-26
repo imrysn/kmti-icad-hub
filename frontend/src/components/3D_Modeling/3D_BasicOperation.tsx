@@ -292,14 +292,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const lessonSteps = React.useMemo(() => [
     t('basicOp1.heading'),                                                         // 0 heading
     t('basicOp1.overview'), // 1 overview
-    t('basicOp1.cylinder.desc'), // 2 → cylinder tab
-    t('basicOp1.box.desc'), // 3 → box tab
-    t('basicOp1.polygon.desc'), // 4 → polygon tab
-    t('basicOp1.cone.desc'), // 5 → cone tab
-    t('basicOp1.torus.desc'), // 6 → torus tab
-    t('basicOp1.start_front_view'), // 7 → back to cylinder, scroll to Before You Start
-    t('basicOp1.arrange_y_orientation'), // 8 → command menu step
-    t('basicOp1.video_intro') // 9 → scroll to video
+    t('basicOp1.cylinder.desc'), // 2 ↁEcylinder tab
+    t('basicOp1.box.desc'), // 3 ↁEbox tab
+    t('basicOp1.polygon.desc'), // 4 ↁEpolygon tab
+    t('basicOp1.cone.desc'), // 5 ↁEcone tab
+    t('basicOp1.torus.desc'), // 6 ↁEtorus tab
+    t('basicOp1.start_front_view'), // 7 ↁEback to cylinder, scroll to Before You Start
+    t('basicOp1.arrange_y_orientation'), // 8 ↁEcommand menu step
+    t('basicOp1.video_intro') // 9 ↁEscroll to video
   ], [t]);
 
   // Scroll as TTS progresses
@@ -353,7 +353,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </h3>
 
-        {/* TTS index 1 — overview narration */}
+        {/* TTS index 1  Eoverview narration */}
         <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
           <KaraokeLessonText
             text={lessonSteps[1]}
@@ -362,7 +362,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
           />
         </div>
 
-        {/* Shape intro — tab-specific, shown here in the main intro card */}
+        {/* Shape intro  Etab-specific, shown here in the main intro card */}
         {(() => {
           const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
           const idx = tabIntroIdx[activeTab] ?? 2;
@@ -379,7 +379,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       </section>
 
       <div className="lesson-grid single-card">
-        {/* Prerequisite steps card — always visible, scrolled to at TTS step 7 */}
+        {/* Prerequisite steps card  Ealways visible, scrolled to at TTS step 7 */}
         <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
           <div className="card-header">
             <h4 style={{ margin: 0 }}>{t('lesson.before_you_start')}</h4>
@@ -412,7 +412,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
 
 
-            {/* Watch tutorial prompt — shown at step 9 (closing message) */}
+            {/* Watch tutorial prompt  Eshown at step 9 (closing message) */}
             {currentIndex === 9 && isSpeaking && (
               <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
                 <KaraokeLessonText
@@ -424,7 +424,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             )}
 
             <div ref={videoSectionRef} style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
+              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
             </div>
 
             <div className="lesson-navigation">
@@ -444,7 +444,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(boxTutorialSteps, 'box')} />
+              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(boxTutorialSteps, 'box')} />
             </div>
 
             <div className="lesson-navigation">
@@ -464,7 +464,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
             </div>
 
             <div className="lesson-navigation">
@@ -484,7 +484,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(coneTutorialSteps, 'cone')} />
+              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(coneTutorialSteps, 'cone')} />
             </div>
 
             <div className="lesson-navigation">
@@ -504,7 +504,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(torusTutorialSteps, 'torus')} />
+              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(torusTutorialSteps, 'torus')} />
             </div>
 
             <div className="lesson-navigation">

@@ -4,7 +4,11 @@ import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
 import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
+import '../LessonQuestionPanel.css';
+import '../InteractiveVideoLesson/InteractiveVideoLesson.css';
 import LessonIntroPanel from '../LessonIntroPanel';
+import LessonQuestionPanel from '../LessonQuestionPanel';
+import type { InteractiveVideoQuestion } from '../InteractiveVideoLesson/types';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
@@ -13,7 +17,9 @@ import { KaraokeLessonText } from '../KaraokeLessonText';
 export type TutorialOverlayType =
   | 'highlight'
   | 'callout'
-  | 'dimensionAnnotation';
+  | 'dimensionAnnotation'
+  | 'quiz'
+  | 'recap';
 
 export interface NormalizedPoint {
   x: number;
@@ -42,9 +48,17 @@ export interface TutorialOverlay {
     end: NormalizedPoint;
   };
   dimensionType?: 'horizontal' | 'vertical';
+  quizData?: {
+    question: string;
+    options: { text: string; isCorrect: boolean; feedback: string }[];
+  };
+  recapData?: {
+    title: string;
+    items: string[];
+  };
 }
 
-export interface TutorialStep {
+export interface TutorialStep { quizData?: { question: string; options: { text: string; isCorrect: boolean; feedback: string }[]; }; recapData?: { title: string; items: string[]; }; 
   id: string | number;
   title: string;
   text: string;
@@ -87,9 +101,10 @@ export interface IntroPanelData {
 interface VideoTutorialViewerProps {
   steps: TutorialStep[];
   introPanel?: IntroPanelData;
+  lessonType?: 'step-by-step' | 'video-tutorial';
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel, lessonType }) => {
   const { t } = useTranslation();
   const [hasStarted, setHasStarted] = useState(!introPanel);
   const [currentStep, setCurrentStep] = useState(0);
@@ -99,6 +114,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const [volume, setVolume] = useState(1);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const [activeQuizId, setActiveQuizId] = useState<string | null>(null);
+  const [quizChoice, setQuizChoice] = useState('');
+  const [quizChecked, setQuizChecked] = useState(false);
+  const passedQuizzesRef = useRef(new Set<string>());
+
   const [videoTime, setVideoTime] = useState(0);
   const [videoRect, setVideoRect] = useState({ left: 0, top: 0, width: 0, height: 0 });
   const synthRef = useRef<SpeechSynthesis | null>(null);
@@ -149,7 +170,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
   useEffect(() => {
     const syncFullscreenState = () => {
-      if (!document.fullscreenElement) setIsFullscreen(false);
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+        setHasStarted(false);
+        handleStop();
+        setCurrentStep(0);
+      }
     };
 
     document.addEventListener('fullscreenchange', syncFullscreenState);
@@ -477,6 +503,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       textUtterance.onend = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         setCurrentCharIndex(0);
+        
+        // Don't auto-advance if the step has a static quiz or recap that needs user interaction
+        if (!steps[currentStep].videoSrc && (steps[currentStep].quizData || steps[currentStep].recapData)) {
+          setIsPlaying(false);
+          setIsPaused(true);
+          return;
+        }
+
         if (currentStep < steps.length - 1) {
           // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
@@ -692,6 +726,21 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                 const video = e.currentTarget;
                 const time = video.currentTime;
                 setVideoTime(time);
+                
+                // Handle quiz pause
+                const activeQuiz = currentData.overlays?.find(o => o.type === 'quiz' && time >= o.startTime && time <= o.endTime && !passedQuizzesRef.current.has(o.id));
+                if (activeQuiz && activeQuizId !== activeQuiz.id) {
+                  setActiveQuizId(activeQuiz.id);
+                  setQuizChoice('');
+                  setQuizChecked(false);
+                  video.pause();
+                  setIsPlaying(false);
+                  setIsPaused(true);
+                  if (audioRef.current) audioRef.current.pause();
+                  if (synthRef.current) synthRef.current.pause();
+                  return;
+                }
+
                 const end = currentData.videoEnd || 9999;
                 const isLastStep = currentStep === steps.length - 1;
                 if (time >= end && !video.paused) {
@@ -852,6 +901,53 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                     </svg>
                   );
                 }
+
+                if (overlay.type === 'quiz' && activeQuizId === overlay.id && overlay.quizData) {
+                  const question: InteractiveVideoQuestion = {
+                    id: overlay.id,
+                    prompt: overlay.quizData.question,
+                    choices: overlay.quizData.options.map((opt, i) => ({
+                      id: String(i),
+                      label: opt.text,
+                      isCorrect: opt.isCorrect,
+                      feedback: opt.feedback
+                    }))
+                  };
+
+                  return (
+                    <div key={overlay.id} style={{ pointerEvents: 'auto' }}>
+                      <LessonQuestionPanel
+                        question={question}
+                        selectedChoice={quizChoice}
+                        answerChecked={quizChecked}
+                        onSelectChoice={setQuizChoice}
+                        onCheckAnswer={() => setQuizChecked(true)}
+                        onRetry={() => { setQuizChoice(''); setQuizChecked(false); }}
+                        onContinue={() => {
+                          passedQuizzesRef.current.add(overlay.id);
+                          setActiveQuizId(null);
+                          togglePlayback();
+                        }}
+                      />
+                    </div>
+                  );
+                }
+
+                if (overlay.type === 'recap' && overlay.recapData) {
+                  return (
+                    <div key={overlay.id} className="ivl-stage-panel ivl-recap-panel" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 50, pointerEvents: 'auto' }}>
+                      <p className="ivl-eyebrow">Lesson recap</p>
+                      <h3>{overlay.recapData.title}</h3>
+                      <div className="ivl-recap-items">
+                        {overlay.recapData.items.map((item, i) => (
+                          <div key={i} className="ivl-recap-item">
+                            <strong>{item}</strong>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
                 
                 return null;
               })}
@@ -859,6 +955,52 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           )}
         </div>
       </div>
+
+      {currentData.quizData && (
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 100 }}>
+          <div style={{ pointerEvents: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <LessonQuestionPanel
+              question={{
+                id: String(currentData.id),
+                prompt: currentData.quizData.question,
+                choices: currentData.quizData.options.map((opt, i) => ({
+                  id: String(i),
+                  label: opt.text,
+                  isCorrect: opt.isCorrect,
+                  feedback: opt.feedback
+                }))
+              }}
+              selectedChoice={quizChoice}
+              answerChecked={quizChecked}
+              onSelectChoice={setQuizChoice}
+              onCheckAnswer={() => setQuizChecked(true)}
+              onRetry={() => { setQuizChoice(''); setQuizChecked(false); }}
+              onContinue={() => {
+                setQuizChoice('');
+                setQuizChecked(false);
+                handleNext();
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {currentData.recapData && (
+        <div className="ivl-stage-panel ivl-recap-panel" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 50, pointerEvents: 'auto' }}>
+          <p className="ivl-eyebrow">Lesson recap</p>
+          <h3>{currentData.recapData.title}</h3>
+          <div className="ivl-recap-items">
+            {currentData.recapData.items.map((item, i) => (
+              <div key={i} className="ivl-recap-item">
+                <strong>{item}</strong>
+              </div>
+            ))}
+          </div>
+          <button className="start-tutorial-btn" onClick={handleNext} style={{ marginTop: '20px' }}>
+            Continue
+          </button>
+        </div>
+      )}
 
       {/* Floating Subtitle Box or Flat bottom subtitle */}
       {currentData.spotlight.opacity === 0 ? (
@@ -895,7 +1037,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       )}
 
       {/* Native-Style Bottom Control Bar */}
-      <div className="kmti-native-video-controls">
+      <div className={`kmti-native-video-controls ${lessonType || 'video-tutorial'}`}>
         <button onClick={togglePlayback} title={isPlaying && !isPaused ? "Pause" : "Play"}>
           {isPlaying && !isPaused ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
         </button>
@@ -966,6 +1108,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           description={introPanel.description}
           startLabel={introPanel.startLabel}
           onStart={() => {
+            void toggleFullscreen();
             setHasStarted(true);
             setTimeout(() => {
               setIsPlaying(true);

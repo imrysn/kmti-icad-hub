@@ -7,106 +7,121 @@ import { TutorialStep } from '../VideoTutorialViewer';
 
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
-    id: "cyl-0",
+    id: "cyl-1-tool-selection",
     title: "Arrange Cylinder",
     text: "",
-    customText: "To create a cylinder, follow these steps.",
+    customText: "First, open Shape Placement. Next, select Place Cylinder. Select Front View. In the Command Menu, make sure Cylinder, Placement, and Diameter Specification are active. Then select Y Orientation.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
     videoStart: 0,
-    videoEnd: 2
+    videoEnd: 3.25,
+    overlays: [
+      { id: "shape-placement", type: "highlight", startTime: 0, endTime: 1.0, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
+      { id: "place-cylinder", type: "highlight", startTime: 1.0, endTime: 1.5, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Cylinder", labelPosition: "bottom" },
+      { id: "front-view", type: "highlight", startTime: 1.5, endTime: 2.0, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" },
+      { id: "opt-cylinder", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Cylinder", labelPosition: "right" },
+      { id: "opt-placement", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
+      { id: "opt-dia", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Diameter Specification", labelPosition: "right" },
+      { id: "opt-y-orient", type: "highlight", startTime: 2.6, endTime: 3.25, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" }
+    ]
   },
   {
-    id: "cyl-1",
+    id: "cyl-2-dimension",
     title: "Arrange Cylinder",
     text: "",
-    customText: "First, click Shape Placement. Next, click Place Cylinder. Next, select Front View.",
+    customText: "Next, use the Item Entry area at the bottom-left of the iCAD SX window. First, specify the cylinder diameter, then press Enter. Next, specify the cylinder height, then press Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 2,
-    videoEnd: 9,
+    videoStart: 3.25,
+    videoEnd: 13.75,
     overlays: [
-      { id: "shape-placement", type: "highlight", startTime: 2, endTime: 3.5, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
-      { id: "place-cylinder", type: "highlight", startTime: 3.3, endTime: 5.3, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Cylinder", labelPosition: "bottom" },
-      { id: "front-view", type: "highlight", startTime: 7.5, endTime: 9.5, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+      { id: "item-entry", type: "highlight", startTime: 4.0, endTime: 6.0, target: { x: 0.0, y: 0.94, width: 0.5, height: 0.06 }, animation: "pulse", label: "Item Entry Area" },
+      { id: "input-dia", type: "highlight", startTime: 6.0, endTime: 9.0, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Diameter (直径)" },
+      { id: "input-height", type: "highlight", startTime: 9.5, endTime: 13.75, target: { x: 0.167, y: 0.948, width: 0.053, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
+      {
+        id: "quiz-cyl-1",
+        type: "quiz",
+        startTime: 13.25,
+        endTime: 13.75,
+        quizData: {
+          question: "Which properties must be specified when creating a cylinder?",
+          options: [
+            { text: "Diameter and Height", isCorrect: true, feedback: "Correct! A cylinder requires diameter and height." },
+            { text: "Width, Depth, and Height", isCorrect: false, feedback: "Those are for a box, not a cylinder." }
+          ]
+        }
+      }
     ]
   },
   {
-    id: "cyl-2",
+    id: "cyl-3-origin",
     title: "Arrange Cylinder",
     text: "",
-    customText: "In the Command Menu, confirm that Cylinder, Placement, and Diameter Specification are active. Then select Y Orientation.",
+    customText: "After specifying the cylinder dimensions, enter the coordinates for its position. Enter zero, zero, zero to place the cylinder at the model origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 9,
-    videoEnd: 12,
+    videoStart: 13.75,
+    videoEnd: 23.40,
     overlays: [
-      { id: "opt-cylinder", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Cylinder", labelPosition: "right" },
-      { id: "opt-placement", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
-      { id: "opt-dia", type: "highlight", startTime: 9, endTime: 10.5, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Diameter Specification", labelPosition: "right" },
-      { id: "opt-y-orient", type: "highlight", startTime: 10.5, endTime: 12, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" }
+      { id: "input-coords", type: "highlight", startTime: 14.5, endTime: 23.0, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates\n0 0 0" },
+      {
+        id: "quiz-cyl-2",
+        type: "quiz",
+        startTime: 22.9,
+        endTime: 23.4,
+        quizData: {
+          question: "What does the coordinate 0,0,0 represent?",
+          options: [
+            { text: "The Global Origin", isCorrect: true, feedback: "Correct!" },
+            { text: "The Center of the Cylinder", isCorrect: false, feedback: "Incorrect. It represents the global origin." }
+          ]
+        }
+      }
     ]
   },
   {
-    id: "cyl-3",
+    id: "cyl-4-result",
     title: "Arrange Cylinder",
     text: "",
-    customText: "Next, use the Item Entry area at the bottom-left of the window. Enter the required diameter, then press Enter. Next, enter the required height, then press Enter.",
+    customText: "The cylinder is now created using the specified diameter, height, and origin position.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 12,
-    videoEnd: 15.5,
+    videoStart: 23.40,
+    videoEnd: 27.0,
     overlays: [
-      { id: "input-dia", type: "highlight", startTime: 12.5, endTime: 14, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Diameter" },
-      { id: "input-height", type: "highlight", startTime: 14, endTime: 15.5, target: { x: 0.167, y: 0.948, width: 0.053, height: 0.028 }, animation: "pulse", label: "Height" }
+      { id: "result-callout", type: "callout", startTime: 24.0, endTime: 27.0, target: { x: 0.5, y: 0.5 }, label: "Cylinder Created ✓" }
     ]
   },
   {
-    id: "cyl-4",
+    id: "cyl-5-explain",
     title: "Arrange Cylinder",
     text: "",
-    customText: "Finally, enter the coordinates for the cylinder's position. Enter zero, zero, zero to place the cylinder at the origin.",
+    customText: "Diameter, or 直径, is the distance across the circular face of the cylinder. Height, or 高さ, is the vertical distance from the bottom of the cylinder to the top.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 15.5,
-    videoEnd: 20,
-    overlays: [
-      { id: "input-coords", type: "highlight", startTime: 16, endTime: 18, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Coordinates" }
-    ]
-  },
-  {
-    id: "cyl-5",
-    title: "Arrange Cylinder",
-    text: "",
-    customText: "The diameter, or 直径, is the distance across the circular face of the cylinder. The height, or 高さ, is the vertical distance from the bottom of the cylinder to the top.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidCylinder,
-    videoStart: 20,
-    videoEnd: 24,
+    videoStart: 27.0,
+    videoEnd: 32.08,
     overlays: [
       {
         id: "dim-dia",
         type: "dimensionAnnotation",
-        startTime: 20,
-        endTime: 24,
+        startTime: 27.5,
+        endTime: 32.08,
         label: "Diameter (直径)",
         labelOffset: { x: 0, y: -5 },
         dimensionType: "horizontal",
@@ -115,12 +130,26 @@ export const cylinderTutorialSteps: TutorialStep[] = [
       {
         id: "dim-height",
         type: "dimensionAnnotation",
-        startTime: 22,
-        endTime: 24,
+        startTime: 29.5,
+        endTime: 32.08,
         label: "Height (高さ)",
         labelOffset: { x: 55, y: 0 },
         dimensionType: "vertical",
         line: { start: { x: 0.64, y: 0.32 }, end: { x: 0.64, y: 0.75 } }
+      },
+      {
+        id: "recap-cyl",
+        type: "recap",
+        startTime: 31.5,
+        endTime: 32.08,
+        recapData: {
+          title: "Lesson Complete",
+          items: [
+            "You selected Shape Placement > Cylinder.",
+            "You specified the diameter and height.",
+            "You placed the cylinder at the origin (0,0,0)."
+          ]
+        }
       }
     ]
   }
@@ -129,63 +158,224 @@ export const cylinderTutorialSteps: TutorialStep[] = [
 export const boxTutorialSteps: TutorialStep[] = [
   {
     id: "box-0",
-    title: "Arrange Box",
-    text: "To create a box, follow these steps.",
+    title: "Creating a Box",
+    text: "",
+    customText: "Welcome to this iCAD SX lesson. In this tutorial, you will learn how to create a basic rectangular solid, specify its dimensions, and position it using coordinates.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
     videoStart: 0,
-    videoEnd: 2
+    videoEnd: 1.5
   },
   {
     id: "box-1",
-    title: "Arrange Box",
-    text: "Select the Box tool from the Icon Menu.",
+    title: "Creating a Box",
+    text: "",
+    customText: "First, click Shape Placement. Next, select Place Box. Next, select Front View.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 2,
-    videoEnd: 7
+    videoStart: 1.5,
+    videoEnd: 6.5,
+    overlays: [
+      { id: "shape-placement", type: "highlight", startTime: 1.5, endTime: 3.0, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
+      { id: "place-box", type: "highlight", startTime: 3.0, endTime: 4.5, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Rectangular Solid", labelPosition: "bottom" },
+      { id: "front-view", type: "highlight", startTime: 4.5, endTime: 6.5, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
   },
   {
     id: "box-2",
-    title: "Arrange Box",
-    text: "Enter the Box specifications: define the Depth, Width, and Height parameters in the bottom-left Item Entry bar.",
+    title: "Creating a Box",
+    text: "",
+    customText: "In the Command Menu, confirm that Rectangular Solid, Placement, and Dimension Specification are active. Then select Y Orientation.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 7,
-    videoEnd: 11
+    videoStart: 6.5,
+    videoEnd: 11,
+    overlays: [
+      { id: "opt-box", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Rectangular Solid", labelPosition: "right" },
+      { id: "opt-placement", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
+      { id: "opt-dim", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Dimension Specification", labelPosition: "right" },
+      { id: "opt-y-orient", type: "highlight", startTime: 8.5, endTime: 10, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
+      {
+        id: "quiz-1",
+        type: "quiz",
+        startTime: 10.5,
+        endTime: 11,
+        quizData: {
+          question: "Which orientation is selected for this Box placement procedure?",
+          options: [
+            { text: "Y Orientation", isCorrect: true, feedback: "Correct! This procedure uses Y Orientation for the rectangular solid placement." },
+            { text: "X Orientation", isCorrect: false, feedback: "Not quite. Review the orientation selected in the demonstration." },
+            { text: "Z Orientation", isCorrect: false, feedback: "Not quite. Review the orientation selected in the demonstration." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "box-3",
-    title: "Arrange Box",
-    text: "Input the placement coordinates in the Key Entry Area and position the Box at the origin.",
+    title: "Creating a Box",
+    text: "",
+    customText: "Next, use the Item Entry area at the bottom-left of the iCAD SX window. Enter the required width, then press Enter. Next, enter the required depth, then press Enter. Finally, enter the required height, then press Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
     videoStart: 11,
-    videoEnd: 15
+    videoEnd: 17,
+    overlays: [
+      { id: "input-width", type: "highlight", startTime: 12, endTime: 13.5, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Width (幅)" },
+      { id: "input-depth", type: "highlight", startTime: 13.5, endTime: 15, target: { x: 0.167, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Depth (奥行き)" },
+      { id: "input-height", type: "highlight", startTime: 15, endTime: 16.5, target: { x: 0.242, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
+      {
+        id: "quiz-2",
+        type: "quiz",
+        startTime: 16.5,
+        endTime: 17,
+        quizData: {
+          question: "Where are the dimensions of the rectangular solid entered?",
+          options: [
+            { text: "Item Entry area", isCorrect: true, feedback: "Correct! The dimensions of the rectangular solid are specified in the Item Entry area." },
+            { text: "Key Entry Area", isCorrect: false, feedback: "The Key Entry Area is used to specify the solid's position rather than its size." },
+            { text: "View controls", isCorrect: false, feedback: "The View controls the viewing orientation, not the solid dimensions." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "box-4",
-    title: "Arrange Box",
-    text: "Confirming the coordinates renders the completed Box on the workspace.",
+    title: "Creating a Box",
+    text: "",
+    customText: "After specifying the dimensions, enter the coordinates for the solid's position. Enter zero, zero, zero to place the rectangular solid at the origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 15,
-    videoEnd: 24
+    videoStart: 17,
+    videoEnd: 21,
+    overlays: [
+      { id: "input-coords", type: "highlight", startTime: 18, endTime: 20, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin: 0 0 0" },
+      {
+        id: "quiz-3",
+        type: "quiz",
+        startTime: 20.5,
+        endTime: 21,
+        quizData: {
+          question: "What coordinates are used to position the rectangular solid at the origin in this lesson?",
+          options: [
+            { text: "0 0 0", isCorrect: true, feedback: "Correct!" },
+            { text: "100 100 0", isCorrect: false, feedback: "Incorrect. Check the lesson again." },
+            { text: "50 50 50", isCorrect: false, feedback: "Incorrect. Check the lesson again." }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    id: "box-5",
+    title: "Creating a Box",
+    text: "",
+    customText: "The rectangular solid is now created using the dimensions and position specified in the previous steps. This dimension controls the width. This dimension controls the depth. This dimension controls the height.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox,
+    videoStart: 21,
+    videoEnd: 24,
+    overlays: [
+      {
+        id: "dim-width",
+        type: "dimensionAnnotation",
+        startTime: 22,
+        endTime: 24,
+        label: "Width (幅)",
+        labelOffset: { x: 0, y: -5 },
+        dimensionType: "horizontal",
+        line: { start: { x: 0.44, y: 0.5 }, end: { x: 0.56, y: 0.5 } } // placeholders
+      },
+      {
+        id: "dim-depth",
+        type: "dimensionAnnotation",
+        startTime: 22.5,
+        endTime: 24,
+        label: "Depth (奥行き)",
+        labelOffset: { x: 0, y: 15 },
+        dimensionType: "horizontal",
+        line: { start: { x: 0.57, y: 0.5 }, end: { x: 0.62, y: 0.42 } } // placeholders
+      },
+      {
+        id: "dim-height",
+        type: "dimensionAnnotation",
+        startTime: 23,
+        endTime: 24,
+        label: "Height (高さ)",
+        labelOffset: { x: 30, y: 0 },
+        dimensionType: "vertical",
+        line: { start: { x: 0.56, y: 0.5 }, end: { x: 0.56, y: 0.35 } } // placeholders
+      },
+      {
+        id: "quiz-final",
+        type: "quiz",
+        startTime: 23.5,
+        endTime: 24,
+        quizData: {
+          question: "Which information determines the size of the rectangular solid?",
+          options: [
+            { text: "The dimension values entered in Item Entry.", isCorrect: true, feedback: "Correct! The Item Entry dimensions define the size, while the coordinate entry determines the position." },
+            { text: "The origin coordinates alone.", isCorrect: false, feedback: "The origin coordinates determine the position, not the size." },
+            { text: "The selected viewing orientation alone.", isCorrect: false, feedback: "The view orientation changes how you see it, not the actual physical size." }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    id: "box-6",
+    title: "Creating a Box - Review",
+    text: "",
+    customText: "Review: 1. Shape Placement. 2. Place Box. 3. Select Front View. 4. Confirm Command Menu. 5. Select Y Orientation. 6. Enter Dimensions. 7. Enter Coordinates. Rectangular Solid Created.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox,
+    videoStart: 24,
+    videoEnd: 24.2,
+    overlays: [
+      {
+        id: "recap-box",
+        type: "recap",
+        startTime: 24,
+        endTime: 24.2,
+        recapData: {
+          title: "Creating a Box — Review",
+          items: [
+            "1. Shape Placement",
+            "2. Place Box / Rectangular Solid",
+            "3. Select Front View",
+            "4. Confirm Command Menu settings",
+            "5. Select Y Orientation",
+            "6. Enter Width (幅)",
+            "7. Enter Depth (奥行き)",
+            "8. Enter Height (高さ)",
+            "9. Enter Origin Coordinates",
+            "✓ Rectangular Solid Created"
+          ]
+        }
+      }
+    ]
   }
 ];
 
@@ -224,7 +414,22 @@ export const polygonTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidPolygon,
     videoStart: 7,
-    videoEnd: 11
+    videoEnd: 11,
+    overlays: [
+      {
+        id: "quiz-poly-1",
+        type: "quiz",
+        startTime: 10,
+        endTime: 11,
+        quizData: {
+          question: "Which properties must be specified when creating a polygonal prism?",
+          options: [
+            { text: "Number of Sides, Path Diameter, and Height", isCorrect: true, feedback: "Correct!" },
+            { text: "Radius and Depth", isCorrect: false, feedback: "Incorrect." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "poly-3",
@@ -248,7 +453,36 @@ export const polygonTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidPolygon,
     videoStart: 15,
-    videoEnd: 20
+    videoEnd: 20,
+    overlays: [
+      {
+        id: "quiz-poly-2",
+        type: "quiz",
+        startTime: 16,
+        endTime: 17,
+        quizData: {
+          question: "How do you render the polygon in the workspace after entering coordinates?",
+          options: [
+            { text: "Confirm the coordinates by pressing Enter", isCorrect: true, feedback: "Correct!" },
+            { text: "Click on the workspace randomly", isCorrect: false, feedback: "Incorrect." }
+          ]
+        }
+      },
+      {
+        id: "recap-poly",
+        type: "recap",
+        startTime: 19,
+        endTime: 20,
+        recapData: {
+          title: "Polygon Complete",
+          items: [
+            "You selected the Polygon tool.",
+            "You specified the number of sides, diameter, and height.",
+            "You positioned it using origin coordinates."
+          ]
+        }
+      }
+    ]
   }
 ];
 
@@ -287,7 +521,23 @@ export const coneTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCone,
     videoStart: 7,
-    videoEnd: 11
+    videoEnd: 11,
+    overlays: [
+      {
+        id: "quiz-cone-1",
+        type: "quiz",
+        startTime: 10,
+        endTime: 11,
+        quizData: {
+          question: "Which of the following is NOT a parameter for creating a Cone?",
+          options: [
+            { text: "Base Diameter", isCorrect: false, feedback: "Base Diameter is a valid parameter." },
+            { text: "Corner Radius", isCorrect: true, feedback: "Correct! Cones do not have corner radiuses." },
+            { text: "Top Face Diameter", isCorrect: false, feedback: "Top Face Diameter is a valid parameter." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "cone-3",
@@ -311,7 +561,36 @@ export const coneTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCone,
     videoStart: 15,
-    videoEnd: 20
+    videoEnd: 20,
+    overlays: [
+      {
+        id: "quiz-cone-2",
+        type: "quiz",
+        startTime: 16,
+        endTime: 17,
+        quizData: {
+          question: "What action places the cone on the workplane?",
+          options: [
+            { text: "Entering target coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
+            { text: "Clicking randomly on the screen", isCorrect: false, feedback: "Incorrect. You must enter coordinates." }
+          ]
+        }
+      },
+      {
+        id: "recap-cone",
+        type: "recap",
+        startTime: 19,
+        endTime: 20,
+        recapData: {
+          title: "Cone Complete",
+          items: [
+            "You selected the Cone tool.",
+            "You specified Number of Sides, Base Diameter, Top Face Diameter, and Height.",
+            "You positioned it using target coordinates."
+          ]
+        }
+      }
+    ]
   }
 ];
 
@@ -350,7 +629,22 @@ export const torusTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidTorus,
     videoStart: 7,
-    videoEnd: 11
+    videoEnd: 11,
+    overlays: [
+      {
+        id: "quiz-torus-1",
+        type: "quiz",
+        startTime: 10,
+        endTime: 11,
+        quizData: {
+          question: "Which of these defines the Torus geometry?",
+          options: [
+            { text: "Section Diameter, Path Radius, and Turn Angle", isCorrect: true, feedback: "Correct!" },
+            { text: "Height and Width", isCorrect: false, feedback: "Incorrect." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "torus-3",
@@ -374,6 +668,35 @@ export const torusTutorialSteps: TutorialStep[] = [
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidTorus,
     videoStart: 15,
-    videoEnd: 22
+    videoEnd: 22,
+    overlays: [
+      {
+        id: "quiz-torus-2",
+        type: "quiz",
+        startTime: 16,
+        endTime: 17,
+        quizData: {
+          question: "How do you place the Torus on the workspace?",
+          options: [
+            { text: "By entering positioning coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
+            { text: "By clicking the Torus icon again", isCorrect: false, feedback: "Incorrect." }
+          ]
+        }
+      },
+      {
+        id: "recap-torus",
+        type: "recap",
+        startTime: 21,
+        endTime: 22,
+        recapData: {
+          title: "Torus Complete",
+          items: [
+            "You selected the Torus tool.",
+            "You defined the Section Diameter, Path Radius, and Turn Angle.",
+            "You positioned it using the Key Entry Area."
+          ]
+        }
+      }
+    ]
   }
 ];

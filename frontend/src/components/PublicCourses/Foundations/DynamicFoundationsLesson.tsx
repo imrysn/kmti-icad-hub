@@ -28,6 +28,7 @@ interface DynamicLessonProps {
   title: string;
   content: string[];
   videoId?: string;
+  videoOverlays?: any[];
   onPrevLesson?: () => void;
   onNextLesson?: () => void;
   nextLabel?: string;
@@ -38,6 +39,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   title,
   content,
   videoId,
+  videoOverlays,
   onPrevLesson,
   onNextLesson,
   nextLabel,
@@ -189,8 +191,10 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                       zoom: '', origin: '', 
                       spotlight: { top: '0', left: '0', width: '0', height: '0', opacity: 0 },
                       subtitlePos: { bottom: '20px' },
-                      videoSrc: videoMap[videoId]
+                      videoSrc: videoMap[videoId],
+                      overlays: videoOverlays
                     }]}
+                    lessonType="video-tutorial"
                     introPanel={{
                       icon: Play,
                       eyebrow: "Interactive Video",

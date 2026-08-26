@@ -119,6 +119,58 @@ export const TOOLBAR_TUTORIAL_STEPS: TutorialStep[] = [
     subtitlePos: { top: "13%", left: "27.8%", transform: "translateX(-50%)" }
   },
   {
+    id: "quiz-tb-1",
+    title: "Knowledge Check",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "50%", left: "50%", transform: "translate(-50%, -50%)" },
+    quizData: {
+      question: "Which toolbar section contains commands like Undo and Redo?",
+      options: [
+        { text: "Edit", isCorrect: true, feedback: "Correct!" },
+        { text: "Screen Operations", isCorrect: false, feedback: "Screen Operations are for zooming and panning." },
+        { text: "File", isCorrect: false, feedback: "File is for saving, opening, etc." }
+      ]
+    }
+  },
+  {
+    id: "quiz-tb-2",
+    title: "Knowledge Check",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "50%", left: "50%", transform: "translate(-50%, -50%)" },
+    quizData: {
+      question: "Which toolbar section is used to switch between Shading and Wireframe displays?",
+      options: [
+        { text: "Shading", isCorrect: true, feedback: "Correct! The Shading section controls model rendering styles." },
+        { text: "Switch Display", isCorrect: false, feedback: "Switch Display is for dimensions and projection." },
+        { text: "3D View", isCorrect: false, feedback: "3D View is for standard view orientations." }
+      ]
+    }
+  },
+  {
+    id: "recap-tb",
+    title: "Review",
+    text: "",
+    zoom: "scale(1)",
+    origin: "50% 50%",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "50%", left: "50%", transform: "translate(-50%, -50%)" },
+    recapData: {
+      title: "Tool Bars Complete",
+      items: [
+        "File & Edit handle general document and history operations.",
+        "Screen Operations & 3D View manage the viewport.",
+        "Shading controls the visual rendering style.",
+        "Entry Control & Entry Tool configure input modes."
+      ]
+    }
+  },
+  {
     id: "outro",
     title: "Conclusion",
     text: "This concludes our tour of the Tool Bars. You can now use these quick-access commands to speed up your modeling workflow!",

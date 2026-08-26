@@ -99,8 +99,9 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   }, []);
 
   const startIntro = useCallback(() => {
+    void toggleFullscreen();
     playVideo();
-  }, [playVideo]);
+  }, [playVideo, toggleFullscreen]);
 
   useEffect(() => {
     if (isSpeaking) {
@@ -267,7 +268,14 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
 
   useEffect(() => {
     const syncFullscreenState = () => {
-      if (!document.fullscreenElement) setIsFullscreen(false);
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+        setPhase('intro');
+        setIsVideoPaused(true);
+        if (videoRef.current) {
+          videoRef.current.pause();
+        }
+      }
     };
 
     document.addEventListener('fullscreenchange', syncFullscreenState);
@@ -398,7 +406,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
           )}
 
           {phase === 'video' && (
-            <div className="kmti-native-video-controls">
+            <div className="kmti-native-video-controls video-tutorial">
               <button onClick={toggleVideoPlayback} title={isVideoPaused ? 'Play' : 'Pause'}>
                 {isVideoPaused ? <Play size={20} fill="currentColor" /> : <Pause size={20} fill="currentColor" />}
               </button>
