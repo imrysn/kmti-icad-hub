@@ -96,6 +96,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
@@ -154,6 +155,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     document.addEventListener('fullscreenchange', syncFullscreenState);
     return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
   }, []);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+    if (tutorialVideoRef.current) {
+      tutorialVideoRef.current.volume = volume;
+    }
+  }, [volume]);
 
   const toggleMute = () => {
     const newMute = !isMuted;
@@ -907,9 +917,24 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           />
         </div>
 
-        <button onClick={toggleMute} title={isMuted ? "Unmute" : "Mute"}>
-          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        </button>
+          <div className="kmti-volume-control">
+            <button onClick={toggleMute} title={isMuted || volume === 0 ? "Unmute" : "Mute"}>
+              {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </button>
+            <input 
+              type="range" 
+              className="kmti-volume-slider" 
+              min="0" max="1" step="0.05"
+              value={isMuted ? 0 : volume}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value);
+                setVolume(val);
+                if (val > 0 && isMuted) setIsMuted(false);
+                if (val === 0 && !isMuted) setIsMuted(true);
+              }}
+              title="Volume"
+            />
+          </div>
         
         <div className="kmti-time-indicator" style={{ fontSize: '13px', whiteSpace: 'nowrap', opacity: 0.8 }}>
           {currentData.videoSrc ? (

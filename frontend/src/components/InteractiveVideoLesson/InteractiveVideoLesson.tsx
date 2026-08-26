@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronLeft, ChevronRight, GripHorizontal, Mouse, Pause, Play, RotateCcw } from 'lucide-react';
+import { CheckCircle2, ChevronLeft, ChevronRight, Mouse, Pause, Play, RotateCcw, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
@@ -49,6 +49,9 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   const [isVideoPaused, setIsVideoPaused] = useState(true);
   const [videoTime, setVideoTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const {
     scrollProgress,
@@ -255,6 +258,48 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     }
   }, [phase]);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = volume;
+      videoRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      if (!document.fullscreenElement) setIsFullscreen(false);
+    };
+
+    document.addEventListener('fullscreenchange', syncFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    setIsMuted((prev) => !prev);
+  }, []);
+
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    if (val > 0 && isMuted) setIsMuted(false);
+    if (val === 0 && !isMuted) setIsMuted(true);
+  }, [isMuted]);
+
+  const toggleFullscreen = useCallback(async () => {
+    const shouldOpen = !isFullscreen;
+    setIsFullscreen(shouldOpen);
+    
+    try {
+      if (shouldOpen) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Ignored
+    }
+  }, [isFullscreen]);
+
   const finishLesson = useCallback(async () => {
     if (completionStartedRef.current) return;
     completionStartedRef.current = true;
@@ -353,18 +398,37 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
           )}
 
           {phase === 'video' && (
-            <div className="tutorial-control-card ivl-tutorial-control-card" aria-label="Tutorial playback controls">
-              <span className="ivl-control-handle" aria-hidden="true"><GripHorizontal size={18} /></span>
-              <span className="ivl-time-badge">
-                {Math.floor(videoTime / 60)}:{String(Math.floor(videoTime % 60)).padStart(2, '0')}
-                <span> / {Math.floor(videoDuration / 60)}:{String(Math.floor(videoDuration % 60)).padStart(2, '0')}</span>
-              </span>
-              <button className="ivl-control-button" type="button" onClick={toggleVideoPlayback} aria-label={isVideoPaused ? 'Play lesson' : 'Pause lesson'}>
-                {isVideoPaused ? <Play size={17} /> : <Pause size={17} />}
-                <span>{isVideoPaused ? 'Play' : 'Pause'}</span>
+            <div className="kmti-native-video-controls">
+              <button onClick={toggleVideoPlayback} title={isVideoPaused ? 'Play' : 'Pause'}>
+                {isVideoPaused ? <Play size={20} fill="currentColor" /> : <Pause size={20} fill="currentColor" />}
               </button>
-              <button className="ivl-control-button ivl-control-icon" type="button" onClick={replayLesson} aria-label="Replay lesson from start" title="Replay from start">
-                <RotateCcw size={17} />
+              <button onClick={replayLesson} title="Replay">
+                <RotateCcw size={18} />
+              </button>
+              <div className="kmti-progress-container">
+                <div 
+                  className="kmti-progress-filled" 
+                  style={{ width: videoDuration ? `${(videoTime / videoDuration) * 100}%` : '0%' }} 
+                />
+              </div>
+              <div className="kmti-volume-control">
+                <button onClick={toggleMute} title={isMuted || volume === 0 ? "Unmute" : "Mute"}>
+                  {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+                <input 
+                  type="range" 
+                  className="kmti-volume-slider" 
+                  min="0" max="1" step="0.05"
+                  value={isMuted ? 0 : volume}
+                  onChange={handleVolumeChange}
+                  title="Volume"
+                />
+              </div>
+              <div className="kmti-time-indicator" style={{ fontSize: '13px', whiteSpace: 'nowrap', opacity: 0.8 }}>
+                {Math.floor(videoTime / 60)}:{String(Math.floor(videoTime % 60)).padStart(2, '0')} / {Math.floor(videoDuration / 60)}:{String(Math.floor(videoDuration % 60)).padStart(2, '0')}
+              </div>
+              <button onClick={toggleFullscreen} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}>
+                {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
               </button>
             </div>
           )}

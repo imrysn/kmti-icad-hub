@@ -439,9 +439,7 @@
 }
 
 .nav-button.next {
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
+  margin-left: auto;
 }
 
 /* --- Instruction Box & Alerts --- */

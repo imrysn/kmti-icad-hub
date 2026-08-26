@@ -750,6 +750,35 @@ textarea:disabled {
   cursor: not-allowed;
 }
 
+.kmti-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  width: 24px;
+  transition: width 0.3s ease;
+}
+
+.kmti-volume-control:hover,
+.kmti-volume-control:focus-within {
+  width: 90px;
+}
+
+.kmti-volume-slider {
+  width: 50px;
+  cursor: pointer;
+  accent-color: var(--primary, #3b82f6);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.kmti-volume-control:hover .kmti-volume-slider,
+.kmti-volume-control:focus-within .kmti-volume-slider {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .kmti-progress-container {
   flex: 1;
   height: 4px;

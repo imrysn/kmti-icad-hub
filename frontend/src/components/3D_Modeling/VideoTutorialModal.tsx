@@ -1,4 +1,4 @@
-import { ChevronLeft,ChevronRight,GripHorizontal,Pause,Play,Square,X } from 'lucide-react';
+import { Pause, Play, X, SkipBack, SkipForward } from 'lucide-react';
 import { useTranslation } from '../../context/LanguageContext';
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -52,39 +52,10 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
-  const [navPos, setNavPos] = useState({ x: 0, y: 0 });
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const dragRef = useRef<{ startX: number, startY: number, startNavX: number, startNavY: number } | null>(null);
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    dragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      startNavX: navPos.x,
-      startNavY: navPos.y
-    };
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    setNavPos({
-      x: dragRef.current.startNavX + dx,
-      y: dragRef.current.startNavY + dy
-    });
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (dragRef.current) {
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-      dragRef.current = null;
-    }
-  };
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -608,72 +579,32 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
         </div>
       )}
 
-      {/* Persistent Floating Control Panel */}
-      <div
-        className="tutorial-control-card"
-        style={{ transform: `translate(${navPos.x}px, ${navPos.y}px)` }}
-      >
-        <div
-          className="drag-handle"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-          title={t("common.drag_move_panel")}
-          style={{ cursor: 'grab', padding: '8px', marginRight: '4px', borderRadius: '4px', display: 'flex' }}
-        >
-          <GripHorizontal size={20} color="#888" />
+      {/* Native-Style Bottom Control Bar */}
+      <div className="kmti-native-video-controls">
+        <button onClick={togglePlayback} title={isPlaying && !isPaused ? "Pause" : "Play"}>
+          {isPlaying && !isPaused ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+        </button>
+        <button onClick={handlePrev} disabled={currentStep === 0} title="Previous Step">
+          <SkipBack size={18} fill="currentColor" />
+        </button>
+        <button onClick={currentStep === steps.length - 1 ? handleClose : handleNext} title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}>
+          <SkipForward size={18} fill="currentColor" />
+        </button>
+
+        <div className="kmti-progress-container">
+          <div 
+            className="kmti-progress-filled" 
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }} 
+          />
         </div>
 
-        <div className="tutorial-controls">
-          {!isPlaying ? (
-            <button
-              className="tutorial-btn"
-              onClick={togglePlayback}
-              title={t("common.play_narration")}
-            >
-              <Play size={16} /> Play
-            </button>
-          ) : (
-            <>
-              <button
-                className="tutorial-btn"
-                onClick={togglePlayback}
-                title={isPaused ? "Resume Narration" : "Pause Narration"}
-              >
-                {isPaused ? <Play size={16} /> : <Pause size={16} />}
-                {isPaused ? "Resume" : "Pause"}
-              </button>
-              <button
-                className="tutorial-btn"
-                onClick={handleStop}
-                title={t("common.stop_narration")}
-              >
-                <Square size={16} /> Stop
-              </button>
-            </>
-          )}
-
-          <button
-            className="tutorial-btn"
-            onClick={handlePrev}
-            disabled={currentStep === 0}
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <button
-            className="tutorial-btn primary"
-            onClick={handleNext}
-            disabled={currentStep === steps.length - 1}
-          >
-            <ChevronRight size={18} />
-          </button>
-
-          <button className="tutorial-btn exit" onClick={handleClose}>
-            Exit Tutorial <X size={18} />
-          </button>
+        <div className="kmti-time-indicator" style={{ fontSize: '13px', whiteSpace: 'nowrap', opacity: 0.8 }}>
+          Step {currentStep + 1} / {steps.length}
         </div>
+
+        <button onClick={handleClose} title="Close Tutorial">
+          <X size={20} />
+        </button>
       </div>
     </div>,
     document.body
