@@ -18,6 +18,11 @@ export const cylinderOverlayLayout = {
   },
 };
 
+/** Create Box overlay geometry, isolated from the other basic-shape lessons. */
+export const boxOverlayLayout = {
+  itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
+};
+
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-1-tool-selection",
@@ -221,179 +226,248 @@ export const cylinderTutorialSteps: TutorialStep[] = [
 
 export const boxTutorialSteps: TutorialStep[] = [
   {
-    id: "box-0",
-    title: "Creating a Box",
+    id: "box-1-shape-placement",
+    title: "Select Shape Placement",
     text: "",
-    customText: "Welcome to this iCAD lesson. In this tutorial, you will learn how to create a basic rectangular solid, specify its dimensions, and position it using coordinates.",
+    customText: "A box, also called a rectangular solid, is a three-dimensional solid with six rectangular faces. In CAD, boxes are commonly used as starting geometry for blocks, plates, housings, bases, and other rectangular components. Use a box when a component has defined width, depth, and height. To begin, open Shape Placement.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 0,
-    videoEnd: 1.5
-  },
-  {
-    id: "box-1",
-    title: "Creating a Box",
-    text: "",
-    customText: "First, click Shape Placement. Next, select Place Box. Next, select Front View.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidBox,
-    videoStart: 1.5,
-    videoEnd: 6.5,
+    videoEnd: 2.233,
     overlays: [
-      { id: "shape-placement", type: "highlight", startTime: 1.5, endTime: 3.0, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
-      { id: "place-box", type: "highlight", startTime: 3.0, endTime: 4.5, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Rectangular Solid", labelPosition: "bottom" },
-      { id: "front-view", type: "highlight", startTime: 4.5, endTime: 6.5, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+      { id: "box-shape-placement", type: "highlight", startTime: 1.2, endTime: 2.233, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" }
     ]
   },
   {
-    id: "box-2",
-    title: "Creating a Box",
+    id: "box-2-place-box",
+    title: "Select the Box Tool",
     text: "",
-    customText: "In the Command Menu, confirm that Rectangular Solid, Placement, and Dimension Specification are active. Then select Y Orientation.",
+    customText: "Select Place Box, or Rectangular Solid, from Shape Placement.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 6.5,
-    videoEnd: 11,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 2.233,
+    videoEnd: 4.817,
     overlays: [
-      { id: "opt-box", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Rectangular Solid", labelPosition: "right" },
-      { id: "opt-placement", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
-      { id: "opt-dim", type: "highlight", startTime: 7, endTime: 8.5, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Dimension Specification", labelPosition: "right" },
-      { id: "opt-y-orient", type: "highlight", startTime: 8.5, endTime: 10, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
+      { id: "box-place-box", type: "highlight", startTime: 3.75, endTime: 4.817, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Rectangular Solid", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "box-3-front-view",
+    title: "Set the Front View",
+    text: "",
+    customText: "Select Front View from the 3D View toolbar.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 4.817,
+    videoEnd: 8.333,
+    overlays: [
+      { id: "box-front-view", type: "highlight", startTime: 5.4, endTime: 8.333, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "box-4-command-options",
+    title: "Confirm the Box Settings",
+    text: "",
+    customText: "In the Command Menu, confirm Rectangular Solid, Placement, and Dimension Specification, then select Y Orientation.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 8.333,
+    videoEnd: 12.5,
+    overlays: [
+      { id: "box-opt-solid", type: "highlight", startTime: 8.333, endTime: 9.4, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, animation: "pulse", label: "Rectangular Solid", labelPosition: "right" },
+      { id: "box-opt-placement", type: "highlight", startTime: 9.4, endTime: 10.4, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "box-opt-dim", type: "highlight", startTime: 10.4, endTime: 11.4, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, animation: "pulse", label: "Dimension Specification", labelPosition: "right" },
+      { id: "box-opt-y-orient", type: "highlight", startTime: 11.4, endTime: 12.5, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
-        id: "quiz-1",
+        id: "quiz-box-orientation",
         type: "quiz",
-        startTime: 10.5,
-        endTime: 11,
+        startTime: 12.0,
+        endTime: 12.5,
         quizData: {
-          question: "Which orientation is selected for this Box placement procedure?",
+          question: "Which orientation is selected for this box placement procedure?",
           options: [
-            { text: "Y Orientation", isCorrect: true, feedback: "Correct! This procedure uses Y Orientation for the rectangular solid placement." },
-            { text: "X Orientation", isCorrect: false, feedback: "Not quite. Review the orientation selected in the demonstration." },
-            { text: "Z Orientation", isCorrect: false, feedback: "Not quite. Review the orientation selected in the demonstration." }
+            { text: "Y Orientation", isCorrect: true, feedback: "Correct! This procedure uses Y Orientation." },
+            { text: "X Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." },
+            { text: "Z Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." }
           ]
         }
       }
     ]
   },
   {
-    id: "box-3",
-    title: "Creating a Box",
+    id: "box-5-width",
+    title: "Enter the Width",
     text: "",
-    customText: "Next, use the Item Entry area at the bottom-left of the iCAD window. Enter the required width, then press Enter. Next, enter the required depth, then press Enter. Finally, enter the required height, then press Enter.",
+    customText: "In the Item Entry area, enter the box width.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 11,
-    videoEnd: 17,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 12.5,
+    videoEnd: 16.667,
     overlays: [
-      { id: "input-width", type: "highlight", startTime: 12, endTime: 13.5, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Width (幅)" },
-      { id: "input-depth", type: "highlight", startTime: 13.5, endTime: 15, target: { x: 0.167, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Depth (奥行き)" },
-      { id: "input-height", type: "highlight", startTime: 15, endTime: 16.5, target: { x: 0.242, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
+      { id: "box-item-entry", type: "highlight", startTime: 12.5, endTime: 13.5, target: { ...boxOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
+      { id: "box-input-width", type: "highlight", startTime: 13.5, endTime: 16.667, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Width (幅)" }
+    ]
+  },
+  {
+    id: "box-6-depth",
+    title: "Enter the Depth",
+    text: "",
+    customText: "Enter the box depth in the Item Entry area.",
+    zoom: "scale(1)", origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox, waitForNarrationBeforeVideo: true, narrateTitle: false,
+    videoStart: 16.667, videoEnd: 20.833,
+    overlays: [
+      { id: "box-input-depth", type: "highlight", startTime: 16.667, endTime: 20.833, target: { x: 0.167, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Depth (奥行き)" }
+    ]
+  },
+  {
+    id: "box-7-height",
+    title: "Enter the Height",
+    text: "",
+    customText: "Enter the box height in the Item Entry area.",
+    zoom: "scale(1)", origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox, waitForNarrationBeforeVideo: true, narrateTitle: false,
+    videoStart: 20.833, videoEnd: 25.0,
+    overlays: [
+      { id: "box-input-height", type: "highlight", startTime: 20.833, endTime: 25.0, target: { x: 0.242, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
       {
-        id: "quiz-2",
+        id: "quiz-box-dimensions",
         type: "quiz",
-        startTime: 16.5,
-        endTime: 17,
+        startTime: 24.5,
+        endTime: 25.0,
         quizData: {
           question: "Where are the dimensions of the rectangular solid entered?",
           options: [
             { text: "Item Entry area", isCorrect: true, feedback: "Correct! The dimensions of the rectangular solid are specified in the Item Entry area." },
-            { text: "Key Entry Area", isCorrect: false, feedback: "The Key Entry Area is used to specify the solid's position rather than its size." },
-            { text: "View controls", isCorrect: false, feedback: "The View controls the viewing orientation, not the solid dimensions." }
+            { text: "Key Entry Area", isCorrect: false, feedback: "The Item Entry area is used for the solid dimensions." },
+            { text: "View controls", isCorrect: false, feedback: "The Item Entry area is used for the solid dimensions." }
           ]
         }
       }
     ]
   },
   {
-    id: "box-4",
-    title: "Creating a Box",
+    id: "box-8-origin",
+    title: "Position the Box",
     text: "",
-    customText: "After specifying the dimensions, enter the coordinates for the solid's position. Enter zero, zero, zero to place the rectangular solid at the origin.",
+    customText: "After the knowledge check, enter zero, zero, zero to position the rectangular solid at the model origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 17,
-    videoEnd: 21,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 25.0,
+    videoEnd: 29.883,
     overlays: [
-      { id: "input-coords", type: "highlight", startTime: 18, endTime: 20, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin: 0 0 0" },
+      { id: "box-input-coords", type: "highlight", startTime: 29.167, endTime: 29.883, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" },
       {
-        id: "quiz-3",
+        id: "quiz-box-origin",
         type: "quiz",
-        startTime: 20.5,
-        endTime: 21,
+        startTime: 29.383,
+        endTime: 29.883,
         quizData: {
           question: "What coordinates are used to position the rectangular solid at the origin in this lesson?",
           options: [
-            { text: "0 0 0", isCorrect: true, feedback: "Correct!" },
-            { text: "100 100 0", isCorrect: false, feedback: "InCorrect! Check the lesson again." },
-            { text: "50 50 50", isCorrect: false, feedback: "InCorrect! Check the lesson again." }
+            { text: "0 0 0", isCorrect: true, feedback: "Correct! Zero, zero, zero represents the model origin." },
+            { text: "100 100 0", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." },
+            { text: "50 50 50", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." }
           ]
         }
       }
     ]
   },
   {
-    id: "box-5",
-    title: "Creating a Box",
+    id: "box-9-result",
+    title: "Review the Result",
     text: "",
-    customText: "The rectangular solid is now created using the dimensions and position specified in the previous steps. This dimension controls the width. This dimension controls the depth. This dimension controls the height.",
+    customText: "The rectangular solid is now created using the specified width, depth, height, and origin position.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox,
-    videoStart: 21,
-    videoEnd: 24,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 29.883,
+    videoEnd: 33.017
+  },
+  {
+    id: "box-10-explain",
+    title: "Review the Box Dimensions",
+    text: "",
+    customText: "Width measures the box from side to side. Depth measures it from front to back. Height measures it from bottom to top.",
+    zoom: "scale(1)", origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox, waitForNarrationBeforeVideo: true, advanceOnSourceVideoEnd: true, narrateTitle: false,
+    videoStart: 33.017, videoEnd: 37.566,
     overlays: [
       {
-        id: "dim-width",
+        id: "box-dim-width",
         type: "dimensionAnnotation",
-        startTime: 22,
-        endTime: 24,
+        startTime: 33.25,
+        endTime: 37.566,
         label: "Width (幅)",
         labelOffset: { x: 0, y: -5 },
         dimensionType: "horizontal",
-        line: { start: { x: 0.44, y: 0.5 }, end: { x: 0.56, y: 0.5 } } // placeholders
+        line: { start: { x: 0.39, y: 0.57 }, end: { x: 0.58, y: 0.57 } }
       },
       {
-        id: "dim-depth",
+        id: "box-dim-depth",
         type: "dimensionAnnotation",
-        startTime: 22.5,
-        endTime: 24,
+        startTime: 34.25,
+        endTime: 37.566,
         label: "Depth (奥行き)",
-        labelOffset: { x: 0, y: 15 },
+        labelOffset: { x: 10, y: -8 },
         dimensionType: "horizontal",
-        line: { start: { x: 0.57, y: 0.5 }, end: { x: 0.62, y: 0.42 } } // placeholders
+        line: { start: { x: 0.58, y: 0.57 }, end: { x: 0.66, y: 0.49 } }
       },
       {
-        id: "dim-height",
+        id: "box-dim-height",
         type: "dimensionAnnotation",
-        startTime: 23,
-        endTime: 24,
+        startTime: 35.25,
+        endTime: 37.566,
         label: "Height (高さ)",
         labelOffset: { x: 30, y: 0 },
         dimensionType: "vertical",
-        line: { start: { x: 0.56, y: 0.5 }, end: { x: 0.56, y: 0.35 } } // placeholders
+        line: { start: { x: 0.66, y: 0.49 }, end: { x: 0.66, y: 0.61 } }
       },
       {
-        id: "quiz-final",
+        id: "quiz-box-final",
         type: "quiz",
-        startTime: 23.5,
-        endTime: 24,
+        startTime: 37.067,
+        endTime: 37.566,
         quizData: {
           question: "Which information determines the size of the rectangular solid?",
           options: [
@@ -406,40 +480,25 @@ export const boxTutorialSteps: TutorialStep[] = [
     ]
   },
   {
-    id: "box-6",
-    title: "Creating a Box - Review",
+    id: "box-11-recap",
+    title: "Create Box Recap",
     text: "",
-    customText: "Review: 1. Shape Placement. 2. Place Box. 3. Select Front View. 4. Confirm Command Menu. 5. Select Y Orientation. 6. Enter Dimensions. 7. Enter Coordinates. Rectangular Solid Created.",
+    customText: "Let's review. You selected Shape Placement and the Box tool, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the width, depth, and height, and used zero, zero, zero to position the rectangular solid at the model origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidBox,
-    videoStart: 24,
-    videoEnd: 24.2,
-    overlays: [
-      {
-        id: "recap-box",
-        type: "recap",
-        startTime: 24,
-        endTime: 24.2,
-        recapData: {
-          title: "Creating a Box — Review",
-          items: [
-            "1. Shape Placement",
-            "2. Place Box / Rectangular Solid",
-            "3. Select Front View",
-            "4. Confirm Command Menu settings",
-            "5. Select Y Orientation",
-            "6. Enter Width (幅)",
-            "7. Enter Depth (奥行き)",
-            "8. Enter Height (高さ)",
-            "9. Enter Origin Coordinates",
-            "✓ Rectangular Solid Created"
-          ]
-        }
-      }
-    ]
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    recapData: {
+      title: "Lesson Complete",
+      items: [
+        "Selected Shape Placement and the Box tool.",
+        "Selected Front View and Y Orientation.",
+        "Entered width, depth, and height in Item Entry.",
+        "Positioned the box at the model origin using 0, 0, 0."
+      ]
+    }
   }
 ];
 
