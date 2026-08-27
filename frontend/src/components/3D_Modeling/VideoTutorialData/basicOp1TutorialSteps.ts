@@ -101,7 +101,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     videoStart: 23.40,
     videoEnd: 27.0,
     overlays: [
-      { id: "result-callout", type: "callout", startTime: 24.0, endTime: 27.0, target: { x: 0.5, y: 0.5 }, label: "Cylinder Created ✓" }
+      { id: "result-callout", type: "callout", startTime: 24.0, endTime: 27.0, target: { x: 0.5, y: 0.5, width: 0, height: 0 }, label: "Cylinder Created ✓" }
     ]
   },
   {

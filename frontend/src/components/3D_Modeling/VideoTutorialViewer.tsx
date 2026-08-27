@@ -1,6 +1,6 @@
 import { LucideIcon, Maximize, Minimize, Pause, Play, X, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import React,{ useEffect,useRef,useState } from 'react';
-import { createPortal } from 'react-dom';
 import { api } from '../../services/api';
 import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
@@ -9,54 +9,13 @@ import '../InteractiveVideoLesson/InteractiveVideoLesson.css';
 import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
 import type { InteractiveVideoQuestion } from '../InteractiveVideoLesson/types';
+import type { TutorialOverlay } from '../../types/tutorial';
+export type { NormalizedPoint, NormalizedRect, TutorialOverlay, TutorialOverlayType } from '../../types/tutorial';
 
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
 import { KaraokeLessonText } from '../KaraokeLessonText';
-
-export type TutorialOverlayType =
-  | 'highlight'
-  | 'callout'
-  | 'dimensionAnnotation'
-  | 'quiz'
-  | 'recap';
-
-export interface NormalizedPoint {
-  x: number;
-  y: number;
-}
-
-export interface NormalizedRect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface TutorialOverlay {
-  id: string;
-  type: TutorialOverlayType;
-  startTime: number;
-  endTime: number;
-  target?: NormalizedRect;
-  label?: string;
-  labelPosition?: 'top' | 'bottom' | 'left' | 'right';
-  labelOffset?: { x: number, y: number };
-  animation?: 'none' | 'pulse' | 'flash';
-  line?: {
-    start: NormalizedPoint;
-    end: NormalizedPoint;
-  };
-  dimensionType?: 'horizontal' | 'vertical';
-  quizData?: {
-    question: string;
-    options: { text: string; isCorrect: boolean; feedback: string }[];
-  };
-  recapData?: {
-    title: string;
-    items: string[];
-  };
-}
+import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration } from '../../utils/quizNarration';
 
 export interface TutorialStep { quizData?: { question: string; options: { text: string; isCorrect: boolean; feedback: string }[]; }; recapData?: { title: string; items: string[]; }; 
   id: string | number;
@@ -87,6 +46,8 @@ export interface TutorialStep { quizData?: { question: string; options: { text: 
   videoSrc?: string;
   videoStart?: number;
   videoEnd?: number;
+  holdVideo?: boolean;
+  narrationEnabled?: boolean;
   overlays?: TutorialOverlay[];
 }
 
@@ -102,9 +63,10 @@ interface VideoTutorialViewerProps {
   steps: TutorialStep[];
   introPanel?: IntroPanelData;
   lessonType?: 'step-by-step' | 'video-tutorial';
+  muteSourceVideoAudio?: boolean;
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel, lessonType }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel, lessonType, muteSourceVideoAudio = false }) => {
   const { t } = useTranslation();
   const [hasStarted, setHasStarted] = useState(!introPanel);
   const [currentStep, setCurrentStep] = useState(0);
@@ -119,6 +81,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const [quizChoice, setQuizChoice] = useState('');
   const [quizChecked, setQuizChecked] = useState(false);
   const passedQuizzesRef = useRef(new Set<string>());
+  const narratedOverlayIdsRef = useRef(new Set<string>());
 
   const [videoTime, setVideoTime] = useState(0);
   const [videoRect, setVideoRect] = useState({ left: 0, top: 0, width: 0, height: 0 });
@@ -199,7 +162,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       audioRef.current.muted = newMute;
     }
     if (tutorialVideoRef.current) {
-      tutorialVideoRef.current.muted = newMute;
+      tutorialVideoRef.current.muted = muteSourceVideoAudio || newMute;
     }
   };
 
@@ -272,14 +235,42 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   }, [currentStep, isPlaying]);
 
   useEffect(() => {
+    if (!isPlaying || isPaused) return;
+
+    const cue = steps[currentStep]?.overlays?.find(overlay =>
+      overlay.narrate && overlay.label && videoTime >= overlay.startTime && videoTime <= overlay.endTime
+    );
+    if (!cue?.label || narratedOverlayIdsRef.current.has(cue.id)) return;
+
+    narratedOverlayIdsRef.current.add(cue.id);
+    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
+    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+
+    if (savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://')) {
+      const apiBase = api.defaults.baseURL || '';
+      const cueUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(cue.label)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
+      const cueAudio = new Audio(cueUrl);
+      cueAudio.volume = volume;
+      cueAudio.muted = isMuted;
+      audioRef.current = cueAudio;
+      cueAudio.play().catch(err => console.error('Timed narration play failed:', err));
+    } else if (synthRef.current) {
+      const utterance = new SpeechSynthesisUtterance(cue.label);
+      utterance.rate = savedRate * 0.9;
+      utterance.volume = isMuted ? 0 : volume;
+      synthRef.current.speak(utterance);
+    }
+  }, [currentStep, isMuted, isPaused, isPlaying, steps, videoTime, volume]);
+
+  useEffect(() => {
     if (tutorialVideoRef.current) {
-      if (isPlaying && !isPaused) {
+      if (isPlaying && !isPaused && !currentData.holdVideo) {
         tutorialVideoRef.current.play().catch(err => console.log("Video play failed:", err));
       } else {
         tutorialVideoRef.current.pause();
       }
     }
-  }, [isPlaying, isPaused]);
+  }, [isPlaying, isPaused, steps, currentStep]);
 
   useEffect(() => {
     if (tutorialVideoRef.current && currentData) {
@@ -289,8 +280,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       if (video.currentTime < start || video.currentTime > (currentData.videoEnd || 9999)) {
         video.currentTime = start;
       }
-      if (isPlaying && !isPaused) {
+      if (isPlaying && !isPaused && !currentData.holdVideo) {
         video.play().catch(err => console.log("Video resume on step change failed:", err));
+      } else if (currentData.holdVideo) {
+        video.pause();
       }
     }
   }, [currentStep]);
@@ -337,8 +330,20 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     setCurrentCharIndex(0);
     setIsPaused(false);
 
+    if (steps[currentStep].narrationEnabled === false) {
+      return;
+    }
 
-    const text = steps[currentStep].text;
+
+    const stepText = (steps[currentStep].customText || steps[currentStep].text || '').trim();
+    const text = steps[currentStep].quizData
+      ? buildKnowledgeCheckNarration(stepText, steps[currentStep].quizData.options.map(option => option.text))
+      : stepText;
+    if (!text) {
+      // Video-only steps do not require synthesized narration. Never send an
+      // empty request to the TTS endpoint.
+      return;
+    }
 
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
@@ -409,7 +414,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           activeIntervalRef.current = null;
         }
         setCurrentCharIndex(0);
-        if (currentStep < steps.length - 1) {
+        if (steps[currentStep].quizData || steps[currentStep].recapData) {
+          setIsPlaying(false);
+          setIsPaused(true);
+        } else if (currentStep < steps.length - 1) {
           // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
@@ -506,7 +514,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
         setCurrentCharIndex(0);
         
         // Don't auto-advance if the step has a static quiz or recap that needs user interaction
-        if (!steps[currentStep].videoSrc && (steps[currentStep].quizData || steps[currentStep].recapData)) {
+        if (steps[currentStep].quizData || steps[currentStep].recapData) {
           setIsPlaying(false);
           setIsPaused(true);
           return;
@@ -565,6 +573,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     if (currentStep < steps.length - 1) {
       setCurrentStep(prev => prev + 1);
       setCurrentCharIndex(0);
+    } else {
+      finishTutorial();
     }
   };
 
@@ -625,6 +635,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     setIsPlaying(false);
     setIsPaused(false);
     setCurrentCharIndex(0);
+    narratedOverlayIdsRef.current.clear();
     if (synthRef.current) {
       synthRef.current.cancel();
     }
@@ -639,6 +650,42 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     if (tutorialVideoRef.current) {
       tutorialVideoRef.current.pause();
       tutorialVideoRef.current.currentTime = 0;
+    }
+  };
+
+  const speakTransientNarration = (narration: string) => {
+    const quizText = narration.trim();
+    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
+    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    synthRef.current?.cancel();
+
+    if (savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://')) {
+      const apiBase = api.defaults.baseURL || '';
+      const quizUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(quizText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
+      const quizAudio = new Audio(quizUrl);
+      quizAudio.volume = volume;
+      quizAudio.muted = isMuted;
+      audioRef.current = quizAudio;
+      quizAudio.play().catch(err => console.error('Quiz narration play failed:', err));
+    } else if (synthRef.current) {
+      const utterance = new SpeechSynthesisUtterance(quizText);
+      utterance.rate = savedRate * 0.9;
+      utterance.volume = isMuted ? 0 : volume;
+      synthRef.current.speak(utterance);
+    }
+  };
+
+  const finishTutorial = () => {
+    handleStop();
+    setCurrentStep(0);
+    setHasStarted(false);
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
     }
   };
 
@@ -705,6 +752,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
             description={introPanel.description}
             startLabel={introPanel.startLabel}
             onStart={() => {
+              narratedOverlayIdsRef.current.clear();
               void toggleFullscreen();
               setHasStarted(true);
               setTimeout(() => {
@@ -738,7 +786,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
               src={currentData.videoSrc}
               className="tutorial-image"
               playsInline
-              muted={isMuted}
+              muted={muteSourceVideoAudio || isMuted}
               onTimeUpdate={(e) => {
                 const video = e.currentTarget;
                 const time = video.currentTime;
@@ -751,10 +799,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                   setQuizChoice('');
                   setQuizChecked(false);
                   video.pause();
-                  setIsPlaying(false);
                   setIsPaused(true);
                   if (audioRef.current) audioRef.current.pause();
                   if (synthRef.current) synthRef.current.pause();
+                  if (activeQuiz.quizData?.question) {
+                    speakTransientNarration(buildKnowledgeCheckNarration(
+                      activeQuiz.quizData.question,
+                      activeQuiz.quizData.options.map(option => option.text),
+                    ));
+                  }
                   return;
                 }
 
@@ -771,6 +824,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                   } else {
                     // Mid step: pause video, let TTS finish, then TTS onended advances the step
                     video.pause();
+                    if (currentData.narrationEnabled === false) {
+                      setCurrentStep(prev => prev + 1);
+                    }
                   }
                 }
               }}
@@ -816,7 +872,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                   const height = overlay.target.height * videoRect.height;
                   
                   return (
-                    <div key={overlay.id} className={`overlay-highlight ${overlay.animation || 'none'}`} style={{
+                    <React.Fragment key={overlay.id}>
+                    <div className={`overlay-highlight ${overlay.animation || 'none'}`} style={{
                       position: 'absolute',
                       left: `${left}px`,
                       top: `${top}px`,
@@ -869,6 +926,29 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                         );
                       })()}
                     </div>
+                    {overlay.centerCaption && overlay.label && (
+                      <div style={{
+                        position: 'absolute',
+                        left: `${(overlay.captionPosition?.x ?? 0.5) * 100}%`,
+                        top: `${(overlay.captionPosition?.y ?? 0.19) * 100}%`,
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 12,
+                        padding: '0.5rem 1.4rem',
+                        border: '1px solid rgba(96, 165, 250, 0.8)',
+                        borderRadius: '999px',
+                        color: '#ffffff',
+                        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 64, 175, 0.88))',
+                        boxShadow: '0 8px 24px rgba(15, 23, 42, 0.38), 0 0 18px rgba(59, 130, 246, 0.22)',
+                        fontSize: 'clamp(1rem, 2.2vw, 1.65rem)',
+                        fontWeight: 800,
+                        letterSpacing: '0.12em',
+                        lineHeight: 1,
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {overlay.label}
+                      </div>
+                    )}
+                    </React.Fragment>
                   );
                 }
                 
@@ -932,12 +1012,26 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                         selectedChoice={quizChoice}
                         answerChecked={quizChecked}
                         onSelectChoice={setQuizChoice}
-                        onCheckAnswer={() => setQuizChecked(true)}
+                        onCheckAnswer={() => {
+                          setQuizChecked(true);
+                          const selectedOption = overlay.quizData?.options[Number(quizChoice)];
+                          if (selectedOption?.isCorrect) {
+                            confetti({ particleCount: 120, spread: 75, origin: { y: 0.62 } });
+                            speakTransientNarration(buildAnswerFeedbackNarration(true, selectedOption.feedback));
+                          } else if (selectedOption) {
+                            speakTransientNarration(buildAnswerFeedbackNarration(false, selectedOption.feedback));
+                          }
+                        }}
                         onRetry={() => { setQuizChoice(''); setQuizChecked(false); }}
                         onContinue={() => {
                           passedQuizzesRef.current.add(overlay.id);
                           setActiveQuizId(null);
-                          togglePlayback();
+                          setQuizChoice('');
+                          setQuizChecked(false);
+                          setIsPaused(false);
+                          tutorialVideoRef.current?.play().catch(err => console.log("Video resume after quiz failed:", err));
+                          audioRef.current?.play().catch(err => console.log("Narration resume after quiz failed:", err));
+                          synthRef.current?.resume();
                         }}
                       />
                     </div>
@@ -968,31 +1062,40 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       </div>
 
       {currentData.quizData && (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 100 }}>
-          <div style={{ pointerEvents: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            <LessonQuestionPanel
-              question={{
-                id: String(currentData.id),
-                prompt: currentData.quizData.question,
-                choices: currentData.quizData.options.map((opt, i) => ({
-                  id: String(i),
-                  label: opt.text,
-                  isCorrect: opt.isCorrect,
-                  feedback: opt.feedback
-                }))
-              }}
-              selectedChoice={quizChoice}
-              answerChecked={quizChecked}
-              onSelectChoice={setQuizChoice}
-              onCheckAnswer={() => setQuizChecked(true)}
-              onRetry={() => { setQuizChoice(''); setQuizChecked(false); }}
-              onContinue={() => {
-                setQuizChoice('');
-                setQuizChecked(false);
-                handleNext();
-              }}
-            />
-          </div>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'auto', zIndex: 100 }}>
+          <LessonQuestionPanel
+            question={{
+              id: String(currentData.id),
+              prompt: currentData.quizData.question,
+              choices: currentData.quizData.options.map((opt, i) => ({
+                id: String(i),
+                label: opt.text,
+                isCorrect: opt.isCorrect,
+                feedback: opt.feedback
+              }))
+            }}
+            selectedChoice={quizChoice}
+            answerChecked={quizChecked}
+            onSelectChoice={setQuizChoice}
+            onCheckAnswer={() => {
+              setQuizChecked(true);
+              const selectedOption = currentData.quizData?.options[Number(quizChoice)];
+              if (selectedOption?.isCorrect) {
+                confetti({ particleCount: 120, spread: 75, origin: { y: 0.62 } });
+                speakTransientNarration(buildAnswerFeedbackNarration(true, selectedOption.feedback));
+              } else if (selectedOption) {
+                speakTransientNarration(buildAnswerFeedbackNarration(false, selectedOption.feedback));
+              }
+            }}
+            onRetry={() => { setQuizChoice(''); setQuizChecked(false); }}
+            onContinue={() => {
+              setQuizChoice('');
+              setQuizChecked(false);
+              setIsPaused(false);
+              setIsPlaying(true);
+              handleNext();
+            }}
+          />
         </div>
       )}
 
@@ -1015,7 +1118,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
       {/* Floating Subtitle Box or Flat bottom subtitle */}
       {currentData.spotlight.opacity === 0 ? (
-        isPlaying && (
+        isPlaying &&
+        currentData.narrationEnabled !== false &&
+        !currentData.quizData &&
+        !currentData.recapData && (
           <div className="tutorial-subtitle-flat">
             <h2 className="tutorial-title">{currentData.title}</h2>
             <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />

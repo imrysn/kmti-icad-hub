@@ -1,4 +1,4 @@
-import { TutorialStep } from "../VideoTutorialModal";
+import type { TutorialStep } from "../VideoTutorialViewer";
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
   {

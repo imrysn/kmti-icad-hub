@@ -9,6 +9,7 @@ import { QuizModal } from './QuizModal';
 
 // Foundations Lesson Imports
 const DynamicFoundationsLesson = lazy(() => import('../../../components/PublicCourses/Foundations/DynamicFoundationsLesson'));
+import { getDynamicFoundationsLessonProps } from '../../../components/PublicCourses/Foundations/dynamicLessonProps';
 const ZoomInOutInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/ZoomInOutInteractiveLesson'));
 const PanInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/PanInteractiveLesson'));
 const RotateViewInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/RotateViewInteractiveLesson'));
@@ -524,7 +525,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     }
                   }
                   if (foundLesson && foundLesson.content) {
-                    return <DynamicFoundationsLesson lessonId={activeLessonId} title={foundLesson.title} content={foundLesson.content} videoId={foundLesson.videoId} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
+                    return <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps(foundLesson)} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
                   }
                 }
 

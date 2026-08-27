@@ -33,3 +33,36 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 - **Implementation**: 
     - **Step-by-Step Tutorial Lesson**: Use the native video controls styling found in the "Understanding the iCAD SX Screen" module.
     - **Video Tutorial Lesson**: Use the native video controls styling found in the "Create Box" lesson.
+
+## 8. Quiz Narration Sequence
+- **Requirement**: Every knowledge check must be fully understandable without relying only on visible text.
+- **Implementation**: When a quiz opens, narrate the following content in this exact order:
+    1. `Now, let's do a knowledge check.`
+    2. The complete quiz question.
+    3. `Choose one answer.`
+    4. Every available choice, prefixed with its sequence number (for example, `Choice 1`, `Choice 2`, and `Choice 3`).
+- **Continuation**: Moving from one quiz to the next must explicitly restart narration so Quiz 2 and later questions are never silent.
+- **Display**: Quiz narration is audio-only while the question panel is open. Do not render a duplicate subtitle behind the quiz or recap panel.
+
+## 9. Correct and Incorrect Answer Feedback
+- **Correct Answer**: After the learner selects **Check Answer** with the correct choice, trigger a visible confetti celebration and narrate `Correct.`
+- **Incorrect Answer**: Do not show confetti. Narrate `Not quite.`, followed by the selected choice's explanatory feedback, and finish with `Please try again.`
+- **Retry State**: Keep the quiz open after an incorrect answer and allow the learner to retry. Continue only after the correct answer is confirmed.
+- **Consistency**: Apply this behavior to post-video quizzes, timeline-overlay quizzes, and quizzes in `InteractiveVideoLesson`.
+
+## 10. Post-Video Quiz and Recap Flow
+- **Requirement**: A lesson must not close or reset when its demonstration footage ends if quizzes or a recap remain.
+- **Implementation**: Freeze the video on the configured final frame, then present Quiz 1, Quiz 2, and the final recap as sequential stages.
+- **Completion**: The final recap's **Continue** button must stop narration, reset the lesson, exit full screen, and return to the `LessonIntroPanel`.
+
+## 11. Source Audio and TTS Separation
+- **Requirement**: When a lesson uses generated narration, the recording's original audio must be independently configurable so it cannot conflict with TTS.
+- **Implementation**: Use `muteSourceVideoAudio` for narrated recordings. This must mute only the source video track; the learner's mute and volume controls must continue to control narration correctly.
+- **Safety**: Never send an empty string to the TTS synthesis endpoint. Trim narration text and skip synthesis when no narratable text exists.
+
+## 12. Timed Labels and Configurable Positioning
+- **Requirement**: Short direction or state labels synchronized to the recording must use the exact action timestamps and must not be replaced by a generic persistent subtitle.
+- **Implementation**: Use a pulsing `highlight` overlay for the selected icon and a concise centered caption when required. Configure the centered caption with normalized coordinates:
+    - `captionPosition.x`: horizontal position from `0` (left) to `1` (right).
+    - `captionPosition.y`: vertical position from `0` (top) to `1` (bottom).
+- **Narration**: Use `narrate: true` only when the timed label must be spoken. A label explicitly designated as visual-only must use `centerCaption: true` without `narrate`.

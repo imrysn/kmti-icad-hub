@@ -1,3 +1,5 @@
+import type { LessonVideoStep, TutorialOverlay } from '../../types/tutorial';
+
 export type QuizQuestion = {
   id: string;
   text: string;
@@ -20,7 +22,9 @@ export type Lesson = {
   quiz?: Quiz;
   content?: string[];
   videoId?: string;
-  videoOverlays?: any[];
+  videoOverlays?: TutorialOverlay[];
+  videoSteps?: LessonVideoStep[];
+  muteSourceVideoAudio?: boolean;
 };
 
 export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
@@ -146,34 +150,104 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         id: 'lesson-4-1',
         title: 'Lesson 4.1 — Standard Views',
         videoId: 'lesson4.1',
+        muteSourceVideoAudio: true,
         content: [
           'Learning Objective:',
           'Display a model from standard engineering viewing directions. Standard views make it easier to understand and inspect engineering geometry.'
         ],
-        videoOverlays: [
+        videoSteps: [
           {
-            id: 'quiz-sv-1',
-            type: 'quiz',
-            startTime: 14,
-            endTime: 15,
+            id: 'standard-view-introduction',
+            title: 'Choose a standard direction',
+            customText: 'Use the 3D View toolbar to switch to an exact engineering direction, such as front, side, top, or bottom.',
+            videoStart: 0,
+            videoEnd: 0.01,
+            holdVideo: true
+          },
+          {
+            id: 'standard-view-demonstration',
+            title: 'Standard view directions',
+            customText: 'Watch the selected standard view icons and the matching view direction.',
+            videoStart: 0,
+            videoEnd: 7,
+            narrationEnabled: false,
+            overlays: [
+              {
+                id: 'highlight-front-view', type: 'highlight', startTime: 0.85, endTime: 1.7,
+                target: { x: 0.437, y: 0.038, width: 0.017, height: 0.030 },
+                label: 'FRONT', labelPosition: 'bottom', animation: 'pulse', centerCaption: true,
+                captionPosition: { x: 0.545, y: 0.28 }
+              },
+              {
+                id: 'highlight-top-view', type: 'highlight', startTime: 1.7, endTime: 3.7,
+                target: { x: 0.424, y: 0.038, width: 0.017, height: 0.030 },
+                label: 'TOP', labelPosition: 'bottom', animation: 'pulse', centerCaption: true,
+                captionPosition: { x: 0.545, y: 0.28 }
+              },
+              {
+                id: 'highlight-bottom-view', type: 'highlight', startTime: 3.7, endTime: 4.7,
+                target: { x: 0.487, y: 0.038, width: 0.017, height: 0.030 },
+                label: 'BOTTOM', labelPosition: 'bottom', animation: 'pulse', centerCaption: true,
+                captionPosition: { x: 0.545, y: 0.28 }
+              },
+              {
+                id: 'highlight-right-view', type: 'highlight', startTime: 4.7, endTime: 5.7,
+                target: { x: 0.45, y: 0.038, width: 0.016, height: 0.030 },
+                label: 'RIGHT', labelPosition: 'bottom', animation: 'pulse', centerCaption: true,
+                captionPosition: { x: 0.545, y: 0.28 }
+              },
+              {
+                id: 'highlight-left-view', type: 'highlight', startTime: 5.7, endTime: 7,
+                target: { x: 0.463, y: 0.038, width: 0.016, height: 0.030 },
+                label: 'LEFT', labelPosition: 'bottom', animation: 'pulse', centerCaption: true,
+                captionPosition: { x: 0.545, y: 0.28 }
+              }
+            ]
+          },
+          {
+            id: 'standard-view-inspection',
+            title: 'Inspect aligned geometry',
+            customText: 'Each standard view looks straight along one direction, making aligned faces, holes, and edges easier to inspect.',
+            videoStart: 7,
+            videoEnd: 7.01,
+            holdVideo: true
+          },
+          {
+            id: 'standard-view-quiz-1', title: 'Knowledge check',
+            customText: 'Which control changes the model to a front, side, top, or bottom viewing direction?',
+            videoStart: 7, videoEnd: 7.01, holdVideo: true,
             quizData: {
-              question: 'Which tool section allows you to change to Top, Front, or Isometric views?',
+              question: 'Which control changes the model to a front, side, top, or bottom viewing direction?',
               options: [
-                { text: '3D View Menu', isCorrect: true, feedback: 'Correct!' },
-                { text: 'Screen Operations', isCorrect: false, feedback: 'Screen operations are for zoom/pan.' }
+                { text: 'The 3D View toolbar', isCorrect: true, feedback: 'Correct. Standard directions are selected from the 3D View toolbar.' },
+                { text: 'The geometry creation toolbar', isCorrect: false, feedback: 'That toolbar creates model geometry; it does not change the viewing direction.' },
+                { text: 'The layer visibility list', isCorrect: false, feedback: 'Layer visibility controls what is shown, not the viewing direction.' }
               ]
             }
           },
           {
-            id: 'recap-sv',
-            type: 'recap',
-            startTime: 19,
-            endTime: 20,
+            id: 'standard-view-quiz-2', title: 'Knowledge check',
+            customText: 'Why is a standard view useful when inspecting a model?',
+            videoStart: 7, videoEnd: 7.01, holdVideo: true,
+            quizData: {
+              question: 'Why is a standard view useful when inspecting a model?',
+              options: [
+                { text: 'It aligns the model with an exact viewing direction.', isCorrect: true, feedback: 'Correct. This makes faces and features easier to compare without perspective ambiguity.' },
+                { text: 'It permanently rotates the component geometry.', isCorrect: false, feedback: 'A view change does not modify the component itself.' },
+                { text: 'It automatically changes the model dimensions.', isCorrect: false, feedback: 'Viewing direction does not alter dimensions.' }
+              ]
+            }
+          },
+          {
+            id: 'standard-view-recap', title: 'Standard Views Recap',
+            customText: 'Review the key points from the Standard Views lesson.',
+            videoStart: 7, videoEnd: 7.01, holdVideo: true,
             recapData: {
-              title: 'Standard Views',
+              title: 'Standard Views Recap',
               items: [
-                'Use the 3D View toolbar to change standard orientations.',
-                'This helps inspect geometry from different angles.'
+                'Choose front, side, top, or bottom from the 3D View toolbar.',
+                'A standard view changes only your viewing direction.',
+                'Use aligned views to inspect faces, holes, and edges clearly.'
               ]
             }
           }
@@ -183,20 +257,69 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         id: 'lesson-4-2',
         title: 'Lesson 4.2 — Isometric View',
         videoId: 'lesson4.2',
+        muteSourceVideoAudio: true,
         content: [
           'An Isometric View displays multiple sides of a 3D object at the same time. This is usually easier for understanding the overall shape of a component.'
         ],
-        videoOverlays: [
+        videoSteps: [
           {
-            id: 'quiz-iso-1',
-            type: 'quiz',
-            startTime: 8,
-            endTime: 9,
+            id: 'isometric-multiple-faces',
+            title: 'Display multiple faces',
+            customText: 'Select an isometric direction from the 3D View toolbar to see the model width, height, and depth together.',
+            videoStart: 0,
+            videoEnd: 6,
+            overlays: [
+              {
+                id: 'highlight-isometric-view-toolbar', type: 'highlight', startTime: 0.2, endTime: 2.7,
+                target: { x: 0.28, y: 0.01, width: 0.058, height: 0.031 },
+                label: 'Select an isometric direction', labelPosition: 'bottom', animation: 'pulse'
+              }
+            ]
+          },
+          {
+            id: 'isometric-overall-form',
+            title: 'Inspect the overall form',
+            customText: 'Use isometric views to understand the overall shape, while remembering that the component geometry itself does not move.',
+            videoStart: 6,
+            videoEnd: 6.01,
+            holdVideo: true
+          },
+          {
+            id: 'isometric-quiz-1', title: 'Knowledge check',
+            customText: 'What does an isometric view show most clearly?',
+            videoStart: 6, videoEnd: 6.01, holdVideo: true,
             quizData: {
-              question: 'What is the main benefit of an Isometric View?',
+              question: 'What does an isometric view show most clearly?',
               options: [
-                { text: 'It displays multiple sides of an object simultaneously.', isCorrect: true, feedback: 'Correct!' },
-                { text: 'It removes all shading.', isCorrect: false, feedback: 'Incorrect.' }
+                { text: 'Multiple sides of the model at the same time', isCorrect: true, feedback: 'Correct. Isometric viewing reveals the model form across several faces.' },
+                { text: 'Only the front face with no depth', isCorrect: false, feedback: 'That describes a front orthographic view, not an isometric view.' },
+                { text: 'Only hidden construction geometry', isCorrect: false, feedback: 'An isometric view changes orientation; it does not isolate construction geometry.' }
+              ]
+            }
+          },
+          {
+            id: 'isometric-quiz-2', title: 'Knowledge check',
+            customText: 'What changes when you select another isometric direction?',
+            videoStart: 6, videoEnd: 6.01, holdVideo: true,
+            quizData: {
+              question: 'What changes when you select another isometric direction?',
+              options: [
+                { text: 'Your viewing direction around the same model', isCorrect: true, feedback: 'Correct. The camera direction changes while the model stays unchanged.' },
+                { text: 'The physical orientation stored in the component', isCorrect: false, feedback: 'Changing the view does not rotate or edit the component geometry.' },
+                { text: 'The dimensions assigned to every feature', isCorrect: false, feedback: 'Dimensions remain unchanged when the view changes.' }
+              ]
+            }
+          },
+          {
+            id: 'isometric-recap', title: 'Isometric View Recap',
+            customText: 'Review the key points from the Isometric View lesson.',
+            videoStart: 6, videoEnd: 6.01, holdVideo: true,
+            recapData: {
+              title: 'Isometric View Recap',
+              items: [
+                'Choose an isometric direction from the 3D View toolbar.',
+                'See several faces and all three spatial directions together.',
+                'Changing the view never changes the component geometry.'
               ]
             }
           }

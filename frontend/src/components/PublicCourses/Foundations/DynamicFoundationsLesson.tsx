@@ -13,6 +13,7 @@ import scrollVideo from '../../../assets/3D_INTERACTIVE/scroll.mp4';
 import lesson41Video from '../../../assets/3D_INTERACTIVE/lesson4.1.mp4';
 import lesson42Video from '../../../assets/3D_INTERACTIVE/lesson4.2.mp4';
 import module5Video from '../../../assets/3D_INTERACTIVE/module5.mp4';
+import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
 
 const videoMap: Record<string, string> = {
   'zoomin_out': zoomInOutVideo,
@@ -28,7 +29,9 @@ interface DynamicLessonProps {
   title: string;
   content: string[];
   videoId?: string;
-  videoOverlays?: any[];
+  videoOverlays?: TutorialOverlay[];
+  videoSteps?: LessonVideoStep[];
+  muteSourceVideoAudio?: boolean;
   onPrevLesson?: () => void;
   onNextLesson?: () => void;
   nextLabel?: string;
@@ -40,6 +43,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   content,
   videoId,
   videoOverlays,
+  videoSteps,
+  muteSourceVideoAudio,
   onPrevLesson,
   onNextLesson,
   nextLabel,
@@ -63,6 +68,29 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
   // Combine title with content for TTS
   const fullSteps = useMemo(() => [title, ...content], [title, content]);
+  const videoNarration = useMemo(() => {
+    const lessonText = content
+      .filter((step) => !/^(Learning Objective|Objective):?$/i.test(step.trim()))
+      .join(' ')
+      .trim();
+
+    return lessonText || title;
+  }, [content, title]);
+  const tutorialSteps = useMemo(() => {
+    const configuredSteps = videoSteps?.length ? videoSteps : [{
+      id: '1', title, customText: videoNarration, videoStart: 0, videoEnd: 9999, overlays: videoOverlays
+    }];
+
+    return configuredSteps.map((step) => ({
+      ...step,
+      text: step.customText,
+      zoom: '',
+      origin: '',
+      spotlight: { top: '0', left: '0', width: '0', height: '0', opacity: 0 },
+      subtitlePos: { bottom: '20px' },
+      videoSrc: videoMap[videoId || ''],
+    }));
+  }, [title, videoId, videoNarration, videoOverlays, videoSteps]);
 
   useEffect(() => {
     registerText(fullSteps, 0);
@@ -184,16 +212,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
               {videoId && videoMap[videoId] && (
                 <div className="instruction-step foundations-video-section" style={{ height: '600px', position: 'relative' }}>
                   <VideoTutorialViewer 
-                    steps={[{
-                      id: '1',
-                      title: title,
-                      text: '',
-                      zoom: '', origin: '', 
-                      spotlight: { top: '0', left: '0', width: '0', height: '0', opacity: 0 },
-                      subtitlePos: { bottom: '20px' },
-                      videoSrc: videoMap[videoId],
-                      overlays: videoOverlays
-                    }]}
+                    steps={tutorialSteps}
+                    muteSourceVideoAudio={muteSourceVideoAudio}
                     lessonType="video-tutorial"
                     introPanel={{
                       icon: Play,

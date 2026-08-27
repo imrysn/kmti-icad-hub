@@ -1,5 +1,6 @@
 import { CheckCircle2, ChevronLeft, ChevronRight, Mouse, Pause, Play, RotateCcw, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import confetti from 'canvas-confetti';
 import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
 import LessonVideoSubtitle from '../LessonVideoSubtitle';
@@ -8,6 +9,7 @@ import { useLessonCore } from '../../hooks/useLessonCore';
 import type { InteractiveVideoLessonConfig, InteractiveVideoQuestion } from './types';
 import '../LessonIntroPanel.css';
 import './InteractiveVideoLesson.css';
+import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration } from '../../utils/quizNarration';
 
 interface InteractiveVideoLessonProps {
   config: InteractiveVideoLessonConfig;
@@ -118,12 +120,26 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   const openQuestion = useCallback((question: InteractiveVideoQuestion) => {
     keepNarrationPlayingOnPauseRef.current = true;
     videoRef.current?.pause();
-    stop();
     setPhase('question');
     setActiveQuestion(question);
     setSelectedChoice('');
     setAnswerChecked(false);
-  }, [stop]);
+    beginNarration(buildKnowledgeCheckNarration(
+      question.prompt,
+      question.choices.map(choice => choice.label),
+    ), undefined, false);
+  }, [beginNarration]);
+
+  const handleQuestionCheck = useCallback(() => {
+    if (!selectedAnswer) return;
+    setAnswerChecked(true);
+    if (selectedAnswer.isCorrect) {
+      confetti({ particleCount: 120, spread: 75, origin: { y: 0.62 } });
+      beginNarration(buildAnswerFeedbackNarration(true, selectedAnswer.feedback), undefined, false);
+    } else {
+      beginNarration(buildAnswerFeedbackNarration(false, selectedAnswer.feedback), undefined, false);
+    }
+  }, [beginNarration, selectedAnswer]);
 
   const processTimeline = useCallback(() => {
     const video = videoRef.current;
@@ -460,7 +476,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
               selectedChoice={selectedChoice}
               answerChecked={answerChecked}
               onSelectChoice={setSelectedChoice}
-              onCheckAnswer={() => setAnswerChecked(true)}
+              onCheckAnswer={handleQuestionCheck}
               onRetry={() => { setSelectedChoice(''); setAnswerChecked(false); }}
               onContinue={handleQuestionContinue}
             />
