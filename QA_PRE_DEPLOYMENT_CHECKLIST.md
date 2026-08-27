@@ -109,7 +109,7 @@ Use this checklist against the exact release candidate that will be packaged and
 - [ ] 2D Drawing and 3D Modeling modules open every available lesson without missing assets.
 - [ ] Lesson progress is saved for the correct trainee and remains after logout/restart.
 - [ ] Progress is isolated between users and courses.
-- [ ] Locked/unlocked lesson rules and completion indicators are correct.
+- [ ] Locked/unlocked lesson rules and completion indicators are Correct!
 - [ ] Quizzes display all question types, accept answers, calculate scores, and apply the 80% pass rule.
 - [ ] Best score, attempts, lockout/reopen, and completion state match backend records.
 - [ ] KMTI Sensei/TTS loads available voices, speaks once, displays active state, stops cleanly, and auto-advances only after narration finishes.
@@ -125,7 +125,7 @@ Use this checklist against the exact release candidate that will be packaged and
 ## 8. Assessments and file workflows
 
 - [ ] Trainee sees only tasks and set mappings assigned to them.
-- [ ] Task ordering, set names, assessment type (2D/3D), instructions, and master files are correct.
+- [ ] Task ordering, set names, assessment type (2D/3D), instructions, and master files are Correct!
 - [ ] Single and bulk master-file downloads preserve filenames and expected folder structure.
 - [ ] Open-in-iCAD/IJCAD/nanoCAD/SolidWorks works when installed and falls back safely when unavailable.
 - [ ] Upload valid DWG, DXF, ICD, ZIP, XLS/XLSX, and other permitted formats at expected size limits.
@@ -144,7 +144,7 @@ Use this checklist against the exact release candidate that will be packaged and
 - [ ] Mentor manual/course selection, lesson viewer, roadmap, and navigation work.
 - [ ] Practical dashboard tabs, trainee filtering, pagination, sorting, and refresh work.
 - [ ] Stopwatch/start/stop/reset and recorded time remain accurate across navigation and restart.
-- [ ] Practical assessment scoring, comments, status transitions, and reopen behavior are correct.
+- [ ] Practical assessment scoring, comments, status transitions, and reopen behavior are Correct!
 - [ ] Submission timeline displays events in chronological order with correct author/time.
 - [ ] Feedback panel saves, reloads, and handles attachments/errors.
 - [ ] Trainee telemetry and progress show the selected trainee only.
@@ -182,7 +182,7 @@ Use this checklist against the exact release candidate that will be packaged and
 - [ ] Standard, KEMCO, and Special variants display the correct active color and layout.
 - [ ] Company, client, quotation details, base rates, task rows, percentages, types, signatures, and comments save correctly.
 - [ ] Add/edit/delete/reorder rows and assemblies recalculate values correctly.
-- [ ] Currency, rounding, negative leasing fee, totals, blank values, zero, and large values are correct.
+- [ ] Currency, rounding, negative leasing fee, totals, blank values, zero, and large values are Correct!
 - [ ] Autosave, manual Save, verification, and submit-to-admin show accurate status and recover from API failure.
 - [ ] Concurrent workspace updates/Socket.IO refresh do not overwrite newer local edits.
 - [ ] Refresh/restart hydrates the latest saved record without duplicating rows.

@@ -17,10 +17,9 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 - **Implementation**: Use the `dimensionAnnotation` overlay type. Specify whether it is `horizontal` or `vertical`, and provide precise line coordinates (`start` and `end`) that trace the dimension on the screen.
 
 ## 4. Final Lesson Recap
-- **Requirement**: Every lesson must end with a comprehensive checklist reviewing what the user just accomplished.
-- **Implementation**: Use the `recap` overlay type at the very end of the video. The `recapData` should contain a `title` (e.g., "Creating a Box — Review") and a chronological list of `items` representing the steps taken during the lesson.
-- **Narration**: The recap must be narrated. If `customText` or `text` is empty, narration MUST be generated from `recapData.title` followed by every `recapData.items` entry in visible order.
-- **Display**: Do not show a duplicate tutorial subtitle behind the recap panel.
+1. **Content and Narration Standard**: Every lesson must end with a comprehensive checklist reviewing what the learner accomplished. Use the `recap` overlay type at the very end of the video. The `recapData` must contain a lesson-specific `title` and a chronological list of `items`. The recap must be narrated. If `customText` or `text` is empty, narration MUST be generated from `recapData.title` followed by every `recapData.items` entry in visible order. Do not show a duplicate tutorial subtitle behind the recap panel.
+2. **Visual and Completion Standard**: The **original Zoom In and Zoom Out lesson recap shown in the approved reference image** is the default global/shared presentation for every iCAD Foundations recap: a dark full-stage panel, green completion icon, blue uppercase `Lesson recap` eyebrow, a centered narration summary with no background and no border, generous vertical spacing, and bordered recap-item cards with blue action labels. Preserve the centered summary text and display the useful recap content with correct sentence capitalization, but remove the generic visible prefixes `Great work` and `Remember`; those phrases must remain in the audio narration. A lesson-specific title may be shown only when required and must use the same centered white heading treatment. The recap must remain visible after narration ends and must always provide one clear action button. Use **Next** when another lesson is available and **Close** when the recap ends the available lesson flow. The action must stop recap narration, save completion when required, exit full screen when required, and then advance or close without leaving the learner trapped on the recap.
+3. **Behavioral Approach — Required for Every Lesson**: Applying recap CSS alone is not compliance. Every video, interactive, reading, exercise, and assessment lesson must route through a recap state before leaving the lesson. The normal lesson-ending event—video sequence completion, final quiz continuation, narration completion, or the learner selecting Next—must open the recap and start its complete narration instead of navigating immediately. The recap must use lesson-specific summary content and actionable review cards, remain open after narration finishes, suppress background subtitles and competing narration, and advance only through its own enabled Next or Close action. Do not add a second fallback recap when the lesson already contains an embedded recap. Automated coverage must prove that every iCAD Foundations leaf lesson has exactly one intended recap path.
 
 ## 5. Synchronized Narration
 - **Requirement**: Every step must include spoken narration and subtitles.
@@ -48,7 +47,7 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 - **Display**: Quiz narration is audio-only while the question panel is open. Do not render a duplicate subtitle behind the quiz or recap panel.
 
 ## 9. Correct and Incorrect Answer Feedback
-- **Correct Answer**: After the learner selects **Check Answer** with the correct choice, trigger a visible confetti celebration and narrate the selected correct option's complete configured `feedback` (for example, `Correct! The Key Entry Area is for precise coordinates.`). Use `Correct.` only when the correct option has no explanatory feedback.
+- **Correct Answer**: After the learner selects **Check Answer** with the correct choice, trigger a visible confetti celebration and narrate the selected correct option's complete configured `feedback` (for example, `Correct! The Key Entry Area is for precise coordinates.`). Use `Correct!` only when the correct option has no explanatory feedback.
 - **Incorrect Answer**: Do not show confetti. Narrate `Not quite.`, followed by the selected choice's explanatory feedback, and finish with `Please try again.`
 - **Retry State**: Keep the quiz open after an incorrect answer and allow the learner to retry. Continue only after the correct answer is confirmed.
 - **Consistency**: Apply this behavior to post-video quizzes, timeline-overlay quizzes, and quizzes in `InteractiveVideoLesson`.
@@ -103,7 +102,7 @@ Before considering a lesson complete, verify all of the following:
 3. Every ordinary step narrates non-empty text and its subtitle matches the active narration.
 4. Every quiz narrates the knowledge-check introduction, full question, `Choose one answer.`, and all choices.
 5. Quiz 2 and later quizzes narrate after the preceding **Continue** action.
-6. Correct answers show confetti and narrate the complete configured correct-answer feedback, falling back to `Correct.` only when no explanation exists.
+6. Correct answers show confetti and narrate the complete configured correct-answer feedback, falling back to `Correct!` only when no explanation exists.
 7. Incorrect answers narrate explanatory retry feedback without confetti and keep the quiz open.
 8. No duplicate subtitle is visible behind quiz or recap panels.
 9. The final recap narrates its title and every checklist item.

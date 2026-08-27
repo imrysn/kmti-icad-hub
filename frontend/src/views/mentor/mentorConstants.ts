@@ -38,7 +38,7 @@ export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
   'lesson-3-3': 'Rotate your viewpoint around a 3D model without changing the model itself.',
   'toolbars': 'Identify the primary iCAD toolbars and understand how they support common modeling operations.',
   'lesson-4-1': 'Display a model from standard engineering viewing directions to make its geometry easier to understand and inspect.',
-  'lesson-4-2': 'Use an isometric view to inspect multiple sides of a 3D object at the same time.',
+  'lesson-4-2': 'Use an User View to inspect multiple sides of a 3D object at the same time.',
   'lesson-5-1': 'Identify the origin and the X, Y, and Z axes used to locate and orient geometry in 3D space.',
   'lesson-6-1': 'Correctly select geometry before performing an operation.',
   'lesson-7-1': 'Create your first simple 2D line geometry in iCAD.',
@@ -151,15 +151,15 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     children: [
       {
         id: 'lesson-4-1',
-        title: 'Lesson 4.1 — Standard Views',
+        title: 'Lesson 4.1 — 3D View',
         videoId: 'lesson4.1',
         muteSourceVideoAudio: true,
-        videoIntroTitle: 'Explore Standard Views',
+        videoIntroTitle: 'Explore 3D View',
         videoIntroEyebrow: 'Interactive view tour',
-        videoIntroDescription: 'Take a guided tour of the standard views and learn how Front, Top, Bottom, Right, and Left orientations support accurate model inspection.',
+        videoIntroDescription: 'Take a guided tour of the 3D View and learn how Front, Top, Bottom, Right, and Left orientations support accurate model inspection.',
         content: [
           'Learning Objective:',
-          'Display a model from standard engineering viewing directions. Standard views make it easier to understand and inspect engineering geometry.'
+          'Display a model from standard engineering viewing directions. 3D View make it easier to understand and inspect engineering geometry.'
         ],
         videoSteps: [
           {
@@ -225,7 +225,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
             quizData: {
               question: 'Which control changes the model to a front, side, top, or bottom viewing direction?',
               options: [
-                { text: 'The 3D View toolbar', isCorrect: true, feedback: 'Correct. Standard directions are selected from the 3D View toolbar.' },
+                { text: 'The 3D View toolbar', isCorrect: true, feedback: 'Correct! Standard directions are selected from the 3D View toolbar.' },
                 { text: 'The geometry creation toolbar', isCorrect: false, feedback: 'That toolbar creates model geometry; it does not change the viewing direction.' },
                 { text: 'The layer visibility list', isCorrect: false, feedback: 'Layer visibility controls what is shown, not the viewing direction.' }
               ]
@@ -238,18 +238,18 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
             quizData: {
               question: 'Why is a standard view useful when inspecting a model?',
               options: [
-                { text: 'It aligns the model with an exact viewing direction.', isCorrect: true, feedback: 'Correct. This makes faces and features easier to compare without perspective ambiguity.' },
+                { text: 'It aligns the model with an exact viewing direction.', isCorrect: true, feedback: 'Correct! This makes faces and features easier to compare without perspective ambiguity.' },
                 { text: 'It permanently rotates the component geometry.', isCorrect: false, feedback: 'A view change does not modify the component itself.' },
                 { text: 'It automatically changes the model dimensions.', isCorrect: false, feedback: 'Viewing direction does not alter dimensions.' }
               ]
             }
           },
           {
-            id: 'standard-view-recap', title: 'Standard Views Recap',
-            customText: 'Review the key points from the Standard Views lesson.',
+            id: 'standard-view-recap', title: '3D View Recap',
+            customText: 'Review the key points from the 3D View lesson.',
             videoStart: 7, videoEnd: 7.01, holdVideo: true,
             recapData: {
-              title: 'Standard Views Recap',
+              title: '3D View Recap',
               items: [
                 'Choose front, side, top, or bottom from the 3D View toolbar.',
                 'A standard view changes only your viewing direction.',
@@ -261,12 +261,12 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
       },
       {
         id: 'lesson-4-2',
-        title: 'Lesson 4.2 — Isometric View',
+        title: 'Lesson 4.2 — User View',
         videoId: 'lesson4.2',
         muteSourceVideoAudio: true,
-        videoIntroTitle: 'Explore the Isometric View',
+        videoIntroTitle: 'Explore the User View',
         videoIntroEyebrow: 'Interactive view tour',
-        videoIntroDescription: 'Take a guided tour of the Isometric View and learn how to inspect multiple faces while understanding the model width, height, and depth.',
+        videoIntroDescription: 'Take a guided tour of the User View and learn how to inspect multiple faces while understanding the model width, height, and depth.',
         content: [
         ],
         videoSteps: [
@@ -287,21 +287,21 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           {
             id: 'isometric-overall-form',
             title: 'Inspect the overall form',
-            customText: 'Use isometric views to understand the overall shape, while remembering that the component geometry itself does not move.',
+            customText: 'Use User Views to understand the overall shape, while remembering that the component geometry itself does not move.',
             videoStart: 6,
             videoEnd: 6.01,
             holdVideo: true
           },
           {
             id: 'isometric-quiz-1', title: 'Knowledge check',
-            customText: 'What does an isometric view show most clearly?',
+            customText: 'What does an User View show most clearly?',
             videoStart: 6, videoEnd: 6.01, holdVideo: true,
             quizData: {
-              question: 'What does an isometric view show most clearly?',
+              question: 'What does an User View show most clearly?',
               options: [
-                { text: 'Multiple sides of the model at the same time', isCorrect: true, feedback: 'Correct. Isometric viewing reveals the model form across several faces.' },
-                { text: 'Only the front face with no depth', isCorrect: false, feedback: 'That describes a front orthographic view, not an isometric view.' },
-                { text: 'Only hidden construction geometry', isCorrect: false, feedback: 'An isometric view changes orientation; it does not isolate construction geometry.' }
+                { text: 'Multiple sides of the model at the same time', isCorrect: true, feedback: 'Correct! User Viewing reveals the model form across several faces.' },
+                { text: 'Only the front face with no depth', isCorrect: false, feedback: 'That describes a front orthographic view, not an User View.' },
+                { text: 'Only hidden construction geometry', isCorrect: false, feedback: 'An User View changes orientation; it does not isolate construction geometry.' }
               ]
             }
           },
@@ -312,18 +312,18 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
             quizData: {
               question: 'What changes when you select another isometric direction?',
               options: [
-                { text: 'Your viewing direction around the same model', isCorrect: true, feedback: 'Correct. The camera direction changes while the model stays unchanged.' },
+                { text: 'Your viewing direction around the same model', isCorrect: true, feedback: 'Correct! The camera direction changes while the model stays unchanged.' },
                 { text: 'The physical orientation stored in the component', isCorrect: false, feedback: 'Changing the view does not rotate or edit the component geometry.' },
                 { text: 'The dimensions assigned to every feature', isCorrect: false, feedback: 'Dimensions remain unchanged when the view changes.' }
               ]
             }
           },
           {
-            id: 'isometric-recap', title: 'Isometric View Recap',
-            customText: 'Review the key points from the Isometric View lesson.',
+            id: 'isometric-recap', title: 'User View Recap',
+            customText: 'Review the key points from the User View lesson.',
             videoStart: 6, videoEnd: 6.01, holdVideo: true,
             recapData: {
-              title: 'Isometric View Recap',
+              title: 'User View Recap',
               items: [
                 'Choose an isometric direction from the 3D View toolbar.',
                 'See several faces and all three spatial directions together.',
@@ -485,7 +485,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 5: Display Front View.',
           'Step 6: Display Top View.',
           'Step 7: Display Side View.',
-          'Step 8: Return to Isometric View.',
+          'Step 8: Return to User View.',
           'Step 9: Select the top face.',
           'Step 10: Select one edge.',
           'If you can complete all ten operations comfortably, you are beginning to develop the navigation skills needed for 3D modeling.'
@@ -540,7 +540,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         content: [
           'iCAD Navigation Challenge: Open the provided training model and complete the following without assistance.',
           'Navigation: Zoom In, Zoom Out, Pan Left, Pan Right, Rotate View, Fit Model to Screen.',
-          'Standard Views: Front, Top, Side, Isometric.',
+          '3D View: Front, Top, Side, Isometric.',
           'Selection: Select one component, Select one face, Select one edge.',
           'Basic Geometry: Create a line, Create a circle, Create a rectangular profile.',
           '3D: Create the assigned simple 3D block, Inspect the completed block from different views.',
@@ -608,10 +608,10 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Objective: Demonstrate that you can independently navigate the iCAD environment and perform basic operations.',
           'Assessment Task: Create a new training file and demonstrate the following skills:',
           'Part A — Interface: Identify the major areas of the iCAD workspace.',
-          'Part B — Navigation: Successfully demonstrate: Zoom, Pan, Rotate View, Front View, Top View, Side View, Isometric View.',
+          'Part B — Navigation: Successfully demonstrate: Zoom, Pan, Rotate View, Front View, Top View, Side View, User View.',
           'Part C — Geometry: Create: Line, Circle, Rectangle.',
           'Part D — 3D: Create a simple rectangular block using the dimensions provided by the instructor.',
-          'Part E — Inspection: Inspect the completed model using standard and isometric views.',
+          'Part E — Inspection: Inspect the completed model using standard and User Views.',
           'Part F — File Management: Save the completed exercise using the required filename.'
         ]
       }
@@ -663,7 +663,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
         { id: 't6', text: 'Which toolbar would be used specifically to navigate through the sequence of previously viewed camera angles?', options: ['2D View', 'Screen Memory', 'User Views', '3D View'], correctAnswer: 0, explanation: 'The 2D View toolbar (ironically named) handles the sequence of previous and next camera views.' },
         { id: 't7', text: 'The "Entry Control" toolbar is unique because it specifically regulates:', options: ['The isometric angles of the workspace', 'The storage of displayed screens in memory slots', 'The methods used for choosing entities and entering coordinates', 'The visibility of work planes during sectioning'], correctAnswer: 2, explanation: 'Entry Control manages magnet tools, entity selection filters, and coordinate entry modes.' },
         { id: 't8', text: 'Scenario: You are working on a complex assembly and need to view the internal components by cutting through the model. Which toolbar provides the "Open Work Plane" command required to initiate this view?', options: ['3D View', 'Section Display', 'Shading', 'Screen Operations'], correctAnswer: 1, explanation: 'Section Display tools allow for virtual slicing and managing work planes for internal viewing.' },
-        { id: 't9', text: 'Scenario: A user wants to set a specific custom perspective that isn\'t covered by the standard Top or Front views. They notice four dedicated buttons for "Isometric Views." Which toolbar are they currently utilizing?', options: ['3D View', '2D Standard Screen', 'User Views', 'Switch Display'], correctAnswer: 2, explanation: 'The User Views toolbar provides access to isometric presets and custom saved camera positions.' },
+        { id: 't9', text: 'Scenario: A user wants to set a specific custom perspective that isn\'t covered by the standard Top or Front views. They notice four dedicated buttons for "User Views." Which toolbar are they currently utilizing?', options: ['3D View', '2D Standard Screen', 'User Views', 'Switch Display'], correctAnswer: 2, explanation: 'The User Views toolbar provides access to isometric presets and custom saved camera positions.' },
         { id: 't10', text: 'Scenario: While modeling, you realize you have made a mistake in the last few steps. You need to revert the project to its previous state. According to the lesson, which toolbar contains the tools necessary for this specific corrective action?', options: ['File', 'Edit', 'Screen Memory', 'Entry Control'], correctAnswer: 1, explanation: 'The Edit toolbar houses the Undo and Redo commands essential for correcting modeling mistakes.' }
       ]
     }
@@ -716,7 +716,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
       title: 'Basic iCAD Operations',
       description: 'Understanding command sequencing, input logic, and modification tools.',
       questions: [
-        { id: 'bo1', text: 'When initiating a new 3D model, which specific standard orientation is required for the starting view?', options: ['Top view', 'Side view', 'Front view', 'Isometric view'], correctAnswer: 2, explanation: 'All new 3D models in the KEMCO iCAD workflow must start from the Front View for proper projection alignment.' },
+        { id: 'bo1', text: 'When initiating a new 3D model, which specific standard orientation is required for the starting view?', options: ['Top view', 'Side view', 'Front view', 'User View'], correctAnswer: 2, explanation: 'All new 3D models in the KEMCO iCAD workflow must start from the Front View for proper projection alignment.' },
         { id: 'bo2', text: 'In the "Arrange Machine Part" interface, which international standard is used to define the available specifications for shape steels (e.g., C-Channels or H-Beams)?', options: ['ISO standard', 'ANSI standard', 'JIS standard', 'DIN standard'], correctAnswer: 2, explanation: 'The iCAD library is standardized around the JIS (Japanese Industrial Standards) for mechanical components.' },
         { id: 'bo3', text: 'Identify the command used to toggle the visibility of specific elements such as dimensions, cutting lines, and welding symbols.', options: ['Delete Entity', 'Show/Hide Drafting Entity', 'Change Level', 'System Information'], correctAnswer: 1, explanation: 'The "Show/Hide Drafting Entity" command allows users to declutter the workspace by toggling annotations.' },
         { id: 'bo4', text: 'When creating a Cylinder, which two specific parameters must be defined within the Item Entry field before setting the origin?', options: ['Radius and Rotation Angle', 'Diameter and Height', 'Circumscribed Diameter and Number of Sides', 'Path Radius and Section Diameter'], correctAnswer: 1, explanation: 'Cylindrical primitives require both the base Diameter and the extrusion Height to be defined.' },
@@ -1089,7 +1089,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2do6', text: 'Under what specific circumstances is the High Precision setting most commonly recommended?', options: ['When inserting a basic drawing template for a single part', 'To fix broken lines or missing details in complex assembly drawings', 'To automatically show tangent lines from chamfers', 'When the drawing needs to be translated into Japanese'], correctAnswer: 1, explanation: 'High Precision recalculates geometry more thoroughly, fixing rendering gaps in dense assemblies.' },
         { id: '2do7', text: 'How does the visibility of Tangent Lines differ between chamfers and fillets during the initial insertion of an orthographic view?', options: ['Both must be turned on manually in the settings box', 'Fillet lines show automatically, but chamfer lines are hidden', 'Chamfer lines show automatically, while fillet lines require manual activation', 'Neither are supported in the new version (V8L1) of ICAD'], correctAnswer: 2, explanation: 'iCAD default settings render chamfer edges automatically but treat fillets as tangents that require user activation.' },
         { id: '2do8', text: 'Scenario: You have inserted a Front View and a Top View into your drawing. You notice that the internal geometry of the part is not visible in these views. According to the lesson, what specific action must you take to reveal the internal holes and cutouts?', options: ['Drag the cursor downward to create a Bottom View', 'Select the "Create Three-view Detail" icon again', 'Open Projection Properties and check the box for Hidden Lines', 'Change the scale on the Tool Bar to 1/1'], correctAnswer: 2, explanation: 'Internal geometry is toggled via the "Hidden Lines" parameter within the view\'s Projection Properties.' },
-        { id: '2do9', text: 'Scenario: A designer is working on a standard part and changes the scale of the Front View to 1/2 using the Projection Properties window. What will happen to the scale of the other standard views (Top, Side, etc.) associated with that part?', options: ['Only the Front View will change; others remain at the original scale', 'The other standard views will automatically update to the 1/2 scale', 'The other views will be deleted and must be re-projected', 'The entire template will shrink to match the 1/2 scale'], correctAnswer: 1, explanation: 'Standard views are linked; updating the scale of the parent view propagates the change to all projections.' },
+        { id: '2do9', text: 'Scenario: A designer is working on a standard part and changes the scale of the Front View to 1/2 using the Projection Properties window. What will happen to the scale of the other 3D View (Top, Side, etc.) associated with that part?', options: ['Only the Front View will change; others remain at the original scale', 'The other 3D View will automatically update to the 1/2 scale', 'The other views will be deleted and must be re-projected', 'The entire template will shrink to match the 1/2 scale'], correctAnswer: 1, explanation: '3D View are linked; updating the scale of the parent view propagates the change to all projections.' },
         { id: '2do10', text: 'Scenario: You are reviewing an assembly drawing and notice that the small chain and sprocket details appear to have missing or "broken" line segments. Based on the "High Precision" lesson, what is the procedural requirement to fix this visibility issue across the entire drawing?', options: ['Uncheck "Hidden Lines" in the Projection Properties of the Front View', 'Check the "High Precision" box, but note that this must be done individually for every view', 'Use the "Change the Front Orientation" tool to reset the assembly', 'Drag the cursor to the Right Direction to refresh the rendering engine'], correctAnswer: 1, explanation: 'High Precision is a per-view setting that must be enabled on every projected view requiring higher fidelity.' }
       ]
     }
@@ -1151,7 +1151,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2di7', text: 'In the "Edit Dimension Characters" window, which field is used to add the diameter symbol (Ø) or other symbols like "C" or "R"?', options: ['Marking', 'Quantity', 'Fitting Tolerance', 'Additional notes'], correctAnswer: 0, explanation: 'The "Marking" field prepends technical symbols (Ø, C, R, SQ) to the numerical dimension value.' },
         { id: '2di8', text: 'Scenario: You are adding dimensions to a series of holes in a single line. Instead of placing individual measurements, you want to display a continuous string of linear dimensions. Which specific command from the "製図" (Drafting) menu should you select, and what is the final action required after picking the lines?', options: ['Standard dimension; Click OK', 'Series dimension; Select "GO" and place at the desired location', 'Part note; Click P1 and P2', 'Positional alignment; Select "convert"'], correctAnswer: 1, explanation: 'Series dimensioning creates a chained string of measurements in a single operation, finalized with the "GO" command.' },
         { id: '2di9', text: 'Scenario: You have several dimensions that are too close together, making the drawing difficult to read. You want to move a single dimension to a new position while maintaining the link to the geometry. According to the 4-step "Change Position" process, what should you do after selecting the command and the dimension?', options: ['Click the tree view', 'Click a point P2 to relocate the dimension', 'Select "Lackey Entity" to align it with the front view', 'Re-paint the dimension green to match the hidden lines'], correctAnswer: 1, explanation: 'The Change Position tool requires the user to select the target entity and then pick a new anchor point (P2) for the text.' },
-        { id: '2di10', text: 'Scenario: You are creating a break view on an Isometric view of a long shaft. You find it difficult to maintain the correct angle for the cutting line. Based on the "Dimension for Breakviews" lesson, what temporary visual aid should you create to resolve this?', options: ['A green hidden line', 'A red reference line for the cutting angle', 'A collective dimension', 'A spline with a wave radius of 10.0'], correctAnswer: 1, explanation: 'Temporary reference geometry (drawn in red) ensures that break cuts remain perpendicular or aligned to the part\'s axis.' }
+        { id: '2di10', text: 'Scenario: You are creating a break view on an User View of a long shaft. You find it difficult to maintain the correct angle for the cutting line. Based on the "Dimension for Breakviews" lesson, what temporary visual aid should you create to resolve this?', options: ['A green hidden line', 'A red reference line for the cutting angle', 'A collective dimension', 'A spline with a wave radius of 10.0'], correctAnswer: 1, explanation: 'Temporary reference geometry (drawn in red) ensures that break cuts remain perpendicular or aligned to the part\'s axis.' }
       ]
     }
   },
@@ -1231,7 +1231,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2rr7', text: 'When re-setting a 3D Part Layout, after selecting the new origin and the X-axis, what does the third left-click define?', options: ['The Z-axis height.', 'The Front view plane (XY-plane).', 'The Y-axis direction.', 'The scale of the part.'], correctAnswer: 2, explanation: 'The standard orientation sequence is: Origin -> X-axis Direction -> Y-axis Direction.' },
         { id: '2rr8', text: 'Scenario: You are selecting an External Retaining Ring for a shaft with a reference diameter (d1) of 25mm. Based on the technical table, what is the required reference dimension for the groove diameter (d2)?', options: ['23.2mm', '24.2mm', '23.9mm', '25.9mm'], correctAnswer: 2, explanation: 'For a 25mm shaft, the standardized groove diameter (d2) is 23.9mm to ensure proper ring tension.' },
         { id: '2rr9', text: 'Scenario: A designer is looking at a technical table and sees a nominal value of (13) enclosed in parentheses. According to the priority notes at the bottom of the retaining ring standards, how should this value be treated?', options: ['It must be used as the primary dimension for the drawing.', 'Priority should be given to values NOT in parentheses; this value is only used if necessary.', 'It indicates a value that is strictly for 2D drafting only.', 'It represents a value that has been deprecated in the latest ICAD version.'], correctAnswer: 1, explanation: 'Dimensions in parentheses are secondary or legacy sizes and should only be used when standard sizes are not viable.' },
-        { id: '2rr10', text: 'Scenario: You have modeled a complex part in the Workspace, but the standard "Top View" is currently showing the side of the object. To fix the orientation of the views for 2D detailing, which software process should you execute?', options: ['Use the "Item Entry" to type in new rotation coordinates.', 'Use the "Change 3D Part Layout" tool to redefine the origin and XY-plane.', 'Select "Tree view" and rename the part to "Top View."', 'Move the part manually using the "Key Entry" area until it looks correct.'], correctAnswer: 1, explanation: 'Redefining the 3D Part Layout synchronizes the model\'s orientation with the drafting views (Top, Front, Side).' }
+        { id: '2rr10', text: 'Scenario: You have modeled a complex part in the Workspace, but the standard "Top View" is currently showing the side of the object. To fix the orientation of the views for 2D detailing, which software process should you execute?', options: ['Use the "Item Entry" to type in new rotation coordinates.', 'Use the "Change 3D Part Layout" tool to redefine the origin and XY-plane.', 'Select "Tree view" and rename the part to "Top View."', 'Move the part manually using the "Key Entry" area until it looks Correct!'], correctAnswer: 1, explanation: 'Redefining the 3D Part Layout synchronizes the model\'s orientation with the drafting views (Top, Front, Side).' }
       ]
     }
   },
@@ -1244,7 +1244,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       questions: [
         { id: '2gt1', text: 'Identify the specific term used to describe a fixed reference point in a drawing from which other machining operations are calculated and measured.', options: ['Scale', 'Datum', 'Layer', 'Annotation'], correctAnswer: 1, explanation: 'Datums are theoretically exact references used for positioning and measurement.' },
         { id: '2gt2', text: 'Name the interface area in the ICAD window where a user must enter the specific character (e.g., \'A\' or \'B\') when setting a reference point for machining.', options: ['Message Pane', 'Tree view', 'Item entry box', 'Icon menu'], correctAnswer: 2, explanation: 'The Item Entry box is the primary input field for text-based parameters in ICAD.' },
-        { id: '2gt3', text: 'In a 3D modeling workflow, which specific orientation must a designer always start with when creating a new model?', options: ['Side view', 'Top view', 'Front view', 'Isometric view'], correctAnswer: 2, explanation: 'Starting with the Front View ensures consistent part orientation across the entire assembly.' },
+        { id: '2gt3', text: 'In a 3D modeling workflow, which specific orientation must a designer always start with when creating a new model?', options: ['Side view', 'Top view', 'Front view', 'User View'], correctAnswer: 2, explanation: 'Starting with the Front View ensures consistent part orientation across the entire assembly.' },
         { id: '2gt4', text: 'When setting up a Geometric Tolerance in the dialog box, which three specific details must be completed to define the tolerance correctly?', options: ['Line color, Font style, and Layer number', 'Tolerance Symbol, Tolerance Value, and Datum', 'Pitch length, Scale factor, and Item entry', 'X-axis, Y-axis, and Z-axis coordinates'], correctAnswer: 1, explanation: 'A complete GD&T callout requires the symbol (type), the numerical value, and the reference datum.' },
         { id: '2gt5', text: 'What is the primary purpose of the "Autoballoon" command in the 2D detailing menu?', options: ['To automatically scale the drawing to fit the template.', 'To pick out parts and groups to create identification bubbles automatically.', 'To calculate the total weight of the assembly based on specific gravity.', 'To convert a 3D solid into a 2D wireframe view.'], correctAnswer: 1, explanation: 'Autoballoon streamlines the creation of BOM identification bubbles for assembly drawings.' },
         { id: '2gt6', text: 'According to the lesson on Spiral Forms, what is the mandatory mathematical relationship between "Pitch" and "Thickness"?', options: ['Thickness must be exactly 1.5 times the Pitch.', 'Pitch and Thickness must be equal to avoid errors.', 'Pitch must be greater than Thickness.', 'The sum of Pitch and Thickness must be zero in the Item Entry.'], correctAnswer: 2, explanation: 'Geometrically, the pitch of a spiral must exceed its thickness to allow for physical material formation.' },
@@ -1431,7 +1431,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2dt6', text: 'According to the Title Block lesson, where should the data changes be performed if the information displayed in the title block needs to be updated?', options: ['Directly in the Title Block on the drawing.', 'In the Material Setting window.', 'Within the "Additional Information" settings.', 'In the BOM (Bill of Materials) list.'], correctAnswer: 2, explanation: 'Administrative metadata is managed through the "Additional Information" interface to ensure system-wide synchronization.' },
         { id: '2dt7', text: 'What is the correct sequence for placing the Title Block in its designated location on a drawing template?', options: ['Select the entity > Click Go > Press OK.', 'Click Create Title Block > Choose Template > Click Go > Click P1 and P2.', 'Open 2D Detailing > Set Material > Click P1 and P2.', 'Right-click the entity > Select Properties > Click OK.'], correctAnswer: 1, explanation: 'Placing the title block requires selecting the tool, choosing the template, confirming (Go), and defining the placement points.' },
         { id: '2dt8', text: 'Scenario: You are performing 2D detailing for a part that was modeled using S45C as a 3D substitute. According to the instructional standards for material equivalency, what material name must be manually entered into the BOM?', options: ['S45C', 'S45C-D', 'S35C', 'SS400'], correctAnswer: 2, explanation: 'If S45C was used for density in 3D, the actual intended material (S35C) must be manually corrected in the parts list documentation.' },
-        { id: '2dt9', text: 'Scenario: You have just placed a Title Block on a drawing, but you realize the "Quantity" field is incorrect. Based on the "Note" regarding title block edits, how should you correct this specific field?', options: ['Delete the entire Title Block and start over.', 'The quantity must be manually edited.', 'Re-select the material in the 3D model.', 'Toggle the "Mirror Part" setting.'], correctAnswer: 1, explanation: 'Certain fields like Quantity may require manual intervention if the automated link does not capture specialized assembly counts.' },
+        { id: '2dt9', text: 'Scenario: You have just placed a Title Block on a drawing, but you realize the "Quantity" field is inCorrect! Based on the "Note" regarding title block edits, how should you correct this specific field?', options: ['Delete the entire Title Block and start over.', 'The quantity must be manually edited.', 'Re-select the material in the 3D model.', 'Toggle the "Mirror Part" setting.'], correctAnswer: 1, explanation: 'Certain fields like Quantity may require manual intervention if the automated link does not capture specialized assembly counts.' },
         { id: '2dt10', text: 'Scenario: A designer is working with a material called "BSP" which is not in the ICAD Material List. Based on the provided "Equivalent Material" table, which material notation should the designer select to ensure the specific gravity is correct for weight computation?', options: ['C1220', 'C1100', 'C2680', 'VP'], correctAnswer: 2, explanation: 'C2680 is the designated equivalent for BSP in the ICAD material library to maintain density accuracy.' }
       ]
     }
@@ -1452,7 +1452,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2av6', text: 'How does the system determine the initial scale of a Detail Drawing upon its creation?', options: ['It defaults to a 1/1 scale regardless of the source.', 'It is automatically double the scale of the main view.', 'It adopts the same scale as the view it originated from.', 'It prompts the user to enter the scale in the Item Entry box first.'], correctAnswer: 2, explanation: 'A new detail drawing inherits the scale of its parent view by default until manually adjusted by the designer.' },
         { id: '2av7', text: 'According to the instructional notes, why must a "Section Name" (e.g., A-A) have an underline applied in the Text Entry window?', options: ['To ensure the text height matches the dimension text.', 'For easy identification of the view within the drawing.', 'To indicate that the view has been trimmed.', 'It is a requirement for the Japanese version of ICAD only.'], correctAnswer: 1, explanation: 'Underlining section titles is a standard visual practice for clear document organization and rapid identification.' },
         { id: '2av8', text: 'Scenario: You are creating a Partial Section of a complex gear. You have drawn an enclosed polygon around the target area. However, when you select the icon and the polygon, the section fails to generate. What is the most likely cause based on the "Notes" for this process?', options: ['The view was not active before proceeding.', 'The polygon lines are not colored green.', 'The polygon was drawn using a solid line instead of a phantom line.', 'The scale of the view was changed on the tool bar.'], correctAnswer: 0, explanation: 'View-specific operations like Partial Sectioning require the target view frame to be active (highlighted) first.' },
-        { id: '2av9', text: 'Scenario: You have inserted an Isometric View and want it to show a specific angle that isn\'t the default. After picking the icon and a location, how do you manually adjust the rotation of the view?', options: ['Change the "Arrow angle" in the Change Properties window.', 'Select the icon again to make the rotate arrow appear.', 'Type the rotation degree into the "Section Name" field.', 'Use the "Lackey Entity" command to align it with the Front View.'], correctAnswer: 1, explanation: 'Re-selecting the command icon triggers the interactive rotation handle for isometric views.' },
+        { id: '2av9', text: 'Scenario: You have inserted an User View and want it to show a specific angle that isn\'t the default. After picking the icon and a location, how do you manually adjust the rotation of the view?', options: ['Change the "Arrow angle" in the Change Properties window.', 'Select the icon again to make the rotate arrow appear.', 'Type the rotation degree into the "Section Name" field.', 'Use the "Lackey Entity" command to align it with the Front View.'], correctAnswer: 1, explanation: 'Re-selecting the command icon triggers the interactive rotation handle for User Views.' },
         { id: '2av10', text: 'Scenario: You have applied Trim and set the Cross-sectional depth to a view, but there are still small, unrelated components visible that clutter the section. According to the "Note" in the Trim section, what is the final method recommended to eliminate these remaining parts?', options: ['Use the "Undo" command and recreate the cutting line.', 'Use the "Hide" function for detailed parts (referencing page 9).', 'Delete the Hatching box in the Projection Properties.', 'Change the "Terminal Marks" to "Dot diameter."'], correctAnswer: 1, explanation: 'For visual clutter that persists after trimming, manual "Hide" operations for specific sub-components are required.' }
       ]
     }
@@ -1466,14 +1466,14 @@ export const ICAD_2D_LESSONS: Lesson[] = [
       description: 'Technical proficiency in manipulating 2D local views, maintaining projection alignment, and executing permanent deletion protocols within the ICAD drafting environment.',
       questions: [
         { id: '2ov1', text: 'Identify the specific graphical indicator (line) that appears when moving a projected view to ensure it remains perfectly leveled with its parent view.', options: ['Center line', 'Snap line', 'Cutting line', 'Grid line'], correctAnswer: 1, explanation: 'The snap line acts as a dynamic guide to maintain orthographic alignment between projected views during relocation.' },
-        { id: '2ov2', text: 'Name the specific location on the drawing template where an Isometric view should ideally be positioned, according to the standard layout notes.', options: ['Lower left corner', 'Upper left portion', 'Upper right portion', 'Bottom right corner'], correctAnswer: 2, explanation: 'Standard KEMCO/JIS practices place the reference Isometric view in the upper right quadrant of the drawing sheet.' },
-        { id: '2ov3', text: 'Identify the specific status of a projected view that, when moved, causes all other associated standard views to move simultaneously.', options: ['Locked', 'Aligned (or highlighted)', 'Frozen', 'Hidden'], correctAnswer: 1, explanation: 'When views are highlighted in their aligned state, the system moves the entire projection set together to preserve geometric relationships.' },
-        { id: '2ov4', text: 'What is the technical consequence of executing the "Delete View" command on a local view?', options: ['The view is hidden but can be restored using the Tree View.', 'Only the dimensions are removed, leaving the geometry intact.', 'The local view and all details contained within it are removed and cannot be restored.', 'The system automatically replaces it with a 3D isometric view.'], correctAnswer: 2, explanation: 'Delete View is a permanent operation that erases the projection and all its associated annotations from the 2D workspace.' },
+        { id: '2ov2', text: 'Name the specific location on the drawing template where an User View should ideally be positioned, according to the standard layout notes.', options: ['Lower left corner', 'Upper left portion', 'Upper right portion', 'Bottom right corner'], correctAnswer: 2, explanation: 'Standard KEMCO/JIS practices place the reference User View in the upper right quadrant of the drawing sheet.' },
+        { id: '2ov3', text: 'Identify the specific status of a projected view that, when moved, causes all other associated 3D View to move simultaneously.', options: ['Locked', 'Aligned (or highlighted)', 'Frozen', 'Hidden'], correctAnswer: 1, explanation: 'When views are highlighted in their aligned state, the system moves the entire projection set together to preserve geometric relationships.' },
+        { id: '2ov4', text: 'What is the technical consequence of executing the "Delete View" command on a local view?', options: ['The view is hidden but can be restored using the Tree View.', 'Only the dimensions are removed, leaving the geometry intact.', 'The local view and all details contained within it are removed and cannot be restored.', 'The system automatically replaces it with a 3D User View.'], correctAnswer: 2, explanation: 'Delete View is a permanent operation that erases the projection and all its associated annotations from the 2D workspace.' },
         { id: '2ov5', text: 'When attempting to adjust the location of a view, what occurs if the "Create three-view" icon is selected and the Front view is highlighted?', options: ['A new set of views will be generated automatically.', 'It indicates that the views are currently aligned with each other.', 'An error message will appear in the Message Pane.', 'The scale of the view will be reset to 1/1.'], correctAnswer: 1, explanation: 'Selecting the projection tool while a view is active serves as a diagnostic to confirm alignment between orthographic planes.' },
         { id: '2ov6', text: 'Why is the normal "delete" command insufficient for removing a projection from a drawing?', options: ['It only deletes the 3D part name from the tree.', 'Unnecessary views cannot be eliminated using the normal delete command; the specific "Delete View" icon must be used.', 'The normal delete command only works for 2D character strings.', 'It would cause a DRAM initialization failure in the workstation.'], correctAnswer: 1, explanation: 'Projections are complex grouped entities that require the specialized Delete View tool to safely remove them from the drawing database.' },
-        { id: '2ov7', text: 'What is the correct sequence of mouse actions to move an Isometric view to a new location?', options: ['Select Delete View > Click P1 > Click OK.', 'Click P1 to select the view > Click P2 on the desired location.', 'Right-click the Tree View > Select Properties > Enter coordinates.', 'Double-click the Icon Menu > Select "High Precision" > Click Go.'], correctAnswer: 1, explanation: 'The Move View workflow involves a primary click to select the view frame (P1) and a secondary click to define the target destination (P2).' },
+        { id: '2ov7', text: 'What is the correct sequence of mouse actions to move an User View to a new location?', options: ['Select Delete View > Click P1 > Click OK.', 'Click P1 to select the view > Click P2 on the desired location.', 'Right-click the Tree View > Select Properties > Enter coordinates.', 'Double-click the Icon Menu > Select "High Precision" > Click Go.'], correctAnswer: 1, explanation: 'The Move View workflow involves a primary click to select the view frame (P1) and a secondary click to define the target destination (P2).' },
         { id: '2ov8', text: 'Scenario: You are trying to move a side view to the far left of the template. As you drag the view, a dashed line connects it back to the Front view. Based on the "Orthographic view" lesson, how do you complete the move while ensuring the views are technically correct?', options: ['Ignore the line and click P2 anywhere to save space.', 'Move until the snap line is created, then click P2 to ensure the viewing is aligned.', 'Release the mouse button immediately to cancel the command.', 'Delete the Front view so the snap line disappears.'], correctAnswer: 1, explanation: 'Maintaining orthographic alignment is critical; the move should only be finalized when the system snaps the view back into its correct horizontal or vertical projection path.' },
-        { id: '2ov9', text: 'Scenario: A trainee has accidentally projected a Bottom View that is not needed for the final fabrication drawing. They have selected the "Delete View" command and clicked on the unnecessary view. A dialog box appears. What must the trainee do to ensure the view is gone, and what is the risk?', options: ['Click CANCEL; the risk is losing the BOM data.', 'Click OK; the risk is that the command cannot be undone once executed.', 'Click GO; the risk is changing the scale of the Isometric view.', 'Click the Tree View; the risk is creating a duplicate part.'], correctAnswer: 1, explanation: 'Confirming the deletion (OK) permanently removes the projection data, a destructive action that cannot be reversed by the Undo command.' },
+        { id: '2ov9', text: 'Scenario: A trainee has accidentally projected a Bottom View that is not needed for the final fabrication drawing. They have selected the "Delete View" command and clicked on the unnecessary view. A dialog box appears. What must the trainee do to ensure the view is gone, and what is the risk?', options: ['Click CANCEL; the risk is losing the BOM data.', 'Click OK; the risk is that the command cannot be undone once executed.', 'Click GO; the risk is changing the scale of the User View.', 'Click the Tree View; the risk is creating a duplicate part.'], correctAnswer: 1, explanation: 'Confirming the deletion (OK) permanently removes the projection data, a destructive action that cannot be reversed by the Undo command.' },
         { id: '2ov10', text: 'Scenario: You are reviewing a drawing where the views are not aligned, making it difficult to read the dimensions across the sheet. Aside from the "Move View" command, what is the "other way" mentioned in the lesson to check or adjust the location to ensure orthographic views are aligned to each other?', options: ['Use the "Create three-view" icon.', 'Use the "Edit Attribute" tool.', 'Use the "Lighten B-rep" tool.', 'Use the "Material Information Setting" window.'], correctAnswer: 0, explanation: 'The "Create three-view" icon can be used as an alignment checker to verify that all projections are correctly mapped to the Front view.' }
       ]
     }
@@ -1490,7 +1490,7 @@ export const ICAD_2D_LESSONS: Lesson[] = [
         { id: '2nm3', text: 'Name the 2D detailing command used to flip a drawing\'s lines, symbols, and dimensions at an equal distance from a specified axis.', options: ['Rotate movement', 'Offset Copy', 'Mirror movement command', 'Scale Entity'], correctAnswer: 2, explanation: 'Mirror movement is used to generate the symmetrical reflection of a part layout across a defined axis.' },
         { id: '2nm4', text: 'When calculating the appropriate Bolt Length for a project, what is the mandatory action if the mathematical result does not match a standard bolt length?', options: ['Use the next smaller standard size to prevent bottoming out.', 'Round the result up to the nearest standard bolt length.', 'Manually machine the bolt to the calculated decimal length.', 'Increase the material thickness to match the bolt.'], correctAnswer: 1, explanation: 'Standard engineering practice requires rounding up to the nearest commercially available bolt length (e.g., 22mm becomes 25mm).' },
         { id: '2nm5', text: 'For a Class 2 (Machine Parts) application using an M10 bolt, what is the standard diameter required for the bolt hole?', options: ['9 mm', '11 mm', '12 mm', '14 mm'], correctAnswer: 1, explanation: 'A Class 2 clearance hole for an M10 fastener is 11mm in diameter.' },
-        { id: '2nm6', text: 'According to the rules for detailing mirror parts, what is the required procedure for handling the Isometric View?', options: ['Delete the isometric view as it cannot be mirrored.', 'Update the isometric view by switching the user view as needed.', 'Manually redraw the isometric view using single dot lines.', 'Keep the isometric view of Part A for both drawings.'], correctAnswer: 1, explanation: 'Mirrored part documentation requires a correctly oriented isometric view representing the "B" (mirrored) geometry.' },
+        { id: '2nm6', text: 'According to the rules for detailing mirror parts, what is the required procedure for handling the User View?', options: ['Delete the User View as it cannot be mirrored.', 'Update the User View by switching the user view as needed.', 'Manually redraw the User View using single dot lines.', 'Keep the User View of Part A for both drawings.'], correctAnswer: 1, explanation: 'Mirrored part documentation requires a correctly oriented User View representing the "B" (mirrored) geometry.' },
         { id: '2nm7', text: 'What is the designated usage and application for SGP (White) pipes in ICAD?', options: ['Structural and Fabricated Parts', 'Fluid applications (Oil, Air, and Coolant)', 'Safety Covers and Guarding', 'Electrical and Sensor mounting'], correctAnswer: 1, explanation: 'SGP (White) pipes are standardized for fluid transport systems within machine assemblies.' },
         { id: '2nm8', text: 'Scenario: You are detailing a mirrored part (Part B). You have successfully mirrored the main views using the origin as a reference. You notice the title block still shows the drawing number for Part A. According to step 9 of the mirroring rules, what must you do?', options: ['Edit the text using the "Edit Characters" command.', 'Insert a new title block to update the drawing number on the template.', 'Leave it as is, as the "B" suffix is implied.', 'Change the layer of the title block to Layer 2.'], correctAnswer: 1, explanation: 'Replacing the Title Block ensures that the Part B drawing number is correctly mapped and synchronized with the template.' },
         { id: '2nm9', text: 'Scenario: You are designing a bolting setup for a Pillow Block where the mounting hole is SLOTTED. Based on the Bolting Setup standards, which hardware combination is required to ensure a secure fit?', options: ['Hexagonal Bolt (HB) and Spring Washer (SW).', 'Hexagonal Bolt (HB), Spring Washer (SW), and Hardened Flat Washer.', 'Hex Sockethead Cap Screw (CS) and Hex Nut.', 'Hexagonal Bolt (HB) and Taper Washer (AW5).'], correctAnswer: 1, explanation: 'Slotted holes require a flat washer to provide a wider bearing surface and prevent the spring washer from deforming the slot.' },

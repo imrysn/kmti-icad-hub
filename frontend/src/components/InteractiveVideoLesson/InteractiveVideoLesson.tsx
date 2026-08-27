@@ -1,9 +1,10 @@
-import { CheckCircle2, ChevronLeft, ChevronRight, Mouse, Pause, Play, RotateCcw, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Mouse, Pause, Play, RotateCcw, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
 import LessonVideoSubtitle from '../LessonVideoSubtitle';
+import LessonRecapPanel from '../LessonRecapPanel';
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import type { InteractiveVideoLessonConfig, InteractiveVideoQuestion } from './types';
@@ -20,7 +21,7 @@ interface InteractiveVideoLessonProps {
   isFirstLesson?: boolean;
 }
 
-type LessonPhase = 'intro' | 'video' | 'question' | 'recap' | 'complete';
+type LessonPhase = 'intro' | 'video' | 'question' | 'recap';
 
 export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   config,
@@ -327,14 +328,26 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     playVideo();
   }, [playVideo, toggleFullscreen]);
 
-  const finishLesson = useCallback(async () => {
+  const beginRecap = useCallback(() => {
+    setActiveQuestion(null);
+    setPhase('recap');
+    beginNarration(config.recapNarration);
+  }, [beginNarration, config.recapNarration]);
+
+  const handleRecapAction = useCallback(async () => {
     if (completionStartedRef.current) return;
     completionStartedRef.current = true;
     setIsSavingCompletion(true);
     setCompletionError('');
+    stop();
     try {
       await onComplete?.();
-      setPhase('complete');
+      if (document.fullscreenElement) await document.exitFullscreen();
+      if (onNextLesson) {
+        onNextLesson();
+      } else {
+        setPhase('intro');
+      }
     } catch (error) {
       console.error('Failed to save interactive lesson completion:', error);
       completionStartedRef.current = false;
@@ -343,13 +356,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
     } finally {
       setIsSavingCompletion(false);
     }
-  }, [onComplete]);
-
-  const beginRecap = useCallback(() => {
-    setActiveQuestion(null);
-    setPhase('recap');
-    beginNarration(config.recapNarration, finishLesson);
-  }, [beginNarration, config.recapNarration, finishLesson]);
+  }, [onComplete, onNextLesson, stop]);
 
   const handleQuestionContinue = () => {
     if (!activeQuestion || !isAnswerCorrect) return;
@@ -483,44 +490,17 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
           )}
 
           {phase === 'recap' && (
-            <div className="ivl-stage-panel ivl-recap-panel" role="status" aria-live="polite">
-              <CheckCircle2 size={30} aria-hidden="true" />
-              <p className="ivl-eyebrow">Lesson recap</p>
-              <h3>Remember</h3>
-              <p>{config.recapNarration}</p>
-              <div className="ivl-recap-items">
-                {config.recapItems.map((item) => (
-                  <div key={item.action} className="ivl-recap-item">
-                    <strong>{item.action}</strong>
-                    <span>{item.result}</span>
-                  </div>
-                ))}
-              </div>
-              {completionError && <p className="ivl-save-error">{completionError}</p>}
-              {completionError && (
-                <button className="ivl-primary-button" disabled={isSavingCompletion} onClick={finishLesson}>
-                  {isSavingCompletion ? 'Saving…' : 'Retry saving progress'}
-                </button>
-              )}
-            </div>
+            <LessonRecapPanel
+              summary={config.recapNarration}
+              items={config.recapItems}
+              actionLabel={isSavingCompletion ? 'Saving…' : (onNextLesson ? (nextLabel || t('lesson.next_lesson')) : 'Close')}
+              actionType={onNextLesson ? 'next' : 'close'}
+              onAction={() => { void handleRecapAction(); }}
+              disabled={isSavingCompletion}
+              error={completionError}
+            />
           )}
 
-          {phase === 'complete' && (
-            <div className="ivl-stage-panel ivl-complete-panel" role="status">
-              <CheckCircle2 size={34} aria-hidden="true" />
-              <p className="ivl-eyebrow">Lesson complete</p>
-              <h3>Lesson Complete</h3>
-              <p>{config.completionText}</p>
-              <div className="ivl-complete-actions">
-                <button className="ivl-secondary-button" onClick={replayLesson}>
-                  <RotateCcw size={17} aria-hidden="true" /> Replay lesson
-                </button>
-                <button className="ivl-primary-button" onClick={onNextLesson}>
-                  {nextLabel || t('lesson.next_lesson')} <ChevronRight size={17} aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
       </section>

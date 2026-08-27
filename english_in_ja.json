@@ -149,7 +149,7 @@
   "standard.sprocketSteps.step1": "In 2D detail of sprocket, there is a safety color note.",
   "standard.sprocketSteps.step2": "This is what we should do in 3D model. Because, as we know in actual, the teeth don't have paint.",
   "standard.sprocketSteps.step3": "Location of Sprocket Keyway",
-  "standard.sprocketSteps.step4": "Note: 1. Location of keyway always indicated on special notes. Key groove should be machined at the center of the tooth. 2. Purchase part with additional process. CORRECT.",
+  "standard.sprocketSteps.step4": "Note: 1. Location of keyway always indicated on special notes. Key groove should be machined at the center of the tooth. 2. Purchase part with additional process. Correct!",
   "standard.boltLengthSteps.step1": "Bolt Length = (Bolt size x 1.5) + (\u03a3 of thickness). Example: Bolt size M8, Washer 2mm, Material 9mm. Bolt Length = 12 + 11 = 23mm, approx 25mm.",
   "standard.boltLengthSteps.step2": "Note: 1. To avoid easily loosen of the bolt, bolt size is need to multiply by 1.5 to 2 to get the length of bolt fasten on thread part. 2. In case the result is not standard, it will round up to the nearest standard bolt length.",
   "standard.boltingSetupSteps.step1": "Bolting setup will depend on a case-by-case basis. These examples are the commonly used setup.",

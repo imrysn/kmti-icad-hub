@@ -13,7 +13,7 @@ describe('getDynamicFoundationsLessonProps', () => {
         quizData: {
           question: 'Which toolbar changes the model view?',
           options: [
-            { text: '3D View', isCorrect: true, feedback: 'Correct.' },
+            { text: '3D View', isCorrect: true, feedback: 'Correct!' },
             { text: 'File', isCorrect: false, feedback: 'File manages documents.' },
             { text: 'Edit', isCorrect: false, feedback: 'Edit contains history commands.' },
           ],
@@ -23,7 +23,7 @@ describe('getDynamicFoundationsLessonProps', () => {
 
     const props = getDynamicFoundationsLessonProps({
       id: 'lesson-4-1',
-      title: 'Standard Views',
+      title: '3D View',
       content: ['Use standard engineering views.'],
       videoId: 'lesson4.1',
       videoOverlays: overlays,
@@ -36,7 +36,7 @@ describe('getDynamicFoundationsLessonProps', () => {
   it('preserves synchronized steps and source-video mute settings', () => {
     const videoSteps: LessonVideoStep[] = [{
       id: 'isometric-view',
-      title: 'Isometric view',
+      title: 'User View',
       customText: 'See multiple model faces.',
       videoStart: 0,
       videoEnd: 6.9,
@@ -44,19 +44,19 @@ describe('getDynamicFoundationsLessonProps', () => {
 
     const props = getDynamicFoundationsLessonProps({
       id: 'lesson-4-2',
-      title: 'Isometric View',
+      title: 'User View',
       content: ['Inspect multiple sides.'],
       videoId: 'lesson4.2',
       videoSteps,
       muteSourceVideoAudio: true,
-      videoIntroTitle: 'Explore the Isometric View',
+      videoIntroTitle: 'Explore the User View',
       videoIntroDescription: 'See multiple faces together.',
       videoIntroEyebrow: 'Interactive view tour',
     });
 
     expect(props.videoSteps).toBe(videoSteps);
     expect(props.muteSourceVideoAudio).toBe(true);
-    expect(props.videoIntroTitle).toBe('Explore the Isometric View');
+    expect(props.videoIntroTitle).toBe('Explore the User View');
     expect(props.videoIntroDescription).toBe('See multiple faces together.');
     expect(props.videoIntroEyebrow).toBe('Interactive view tour');
   });

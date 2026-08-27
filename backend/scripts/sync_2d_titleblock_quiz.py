@@ -62,7 +62,7 @@ def sync_2d_titleblock_quiz():
                 "explanation": "If S45C was used for density in 3D, the actual intended material (S35C) must be manually corrected in the parts list documentation."
             },
             {
-                "text": "Scenario: You have just placed a Title Block on a drawing, but you realize the \"Quantity\" field is incorrect. Based on the \"Note\" regarding title block edits, how should you correct this specific field?",
+                "text": "Scenario: You have just placed a Title Block on a drawing, but you realize the \"Quantity\" field is inCorrect! Based on the \"Note\" regarding title block edits, how should you correct this specific field?",
                 "options": ["Delete the entire Title Block and start over.", "The quantity must be manually edited.", "Re-select the material in the 3D model.", "Toggle the \"Mirror Part\" setting."],
                 "correct_answer": 1,
                 "explanation": "Certain fields like Quantity may require manual intervention if the automated link does not capture specialized assembly counts."

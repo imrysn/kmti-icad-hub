@@ -1,5 +1,5 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
@@ -95,7 +95,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       title: t('2d.additional.title'),
       subtitle: t('2d.additional.isometric_subtitle'),
       steps: [
-        "Isometric View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
+        "User View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
         "There are some instances that the cross-sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate the unnecessary parts."
       ]
     },
@@ -170,7 +170,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                     <KaraokeLessonText
                       as="span"
                       className="step-label"
-                        text={t('2d.additional.cross_section')}
+                      text={t('2d.additional.cross_section')}
                       isActive={isSpeaking && currentIndex === 2}
                       currentCharIndex={currentCharIndex}
                     />
@@ -242,7 +242,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
                       <KaraokeLessonText
                         as="span"
                         className="step-label"
-                        text="Isometric View"
+                        text="User View"
                         isActive={isSpeaking && currentIndex === 2}
                         currentCharIndex={currentCharIndex}
                       />

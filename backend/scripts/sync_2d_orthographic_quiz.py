@@ -62,10 +62,10 @@ def sync_2d_orthographic_quiz():
                 "explanation": "Internal geometry is toggled via the \"Hidden Lines\" parameter within the view's Projection Properties."
             },
             {
-                "text": "Scenario: A designer is working on a standard part and changes the scale of the Front View to 1/2 using the Projection Properties window. What will happen to the scale of the other standard views (Top, Side, etc.) associated with that part?",
-                "options": ["Only the Front View will change; others remain at the original scale", "The other standard views will automatically update to the 1/2 scale", "The other views will be deleted and must be re-projected", "The entire template will shrink to match the 1/2 scale"],
+                "text": "Scenario: A designer is working on a standard part and changes the scale of the Front View to 1/2 using the Projection Properties window. What will happen to the scale of the other 3D View (Top, Side, etc.) associated with that part?",
+                "options": ["Only the Front View will change; others remain at the original scale", "The other 3D View will automatically update to the 1/2 scale", "The other views will be deleted and must be re-projected", "The entire template will shrink to match the 1/2 scale"],
                 "correct_answer": 1,
-                "explanation": "Standard views are linked; updating the scale of the parent view propagates the change to all projections."
+                "explanation": "3D View are linked; updating the scale of the parent view propagates the change to all projections."
             },
             {
                 "text": "Scenario: You are reviewing an assembly drawing and notice that the small chain and sprocket details appear to have missing or \"broken\" line segments. Based on the \"High Precision\" lesson, what is the procedural requirement to fix this visibility issue across the entire drawing?",

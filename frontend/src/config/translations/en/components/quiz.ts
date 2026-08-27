@@ -8,7 +8,7 @@ export const en_components_quiz = {
   "quiz.rule_noexit_label": "No-Exit Policy:",
   "quiz.rule_noexit_desc": "Once started, you cannot exit the assessment until all questions are answered.",
   "quiz.rule_time_label": "Time Constraints:",
-  "quiz.rule_time_desc": "Each question has a strict 1-minute limit. Timeouts are marked as incorrect.",
+  "quiz.rule_time_desc": "Each question has a strict 1-minute limit. Timeouts are marked as inCorrect!",
   "quiz.rule_random_label": "Randomized Loadout:",
   "quiz.rule_random_desc": "Questions and choices are shuffled dynamically for every attempt.",
   "quiz.start_confirm_title": "Start Assessment",

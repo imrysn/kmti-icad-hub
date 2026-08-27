@@ -62,10 +62,10 @@ def sync_2d_additional_view_quiz():
                 "explanation": "View-specific operations like Partial Sectioning require the target view frame to be active (highlighted) first."
             },
             {
-                "text": "Scenario: You have inserted an Isometric View and want it to show a specific angle that isn't the default. After picking the icon and a location, how do you manually adjust the rotation of the view?",
+                "text": "Scenario: You have inserted an User View and want it to show a specific angle that isn't the default. After picking the icon and a location, how do you manually adjust the rotation of the view?",
                 "options": ["Change the \"Arrow angle\" in the Change Properties window.", "Select the icon again to make the rotate arrow appear.", "Type the rotation degree into the \"Section Name\" field.", "Use the \"Lackey Entity\" command to align it with the Front View."],
                 "correct_answer": 1,
-                "explanation": "Re-selecting the command icon triggers the interactive rotation handle for isometric views."
+                "explanation": "Re-selecting the command icon triggers the interactive rotation handle for User Views."
             },
             {
                 "text": "Scenario: You have applied Trim and set the Cross-sectional depth to a view, but there are still small, unrelated components visible that clutter the section. According to the \"Note\" in the Trim section, what is the final method recommended to eliminate these remaining parts?",

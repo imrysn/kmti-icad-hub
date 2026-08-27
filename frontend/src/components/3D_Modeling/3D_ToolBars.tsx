@@ -19,8 +19,36 @@ interface ToolBarsLessonProps {
   nextLabel?: string;
 }
 
+export const localizeToolbarTutorialSteps = (
+  translate: (key: string) => string,
+  translateContent: (text: string) => string = (text) => text,
+) => TOOLBAR_TUTORIAL_STEPS.map((step) => {
+  const titleKey = `tutorial.toolbars.${step.id}.title`;
+  const textKey = `tutorial.toolbars.${step.id}.text`;
+  const translatedTitle = translate(titleKey);
+  const translatedText = translate(textKey);
+
+  return {
+    ...step,
+    title: translatedTitle === titleKey ? step.title : translatedTitle,
+    text: translatedText === textKey ? step.text : translatedText,
+    quizData: step.quizData ? {
+      question: translateContent(step.quizData.question),
+      options: step.quizData.options.map((option) => ({
+        ...option,
+        text: translateContent(option.text),
+        feedback: translateContent(option.feedback),
+      })),
+    } : undefined,
+    recapData: step.recapData ? {
+      title: translateContent(step.recapData.title),
+      items: step.recapData.items.map(translateContent),
+    } : undefined,
+  };
+});
+
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const { t } = useTranslation();
+  const { t, translateContent } = useTranslation();
   const {
     scrollProgress,
     containerRef  } = useLessonCore('toolbars');
@@ -43,11 +71,7 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 
           <div className="interactive-stage-container">
             <VideoTutorialViewer 
-              steps={TOOLBAR_TUTORIAL_STEPS.map(s => ({
-                ...s,
-                title: t(`tutorial.toolbars.${s.id}.title`),
-                text: t(`tutorial.toolbars.${s.id}.text`)
-              }))}
+              steps={localizeToolbarTutorialSteps(t, translateContent)}
               introPanel={{
                 icon: Wrench,
                 eyebrow: "Interactive tool tour",

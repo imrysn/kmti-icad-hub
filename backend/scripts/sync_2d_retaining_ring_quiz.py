@@ -69,7 +69,7 @@ def sync_2d_retaining_ring_quiz():
             },
             {
                 "text": "Scenario: You have modeled a complex part in the Workspace, but the standard \"Top View\" is currently showing the side of the object. To fix the orientation of the views for 2D detailing, which software process should you execute?",
-                "options": ["Use the \"Item Entry\" to type in new rotation coordinates.", "Use the \"Change 3D Part Layout\" tool to redefine the origin and XY-plane.", "Select \"Tree view\" and rename the part to \"Top View.\"", "Move the part manually using the \"Key Entry\" area until it looks correct."],
+                "options": ["Use the \"Item Entry\" to type in new rotation coordinates.", "Use the \"Change 3D Part Layout\" tool to redefine the origin and XY-plane.", "Select \"Tree view\" and rename the part to \"Top View.\"", "Move the part manually using the \"Key Entry\" area until it looks Correct!"],
                 "correct_answer": 1,
                 "explanation": "Redefining the 3D Part Layout synchronizes the model's orientation with the drafting views (Top, Front, Side)."
             }

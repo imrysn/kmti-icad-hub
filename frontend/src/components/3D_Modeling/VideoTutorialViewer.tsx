@@ -7,6 +7,7 @@ import '../LessonQuestionPanel.css';
 import '../InteractiveVideoLesson/InteractiveVideoLesson.css';
 import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
+import LessonRecapPanel from '../LessonRecapPanel';
 import type { InteractiveVideoQuestion } from '../InteractiveVideoLesson/types';
 import type { TutorialOverlay } from '../../types/tutorial';
 export type { NormalizedPoint, NormalizedRect, TutorialOverlay, TutorialOverlayType } from '../../types/tutorial';
@@ -53,6 +54,12 @@ export interface TutorialStep { quizData?: { question: string; options: { text: 
   videoStart?: number;
   videoEnd?: number;
   holdVideo?: boolean;
+  /** When enabled, narrate the step completely before starting its video segment. */
+  waitForNarrationBeforeVideo?: boolean;
+  /** Advance to the following lesson step when the source MP4 itself ends. */
+  advanceOnSourceVideoEnd?: boolean;
+  /** Set to false when the visible step heading should not be spoken. */
+  narrateTitle?: boolean;
   narrationEnabled?: boolean;
   overlays?: TutorialOverlay[];
 }
@@ -78,6 +85,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [narrationCompletedStep, setNarrationCompletedStep] = useState<number | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
@@ -273,13 +281,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
   useEffect(() => {
     if (tutorialVideoRef.current) {
-      if (isPlaying && !isPaused && !currentData.holdVideo) {
+      const canPlayVideo = !currentData.waitForNarrationBeforeVideo || narrationCompletedStep === currentStep;
+      if (isPlaying && !isPaused && !currentData.holdVideo && canPlayVideo) {
         tutorialVideoRef.current.play().catch(err => console.log("Video play failed:", err));
       } else {
         tutorialVideoRef.current.pause();
       }
     }
-  }, [isPlaying, isPaused, steps, currentStep]);
+  }, [isPlaying, isPaused, narrationCompletedStep, steps, currentStep]);
 
   useEffect(() => {
     if (tutorialVideoRef.current && currentData) {
@@ -289,13 +298,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       if (video.currentTime < start || video.currentTime > (currentData.videoEnd || 9999)) {
         video.currentTime = start;
       }
-      if (isPlaying && !isPaused && !currentData.holdVideo) {
+      const canPlayVideo = !currentData.waitForNarrationBeforeVideo || narrationCompletedStep === currentStep;
+      if (isPlaying && !isPaused && !currentData.holdVideo && canPlayVideo) {
         video.play().catch(err => console.log("Video resume on step change failed:", err));
-      } else if (currentData.holdVideo) {
+      } else {
         video.pause();
       }
     }
-  }, [currentStep]);
+  }, [currentStep, narrationCompletedStep]);
 
   // Keyboard navigation (only active when fullscreen or maybe always if focused, but let's just keep it)
   useEffect(() => {
@@ -345,10 +355,16 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
 
     const stepText = (steps[currentStep].customText || steps[currentStep].text || '').trim();
-    const text = buildTutorialStepNarration(stepText, steps[currentStep].quizData, steps[currentStep].recapData);
+    const text = buildTutorialStepNarration(
+      stepText,
+      steps[currentStep].quizData,
+      steps[currentStep].recapData,
+      steps[currentStep].narrateTitle === false ? '' : steps[currentStep].title,
+    );
     if (!text) {
       // Video-only steps do not require synthesized narration. Never send an
       // empty request to the TTS endpoint.
+      setNarrationCompletedStep(currentStep);
       return;
     }
 
@@ -420,6 +436,10 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           activeIntervalRef.current = null;
         }
         setCurrentCharIndex(0);
+        if (steps[currentStep].waitForNarrationBeforeVideo && steps[currentStep].videoSrc) {
+          setNarrationCompletedStep(currentStep);
+          return;
+        }
         if (steps[currentStep].quizData || steps[currentStep].recapData) {
           setIsPlaying(false);
           setIsPaused(true);
@@ -522,6 +542,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       textUtterance.onend = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
         setCurrentCharIndex(0);
+
+        if (steps[currentStep].waitForNarrationBeforeVideo && steps[currentStep].videoSrc) {
+          setNarrationCompletedStep(currentStep);
+          return;
+        }
         
         // Don't auto-advance if the step has a static quiz or recap that needs user interaction
         if (steps[currentStep].quizData || steps[currentStep].recapData) {
@@ -833,15 +858,22 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                     setCurrentStep(0);
                     setCurrentCharIndex(0);
                   } else {
-                    // Mid step: pause video, let TTS finish, then TTS onended advances the step
+                    // Mid step: sequential lessons advance after their narrated
+                    // video segment; concurrent lessons wait for TTS to finish.
                     video.pause();
-                    if (currentData.narrationEnabled === false) {
+                    if (currentData.waitForNarrationBeforeVideo || currentData.narrationEnabled === false) {
                       setCurrentStep(prev => prev + 1);
                     }
                   }
                 }
               }}
               onEnded={(e) => {
+                if (currentData.advanceOnSourceVideoEnd && currentStep < steps.length - 1) {
+                  const video = e.currentTarget;
+                  video.pause();
+                  setCurrentStep(prev => prev + 1);
+                  return;
+                }
                 setIsPlaying(false);
                 setCurrentStep(0);
                 setCurrentCharIndex(0);
@@ -1051,16 +1083,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
                 if (overlay.type === 'recap' && overlay.recapData) {
                   return (
-                    <div key={overlay.id} className="ivl-stage-panel ivl-recap-panel" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 50, pointerEvents: 'auto' }}>
-                      <p className="ivl-eyebrow">Lesson recap</p>
-                      <h3>{overlay.recapData.title}</h3>
-                      <div className="ivl-recap-items">
-                        {overlay.recapData.items.map((item, i) => (
-                          <div key={i} className="ivl-recap-item">
-                            <strong>{item}</strong>
-                          </div>
-                        ))}
-                      </div>
+                    <div key={overlay.id} style={{ position: 'absolute', inset: 0, zIndex: 50, pointerEvents: 'auto' }}>
+                      <LessonRecapPanel
+                        title={overlay.recapData.title}
+                        summary={currentData.text}
+                        items={overlay.recapData.items.map((text) => ({ text }))}
+                        actionLabel={currentStep === steps.length - 1 ? 'Close' : 'Next'}
+                        actionType={currentStep === steps.length - 1 ? 'close' : 'next'}
+                        onAction={handleNext}
+                      />
                     </div>
                   );
                 }
@@ -1111,19 +1142,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       )}
 
       {currentData.recapData && (
-        <div className="ivl-stage-panel ivl-recap-panel" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 50, pointerEvents: 'auto' }}>
-          <p className="ivl-eyebrow">Lesson recap</p>
-          <h3>{currentData.recapData.title}</h3>
-          <div className="ivl-recap-items">
-            {currentData.recapData.items.map((item, i) => (
-              <div key={i} className="ivl-recap-item">
-                <strong>{item}</strong>
-              </div>
-            ))}
-          </div>
-          <button className="start-tutorial-btn" onClick={handleNext} style={{ marginTop: '20px' }}>
-            Continue
-          </button>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 50, pointerEvents: 'auto' }}>
+          <LessonRecapPanel
+            title={currentData.recapData.title}
+            summary={currentData.text}
+            items={currentData.recapData.items.map((text) => ({ text }))}
+            actionLabel={currentStep === steps.length - 1 ? 'Close' : 'Next'}
+            actionType={currentStep === steps.length - 1 ? 'close' : 'next'}
+            onAction={handleNext}
+          />
         </div>
       )}
 
@@ -1131,6 +1158,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       {currentData.spotlight.opacity === 0 ? (
         isPlaying &&
         currentData.narrationEnabled !== false &&
+        !activeQuizId &&
         !currentData.quizData &&
         !currentData.recapData && (
           <div className="tutorial-subtitle-flat">
@@ -1138,7 +1166,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
             <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
           </div>
         )
-      ) : (
+      ) : !activeQuizId ? (
         <div
           className="tutorial-subtitle-box"
           style={{
@@ -1162,7 +1190,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           <h2 className="tutorial-title">{currentData.title}</h2>
           <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
         </div>
-      )}
+      ) : null}
 
       {/* Native-Style Bottom Control Bar */}
       <div className={`kmti-native-video-controls ${lessonType || 'video-tutorial'}`}>

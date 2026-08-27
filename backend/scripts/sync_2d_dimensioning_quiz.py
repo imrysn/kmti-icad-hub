@@ -68,7 +68,7 @@ def sync_2d_dimensioning_quiz():
                 "explanation": "The Change Position tool requires the user to select the target entity and then pick a new anchor point (P2) for the text."
             },
             {
-                "text": "Scenario: You are creating a break view on an Isometric view of a long shaft. You find it difficult to maintain the correct angle for the cutting line. Based on the \"Dimension for Breakviews\" lesson, what temporary visual aid should you create to resolve this?",
+                "text": "Scenario: You are creating a break view on an User View of a long shaft. You find it difficult to maintain the correct angle for the cutting line. Based on the \"Dimension for Breakviews\" lesson, what temporary visual aid should you create to resolve this?",
                 "options": ["A green hidden line", "A red reference line for the cutting angle", "A collective dimension", "A spline with a wave radius of 10.0"],
                 "correct_answer": 1,
                 "explanation": "Temporary reference geometry (drawn in red) ensures that break cuts remain perpendicular or aligned to the part's axis."

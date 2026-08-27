@@ -27,7 +27,7 @@ def sync_2d_geometric_tol_quiz():
             },
             {
                 "text": "In a 3D modeling workflow, which specific orientation must a designer always start with when creating a new model?",
-                "options": ["Side view", "Top view", "Front view", "Isometric view"],
+                "options": ["Side view", "Top view", "Front view", "User View"],
                 "correct_answer": 2,
                 "explanation": "Starting with the Front View ensures consistent part orientation across the entire assembly."
             },

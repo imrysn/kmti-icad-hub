@@ -160,19 +160,48 @@
 .ivl-primary-button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .ivl-recap-panel, .ivl-complete-panel { background: rgba(7, 11, 18, 0.94); }
+.ivl-recap-panel { padding: clamp(2rem, 5vw, 4rem); }
 .ivl-recap-panel > svg, .ivl-complete-panel > svg { color: #34d399; }
+.ivl-recap-panel > svg { width: 34px; height: 34px; margin-bottom: 0.8rem; }
+.ivl-recap-panel > .ivl-eyebrow {
+  margin: 0 0 0.8rem !important;
+  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+}
+.ivl-recap-panel > h3 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
 .ivl-save-error { color: #fecaca !important; }
-.ivl-recap-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; width: min(560px, 100%); margin: 0.25rem auto 0.75rem; }
-.ivl-recap-item { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.75rem; border: 1px solid rgba(148, 163, 184, 0.32); border-radius: 9px; color: #e2e8f0; }
-.ivl-recap-item strong { color: #93c5fd; font-size: 0.86rem; }
-.ivl-recap-item span { font-weight: 800; }
+.ivl-recap-panel > .ivl-recap-summary {
+  width: min(760px, 100%);
+  margin: 0 0 2rem;
+  padding: 0;
+  border: 0;
+  color: #cbd5e1 !important;
+  background: transparent;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.65;
+}
+.ivl-recap-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: min(720px, 100%); margin: 0 auto; }
+.ivl-recap-item { display: flex; min-height: 88px; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; padding: 1rem 1.25rem; border: 1px solid rgba(148, 163, 184, 0.38); border-radius: 10px; color: #e2e8f0; }
+.ivl-recap-item strong { color: #93c5fd; font-size: 0.9rem; font-weight: 700; line-height: 1.4; }
+.ivl-recap-item span { font-size: 1.05rem; font-weight: 750; line-height: 1.4; }
+.ivl-recap-action { min-width: 132px; margin-top: 1.75rem; }
 
 .ivl-navigation { max-width: 1000px; margin-top: 1.5rem; }
 
 @media (max-width: 720px) {
   .ivl-video-shell { min-height: 420px; aspect-ratio: auto; }
   .ivl-action-overlay { top: 2.25rem; right: 1.5rem; }
-  .ivl-recap-items { grid-template-columns: 1fr; }
+  .ivl-recap-panel { justify-content: flex-start; padding: 2.5rem 1.25rem; }
+  .ivl-recap-panel > .ivl-recap-summary { margin-bottom: 1.5rem; }
+  .ivl-recap-items { grid-template-columns: 1fr; gap: 0.75rem; }
+  .ivl-recap-item { min-height: 72px; }
   .ivl-tutorial-control-card { right: 0.7rem; bottom: 0.7rem; }
   .ivl-time-badge { display: none; }
 }

@@ -1,10 +1,14 @@
 import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect } from "react";
+import React,{ useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { useTranslation } from '../../context/LanguageContext';
 import './CourseLesson.css';
+import '../InteractiveVideoLesson/InteractiveVideoLesson.css';
+import '../PublicCourses/Foundations/FoundationsLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
+import LessonRecapPanel from '../LessonRecapPanel';
+import { getFoundationsRecap } from '../PublicCourses/Foundations/foundationsRecaps';
 
 // --- Assets ---
 import originOverview from "../../assets/3d-images/origin.png";
@@ -26,6 +30,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 }) => {
   const activeTab = subLessonId === 'origin-layout' ? 'layout' : 'projections';
   const { t } = useTranslation();
+  const [showRecap, setShowRecap] = useState(false);
 
   const {
     scrollProgress,
@@ -40,6 +45,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
   useEffect(() => {
     stop();
+    setShowRecap(false);
   }, [activeTab, stop]);
 
   const LESSON_DATA = React.useMemo(() => ({
@@ -63,7 +69,21 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
 
   const currentLesson = activeTab === 'projections' ? LESSON_DATA.projections : LESSON_DATA.layout;
 
+  const recap = getFoundationsRecap(subLessonId || 'origin-projections');
+
   const handleNext = () => {
+    if (recap) {
+      setShowRecap(true);
+      speak([recap.narration], 0);
+      return;
+    }
+    if (onNextLesson) onNextLesson();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const finishRecap = () => {
+    stop();
+    setShowRecap(false);
     if (onNextLesson) onNextLesson();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -267,6 +287,17 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
           </div>
         </div>
       </div>
+      {showRecap && recap && (
+        <div className="foundations-recap-overlay">
+          <LessonRecapPanel
+            summary={recap.narration}
+            items={recap.items}
+            actionLabel={nextLabel || t('lesson.next_lesson')}
+            actionType="next"
+            onAction={finishRecap}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -25,7 +25,7 @@ data = {
     ],
     "Topic": [
         "Orthographic Projection",
-        "Isometric View",
+        "User View",
         "Tolerance Specifications",
         "Surface Modeling",
         "Component Assembly",
@@ -55,7 +55,7 @@ data = {
     ],
     "Tips": [
         "Use orthographic views for technical drawings with precise dimensions. No perspective distortion.",
-        "Isometric views are ideal for visualizing 3D assemblies while maintaining scale.",
+        "User Views are ideal for visualizing 3D assemblies while maintaining scale.",
         "Standard tolerances: ±0.1mm for general features, ±0.01mm for precision fits.",
         "Use surface modeling for ergonomic designs, aerodynamic shapes, or aesthetic parts.",
         "Always constrain parts fully to avoid unexpected movement during design changes.",

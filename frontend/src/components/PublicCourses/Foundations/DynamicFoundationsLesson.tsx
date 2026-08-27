@@ -1,5 +1,5 @@
 import { useTranslation } from '../../../context/LanguageContext';
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ChevronRight, ChevronLeft, Eye, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
@@ -14,6 +14,8 @@ import lesson41Video from '../../../assets/3D_INTERACTIVE/lesson4.1.mp4';
 import lesson42Video from '../../../assets/3D_INTERACTIVE/lesson4.2.mp4';
 import module5Video from '../../../assets/3D_INTERACTIVE/module5.mp4';
 import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
+import LessonRecapPanel from '../../LessonRecapPanel';
+import { getFoundationsRecap } from './foundationsRecaps';
 
 const videoMap: Record<string, string> = {
   'zoomin_out': zoomInOutVideo,
@@ -56,6 +58,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   nextLabel,
 }) => {
   const { t } = useTranslation();
+  const [showRecap, setShowRecap] = useState(false);
 
   const {
     scrollProgress,
@@ -98,6 +101,24 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
     }));
   }, [title, videoId, videoNarration, videoOverlays, videoSteps]);
   const isViewTourLesson = Boolean(videoIntroEyebrow);
+  const fallbackRecap = useMemo(() => getFoundationsRecap(lessonId), [lessonId]);
+  const hasEmbeddedRecap = Boolean(videoSteps?.some((step) => step.recapData));
+
+  const beginRecapOrAdvance = () => {
+    if (fallbackRecap && !hasEmbeddedRecap) {
+      setShowRecap(true);
+      speak([fallbackRecap.narration], 0);
+      return;
+    }
+    onNextLesson?.();
+  };
+
+  const finishRecap = () => {
+    stop();
+    setShowRecap(false);
+    onNextLesson?.();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     registerText(fullSteps, 0);
@@ -109,7 +130,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
     "content",
     fullSteps.length,
     [{ id: 'content' }],
-    () => { if (onNextLesson) onNextLesson(); },
+    beginRecapOrAdvance,
     speak,
     fullSteps,
     0
@@ -238,10 +259,21 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
             {onPrevLesson && (
               <button className="nav-button" onClick={() => { onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
             )}
-            <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
+            <button className="nav-button next" onClick={() => { beginRecapOrAdvance(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>
       </div>
+      {showRecap && fallbackRecap && (
+        <div className="foundations-recap-overlay">
+          <LessonRecapPanel
+            summary={fallbackRecap.narration}
+            items={fallbackRecap.items}
+            actionLabel={nextLabel || t('lesson.next_lesson')}
+            actionType="next"
+            onAction={finishRecap}
+          />
+        </div>
+      )}
     </div>
   );
 };

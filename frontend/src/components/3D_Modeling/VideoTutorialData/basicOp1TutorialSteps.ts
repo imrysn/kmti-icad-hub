@@ -5,50 +5,101 @@ import vidPolygon from '../../../assets/3D_Video_Tutorial/basicOp_polygon.mp4';
 import vidTorus from '../../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
 import { TutorialStep } from '../VideoTutorialViewer';
 
+/**
+ * Create Cylinder overlay geometry uses normalized video coordinates.
+ * Adjust x/y to move the highlight and width/height to resize it.
+ */
+export const cylinderOverlayLayout = {
+  itemEntryArea: {
+    x: 0.07,
+    y: 0.945,
+    width: 0.155,
+    height: 0.032,
+  },
+};
+
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-1-tool-selection",
-    title: "Arrange Cylinder",
+    title: "Select the Cylinder Tool",
     text: "",
-    customText: "First, open Shape Placement. Next, select Place Cylinder. Select Front View. In the Command Menu, make sure Cylinder, Placement, and Diameter Specification are active. Then select Y Orientation.",
+    customText: "A cylinder is a three-dimensional solid with two parallel circular faces joined by a curved surface. In CAD, cylinders are commonly used as starting geometry for shafts, pins, rollers, bosses, and cylindrical holes. Use a cylinder whenever a component or feature has a consistent circular profile along its height. To begin, open Shape Placement, then select Place Cylinder.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 0,
     videoEnd: 3.25,
     overlays: [
-      { id: "shape-placement", type: "highlight", startTime: 0, endTime: 1.0, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
-      { id: "place-cylinder", type: "highlight", startTime: 1.0, endTime: 1.5, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Cylinder", labelPosition: "bottom" },
-      { id: "front-view", type: "highlight", startTime: 1.5, endTime: 2.0, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" },
-      { id: "opt-cylinder", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, label: "Cylinder", labelPosition: "right" },
-      { id: "opt-placement", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, label: "Placement", labelPosition: "right" },
-      { id: "opt-dia", type: "highlight", startTime: 2.0, endTime: 2.6, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, label: "Diameter Specification", labelPosition: "right" },
-      { id: "opt-y-orient", type: "highlight", startTime: 2.6, endTime: 3.25, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" }
+      { id: "shape-placement", type: "highlight", startTime: 0.75, endTime: 1.67, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
+      { id: "place-cylinder", type: "highlight", startTime: 1.67, endTime: 3.25, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Cylinder", labelPosition: "bottom" }
     ]
   },
   {
-    id: "cyl-2-dimension",
-    title: "Arrange Cylinder",
+    id: "cyl-2-front-view",
+    title: "Set the Front View",
     text: "",
-    customText: "Next, use the Item Entry area at the bottom-left of the iCAD window. First, specify the cylinder diameter, then press Enter. Next, specify the cylinder height, then press Enter.",
+    customText: "Select Front View from the 3D View toolbar.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 3.25,
+    videoEnd: 8.25,
+    overlays: [
+      { id: "front-view", type: "highlight", startTime: 4.75, endTime: 8.25, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "cyl-3-command-options",
+    title: "Confirm the Cylinder Settings",
+    text: "",
+    customText: "In the Command Menu, confirm Cylinder, Placement, and Diameter Specification, then select Y Orientation.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 8.25,
     videoEnd: 13.75,
     overlays: [
-      { id: "item-entry", type: "highlight", startTime: 4.0, endTime: 6.0, target: { x: 0.0, y: 0.94, width: 0.5, height: 0.06 }, animation: "pulse", label: "Item Entry Area" },
-      { id: "input-dia", type: "highlight", startTime: 6.0, endTime: 9.0, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Diameter (直径)" },
-      { id: "input-height", type: "highlight", startTime: 9.5, endTime: 13.75, target: { x: 0.167, y: 0.948, width: 0.053, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
+      { id: "opt-cylinder", type: "highlight", startTime: 8.25, endTime: 9.35, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, animation: "pulse", label: "Cylinder", labelPosition: "right" },
+      { id: "opt-placement", type: "highlight", startTime: 9.35, endTime: 10.45, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "opt-dia", type: "highlight", startTime: 10.45, endTime: 11.75, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, animation: "pulse", label: "Diameter Specification", labelPosition: "right" },
+      { id: "opt-y-orient", type: "highlight", startTime: 11.75, endTime: 13.75, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" }
+    ]
+  },
+  {
+    id: "cyl-4-dimensions",
+    title: "Enter the Cylinder Dimensions",
+    text: "",
+    customText: "In the Item Entry area, enter the cylinder diameter and height.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 13.75,
+    videoEnd: 20.83,
+    overlays: [
+      { id: "item-entry", type: "highlight", startTime: 13.75, endTime: 14.75, target: { ...cylinderOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
+      { id: "input-dia", type: "highlight", startTime: 14.75, endTime: 17.25, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Diameter (直径)" },
+      { id: "input-height", type: "highlight", startTime: 17.25, endTime: 20.83, target: { x: 0.167, y: 0.948, width: 0.053, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
       {
         id: "quiz-cyl-1",
         type: "quiz",
-        startTime: 13.25,
-        endTime: 13.75,
+        startTime: 20.33,
+        endTime: 20.83,
         quizData: {
           question: "Which properties must be specified when creating a cylinder?",
           options: [
@@ -60,37 +111,39 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     ]
   },
   {
-    id: "cyl-3-origin",
-    title: "Arrange Cylinder",
+    id: "cyl-5-origin",
+    title: "Position the Cylinder",
     text: "",
-    customText: "After specifying the cylinder dimensions, enter the coordinates for its position. Enter zero, zero, zero to place the cylinder at the model origin.",
+    customText: "After the knowledge check, enter the coordinates for the cylinder position. Enter zero, zero, zero to place the cylinder at the model origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
-    videoStart: 13.75,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 20.83,
     videoEnd: 23.40,
     overlays: [
-      { id: "input-coords", type: "highlight", startTime: 14.5, endTime: 23.0, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates\n0 0 0" },
+      { id: "input-coords", type: "highlight", startTime: 20.83, endTime: 23.3, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates\n0 0 0" },
       {
         id: "quiz-cyl-2",
         type: "quiz",
         startTime: 22.9,
         endTime: 23.4,
         quizData: {
-          question: "What does the coordinate 0,0,0 represent?",
+          question: "What does the coordinate set zero, zero, zero represent?",
           options: [
-            { text: "The Global Origin", isCorrect: true, feedback: "Correct!" },
-            { text: "The Center of the Cylinder", isCorrect: false, feedback: "Incorrect. It represents the global origin." }
+            { text: "The Global Origin", isCorrect: true, feedback: "Correct! Zero, zero, zero represents the global origin." },
+            { text: "The Center of the Cylinder", isCorrect: false, feedback: "Zero, zero, zero represents the global origin." }
           ]
         }
       }
     ]
   },
   {
-    id: "cyl-4-result",
-    title: "Arrange Cylinder",
+    id: "cyl-6-result",
+    title: "Review the Result",
     text: "",
     customText: "The cylinder is now created using the specified diameter, height, and origin position.",
     zoom: "scale(1)",
@@ -98,6 +151,8 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 23.40,
     videoEnd: 27.0,
     overlays: [
@@ -105,8 +160,8 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     ]
   },
   {
-    id: "cyl-5-explain",
-    title: "Arrange Cylinder",
+    id: "cyl-7-explain",
+    title: "Review the Cylinder Dimensions",
     text: "",
     customText: "Diameter, or 直径, is the distance across the circular face of the cylinder. Height, or 高さ, is the vertical distance from the bottom of the cylinder to the top.",
     zoom: "scale(1)",
@@ -114,6 +169,9 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCylinder,
+    waitForNarrationBeforeVideo: true,
+    advanceOnSourceVideoEnd: true,
+    narrateTitle: false,
     videoStart: 27.0,
     videoEnd: 32.08,
     overlays: [
@@ -125,7 +183,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
         label: "Diameter (直径)",
         labelOffset: { x: 0, y: -5 },
         dimensionType: "horizontal",
-        line: { start: { x: 0.448, y: 0.29 }, end: { x: 0.64, y: 0.29 } }
+        line: { start: { x: 0.47, y: 0.30 }, end: { x: 0.65, y: 0.30 } }
       },
       {
         id: "dim-height",
@@ -135,23 +193,29 @@ export const cylinderTutorialSteps: TutorialStep[] = [
         label: "Height (高さ)",
         labelOffset: { x: 55, y: 0 },
         dimensionType: "vertical",
-        line: { start: { x: 0.64, y: 0.32 }, end: { x: 0.64, y: 0.75 } }
-      },
-      {
-        id: "recap-cyl",
-        type: "recap",
-        startTime: 31.5,
-        endTime: 32.08,
-        recapData: {
-          title: "Lesson Complete",
-          items: [
-            "You selected Shape Placement > Cylinder.",
-            "You specified the diameter and height.",
-            "You placed the cylinder at the origin (0,0,0)."
-          ]
-        }
+        line: { start: { x: 0.66, y: 0.32 }, end: { x: 0.66, y: 0.75 } }
       }
     ]
+  },
+  {
+    id: "cyl-8-recap",
+    title: "Create Cylinder Recap",
+    text: "",
+    customText: "Let's review. You selected Shape Placement and the Cylinder tool. You specified the cylinder diameter and height in the Item Entry area. After the knowledge check, you entered zero, zero, zero to position the cylinder at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    recapData: {
+      title: "Lesson Complete",
+      items: [
+        "Selected Shape Placement and the Cylinder tool.",
+        "Entered the cylinder diameter and height.",
+        "Positioned the cylinder at the model origin using 0, 0, 0."
+      ]
+    }
   }
 ];
 
@@ -275,8 +339,8 @@ export const boxTutorialSteps: TutorialStep[] = [
           question: "What coordinates are used to position the rectangular solid at the origin in this lesson?",
           options: [
             { text: "0 0 0", isCorrect: true, feedback: "Correct!" },
-            { text: "100 100 0", isCorrect: false, feedback: "Incorrect. Check the lesson again." },
-            { text: "50 50 50", isCorrect: false, feedback: "Incorrect. Check the lesson again." }
+            { text: "100 100 0", isCorrect: false, feedback: "InCorrect! Check the lesson again." },
+            { text: "50 50 50", isCorrect: false, feedback: "InCorrect! Check the lesson again." }
           ]
         }
       }
@@ -425,7 +489,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
           question: "Which properties must be specified when creating a polygonal prism?",
           options: [
             { text: "Number of Sides, Path Diameter, and Height", isCorrect: true, feedback: "Correct!" },
-            { text: "Radius and Depth", isCorrect: false, feedback: "Incorrect." }
+            { text: "Radius and Depth", isCorrect: false, feedback: "InCorrect!" }
           ]
         }
       }
@@ -464,7 +528,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
           question: "How do you render the polygon in the workspace after entering coordinates?",
           options: [
             { text: "Confirm the coordinates by pressing Enter", isCorrect: true, feedback: "Correct!" },
-            { text: "Click on the workspace randomly", isCorrect: false, feedback: "Incorrect." }
+            { text: "Click on the workspace randomly", isCorrect: false, feedback: "InCorrect!" }
           ]
         }
       },
@@ -572,7 +636,7 @@ export const coneTutorialSteps: TutorialStep[] = [
           question: "What action places the cone on the workplane?",
           options: [
             { text: "Entering target coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
-            { text: "Clicking randomly on the screen", isCorrect: false, feedback: "Incorrect. You must enter coordinates." }
+            { text: "Clicking randomly on the screen", isCorrect: false, feedback: "InCorrect! You must enter coordinates." }
           ]
         }
       },
@@ -640,7 +704,7 @@ export const torusTutorialSteps: TutorialStep[] = [
           question: "Which of these defines the Torus geometry?",
           options: [
             { text: "Section Diameter, Path Radius, and Turn Angle", isCorrect: true, feedback: "Correct!" },
-            { text: "Height and Width", isCorrect: false, feedback: "Incorrect." }
+            { text: "Height and Width", isCorrect: false, feedback: "InCorrect!" }
           ]
         }
       }
@@ -679,7 +743,7 @@ export const torusTutorialSteps: TutorialStep[] = [
           question: "How do you place the Torus on the workspace?",
           options: [
             { text: "By entering positioning coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
-            { text: "By clicking the Torus icon again", isCorrect: false, feedback: "Incorrect." }
+            { text: "By clicking the Torus icon again", isCorrect: false, feedback: "InCorrect!" }
           ]
         }
       },

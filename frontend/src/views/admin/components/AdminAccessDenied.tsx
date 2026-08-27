@@ -20,7 +20,7 @@ export const AdminAccessDenied: React.FC<AdminAccessDeniedProps> = ({ area }) =>
         <h1>Admin access required</h1>
         <p>
             Your account does not have access to the <strong>{area}</strong> administration area.
-            Contact an authorized KMTI administrator if you believe this is incorrect.
+            Contact an authorized KMTI administrator if you believe this is inCorrect!
         </p>
     </section>
 );

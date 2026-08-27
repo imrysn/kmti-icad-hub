@@ -37,14 +37,14 @@ describe('DynamicFoundationsLesson', () => {
         type: 'recap',
         startTime: 19,
         endTime: 20,
-        recapData: { title: 'Standard Views', items: ['Select a standard orientation.'] },
+        recapData: { title: '3D View', items: ['Select a standard orientation.'] },
       },
     ];
 
     render(
       <DynamicFoundationsLesson
         lessonId="lesson-4-1"
-        title="Standard Views"
+        title="3D View"
         content={['Inspect the model from standard directions.']}
         videoId="lesson4.1"
         videoOverlays={overlays}
@@ -63,14 +63,14 @@ describe('DynamicFoundationsLesson', () => {
     render(
       <DynamicFoundationsLesson
         lessonId="lesson-4-1"
-        title="Standard Views"
+        title="3D View"
         content={['Learning Objective:']}
         videoId="lesson4.1"
       />,
     );
 
     const renderedStep = viewerSpy.mock.calls.at(-1)?.[0].steps[0];
-    expect(renderedStep.text).toBe('Standard Views');
+    expect(renderedStep.text).toBe('3D View');
   });
 
   it('passes synchronized narration steps and source-audio muting to the viewer', () => {
@@ -85,7 +85,7 @@ describe('DynamicFoundationsLesson', () => {
     render(
       <DynamicFoundationsLesson
         lessonId="lesson-4-1"
-        title="Standard Views"
+        title="3D View"
         content={['Use standard engineering views.']}
         videoId="lesson4.1"
         videoSteps={videoSteps}

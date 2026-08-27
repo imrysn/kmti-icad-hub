@@ -15,7 +15,7 @@ def sync_basic_op_quiz():
         new_questions = [
             {
                 "text": "When initiating a new 3D model, which specific standard orientation is required for the starting view?",
-                "options": ["Top view", "Side view", "Front view", "Isometric view"],
+                "options": ["Top view", "Side view", "Front view", "User View"],
                 "correct_answer": 2,
                 "explanation": "All new 3D models in the KEMCO iCAD workflow must start from the Front View for proper projection alignment."
             },

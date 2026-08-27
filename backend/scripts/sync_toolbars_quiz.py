@@ -62,7 +62,7 @@ def sync_toolbars_quiz():
                 "explanation": "Section Display tools allow for virtual slicing and managing work planes for internal viewing."
             },
             {
-                "text": "Scenario: A user wants to set a specific custom perspective that isn't covered by the standard Top or Front views. They notice four dedicated buttons for \"Isometric Views.\" Which toolbar are they currently utilizing?",
+                "text": "Scenario: A user wants to set a specific custom perspective that isn't covered by the standard Top or Front views. They notice four dedicated buttons for \"User Views.\" Which toolbar are they currently utilizing?",
                 "options": ["3D View", "2D Standard Screen", "User Views", "Switch Display"],
                 "correct_answer": 2,
                 "explanation": "The User Views toolbar provides access to isometric presets and custom saved camera positions."

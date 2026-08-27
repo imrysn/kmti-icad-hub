@@ -44,10 +44,10 @@ def sync_2d_normal_mirror_quiz():
                 "explanation": "A Class 2 clearance hole for an M10 fastener is 11mm in diameter."
             },
             {
-                "text": "According to the rules for detailing mirror parts, what is the required procedure for handling the Isometric View?",
-                "options": ["Delete the isometric view as it cannot be mirrored.", "Update the isometric view by switching the user view as needed.", "Manually redraw the isometric view using single dot lines.", "Keep the isometric view of Part A for both drawings."],
+                "text": "According to the rules for detailing mirror parts, what is the required procedure for handling the User View?",
+                "options": ["Delete the User View as it cannot be mirrored.", "Update the User View by switching the user view as needed.", "Manually redraw the User View using single dot lines.", "Keep the User View of Part A for both drawings."],
                 "correct_answer": 1,
-                "explanation": "Mirrored part documentation requires a correctly oriented isometric view representing the \"B\" (mirrored) geometry."
+                "explanation": "Mirrored part documentation requires a correctly oriented User View representing the \"B\" (mirrored) geometry."
             },
             {
                 "text": "What is the designated usage and application for SGP (White) pipes in ICAD?",

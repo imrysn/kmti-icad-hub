@@ -20,20 +20,20 @@ def sync_2d_operal_view_quiz():
                 "explanation": "The snap line acts as a dynamic guide to maintain orthographic alignment between projected views during relocation."
             },
             {
-                "text": "Name the specific location on the drawing template where an Isometric view should ideally be positioned, according to the standard layout notes.",
+                "text": "Name the specific location on the drawing template where an User View should ideally be positioned, according to the standard layout notes.",
                 "options": ["Lower left corner", "Upper left portion", "Upper right portion", "Bottom right corner"],
                 "correct_answer": 2,
-                "explanation": "Standard KEMCO/JIS practices place the reference Isometric view in the upper right quadrant of the drawing sheet."
+                "explanation": "Standard KEMCO/JIS practices place the reference User View in the upper right quadrant of the drawing sheet."
             },
             {
-                "text": "Identify the specific status of a projected view that, when moved, causes all other associated standard views to move simultaneously.",
+                "text": "Identify the specific status of a projected view that, when moved, causes all other associated 3D View to move simultaneously.",
                 "options": ["Locked", "Aligned (or highlighted)", "Frozen", "Hidden"],
                 "correct_answer": 1,
                 "explanation": "When views are highlighted in their aligned state, the system moves the entire projection set together to preserve geometric relationships."
             },
             {
                 "text": "What is the technical consequence of executing the \"Delete View\" command on a local view?",
-                "options": ["The view is hidden but can be restored using the Tree View.", "Only the dimensions are removed, leaving the geometry intact.", "The local view and all details contained within it are removed and cannot be restored.", "The system automatically replaces it with a 3D isometric view."],
+                "options": ["The view is hidden but can be restored using the Tree View.", "Only the dimensions are removed, leaving the geometry intact.", "The local view and all details contained within it are removed and cannot be restored.", "The system automatically replaces it with a 3D User View."],
                 "correct_answer": 2,
                 "explanation": "Delete View is a permanent operation that erases the projection and all its associated annotations from the 2D workspace."
             },
@@ -50,7 +50,7 @@ def sync_2d_operal_view_quiz():
                 "explanation": "Projections are complex grouped entities that require the specialized Delete View tool to safely remove them from the drawing database."
             },
             {
-                "text": "What is the correct sequence of mouse actions to move an Isometric view to a new location?",
+                "text": "What is the correct sequence of mouse actions to move an User View to a new location?",
                 "options": ["Select Delete View > Click P1 > Click OK.", "Click P1 to select the view > Click P2 on the desired location.", "Right-click the Tree View > Select Properties > Enter coordinates.", "Double-click the Icon Menu > Select \"High Precision\" > Click Go."],
                 "correct_answer": 1,
                 "explanation": "The Move View workflow involves a primary click to select the view frame (P1) and a secondary click to define the target destination (P2)."
@@ -63,7 +63,7 @@ def sync_2d_operal_view_quiz():
             },
             {
                 "text": "Scenario: A trainee has accidentally projected a Bottom View that is not needed for the final fabrication drawing. They have selected the \"Delete View\" command and clicked on the unnecessary view. A dialog box appears. What must the trainee do to ensure the view is gone, and what is the risk?",
-                "options": ["Click CANCEL; the risk is losing the BOM data.", "Click OK; the risk is that the command cannot be undone once executed.", "Click GO; the risk is changing the scale of the Isometric view.", "Click the Tree View; the risk is creating a duplicate part."],
+                "options": ["Click CANCEL; the risk is losing the BOM data.", "Click OK; the risk is that the command cannot be undone once executed.", "Click GO; the risk is changing the scale of the User View.", "Click the Tree View; the risk is creating a duplicate part."],
                 "correct_answer": 1,
                 "explanation": "Confirming the deletion (OK) permanently removes the projection data, a destructive action that cannot be reversed by the Undo command."
             },

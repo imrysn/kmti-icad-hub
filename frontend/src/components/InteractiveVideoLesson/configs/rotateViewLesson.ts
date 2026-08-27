@@ -19,7 +19,7 @@ export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
         'View Rotation lets you inspect the model from different angles.',
         'Position the mouse cursor over the 3D model.',
         'Press and hold the middle mouse button, or scroll wheel, and the right mouse button at the same time.',
-        'You can also hold the Alt key and use the left mouse button.',
+        'Alternatively, hold the Alt key while dragging with the left mouse button.',
         'Move the mouse slowly to rotate your viewpoint around the model.',
         'Release the mouse buttons when you reach the viewing angle you want.',
         'Rotate View changes where you are looking from. It does not change the actual orientation of the model.',
@@ -41,8 +41,8 @@ export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
         },
         {
           at: 7,
-          narration: 'You can also hold the Alt key and use the left mouse button.',
-          overlayText: 'Alt + Left Mouse Button = Rotate View',
+          narration: 'Alternatively, hold the Alt key while dragging with the left mouse button.',
+          overlayText: 'Alternative: Alt + Left-Button Drag',
         },
         {
           at: 9,
@@ -78,9 +78,10 @@ export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
       { id: 'model-resizes', label: 'The model dimensions change.', isCorrect: false, feedback: 'Not quite. View Rotation does not modify model dimensions.' },
     ],
   },
-  recapNarration: 'Great work. Remember: use the middle and right mouse buttons together, then move the mouse to rotate your view. Rotate View changes your viewpoint, not the actual model.',
+  recapNarration: 'Great work. Remember: use the middle and right mouse buttons together, then move the mouse to rotate your view. Alternatively, hold the Alt key while dragging with the left mouse button. Rotate View changes your viewpoint, not the actual model.',
   recapItems: [
     { action: 'Middle + Right Mouse Buttons', result: 'Start Rotate View' },
+    { action: 'Alt + Left-Button Drag', result: 'Alternative Rotate Method' },
     { action: 'Move the Mouse', result: 'Change Viewing Angle' },
   ],
   completionText: 'You now understand how to rotate the 3D view and inspect a model from different angles.',

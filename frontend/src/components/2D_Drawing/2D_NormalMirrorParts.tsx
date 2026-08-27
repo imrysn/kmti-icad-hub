@@ -1,5 +1,5 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
@@ -74,7 +74,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
       subtitle: 'Designating normal and mirror parts with standardized numbering and symmetry rules.',
       steps: [
         "Normal: Example drawing number RTXXXXXN01. Mirror parts are parts that are symmetrically the same. Example drawing number RTXXXXXA01 & RTXXXXXB01.",
-        "Rule on how to detail a mirror parts: 1. Detail the first drawing, for example RTXXXXXA01. 2. Proceed to checking and editing of check back until finalized the part. 3. Save as RTXXXXXA01 to RTXXXXXB01. Replace part if it already exists. 4. Properly mirror the part using mirror icon. Edit properties and part dimensions affected by the mirror process. 5. Proceed on editing 2D detailing. 6. View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling. 7. Encircled view is right side view. Mirror it and change ownership to left side view. 8. Update isometric view, switch user view as needed. 9. Insert new title block to update the drawing number on template."
+        "Rule on how to detail a mirror parts: 1. Detail the first drawing, for example RTXXXXXA01. 2. Proceed to checking and editing of check back until finalized the part. 3. Save as RTXXXXXA01 to RTXXXXXB01. Replace part if it already exists. 4. Properly mirror the part using mirror icon. Edit properties and part dimensions affected by the mirror process. 5. Proceed on editing 2D detailing. 6. View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling. 7. Encircled view is right side view. Mirror it and change ownership to left side view. 8. Update User View, switch user view as needed. 9. Insert new title block to update the drawing number on template."
       ]
     },
     '2d-normal-mirror-mirror-command': {
@@ -178,7 +178,7 @@ const NormalMirrorPartsLesson: React.FC<NormalMirrorPartsLessonProps> = ({
                           <li>Proceed on editing 2D detailing.</li>
                           <li>View inside the box need to mirror, the reference is in origin same as what we do in 3D modeling.</li>
                           <li>Encircled view is right side view. Mirror it and change ownership to left side view.</li>
-                          <li>Update isometric view, switch user view as needed.</li>
+                          <li>Update User View, switch user view as needed.</li>
                           <li>Insert new title block to update the drawing number on template.</li>
                         </ol>
                       </div>

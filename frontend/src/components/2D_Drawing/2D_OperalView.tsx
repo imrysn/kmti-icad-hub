@@ -1,5 +1,5 @@
-import { ChevronLeft,ChevronRight } from 'lucide-react';
-import React,{ useEffect,useState } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../KaraokeLessonText";
@@ -80,8 +80,8 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
       title: t('2d.operate_view'),
       subtitle: t('2d.repositioning_isometric_and_orthographic'),
       steps: [
-        "Move View: Use this command to reposition technical views on the template. For Isometric views, position them freely without overlapping. For Orthographic views, moving one will move all aligned views simultaneously.",
-        "Alignment Standard: Position isometric views carefully—not too far or overlapping. Ensure all projected views remain parallel and aligned to maintain professional drafting standards."
+        "Move View: Use this command to reposition technical views on the template. For User Views, position them freely without overlapping. For Orthographic views, moving one will move all aligned views simultaneously.",
+        "Alignment Standard: Position User Views carefully—not too far or overlapping. Ensure all projected views remain parallel and aligned to maintain professional drafting standards."
       ]
     },
     '2d-operal-view-alignment-delete': {
@@ -166,10 +166,10 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
                       <img src={operateView1ImgA} alt="Move View Menu" className="software-screenshot screenshot-medium mb-4" />
                       <div className="step-header" style={{ marginLeft: "3rem", marginTop: "1.5rem", marginBottom: "1rem" }}>
                         <span className="step-number">a.1</span>
-                        <span className="step-label">Isometric View</span>
+                        <span className="step-label">User View</span>
                       </div>
-                      <p className="p-flush">Position of isometric view must not be too close, too far, or over lap with the orthographic view.</p>
-                      <img src={operateView1ImgA1} alt="Isometric View" className="software-screenshot screenshot-wide" />
+                      <p className="p-flush">Position of User View must not be too close, too far, or over lap with the orthographic view.</p>
+                      <img src={operateView1ImgA1} alt="User View" className="software-screenshot screenshot-wide" />
                     </div>
                   </div>
 

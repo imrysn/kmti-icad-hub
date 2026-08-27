@@ -257,7 +257,7 @@
           "Top View",
           "Front View",
           "Side View",
-          "Isometric View"
+          "User View"
         ],
         "correct_answer": 1,
         "explanation": "The Front View is standardly mapped to the XY plane in KEMCO iCAD logic."
@@ -1306,7 +1306,7 @@
           "Yes",
           "in advanced settings it can drive the pattern type",
           "Only if you paint it",
-          "Only in the Isometric view"
+          "Only in the User View"
         ],
         "correct_answer": 1,
         "explanation": "Smart CAD systems link material data to drafting symbols."
@@ -2211,7 +2211,7 @@
       {
         "text": "Situational: A part has a complex internal cavity that cannot be clearly seen with hidden lines. Which view type is standardly required?",
         "options": [
-          "Isometric View",
+          "User View",
           "Section View",
           "Auxiliary View",
           "Partial View"
@@ -4556,7 +4556,7 @@
           "Top View",
           "The view showing the primary asymmetry/flipping",
           "Front View",
-          "Isometric View"
+          "User View"
         ],
         "correct_answer": 1,
         "explanation": "Identify where the \"handedness\" is most obvious."
