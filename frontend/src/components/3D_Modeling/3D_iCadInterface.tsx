@@ -1,4 +1,4 @@
-import { ChevronLeft,ChevronRight,Monitor } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Monitor } from 'lucide-react';
 import React from "react";
 import { useLessonCore } from "../../hooks/useLessonCore";
 import './CourseLesson.css';
@@ -34,10 +34,23 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     t('icad.step11')
   ], [t]);
 
+  const localizedTutorialSteps = React.useMemo(() => TUTORIAL_STEPS.map((step) => {
+    const titleKey = `tutorial.icad.${step.id}.title`;
+    const textKey = `tutorial.icad.${step.id}.text`;
+    const translatedTitle = t(titleKey);
+    const translatedText = t(textKey);
+
+    return {
+      ...step,
+      title: translatedTitle === titleKey ? step.title : translatedTitle,
+      text: translatedText === textKey ? step.text : translatedText,
+    };
+  }), [t]);
+
   const {
     scrollProgress,
     containerRef,
-    currentIndex  } = useLessonCore('interface', INTERFACE_STEPS);
+    currentIndex } = useLessonCore('interface', INTERFACE_STEPS);
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -52,16 +65,12 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer 
-              steps={TUTORIAL_STEPS.map(s => ({
-                ...s,
-                title: t(`tutorial.icad.${s.id}.title`),
-                text: t(`tutorial.icad.${s.id}.text`)
-              }))}
+            <VideoTutorialViewer
+              steps={localizedTutorialSteps}
               introPanel={showFoundationsIntro ? {
                 icon: Monitor,
                 eyebrow: "Interactive screen tour",
-                title: "Explore the iCAD SX Screen",
+                title: "Explore the iCAD Interface",
                 description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
               } : undefined}
             />
@@ -69,8 +78,8 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
 
           <div className="lesson-navigation">
             {onPrevLesson && (
-  <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+              <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
             <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>

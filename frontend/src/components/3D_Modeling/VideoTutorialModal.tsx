@@ -2,7 +2,11 @@ import { Pause, Play, X, SkipBack, SkipForward } from 'lucide-react';
 import { useTranslation } from '../../context/LanguageContext';
 import React,{ useEffect,useRef,useState } from 'react';
 import { createPortal } from 'react-dom';
-import { api } from '../../services/api';
+import {
+  createFoundationsBrowserUtterance,
+  createFoundationsNarrationAudio,
+  getFoundationsNarrationRate,
+} from '../../services/foundationsNarrationService';
 import { KaraokeLessonText } from '../KaraokeLessonText';
 import './VideoTutorialModal.css';
 
@@ -179,16 +183,10 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
     const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
     const spokenText = sanitizeSpeech(text);
 
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
-    const isBackendVoice = savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://');
-    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+    const savedRate = getFoundationsNarrationRate();
+    const textAudio = createFoundationsNarrationAudio(spokenText);
 
-    if (isBackendVoice) {
-      const apiBase = api.defaults.baseURL || '';
-
-      const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
-
-      const textAudio = new Audio(textUrl);
+    if (textAudio) {
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
@@ -263,8 +261,8 @@ const VideoTutorialModal: React.FC<VideoTutorialModalProps> = ({
       // Fallback: Browser Web Speech synthesis
       if (!synthRef.current) return;
 
-      const textUtterance = new SpeechSynthesisUtterance(spokenText);
-      textUtterance.rate = savedRate * 0.9;
+      const textUtterance = createFoundationsBrowserUtterance(spokenText);
+      if (!textUtterance) return;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (text.length * 60) / textUtterance.rate;

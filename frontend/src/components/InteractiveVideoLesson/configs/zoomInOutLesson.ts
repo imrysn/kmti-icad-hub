@@ -4,11 +4,11 @@ import type { InteractiveVideoLessonConfig } from '../types';
 export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
   id: 'lesson-3-1',
   title: 'Zoom In and Zoom Out',
-  objective: 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD SX.',
+  objective: 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD.',
   videoSrc: zoomInOutVideo,
   videoLabel: 'iCAD Zoom In and Zoom Out demonstration',
-  introSupportingText: 'Learn how to control your view while working with a model in iCAD SX.',
-  introNarration: 'Welcome to this iCAD SX navigation lesson. In this lesson, you will learn how to zoom in and zoom out while viewing a model.',
+  introSupportingText: 'Learn how to control your view while working with a model in iCAD.',
+  introNarration: 'Welcome to this iCAD navigation lesson. In this lesson, you will learn how to zoom in and zoom out while viewing a model.',
   segments: [
     {
       id: 'zoom-in',
@@ -48,7 +48,7 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
       ],
       checkpoint: {
         id: 'zoom-in-check',
-        prompt: 'How do you zoom in on the model in iCAD SX?',
+        prompt: 'How do you zoom in on the model in iCAD?',
         choices: [
           { id: 'forward', label: 'Scroll the mouse wheel forward/up.', isCorrect: true, feedback: 'Correct! Scrolling the mouse wheel forward zooms in toward the area around your cursor.' },
           { id: 'backward', label: 'Scroll the mouse wheel backward/down.', isCorrect: false, feedback: 'Not quite. Scrolling the mouse wheel backward zooms out rather than zooming in.' },
@@ -90,7 +90,7 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
       ],
       checkpoint: {
         id: 'zoom-out-check',
-        prompt: 'What should you do to zoom out in iCAD SX?',
+        prompt: 'What should you do to zoom out in iCAD?',
         choices: [
           { id: 'backward', label: 'Scroll the mouse wheel backward/down.', isCorrect: true, feedback: 'Correct! Scrolling the mouse wheel backward zooms out and lets you see a larger area of the workspace.' },
           { id: 'forward', label: 'Scroll the mouse wheel forward/up.', isCorrect: false, feedback: 'Not quite. Scrolling the mouse wheel forward zooms in.' },
@@ -113,5 +113,5 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
     { action: 'Mouse Wheel Forward ↑', result: 'Zoom In' },
     { action: 'Mouse Wheel Backward ↓', result: 'Zoom Out' },
   ],
-  completionText: 'You now understand how to zoom in and zoom out in iCAD SX.',
+  completionText: 'You now understand how to zoom in and zoom out in iCAD.',
 };

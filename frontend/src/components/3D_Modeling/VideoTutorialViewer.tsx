@@ -1,7 +1,6 @@
 import { LucideIcon, Maximize, Minimize, Pause, Play, X, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import React,{ useEffect,useRef,useState } from 'react';
-import { api } from '../../services/api';
 import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
 import '../LessonQuestionPanel.css';
@@ -15,7 +14,14 @@ export type { NormalizedPoint, NormalizedRect, TutorialOverlay, TutorialOverlayT
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
 import { KaraokeLessonText } from '../KaraokeLessonText';
-import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration } from '../../utils/quizNarration';
+import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration, buildTutorialStepNarration } from '../../utils/quizNarration';
+import { FOUNDATIONS_NARRATION_PROFILE } from '../../config/foundationsNarration';
+import {
+  createFoundationsBrowserUtterance,
+  createFoundationsNarrationAudio,
+  getFoundationsNarrationRate,
+  normalizeFoundationsNarrationText,
+} from '../../services/foundationsNarrationService';
 
 export interface TutorialStep { quizData?: { question: string; options: { text: string; isCorrect: boolean; feedback: string }[]; }; recapData?: { title: string; items: string[]; }; 
   id: string | number;
@@ -243,22 +249,25 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     if (!cue?.label || narratedOverlayIdsRef.current.has(cue.id)) return;
 
     narratedOverlayIdsRef.current.add(cue.id);
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
-    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+    const savedRate = getFoundationsNarrationRate();
+    const cueAudio = createFoundationsNarrationAudio(cue.label, {
+      rate: savedRate,
+      volume,
+      muted: isMuted,
+    });
 
-    if (savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://')) {
-      const apiBase = api.defaults.baseURL || '';
-      const cueUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(cue.label)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
-      const cueAudio = new Audio(cueUrl);
+    if (cueAudio) {
       cueAudio.volume = volume;
       cueAudio.muted = isMuted;
       audioRef.current = cueAudio;
       cueAudio.play().catch(err => console.error('Timed narration play failed:', err));
     } else if (synthRef.current) {
-      const utterance = new SpeechSynthesisUtterance(cue.label);
-      utterance.rate = savedRate * 0.9;
-      utterance.volume = isMuted ? 0 : volume;
-      synthRef.current.speak(utterance);
+      const utterance = createFoundationsBrowserUtterance(cue.label, {
+        rate: savedRate,
+        volume,
+        muted: isMuted,
+      });
+      if (utterance) synthRef.current.speak(utterance);
     }
   }, [currentStep, isMuted, isPaused, isPlaying, steps, videoTime, volume]);
 
@@ -336,29 +345,26 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
 
     const stepText = (steps[currentStep].customText || steps[currentStep].text || '').trim();
-    const text = steps[currentStep].quizData
-      ? buildKnowledgeCheckNarration(stepText, steps[currentStep].quizData.options.map(option => option.text))
-      : stepText;
+    const text = buildTutorialStepNarration(stepText, steps[currentStep].quizData, steps[currentStep].recapData);
     if (!text) {
       // Video-only steps do not require synthesized narration. Never send an
       // empty request to the TTS endpoint.
       return;
     }
 
-    const sanitizeSpeech = (t: string) => t.replace(/i\s*CAD/ig, 'eye cad');
-    const spokenText = sanitizeSpeech(text);
+    const spokenText = normalizeFoundationsNarrationText(text);
 
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
+    const savedVoice = FOUNDATIONS_NARRATION_PROFILE.voiceURI;
     const isBackendVoice = savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://');
-    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+    const savedRate = getFoundationsNarrationRate();
 
     if (isBackendVoice) {
-      const apiBase = api.defaults.baseURL || '';
-
-      const textUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(spokenText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
-
-      const textAudio = new Audio(textUrl);
-      textAudio.muted = isMuted;
+      const textAudio = createFoundationsNarrationAudio(spokenText, {
+        rate: savedRate,
+        volume,
+        muted: isMuted,
+      });
+      if (!textAudio) return;
       audioRef.current = textAudio;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
@@ -447,8 +453,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       // Fallback: Browser Web Speech synthesis
       if (!synthRef.current) return;
 
-      const textUtterance = new SpeechSynthesisUtterance(spokenText);
-      textUtterance.rate = savedRate * 0.9;
+      const textUtterance = createFoundationsBrowserUtterance(spokenText, {
+        rate: savedRate,
+        volume,
+        muted: isMuted,
+      });
+      if (!textUtterance) return;
 
       const words = text.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (text.length * 60) / textUtterance.rate;
@@ -655,8 +665,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
   const speakTransientNarration = (narration: string) => {
     const quizText = narration.trim();
-    const savedVoice = localStorage.getItem('tts_voice_uri') || 'openai://nova';
-    const savedRate = parseFloat(localStorage.getItem('tts_rate') || '0.8');
+    const savedRate = getFoundationsNarrationRate();
 
     if (audioRef.current) {
       audioRef.current.pause();
@@ -664,19 +673,21 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     }
     synthRef.current?.cancel();
 
-    if (savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://')) {
-      const apiBase = api.defaults.baseURL || '';
-      const quizUrl = `${apiBase}/api/v1/tts/synthesize?text=${encodeURIComponent(quizText)}&voice=${encodeURIComponent(savedVoice)}&speed=${savedRate}`;
-      const quizAudio = new Audio(quizUrl);
-      quizAudio.volume = volume;
-      quizAudio.muted = isMuted;
+    const quizAudio = createFoundationsNarrationAudio(quizText, {
+      rate: savedRate,
+      volume,
+      muted: isMuted,
+    });
+    if (quizAudio) {
       audioRef.current = quizAudio;
       quizAudio.play().catch(err => console.error('Quiz narration play failed:', err));
     } else if (synthRef.current) {
-      const utterance = new SpeechSynthesisUtterance(quizText);
-      utterance.rate = savedRate * 0.9;
-      utterance.volume = isMuted ? 0 : volume;
-      synthRef.current.speak(utterance);
+      const utterance = createFoundationsBrowserUtterance(quizText, {
+        rate: savedRate,
+        volume,
+        muted: isMuted,
+      });
+      if (utterance) synthRef.current.speak(utterance);
     }
   };
 

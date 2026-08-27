@@ -16,8 +16,26 @@ KOKORO_VOICES = [
     "jf_teatime", "jm_kiko"
 ]
 
-# Common user playback rates (speeds) scaled by 1.25
-SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
+# Current UI playback rates. Runtime sends these values unchanged.
+SPEEDS = [0.8, 0.9, 1.0, 1.2, 1.5]
+OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1").strip()
+OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip().lower()
+OPENAI_TTS_VOICE = "nova"
+TTS_CACHE_PROFILE_VERSION = os.getenv("TTS_CACHE_PROFILE_VERSION", "foundations-v2").strip() or "foundations-v2"
+
+def normalize_cache_text(text: str) -> str:
+    return re.sub(r"\s+", " ", (text or "").replace("\xa0", " ")).strip()
+
+def build_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str, version: str = TTS_CACHE_PROFILE_VERSION) -> str:
+    cache_string = f"{version}_{provider}_{model}_{voice}_{normalize_cache_text(text)}_{speed}_{lang}_{response_format}"
+    return hashlib.sha256(cache_string.encode("utf-8")).hexdigest()
+
+def build_legacy_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str) -> str:
+    cache_string = f"{provider}_{model}_{voice}_{normalize_cache_text(text)}_{speed}_{lang}_{response_format}"
+    return hashlib.sha256(cache_string.encode("utf-8")).hexdigest()
+
+def is_japanese_text(text: str) -> bool:
+    return bool(re.search(r"[\u3040-\u30ff\u3400-\u9fff\u3000-\u303f]", text))
 
 def clean_text_for_espeak(text: str) -> str:
     text = text.replace("eyekad", "eye cad")
@@ -50,7 +68,7 @@ def split_into_sentences(text: str) -> list:
     sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z0-9])|(?<=[.!?])\s*$', clean_text)
     return [s.strip() for s in sentences if s.strip()]
 
-def get_hashes_for_text(text: str) -> set:
+def get_hashes_for_text(text: str, include_legacy: bool = True) -> set:
     hashes = set()
     sentences = split_into_sentences(text)
     for sentence in sentences:
@@ -61,14 +79,46 @@ def get_hashes_for_text(text: str) -> set:
         # Strip/clean like the backend does
         clean_txt = clean_text_for_espeak(normalized)
         
-        # Generate hash for each voice and speed
+        # Generate the OpenAI Nova keys used by current Foundations lessons.
+        openai_lang = "ja-jp" if is_japanese_text(clean_txt) else "en-us"
+        for speed in SPEEDS:
+            cache_key = build_cache_key(
+                "openai",
+                OPENAI_TTS_MODEL,
+                OPENAI_TTS_VOICE,
+                clean_txt,
+                speed,
+                openai_lang,
+                OPENAI_TTS_RESPONSE_FORMAT,
+            )
+            hashes.add(f"{cache_key}.{OPENAI_TTS_RESPONSE_FORMAT}")
+            if include_legacy:
+                legacy_key = build_legacy_cache_key(
+                    "openai", OPENAI_TTS_MODEL, OPENAI_TTS_VOICE, clean_txt,
+                    speed, openai_lang, OPENAI_TTS_RESPONSE_FORMAT,
+                )
+                hashes.add(f"{legacy_key}.{OPENAI_TTS_RESPONSE_FORMAT}")
+
+        # Preserve valid fallback files using the runtime Kokoro key format.
         for voice in KOKORO_VOICES:
             lang = "ja" if voice.startswith("j") else "en-us"
             for speed in SPEEDS:
-                synthesis_speed = speed * 1.25
-                cache_string = f"{clean_txt}_{voice}_{synthesis_speed}_{lang}"
-                cache_key = hashlib.sha256(cache_string.encode('utf-8')).hexdigest()
+                cache_key = build_cache_key(
+                    "kokoro",
+                    "kokoro-v1.0.onnx",
+                    voice,
+                    clean_txt,
+                    speed,
+                    lang,
+                    "wav",
+                )
                 hashes.add(f"{cache_key}.wav")
+                if include_legacy:
+                    legacy_key = build_legacy_cache_key(
+                        "kokoro", "kokoro-v1.0.onnx", voice, clean_txt,
+                        speed, lang, "wav",
+                    )
+                    hashes.add(f"{legacy_key}.wav")
     return hashes
 
 def extract_strings_from_file(file_path: str) -> list:
@@ -100,10 +150,11 @@ def extract_strings_from_file(file_path: str) -> list:
         print(f"Warning: Failed to read file {file_path}: {e}")
     return [t.strip() for t in texts if len(t.strip()) > 5]
 
-def clean_cache(dry_run=True):
+def clean_cache(dry_run=True, include_legacy=True):
     print("====================================================")
     print("      KMTI iCAD Hub - TTS Cache Cleanup Tool")
     print("====================================================")
+    print(f"Legacy cache policy: {'preserve' if include_legacy else 'eligible for cleanup'}")
     
     # 1. Determine Cache Directory
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -113,8 +164,9 @@ def clean_cache(dry_run=True):
         return
 
     print(f"Scanning cache directory: {cache_dir}")
-    cached_files = [f for f in os.listdir(cache_dir) if f.endswith(".wav")]
-    print(f"Found {len(cached_files)} cached WAV files.")
+    cache_extensions = (".mp3", ".wav", ".ogg", ".flac", ".pcm")
+    cached_files = [f for f in os.listdir(cache_dir) if f.lower().endswith(cache_extensions)]
+    print(f"Found {len(cached_files)} cached audio files.")
     if not cached_files:
         print("Nothing to clean.")
         return
@@ -156,7 +208,7 @@ def clean_cache(dry_run=True):
     print("\nComputing expected TTS cache hashes...")
     valid_hashes = set()
     for text in active_texts:
-        valid_hashes.update(get_hashes_for_text(text))
+        valid_hashes.update(get_hashes_for_text(text, include_legacy=include_legacy))
     print(f"Generated {len(valid_hashes)} valid cache keys.")
 
     # 4. Compare and Identify Unused Files
@@ -193,7 +245,8 @@ def clean_cache(dry_run=True):
         print(f"Cleanup complete. Successfully deleted {deleted_count} files.")
 
 if __name__ == "__main__":
-    dry_run = True
-    if len(sys.argv) > 1 and sys.argv[1] == "--force":
-        dry_run = False
-    clean_cache(dry_run=dry_run)
+    arguments = set(sys.argv[1:])
+    clean_cache(
+        dry_run="--force" not in arguments,
+        include_legacy="--drop-legacy" not in arguments,
+    )

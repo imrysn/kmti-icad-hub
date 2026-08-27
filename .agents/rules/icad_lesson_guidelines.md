@@ -1,6 +1,6 @@
-# iCAD SX Interactive Lesson Guidelines
+# iCAD Interactive Lesson Guidelines
 
-This document serves as the Knowledge Base and standard requirements for all interactive video lessons within the iCAD SX Foundations curriculum. 
+This document serves as the Knowledge Base and standard requirements for all interactive video lessons within the iCAD Foundations curriculum. 
 
 When creating or modifying an interactive lesson configuration (e.g., `TutorialStep[]`), you MUST ensure that **all** of the following core features are present to maintain the highest quality standard for user engagement:
 
@@ -19,10 +19,13 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 ## 4. Final Lesson Recap
 - **Requirement**: Every lesson must end with a comprehensive checklist reviewing what the user just accomplished.
 - **Implementation**: Use the `recap` overlay type at the very end of the video. The `recapData` should contain a `title` (e.g., "Creating a Box — Review") and a chronological list of `items` representing the steps taken during the lesson.
+- **Narration**: The recap must be narrated. If `customText` or `text` is empty, narration MUST be generated from `recapData.title` followed by every `recapData.items` entry in visible order.
+- **Display**: Do not show a duplicate tutorial subtitle behind the recap panel.
 
 ## 5. Synchronized Narration
 - **Requirement**: Every step must include spoken narration and subtitles.
 - **Implementation**: Populate the `customText` property with clear, step-by-step instructions. Ensure `videoStart` and `videoEnd` timings perfectly match the action on the screen.
+- **Exceptions**: Quiz and recap narration is audio-only while its panel is visible. A timed label explicitly designated as visual-only may omit narration. These exceptions must never create an empty TTS request.
 
 ## 6. Autostart in Full Screen
 - **Requirement**: When the user initiates a lesson via the intro panel, the lesson must immediately launch into full screen mode for maximum immersion. Additionally, if the user exits full screen mode, the lesson must automatically close and return them to the `LessonIntroPanel`.
@@ -31,7 +34,7 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 ## 7. Native Video Controls Styling
 - **Requirement**: The `kmti-native-video-controls` component must adapt its styling depending on the type of lesson being viewed.
 - **Implementation**: 
-    - **Step-by-Step Tutorial Lesson**: Use the native video controls styling found in the "Understanding the iCAD SX Screen" module.
+    - **Step-by-Step Tutorial Lesson**: Use the native video controls styling found in the "Understanding the iCAD Screen" module.
     - **Video Tutorial Lesson**: Use the native video controls styling found in the "Create Box" lesson.
 
 ## 8. Quiz Narration Sequence
@@ -45,7 +48,7 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 - **Display**: Quiz narration is audio-only while the question panel is open. Do not render a duplicate subtitle behind the quiz or recap panel.
 
 ## 9. Correct and Incorrect Answer Feedback
-- **Correct Answer**: After the learner selects **Check Answer** with the correct choice, trigger a visible confetti celebration and narrate `Correct.`
+- **Correct Answer**: After the learner selects **Check Answer** with the correct choice, trigger a visible confetti celebration and narrate the selected correct option's complete configured `feedback` (for example, `Correct! The Key Entry Area is for precise coordinates.`). Use `Correct.` only when the correct option has no explanatory feedback.
 - **Incorrect Answer**: Do not show confetti. Narrate `Not quite.`, followed by the selected choice's explanatory feedback, and finish with `Please try again.`
 - **Retry State**: Keep the quiz open after an incorrect answer and allow the learner to retry. Continue only after the correct answer is confirmed.
 - **Consistency**: Apply this behavior to post-video quizzes, timeline-overlay quizzes, and quizzes in `InteractiveVideoLesson`.
@@ -66,3 +69,44 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
     - `captionPosition.x`: horizontal position from `0` (left) to `1` (right).
     - `captionPosition.y`: vertical position from `0` (top) to `1` (bottom).
 - **Narration**: Use `narrate: true` only when the timed label must be spoken. A label explicitly designated as visual-only must use `centerCaption: true` without `narrate`.
+
+## 13. Data-Backed Narration Fallbacks
+- **Requirement**: Visible instructional content must never be silent merely because a tutorial step's `text` field is empty.
+- **Quiz Fallback**: When a quiz step has empty `customText` and `text`, use `quizData.question` as the narrated question. Then narrate `Choose one answer.` and all `quizData.options` in order.
+- **Recap Fallback**: When a recap step has empty `customText` and `text`, narrate `Let's review what you learned.`, the `recapData.title`, and every recap item in order.
+- **Priority**: Resolve narration in this order: non-empty `customText`, non-empty `text`, structured quiz or recap data, then skip TTS safely.
+- **Safety**: Trim the resolved text. Never call `/api/v1/tts/synthesize` with an empty `text` query parameter.
+
+## 14. Translation-Key Integrity
+- **Requirement**: Raw translation keys such as `tutorial.icad.12.text`, `.title`, or `.next` must never appear in the lesson UI or narration.
+- **Coverage**: Every tutorial step ID must have the required English and Japanese `title` and `text` entries when localization is used.
+- **Fallback**: If the translation function returns the key itself, use the configured tutorial step title or text instead of rendering the key.
+- **Maintenance**: Whenever a step is added, removed, or renumbered, update all locale files in the same change.
+- **Testing**: Add or update a test that iterates through every configured step and verifies that all required locale keys exist.
+
+## 15. Lesson Intro Panel and Video-Only Layout
+- **Structure**: Foundations intro panels must use a lesson-specific icon, an `Interactive ... tour` eyebrow, an `Explore ...` title, a concise `Take a guided tour...` description, and the standard `Start lesson` button.
+- **Video-Only Lessons**: Do not wrap the dark `LessonIntroPanel` in an additional white document card. Use a transparent outer card with no border or shadow.
+- **Duplicate Content**: Do not render a separate explanatory paragraph above a video-only intro panel when the same concept is already covered by the learning objective and intro description.
+- **Scope**: Apply transparent video-only styling only to lessons explicitly configured for that layout; do not remove document-card styling from text-based lessons.
+
+## 16. Shared Player Consistency
+- **Requirement**: Standards must be implemented in every Foundations lesson player, not only in one lesson configuration.
+- **Players**: Audit both `VideoTutorialViewer` and `InteractiveVideoLesson`, including static quiz steps, timeline-overlay quizzes, post-video quizzes, and recap stages.
+- **Shared Logic**: Prefer shared narration and feedback helpers so wording and sequencing cannot diverge between lessons.
+- **State Transitions**: Advancing from Quiz 1 to Quiz 2 must set the next step and explicitly restart narration. Advancing to the recap must likewise start recap narration.
+
+## 17. Required Verification Checklist
+Before considering a lesson complete, verify all of the following:
+1. Video duration was measured and every `videoStart`, `videoEnd`, overlay, quiz, and recap timestamp is inside the real media duration.
+2. Source-video audio and TTS audio do not overlap unintentionally.
+3. Every ordinary step narrates non-empty text and its subtitle matches the active narration.
+4. Every quiz narrates the knowledge-check introduction, full question, `Choose one answer.`, and all choices.
+5. Quiz 2 and later quizzes narrate after the preceding **Continue** action.
+6. Correct answers show confetti and narrate the complete configured correct-answer feedback, falling back to `Correct.` only when no explanation exists.
+7. Incorrect answers narrate explanatory retry feedback without confetti and keep the quiz open.
+8. No duplicate subtitle is visible behind quiz or recap panels.
+9. The final recap narrates its title and every checklist item.
+10. The final **Continue** action exits full screen, resets playback, and returns to the intro panel.
+11. No raw localization key is visible or sent to TTS.
+12. Type checking and the complete automated test suite pass.

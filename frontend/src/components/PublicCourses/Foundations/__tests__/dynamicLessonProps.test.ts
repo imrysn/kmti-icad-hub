@@ -49,9 +49,15 @@ describe('getDynamicFoundationsLessonProps', () => {
       videoId: 'lesson4.2',
       videoSteps,
       muteSourceVideoAudio: true,
+      videoIntroTitle: 'Explore the Isometric View',
+      videoIntroDescription: 'See multiple faces together.',
+      videoIntroEyebrow: 'Interactive view tour',
     });
 
     expect(props.videoSteps).toBe(videoSteps);
     expect(props.muteSourceVideoAudio).toBe(true);
+    expect(props.videoIntroTitle).toBe('Explore the Isometric View');
+    expect(props.videoIntroDescription).toBe('See multiple faces together.');
+    expect(props.videoIntroEyebrow).toBe('Interactive view tour');
   });
 });

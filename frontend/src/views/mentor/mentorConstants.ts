@@ -25,21 +25,24 @@ export type Lesson = {
   videoOverlays?: TutorialOverlay[];
   videoSteps?: LessonVideoStep[];
   muteSourceVideoAudio?: boolean;
+  videoIntroTitle?: string;
+  videoIntroDescription?: string;
+  videoIntroEyebrow?: string;
 };
 
 export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
-  'lesson-1-1': 'By the end of this lesson, you should understand what iCAD SX is and how it is used in engineering design.',
-  'lesson-2-1': 'Identify the important areas of the iCAD SX interface and understand their purpose.',
-  'lesson-3-1': 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD SX.',
+  'lesson-1-1': 'By the end of this lesson, you should understand what iCAD is and how it is used in engineering design.',
+  'lesson-2-1': 'Identify the important areas of the iCAD interface and understand their purpose.',
+  'lesson-3-1': 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD.',
   'lesson-3-2': 'Move your view to another area without moving the actual model.',
   'lesson-3-3': 'Rotate your viewpoint around a 3D model without changing the model itself.',
-  'toolbars': 'Identify the primary iCAD SX toolbars and understand how they support common modeling operations.',
+  'toolbars': 'Identify the primary iCAD toolbars and understand how they support common modeling operations.',
   'lesson-4-1': 'Display a model from standard engineering viewing directions to make its geometry easier to understand and inspect.',
   'lesson-4-2': 'Use an isometric view to inspect multiple sides of a 3D object at the same time.',
   'lesson-5-1': 'Identify the origin and the X, Y, and Z axes used to locate and orient geometry in 3D space.',
   'lesson-6-1': 'Correctly select geometry before performing an operation.',
-  'lesson-7-1': 'Create your first simple 2D line geometry in iCAD SX.',
-  'lesson-7-2': 'Create basic circle and rectangle geometry using the appropriate iCAD SX commands.',
+  'lesson-7-1': 'Create your first simple 2D line geometry in iCAD.',
+  'lesson-7-2': 'Create basic circle and rectangle geometry using the appropriate iCAD commands.',
   'lesson-8-1': 'Create a basic rectangular 3D block from a dimensioned 2D profile.',
   'lesson-9-1': 'Apply navigation, standard-view, and selection skills while inspecting a 3D model.',
   'lesson-10-1': 'Save training work using the correct location, filename, and file-management procedure.',
@@ -51,16 +54,16 @@ export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
 export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   {
     id: 'module-1',
-    title: 'Module 1 - Getting Started with iCAD SX',
+    title: 'Module 1 - Getting Started with iCAD',
     children: [
       {
         id: 'lesson-1-1',
-        title: 'Lesson 1.1 — What is iCAD SX?',
+        title: 'Lesson 1.1 — What is iCAD?',
         content: [
-          'Learning Objective: By the end of this lesson, you should understand what iCAD SX is and how it is used in engineering design.',
-          'What is iCAD SX?',
-          'iCAD SX is a mechanical CAD system used to create and manage engineering designs.',
-          'Engineers can use iCAD SX to: Create 2D geometry, Create 3D mechanical parts, Build assemblies, Produce engineering drawings, Add dimensions and annotations, Modify existing designs, Review machine and component designs.',
+          'Learning Objective: By the end of this lesson, you should understand what iCAD is and how it is used in engineering design.',
+          'What is iCAD?',
+          'iCAD is a mechanical CAD system used to create and manage engineering designs.',
+          'Engineers can use iCAD to: Create 2D geometry, Create 3D mechanical parts, Build assemblies, Produce engineering drawings, Add dimensions and annotations, Modify existing designs, Review machine and component designs.',
           'Typical Workflow: A basic engineering workflow may look like: Create/Open Drawing → Create Geometry → Build 3D Model → Create Assembly → Prepare 2D Drawing → Review → Save.',
           'You will learn these processes gradually throughout the iCAD training courses.'
         ]
@@ -69,19 +72,19 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-2',
-    title: 'Module 2 - Understanding the iCAD SX Screen',
+    title: 'Module 2 - Understanding the iCAD Interface',
     children: [
       {
         id: 'lesson-2-1',
         title: 'Lesson 2.1 — Identify the Main Interface',
         content: [
-          'Learning Objective: Identify the important areas of the iCAD SX interface.',
-          'Step 1: Open iCAD SX: Launch iCAD SX on your computer. Wait until the main workspace is fully displayed.',
+          'Learning Objective: Identify the important areas of the iCAD interface.',
+          'Step 1: Open iCAD: Launch iCAD on your computer. Wait until the main workspace is fully displayed.',
           'Step 2: Look at the Main Screen: Before clicking anything, familiarize yourself with the interface.',
           'Menu / Command Area: This contains commands used to create and modify your design.',
           'Graphics Area: This is the large working area where your 2D drawings and 3D models are displayed.',
           'View Controls: These allow you to change how you are looking at your model.',
-          'Information / Guidance Area: During an operation, iCAD SX may display instructions telling you what action is required next.',
+          'Information / Guidance Area: During an operation, iCAD may display instructions telling you what action is required next.',
           'Try It Yourself: Without starting a modeling command, locate: Main menu, Graphics area, View controls, Coordinate/origin indicator, Command or guidance area.',
           'Do not worry about memorizing every button. The goal is simply to become familiar with the workspace.'
         ]
@@ -109,7 +112,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Learning Objective: Move your view to another area without moving the actual model.',
           'What is Pan?',
           'Pan moves your viewpoint across the drawing or model. Imagine looking at a large drawing through a small window. Panning moves the window to another area. The actual drawing remains in the same location.',
-          'How to Pan in iCAD SX.',
+          'How to Pan in iCAD.',
           'Step 1: Move the mouse pointer into the Workspace.',
           'Step 2: Press and hold the middle mouse button (scroll wheel).',
           'Step 3: Drag the mouse to move the view (Left, Right, Up, Down).',
@@ -151,6 +154,9 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         title: 'Lesson 4.1 — Standard Views',
         videoId: 'lesson4.1',
         muteSourceVideoAudio: true,
+        videoIntroTitle: 'Explore Standard Views',
+        videoIntroEyebrow: 'Interactive view tour',
+        videoIntroDescription: 'Take a guided tour of the standard views and learn how Front, Top, Bottom, Right, and Left orientations support accurate model inspection.',
         content: [
           'Learning Objective:',
           'Display a model from standard engineering viewing directions. Standard views make it easier to understand and inspect engineering geometry.'
@@ -258,8 +264,10 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         title: 'Lesson 4.2 — Isometric View',
         videoId: 'lesson4.2',
         muteSourceVideoAudio: true,
+        videoIntroTitle: 'Explore the Isometric View',
+        videoIntroEyebrow: 'Interactive view tour',
+        videoIntroDescription: 'Take a guided tour of the Isometric View and learn how to inspect multiple faces while understanding the model width, height, and depth.',
         content: [
-          'An Isometric View displays multiple sides of a 3D object at the same time. This is usually easier for understanding the overall shape of a component.'
         ],
         videoSteps: [
           {
@@ -412,7 +420,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 5: Specify the starting point.',
           'Step 6: Move your pointer to the desired ending position.',
           'Step 7: Specify the ending point.',
-          'Step 8: Finish/confirm the command according to the command guidance displayed by iCAD SX.',
+          'Step 8: Finish/confirm the command according to the command guidance displayed by iCAD.',
           'Expected Result: A line should appear between your selected start and end points.'
         ]
       },
@@ -424,7 +432,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 1: Locate the Circle command.',
           'Step 2: Click Circle.',
           'Step 3: Specify the center point.',
-          'Step 4: Define the radius or diameter as requested by iCAD SX.',
+          'Step 4: Define the radius or diameter as requested by iCAD.',
           'Step 5: Confirm the operation. Expected Result: A circle should appear in the Graphics Area.',
           'Rectangle Procedure.',
           'Step 1: Select the appropriate rectangle/rectangular geometry command.',
@@ -452,7 +460,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 4: Confirm the profile.',
           'Part 2 — Create the 3D Shape.',
           'Step 1: Select the completed profile.',
-          'Step 2: Start the appropriate 3D creation/extrusion operation used in your iCAD SX environment.',
+          'Step 2: Start the appropriate 3D creation/extrusion operation used in your iCAD environment.',
           'Step 3: Enter: Height = 20 mm.',
           'Step 4: Preview the result.',
           'Step 5: Confirm the operation.',

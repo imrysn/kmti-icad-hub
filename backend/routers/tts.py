@@ -4,6 +4,8 @@ import sys
 import hashlib
 import threading
 import re
+import tempfile
+from contextlib import contextmanager
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
 import httpx
@@ -62,6 +64,9 @@ VOICES_PATH = os.path.join(MODEL_DIR, "voices-v1.0.bin")
 # Global instances and lock for lazy initialization
 _kokoro_instance = None
 _kokoro_lock = threading.Lock()
+_cache_locks_guard = threading.Lock()
+_cache_locks: dict[str, threading.Lock] = {}
+_cache_lock_users: dict[str, int] = {}
 
 KOKORO_VOICES = [
     {"id": "kokoro://af_sarah", "name": "Kokoro Sarah (US Female - Premium)", "lang": "en-US", "voice_code": "af_sarah"},
@@ -91,11 +96,21 @@ OPENAI_VOICES = [
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
 OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1").strip()
-OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip()
 OPENAI_TTS_VOICE_EN = os.getenv("OPENAI_TTS_VOICE_EN", "nova").strip()
 OPENAI_TTS_VOICE_JA = os.getenv("OPENAI_TTS_VOICE_JA", "nova").strip()
 OPENAI_TTS_RESPONSE_FORMAT = os.getenv("OPENAI_TTS_RESPONSE_FORMAT", "mp3").strip().lower()
 TTS_PROVIDER = os.getenv("TTS_PROVIDER", "openai").strip().lower()
+TTS_CACHE_PROFILE_VERSION = os.getenv("TTS_CACHE_PROFILE_VERSION", "foundations-v2").strip() or "foundations-v2"
+
+def positive_int_env(name: str, default: int) -> int:
+    try:
+        return max(1, int(os.getenv(name, str(default))))
+    except (TypeError, ValueError):
+        logger.warning(f"Invalid {name}; using {default}.")
+        return default
+
+TTS_CACHE_MAX_MB = positive_int_env("TTS_CACHE_MAX_MB", 1024)
+TTS_CACHE_MAX_BYTES = TTS_CACHE_MAX_MB * 1024 * 1024
 
 def get_kokoro_model():
     global _kokoro_instance
@@ -175,10 +190,8 @@ def get_kokoro_model():
 
 @router.get("/voices")
 def list_voices():
-    """List available voices for the configured TTS provider."""
-    if TTS_PROVIDER == "openai":
-        return OPENAI_VOICES + KOKORO_VOICES
-    return KOKORO_VOICES
+    """Expose the single approved narration voice in TTS settings."""
+    return [voice for voice in OPENAI_VOICES if voice["voice_code"] == "nova"]
 
 def clean_text_for_espeak(text: str) -> str:
     # Replace project terms with phonetically clear English words that espeak knows
@@ -221,9 +234,115 @@ def get_kokoro_voice_for_lang(lang: str, requested_voice: str = "") -> str:
         return "jf_teatime"
     return "af_sarah"
 
-def build_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str) -> str:
-    cache_string = f"{provider}_{model}_{voice}_{text}_{speed}_{lang}_{response_format}"
+def normalize_cache_text(text: str) -> str:
+    return re.sub(r"\s+", " ", (text or "").replace("\xa0", " ")).strip()
+
+def build_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str, version: str = TTS_CACHE_PROFILE_VERSION) -> str:
+    normalized_text = normalize_cache_text(text)
+    cache_string = f"{version}_{provider}_{model}_{voice}_{normalized_text}_{speed}_{lang}_{response_format}"
     return hashlib.sha256(cache_string.encode("utf-8")).hexdigest()
+
+def build_legacy_cache_key(provider: str, model: str, voice: str, text: str, speed: float, lang: str, response_format: str) -> str:
+    normalized_text = normalize_cache_text(text)
+    cache_string = f"{provider}_{model}_{voice}_{normalized_text}_{speed}_{lang}_{response_format}"
+    return hashlib.sha256(cache_string.encode("utf-8")).hexdigest()
+
+@contextmanager
+def cache_generation_lock(cache_key: str):
+    """Serialize one cache key and discard the lock after its last user exits."""
+    with _cache_locks_guard:
+        cache_lock = _cache_locks.setdefault(cache_key, threading.Lock())
+        _cache_lock_users[cache_key] = _cache_lock_users.get(cache_key, 0) + 1
+    cache_lock.acquire()
+    try:
+        yield
+    finally:
+        cache_lock.release()
+        with _cache_locks_guard:
+            remaining_users = _cache_lock_users[cache_key] - 1
+            if remaining_users == 0:
+                _cache_lock_users.pop(cache_key, None)
+                _cache_locks.pop(cache_key, None)
+            else:
+                _cache_lock_users[cache_key] = remaining_users
+
+def media_type_for_format(response_format: str) -> str:
+    return {
+        "mp3": "audio/mpeg",
+        "wav": "audio/wav",
+        "ogg": "audio/ogg",
+        "flac": "audio/flac",
+        "pcm": "audio/L16",
+    }.get(response_format.lower(), f"audio/{response_format.lower()}")
+
+def cache_file_response(file_path: str, cache_status: str, cache_location: str) -> FileResponse:
+    filename = os.path.basename(file_path)
+    response_format = filename.rsplit(".", 1)[-1]
+    try:
+        if cache_location.startswith("LOCAL"):
+            os.utime(file_path, None)
+    except OSError:
+        pass
+    canonical_cache_status = "MISS" if cache_status.startswith("MISS") else "HIT"
+    return FileResponse(
+        file_path,
+        media_type=media_type_for_format(response_format),
+        headers={
+            "Content-Disposition": f"inline; filename={filename}",
+            "Cache-Control": "private, max-age=31536000, immutable",
+            "ETag": f'"{filename}"',
+            "X-TTS-Cache": canonical_cache_status,
+            "X-TTS-Cache-Detail": cache_status,
+            "X-TTS-Cache-Location": cache_location,
+            "X-TTS-Cache-Profile": TTS_CACHE_PROFILE_VERSION,
+        },
+    )
+
+def atomic_write_bytes(file_path: str, audio_bytes: bytes) -> None:
+    fd, temp_path = tempfile.mkstemp(prefix="tts-", suffix=".tmp", dir=WRITABLE_CACHE_DIR)
+    try:
+        with os.fdopen(fd, "wb") as temp_file:
+            temp_file.write(audio_bytes)
+            temp_file.flush()
+            os.fsync(temp_file.fileno())
+        os.replace(temp_path, file_path)
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+def atomic_write_wav(file_path: str, samples, sample_rate: int) -> None:
+    fd, temp_path = tempfile.mkstemp(prefix="tts-", suffix=".wav", dir=WRITABLE_CACHE_DIR)
+    os.close(fd)
+    try:
+        sf.write(temp_path, samples, sample_rate, format="WAV")
+        os.replace(temp_path, file_path)
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+def enforce_cache_size_limit(protected_path: str = "") -> None:
+    try:
+        files = [
+            os.path.join(WRITABLE_CACHE_DIR, name)
+            for name in os.listdir(WRITABLE_CACHE_DIR)
+            if name.lower().endswith((".mp3", ".wav", ".ogg", ".flac", ".pcm"))
+        ]
+        total_size = sum(os.path.getsize(path) for path in files)
+        if total_size <= TTS_CACHE_MAX_BYTES:
+            return
+        for path in sorted(files, key=os.path.getmtime):
+            if os.path.abspath(path) == os.path.abspath(protected_path):
+                continue
+            try:
+                size = os.path.getsize(path)
+                os.remove(path)
+                total_size -= size
+            except OSError as cleanup_error:
+                logger.warning(f"Failed to remove old TTS cache file {path}: {cleanup_error}")
+            if total_size <= TTS_CACHE_MAX_BYTES:
+                break
+    except OSError as cache_error:
+        logger.warning(f"Unable to enforce TTS cache size limit: {cache_error}")
 
 def openai_tts_synthesize(text: str, voice: str, speed: float, lang: str) -> tuple[bytes, str]:
     if not OPENAI_API_KEY:
@@ -291,12 +410,13 @@ def kokoro_tts_synthesize(text: str, voice: str, speed: float, lang: str):
 @router.get("/synthesize")
 def synthesize(
     text: str = Query(..., description="Text to convert to speech"),
-    voice: str = Query("af_sarah", description="Voice ID to use"),
+    voice: str = Query("openai://nova", description="Voice ID to use (defaults to the approved Nova profile)"),
     speed: float = Query(1.0, ge=0.5, le=2.0, description="Speech speed rate"),
     lang: str = Query(None, description="Language code (defaults to US English or Japanese depending on voice)")
 ):
     """Synthesize text to speech on-the-fly and return a cached audio file."""
-    if not text.strip():
+    normalized_text = normalize_cache_text(text)
+    if not normalized_text:
         raise HTTPException(status_code=400, detail="Text cannot be empty.")
 
     normalized_voice = normalize_voice_input(voice)
@@ -306,88 +426,116 @@ def synthesize(
     elif normalized_voice.startswith("kokoro://"):
         provider = "kokoro"
 
-    synthesis_speed = speed * 1.25
+    synthesis_speed = float(speed)
     cache_lang = (lang or "").lower()
     cache_voice = normalized_voice.replace("kokoro://", "").replace("openai://", "")
 
     if provider == "openai":
         if not cache_lang:
-            cache_lang = "ja-jp" if is_japanese_text(text) else "en-us"
+            cache_lang = "ja-jp" if is_japanese_text(normalized_text) else "en-us"
         cache_format = OPENAI_TTS_RESPONSE_FORMAT if OPENAI_TTS_RESPONSE_FORMAT in {"mp3", "wav", "ogg", "flac", "pcm"} else "mp3"
-        cache_key = build_cache_key(provider, OPENAI_TTS_MODEL, cache_voice, text.strip(), synthesis_speed, cache_lang, cache_format)
+        cache_key = build_cache_key(provider, OPENAI_TTS_MODEL, cache_voice, normalized_text, synthesis_speed, cache_lang, cache_format)
+        legacy_cache_key = build_legacy_cache_key(provider, OPENAI_TTS_MODEL, cache_voice, normalized_text, synthesis_speed, cache_lang, cache_format)
         cache_filename = f"{cache_key}.{cache_format}"
+        legacy_cache_filename = f"{legacy_cache_key}.{cache_format}"
     else:
         if not cache_lang:
             cache_lang = "ja" if cache_voice.startswith("j") else "en-us"
-        clean_text = clean_text_for_espeak(text)
+        clean_text = clean_text_for_espeak(normalized_text)
         cache_key = build_cache_key(provider, "kokoro-v1.0.onnx", cache_voice, clean_text, synthesis_speed, cache_lang, "wav")
+        legacy_cache_key = build_legacy_cache_key(provider, "kokoro-v1.0.onnx", cache_voice, clean_text, synthesis_speed, cache_lang, "wav")
         cache_filename = f"{cache_key}.wav"
+        legacy_cache_filename = f"{legacy_cache_key}.wav"
 
-    # 1. Check read-only bundled cache first
-    bundled_file_path = os.path.join(BUNDLED_CACHE_DIR, cache_filename)
-    if os.path.exists(bundled_file_path):
-        logger.info(f"TTS Cache Hit (Bundled): '{text[:30]}...' -> {cache_filename}")
-        media_type = "audio/mpeg" if cache_filename.endswith(".mp3") else "audio/wav"
-        return FileResponse(
-            bundled_file_path,
-            media_type=media_type,
-            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
+    def find_cached_response():
+        candidates = (
+            (os.path.join(BUNDLED_CACHE_DIR, cache_filename), "BUNDLED", "HIT"),
+            (os.path.join(WRITABLE_CACHE_DIR, cache_filename), "LOCAL", "HIT"),
+            (os.path.join(BUNDLED_CACHE_DIR, legacy_cache_filename), "BUNDLED-LEGACY", "HIT-LEGACY"),
+            (os.path.join(WRITABLE_CACHE_DIR, legacy_cache_filename), "LOCAL-LEGACY", "HIT-LEGACY"),
         )
+        for file_path, location, status in candidates:
+            if os.path.exists(file_path):
+                logger.info(f"TTS Cache {status} ({location}): '{normalized_text[:30]}...' -> {os.path.basename(file_path)}")
+                return cache_file_response(file_path, status, location)
+        return None
 
-    # 2. Check writable local cache
-    local_file_path = os.path.join(WRITABLE_CACHE_DIR, cache_filename)
-    if os.path.exists(local_file_path):
-        logger.info(f"TTS Cache Hit (Local): '{text[:30]}...' -> {cache_filename}")
-        media_type = "audio/mpeg" if cache_filename.endswith(".mp3") else "audio/wav"
-        return FileResponse(
-            local_file_path,
-            media_type=media_type,
-            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
+    def find_openai_fallback_response():
+        fallback_voice = get_kokoro_voice_for_lang(cache_lang, cache_voice)
+        fallback_lang = "ja" if cache_lang.startswith("ja") else "en-us"
+        fallback_text = clean_text_for_espeak(normalized_text)
+        fallback_key = build_cache_key(
+            "kokoro", "kokoro-v1.0.onnx", fallback_voice, fallback_text,
+            synthesis_speed, fallback_lang, "wav",
         )
+        legacy_fallback_key = build_legacy_cache_key(
+            "kokoro", "kokoro-v1.0.onnx", fallback_voice, fallback_text,
+            synthesis_speed, fallback_lang, "wav",
+        )
+        candidates = (
+            (os.path.join(BUNDLED_CACHE_DIR, f"{fallback_key}.wav"), "BUNDLED", "HIT-FALLBACK"),
+            (os.path.join(WRITABLE_CACHE_DIR, f"{fallback_key}.wav"), "LOCAL", "HIT-FALLBACK"),
+            (os.path.join(BUNDLED_CACHE_DIR, f"{legacy_fallback_key}.wav"), "BUNDLED-LEGACY", "HIT-FALLBACK-LEGACY"),
+            (os.path.join(WRITABLE_CACHE_DIR, f"{legacy_fallback_key}.wav"), "LOCAL-LEGACY", "HIT-FALLBACK-LEGACY"),
+        )
+        for file_path, location, status in candidates:
+            if os.path.exists(file_path):
+                logger.info(f"TTS Cache {status} ({location}): '{normalized_text[:30]}...' -> {os.path.basename(file_path)}")
+                return cache_file_response(file_path, status, location)
+        return None
 
-    try:
+    cached_response = find_cached_response()
+    if cached_response:
+        return cached_response
+
+    with cache_generation_lock(cache_key):
+        # A concurrent request may have generated the file while this request waited.
+        cached_response = find_cached_response()
+        if cached_response:
+            cached_response.headers["X-TTS-Cache-Detail"] = "HIT-AFTER-WAIT"
+            return cached_response
+
+        # During an OpenAI outage, reuse an already generated Kokoro fallback
+        # without repeatedly calling the remote provider for identical speech.
         if provider == "openai":
-            try:
-                audio_bytes, response_format = openai_tts_synthesize(
-                    text=text.strip(),
-                    voice=cache_voice,
-                    speed=synthesis_speed,
-                    lang=cache_lang
-                )
-                try:
-                    with open(local_file_path, "wb") as f:
-                        f.write(audio_bytes)
-                    logger.info(f"OpenAI TTS cache written: {cache_filename}")
-                except Exception as cache_write_err:
-                    logger.warning(f"Failed to write OpenAI TTS cache file: {cache_write_err}")
-
-                media_type = "audio/mpeg" if response_format == "mp3" else f"audio/{response_format}"
-                return FileResponse(
-                    local_file_path,
-                    media_type=media_type,
-                    headers={"Content-Disposition": f"inline; filename={cache_filename}"}
-                )
-            except Exception as openai_err:
-                logger.exception(f"OpenAI TTS failed, falling back to Kokoro. Error: {openai_err}")
-                provider = "kokoro"
-                cache_voice = get_kokoro_voice_for_lang(cache_lang, cache_voice)
-
-        clean_text = clean_text_for_espeak(text)
-        samples, sample_rate = kokoro_tts_synthesize(clean_text, cache_voice, synthesis_speed, cache_lang)
+            fallback_response = find_openai_fallback_response()
+            if fallback_response:
+                return fallback_response
 
         try:
-            sf.write(local_file_path, samples, sample_rate, format="WAV")
-            logger.info(f"Kokoro TTS cache written: {cache_filename}")
-        except Exception as cache_write_err:
-            logger.warning(f"Failed to write TTS cache file: {cache_write_err}")
+            if provider == "openai":
+                try:
+                    audio_bytes, response_format = openai_tts_synthesize(
+                        text=normalized_text,
+                        voice=cache_voice,
+                        speed=synthesis_speed,
+                        lang=cache_lang,
+                    )
+                    local_file_path = os.path.join(WRITABLE_CACHE_DIR, cache_filename)
+                    atomic_write_bytes(local_file_path, audio_bytes)
+                    enforce_cache_size_limit(local_file_path)
+                    logger.info(f"OpenAI TTS cache written atomically: {cache_filename}")
+                    return cache_file_response(local_file_path, "MISS", "LOCAL")
+                except Exception as openai_err:
+                    logger.exception(f"OpenAI TTS failed, falling back to Kokoro. Error: {openai_err}")
+                    provider = "kokoro"
+                    cache_voice = get_kokoro_voice_for_lang(cache_lang, cache_voice)
+                    cache_lang = "ja" if cache_lang.startswith("ja") else "en-us"
 
-        return FileResponse(
-            local_file_path,
-            media_type="audio/wav",
-            headers={"Content-Disposition": f"inline; filename={cache_filename}"}
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.exception("Error generating speech")
-        raise HTTPException(status_code=500, detail=f"Speech synthesis failed: {str(e)}")
+            clean_text = clean_text_for_espeak(normalized_text)
+            fallback_key = build_cache_key("kokoro", "kokoro-v1.0.onnx", cache_voice, clean_text, synthesis_speed, cache_lang, "wav")
+            fallback_filename = f"{fallback_key}.wav"
+            fallback_path = os.path.join(WRITABLE_CACHE_DIR, fallback_filename)
+            if os.path.exists(fallback_path):
+                return cache_file_response(fallback_path, "HIT-FALLBACK", "LOCAL")
+
+            samples, sample_rate = kokoro_tts_synthesize(clean_text, cache_voice, synthesis_speed, cache_lang)
+            atomic_write_wav(fallback_path, samples, sample_rate)
+            enforce_cache_size_limit(fallback_path)
+            logger.info(f"Kokoro TTS cache written atomically: {fallback_filename}")
+            return cache_file_response(fallback_path, "MISS-FALLBACK", "LOCAL")
+        except HTTPException:
+            raise
+        except Exception as error:
+            logger.exception("Error generating speech")
+            raise HTTPException(status_code=500, detail=f"Speech synthesis failed: {str(error)}")

@@ -8,6 +8,9 @@ export interface DynamicFoundationsLessonSource {
   videoOverlays?: TutorialOverlay[];
   videoSteps?: LessonVideoStep[];
   muteSourceVideoAudio?: boolean;
+  videoIntroTitle?: string;
+  videoIntroDescription?: string;
+  videoIntroEyebrow?: string;
 }
 
 export const getDynamicFoundationsLessonProps = (lesson: DynamicFoundationsLessonSource) => ({
@@ -18,4 +21,7 @@ export const getDynamicFoundationsLessonProps = (lesson: DynamicFoundationsLesso
   videoOverlays: lesson.videoOverlays,
   videoSteps: lesson.videoSteps,
   muteSourceVideoAudio: lesson.muteSourceVideoAudio,
+  videoIntroTitle: lesson.videoIntroTitle,
+  videoIntroDescription: lesson.videoIntroDescription,
+  videoIntroEyebrow: lesson.videoIntroEyebrow,
 });

@@ -23,4 +23,10 @@ export const ja_3d_icad_tutorial = {
   "tutorial.icad.10.text": "座標やその他の値は、キー入力エリアから入力できます。",
   "tutorial.icad.11.title": "メッセージペイン",
   "tutorial.icad.11.text": "操作に関するメッセージを表示します。赤色で表示されるメッセージはエラーメッセージです。",
+  "tutorial.icad.13.title": "理解度チェック",
+  "tutorial.icad.13.text": "",
+  "tutorial.icad.14.title": "理解度チェック",
+  "tutorial.icad.14.text": "",
+  "tutorial.icad.15.title": "復習",
+  "tutorial.icad.15.text": "",
 };

@@ -1,6 +1,6 @@
 import { useTranslation } from '../../../context/LanguageContext';
 import React, { useEffect, useMemo } from "react";
-import { ChevronRight, ChevronLeft, Play } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Eye, Play } from 'lucide-react';
 import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
@@ -32,6 +32,9 @@ interface DynamicLessonProps {
   videoOverlays?: TutorialOverlay[];
   videoSteps?: LessonVideoStep[];
   muteSourceVideoAudio?: boolean;
+  videoIntroTitle?: string;
+  videoIntroDescription?: string;
+  videoIntroEyebrow?: string;
   onPrevLesson?: () => void;
   onNextLesson?: () => void;
   nextLabel?: string;
@@ -45,6 +48,9 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   videoOverlays,
   videoSteps,
   muteSourceVideoAudio,
+  videoIntroTitle,
+  videoIntroDescription,
+  videoIntroEyebrow,
   onPrevLesson,
   onNextLesson,
   nextLabel,
@@ -91,6 +97,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
       videoSrc: videoMap[videoId || ''],
     }));
   }, [title, videoId, videoNarration, videoOverlays, videoSteps]);
+  const isViewTourLesson = Boolean(videoIntroEyebrow);
 
   useEffect(() => {
     registerText(fullSteps, 0);
@@ -109,13 +116,13 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   );
 
   return (
-    <div className="course-lesson-container foundations-lesson" ref={containerRef}>
+    <div className={`course-lesson-container foundations-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
       <div className="lesson-grid single-card foundations-lesson-grid">
-        <div className="lesson-card tab-content foundations-lesson-card">
+        <div className={`lesson-card tab-content foundations-lesson-card ${isViewTourLesson ? 'foundations-view-tour-card' : ''}`}>
           <div className="fade-in foundations-lesson-content">
             <div className="foundations-content-stack">
               {content.map((step, idx) => {
@@ -216,10 +223,10 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                     muteSourceVideoAudio={muteSourceVideoAudio}
                     lessonType="video-tutorial"
                     introPanel={{
-                      icon: Play,
-                      eyebrow: "Interactive Video",
-                      title: "Watch Video Demonstration",
-                      description: "See this tool in action in the workspace."
+                      icon: videoIntroEyebrow ? Eye : Play,
+                      eyebrow: videoIntroEyebrow || "Interactive Video",
+                      title: videoIntroTitle || "Watch Video Demonstration",
+                      description: videoIntroDescription || "See this tool in action in the workspace."
                     }}
                   />
                 </div>

@@ -60,7 +60,7 @@ export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
       ],
       checkpoint: {
         id: 'rotate-action-check',
-        prompt: 'Which mouse action rotates the 3D view in iCAD SX?',
+        prompt: 'Which mouse action rotates the 3D view in iCAD?',
         choices: [
           { id: 'middle-right', label: 'Hold the middle and right mouse buttons, then move the mouse.', isCorrect: true, feedback: 'Correct! Holding the middle and right mouse buttons while moving the mouse rotates your viewpoint.' },
           { id: 'wheel-forward', label: 'Scroll the mouse wheel forward.', isCorrect: false, feedback: 'Not quite. Scrolling the wheel forward zooms in.' },

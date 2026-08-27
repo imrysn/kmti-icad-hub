@@ -115,6 +115,12 @@ Use this checklist against the exact release candidate that will be packaged and
 - [ ] KMTI Sensei/TTS loads available voices, speaks once, displays active state, stops cleanly, and auto-advances only after narration finishes.
 - [ ] TTS handles rapid play/pause/next/close without `play()` interruption errors or overlapping audio.
 - [ ] TTS failure, missing model, offline backend, and unsupported browser voice have a usable fallback.
+- [ ] Every iCAD Foundations lesson requests only OpenAI Nova and uses effective rate `1.0` with browser-fallback pitch `1.0`.
+- [ ] No Foundations lesson player constructs the synthesis URL directly or applies a hidden speed multiplier.
+- [ ] First-time narration reports a cache miss; identical replay reports a hit and does not call the provider again.
+- [ ] Simultaneous identical narration requests generate one audio file, and no temporary or partial cache file remains.
+- [ ] During an OpenAI outage, a generated Kokoro fallback is reused on replay without another OpenAI attempt.
+- [ ] Cache-size retention and the dry-run cleanup utility preserve current, legacy, bundled, and active cache entries correctly.
 
 ## 8. Assessments and file workflows
 

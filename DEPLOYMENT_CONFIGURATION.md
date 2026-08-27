@@ -39,6 +39,16 @@ The backend creates TTS cache at runtime. Back up and retain only business data
 required by policy: MySQL, uploads, knowledge-base sources/index inputs, and
 approved quotation records. Runtime cache must not be treated as source code.
 
+For iCAD Foundations narration, keep `OPENAI_TTS_VOICE_EN=nova` and use Nova for
+Japanese narration unless an approved profile change is released. Keep
+`OPENAI_TTS_RESPONSE_FORMAT=mp3`, assign a reviewed `TTS_CACHE_PROFILE_VERSION`,
+and set `TTS_CACHE_MAX_MB` for the available runtime storage. The service account
+must be able to create, replace, touch, and remove files in the writable TTS cache
+directory. Do not package generated cache files into release artifacts.
+The cleanup tool preserves legacy cache entries by default. After a reviewed
+profile migration and rollback window, run it first as a dry run with
+`--drop-legacy`; add `--force` only after the deletion list has been approved.
+
 ## Required preflight
 
 Run these commands from a clean release checkout:

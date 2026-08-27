@@ -1,5 +1,12 @@
 import { useCallback,useEffect,useRef,useState } from 'react';
 import { api } from '../services/api';
+import { FOUNDATIONS_NARRATION_PROFILE } from '../config/foundationsNarration';
+import {
+  createFoundationsBrowserUtterance,
+  createFoundationsNarrationAudio,
+  getFoundationsNarrationRate,
+  saveFoundationsNarrationRate,
+} from '../services/foundationsNarrationService';
 import { getSentenceMapping,normalizeSpeechText,splitIntoSentences } from '../utils/sentenceUtils';
 
 interface SentenceQueueItem {
@@ -28,14 +35,10 @@ export const useTTS = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState<number>(0); // Global to paragraph
 
   // User Preference States (with localStorage persistence)
-  const [rate, setRateState] = useState<number>(() => {
-    const saved = localStorage.getItem('tts_rate');
-    return saved ? parseFloat(saved) : 0.8;
-  });
-  const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(() => {
-    const saved = localStorage.getItem('tts_voice_uri');
-    return saved && saved !== 'undefined' && saved !== 'null' && saved !== '' ? saved : 'openai://nova';
-  });
+  const [rate, setRateState] = useState<number>(() => getFoundationsNarrationRate());
+  const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(
+    FOUNDATIONS_NARRATION_PROFILE.voiceURI,
+  );
   const [voices, setVoices] = useState<TTSVoice[]>([]);
 
   const queueRef = useRef<SentenceQueueItem[]>([]);
@@ -94,8 +97,7 @@ export const useTTS = () => {
   }, []);
 
   const setRate = useCallback((r: number) => {
-    setRateState(r);
-    localStorage.setItem('tts_rate', r.toString());
+    setRateState(saveFoundationsNarrationRate(r));
   }, []);
 
   const setSelectedVoiceURI = useCallback((uri: string | null) => {
@@ -208,7 +210,6 @@ export const useTTS = () => {
     console.log("useTTS: speakSentence index:", index, "isBackendVoice:", isBackendVoice, "selectedVoiceURI:", selectedVoiceURI);
 
     if (isBackendVoice) {
-      const voiceName = selectedVoiceURI!.replace('kokoro://', '').replace('openai://', '');
       let browserFallbackStarted = false;
 
       const playBrowserFallback = () => {
@@ -224,17 +225,14 @@ export const useTTS = () => {
           preloadedAudioRef.current = null;
         }
 
-        const utterance = new SpeechSynthesisUtterance(item.normalizedText);
+        const utterance = createFoundationsBrowserUtterance(item.normalizedText, { rate });
+        if (!utterance) return;
         const teacherVoice = getTeacherVoice();
         if (teacherVoice) {
           const nativeVoice = window.speechSynthesis.getVoices()
             .find((candidate) => candidate.voiceURI === teacherVoice.voiceURI);
           if (nativeVoice) utterance.voice = nativeVoice;
         }
-        utterance.rate = rate;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-
         if (typeof window !== 'undefined') {
           (window as any)._activeUtterance = utterance;
         }
@@ -273,9 +271,9 @@ export const useTTS = () => {
         audio = preloadedAudioRef.current.audio;
         preloadedAudioRef.current = null;
       } else {
-        const url = `${api.defaults.baseURL || ''}/api/v1/tts/synthesize?text=${encodeURIComponent(item.normalizedText)}&voice=${voiceName}&speed=${rate}`;
-        console.log("useTTS: Synthesizing and playing from URL:", url);
-        audio = new Audio(url);
+        const narrationAudio = createFoundationsNarrationAudio(item.normalizedText, { rate });
+        if (!narrationAudio) return;
+        audio = narrationAudio;
       }
 
       audioRef.current = audio;
@@ -285,10 +283,11 @@ export const useTTS = () => {
       // Preload next sentence in background while this one plays
       if (index + 1 < queueRef.current.length) {
         const nextItem = queueRef.current[index + 1];
-        const nextUrl = `${api.defaults.baseURL || ''}/api/v1/tts/synthesize?text=${encodeURIComponent(nextItem.normalizedText)}&voice=${voiceName}&speed=${rate}`;
-        const nextAudio = new Audio(nextUrl);
-        nextAudio.load();
-        preloadedAudioRef.current = { index: index + 1, audio: nextAudio };
+        const nextAudio = createFoundationsNarrationAudio(nextItem.normalizedText, { rate });
+        if (nextAudio) {
+          nextAudio.load();
+          preloadedAudioRef.current = { index: index + 1, audio: nextAudio };
+        }
       }
 
       const timedWords = Array.from(item.normalizedText.matchAll(/\S+/g)).map((match) => {
@@ -409,7 +408,8 @@ export const useTTS = () => {
     } else {
       // Fallback: Browser Web Speech API
       if (!window.speechSynthesis) return;
-      const utterance = new SpeechSynthesisUtterance(item.normalizedText);
+      const utterance = createFoundationsBrowserUtterance(item.normalizedText, { rate });
+      if (!utterance) return;
       if (typeof window !== 'undefined') {
         (window as any)._activeUtterance = utterance;
       }
@@ -427,10 +427,6 @@ export const useTTS = () => {
         const nativeVoice = rawVoices.find(v => v.voiceURI === voice!.voiceURI);
         if (nativeVoice) utterance.voice = nativeVoice;
       }
-
-      utterance.rate = rate;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
 
       const words = item.normalizedText.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (item.normalizedText.length * 60) / utterance.rate;

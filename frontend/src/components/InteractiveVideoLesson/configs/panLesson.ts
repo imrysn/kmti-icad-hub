@@ -49,7 +49,7 @@ export const panLessonConfig: InteractiveVideoLessonConfig = {
       ],
       checkpoint: {
         id: 'pan-action-check',
-        prompt: 'How do you pan the view in iCAD SX?',
+        prompt: 'How do you pan the view in iCAD?',
         choices: [
           { id: 'middle-drag', label: 'Hold the middle mouse button and drag.', isCorrect: true, feedback: 'Correct! Holding the middle mouse button while dragging moves your view across the workspace.' },
           { id: 'wheel-scroll', label: 'Scroll the mouse wheel forward.', isCorrect: false, feedback: 'Not quite. Scrolling the wheel forward zooms in rather than panning.' },
@@ -72,5 +72,5 @@ export const panLessonConfig: InteractiveVideoLessonConfig = {
     { action: 'Hold Middle Mouse Button', result: 'Start Pan' },
     { action: 'Drag the Mouse', result: 'Move the View' },
   ],
-  completionText: 'You now understand how to pan across the iCAD SX workspace without moving the model.',
+  completionText: 'You now understand how to pan across the iCAD workspace without moving the model.',
 };

@@ -3,6 +3,7 @@ import { Sliders,Volume2,VolumeX } from 'lucide-react';
 import React,{ useEffect,useRef,useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import { useTTSContext } from '../context/TTSContext';
+import { FOUNDATIONS_NARRATION_PROFILE,isFoundationsNarrationVoice } from '../config/foundationsNarration';
 
 interface ReadAloudButtonProps {
   isSpeaking: boolean;
@@ -43,7 +44,13 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
     setIsOpen(!isOpen);
   };
 
-  // Filter voices to English and Japanese since this is an international iCAD environment
+  const novaVoice = voices.find(voice => isFoundationsNarrationVoice(voice.voiceURI));
+
+  useEffect(() => {
+    if (selectedVoiceURI !== FOUNDATIONS_NARRATION_PROFILE.voiceURI) {
+      setSelectedVoiceURI(FOUNDATIONS_NARRATION_PROFILE.voiceURI);
+    }
+  }, [selectedVoiceURI,setSelectedVoiceURI]);
 
   const speedPresets = [0.8, 0.9, 1.0, 1.2, 1.5];
 
@@ -193,8 +200,8 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#cbd5e1' }}>Language Voice</label>
             <select
-              value={selectedVoiceURI || ''}
-              onChange={(e) => setSelectedVoiceURI(e.target.value || null)}
+              value={FOUNDATIONS_NARRATION_PROFILE.voiceURI}
+              disabled
               style={{
                 background: 'rgba(30, 41, 59, 0.8)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -203,22 +210,19 @@ export const ReadAloudButton: React.FC<ReadAloudButtonProps> = ({ isSpeaking, on
                 padding: '8px 10px',
                 fontSize: '0.75rem',
                 outline: 'none',
-                cursor: 'pointer',
+                cursor: 'default',
                 width: '100%',
               }}
             >
-              <option value="">Default (Automatic Voice)</option>
-              {voices.map(v => (
-                <option key={v.voiceURI} value={v.voiceURI}>
-                  {v.name} ({v.lang})
-                </option>
-              ))}
+              <option value={FOUNDATIONS_NARRATION_PROFILE.voiceURI}>
+                {novaVoice?.name || 'OpenAI Nova (Female)'} ({FOUNDATIONS_NARRATION_PROFILE.englishLanguage})
+              </option>
             </select>
           </div>
 
           {/* Inline Info */}
           <div style={{ fontSize: '0.65rem', color: '#64748b', fontStyle: 'italic', display: 'flex', gap: '4px', alignItems: 'center' }}>
-            <span>Select a browser voice for standard text-to-speech.</span>
+            <span>iCAD Foundations narration uses OpenAI Nova.</span>
           </div>
         </div>
       )}

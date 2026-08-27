@@ -23,4 +23,10 @@ export const en_3d_icad_tutorial = {
   "tutorial.icad.10.text": "Right next to it is the Key Entry Area, where precise coordinates and other numeric values can be entered manually.",
   "tutorial.icad.11.title": "Message Pane",
   "tutorial.icad.11.text": "Finally, on the bottom right is the Message Pane. It displays messages related to your operations, with errors clearly highlighted in red. This concludes our interface overview.",
+  "tutorial.icad.13.title": "Knowledge Check",
+  "tutorial.icad.13.text": "",
+  "tutorial.icad.14.title": "Knowledge Check",
+  "tutorial.icad.14.text": "",
+  "tutorial.icad.15.title": "Review",
+  "tutorial.icad.15.text": "",
 };

@@ -191,188 +191,188 @@ export const LandingView: React.FC = () => {
       </nav>
 
       <main id="landing-main">
-      {/* Hero Section */}
-      <header className="hero-section">
-        <div className="hero-content animate-on-scroll">
-          <div className="badge-pill">
-            <Sparkles size={14} className="sparkle-icon" />
-            <span>The New Standard in iCAD Training</span>
-          </div>
-          <h1 className="hero-title">
-            Master <span>iCAD</span> Operations
-          </h1>
-          <p className="hero-subtitle">
-            Experience the most interactive, beginner-friendly platform to learn iCAD. From absolute basics to professional detailing, guided by AI and real mentors.
-          </p>
-          <div className="hero-buttons">
-            <button className="btn-primary large group" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>
-              Start Learning Today
-              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="btn-secondary large" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
-              Explore Features
-            </button>
-          </div>
-        </div>
-        
-        {/* Mockup Dashboard Preview */}
-        <div className="hero-preview animate-on-scroll" style={{ animationDelay: '0.2s' }}>
-          <div className="glass-mockup">
-            <div className="mockup-header">
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
+        {/* Hero Section */}
+        <header className="hero-section">
+          <div className="hero-content animate-on-scroll">
+            <div className="badge-pill">
+              <Sparkles size={14} className="sparkle-icon" />
+              <span>The New Standard in iCAD Training</span>
             </div>
-            <div className="mockup-body">
-              <div className="mockup-sidebar">
-                <span className="mockup-course-label">iCAD Foundations</span>
-                <div className="mockup-progress"><span /></div>
-                <div className="mockup-lesson active"><CheckCircle size={14} /> What is iCAD SX?</div>
-                <div className="mockup-lesson"><BookOpen size={14} /> Screen layout</div>
-                <div className="mockup-lesson"><Lock size={14} /> Model navigation</div>
+            <h1 className="hero-title">
+              Master <span>iCAD</span> Operations
+            </h1>
+            <p className="hero-subtitle">
+              Experience the most interactive, beginner-friendly platform to learn iCAD. From absolute basics to professional detailing, guided by AI and real mentors.
+            </p>
+            <div className="hero-buttons">
+              <button className="btn-primary large group" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>
+                Start Learning Today
+                <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button className="btn-secondary large" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
+                Explore Features
+              </button>
+            </div>
+          </div>
+
+          {/* Mockup Dashboard Preview */}
+          <div className="hero-preview animate-on-scroll" style={{ animationDelay: '0.2s' }}>
+            <div className="glass-mockup">
+              <div className="mockup-header">
+                <span className="dot dot-red"></span>
+                <span className="dot dot-yellow"></span>
+                <span className="dot dot-green"></span>
               </div>
-              <div className="mockup-content">
-                <div className="mockup-lesson-header">
-                  <div><span>Lesson 1 of 17</span><strong>What is iCAD SX?</strong></div>
-                  <div className="mockup-tts"><PlayCircle size={15} /> Read lesson</div>
+              <div className="mockup-body">
+                <div className="mockup-sidebar">
+                  <span className="mockup-course-label">iCAD Foundations</span>
+                  <div className="mockup-progress"><span /></div>
+                  <div className="mockup-lesson active"><CheckCircle size={14} /> What is iCAD?</div>
+                  <div className="mockup-lesson"><BookOpen size={14} /> Screen layout</div>
+                  <div className="mockup-lesson"><Lock size={14} /> Model navigation</div>
                 </div>
-                <div className="mockup-learning-card">
-                  <div className="mockup-copy">
-                    <span>Learning objective</span>
-                    <strong>Understand the iCAD workspace</strong>
-                    <p>Follow the guided lesson while seeing the real interface and controls.</p>
+                <div className="mockup-content">
+                  <div className="mockup-lesson-header">
+                    <div><span>Lesson 1 of 17</span><strong>What is iCAD?</strong></div>
+                    <div className="mockup-tts"><PlayCircle size={15} /> Read lesson</div>
                   </div>
-                  <img src={icadInterfacePreview} alt="Preview of the iCAD software interface used in a KMTI lesson" decoding="async" />
+                  <div className="mockup-learning-card">
+                    <div className="mockup-copy">
+                      <span>Learning objective</span>
+                      <strong>Understand the iCAD workspace</strong>
+                      <p>Follow the guided lesson while seeing the real interface and controls.</p>
+                    </div>
+                    <img src={icadInterfacePreview} alt="Preview of the iCAD software interface used in a KMTI lesson" decoding="async" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Features Section */}
-      <section id="features" className="features-section">
-        <div className="section-header animate-on-scroll">
-          <h2>Why Choose KMTI?</h2>
-          <p>We built the ultimate learning experience for CAD professionals and career shifters alike.</p>
-        </div>
-        <div className="features-grid">
-          <div className="feature-card glass-panel hover-lift animate-on-scroll">
-            <div className="feature-icon-wrapper blue">
-              <PlayCircle size={28} />
-            </div>
-            <h3>Interactive TTS Lessons</h3>
-            <p>Guided, step-by-step text-to-speech lessons that feel like a mentor is right next to you, pointing exactly where to click.</p>
+        {/* Features Section */}
+        <section id="features" className="features-section">
+          <div className="section-header animate-on-scroll">
+            <h2>Why Choose KMTI?</h2>
+            <p>We built the ultimate learning experience for CAD professionals and career shifters alike.</p>
           </div>
-          <div className="feature-card glass-panel hover-lift animate-on-scroll" style={{ animationDelay: '0.1s' }}>
-            <div className="feature-icon-wrapper green">
-              <BookOpen size={28} />
-            </div>
-            <h3>Beginner Friendly</h3>
-            <p>Start from absolute zero. Our Foundations curriculum is meticulously designed for complete beginners and career shifters.</p>
-          </div>
-          <div className="feature-card glass-panel hover-lift animate-on-scroll" style={{ animationDelay: '0.2s' }}>
-            <div className="feature-icon-wrapper purple">
-              <MessageCircle size={28} />
-            </div>
-            <h3>Direct Mentor Support</h3>
-            <p>Stuck on a lesson? Chat directly with experienced KMTI mentors right inside the platform to get unblocked instantly.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="how-it-works" className="journey-section">
-        <div className="section-header animate-on-scroll">
-          <span className="section-eyebrow">Your learning journey</span>
-          <h2>A clear path from registration to mastery</h2>
-          <p>Learn at your pace with structured lessons, practical checks, and support when you need it.</p>
-        </div>
-        <div className="journey-grid">
-          <article className="journey-step animate-on-scroll">
-            <span className="journey-number">01</span><UserCheck size={24} />
-            <h3>Choose your training plan</h3>
-            <p>Apply for the course level that matches your experience and learning goals.</p>
-          </article>
-          <article className="journey-step animate-on-scroll" style={{ animationDelay: '0.1s' }}>
-            <span className="journey-number">02</span><BookOpen size={24} />
-            <h3>Learn step by step</h3>
-            <p>Complete guided iCAD lessons with progress tracking and interactive assistance.</p>
-          </article>
-          <article className="journey-step animate-on-scroll" style={{ animationDelay: '0.2s' }}>
-            <span className="journey-number">03</span><Award size={24} />
-            <h3>Validate your skills</h3>
-            <p>Finish the required activities and assessments for your selected training level.</p>
-          </article>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="pricing-section">
-        <div className="section-header animate-on-scroll">
-          <h2>Choose Your Path</h2>
-          <p>Whether you're starting from scratch or upgrading your career, we have a plan for you.</p>
-        </div>
-        
-        {plansLoading && <div className="landing-plans-status" role="status" aria-live="polite">Loading training plans…</div>}
-        {plansError && <div className="landing-plans-status error" role="alert"><span>{plansError}</span><button type="button" onClick={() => void loadPlans()}>Try again</button></div>}
-        {!plansLoading && !plansError && plans.length === 0 && <div className="landing-plans-status">No public training plans are currently available.</div>}
-        {!plansLoading && plans.length > 0 && <div className="pricing-grid">
-          {plans.map((plan, index) => {
-            const marketing = PLAN_MARKETING[plan.code] || {
-              outcome: plan.description || 'Build practical iCAD skills through guided KMTI training.',
-              features: ['Guided course content', 'Progress tracking', 'KMTI training support'],
-            };
-            const interval = plan.billing_interval === 'one_time' ? 'one-time' : `/user/${plan.billing_interval}`;
-            return <div key={plan.id} className={`pricing-card glass-panel ${marketing.popular ? 'popular scale-up' : ''}`} style={{ animationDelay: `${Math.min(index, 4) * 0.1}s` }}>
-              {marketing.popular && <div className="popular-badge">Most Popular</div>}
-              <div className="pricing-header">
-                <h3>{plan.name}</h3>
-                <div className={`price landing-dynamic-price ${plan.price_minor_units == null ? 'price-unavailable' : ''}`}><strong>{formatPlanPrice(plan)}</strong>{plan.price_minor_units != null && <span className="period">{interval}</span>}</div>
+          <div className="features-grid">
+            <div className="feature-card glass-panel hover-lift animate-on-scroll">
+              <div className="feature-icon-wrapper blue">
+                <PlayCircle size={28} />
               </div>
-              <div className="pricing-body">
-                <div className="plan-outcome"><Target size={16} className="outcome-icon" /><p><strong>What you'll achieve:</strong>{marketing.outcome}</p></div>
-                <ul className="plan-features">{marketing.features.map((feature, featureIndex) => <li key={feature}>{plan.code === 'icad-complete' && featureIndex === marketing.features.length - 1 ? <ShieldCheck size={18} className="check-icon" /> : <CheckCircle size={18} className="check-icon" />}{feature}</li>)}</ul>
-                <button className={marketing.popular ? 'btn-primary full-width' : 'btn-outline full-width'} onClick={() => handleStartLearning(plan.code)}>Apply for {plan.name}</button>
+              <h3>Interactive TTS Lessons</h3>
+              <p>Guided, step-by-step text-to-speech lessons that feel like a mentor is right next to you, pointing exactly where to click.</p>
+            </div>
+            <div className="feature-card glass-panel hover-lift animate-on-scroll" style={{ animationDelay: '0.1s' }}>
+              <div className="feature-icon-wrapper green">
+                <BookOpen size={28} />
               </div>
-            </div>;
-          })}
-        </div>}
-      </section>
+              <h3>Beginner Friendly</h3>
+              <p>Start from absolute zero. Our Foundations curriculum is meticulously designed for complete beginners and career shifters.</p>
+            </div>
+            <div className="feature-card glass-panel hover-lift animate-on-scroll" style={{ animationDelay: '0.2s' }}>
+              <div className="feature-icon-wrapper purple">
+                <MessageCircle size={28} />
+              </div>
+              <h3>Direct Mentor Support</h3>
+              <p>Stuck on a lesson? Chat directly with experienced KMTI mentors right inside the platform to get unblocked instantly.</p>
+            </div>
+          </div>
+        </section>
 
-      {plans.length > 0 && <section className="plan-comparison-section" aria-labelledby="plan-comparison-title">
-        <div className="section-header animate-on-scroll">
-          <span className="section-eyebrow">Compare access</span>
-          <h2 id="plan-comparison-title">What each training level includes</h2>
-          <p>Compare the major learning areas before submitting your application.</p>
-        </div>
-        <div className="plan-comparison-grid">
-          {plans.map(plan => {
-            const level = PLAN_LEVELS[plan.code] || 1;
-            return <article className={`plan-comparison-card ${PLAN_MARKETING[plan.code]?.popular ? 'featured' : ''}`} key={plan.id}>
-              <header><h3>{plan.name}</h3><button type="button" onClick={() => handleStartLearning(plan.code)}>Choose plan</button></header>
-              <ul>{COMPARISON_ITEMS.map(item => <li className={level >= item.level ? 'included' : 'not-included'} key={item.label}><CheckCircle size={15} aria-hidden="true"/><span>{item.label}</span><small>{level >= item.level ? 'Included' : 'Higher plan'}</small></li>)}</ul>
-            </article>;
-          })}
-        </div>
-      </section>}
+        <section id="how-it-works" className="journey-section">
+          <div className="section-header animate-on-scroll">
+            <span className="section-eyebrow">Your learning journey</span>
+            <h2>A clear path from registration to mastery</h2>
+            <p>Learn at your pace with structured lessons, practical checks, and support when you need it.</p>
+          </div>
+          <div className="journey-grid">
+            <article className="journey-step animate-on-scroll">
+              <span className="journey-number">01</span><UserCheck size={24} />
+              <h3>Choose your training plan</h3>
+              <p>Apply for the course level that matches your experience and learning goals.</p>
+            </article>
+            <article className="journey-step animate-on-scroll" style={{ animationDelay: '0.1s' }}>
+              <span className="journey-number">02</span><BookOpen size={24} />
+              <h3>Learn step by step</h3>
+              <p>Complete guided iCAD lessons with progress tracking and interactive assistance.</p>
+            </article>
+            <article className="journey-step animate-on-scroll" style={{ animationDelay: '0.2s' }}>
+              <span className="journey-number">03</span><Award size={24} />
+              <h3>Validate your skills</h3>
+              <p>Finish the required activities and assessments for your selected training level.</p>
+            </article>
+          </div>
+        </section>
 
-      <section id="faq" className="landing-faq-section">
-        <div className="section-header animate-on-scroll">
-          <span className="section-eyebrow">Before you apply</span>
-          <h2>Frequently asked questions</h2>
-        </div>
-        <div className="landing-faq-list animate-on-scroll">
-          <details><summary>Do I need previous iCAD experience?</summary><p>No. iCAD Foundations starts with the workspace, essential controls, and basic navigation for new learners.</p></details>
-          <details><summary>How do I receive access after registering?</summary><p>Submit your registration and verify your email. A KMTI administrator reviews the application and you will receive an approval notice when your account is activated.</p></details>
-          <details><summary>Can I upgrade my plan later?</summary><p>Yes. Once signed in, you can review the available training plans and request an upgrade from your learner account.</p></details>
-          <details><summary>Can I learn on my own schedule?</summary><p>Yes. Lessons are browser-based and your progress is saved, subject to the access period assigned to your plan.</p></details>
-        </div>
-      </section>
+        {/* Pricing Section */}
+        <section id="pricing" className="pricing-section">
+          <div className="section-header animate-on-scroll">
+            <h2>Choose Your Path</h2>
+            <p>Whether you're starting from scratch or upgrading your career, we have a plan for you.</p>
+          </div>
 
-      <section className="landing-final-cta animate-on-scroll">
-        <div><span className="section-eyebrow">Start building practical iCAD skills</span><h2>Ready to begin your training?</h2><p>Choose the learning path that fits your goals and submit your application today.</p></div>
-        <button className="btn-primary large" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>View training plans <ChevronRight size={18} /></button>
-      </section>
+          {plansLoading && <div className="landing-plans-status" role="status" aria-live="polite">Loading training plans…</div>}
+          {plansError && <div className="landing-plans-status error" role="alert"><span>{plansError}</span><button type="button" onClick={() => void loadPlans()}>Try again</button></div>}
+          {!plansLoading && !plansError && plans.length === 0 && <div className="landing-plans-status">No public training plans are currently available.</div>}
+          {!plansLoading && plans.length > 0 && <div className="pricing-grid">
+            {plans.map((plan, index) => {
+              const marketing = PLAN_MARKETING[plan.code] || {
+                outcome: plan.description || 'Build practical iCAD skills through guided KMTI training.',
+                features: ['Guided course content', 'Progress tracking', 'KMTI training support'],
+              };
+              const interval = plan.billing_interval === 'one_time' ? 'one-time' : `/user/${plan.billing_interval}`;
+              return <div key={plan.id} className={`pricing-card glass-panel ${marketing.popular ? 'popular scale-up' : ''}`} style={{ animationDelay: `${Math.min(index, 4) * 0.1}s` }}>
+                {marketing.popular && <div className="popular-badge">Most Popular</div>}
+                <div className="pricing-header">
+                  <h3>{plan.name}</h3>
+                  <div className={`price landing-dynamic-price ${plan.price_minor_units == null ? 'price-unavailable' : ''}`}><strong>{formatPlanPrice(plan)}</strong>{plan.price_minor_units != null && <span className="period">{interval}</span>}</div>
+                </div>
+                <div className="pricing-body">
+                  <div className="plan-outcome"><Target size={16} className="outcome-icon" /><p><strong>What you'll achieve:</strong>{marketing.outcome}</p></div>
+                  <ul className="plan-features">{marketing.features.map((feature, featureIndex) => <li key={feature}>{plan.code === 'icad-complete' && featureIndex === marketing.features.length - 1 ? <ShieldCheck size={18} className="check-icon" /> : <CheckCircle size={18} className="check-icon" />}{feature}</li>)}</ul>
+                  <button className={marketing.popular ? 'btn-primary full-width' : 'btn-outline full-width'} onClick={() => handleStartLearning(plan.code)}>Apply for {plan.name}</button>
+                </div>
+              </div>;
+            })}
+          </div>}
+        </section>
+
+        {plans.length > 0 && <section className="plan-comparison-section" aria-labelledby="plan-comparison-title">
+          <div className="section-header animate-on-scroll">
+            <span className="section-eyebrow">Compare access</span>
+            <h2 id="plan-comparison-title">What each training level includes</h2>
+            <p>Compare the major learning areas before submitting your application.</p>
+          </div>
+          <div className="plan-comparison-grid">
+            {plans.map(plan => {
+              const level = PLAN_LEVELS[plan.code] || 1;
+              return <article className={`plan-comparison-card ${PLAN_MARKETING[plan.code]?.popular ? 'featured' : ''}`} key={plan.id}>
+                <header><h3>{plan.name}</h3><button type="button" onClick={() => handleStartLearning(plan.code)}>Choose plan</button></header>
+                <ul>{COMPARISON_ITEMS.map(item => <li className={level >= item.level ? 'included' : 'not-included'} key={item.label}><CheckCircle size={15} aria-hidden="true" /><span>{item.label}</span><small>{level >= item.level ? 'Included' : 'Higher plan'}</small></li>)}</ul>
+              </article>;
+            })}
+          </div>
+        </section>}
+
+        <section id="faq" className="landing-faq-section">
+          <div className="section-header animate-on-scroll">
+            <span className="section-eyebrow">Before you apply</span>
+            <h2>Frequently asked questions</h2>
+          </div>
+          <div className="landing-faq-list animate-on-scroll">
+            <details><summary>Do I need previous iCAD experience?</summary><p>No. iCAD Foundations starts with the workspace, essential controls, and basic navigation for new learners.</p></details>
+            <details><summary>How do I receive access after registering?</summary><p>Submit your registration and verify your email. A KMTI administrator reviews the application and you will receive an approval notice when your account is activated.</p></details>
+            <details><summary>Can I upgrade my plan later?</summary><p>Yes. Once signed in, you can review the available training plans and request an upgrade from your learner account.</p></details>
+            <details><summary>Can I learn on my own schedule?</summary><p>Yes. Lessons are browser-based and your progress is saved, subject to the access period assigned to your plan.</p></details>
+          </div>
+        </section>
+
+        <section className="landing-final-cta animate-on-scroll">
+          <div><span className="section-eyebrow">Start building practical iCAD skills</span><h2>Ready to begin your training?</h2><p>Choose the learning path that fits your goals and submit your application today.</p></div>
+          <button className="btn-primary large" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>View training plans <ChevronRight size={18} /></button>
+        </section>
       </main>
 
       {/* Footer */}
