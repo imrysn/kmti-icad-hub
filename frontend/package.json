@@ -1,6 +1,6 @@
 {
     "name": "kmti-icad-hub",
-    "version": "1.0.1",
+    "version": "1.1.7",
     "description": "KMTI iCAD training, assessment, support, and quotation desktop hub",
     "author": "Kusakabe & Maeno Tech., Inc.",
     "main": "electron/main.js",

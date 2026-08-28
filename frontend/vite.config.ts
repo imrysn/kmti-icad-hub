@@ -1,8 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+const removeCrossoriginPlugin = () => ({
+    name: 'remove-crossorigin',
+    transformIndexHtml(html: string) {
+        return html.replace(/ crossorigin/g, '');
+    },
+});
+
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), removeCrossoriginPlugin()],
     base: './',
     server: {
         port: 5173,
