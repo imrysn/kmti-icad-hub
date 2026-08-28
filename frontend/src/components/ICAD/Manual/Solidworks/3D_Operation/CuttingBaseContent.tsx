@@ -1,7 +1,6 @@
 import React from "react";
 import sImg from "../../../../../assets/Solidworks/3D_Operation/3D_S.png";
 import frontFaceImg from "../../../../../assets/Solidworks/3D_Operation/3D_Front_Face.png";
-import skImg from "../../../../../assets/Solidworks/3D_Operation/3D_SK.png";
 import ex26Img from "../../../../../assets/Solidworks/3D_Operation/3D_EX26.png";
 import cutImg from "../../../../../assets/Solidworks/3D_Operation/3D_Cut.png";
 import exCutImg from "../../../../../assets/Solidworks/3D_Operation/3D_Ex_Cut.png";

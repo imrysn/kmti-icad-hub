@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
-import { KaraokeLessonText } from "../../../KaraokeLessonText";
 import "../../../../styles/2D_Drawing/CourseLesson.css";
 
 interface PipingTableLessonProps {
@@ -165,7 +164,6 @@ const PipingTableLesson: React.FC<PipingTableLessonProps> = ({
     stop,
     isSpeaking,
     currentIndex,
-    currentCharIndex,
     registerText,
   } = useLessonCore("kemco-piping-table");
 

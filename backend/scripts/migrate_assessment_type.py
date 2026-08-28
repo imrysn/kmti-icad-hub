@@ -3,8 +3,6 @@ import sys
 import sqlite3
 import pymysql
 from pathlib import Path
-from dotenv import load_dotenv
-
 # Load environment variables
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from database import USE_MYSQL, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, APP_PATH

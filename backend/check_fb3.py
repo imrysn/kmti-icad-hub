@@ -1,6 +1,4 @@
 import os
-import sys
-
 from database import get_db
 from models import AssessmentFeedback
 from routers.assessments import resolve_uploaded_file_path

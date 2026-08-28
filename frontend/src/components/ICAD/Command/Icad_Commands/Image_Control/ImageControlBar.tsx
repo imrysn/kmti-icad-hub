@@ -61,7 +61,6 @@ interface ImageControlBarProps {
 }
 
 export const ImageControlBar: React.FC<ImageControlBarProps> = ({
-    containerRef,
     isFullscreen: isExternalFullscreen,
     onToggleFullscreen,
     onPrevStep,
@@ -79,25 +78,11 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
     isBrowseOpen: externalIsBrowseOpen,
     onToggleBrowse
 }) => {
-    const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
     const [isCssFallback, setIsCssFallback] = useState(false);
     const [navPos, setNavPos] = useState({ x: 0, y: 0 });
     const [internalIsBrowseOpen, setInternalIsBrowseOpen] = useState(false);
-    const [hoveredItemIndex, setHoveredItemIndex] = useState<number | null>(null);
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [isTitleDropdownOpen, setIsTitleDropdownOpen] = useState(false);
-    const [isLight, setIsLight] = useState(
-        () => document.documentElement.getAttribute('data-theme') === 'light'
-    );
-
-    // Track theme changes reactively
-    useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsLight(document.documentElement.getAttribute('data-theme') === 'light');
-        });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-        return () => observer.disconnect();
-    }, []);
 
     // Keep the active section in range if referenceSections shrinks/changes
     useEffect(() => {
@@ -118,11 +103,6 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
 
     const dragRef = useRef<{ startX: number; startY: number; startNavX: number; startNavY: number } | null>(null);
 
-    // CSS-only fullscreen: expands the container to fill the browser's own
-    // viewport/page rather than escalating to the OS-level native Fullscreen
-    // API. isNativeFullscreen is still tracked (in case the browser enters
-    // native fullscreen through some other means, e.g. the user hitting F11
-    // directly) but is no longer driven by this component's own toggle.
     const isFullscreen = isExternalFullscreen !== undefined ? isExternalFullscreen : isCssFallback;
 
     const hasSections = !!(referenceSections && referenceSections.length > 0);
@@ -134,17 +114,6 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
         : (referenceItems && referenceItems.length > 0 ? referenceItems : DEFAULT_REFERENCE_ITEMS);
 
     const activeIndexOffset = activeSection?.indexOffset ?? 0;
-
-    const checkIsFullscreen = () => {
-        const doc = document as any;
-        return !!(
-            doc.fullscreenElement ||
-            doc.webkitFullscreenElement ||
-            doc.webkitCurrentFullScreenElement ||
-            doc.mozFullScreenElement ||
-            doc.msFullscreenElement
-        );
-    };
 
     // Pointer Dragging for control pill
     const handlePointerDown = (e: React.PointerEvent) => {
@@ -175,29 +144,6 @@ export const ImageControlBar: React.FC<ImageControlBarProps> = ({
             dragRef.current = null;
         }
     };
-
-    // Native Fullscreen change listeners — kept as a passive safety net so
-    // isNativeFullscreen stays accurate if native fullscreen is triggered
-    // by something outside this component (e.g. the user pressing F11).
-    useEffect(() => {
-        const handleFullscreenChange = () => {
-            const isNative = checkIsFullscreen();
-            setIsNativeFullscreen(isNative);
-        };
-
-        const events = [
-            "fullscreenchange",
-            "webkitfullscreenchange",
-            "mozfullscreenchange",
-            "MSFullscreenChange"
-        ];
-
-        events.forEach(evt => document.addEventListener(evt, handleFullscreenChange));
-
-        return () => {
-            events.forEach(evt => document.removeEventListener(evt, handleFullscreenChange));
-        };
-    }, []);
 
     // Keyboard Shortcuts
     useEffect(() => {

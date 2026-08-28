@@ -126,7 +126,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     }, []);
 
     // Derived stable state
-    const { lessons: dbLessons, loading: lessonsLoading, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
+    const { lessons: dbLessons, allLessonIds: dbLessonIds, completableModuleIds: dbCompletableIds } = useLessons(selectedCourse?.id);
 
     const currentLessons = useMemo(() => {
         const course = selectedCourse;

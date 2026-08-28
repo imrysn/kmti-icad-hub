@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { ChevronLeft, ChevronRight, LayoutGrid, X, GripHorizontal, Maximize, Minimize } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutGrid, X, GripHorizontal } from 'lucide-react';
 import { useLessonCore } from "../../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../../KaraokeLessonText";

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { menuData } from "./Menu_Data/menuData";
 import { ReadAloudButton } from "../../../ReadAloudButton";

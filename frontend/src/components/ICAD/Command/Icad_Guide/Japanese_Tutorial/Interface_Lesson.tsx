@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Tree_View_Japanese_Tutorial from "./Tree_View/Tree_View";
 import { ReadAloudButton } from "../../../../ReadAloudButton";
 import { useTTSContext } from "../../../../../context/TTSContext";

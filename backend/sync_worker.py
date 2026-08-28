@@ -3,13 +3,12 @@ import time
 import logging
 import os
 import shutil
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text, inspect
 
 try:
-    from .database import USE_MYSQL, sqlite_engine, mysql_engine, SQLiteSessionLocal, MySQLSessionLocal, get_db_mode
+    from .database import USE_MYSQL, sqlite_engine, mysql_engine, get_db_mode
 except ImportError:
-    from database import USE_MYSQL, sqlite_engine, mysql_engine, SQLiteSessionLocal, MySQLSessionLocal, get_db_mode
+    from database import USE_MYSQL, sqlite_engine, mysql_engine, get_db_mode
 
 logger = logging.getLogger(__name__)
 

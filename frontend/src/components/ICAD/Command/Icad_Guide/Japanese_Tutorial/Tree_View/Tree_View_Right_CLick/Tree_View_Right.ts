@@ -191,8 +191,6 @@ const TREE_X = 131;           // left edge of panel content
 const TREE_RIGHT = 380;       // right edge of panel content
 const ROW_TOP = 155;          // y of the first row (LD11016U01_LMMU)
 const ROW_HEIGHT = 16;        // every row is a consistent 16px tall
-const TREE_BOTTOM = 465;      // bottom edge of the last row (グローバル)
-
 // row(index) returns the PositionConfig for the Nth row (0-indexed from ROW_TOP)
 const row = (index: number, rows: number = 1): PositionConfig => ({
     x: toPctX(TREE_X),

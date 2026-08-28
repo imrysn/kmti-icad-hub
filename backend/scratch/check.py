@@ -1,6 +1,4 @@
 import os
-import re
-
 dir_path = r'i:\MG_DATA\@Recycle\App Development\kmti-icad-hub\frontend\src\components'
 
 results = []

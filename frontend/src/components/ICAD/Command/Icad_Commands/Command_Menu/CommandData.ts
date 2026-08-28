@@ -1,5 +1,3 @@
-import { TorusGeometry } from "three";
-
 export interface MenuItem {
     label: string;
     shortcut?: string;
@@ -2150,14 +2148,6 @@ const row = (col: number, rowIndex: number, customW: number = 20, customH: numbe
     y: toPctY(CMD_Y_START + rowIndex * CMD_ROW_HEIGHT),
     w: toPctX(customW),
     h: toPctY(customH)
-});
-
-// spotPos helper for direct pixel coordinates (x, y, w, h)
-const spotPos = (xPx: number, yPx: number, wPx: number = 20, hPx: number = CMD_HEIGHT): PositionConfig => ({
-    x: toPctX(xPx),
-    y: toPctY(yPx),
-    w: toPctX(wPx),
-    h: toPctY(hPx)
 });
 
 export const SPOTLIGHTS: SpotlightConfig[] = [

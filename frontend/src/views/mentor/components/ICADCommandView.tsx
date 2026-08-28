@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2 } from 'lucide-react';
 import { IcadCommandsGrid } from './icad/IcadCommandsGrid';
 import { IcadGuideGrid } from './icad/IcadGuideGrid';
 import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
@@ -20,24 +19,6 @@ const ICAD_COMMANDS_SAFE_DEFAULT = {
 interface Props {
     setSelectedCourse: (course: any) => void;
 }
-
-// Sidebar lesson entry
-const SIDEBAR_LESSONS = [
-    { id: 'icad_commands', label: 'iCAD Commands' },
-    { id: 'icad_guide', label: 'iCAD Guide' },
-    { id: 'icad_menu_setup', label: 'iCAD Menu Setup' },
-];
-
-// Shared "top bar" wrapper style
-const topBarStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0.54rem 1.2rem',
-    borderBottom: '1px solid var(--border-color)',
-    background: 'var(--bg-surface)',
-    flexShrink: 0,
-};
 
 export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
     const { byKey } = useContentAvailability();

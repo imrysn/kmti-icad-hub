@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
-import { ChevronRight, ChevronLeft, Menu, BookOpen, Video, Brain, Loader2, Layers, LogOut } from 'lucide-react'; import { Course } from '../../../types';
-import { useUI } from '../../../context/UIContext'; import { useAuth } from '../../../hooks/useAuth';
+import { ChevronRight, ChevronLeft, BookOpen, Loader2, Layers, LogOut } from 'lucide-react'; import { Course } from '../../../types';
+import { useUI } from '../../../context/UIContext';
 import { Lesson } from '../mentorConstants'; import { QuizModal } from './QuizModal';
 import { authService } from '../../../services/authService';
 import api from '../../../services/api';
@@ -112,8 +112,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   allLessonIdsLength,
   goToNextLesson,
   goToPrevLesson,
-  sidebarOpen,
-  setSidebarOpen,
   setSelectedCourse,
   getActiveLessonTitle,
   lessons,
@@ -124,7 +122,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   showExitCourse = false
 }) => {
   const { requestConfirmation } = useUI();
-  const { user } = useAuth();
   const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
   const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
   const [hasLessonScrolled, setHasLessonScrolled] = useState(false);
@@ -202,11 +199,9 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
-  const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
-
-  const isTrainee = user?.role === 'trainee';
+  const [, setIsLoadingQuiz] = useState(false);
   const [dbContent, setDbContent] = useState<any[]>([]);
-  const [isDbLoading, setIsDbLoading] = useState(false);
+  const [, setIsDbLoading] = useState(false);
 
   useEffect(() => {
     setShowQuiz(false);
@@ -562,29 +557,29 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-orthographic': (id) => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-command-menu': (id) => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-line-props': (id) => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-dimensioning': (id) => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-part': (id) => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-app': (id) => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-retaining-ring': (id) => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-geometric-tol': (id) => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-heat-treatment': (id) => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-bom': (id) => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-additional-view': (id) => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-operal-view': (id) => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-normal-mirror': (id) => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-balloon': (id) => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-titleblock': (id) => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-keyway': (id) => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-part-note': (id) => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-machining-symbol': (id) => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-welding-symbol': (id) => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-surface-coating': (id) => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-weight-computation': (id) => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-revision-code': (id) => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
-                  '2d-standard-library': (id) => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
+                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   '2d': (id) => <KemcoTwoDStandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'general-standard-steel': (id) => <GeneralStandardSteelLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,
                   'retainer-ring': (id) => <RetainerRingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={goToPrevLesson} nextLabel={nextLabel} />,

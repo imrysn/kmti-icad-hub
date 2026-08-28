@@ -1,4 +1,3 @@
-import React from 'react';
 import { TutorialStep } from "../../../3D_Modeling/VideoTutorialViewer";
 
 import partModeImg from "../../../../../../assets/Solidworks/3D_Fv/Solidwork_Interface_main.png";

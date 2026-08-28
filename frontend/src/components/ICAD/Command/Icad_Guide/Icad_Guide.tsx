@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Interface_Lesson from './Japanese_Tutorial/Interface_Lesson';
 
 interface IcadGuideProps {

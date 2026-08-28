@@ -1,6 +1,5 @@
 import React from "react";
 import fileImg from "../../../../../assets/Solidworks/3D_Operation/3D_File.png";
-import okImg from "../../../../../assets/Solidworks/3D_Operation/3D_O.png";
 import custom1Img from "../../../../../assets/Solidworks/3D_Operation/3D_Custom1.png";
 
 const EditingPropertiesContent: React.FC = () => (

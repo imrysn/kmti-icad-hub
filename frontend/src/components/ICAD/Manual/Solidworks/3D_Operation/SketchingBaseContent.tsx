@@ -2,7 +2,6 @@ import React from "react";
 import cornerImg from "../../../../../assets/Solidworks/3D_Operation/3D_Corner.png";
 import checkImg from "../../../../../assets/Solidworks/3D_Operation/3D_Check.png";
 import sketchImg from "../../../../../assets/Solidworks/3D_Operation/3D_Sketch.png";
-import callImg from "../../../../../assets/Solidworks/3D_Operation/3D_Call.png";
 import smartImg from "../../../../../assets/Solidworks/3D_Operation/3D_Smart.png";
 import modifyImg from "../../../../../assets/Solidworks/3D_Operation/3D_Modify.png";
 import underImg from "../../../../../assets/Solidworks/3D_Operation/3D_Under.png";
