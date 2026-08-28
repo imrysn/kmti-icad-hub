@@ -43,10 +43,12 @@
 .login-brand-header {
   text-align: center;
   margin-bottom: 4.5rem;
+  transform: translateY(-24px);
   z-index: 10;
 }
 
 .login-logo-text {
+  display: block;
   font-family: var(--font-heading);
   font-size: 7rem;
   font-weight: 800;
@@ -56,14 +58,26 @@
   margin-bottom: 0.5rem;
 }
 
-.brand-subtitle {
+.brand-product-title,
+.brand-description {
   font-family: var(--font-main);
   color: rgb(255, 255, 255);
-  font-size: 0.9rem;
-  font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
   line-height: 1.4;
+}
+
+.brand-product-title {
+  margin-top: 0.3rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+}
+
+.brand-description {
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
 }
 
 /* Login Form */
@@ -211,72 +225,6 @@
   }
 }
 
-.forgot-password-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-family: var(--font-main);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s, text-decoration 0.2s;
-  outline: none;
-}
-
-.forgot-password-btn:hover {
-  color: #dd4dfa;
-  text-decoration: underline;
-}
-
-.login-options-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: -0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.remember-me-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
-  user-select: none;
-  transition: color 0.2s;
-  letter-spacing: 0.1em;
-}
-
-.remember-me-checkbox:hover {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.remember-me-checkbox input[type="checkbox"] {
-  cursor: pointer;
-  accent-color: #dd4dfa;
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.remember-me-checkbox input[type="checkbox"]:focus,
-.remember-me-checkbox input[type="checkbox"]:focus-visible,
-.remember-me-checkbox input[type="checkbox"]:hover {
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-.login-options-row .forgot-password-btn {
-  font-size: 0.7rem;
-  padding: 0;
-  letter-spacing: 0.05em;
-}
-
 .login-settings-btn {
   position: absolute;
   top: 16px;
@@ -338,11 +286,18 @@
   letter-spacing: 0.12em;
 }
 
-.brand-subtitle {
+.brand-product-title {
   color: var(--text-main);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+}
+
+.brand-description {
+  color: var(--text-main);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.07em;
 }
 
 .login-form-wrapper {
@@ -393,7 +348,8 @@
   color: #172033;
 }
 
-.unified-login-container .brand-subtitle {
+.unified-login-container .brand-product-title,
+.unified-login-container .brand-description {
   color: #273247;
 }
 
@@ -403,15 +359,8 @@
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
 }
 
-.unified-login-container .input-group label,
-.unified-login-container .remember-me-checkbox,
-.unified-login-container .forgot-password-btn {
+.unified-login-container .input-group label {
   color: #667085;
-}
-
-.unified-login-container .remember-me-checkbox:hover,
-.unified-login-container .forgot-password-btn:hover {
-  color: var(--color-primary);
 }
 
 .unified-login-container .input-group input {
@@ -476,36 +425,6 @@
   box-shadow: none !important;
 }
 
-.unified-login-container .login-options-row {
-  min-height: 32px;
-  margin-top: -0.5rem;
-  margin-bottom: 1.25rem;
-}
-
-.unified-login-container .login-options-row .forgot-password-btn {
-  min-height: auto;
-  padding: 4px 0;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0;
-  box-shadow: none !important;
-  color: #667085;
-  line-height: 1.25;
-  text-decoration: none;
-  transform: none !important;
-}
-
-.unified-login-container .login-options-row .forgot-password-btn:hover {
-  background: transparent !important;
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.unified-login-container .remember-me-checkbox {
-  min-height: 32px;
-  margin: 0;
-}
-
 .unified-login-container .glass-form {
   background: transparent;
   border: none;
@@ -543,23 +462,102 @@
   color: #dc2626;
 }
 
-/* Ensure the Forgot Password Modal Perfectly Matches the Login Theme */
-.global-modal-container.login-theme-modal {
-  background: #ffffff;
-  border-color: #d7e1ee;
-  color: #1d2d44;
+.login-system-footer {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  width: calc(100% - 4rem);
+  transform: translateX(-50%);
+  color: #6f829f;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  -webkit-app-region: no-drag;
 }
 
-[data-theme='dark'] .global-modal-container.login-theme-modal {
-  background: #1d2c43;
-  border-color: #38506f;
-  color: #e7eef8;
+.login-system-footer .is-offline {
+  color: #ef4444;
 }
 
-.global-modal-container.login-theme-modal .global-modal-title {
-  color: inherit;
+.login-footer-status,
+.login-system-footer>span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
 }
 
-.global-modal-container.login-theme-modal .global-modal-close-btn {
-  color: #ef4444 !important;
+.login-status-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.login-status-dot.is-online {
+  background: #22c55e;
+  box-shadow: 0 0 0 rgba(34, 197, 94, 0.55);
+  animation: login-status-pulse 1.8s ease-out infinite;
+}
+
+.login-status-dot.is-checking {
+  background: #94a3b8;
+}
+
+.login-status-dot.is-offline {
+  background: #ef4444;
+}
+
+@keyframes login-status-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+
+  70%,
+  100% {
+    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-status-dot.is-online {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .unified-login-container {
+    justify-content: flex-start;
+    padding-top: 4.75rem;
+    padding-bottom: 5rem;
+  }
+
+  .unified-login-container .login-brand-header {
+    margin-bottom: 2.25rem;
+    transform: translateY(-24px);
+  }
+
+  .unified-login-container .input-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .unified-login-container .glass-login-btn {
+    margin-top: 0.5rem;
+  }
+
+  .login-system-footer {
+    bottom: 24px;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.8rem;
+    white-space: normal;
+  }
 }

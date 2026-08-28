@@ -178,6 +178,18 @@ class Course(Base):
     order = Column(Integer, default=0)
 
 
+class ContentAvailability(Base):
+    """Operational publishing state for learner-facing course modules."""
+    __tablename__ = "content_availability"
+
+    resource_key = Column(String(100), primary_key=True)
+    display_name = Column(String(200), nullable=False)
+    status = Column(String(30), nullable=False, default="available")
+    message = Column(String(500), nullable=True)
+    updated_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+
 class Lesson(Base):
     """Hierarchical curriculum lessons"""
     __tablename__ = "lessons"

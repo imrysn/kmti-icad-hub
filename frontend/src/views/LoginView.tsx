@@ -1,34 +1,57 @@
 import { Eye, EyeOff, Lock, User as UserIcon, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from '../components/Modal';
+import { BUILD_INFO } from '../generated/buildInfo';
 import { useAuth } from '../hooks/useAuth';
-import { authService } from '../services/authService';
+import { getSystemStatus } from '../services/api';
 import '../styles/LoginView.css';
-import { parseBackendError } from '../utils/errorUtils';
+
+interface LoginSystemStatus {
+    version: string;
+    uptimeSeconds: number;
+    databaseOnline: boolean | null;
+}
+
+const formatUptime = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+};
 
 export const LoginView: React.FC = () => {
     const { login, isLoggingIn } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' }); const [localError, setLocalError] = useState('');
-    const [showPassword, setShowPassword] = useState(false); const [rememberMe, setRememberMe] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [systemStatus, setSystemStatus] = useState<LoginSystemStatus>({
+        version: BUILD_INFO.version,
+        uptimeSeconds: 0,
+        databaseOnline: null,
+    });
 
-    // Forgot Password State
-    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false); const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
-    const [forgotPasswordMessage, setForgotPasswordMessage] = useState(''); const [isForgotPasswordSubmitting, setIsForgotPasswordSubmitting] = useState(false);
-
-    // Load remembered username on mount and check for session expiration
+    // Clear legacy remembered-user data and check for session expiration.
     useEffect(() => {
-        const rememberedUser = localStorage.getItem('remembered_username');
-        if (rememberedUser) {
-            setFormData(prev => ({ ...prev, username: rememberedUser }));
-            setRememberMe(true);
-        }
+        localStorage.removeItem('remembered_username');
 
         const queryParams = new URLSearchParams(window.location.search);
         if (queryParams.get('expired') === 'true') {
             setLocalError('YOUR SESSION HAS EXPIRED. PLEASE LOG IN AGAIN.');
         }
+
+        const refreshSystemStatus = async () => {
+            const status = await getSystemStatus();
+            setSystemStatus({
+                version: BUILD_INFO.version,
+                uptimeSeconds: Number(status.uptime_seconds) || 0,
+                databaseOnline: typeof status.database_online === 'boolean'
+                    ? status.database_online
+                    : status.status === 'online',
+            });
+        };
+
+        void refreshSystemStatus();
+        const statusInterval = window.setInterval(refreshSystemStatus, 60000);
+        return () => window.clearInterval(statusInterval);
     }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,17 +73,10 @@ export const LoginView: React.FC = () => {
         }
 
         try {
-            // Handle Remember Me persistence
-            if (rememberMe) {
-                localStorage.setItem('remembered_username', formData.username);
-            } else {
-                localStorage.removeItem('remembered_username');
-            }
-
             await login({
                 username: formData.username,
                 password: formData.password,
-                remember_me: rememberMe
+                remember_me: false
             });
             // Explicitly navigate to home to trigger role-based redirect in App.tsx
             if (window.electronAPI) {
@@ -69,36 +85,6 @@ export const LoginView: React.FC = () => {
             navigate('/');
         } catch (err: any) {
             setLocalError(err.message || 'LOGIN FAILED. CHECK YOUR CREDENTIALS.');
-        }
-    };
-
-    const handleForgotPassword = () => {
-        setShowForgotPasswordModal(true);
-        setForgotPasswordEmail('');
-        setForgotPasswordMessage('');
-    };
-
-    const handleForgotPasswordCancel = () => {
-        setShowForgotPasswordModal(false);
-        setForgotPasswordEmail('');
-        setForgotPasswordMessage('');
-    };
-
-    const handleForgotPasswordSubmit = async () => {
-        if (!forgotPasswordEmail.trim()) return;
-
-        setIsForgotPasswordSubmitting(true);
-        try {
-            const response = await authService.forgotPassword(forgotPasswordEmail);
-            setForgotPasswordMessage(response.message);
-            // Close modal after delay
-            setTimeout(() => {
-                setShowForgotPasswordModal(false);
-            }, 3000);
-        } catch (err: any) {
-            setForgotPasswordMessage(parseBackendError(err, 'Failed to send reset request. Please try again later.'));
-        } finally {
-            setIsForgotPasswordSubmitting(false);
         }
     };
 
@@ -124,8 +110,8 @@ export const LoginView: React.FC = () => {
 
             <div className="login-brand-header">
                 <span className="login-logo-text">KMTI</span>
-                <div className="brand-subtitle">TRAINING HUB</div>
-                <div className="brand-subtitle">ICAD MANUAL AND STANDARD</div>
+                <div className="brand-product-title">TRAINING HUB</div>
+                <div className="brand-description">ICAD &amp; SOLIDWORKS TRAINING MANUAL</div>
             </div>
 
             <div className="login-form-wrapper">
@@ -151,20 +137,6 @@ export const LoginView: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="login-options-row">
-                        <label className="remember-me-checkbox">
-                            <input
-                                type="checkbox"
-                                checked={rememberMe}
-                                onChange={(e) => setRememberMe(e.target.checked)}
-                            />
-                            <span>REMEMBER ME</span>
-                        </label>
-                        <button type="button" className="forgot-password-btn" onClick={handleForgotPassword}>
-                            Forgot Password?
-                        </button>
-                    </div>
-
                     {localError && <div className="local-error-msg">{localError}</div>}
 
                     <button type="submit" className="glass-login-btn" disabled={isLoggingIn}>
@@ -173,46 +145,21 @@ export const LoginView: React.FC = () => {
                 </form>
             </div>
 
-            {/* Forgot Password Modal */}
-            <Modal
-                isOpen={showForgotPasswordModal}
-                onClose={handleForgotPasswordCancel}
-                title="Forgot Password"
-                tag="AUTH_RECOVERY"
-                size="sm"
-                containerClassName="login-theme-modal"
-            >
-                {forgotPasswordMessage && (
-                    <p className="modal-success-msg">{forgotPasswordMessage}</p>
-                )}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div className="input-group">
-                        <label htmlFor="forgot-email" className="modal-field-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.45rem', color: 'inherit', opacity: 0.7 }}>EMAIL OR USERNAME</label>
-                        <input id="forgot-email" type="text" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                            placeholder="Email or Username"
-                            disabled={isForgotPasswordSubmitting}
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem 1rem',
-                                borderRadius: '10px',
-                                border: '1px solid var(--border-color)',
-                                background: 'transparent',
-                                color: 'inherit',
-                                outline: 'none',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                    </div>
-                    <div className="modal-buttons" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-                        <button onClick={handleForgotPasswordCancel} className="global-btn-secondary" disabled={isForgotPasswordSubmitting}>
-                            Cancel
-                        </button>
-                        <button onClick={handleForgotPasswordSubmit} className="global-btn-primary" disabled={!forgotPasswordEmail.trim() || isForgotPasswordSubmitting}>
-                            {isForgotPasswordSubmitting ? 'Sending...' : 'Send Reset Link'}
-                        </button>
-                    </div>
-                </div>
-            </Modal>
+            <footer className="login-system-footer" aria-live="polite">
+                <span>VER {systemStatus.version}</span>
+                <span>© {new Date().getFullYear()} KMTI</span>
+                <span className="login-footer-status">
+                    <span className="login-status-dot is-online" aria-hidden="true" />
+                    Uptime: {formatUptime(systemStatus.uptimeSeconds)}
+                </span>
+                <span className={systemStatus.databaseOnline === false ? 'is-offline' : ''}>
+                    <span
+                        className={`login-status-dot ${systemStatus.databaseOnline === null ? 'is-checking' : systemStatus.databaseOnline ? 'is-online' : 'is-offline'}`}
+                        aria-hidden="true"
+                    />
+                    Database: {systemStatus.databaseOnline === null ? 'CHECKING' : systemStatus.databaseOnline ? 'ONLINE' : 'OFFLINE'}
+                </span>
+            </footer>
         </div>
     );
 };

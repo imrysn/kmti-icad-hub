@@ -18,8 +18,9 @@ import { SystemAnalytics } from './components/SystemAnalytics';
 import { TraineeDetail } from './components/TraineeDetail';
 import { UserManagement } from './components/UserManagement';
 import { UserModal } from './components/UserModal';
+import { CourseAvailabilityManagement } from './components/CourseAvailabilityManagement';
 
-export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'logs' | 'trainees';
+export type AdminTab = 'overview' | 'users' | 'progress' | 'assessments' | 'practical' | 'availability' | 'logs' | 'trainees';
 
 export const AdminMode: React.FC = () => {
     const location = useLocation();
@@ -145,6 +146,12 @@ export const AdminMode: React.FC = () => {
                     <div style={{ display: activeTab === 'practical' ? 'flex' : 'none', flex: 1, flexDirection: 'column', minHeight: 0 }}>
                         <ErrorBoundary>
                             <PracticalManagement />
+                        </ErrorBoundary>
+                    </div>
+
+                    <div style={{ display: activeTab === 'availability' ? 'block' : 'none' }}>
+                        <ErrorBoundary>
+                            <CourseAvailabilityManagement />
                         </ErrorBoundary>
                     </div>
 

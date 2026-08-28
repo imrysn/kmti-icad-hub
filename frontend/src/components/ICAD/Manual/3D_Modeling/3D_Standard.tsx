@@ -685,14 +685,20 @@ const StandardLesson: React.FC<StandardLessonProps> = ({
                 )}
 
                 {activeTab === 'stainless' && (
-                  <div className="lesson-table-container mt-4">
-                    <table className="lesson-table">
+                  <div className="lesson-table-container stainless-code-table-container mt-4">
+                    <table className="lesson-table stainless-code-table">
+                      <colgroup>
+                        <col className="stainless-type-column" />
+                        <col className="stainless-code-column" />
+                        <col className="stainless-size-column" />
+                        <col className="stainless-name-column" />
+                      </colgroup>
                       <thead>
                         <tr>
-                          <th style={{ width: '45%' }}>Stainless Types</th>
-                          <th style={{ minWidth: '80px', width: '15%' }}>Code</th>
-                          <th style={{ minWidth: '120px', width: '20%' }}>Size</th>
-                          <th style={{ width: '20%' }}>Japanese Name</th>
+                          <th>Stainless Types</th>
+                          <th>Code</th>
+                          <th>Size</th>
+                          <th>Japanese Name</th>
                         </tr>
                       </thead>
                       <tbody>

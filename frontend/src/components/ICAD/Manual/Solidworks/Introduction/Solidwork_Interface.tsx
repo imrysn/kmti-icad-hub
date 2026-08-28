@@ -295,6 +295,7 @@ const SolidworkInterfaceLesson: React.FC<SolidworkInterfaceProps> = ({
                                 steps={SOLIDWORKS_TUTORIAL_STEPS} 
                                 imageSrc={mainInterface}
                                 showBrowser={true}
+                                moreContentStepIds={[7, 9]}
                                 fullscreenImageFit="fill"
                             />
                         </div>

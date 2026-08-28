@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { menuData } from "./Menu_Data/menuData";
 import { ReadAloudButton } from "../../../ReadAloudButton";
 import { useTTSContext } from "../../../../context/TTSContext";
 import ExitCourseButton from "../Exit_Course_Button/ExitCourseButton";
 import { LessonHeaderBanner } from "../../../LessonHeaderBanner";
 
-import "../../../../styles/2D_Drawing/CourseLesson.css";
+import "../Command_Page_Theme/CommandShared.css";
+import "./Menu_Setup_Theme/Menu_Setup_Theme.css";
 
 type Category = keyof typeof menuData;
 
@@ -27,13 +29,34 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
     const sentinelRef = useRef<HTMLDivElement>(null);
     const [isButtonStuck, setIsButtonStuck] = useState(false);
 
-    const tabMenuRef = useRef<HTMLDivElement>(null);
-    const [isTabMenuStuck, setIsTabMenuStuck] = useState(false);
-
     const [navbarHeight, setNavbarHeight] = useState(FALLBACK_NAVBAR_HEIGHT);
 
     const [selected, setSelected] = useState<Category>("Function");
     const categories = Object.keys(menuData) as Category[];
+    const selectedIndex = categories.indexOf(selected);
+
+    const scrollLessonToTop = () => {
+        requestAnimationFrame(() => {
+            document.querySelector<HTMLElement>(".command-page-shell")
+                ?.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    };
+
+    const handlePrevious = () => {
+        if (selectedIndex <= 0) return;
+        setSelected(categories[selectedIndex - 1]);
+        scrollLessonToTop();
+    };
+
+    const handleNext = () => {
+        if (selectedIndex < categories.length - 1) {
+            setSelected(categories[selectedIndex + 1]);
+            scrollLessonToTop();
+            return;
+        }
+
+        onExit?.();
+    };
 
     const handleStartReading = () => {
         const utterance = new SpeechSynthesisUtterance("Menu Setup Keywords");
@@ -109,76 +132,12 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
         return () => observer.disconnect();
     }, [obscuredHeight]);
 
-    useEffect(() => {
-        const tabMenu = tabMenuRef.current;
-        if (!tabMenu) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsTabMenuStuck(!entry.isIntersecting);
-            },
-            {
-                root: null,
-                rootMargin: `-${obscuredHeight}px 0px 0px 0px`,
-                threshold: 0,
-            }
-        );
-
-        observer.observe(tabMenu);
-        return () => observer.disconnect();
-    }, [obscuredHeight]);
-
     return (
-        <div style={{ width: "100%", minHeight: "100%", height: "auto", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "var(--bg-dark)", fontFamily: "var(--font-main)", overflowY: "auto", paddingBottom: "140px", position: "relative" }}>
-
-            {/* Scoped styles for the lesson counter, tab bar, and table row hover —
-                dark is the default (unprefixed) rule, matching the convention in
-                Command_Page_Theme/CommadPage.css; [data-theme='light'] overrides it */}
-            <style>{`
-        .icad-lesson-counter {
-            font-family: Outfit, sans-serif;
-            font-size: 16px;
-            color: #DD4DFA;
-            margin: 0 0 8px;
-            text-align: center;
-            word-spacing: 0.25em;
-            letter-spacing: normal;
-        }
-        [data-theme='light'] .icad-lesson-counter {
-            color: #B5179E;
-        }
-
-
-        .lesson-card.tab-content.fade-in {
-            background: #111827;
-            display: block;
-        }
-        [data-theme='light'] .lesson-card.tab-content.fade-in {
-            background: #fff;
-        }
-        .icad-th {
-            background: #DD4DFA1A;
-            color: #DD4DFA;
-        }
-        [data-theme='light'] .icad-th {
-            background: #FCEDFE;
-            color: #6366F1;
-        }
-        .icad-td {
-            color: #F1F5F9;
-        }
-        [data-theme='light'] .icad-td {
-            color: #334155;
-        }
-        `}</style>
+        <div className="command-page-shell">
 
             {isButtonStuck && (
-                <div className="lesson-action-cluster" style={{
-                    position: "fixed",
+                <div className="lesson-action-cluster command-sticky-actions" style={{
                     top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
-                    left: "32px",
-                    right: "24px",
-                    zIndex: 900,
                 }}>
                     <ExitCourseButton onExit={() => onExit?.()} />
                     <ReadAloudButton
@@ -203,63 +162,14 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                 ) : undefined}
             />
 
-            {/* Spacing between divider and tab menu */}
-            <div style={{ height: "32px" }} />
-
             {/* Content — category tab bar + lesson card */}
-            <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px", display: "flex", flexDirection: "column", alignItems: "center", marginTop: "4rem" }}>
+            <div className="lesson-content-body">
+                <div className="course-lesson-container command-content--menu-setup">
 
                 {/* Pill-shaped category tab bar */}
-                {isTabMenuStuck && (
-                    <div style={{
-                        position: "fixed",
-                        top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
-                        left: 0,
-                        right: 0,
-                        display: "flex",
-                        justifyContent: "center",
-                        zIndex: 900,
-                    }}>
-                        <div
-                            role="tablist"
-                            className="lesson-tabs"
-                            style={{
-                                display: "inline-flex",
-                                gap: "4px",
-                                padding: "6px",
-                                position: "relative",
-                                borderRadius: "var(--radius-md)",
-                            }}
-                        >
-                            {categories.map((category) => {
-                                const isActive = selected === category;
-                                return (
-                                    <button
-                                        key={category}
-                                        role="tab"
-                                        aria-selected={isActive}
-                                        className={isActive ? "tab-button active" : "tab-button"}
-                                        onClick={() => setSelected(category)}
-                                    >
-                                        {category}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                )}
                 <div
-                    ref={tabMenuRef}
                     role="tablist"
-                    className="lesson-tabs"
-                    style={{
-                        display: "inline-flex",
-                        gap: "4px",
-                        padding: "6px",
-                        position: "relative",
-                        borderRadius: "var(--radius-md)",
-                        visibility: isTabMenuStuck ? "hidden" : "visible",
-                    }}
+                    className="lesson-tabs command-tab-list"
                 >
                     {categories.map((category) => {
                         const isActive = selected === category;
@@ -280,85 +190,22 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                 {/* Lesson card — sizes its width to the table's natural content
                     width (up to the available container), and its height always
                     grows to fit the full table (no collapse/expand). */}
-                <div className="lesson-card tab-content fade-in" style={{
-                    width: "1000px",
-                    maxWidth: "100%",
-                    marginTop: "8rem",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "var(--radius-lg)",
-                    boxShadow: "var(--shadow-card)",
-                    padding: "28px 32px",
-                    textAlign: "left",
-                    boxSizing: "border-box",
-                }}>
-                    <div style={{
-                        position: "relative",
-                        paddingLeft: "16px",
-                        marginBottom: "20px",
-                        color: "var(--color-primary)",
-                        fontFamily: "Outfit, sans-serif",
-                        fontSize: "1.1rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.03em",
-                        textTransform: "uppercase",
-                    }}>
-                        <span style={{
-                            position: "absolute",
-                            left: 0,
-                            top: "1px",
-                            bottom: "1px",
-                            width: "3px",
-                            background: "var(--color-primary)",
-                            borderRadius: "var(--radius-md)",
-                        }} />
-                        {selected}
+                <div className="lesson-card fade-in">
+                    <div className="card-header">
+                        <h4 className="section-title">{selected}</h4>
                     </div>
 
-                    <div style={{ width: "100%", overflowX: "auto" }}>
-                        <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid var(--border-color)", color: "var(--text-main)", fontFamily: "Outfit, sans-serif" }}>
+                    <div className="command-table-scroll">
+                        <table className="command-table">
                             <thead>
                                 <tr>
-                                    <th className="icad-th" style={{
-                                        textAlign: "center",
-                                        padding: "12px",
-                                        borderBottom: "2px solid var(--border-color)",
-                                        borderRight: "1px solid var(--border-color)",
-                                        fontFamily: "Outfit, sans-serif",
-                                        fontSize: "0.8rem",
-                                        fontWeight: 700,
-                                        letterSpacing: "0.03em",
-                                        textTransform: "uppercase",
-                                        whiteSpace: "nowrap",
-                                        minWidth: "96px",
-                                    }}>
+                                    <th className="icad-th">
                                         Key
                                     </th>
-                                    <th className="icad-th" style={{
-                                        textAlign: "center",
-                                        padding: "12px",
-                                        borderBottom: "2px solid var(--border-color)",
-                                        borderRight: "1px solid var(--border-color)",
-                                        fontFamily: "Outfit, sans-serif",
-                                        fontSize: "0.8rem",
-                                        fontWeight: 700,
-                                        letterSpacing: "0.03em",
-                                        textTransform: "uppercase",
-                                        whiteSpace: "nowrap",
-                                        minWidth: "140px",
-                                    }}>
+                                    <th className="icad-th command-table__command">
                                         Command
                                     </th>
-                                    <th className="icad-th" style={{
-                                        textAlign: "center",
-                                        padding: "12px",
-                                        borderBottom: "2px solid var(--border-color)",
-                                        fontFamily: "Outfit, sans-serif",
-                                        fontSize: "0.8rem",
-                                        fontWeight: 700,
-                                        letterSpacing: "0.03em",
-                                        textTransform: "uppercase",
-                                        whiteSpace: "nowrap",
-                                    }}>
+                                    <th className="icad-th">
                                         Content
                                     </th>
                                 </tr>
@@ -368,38 +215,13 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                                 {menuData[selected].map((item) =>
                                     item.shortcuts.map((shortcut, index) => (
                                         <tr key={`${item.key}-${index}`} className="lesson-table-row">
-                                            <td className="icad-td" style={{
-                                                padding: "16px 20px 16px 8px",
-                                                fontFamily: "Inter, system-ui, -apple-system, sans-serif",
-                                                textAlign: "center",
-                                                borderBottom: "1px solid var(--border-color)",
-                                                borderRight: "1px solid var(--border-color)",
-                                                fontSize: "14.4px",
-                                                whiteSpace: "nowrap",
-                                                minWidth: "96px",
-                                            }}>
+                                            <td className="icad-td command-table__key">
                                                 {index === 0 ? item.key : ""}
                                             </td>
-                                            <td className="icad-td" style={{
-                                                padding: "16px 20px 16px 8px",
-                                                fontFamily: "Inter, system-ui, -apple-system, sans-serif",
-                                                textAlign: "center",
-                                                borderBottom: "1px solid var(--border-color)",
-                                                borderRight: "1px solid var(--border-color)",
-                                                fontSize: "14.4px",
-                                                whiteSpace: "nowrap",
-                                                minWidth: "140px",
-                                            }}>
+                                            <td className="icad-td command-table__command">
                                                 {shortcut.type}
                                             </td>
-                                            <td className="icad-td" style={{
-                                                padding: "16px 20px 16px 8px",
-                                                fontFamily: "Inter, system-ui, -apple-system, sans-serif",
-                                                textAlign: "center",
-                                                borderBottom: "1px solid var(--border-color)",
-                                                fontSize: "14.4px",
-                                                wordBreak: "break-all",
-                                            }}>
+                                            <td className="icad-td command-table__content">
                                                 {shortcut.command}
                                             </td>
                                         </tr>
@@ -408,6 +230,21 @@ function MenuSetup({ onExit, lessonNumber = 1, totalLessons = 1 }: MenuSetupProp
                             </tbody>
                         </table>
                     </div>
+
+                    <div className="lesson-navigation">
+                        <button
+                            className="nav-button"
+                            onClick={handlePrevious}
+                            disabled={selectedIndex === 0}
+                        >
+                            <ChevronLeft size={18} /> Previous
+                        </button>
+                        <button className="nav-button next" onClick={handleNext}>
+                            {selectedIndex === categories.length - 1 ? "Next Lesson" : "Next"}
+                            <ChevronRight size={18} />
+                        </button>
+                    </div>
+                </div>
                 </div>
             </div>
 

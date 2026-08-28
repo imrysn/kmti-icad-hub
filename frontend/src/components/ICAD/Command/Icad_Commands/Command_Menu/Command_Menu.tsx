@@ -7,6 +7,7 @@ import { ReadAloudButton } from '../../../../ReadAloudButton';
 import { useTTSContext } from '../../../../../context/TTSContext';
 import ExitCourseButton from '../../Exit_Course_Button/ExitCourseButton';
 import { LessonHeaderBanner } from '../../../../LessonHeaderBanner';
+import '../../Command_Page_Theme/CommandShared.css';
 
 const FALLBACK_NAVBAR_HEIGHT = 60;
 const TOPBAR_HEIGHT = 56;
@@ -581,45 +582,11 @@ function Command_Menu_Japanese_Tutorial({ onExit, lessonNumber = 1, totalLessons
     );
 
     return (
-        <div style={{
-            width: "100%",
-            minHeight: "100%",
-            height: "auto",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "var(--bg-surface)",
-            fontFamily: "var(--font-main)",
-            overflowY: "auto",
-            paddingBottom: "140px",
-            position: "relative"
-        }}>
-
-            {/* Scoped color rule for the lesson counter — swap the media query for your
-                app's actual theme selector if you toggle via a class/data-attribute
-                rather than the OS-level color scheme */}
-            <style>{`
-        .icad-lesson-counter {
-            font-family: Outfit, sans-serif;
-            font-size: 16px;
-            color: #DD4DFA;
-            margin: 0 0 8px;
-            text-align: center;
-            word-spacing: 0.25em;
-            letter-spacing: normal;
-        }
-        [data-theme='light'] .icad-lesson-counter {
-            color: #B5179E;
-        }
-        `}</style>
+        <div className="command-page-shell command-page-shell--surface">
 
             {isButtonStuck && (
-                <div className="lesson-action-cluster" style={{
-                    position: "fixed",
+                <div className="lesson-action-cluster command-sticky-actions" style={{
                     top: `${navbarHeight + TOPBAR_HEIGHT + STUCK_BUTTON_GAP}px`,
-                    left: "32px",
-                    right: "24px",
-                    zIndex: 900,
                 }}>
                     <ExitCourseButton onExit={() => onExit?.()} />
                     <ReadAloudButton
@@ -644,7 +611,7 @@ function Command_Menu_Japanese_Tutorial({ onExit, lessonNumber = 1, totalLessons
             />
 
             {/* Vertically scrollable content container matching Interface_Lesson.tsx */}
-            <div style={{ width: "100%", flex: 1, minHeight: "60vh", height: "auto", padding: "0px 32px 96px", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "32px" }}>
+            <div className="command-content command-content--centered command-content--tutorial">
                 {isFullscreen ? createPortal(videoContainerMarkup, document.body) : videoContainerMarkup}
             </div>
         </div>

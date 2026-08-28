@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PlayCircle } from 'lucide-react';
+import kemcoStandardBackground from '../../../../assets/KEMCO-STANDARD.png';
 
 interface Props {
     setSelectedCourse: (course: any) => void;
@@ -10,13 +11,15 @@ export const IcadKemcoJisStandards: React.FC<Props> = ({ setSelectedCourse }) =>
     return (
         <div className="course-card card-2d">
             <div className="card-header">
-                <h3>KEMCO and JIS Standards</h3>
+                <h3>KEMCO and JIS Standard</h3>
             </div>
-            <p>Placeholder for future content.</p>
+            <p>Learn KEMCO drafting requirements, JIS standards, materials, components, and drawing practices.</p>
             <div className="card-graphic-container card-2d-graphic-container">
-                <div className="card-2d-image" style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
-                    Graphic Placeholder
-                </div>
+                <img
+                    src={kemcoStandardBackground}
+                    alt="KEMCO and JIS Standard"
+                    className="card-2d-image"
+                />
             </div>
             <button 
                 className="primary" 
@@ -24,8 +27,8 @@ export const IcadKemcoJisStandards: React.FC<Props> = ({ setSelectedCourse }) =>
                     e.stopPropagation();
                     setSelectedCourse({
                         id: 'mock-icad-kemco',
-                        title: 'KEMCO and JIS Standards',
-                        description: 'Placeholder for future content.',
+                        title: 'KEMCO and JIS Standard',
+                        description: 'Learn KEMCO drafting requirements, JIS standards, materials, components, and drawing practices.',
                         course_type: 'Standard'
                     });
                 }}

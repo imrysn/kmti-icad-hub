@@ -43,6 +43,21 @@ class CourseResponse(BaseModel):
 class CourseList(BaseModel):
     courses: List[CourseResponse]
 
+class ContentAvailabilityResponse(BaseModel):
+    resource_key: str
+    display_name: str
+    status: Literal["available", "coming_soon", "maintenance", "hidden"]
+    message: Optional[str] = None
+    updated_by: Optional[int] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class ContentAvailabilityUpdate(BaseModel):
+    status: Literal["available", "coming_soon", "maintenance", "hidden"]
+    message: Optional[str] = None
+
 class CourseProgress(BaseModel):
     course_id: str
     user_id: str

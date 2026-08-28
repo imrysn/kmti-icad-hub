@@ -37,28 +37,10 @@ function ExitCourseButton({ onExit }: ExitCourseButtonComponentProps) {
     return (
         <div
             className="lesson-action-cluster command-exit-action-cluster"
-            style={{
-                width: '100%',
-            }}
         >
             <button
                 className="exit-course-btn command-exit-course-btn"
                 onClick={handleExitCourse}
-                style={{
-                    fontFamily: 'Outfit, sans-serif',
-                    fontSize: '12.8px',
-                    padding: '8px 16px',
-                    letterSpacing: '0.3px',
-                    borderRadius: '6px',
-                    boxSizing: 'border-box',
-                    lineHeight: '1.6',
-                    fontWeight: 700,
-                    transition: 'color 0.15s ease',
-                    textAlign: 'center',
-                    flexShrink: 0,
-                    whiteSpace: 'nowrap',
-                    cursor: 'pointer',
-                }}
             >
                 <LogOut size={16} aria-hidden="true" />
                 <span>EXIT COURSE</span>

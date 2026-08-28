@@ -1,0 +1,1 @@
+import{g as e,r as t}from"./index-DWTQWupy.js";e();var n=t(),r=({text:e,className:t=``,style:r,as:i=`p`})=>(0,n.jsx)(i,{className:t,style:r,dangerouslySetInnerHTML:{__html:e||``}});export{r as t};

@@ -270,37 +270,71 @@ function Menu_Bar_Japanese_Tutorial() {
 
                     const isHoverOpen = hoveredSpotIndex === i;
                     const showDropdown = (isActive && isLabelDropdownOpen) || isHoverOpen;
+                    const hasExpandedHitArea = i >= 3; // Settings (S), Tools (T), Window (W), Help (H)
+                    const nextSpot = SPOTLIGHTS[i + 1];
+                    const nextPos = nextSpot
+                        ? (isFullscreen ? nextSpot.fullscreenPos : nextSpot.normalPos)
+                        : null;
+                    const hitAreaWidth = hasExpandedHitArea && nextPos
+                        ? Math.max(0, nextPos.x - pos.x)
+                        : pos.w;
+
+                    const activateMenu = () => {
+                        setIsPlaying(false);
+                        if (stepIndex === i) {
+                            setIsLabelDropdownOpen(!isLabelDropdownOpen);
+                        } else {
+                            setStepIndex(i);
+                            setIsLabelDropdownOpen(true);
+                        }
+                    };
 
                     return (
                         <div key={spot.label}>
                             <button
-                                onClick={(e) => {
+                                onPointerDown={(e) => {
                                     e.stopPropagation();
-                                    setIsPlaying(false);
-                                    if (stepIndex === i) {
-                                        setIsLabelDropdownOpen(!isLabelDropdownOpen);
-                                    } else {
-                                        setStepIndex(i);
-                                        setIsLabelDropdownOpen(true);
-                                    }
+                                    e.preventDefault();
+                                    activateMenu();
                                 }}
                                 onMouseEnter={() => setHoveredSpotIndex(i)}
                                 onMouseLeave={() => setHoveredSpotIndex(null)}
+                                aria-label={`Open ${spot.label} menu`}
                                 style={{
                                     position: "absolute",
                                     left: `${pos.x}%`,
-                                    top: `${pos.y}%`,
-                                    width: `${pos.w}%`,
-                                    height: `${pos.h}%`,
+                                    top: hasExpandedHitArea
+                                        ? `calc(${pos.y}% - ${isFullscreen ? 12 : 8}px)`
+                                        : `${pos.y}%`,
+                                    width: `${hitAreaWidth}%`,
+                                    height: hasExpandedHitArea
+                                        ? `${isFullscreen ? 48 : 32}px`
+                                        : `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
+                                    backgroundColor: hasExpandedHitArea ? "transparent" : isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
                             />
+
+                            {hasExpandedHitArea && (isActive || isHoverOpen) && (
+                                <div
+                                    aria-hidden="true"
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w}%`,
+                                        height: `${pos.h}%`,
+                                        zIndex: 29,
+                                        pointerEvents: "none",
+                                        backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "rgba(236, 117, 247, 0.27)",
+                                    }}
+                                />
+                            )}
 
                             {/* Instant black label tooltip shown on the right side of the spotlight button */}
                             {isHoverOpen && (

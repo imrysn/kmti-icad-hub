@@ -1,0 +1,1 @@
+var e=``+new URL(`3d_part1_create_3d_part-DLpusubV.png`,import.meta.url).href;export{e as t};

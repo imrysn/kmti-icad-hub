@@ -1,0 +1,1 @@
+var e=``+new URL(`component1_copy-Dc829rFP.png`,import.meta.url).href,t=``+new URL(`component1_move-BvL3n3Mc.png`,import.meta.url).href;export{e as n,t};

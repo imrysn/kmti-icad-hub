@@ -847,6 +847,59 @@
   color: #000000 !important;
   font-weight: 600;
 }
+
+/* Stainless screw codes must fit the lesson card without wrapping codes or scrolling. */
+.stainless-code-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.stainless-code-table-container .stainless-code-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.stainless-code-table .stainless-type-column { width: 46%; }
+.stainless-code-table .stainless-code-column { width: 12%; }
+.stainless-code-table .stainless-size-column { width: 14%; }
+.stainless-code-table .stainless-name-column { width: 28%; }
+
+.stainless-code-table th,
+.stainless-code-table td {
+  min-width: 0;
+  padding-inline: clamp(0.45rem, 1vw, 1rem);
+}
+
+.stainless-code-table th:first-child,
+.stainless-code-table td:first-child,
+.stainless-code-table th:last-child,
+.stainless-code-table td:last-child {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+.stainless-code-table th:nth-child(2),
+.stainless-code-table td:nth-child(2),
+.stainless-code-table th:nth-child(3),
+.stainless-code-table td:nth-child(3) {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .stainless-code-table th,
+  .stainless-code-table td {
+    padding: 0.6rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .stainless-code-table th {
+    font-size: 0.68rem;
+  }
+}
 /* --- Lesson Karaoke Highlighting --- */
 
 .lesson-karaoke-wrapper {

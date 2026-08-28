@@ -191,33 +191,26 @@ describe('LoginView — password toggle', () => {
     expect(screen.getByPlaceholderText('••••••••')).toHaveAttribute('type', 'text');
   });
 });
-// Remember Me checkbox
-describe('LoginView — Remember Me checkbox', () => {
-  it('toggles remember me state and saves username on successful login', async () => {
-    const user = userEvent.setup();
-    mockLogin.mockResolvedValue({ user: TEST_USERS.trainee, access_token: TEST_TOKEN });
+describe('LoginView — login options and system footer', () => {
+  it('does not render Remember Me or Forgot Password controls', () => {
     renderLogin();
-
-    const checkbox = screen.getByLabelText(/remember me/i);
-    expect(checkbox).not.toBeChecked();
-
-    await user.click(checkbox);
-    expect(checkbox).toBeChecked();
-
-    await user.type(screen.getByPlaceholderText('Enter username'), 'trainee_test');
-    await user.type(screen.getByPlaceholderText('••••••••'), 'Trainee@12345');
-    await user.click(screen.getByRole('button', { name: /sign in/i }));
-
-    await waitFor(() => {
-      expect(localStorage.getItem('remembered_username')).toBe('trainee_test');
-    });
+    expect(screen.queryByText(/remember me/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/forgot password/i)).not.toBeInTheDocument();
   });
 
-  it('pre-fills username when remembered_username exists in localStorage', () => {
+  it('clears legacy remembered username data', () => {
     localStorage.setItem('remembered_username', 'remembered_user');
     renderLogin();
-    expect(screen.getByPlaceholderText('Enter username')).toHaveValue('remembered_user');
-    expect(screen.getByLabelText(/remember me/i)).toBeChecked();
+    expect(screen.getByPlaceholderText('Enter username')).toHaveValue('');
+    expect(localStorage.getItem('remembered_username')).toBeNull();
+  });
+
+  it('renders version, uptime, and database status without exposing the build identifier', async () => {
+    renderLogin();
+    expect(screen.getByText(/VER 1\.0\.1/i)).toBeInTheDocument();
+    expect(screen.queryByText(/BUILD/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/Uptime:/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Database: ONLINE/i)).toBeInTheDocument();
   });
 });
 // Close button

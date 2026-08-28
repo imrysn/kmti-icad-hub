@@ -296,12 +296,21 @@ function Tree_View_Japanese_Tutorial() {
                     const showMenu = (isActive || isContextActive);
                     const menuItems = spot.menuItems || spot.contextMenuItems;
                     const isMenuBarItem = i < MENU_BAR_SPOTLIGHTS.length; // gates tooltip label + dropdown side
+                    const hasExpandedMenuHitArea = isMenuBarItem && i >= 3;
+                    const nextSpot = SPOTLIGHTS[i + 1];
+                    const nextPos = nextSpot && i + 1 < MENU_BAR_SPOTLIGHTS.length
+                        ? (isFullscreen ? nextSpot.fullscreenPos : nextSpot.normalPos)
+                        : null;
+                    const hitAreaWidth = hasExpandedMenuHitArea && nextPos
+                        ? Math.max(0, nextPos.x - pos.x)
+                        : pos.w;
 
                     return (
                         <div key={spot.label}>
                             <button
-                                onClick={(e) => {
+                                onPointerDown={(e) => {
                                     e.stopPropagation();
+                                    e.preventDefault();
                                     setIsPlaying(false);
                                     setContextMenu(null);
                                     setStepIndex(i);
@@ -326,21 +335,42 @@ function Tree_View_Japanese_Tutorial() {
                                 }}
                                 onMouseEnter={() => setHoveredSpotIndex(i)}
                                 onMouseLeave={() => setHoveredSpotIndex(null)}
+                                aria-label={`Open ${spot.label}`}
                                 style={{
                                     position: "absolute",
                                     left: `${pos.x}%`,
-                                    top: `${pos.y}%`,
-                                    width: `${pos.w}%`,
-                                    height: `${pos.h}%`,
+                                    top: hasExpandedMenuHitArea
+                                        ? `calc(${pos.y}% - ${isFullscreen ? 10 : 6}px)`
+                                        : `${pos.y}%`,
+                                    width: `${hitAreaWidth}%`,
+                                    height: hasExpandedMenuHitArea
+                                        ? `${isFullscreen ? 44 : 32}px`
+                                        : `${pos.h}%`,
                                     zIndex: 30,
                                     pointerEvents: "auto",
-                                    backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
+                                    backgroundColor: hasExpandedMenuHitArea ? "transparent" : isActive ? "rgba(234, 0, 255, 0.29)" : isHoverOpen ? "rgba(236, 117, 247, 0.27)" : "transparent",
                                     border: "none",
                                     cursor: "pointer",
                                     outline: "none",
                                     transition: "background-color 0.2s ease",
                                 }}
                             />
+
+                            {hasExpandedMenuHitArea && (isActive || isHoverOpen) && (
+                                <div
+                                    aria-hidden="true"
+                                    style={{
+                                        position: "absolute",
+                                        left: `${pos.x}%`,
+                                        top: `${pos.y}%`,
+                                        width: `${pos.w}%`,
+                                        height: `${pos.h}%`,
+                                        zIndex: 29,
+                                        pointerEvents: "none",
+                                        backgroundColor: isActive ? "rgba(234, 0, 255, 0.29)" : "rgba(236, 117, 247, 0.27)",
+                                    }}
+                                />
+                            )}
 
                             {/* Tooltip label — only rendered for Menu Bar items, removed for Tree View */}
                             {isHoverOpen && isMenuBarItem && (

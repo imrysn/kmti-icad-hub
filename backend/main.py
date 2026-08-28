@@ -1,4 +1,5 @@
 import os
+import time
 from dotenv import load_dotenv
 
 # Load environment variables from the backend directory
@@ -10,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from .database import engine, sqlite_engine, mysql_engine, Base, get_db, get_db_mode
+from .generated_build_info import APP_VERSION, BUILD_ID, BUILT_AT
 from .routers import auth, admin, lessons, quizzes, assessments
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -47,6 +49,7 @@ except Exception as e:
     print(f"[!] Warning: Could not create tables or run startup migrations: {e}")
 
 app = FastAPI(title="KMTI iCAD Hub API")
+app_started_at = time.monotonic()
 
 # Enable CORS for Electron app and dev servers
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
@@ -102,22 +105,26 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     except Exception:
         serialized_errors = exc.errors()
 
-    error_details = {
-        "detail": serialized_errors,
-        "body": str(exc.body) if hasattr(exc, "body") else "No body"
-    }
-    with open("scratch/error_log.txt", "w") as f:
-        json.dump(error_details, f, default=str)
     return JSONResponse(status_code=422, content={"detail": serialized_errors})
 
 # System Status Endpoint
 @app.get("/api/v1/system/status")
 def get_system_status(db: Session = Depends(get_db)):
+    database_online = True
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception:
+        database_online = False
+
     return {
-        "status": "online",
+        "status": "online" if database_online else "degraded",
+        "database_online": database_online,
         "db_mode": get_db_mode(),
         "nas_reachable": get_db_mode() == "mysql",
-        "version": "1.0.0"
+        "version": APP_VERSION,
+        "build_id": BUILD_ID,
+        "built_at": BUILT_AT,
+        "uptime_seconds": int(time.monotonic() - app_started_at),
     }
 
 # Mount static assets (configurable)
@@ -130,7 +137,7 @@ if os.path.exists(assets_path):
 else:
     print(f"[!] Warning: Static assets path not found: {assets_path}")
 
-from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations, contacts
+from .routers import auth, admin, lessons, quizzes, assessments, notifications, settings, tts, quotations, contacts, availability
 
 # Include Modular Routers
 app.include_router(auth.router, prefix="/api/v1")
@@ -143,6 +150,7 @@ app.include_router(settings.router, prefix="/api/v1")
 app.include_router(tts.router, prefix="/api/v1")
 app.include_router(quotations.router, prefix="/api/v1")
 app.include_router(contacts.router, prefix="/api/v1")
+app.include_router(availability.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

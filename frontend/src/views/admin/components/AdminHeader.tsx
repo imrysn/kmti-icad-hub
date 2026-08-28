@@ -31,6 +31,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'logs' && 'Security Audit'}
                     {activeTab === 'assessments' && 'Assessment Management'}
                     {activeTab === 'practical' && 'Training Sets'}
+                    {activeTab === 'availability' && 'Course Availability'}
                     {activeTab === 'trainees' && 'Trainee Overview'}
                 </h1>
                 <p className="subtitle">
@@ -40,6 +41,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     {activeTab === 'logs' && `Detailed record of critical system security events`}
                     {activeTab === 'assessments' && `Create and manage quizzes, questions, and evaluation criteria`}
                     {activeTab === 'practical' && `Manage 3D and 2D assessment units and assign to trainers`}
+                    {activeTab === 'availability' && `Control which learning modules trainees can open`}
                     {activeTab === 'trainees' && `Monitor practical drafting attempts, course progression, and config mappings`}
                 </p>
             </div>

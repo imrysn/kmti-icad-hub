@@ -1,4 +1,4 @@
-import { Activity,BarChart3,ClipboardList,Shield,Users,Zap } from 'lucide-react';
+import { Activity,BarChart3,BookOpenCheck,ClipboardList,Shield,Users,Zap } from 'lucide-react';
 import React from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { User } from '../../../services/authService';
@@ -22,10 +22,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ }) => {
                     { id: 'progress', icon: BarChart3, label: 'Performance' },
                     { id: 'assessments', icon: ClipboardList, label: 'Quizzes' },
                     { id: 'practical', icon: Zap, label: 'Training Set' },
+                    { id: 'availability', icon: BookOpenCheck, label: 'Course Availability' },
                     { id: 'logs', icon: Shield, label: 'Audit Logs' }
                 ].map((item) => (
                     <button key={item.id} className={`nav-item ${activeTab === item.id ? 'active' : ''}`} onClick={() => navigate(`/admin/${item.id}`)}
-                        data-tooltip={item.label}
+                        data-tooltip={item.label} aria-label={item.label} title={item.label}
                     >
                         <div className="nav-icon">
                             <item.icon size={18} />

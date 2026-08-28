@@ -1,14 +1,20 @@
 import React from 'react';
 import { PlayCircle } from 'lucide-react';
+import { ContentAvailability } from '../../../../services/availabilityService';
+import { AvailabilityOverlay, availabilityLabel } from './AvailabilityOverlay';
 
 interface Props {
     setSelectedCourse: (course: any) => void;
     onLaunchCommands: () => void;
+    availability?: ContentAvailability;
 }
 
-export const IcadCommandsGrid: React.FC<Props> = ({ onLaunchCommands }) => {
+export const IcadCommandsGrid: React.FC<Props> = ({ onLaunchCommands, availability }) => {
+    if (availability?.status === 'hidden') return null;
+    const unavailable = !!availability && availability.status !== 'available';
     return (
-        <div className="course-card card-2d">
+        <div className={`course-card card-2d ${unavailable ? 'locked availability-locked' : ''}`}>
+            {unavailable && <AvailabilityOverlay availability={availability} />}
             <div className="card-header">
                 <h3>iCAD Commands</h3>
             </div>
@@ -26,8 +32,8 @@ export const IcadCommandsGrid: React.FC<Props> = ({ onLaunchCommands }) => {
                     Drafting Command Explorer
                 </div>
             </div>
-            <button className="primary" onClick={onLaunchCommands}>
-                Launch Module <PlayCircle size={18} />
+            <button className={`primary ${unavailable ? 'disabled' : ''}`} disabled={unavailable} onClick={() => !unavailable && onLaunchCommands()}>
+                {unavailable ? availabilityLabel(availability.status) : 'Launch Module'} <PlayCircle size={18} />
             </button>
         </div>
     );

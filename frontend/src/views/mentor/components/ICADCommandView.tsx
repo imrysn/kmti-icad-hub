@@ -6,6 +6,14 @@ import { IcadMenuSetupGrid } from './icad/IcadMenuSetupGrid';
 import Icad_Commands from '../../../components/ICAD/Command/Icad_Commands/Icad_Commands';
 import Icad_Guide from '../../../components/ICAD/Command/Icad_Guide/Icad_Guide';
 import Icad_Menu_Setup from '../../../components/ICAD/Command/Icad_Menu_Setup/menuSetup';
+import { useContentAvailability } from '../../../hooks/useContentAvailability';
+
+const ICAD_COMMANDS_SAFE_DEFAULT = {
+    resource_key: 'icad_commands',
+    display_name: 'iCAD Commands',
+    status: 'coming_soon' as const,
+    message: 'This course is currently being prepared and is not yet available.',
+};
 
 
 
@@ -32,6 +40,7 @@ const topBarStyle: React.CSSProperties = {
 };
 
 export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
+    const { byKey } = useContentAvailability();
     const [commandsPage, setCommandsPage] = useState<string | null>(null);
     const [guidePage, setGuidePage] = useState<string | null>(null);
     const [menuSetupPage, setMenuSetupPage] = useState<string | null>(null);
@@ -46,6 +55,12 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
         window.addEventListener('resetCourseView', handleReset);
         return () => window.removeEventListener('resetCourseView', handleReset);
     }, []);
+
+    useEffect(() => {
+        if (commandsPage && byKey.icad_commands && byKey.icad_commands.status !== 'available') setCommandsPage(null);
+        if (guidePage && byKey.icad_guide && byKey.icad_guide.status !== 'available') setGuidePage(null);
+        if (menuSetupPage && byKey.icad_menu_setup && byKey.icad_menu_setup.status !== 'available') setMenuSetupPage(null);
+    }, [byKey, commandsPage, guidePage, menuSetupPage]);
 
     // ── Full-page Commands view (LessonViewer-like layout) ──────────────────
     if (commandsPage === 'icad_commands') {
@@ -112,14 +127,17 @@ export const ICADCommandView: React.FC<Props> = ({ setSelectedCourse }) => {
                     <IcadCommandsGrid
                         setSelectedCourse={setSelectedCourse}
                         onLaunchCommands={() => setCommandsPage('icad_commands')}
+                        availability={byKey.icad_commands || ICAD_COMMANDS_SAFE_DEFAULT}
                     />
                     <IcadGuideGrid
                         setSelectedCourse={setSelectedCourse}
                         onLaunchGuide={() => setGuidePage('icad_guide')}
+                        availability={byKey.icad_guide}
                     />
                     <IcadMenuSetupGrid
                         setSelectedCourse={setSelectedCourse}
                         onLaunchMenuSetUp={() => setMenuSetupPage('icad_menu_setup')}
+                        availability={byKey.icad_menu_setup}
                     />
                 </div>
             </div>

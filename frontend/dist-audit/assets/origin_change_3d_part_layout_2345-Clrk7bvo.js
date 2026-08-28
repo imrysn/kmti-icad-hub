@@ -1,0 +1,1 @@
+var e=``+new URL(`origin_change_3d_part_layout_2345-BoUWLr4e.png`,import.meta.url).href;export{e as t};

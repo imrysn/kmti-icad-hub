@@ -516,6 +516,50 @@
   backdrop-filter: blur(8px);
 }
 
+.course-card.availability-locked .availability-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(8, 15, 30, 0.62);
+  backdrop-filter: blur(7px);
+}
+
+/* Availability cards use one dedicated status layout instead of layering it
+   over the normal hover content. */
+.course-card.availability-locked > .card-header,
+.course-card.availability-locked > p,
+.course-card.availability-locked > .card-graphic-container,
+.course-card.availability-locked > button {
+  visibility: hidden;
+}
+
+.course-card.availability-locked .locked-overlay-inner {
+  width: min(100%, 320px);
+  gap: 0.8rem;
+  padding: 2rem 1.5rem;
+}
+
+.course-card.availability-locked .availability-overlay-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.course-card.availability-locked .availability-status-label {
+  margin-top: 0.1rem;
+}
+
+.course-card.availability-locked .locked-hint {
+  max-width: 270px;
+  margin-top: 0.35rem;
+  font-size: 0.9rem !important;
+  line-height: 1.5;
+  text-align: center;
+  transform: none;
+  flex: none;
+}
+
 .locked-overlay-inner {
   display: flex;
   flex-direction: column;
