@@ -45,9 +45,14 @@ interface VideoTutorialViewerProps {
   imageSrc?: string;
   browserTitle?: string;
   showBrowser?: boolean;
+  fullscreenImageFit?: 'contain' | 'fill' | 'cover';
 }
 
-const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageSrc }) => {
+const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({
+  steps,
+  imageSrc,
+  fullscreenImageFit = 'contain'
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const safeStep = steps && steps.length > 0 ? (currentStep < steps.length ? currentStep : 0) : 0;
   const currentData = steps && steps.length > 0 ? steps[safeStep] : null;
@@ -609,7 +614,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
             width: '100%',
             maxWidth: '100%',
             maxHeight: isFullscreen ? '100vh' : 'calc(100vh - 200px)',
-            aspectRatio: '16 / 9',
+            height: isFullscreen ? '100%' : undefined,
+            aspectRatio: isFullscreen ? 'auto' : '16 / 9',
             minWidth: 0,
             minHeight: 0
           }}
@@ -623,7 +629,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
                 display: 'block',
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain'
+                objectFit: isFullscreen ? fullscreenImageFit : 'contain'
               }}
               playsInline
               muted
@@ -665,7 +671,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, imageS
                 display: 'block',
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain'
+                objectFit: isFullscreen ? fullscreenImageFit : 'contain'
               }}
             />
           )}
