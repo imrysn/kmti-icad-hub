@@ -907,7 +907,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
             }}>
               {currentData.overlays.map(overlay => {
                 if (videoTime < overlay.startTime || videoTime > overlay.endTime) return null;
-                
+
                 if (overlay.type === 'highlight' && overlay.target) {
                   const left = videoRect.left + overlay.target.x * videoRect.width;
                   const top = videoRect.top + overlay.target.y * videoRect.height;

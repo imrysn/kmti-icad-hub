@@ -28,6 +28,11 @@ export const polygonOverlayLayout = {
   itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
 };
 
+/** Create Cone overlay geometry, isolated from the other basic-shape lessons. */
+export const coneOverlayLayout = {
+  itemEntryArea: { x: 0.07, y: 0.945, width: 0.31, height: 0.032 },
+};
+
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-1-tool-selection",
@@ -683,7 +688,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
       {
         id: "poly-dim-diameter",
         type: "dimensionAnnotation",
-        startTime: 30.0,
+        startTime: 31.0,
         endTime: 33.4,
         label: "Path Diameter (直径)",
         labelOffset: { x: 20, y: 30 },
@@ -693,7 +698,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
       {
         id: "poly-dim-height",
         type: "dimensionAnnotation",
-        startTime: 30.0,
+        startTime: 32.0,
         endTime: 33.4,
         label: "Height (高さ)",
         labelOffset: { x: 50, y: 0 },
@@ -741,215 +746,395 @@ export const polygonTutorialSteps: TutorialStep[] = [
 
 export const coneTutorialSteps: TutorialStep[] = [
   {
-    id: "cone-0",
-    title: "Arrange Cone",
-    text: "To create a cone, follow these steps.",
+    id: "cone-1-tool-selection",
+    title: "Select the Cone Tool",
+    text: "",
+    customText: "A cone is a three-dimensional solid with a circular base that tapers toward a smaller top face or a point. In CAD, cones are useful for tapered components, reducers, funnels, nozzles, and conical features. To begin, open Shape Arrangement, then select Cone.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 0,
-    videoEnd: 2
-  },
-  {
-    id: "cone-1",
-    title: "Arrange Cone",
-    text: "Select the Cone tool from the Icon Menu.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidCone,
-    videoStart: 2,
-    videoEnd: 7
-  },
-  {
-    id: "cone-2",
-    title: "Arrange Cone",
-    text: "In the Item Entry bar, specify the Cone parameters: Number of Sides, Base Diameter, Top Face Diameter, and Height.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidCone,
-    videoStart: 7,
-    videoEnd: 11,
+    videoEnd: 3.25,
     overlays: [
+      { id: "cone-shape-arrangement", type: "highlight", startTime: 0.75, endTime: 1.6, target: { x: 0.908, y: 0.123, width: 0.071, height: 0.028 }, animation: "pulse", label: "Shape Arrangement", labelPosition: "top" },
+      { id: "cone-place-cone", type: "highlight", startTime: 1.6, endTime: 3.25, target: { x: 0.91, y: 0.173, width: 0.02, height: 0.035 }, animation: "pulse", label: "Cone", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "cone-2-front-view",
+    title: "Set the Front View",
+    text: "",
+    customText: "Select Front View from the 3D View toolbar.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 3.25,
+    videoEnd: 6.25,
+    overlays: [
+      { id: "cone-front-view", type: "highlight", startTime: 3.25, endTime: 6.25, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "cone-3-command-options",
+    title: "Confirm the Cone Settings",
+    text: "",
+    customText: "In the Command Menu, confirm Cone and Placement, then select Y Orientation.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 6.25,
+    videoEnd: 11.25,
+    overlays: [
+      { id: "cone-opt-cone", type: "highlight", startTime: 6.35, endTime: 7.15, target: { x: 0.0, y: 0.688, width: 0.036, height: 0.023 }, animation: "pulse", label: "Cone", labelPosition: "right" },
+      { id: "cone-opt-placement", type: "highlight", startTime: 7.15, endTime: 8.15, target: { x: 0.001, y: 0.813, width: 0.035, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "cone-opt-y-orientation", type: "highlight", startTime: 9.75, endTime: 11.0, target: { x: 0.017, y: 0.862, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
-        id: "quiz-cone-1",
+        id: "quiz-cone-command",
         type: "quiz",
-        startTime: 10,
-        endTime: 11,
+        startTime: 11.0,
+        endTime: 11.25,
         quizData: {
-          question: "Which of the following is NOT a parameter for creating a Cone?",
+          question: "Which orientation is selected for this cone placement procedure?",
           options: [
-            { text: "Base Diameter", isCorrect: false, feedback: "Base Diameter is a valid parameter." },
-            { text: "Corner Radius", isCorrect: true, feedback: "Correct! Cones do not have corner radiuses." },
-            { text: "Top Face Diameter", isCorrect: false, feedback: "Top Face Diameter is a valid parameter." }
+            { text: "Y Orientation", isCorrect: true, feedback: "Correct! This procedure uses Y Orientation." },
+            { text: "X Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." },
+            { text: "Z Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." }
           ]
         }
       }
     ]
   },
   {
-    id: "cone-3",
-    title: "Arrange Cone",
-    text: "Navigate to the Key Entry Area, type the target coordinates, and locate the Cone on the workplane.",
+    id: "cone-4-dimensions",
+    title: "Enter the Cone Parameters",
+    text: "",
+    customText: "In the Item Entry area, enter the base diameter, top face diameter, and height.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidCone,
-    videoStart: 11,
-    videoEnd: 15
-  },
-  {
-    id: "cone-4",
-    title: "Arrange Cone",
-    text: "Confirming the coordinates renders the completed Cone on the workspace.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidCone,
-    videoStart: 15,
-    videoEnd: 20,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 11.25,
+    videoEnd: 22.5,
     overlays: [
+      { id: "cone-item-entry", type: "highlight", startTime: 11.25, endTime: 11.75, target: { ...coneOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
+      { id: "cone-input-base", type: "highlight", startTime: 11.75, endTime: 16.25, target: { x: 0.07, y: 0.948, width: 0.09, height: 0.028 }, animation: "pulse", label: "Base Diameter (底面直径)" },
+      { id: "cone-input-top", type: "highlight", startTime: 16.25, endTime: 19.25, target: { x: 0.16, y: 0.948, width: 0.09, height: 0.028 }, animation: "pulse", label: "Top Face Diameter (上面直径)" },
+      { id: "cone-input-height", type: "highlight", startTime: 19.25, endTime: 22.25, target: { x: 0.25, y: 0.948, width: 0.09, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
       {
-        id: "quiz-cone-2",
+        id: "quiz-cone-parameters",
         type: "quiz",
-        startTime: 16,
-        endTime: 17,
+        startTime: 22.25,
+        endTime: 22.5,
         quizData: {
-          question: "What action places the cone on the workplane?",
+          question: "Which dimensions define the cone in this lesson?",
           options: [
-            { text: "Entering target coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
-            { text: "Clicking randomly on the screen", isCorrect: false, feedback: "InCorrect! You must enter coordinates." }
-          ]
-        }
-      },
-      {
-        id: "recap-cone",
-        type: "recap",
-        startTime: 19,
-        endTime: 20,
-        recapData: {
-          title: "Cone Complete",
-          items: [
-            "You selected the Cone tool.",
-            "You specified Number of Sides, Base Diameter, Top Face Diameter, and Height.",
-            "You positioned it using target coordinates."
+            { text: "Base diameter, top face diameter, and height", isCorrect: true, feedback: "Correct! These three dimensions define the cone." },
+            { text: "Width, depth, and height", isCorrect: false, feedback: "Those values define a rectangular solid, not this cone." },
+            { text: "Path diameter and height only", isCorrect: false, feedback: "This cone requires both diameter values and its height." }
           ]
         }
       }
     ]
+  },
+  {
+    id: "cone-5-origin",
+    title: "Position the Cone",
+    text: "",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the cone at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 22.5,
+    videoEnd: 24.75,
+    overlays: [
+      { id: "cone-input-origin", type: "highlight", startTime: 22.5, endTime: 24.75, target: { x: 0.47, y: 0.949, width: 0.53, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" }
+    ]
+  },
+  {
+    id: "cone-6-result",
+    title: "Review the Result",
+    text: "",
+    customText: "The cone is now created using the specified base diameter, top face diameter, height, and origin position.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 24.75,
+    videoEnd: 27.0
+  },
+  {
+    id: "cone-7-explain",
+    title: "Review the Cone Dimensions",
+    text: "",
+    customText: "Base diameter controls the lower circular face. Top face diameter controls the upper circular face. Height measures the cone from bottom to top.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    advanceOnSourceVideoEnd: true,
+    videoStart: 27.0,
+    videoEnd: 30.866667,
+    overlays: [
+      { id: "cone-dim-base", type: "dimensionAnnotation", startTime: 27.25, endTime: 30.866667, label: "Base Diameter (底面直径)", labelOffset: { x: 0, y: 28 }, dimensionType: "horizontal", line: { start: { x: 0.5, y: 0.76 }, end: { x: 0.655, y: 0.76 } } },
+      { id: "cone-dim-top", type: "dimensionAnnotation", startTime: 28.25, endTime: 30.866667, label: "Top Face Diameter (上面直径)", labelOffset: { x: -8, y: -12 }, dimensionType: "horizontal", line: { start: { x: 0.53, y: 0.33 }, end: { x: 0.61, y: 0.33 } } },
+      { id: "cone-dim-height", type: "dimensionAnnotation", startTime: 29.25, endTime: 30.866667, label: "Height (高さ)", labelOffset: { x: 55, y: 0 }, dimensionType: "vertical", line: { start: { x: 0.66, y: 0.36 }, end: { x: 0.66, y: 0.72 } } },
+      {
+        id: "quiz-cone-origin",
+        type: "quiz",
+        startTime: 30.366667,
+        endTime: 30.866667,
+        quizData: {
+          question: "What coordinates position the cone at the model origin?",
+          options: [
+            { text: "0, 0, 0", isCorrect: true, feedback: "Correct! Zero, zero, zero positions the cone at the model origin." },
+            { text: "100, 0, 0", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." },
+            { text: "50, 50, 50", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    id: "cone-8-recap",
+    title: "Create Cone Recap",
+    text: "",
+    customText: "Let's review. You opened Shape Arrangement and selected Cone, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the base diameter, top face diameter, and height, and used zero, zero, zero to position the cone at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    recapData: {
+      title: "Lesson Complete",
+      items: [
+        "Opened Shape Arrangement and selected the Cone tool.",
+        "Selected Front View and Y Orientation.",
+        "Entered base diameter, top face diameter, and height.",
+        "Positioned the cone at the model origin using 0, 0, 0."
+      ]
+    }
   }
 ];
 
 export const torusTutorialSteps: TutorialStep[] = [
   {
-    id: "torus-0",
-    title: "Arrange Torus",
-    text: "To create a torus, follow these steps.",
+    id: "torus-1-tool-selection",
+    title: "Select the Torus Tool",
+    text: "",
+    customText: "A torus is a three-dimensional ring-shaped solid formed by revolving a circular profile around an axis. In CAD, it is useful for creating rings, seals, curved pipes, and similar components. To begin, select Torus from the Shape Arrangement controls.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 0,
-    videoEnd: 2
-  },
-  {
-    id: "torus-1",
-    title: "Arrange Torus",
-    text: "Select the Torus tool from the Icon Menu.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidTorus,
-    videoStart: 2,
-    videoEnd: 7
-  },
-  {
-    id: "torus-2",
-    title: "Arrange Torus",
-    text: "In the bottom-left Item Entry bar, define the Section Diameter, Path Radius, and Turn Angle for the Torus.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidTorus,
-    videoStart: 7,
-    videoEnd: 11,
+    videoEnd: 3,
     overlays: [
+      { id: "torus-place-torus", type: "highlight", startTime: 1.5, endTime: 3, target: { x: 0.0, y: 0.67, width: 0.065, height: 0.026 }, animation: "pulse", label: "Torus", labelPosition: "right" }
+    ]
+  },
+  {
+    id: "torus-2-front-view",
+    title: "Set the Front View",
+    text: "",
+    customText: "Select Front View from the 3D View toolbar.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 3,
+    videoEnd: 5,
+    overlays: [
+      { id: "torus-front-view", type: "highlight", startTime: 3.1, endTime: 5, target: { x: 0.425, y: 0.036, width: 0.018, height: 0.035 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "torus-3-command-options",
+    title: "Confirm the Torus Settings",
+    text: "",
+    customText: "In the Command Menu, confirm Torus and Placement, then select Y Orientation.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 5,
+    videoEnd: 10,
+    overlays: [
+      { id: "torus-opt-torus", type: "highlight", startTime: 5.25, endTime: 6.75, target: { x: 0.0, y: 0.67, width: 0.065, height: 0.026 }, animation: "pulse", label: "Torus", labelPosition: "right" },
+      { id: "torus-opt-placement", type: "highlight", startTime: 6.75, endTime: 8.25, target: { x: 0.0, y: 0.815, width: 0.065, height: 0.026 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "torus-opt-y-orientation", type: "highlight", startTime: 9.5, endTime: 9.85, target: { x: 0.018, y: 0.866, width: 0.018, height: 0.026 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
-        id: "quiz-torus-1",
+        id: "quiz-torus-command",
         type: "quiz",
-        startTime: 10,
-        endTime: 11,
+        startTime: 9.85,
+        endTime: 10,
         quizData: {
-          question: "Which of these defines the Torus geometry?",
+          question: "Which orientation is selected for this torus placement procedure?",
           options: [
-            { text: "Section Diameter, Path Radius, and Turn Angle", isCorrect: true, feedback: "Correct!" },
-            { text: "Height and Width", isCorrect: false, feedback: "InCorrect!" }
+            { text: "Y Orientation", isCorrect: true, feedback: "Correct! This procedure uses Y Orientation." },
+            { text: "X Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." },
+            { text: "Z Orientation", isCorrect: false, feedback: "This procedure uses Y Orientation." }
           ]
         }
       }
     ]
   },
   {
-    id: "torus-3",
-    title: "Arrange Torus",
-    text: "Go to the Key Entry Area, specify the positioning coordinates, and place the Torus on your workspace.",
+    id: "torus-4-dimensions",
+    title: "Enter the Torus Parameters",
+    text: "",
+    customText: "In the Item Entry area, enter the section diameter, path radius, and turn angle.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidTorus,
-    videoStart: 11,
-    videoEnd: 15
-  },
-  {
-    id: "torus-4",
-    title: "Arrange Torus",
-    text: "Confirming the coordinates renders the completed Torus on the workspace.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidTorus,
-    videoStart: 15,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 10,
     videoEnd: 22,
     overlays: [
+      { id: "torus-item-entry", type: "highlight", startTime: 10, endTime: 10.5, target: { x: 0.07, y: 0.948, width: 0.268, height: 0.03 }, animation: "pulse", label: "Item Entry Area", labelPosition: "top" },
+      { id: "torus-input-section", type: "highlight", startTime: 10.5, endTime: 15, target: { x: 0.07, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Section Diameter (断面直径)", labelPosition: "top" },
+      { id: "torus-input-path", type: "highlight", startTime: 15, endTime: 19, target: { x: 0.16, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Path Radius (経路半径)", labelPosition: "top" },
+      { id: "torus-input-angle", type: "highlight", startTime: 19, endTime: 21.8, target: { x: 0.25, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Turn Angle (回転角)", labelPosition: "top" },
       {
-        id: "quiz-torus-2",
+        id: "quiz-torus-parameters",
         type: "quiz",
-        startTime: 16,
-        endTime: 17,
-        quizData: {
-          question: "How do you place the Torus on the workspace?",
-          options: [
-            { text: "By entering positioning coordinates in the Key Entry Area", isCorrect: true, feedback: "Correct!" },
-            { text: "By clicking the Torus icon again", isCorrect: false, feedback: "InCorrect!" }
-          ]
-        }
-      },
-      {
-        id: "recap-torus",
-        type: "recap",
-        startTime: 21,
+        startTime: 21.8,
         endTime: 22,
-        recapData: {
-          title: "Torus Complete",
-          items: [
-            "You selected the Torus tool.",
-            "You defined the Section Diameter, Path Radius, and Turn Angle.",
-            "You positioned it using the Key Entry Area."
+        quizData: {
+          question: "Which values define the torus in this lesson?",
+          options: [
+            { text: "Section diameter, path radius, and turn angle", isCorrect: true, feedback: "Correct! These three values define the torus." },
+            { text: "Width, depth, and height", isCorrect: false, feedback: "Those values define a rectangular solid, not a torus." },
+            { text: "Base diameter and height", isCorrect: false, feedback: "Those values do not define this torus." }
           ]
         }
       }
     ]
+  },
+  {
+    id: "torus-5-origin",
+    title: "Position the Torus",
+    text: "",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the torus at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 22,
+    videoEnd: 26,
+    overlays: [
+      { id: "torus-input-origin", type: "highlight", startTime: 22, endTime: 25.75, target: { x: 0.47, y: 0.949, width: 0.53, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0", labelPosition: "top" },
+      {
+        id: "quiz-torus-origin",
+        type: "quiz",
+        startTime: 25.75,
+        endTime: 26,
+        quizData: {
+          question: "What coordinates position the torus at the model origin?",
+          options: [
+            { text: "0, 0, 0", isCorrect: true, feedback: "Correct! Zero, zero, zero positions the torus at the model origin." },
+            { text: "100, 0, 0", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." },
+            { text: "50, 50, 50", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    id: "torus-6-result",
+    title: "Review the Result",
+    text: "",
+    customText: "The torus is now created using the specified section diameter, path radius, turn angle, and origin position.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 26,
+    videoEnd: 28
+  },
+  {
+    id: "torus-7-explain",
+    title: "Review the Torus Parameters",
+    text: "",
+    customText: "Section diameter controls the thickness of the torus tube. Path radius controls the distance from the torus center to the center of the tube. Turn angle controls how far the circular profile revolves around the axis.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    waitForNarrationBeforeVideo: true,
+    advanceOnSourceVideoEnd: true,
+    narrateTitle: false,
+    videoStart: 28,
+    videoEnd: 33.616667,
+    overlays: [
+      { id: "torus-dim-section", type: "dimensionAnnotation", startTime: 28.5, endTime: 33.616667, label: "Section Diameter (断面直径)", labelOffset: { x: -55, y: 0 }, dimensionType: "vertical", line: { start: { x: 0.415, y: 0.47 }, end: { x: 0.415, y: 0.53 } } },
+      { id: "torus-dim-path", type: "dimensionAnnotation", startTime: 29.5, endTime: 33.616667, label: "Path Radius (経路半径)", labelOffset: { x: 0, y: 28 }, dimensionType: "horizontal", line: { start: { x: 0.42, y: 0.52 }, end: { x: 0.64, y: 0.52 } } },
+      { id: "torus-dim-angle", type: "dimensionAnnotation", startTime: 30.5, endTime: 33.1, label: "Turn Angle (回転角)", labelOffset: { x: 45, y: -15 }, dimensionType: "diagonal", line: { start: { x: 0.64, y: 0.52 }, end: { x: 0.76, y: 0.40 } } }
+    ]
+  },
+  {
+    id: "torus-8-recap",
+    title: "Create Torus Recap",
+    text: "",
+    customText: "Let's review. You selected the Torus tool, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the section diameter, path radius, and turn angle, and used zero, zero, zero to position the torus at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    recapData: {
+      title: "Lesson Complete",
+      items: [
+        "Selected the Torus tool and Front View.",
+        "Confirmed the Command Menu settings and Y Orientation.",
+        "Entered section diameter, path radius, and turn angle.",
+        "Positioned the torus at the model origin using 0, 0, 0."
+      ]
+    }
   }
 ];

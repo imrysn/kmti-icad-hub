@@ -4,7 +4,7 @@ export const en_3d_basic_operation = {
   "basicOp1.cylinder.desc": "A Cylinder is a circular solid defined by its Diameter and Height — ideal for shafts, pins, bosses, and round posts.",
   "basicOp1.box.desc": "A Box is a rectangular solid defined by Depth, Width, and Height. It forms the foundation of structural parts such as plates, brackets, and housings.",
   "basicOp1.polygon.desc": "A Polygon is a prismatic solid with a regular polygonal cross-section. You define it by the Number of Sides, the circumscribed Path Diameter, and the Height — useful for hexagonal bolts and multi-sided columns.",
-  "basicOp1.cone.desc": "A Cone is a tapered solid defined by the Number of Sides, Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.",
+  "basicOp1.cone.desc": "A Cone is a tapered solid defined by its Base Diameter, Top Face Diameter, and Height. Setting the top face diameter to zero creates a pointed cone.",
   "basicOp1.torus.desc": "A Torus is a donut-shaped solid defined by the Section Diameter, Path Radius, and Turn Angle. It is used for O-rings, gaskets, and curved pipe sections.",
   "basicOp1.start_front_view": "Before creating any shape, always start with the Front View. This ensures your model is correctly oriented from the beginning.",
   "basicOp1.arrange_y_orientation": "On the command menu, go to Arrange Solid and select Y Orientation to align the shape correctly along the Y axis.",

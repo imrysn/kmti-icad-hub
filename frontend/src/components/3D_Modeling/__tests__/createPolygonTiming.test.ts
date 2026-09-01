@@ -119,8 +119,11 @@ describe('Create Polygon video timing', () => {
     expect(overlays.get('poly-dim-diameter')?.type).toBe('dimensionAnnotation');
     expect(overlays.get('poly-dim-height')?.type).toBe('dimensionAnnotation');
     expect(overlays.get('poly-dim-sides')?.startTime).toBe(30);
-    expect(overlays.get('poly-dim-diameter')?.startTime).toBe(30);
-    expect(overlays.get('poly-dim-height')?.startTime).toBe(30);
+    expect(overlays.get('poly-dim-diameter')?.startTime).toBe(31);
+    expect(overlays.get('poly-dim-height')?.startTime).toBe(32);
+    expect(overlays.get('poly-dim-sides')?.endTime).toBe(33.4);
+    expect(overlays.get('poly-dim-diameter')?.endTime).toBe(33.4);
+    expect(overlays.get('poly-dim-height')?.endTime).toBe(33.4);
   });
 
   it('uses three-option quizzes with complete narration and non-duplicated feedback', () => {
