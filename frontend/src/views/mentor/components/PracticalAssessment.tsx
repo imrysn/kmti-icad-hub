@@ -110,10 +110,41 @@ export const PracticalAssessment: React.FC<PracticalAssessmentProps> = ({ onBack
 
     const handleOpenInCAD = async (submissionId: number) => {
         try {
-            await assessmentService.openSubmissionInCAD(submissionId);
-            showNotification('File sent to CAD software', 'success');
+            const submission = submissions.find(item => item.id === submissionId);
+            if (!submission) {
+                showNotification('Submission could not be found.', 'error');
+                return;
+            }
+
+            const filename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submissionId}.icd`;
+            const token = authService.getToken();
+            if (!token) {
+                showNotification('Session expired. Please login again.', 'error');
+                return;
+            }
+
+            if (window.electronAPI?.downloadAndOpen) {
+                await window.electronAPI.downloadAndOpen({
+                    url: assessmentService.getSubmissionDownloadUrl(submissionId),
+                    filename,
+                    token,
+                    appName: 'icad',
+                });
+                showNotification('Submission opened in iCAD.', 'success');
+            } else {
+                const blob = await assessmentService.getSubmissionFileBlob(submissionId);
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+                showNotification('Submission downloaded.', 'success');
+            }
         } catch (error: any) {
-            showNotification(error?.response?.data?.detail || 'Failed to open file in CAD.', 'error');
+            showNotification(error?.response?.data?.detail || error?.message || 'Failed to open file in iCAD.', 'error');
         }
     };
 

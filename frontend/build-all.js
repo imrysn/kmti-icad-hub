@@ -32,9 +32,7 @@ try {
     process.exit(1);
 }
 
-// Runtime configuration and generated TTS cache are intentionally excluded.
-// Deploy a protected .env beside the backend executable on the target server.
-console.log('\nRuntime .env and generated TTS cache are excluded from build artifacts.');
+console.log('\nBackend runtime configuration is staged beside the server executable.');
 
 console.log('\n[2/2] Building and Packaging Electron Frontend...');
 try {
@@ -52,5 +50,5 @@ console.log('\n===================================================');
 console.log('SUCCESS: All builds completed successfully!');
 console.log('  - Backend Server: backend/dist/KMTI_iCAD_Server.exe');
 console.log('  - Frontend Setup: frontend/dist-electron/KMTI_iCAD_Hub Setup *.exe');
-console.log('  - Deploy backend/.env separately using protected server configuration.');
+console.log('  - Protected server config: backend/dist/.env');
 console.log('===================================================');

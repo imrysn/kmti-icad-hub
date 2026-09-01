@@ -594,15 +594,37 @@ export const PracticalTrainerDashboard: React.FC = () => {
         if (!confirmed) return;
 
         try {
-            const blob = await assessmentService.getSubmissionFileBlob(submission.id);
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = attachedFilename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
+            if (window.electronAPI?.downloadBulkFiles) {
+                const token = authService.getToken();
+                if (!token) {
+                    showNotification('Session expired. Please login again.', 'error');
+                    return;
+                }
+
+                const result = await window.electronAPI.downloadBulkFiles({
+                    tasks: [{
+                        id: submission.id,
+                        url: assessmentService.getSubmissionDownloadUrl(submission.id),
+                        target_relative_path: attachedFilename,
+                    }],
+                    token,
+                });
+                if (result.successCount === 0) {
+                    throw new Error(result.errors?.[0]?.message || 'No files were downloaded.');
+                }
+            } else {
+                const blob = await assessmentService.getSubmissionFileBlob(submission.id);
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = attachedFilename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            }
+            showNotification('Submission downloaded to your Downloads folder.', 'success');
         } catch (err) {
             console.error('Submission download failed:', err);
             showNotification(getFileOperationErrorMessage(err), 'error');
@@ -612,7 +634,8 @@ export const PracticalTrainerDashboard: React.FC = () => {
     const handleOpenInIJCAD = async (submission: AssessmentSubmission, appName?: string) => {
         const ext = submission.submission_file_path?.split('.').pop() || 'dwg';
         const attachedFilename = submission.submission_file_path?.split(/[\\/]/).pop() || `Submission_${submission.user?.username}_Set${submission.task?.set_number}_${submission.task?.task_code}.${ext}`;
-        const targetApplication = submission.submission_kind === 'quotation' ? 'Excel' : (appName || 'CAD');
+        const requestedApplication = submission.submission_kind === 'quotation' ? undefined : (appName || 'icad');
+        const targetApplication = submission.submission_kind === 'quotation' ? 'Excel' : 'iCAD';
 
         const confirmed = await requestConfirmation({
             title: "Confirm Open",
@@ -626,11 +649,11 @@ export const PracticalTrainerDashboard: React.FC = () => {
 
         if (window.electronAPI && window.electronAPI.downloadAndOpen) {
             try {
-                const url = `${api.defaults.baseURL || 'http://localhost:3001'}/api/v1/assessments/submissions/${submission.id}/download`;
+                const url = assessmentService.getSubmissionDownloadUrl(submission.id);
                 const token = authService.getToken() || '';
 
                 showNotification(`Opening ${attachedFilename} in ${targetApplication}...`, 'info');
-                await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName });
+                await window.electronAPI.downloadAndOpen({ url, filename: attachedFilename, token, appName: requestedApplication });
                 showNotification(`Submission opened.`, 'success');
             } catch (err) {
                 console.error('Failed to open in CAD:', err);

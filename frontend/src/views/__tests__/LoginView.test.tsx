@@ -14,6 +14,7 @@ import { render,screen,waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach,describe,expect,it,vi } from 'vitest';
+import { BUILD_INFO } from '../../generated/buildInfo';
 import { TEST_TOKEN,TEST_USERS } from '../../test/mocks/handlers';
 
 // ── Mock heavy dependencies that don't render in jsdom ────────────
@@ -207,7 +208,7 @@ describe('LoginView — login options and system footer', () => {
 
   it('renders version, uptime, and database status without exposing the build identifier', async () => {
     renderLogin();
-    expect(screen.getByText(/VER 1\.0\.1/i)).toBeInTheDocument();
+    expect(screen.getByText(`VER ${BUILD_INFO.version}`)).toBeInTheDocument();
     expect(screen.queryByText(/BUILD/i)).not.toBeInTheDocument();
     expect(screen.getByText(/Uptime:/i)).toBeInTheDocument();
     expect(await screen.findByText(/Database: ONLINE/i)).toBeInTheDocument();

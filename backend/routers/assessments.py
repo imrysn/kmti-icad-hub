@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 import os
 import shutil
+import sys
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -23,6 +24,25 @@ from ..services.assessment_service import resequence_set_task_codes
 from ..services.progress_service import calculate_all_trainee_progress
 
 router = APIRouter(prefix="/assessments", tags=["Assessments"])
+
+def get_persistent_local_upload_root() -> str:
+    if getattr(sys, "frozen", False):
+        program_data = os.getenv("PROGRAMDATA", r"C:\ProgramData")
+        return os.path.join(program_data, "KMTI Training Hub", "uploads")
+    return os.path.join(APP_PATH, "uploads")
+
+def get_effective_upload_root() -> str:
+    configured_root = os.getenv("UPLOAD_DIR")
+    if configured_root:
+        drive = os.path.splitdrive(configured_root)[0]
+        if configured_root.startswith("\\\\"):
+            parts = configured_root.strip("\\").split("\\")
+            share_root = "\\\\" + "\\".join(parts[:2]) if len(parts) >= 2 else configured_root
+            if os.path.exists(share_root):
+                return configured_root
+        elif not drive or os.path.exists(drive + "\\"):
+            return configured_root
+    return get_persistent_local_upload_root()
 
 def resolve_master_path(master_file_path: str) -> str:
     if not master_file_path:
@@ -129,21 +149,50 @@ def resolve_uploaded_file_path(stored_path: str) -> str:
     if any(part in ("", ".", "..") for part in relative_parts):
         return stored_path
 
-    upload_root = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    upload_root = get_effective_upload_root()
     candidates = [
         os.path.join(upload_root, *relative_parts),
         os.path.join(APP_PATH, "uploads", *relative_parts),
         os.path.join(os.path.dirname(APP_PATH), "uploads", *relative_parts),
+            os.path.join(os.path.dirname(os.path.dirname(APP_PATH)), "uploads", *relative_parts),
+            os.path.join(get_persistent_local_upload_root(), *relative_parts),
         os.path.join(r"\\kmti-nas\Shared\data\trainingApp\uploads", *relative_parts),
         os.path.join(r"Z:\Training\trainingApp\uploads", *relative_parts)
     ]
     for candidate in candidates:
         if os.path.exists(candidate):
             return candidate
+
+    # User IDs can change when accounts are migrated between local SQLite and
+    # the network database. Recover the file by preserving its complete path
+    # below submissions/<user-id>, while allowing only that ID segment to vary.
+    if relative_parts[0].lower() == "submissions" and len(relative_parts) > 2:
+        upload_roots = [
+            upload_root,
+            os.path.join(APP_PATH, "uploads"),
+            os.path.join(os.path.dirname(APP_PATH), "uploads"),
+            os.path.join(os.path.dirname(os.path.dirname(APP_PATH)), "uploads"),
+            get_persistent_local_upload_root(),
+            r"\\kmti-nas\Shared\data\trainingApp\uploads",
+            r"Z:\Training\trainingApp\uploads",
+        ]
+        submission_suffix = relative_parts[2:]
+        for root in upload_roots:
+            submissions_root = os.path.join(root, "submissions")
+            try:
+                user_directories = os.listdir(submissions_root)
+            except OSError:
+                continue
+            for user_directory in user_directories:
+                if not user_directory.isdigit():
+                    continue
+                migrated_candidate = os.path.join(submissions_root, user_directory, *submission_suffix)
+                if os.path.isfile(migrated_candidate):
+                    return migrated_candidate
     return candidates[0]
 
 def configured_upload_storage_available() -> bool:
-    upload_root = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
+    upload_root = get_effective_upload_root()
     drive = os.path.splitdrive(upload_root)[0]
     if drive:
         return os.path.exists(drive + "\\")
@@ -772,10 +821,7 @@ async def submit_quotation(
         db.add(anchor_task)
         db.flush()
 
-    base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-    drive_letter = os.path.splitdrive(base_upload_dir)[0]
-    if drive_letter and not os.path.exists(drive_letter + "\\"):
-        base_upload_dir = os.path.join(APP_PATH, "uploads")
+    base_upload_dir = get_effective_upload_root()
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     upload_dir = os.path.join(
         base_upload_dir, "submissions", str(current_user.id),
@@ -881,12 +927,7 @@ async def submit_task(
 
     # Define upload directory mirroring the master structure
     master_dir = os.path.dirname(task.master_file_path) if task.master_file_path else ""
-    base_upload_dir = os.getenv("UPLOAD_DIR", os.path.join(APP_PATH, "uploads"))
-
-    # Safety Check: If UPLOAD_DIR points to a drive that doesn't exist on this machine (e.g. copied .env file), fallback to local APP_PATH
-    drive_letter = os.path.splitdrive(base_upload_dir)[0]
-    if drive_letter and not os.path.exists(drive_letter + "\\"):
-        base_upload_dir = os.path.join(APP_PATH, "uploads")
+    base_upload_dir = get_effective_upload_root()
 
     upload_dir = os.path.join(base_upload_dir, "submissions", str(current_user.id), master_dir)
     os.makedirs(upload_dir, exist_ok=True)
@@ -1109,21 +1150,23 @@ def download_trainee_submission(
 ):
     """Download a trainee's .dwg submission for review."""
     try:
-        if current_user.role not in ["employee", "admin"]:
-            raise HTTPException(status_code=403, detail="Not authorized")
-
         submission = db.query(AssessmentSubmission).filter(AssessmentSubmission.id == submission_id).first()
         if not submission or not submission.submission_file_path:
             raise HTTPException(status_code=404, detail="Submission file not found")
 
-        # Fix #4: Employees may only download submissions from trainees assigned to them
-        if current_user.role == "employee":
+        if current_user.role == "trainee":
+            if submission.user_id != current_user.id:
+                raise HTTPException(status_code=403, detail="Not authorized")
+        elif current_user.role == "employee":
+            # Employees may only download submissions from assigned trainees.
             is_assigned = db.query(TrainerTraineeMapping).filter(
                 TrainerTraineeMapping.trainer_id == current_user.id,
                 TrainerTraineeMapping.trainee_id == submission.user_id
             ).first()
             if not is_assigned:
                 raise HTTPException(status_code=403, detail="You are not assigned to this trainee.")
+        elif current_user.role != "admin":
+            raise HTTPException(status_code=403, detail="Not authorized")
 
         full_path = resolve_uploaded_file_path(submission.submission_file_path)
 

@@ -222,6 +222,24 @@ class TestTrainerSubmissions:
 
 
 class TestSubmissionDownloads:
+    def test_trainee_can_download_own_submission(
+        self, client, db, tmp_path, monkeypatch, trainee_token, seed_submission
+    ):
+        submitted_file = tmp_path / "submissions" / "1" / "own.dwg"
+        submitted_file.parent.mkdir(parents=True)
+        submitted_file.write_bytes(b"own-cad-content")
+        seed_submission.submission_file_path = "submissions/1/own.dwg"
+        db.commit()
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+
+        response = client.get(
+            f"/api/v1/assessments/submissions/{seed_submission.id}/download",
+            headers=auth_headers(trainee_token),
+        )
+
+        assert response.status_code == 200
+        assert response.content == b"own-cad-content"
+
     def test_recovers_submission_after_upload_root_changes(
         self, client, db, tmp_path, monkeypatch, employee_token,
         trainer_mapping, seed_submission
@@ -240,6 +258,25 @@ class TestSubmissionDownloads:
 
         assert response.status_code == 200
         assert response.content == b"valid-cad-content"
+
+    def test_recovers_submission_after_user_id_migration(
+        self, client, db, tmp_path, monkeypatch, employee_token,
+        trainer_mapping, seed_submission
+    ):
+        migrated = tmp_path / "submissions" / "1" / "Units & Tasks" / "Set 7" / "dummy.dwg"
+        migrated.parent.mkdir(parents=True)
+        migrated.write_bytes(b"migrated-cad-content")
+        seed_submission.submission_file_path = "submissions/40/Units & Tasks/Set 7/dummy.dwg"
+        db.commit()
+        monkeypatch.setenv("UPLOAD_DIR", str(tmp_path))
+
+        response = client.get(
+            f"/api/v1/assessments/submissions/{seed_submission.id}/download",
+            headers=auth_headers(employee_token),
+        )
+
+        assert response.status_code == 200
+        assert response.content == b"migrated-cad-content"
 # Admin-only: POST /api/v1/assessments/admin/assign
 class TestAssignTrainer:
     ENDPOINT = "/api/v1/assessments/admin/assign"

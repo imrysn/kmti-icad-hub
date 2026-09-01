@@ -1,6 +1,6 @@
 {
     "name": "kmti-icad-hub",
-    "version": "1.1.7",
+    "version": "1.1.8",
     "description": "KMTI iCAD training, assessment, support, and quotation desktop hub",
     "author": "Kusakabe & Maeno Tech., Inc.",
     "main": "electron/main.js",
@@ -18,7 +18,8 @@
     },
     "dependencies": {
         "exceljs": "^4.4.0",
-        "file-saver": "^2.0.5"
+        "file-saver": "^2.0.5",
+        "socket.io-client": "^4.8.3"
     },
     "overrides": {
         "uuid": "^11.1.1"
@@ -47,7 +48,9 @@
         "msw": "^2.14.6",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-markdown": "^10.1.0",
         "react-router-dom": "^7.13.1",
+        "remark-gfm": "^4.0.1",
         "three": "^0.182.0",
         "typescript": "^5.0.2",
         "vite": "^8.1.5",

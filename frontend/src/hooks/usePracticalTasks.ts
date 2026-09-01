@@ -152,7 +152,7 @@ export const usePracticalTasks = (assessmentType?: '3D' | '2D', confirmFn?: Conf
         }
 
         showNotification(`Preparing ${task.title}...`, 'info');
-        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token });
+        await window.electronAPI.downloadAndOpen({ url, filename: originalFilename, token, appName: 'ijcad' });
         showNotification(`${task.title} opened in iJCAD.`, 'success');
       } catch (err) {
         console.error('Failed to open in iJCAD:', err);

@@ -93,7 +93,14 @@ if __name__ == "__main__":
 
     # 2. Configure environment before heavy imports
     if getattr(sys, 'frozen', False):
-        os.environ["ENV_FILE_PATH"] = os.path.join(BASE_PATH, ".env")
+        # Prefer a protected runtime configuration beside the executable. During
+        # local builds, also support the source backend directory one level up.
+        env_candidates = [
+            os.path.join(BASE_PATH, ".env"),
+            os.path.join(os.path.dirname(BASE_PATH), ".env"),
+        ]
+        env_file_path = next((candidate for candidate in env_candidates if os.path.isfile(candidate)), env_candidates[0])
+        os.environ["ENV_FILE_PATH"] = env_file_path
         # Disable ChromaDB telemetry which can cause hangs/delays
         os.environ["ANONYMIZED_TELEMETRY"] = "False"
         # Ensure we can find our own package

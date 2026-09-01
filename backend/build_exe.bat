@@ -45,6 +45,24 @@ venv\Scripts\python.exe -m PyInstaller --onefile --console ^
     --collect-all librosa ^
     server.py
 
+if errorlevel 1 (
+    echo ERROR: Backend executable build failed.
+    popd
+    exit /b 1
+)
+
+if exist ".env" (
+    copy /y ".env" "dist\.env" >nul
+    if errorlevel 1 (
+        echo ERROR: Failed to copy the protected runtime configuration to backend\dist.
+        popd
+        exit /b 1
+    )
+    echo Runtime configuration copied to backend\dist\.env
+) else (
+    echo WARNING: backend\.env was not found. The server requires a protected .env beside the executable.
+)
+
 echo ===================================================
 echo   Build Complete!
 echo   Output: backend/dist/KMTI_iCAD_Server.exe

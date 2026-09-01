@@ -8,14 +8,56 @@ const fs = require('fs');
 const { net } = require('electron');
 const { spawn } = require('child_process');
 
-const CAD_EXECUTABLES = Object.freeze({
-    ijcad: 'gcad.exe',
-    nanocad: 'ncad.exe',
-    icad: 'icad.exe',
-    solidworks: 'SLDWORKS.exe',
+const CAD_APPLICATIONS = Object.freeze({
+    ijcad: {
+        executable: 'gcad.exe',
+        vendorDirectories: ['ITJP'],
+    },
+    nanocad: {
+        executable: 'ncad.exe',
+        vendorDirectories: ['Nanosoft'],
+    },
+    icad: {
+        executable: 'icad.exe',
+        candidates: ['C:\\ICADSX\\bin\\icad.exe'],
+    },
+    solidworks: {
+        executable: 'SLDWORKS.exe',
+        vendorDirectories: ['SOLIDWORKS Corp'],
+    },
 });
 const reservedDownloadPaths = new Set();
 const activeOpenOperations = new Set();
+
+function resolveCadExecutable(appName) {
+    const application = CAD_APPLICATIONS[String(appName || '').toLowerCase()];
+    if (!application) return null;
+
+    const candidates = [...(application.candidates || [])];
+    const programFileRoots = [process.env.ProgramFiles, process.env['ProgramFiles(x86)']]
+        .filter(Boolean);
+
+    for (const programFilesRoot of programFileRoots) {
+        for (const vendorDirectory of application.vendorDirectories || []) {
+            const vendorPath = path.join(programFilesRoot, vendorDirectory);
+            try {
+                for (const entry of fs.readdirSync(vendorPath, { withFileTypes: true })) {
+                    if (!entry.isDirectory()) continue;
+                    const productPath = path.join(vendorPath, entry.name);
+                    candidates.push(
+                        path.join(productPath, application.executable),
+                        path.join(productPath, 'bin', application.executable),
+                        path.join(productPath, 'BIN', application.executable),
+                    );
+                }
+            } catch (_) {
+                // The vendor is not installed in this Program Files location.
+            }
+        }
+    }
+
+    return candidates.find(candidate => fs.existsSync(candidate)) || application.executable;
+}
 
 function isPathInside(parentDir, candidatePath) {
     const relative = path.relative(path.resolve(parentDir), path.resolve(candidatePath));
@@ -379,7 +421,7 @@ function createWindow() {
             };
 
             const executable = appName && appName !== 'default'
-                ? CAD_EXECUTABLES[String(appName).toLowerCase()]
+                ? resolveCadExecutable(appName)
                 : null;
             if (!executable) return await openWithDefault();
 
