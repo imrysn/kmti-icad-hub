@@ -464,7 +464,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
             <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
             </div>
 
             <div className="lesson-navigation">

@@ -23,6 +23,11 @@ export const boxOverlayLayout = {
   itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
 };
 
+/** Create Polygon overlay geometry, isolated from the other basic-shape lessons. */
+export const polygonOverlayLayout = {
+  itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
+};
+
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
     id: "cyl-1-tool-selection",
@@ -504,108 +509,233 @@ export const boxTutorialSteps: TutorialStep[] = [
 
 export const polygonTutorialSteps: TutorialStep[] = [
   {
-    id: "poly-0",
-    title: "Arrange Polygonal Prism",
-    text: "To create a polygon, follow these steps.",
+    id: "poly-1-tool-selection",
+    title: "Select Polygonal Prism",
+    text: "",
+    customText: "A polygonal prism is a three-dimensional solid with matching polygon-shaped faces connected by rectangular sides. In CAD, it is useful for creating hexagonal bosses, multi-sided shafts, nuts, and other prismatic parts. To begin, open Shape Placement, then select Polygonal Prism.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
     videoStart: 0,
-    videoEnd: 2
-  },
-  {
-    id: "poly-1",
-    title: "Arrange Polygonal Prism",
-    text: "Select the Polygon tool from the Icon Menu.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidPolygon,
-    videoStart: 2,
-    videoEnd: 7
-  },
-  {
-    id: "poly-2",
-    title: "Arrange Polygonal Prism",
-    text: "Specify the Polygon specifications: input the Number of Sides, the circumscribed Path Diameter, and the Height in the Item Entry bar.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidPolygon,
-    videoStart: 7,
-    videoEnd: 11,
+    videoEnd: 4.8,
     overlays: [
+      { id: "poly-shape-placement", type: "highlight", startTime: 0.75, endTime: 2.2, target: { x: 0.908, y: 0.123, width: 0.07, height: 0.026 }, animation: "pulse", label: "Shape Placement" },
+      { id: "poly-place-polygon", type: "highlight", startTime: 2.2, endTime: 4.8, target: { x: 0.945, y: 0.145, width: 0.017, height: 0.032 }, animation: "pulse", label: "Polygonal Prism", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "poly-2-front-view",
+    title: "Set the Front View",
+    text: "",
+    customText: "Select Front View from the 3D View toolbar.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 4.8,
+    videoEnd: 7.8,
+    overlays: [
+      { id: "poly-front-view", type: "highlight", startTime: 5.0, endTime: 7.8, target: { x: 0.438, y: 0.037, width: 0.016, height: 0.03 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+    ]
+  },
+  {
+    id: "poly-3-command-options",
+    title: "Confirm the Polygon Settings",
+    text: "",
+    customText: "In the Command Menu, confirm Polygonal Prism, Placement, and Dimension Specification, then select Y Orientation.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 7.8,
+    videoEnd: 15.0,
+    overlays: [
+      { id: "poly-opt-prism", type: "highlight", startTime: 7.8, endTime: 9.4, target: { x: 0.001, y: 0.671, width: 0.036, height: 0.023 }, animation: "pulse", label: "Polygonal Prism", labelPosition: "right" },
+      { id: "poly-opt-placement", type: "highlight", startTime: 9.4, endTime: 11.0, target: { x: 0.001, y: 0.813, width: 0.035, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "poly-opt-dimension", type: "highlight", startTime: 11.0, endTime: 12.75, target: { x: 0.001, y: 0.87, width: 0.035, height: 0.023 }, animation: "pulse", label: "Dimension Specification", labelPosition: "right" },
+      { id: "poly-opt-y-orientation", type: "highlight", startTime: 12.75, endTime: 14.75, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
-        id: "quiz-poly-1",
+        id: "quiz-poly-command",
         type: "quiz",
-        startTime: 10,
-        endTime: 11,
+        startTime: 14.75,
+        endTime: 15.0,
         quizData: {
-          question: "Which properties must be specified when creating a polygonal prism?",
+          question: "Which command creates the multi-sided solid demonstrated in this lesson?",
           options: [
-            { text: "Number of Sides, Path Diameter, and Height", isCorrect: true, feedback: "Correct!" },
-            { text: "Radius and Depth", isCorrect: false, feedback: "InCorrect!" }
+            { text: "Polygonal Prism", isCorrect: true, feedback: "Correct! Polygonal Prism creates the multi-sided solid used in this lesson." },
+            { text: "Cylinder", isCorrect: false, feedback: "Polygonal Prism is the command used for this multi-sided solid." },
+            { text: "Cone", isCorrect: false, feedback: "Polygonal Prism is the command used for this multi-sided solid." }
           ]
         }
       }
     ]
   },
   {
-    id: "poly-3",
-    title: "Arrange Polygonal Prism",
-    text: "Type the origin placement coordinates in the Key Entry Area to place the Polygon in your workspace.",
+    id: "poly-4-dimensions",
+    title: "Enter the Polygon Dimensions",
+    text: "",
+    customText: "In the Item Entry area, enter the number of sides, the circumscribed path diameter, and the height.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidPolygon,
-    videoStart: 11,
-    videoEnd: 15
-  },
-  {
-    id: "poly-4",
-    title: "Arrange Polygonal Prism",
-    text: "Confirming the coordinates renders the completed Polygon on the workspace.",
-    zoom: "scale(1)",
-    origin: "center",
-    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
-    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
-    videoSrc: vidPolygon,
-    videoStart: 15,
-    videoEnd: 20,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 15.0,
+    videoEnd: 22.3,
     overlays: [
+      { id: "poly-item-entry", type: "highlight", startTime: 15.0, endTime: 16.0, target: { ...polygonOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
+      { id: "poly-input-sides", type: "highlight", startTime: 16.0, endTime: 18.8, target: { x: 0.07, y: 0.948, width: 0.055, height: 0.028 }, animation: "pulse", label: "Number of Sides" },
+      { id: "poly-input-diameter", type: "highlight", startTime: 18.8, endTime: 20.5, target: { x: 0.124, y: 0.948, width: 0.078, height: 0.028 }, animation: "pulse", label: "Path Diameter" },
+      { id: "poly-input-height", type: "highlight", startTime: 20.5, endTime: 22.05, target: { x: 0.2, y: 0.948, width: 0.079, height: 0.028 }, animation: "pulse", label: "Height" },
       {
-        id: "quiz-poly-2",
+        id: "quiz-poly-dimensions",
         type: "quiz",
-        startTime: 16,
-        endTime: 17,
+        startTime: 22.05,
+        endTime: 22.3,
         quizData: {
-          question: "How do you render the polygon in the workspace after entering coordinates?",
+          question: "Which properties define the polygonal prism in this lesson?",
           options: [
-            { text: "Confirm the coordinates by pressing Enter", isCorrect: true, feedback: "Correct!" },
-            { text: "Click on the workspace randomly", isCorrect: false, feedback: "InCorrect!" }
+            { text: "Number of sides, path diameter, and height", isCorrect: true, feedback: "Correct! These three values define the polygonal prism." },
+            { text: "Width, depth, and height", isCorrect: false, feedback: "Those values define a rectangular solid; this polygonal prism uses sides, path diameter, and height." },
+            { text: "Base diameter and top diameter only", isCorrect: false, feedback: "This polygonal prism uses the number of sides, path diameter, and height." }
           ]
         }
+      }
+    ]
+  },
+  {
+    id: "poly-5-origin",
+    title: "Position the Polygonal Prism",
+    text: "",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the polygonal prism at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 22.3,
+    videoEnd: 26.5,
+    overlays: [
+      { id: "poly-input-origin", type: "highlight", startTime: 22.8, endTime: 26.5, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" }
+    ]
+  },
+  {
+    id: "poly-6-result",
+    title: "Review the Result",
+    text: "",
+    customText: "The polygonal prism is now created using the specified number of sides, path diameter, height, and origin position.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "86%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    videoStart: 26.5,
+    videoEnd: 28.3
+  },
+  {
+    id: "poly-7-explain",
+    title: "Review the Polygonal Prism Dimensions",
+    text: "",
+    customText: "Number of sides defines the polygon profile. Path diameter controls the size of that profile. Height measures the polygonal prism from bottom to top.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "88%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    advanceOnSourceVideoEnd: true,
+    videoStart: 28.3,
+    videoEnd: 33.4,
+    overlays: [
+      {
+        id: "poly-dim-sides",
+        type: "polygonOutline",
+        startTime: 30.0,
+        endTime: 33.4,
+        label: "Number of Sides (頂点数)",
+        labelOffset: { x: 0, y: -8 },
+        points: [
+          { x: 0.493, y: 0.377 },
+          { x: 0.572, y: 0.353 },
+          { x: 0.636, y: 0.416 },
+          { x: 0.614, y: 0.503 },
+          { x: 0.532, y: 0.523 },
+          { x: 0.473, y: 0.463 }
+        ]
       },
       {
-        id: "recap-poly",
-        type: "recap",
-        startTime: 19,
-        endTime: 20,
-        recapData: {
-          title: "Polygon Complete",
-          items: [
-            "You selected the Polygon tool.",
-            "You specified the number of sides, diameter, and height.",
-            "You positioned it using origin coordinates."
+        id: "poly-dim-diameter",
+        type: "dimensionAnnotation",
+        startTime: 30.0,
+        endTime: 33.4,
+        label: "Path Diameter (直径)",
+        labelOffset: { x: 20, y: 30 },
+        dimensionType: "horizontal",
+        line: { start: { x: 0.54, y: 0.78 }, end: { x: 0.62, y: 0.76 } }
+      },
+      {
+        id: "poly-dim-height",
+        type: "dimensionAnnotation",
+        startTime: 30.0,
+        endTime: 33.4,
+        label: "Height (高さ)",
+        labelOffset: { x: 50, y: 0 },
+        dimensionType: "vertical",
+        line: { start: { x: 0.65, y: 0.43 }, end: { x: 0.65, y: 0.66 } }
+      },
+      {
+        id: "quiz-poly-origin",
+        type: "quiz",
+        startTime: 32.9,
+        endTime: 33.4,
+        quizData: {
+          question: "What coordinates position the polygonal prism at the model origin?",
+          options: [
+            { text: "0, 0, 0", isCorrect: true, feedback: "Correct! Zero, zero, zero positions the polygonal prism at the model origin." },
+            { text: "100, 0, 0", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." },
+            { text: "50, 50, 50", isCorrect: false, feedback: "Zero, zero, zero is the coordinate of the model origin." }
           ]
         }
       }
     ]
+  },
+  {
+    id: "poly-8-recap",
+    title: "Create Polygon Recap",
+    text: "",
+    customText: "Let's review. You selected Front View and Polygonal Prism, confirmed the Command Menu settings, entered the number of sides, path diameter, and height, and used zero, zero, zero to position the polygonal prism at the model origin.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+    recapData: {
+      title: "Lesson Complete",
+      items: [
+        "Selected Front View and Polygonal Prism.",
+        "Confirmed the required Command Menu settings.",
+        "Entered the number of sides, path diameter, and height.",
+        "Positioned the polygonal prism at the model origin using 0, 0, 0."
+      ]
+    }
   }
 ];
 

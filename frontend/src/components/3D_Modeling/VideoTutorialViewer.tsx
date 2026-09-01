@@ -1036,6 +1036,43 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                   );
                 }
 
+                if (overlay.type === 'polygonOutline' && overlay.points && overlay.points.length >= 3) {
+                  const points = overlay.points.map((point) => ({
+                    x: videoRect.left + point.x * videoRect.width,
+                    y: videoRect.top + point.y * videoRect.height,
+                  }));
+                  const svgPoints = points.map((point) => `${point.x},${point.y}`).join(' ');
+                  const centerX = points.reduce((total, point) => total + point.x, 0) / points.length;
+                  const topY = Math.min(...points.map((point) => point.y));
+
+                  return (
+                    <svg key={overlay.id} style={{
+                      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10
+                    }}>
+                      <polygon
+                        points={svgPoints}
+                        fill="rgba(255, 0, 0, 0.04)"
+                        stroke="rgba(255, 0, 0, 0.9)"
+                        strokeWidth="3"
+                        strokeLinejoin="round"
+                      />
+                      {overlay.label && (
+                        <text
+                          x={centerX + (overlay.labelOffset?.x ?? 0)}
+                          y={topY - 12 + (overlay.labelOffset?.y ?? 0)}
+                          fill="white"
+                          fontSize="14"
+                          fontWeight="bold"
+                          textAnchor="middle"
+                          style={{ textShadow: '1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black' }}
+                        >
+                          {overlay.label}
+                        </text>
+                      )}
+                    </svg>
+                  );
+                }
+
                 if (overlay.type === 'quiz' && activeQuizId === overlay.id && overlay.quizData) {
                   const question: InteractiveVideoQuestion = {
                     id: overlay.id,

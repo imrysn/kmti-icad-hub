@@ -2,6 +2,7 @@ export type TutorialOverlayType =
   | 'highlight'
   | 'callout'
   | 'dimensionAnnotation'
+  | 'polygonOutline'
   | 'quiz'
   | 'recap';
 
@@ -34,6 +35,8 @@ export interface TutorialOverlay {
     start: NormalizedPoint;
     end: NormalizedPoint;
   };
+  /** Ordered vertices for a closed polygon outline, using normalized video coordinates. */
+  points?: NormalizedPoint[];
   dimensionType?: 'horizontal' | 'vertical' | 'diagonal';
   quizData?: {
     question: string;
