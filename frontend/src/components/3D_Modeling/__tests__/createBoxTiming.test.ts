@@ -33,10 +33,10 @@ describe('Create Box video timing', () => {
       ['box-1-shape-placement', 0, 2.233],
       ['box-2-place-box', 2.233, 4.817],
       ['box-3-front-view', 4.817, 8.333],
-      ['box-4-command-options', 8.333, 12.5],
-      ['box-5-width', 12.5, 16.667],
-      ['box-6-depth', 16.667, 20.833],
-      ['box-7-height', 20.833, 25],
+      ['box-4-command-options', 8.333, 15.25],
+      ['box-5-width', 15.25, 18.25],
+      ['box-6-depth', 18.25, 21.75],
+      ['box-7-height', 21.75, 25],
       ['box-8-origin', 25, 29.883],
       ['box-9-result', 29.883, 33.017],
       ['box-10-explain', 33.017, 37.566],
@@ -55,7 +55,54 @@ describe('Create Box video timing', () => {
     expect(overlays.get('box-place-box')?.startTime).toBeLessThanOrEqual(4.167);
     expect(overlays.get('box-place-box')?.endTime).toBe(4.817);
     expect(overlays.get('box-front-view')?.endTime).toBe(8.333);
-    expect(overlays.get('box-opt-y-orient')?.endTime).toBe(12.5);
+    expect(overlays.get('box-opt-y-orient')?.startTime).toBe(13.75);
+    expect(overlays.get('box-opt-y-orient')?.endTime).toBe(15);
+  });
+
+  it('does not overlap the Dimension Specification and Y Orientation labels', () => {
+    expect(overlays.get('box-opt-dim')?.endTime).toBe(
+      overlays.get('box-opt-y-orient')?.startTime,
+    );
+  });
+
+  it('does not open the orientation knowledge check before Y Orientation finishes', () => {
+    expect(overlays.get('quiz-box-orientation')?.startTime).toBeGreaterThanOrEqual(
+      overlays.get('box-opt-y-orient')?.endTime ?? Infinity,
+    );
+  });
+
+  it('keeps Dimension Specification visible through its observed action', () => {
+    const dimensionSpecification = overlays.get('box-opt-dim');
+
+    expect(dimensionSpecification?.startTime).toBe(12.5);
+    expect(dimensionSpecification?.endTime).toBe(13.75);
+  });
+
+  it('shows the Item Entry Area only after the orientation check', () => {
+    const itemEntryArea = overlays.get('box-item-entry');
+
+    expect(itemEntryArea?.startTime).toBe(15.25);
+    expect(itemEntryArea?.endTime).toBe(15.9);
+  });
+
+  it('shows the Width field after the Item Entry Area', () => {
+    const width = overlays.get('box-input-width');
+
+    expect(width?.startTime).toBe(15.9);
+    expect(width?.endTime).toBe(18.25);
+  });
+
+  it('hands Width to Depth and Depth to Height at the observed action boundaries', () => {
+    const widthStep = boxTutorialSteps.find((step) => step.id === 'box-5-width')!;
+    const depthStep = boxTutorialSteps.find((step) => step.id === 'box-6-depth')!;
+    const heightStep = boxTutorialSteps.find((step) => step.id === 'box-7-height')!;
+
+    expect(widthStep.videoEnd).toBe(depthStep.videoStart);
+    expect(depthStep.videoEnd).toBe(heightStep.videoStart);
+    expect(overlays.get('box-input-width')?.endTime).toBe(18.25);
+    expect(overlays.get('box-input-depth')?.startTime).toBe(18.25);
+    expect(overlays.get('box-input-depth')?.endTime).toBe(21.75);
+    expect(overlays.get('box-input-height')?.startTime).toBe(21.75);
   });
 
   it('keeps every timed overlay inside its containing video segment', () => {
@@ -84,7 +131,7 @@ describe('Create Box video timing', () => {
     const originStep = boxTutorialSteps.find((step) => step.id === 'box-8-origin')!;
 
     expect(originStep.customText).toContain('After the knowledge check');
-    expect(originStep.customText).toContain('zero, zero, zero');
+    expect(originStep.customText).toContain('0, 0, 0');
     expect(overlays.get('quiz-box-dimensions')?.endTime).toBeLessThanOrEqual(originStep.videoStart!);
   });
 

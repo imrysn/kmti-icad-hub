@@ -258,7 +258,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     videoStart: 2.233,
     videoEnd: 4.817,
     overlays: [
-      { id: "box-place-box", type: "highlight", startTime: 3.75, endTime: 4.817, target: { x: 0.908, y: 0.145, width: 0.022, height: 0.032 }, animation: "pulse", label: "Place Rectangular Solid", labelPosition: "bottom" }
+      { id: "box-place-box", type: "highlight", startTime: 3.75, endTime: 4.817, target: { x: 0.926, y: 0.145, width: 0.02, height: 0.032 }, animation: "pulse", label: "Place Rectangular Solid", labelPosition: "bottom" }
     ]
   },
   {
@@ -292,17 +292,17 @@ export const boxTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     videoStart: 8.333,
-    videoEnd: 12.5,
+    videoEnd: 15.25,
     overlays: [
-      { id: "box-opt-solid", type: "highlight", startTime: 8.333, endTime: 9.4, target: { x: 0.0, y: 0.655, width: 0.036, height: 0.023 }, animation: "pulse", label: "Rectangular Solid", labelPosition: "right" },
-      { id: "box-opt-placement", type: "highlight", startTime: 9.4, endTime: 10.4, target: { x: 0.0, y: 0.813, width: 0.036, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
-      { id: "box-opt-dim", type: "highlight", startTime: 10.4, endTime: 11.4, target: { x: 0.0, y: 0.87, width: 0.036, height: 0.023 }, animation: "pulse", label: "Dimension Specification", labelPosition: "right" },
-      { id: "box-opt-y-orient", type: "highlight", startTime: 11.4, endTime: 12.5, target: { x: 0.017, y: 0.846, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
+      { id: "box-opt-solid", type: "highlight", startTime: 8.333, endTime: 9.4, target: { x: 0.032, y: 0.655, width: 0.036, height: 0.023 }, animation: "pulse", label: "Rectangular Solid", labelPosition: "right" },
+      { id: "box-opt-placement", type: "highlight", startTime: 10.4, endTime: 12.5, target: { x: 0.001, y: 0.813, width: 0.035, height: 0.023 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "box-opt-dim", type: "highlight", startTime: 12.5, endTime: 13.75, target: { x: 0.001, y: 0.886, width: 0.035, height: 0.023 }, animation: "pulse", label: "Dimension Specification", labelPosition: "right" },
+      { id: "box-opt-y-orient", type: "highlight", startTime: 13.75, endTime: 15.0, target: { x: 0.017, y: 0.862, width: 0.019, height: 0.023 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
         id: "quiz-box-orientation",
         type: "quiz",
-        startTime: 12.0,
-        endTime: 12.5,
+        startTime: 15.0,
+        endTime: 15.25,
         quizData: {
           question: "Which orientation is selected for this box placement procedure?",
           options: [
@@ -326,11 +326,11 @@ export const boxTutorialSteps: TutorialStep[] = [
     videoSrc: vidBox,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 12.5,
-    videoEnd: 16.667,
+    videoStart: 15.25,
+    videoEnd: 18.25,
     overlays: [
-      { id: "box-item-entry", type: "highlight", startTime: 12.5, endTime: 13.5, target: { ...boxOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
-      { id: "box-input-width", type: "highlight", startTime: 13.5, endTime: 16.667, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Width (幅)" }
+      { id: "box-item-entry", type: "highlight", startTime: 15.25, endTime: 15.9, target: { ...boxOverlayLayout.itemEntryArea }, animation: "pulse", label: "Item Entry Area" },
+      { id: "box-input-width", type: "highlight", startTime: 15.9, endTime: 18.25, target: { x: 0.092, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Width (幅)" }
     ]
   },
   {
@@ -342,9 +342,9 @@ export const boxTutorialSteps: TutorialStep[] = [
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox, waitForNarrationBeforeVideo: true, narrateTitle: false,
-    videoStart: 16.667, videoEnd: 20.833,
+    videoStart: 18.25, videoEnd: 21.75,
     overlays: [
-      { id: "box-input-depth", type: "highlight", startTime: 16.667, endTime: 20.833, target: { x: 0.167, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Depth (奥行き)" }
+      { id: "box-input-depth", type: "highlight", startTime: 18.25, endTime: 21.75, target: { x: 0.167, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Depth (奥行き)" }
     ]
   },
   {
@@ -356,9 +356,9 @@ export const boxTutorialSteps: TutorialStep[] = [
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
     subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
     videoSrc: vidBox, waitForNarrationBeforeVideo: true, narrateTitle: false,
-    videoStart: 20.833, videoEnd: 25.0,
+    videoStart: 21.75, videoEnd: 25.0,
     overlays: [
-      { id: "box-input-height", type: "highlight", startTime: 20.833, endTime: 25.0, target: { x: 0.242, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
+      { id: "box-input-height", type: "highlight", startTime: 21.75, endTime: 25.0, target: { x: 0.242, y: 0.948, width: 0.051, height: 0.028 }, animation: "pulse", label: "Height (高さ)" },
       {
         id: "quiz-box-dimensions",
         type: "quiz",
@@ -379,7 +379,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     id: "box-8-origin",
     title: "Position the Box",
     text: "",
-    customText: "After the knowledge check, enter zero, zero, zero to position the rectangular solid at the model origin.",
+    customText: "After the knowledge check, enter 0, 0, 0 in the Item Entry area to position the rectangular solid at the model origin.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -439,9 +439,9 @@ export const boxTutorialSteps: TutorialStep[] = [
         startTime: 33.25,
         endTime: 37.566,
         label: "Width (幅)",
-        labelOffset: { x: 0, y: -5 },
-        dimensionType: "horizontal",
-        line: { start: { x: 0.39, y: 0.57 }, end: { x: 0.58, y: 0.57 } }
+        labelOffset: { x: -55, y: 10 },
+        dimensionType: "diagonal",
+        line: { start: { x: 0.44, y: 0.57 }, end: { x: 0.585, y: 0.72 } }
       },
       {
         id: "box-dim-depth",
@@ -449,9 +449,9 @@ export const boxTutorialSteps: TutorialStep[] = [
         startTime: 34.25,
         endTime: 37.566,
         label: "Depth (奥行き)",
-        labelOffset: { x: 10, y: -8 },
+        labelOffset: { x: 55, y: 30 },
         dimensionType: "horizontal",
-        line: { start: { x: 0.58, y: 0.57 }, end: { x: 0.66, y: 0.49 } }
+        line: { start: { x: 0.61, y: 0.71 }, end: { x: 0.695, y: 0.62 } }
       },
       {
         id: "box-dim-height",
@@ -459,9 +459,9 @@ export const boxTutorialSteps: TutorialStep[] = [
         startTime: 35.25,
         endTime: 37.566,
         label: "Height (高さ)",
-        labelOffset: { x: 30, y: 0 },
+        labelOffset: { x: 55, y: -5 },
         dimensionType: "vertical",
-        line: { start: { x: 0.66, y: 0.49 }, end: { x: 0.66, y: 0.61 } }
+        line: { start: { x: 0.70, y: 0.51 }, end: { x: 0.70, y: 0.605 } }
       },
       {
         id: "quiz-box-final",

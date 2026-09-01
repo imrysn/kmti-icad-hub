@@ -34,7 +34,7 @@ export interface TutorialOverlay {
     start: NormalizedPoint;
     end: NormalizedPoint;
   };
-  dimensionType?: 'horizontal' | 'vertical';
+  dimensionType?: 'horizontal' | 'vertical' | 'diagonal';
   quizData?: {
     question: string;
     options: { text: string; isCorrect: boolean; feedback: string }[];
