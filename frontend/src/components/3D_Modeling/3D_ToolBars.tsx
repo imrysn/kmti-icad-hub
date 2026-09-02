@@ -140,7 +140,7 @@ export const localizeToolbarTutorialSteps = (
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const { t, translateContent } = useTranslation();
   const {
-    containerRef  } = useLessonCore('toolbars');
+    containerRef } = useLessonCore('toolbars');
 
 
 
@@ -161,7 +161,7 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
                   steps={TOOLBARS_WRITTEN_TUTORIAL_STEPS}
                   writtenTutorialCopy={TOOLBARS_WRITTEN_TUTORIAL_COPY}
                 >
-                  <VideoTutorialViewer 
+                  <VideoTutorialViewer
                     steps={steps}
                     introPanel={{
                       icon: Wrench,
@@ -177,8 +177,8 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 
           <div className="lesson-navigation">
             {onPrevLesson && (
-  <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+              <button className="nav-button" onClick={() => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
             <button className="nav-button next" onClick={() => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
           </div>
         </div>
