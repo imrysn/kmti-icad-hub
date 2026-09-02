@@ -4,9 +4,21 @@ import { TOOLBAR_TUTORIAL_STEPS } from '../VideoTutorialData/ToolBarsTutorial';
 import { localizeToolbarTutorialSteps } from '../3D_ToolBars';
 
 describe('iCAD Tool Bars title narration', () => {
-  it('includes every normal visible step title before its description', () => {
+  it('starts the introduction directly with its text', () => {
+    const intro = TOOLBAR_TUTORIAL_STEPS.find((step) => step.id === 'intro');
+
+    expect(intro?.narrateTitle).toBe(false);
+    expect(buildTutorialStepNarration(
+      intro?.text || '',
+      intro?.quizData,
+      intro?.recapData,
+      intro?.narrateTitle === false ? '' : intro?.title,
+    )).toBe('Welcome to the Tool Bars tutorial! In this guide, we will walk through the various quick-access menus at the top of the workspace and explore what each section does.');
+  });
+
+  it('includes other normal visible step titles before their descriptions', () => {
     const normalSteps = TOOLBAR_TUTORIAL_STEPS.filter(
-      (step) => !step.quizData && !step.recapData && step.narrationEnabled !== false,
+      (step) => !step.quizData && !step.recapData && step.narrationEnabled !== false && step.narrateTitle !== false,
     );
 
     expect(normalSteps.length).toBeGreaterThan(0);
@@ -71,7 +83,7 @@ describe('iCAD Tool Bars title narration', () => {
 
     expect(narration).toBe(
       "Now, let's do a knowledge check. Which toolbar section is used to switch between Shading and Wireframe displays? "
-      + 'Choose one answer. Choice 1: Shading. Choice 2: Switch Display. Choice 3: 3D View.',
+      + 'Choose one answer. A: Shading. B: Switch Display. C: 3D View.',
     );
   });
 

@@ -441,7 +441,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
           )}
 
           {phase === 'video' && (
-            <div className="kmti-native-video-controls video-tutorial">
+            <div className={`kmti-native-video-controls video-tutorial ${!isVideoPaused ? 'is-playing' : ''}`}>
               <button onClick={toggleVideoPlayback} title={isVideoPaused ? 'Play' : 'Pause'}>
                 {isVideoPaused ? <Play size={20} fill="currentColor" /> : <Pause size={20} fill="currentColor" />}
               </button>
@@ -517,7 +517,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
 
       <div className="lesson-navigation ivl-navigation">
         {onPrevLesson && (
-          <button className="nav-button" onClick={onPrevLesson}>
+          <button className="nav-button" onClick={onPrevLesson} disabled={phase === 'question'}>
             <ChevronLeft size={18} /> {t('common.previous')}
           </button>
         )}

@@ -438,6 +438,11 @@
   color: #ffffff;
 }
 
+.nav-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .nav-button.next {
   margin-left: auto;
 }

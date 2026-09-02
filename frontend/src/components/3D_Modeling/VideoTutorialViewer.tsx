@@ -104,6 +104,23 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isKnowledgeCheckActive = Boolean(activeQuizId || steps[currentStep]?.quizData);
+
+  useEffect(() => {
+    if (!isKnowledgeCheckActive) return;
+
+    const previousLessonButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(
+      '.foundations-lesson-content-body .lesson-navigation .nav-button:not(.next)'
+    ));
+    const previousDisabledStates = previousLessonButtons.map(button => button.disabled);
+    previousLessonButtons.forEach(button => { button.disabled = true; });
+
+    return () => {
+      previousLessonButtons.forEach((button, index) => {
+        button.disabled = previousDisabledStates[index];
+      });
+    };
+  }, [isKnowledgeCheckActive]);
 
   // Handle precise video rendering area for overlays
   useEffect(() => {
@@ -332,7 +349,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentStep, isPlaying, isFullscreen]);
+  }, [currentStep, isPlaying, isFullscreen, isKnowledgeCheckActive]);
 
   const speakCurrentStep = () => {
     if (activeIntervalRef.current) {
@@ -435,8 +452,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           clearTimeout(activeIntervalRef.current);
           activeIntervalRef.current = null;
         }
-        setCurrentCharIndex(0);
-        if (steps[currentStep].waitForNarrationBeforeVideo && steps[currentStep].videoSrc) {
+        // Keep the final word spotlight visible until the next step starts.
+        // Resetting here briefly restores the step's full-area spotlight.
+        if (steps[currentStep].waitForNarrationBeforeVideo && steps[currentStep].videoSrc && !steps[currentStep].holdVideo) {
           setNarrationCompletedStep(currentStep);
           return;
         }
@@ -541,7 +559,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
 
       textUtterance.onend = () => {
         if (activeIntervalRef.current) clearTimeout(activeIntervalRef.current);
-        setCurrentCharIndex(0);
+        // Keep the final word spotlight visible until the next step starts.
+        // The following step resets the narration position when it begins.
 
         if (steps[currentStep].waitForNarrationBeforeVideo && steps[currentStep].videoSrc) {
           setNarrationCompletedStep(currentStep);
@@ -614,6 +633,8 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   };
 
   const handlePrev = () => {
+    if (isKnowledgeCheckActive) return;
+
     const subIndices = getSubHighlightIndices();
     if (subIndices.length > 0 && currentCharIndex > 0) {
       const prevIndices = subIndices.filter(idx => idx < currentCharIndex);
@@ -756,23 +777,21 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       return currentData.spotlight;
     }
 
-    const text = currentData.text;
-    let startIdx = currentCharIndex;
-    while (startIdx < text.length && text[startIdx] === ' ') {
-      startIdx++;
+    const lowerText = currentData.text.toLowerCase();
+    let latestMatch: { index: number; spotlight: typeof currentData.spotlight } | null = null;
+
+    for (const wordSpotlight of currentData.wordSpotlights) {
+      for (const word of wordSpotlight.words) {
+        const wordIndex = lowerText.indexOf(word.toLowerCase());
+        if (wordIndex <= currentCharIndex && wordIndex >= 0 && (!latestMatch || wordIndex > latestMatch.index)) {
+          latestMatch = { index: wordIndex, spotlight: wordSpotlight.spotlight };
+        }
+      }
     }
 
-    let nextSpace = text.indexOf(' ', startIdx);
-    if (nextSpace === -1) nextSpace = text.length;
-
-    const currentWord = text.substring(startIdx, nextSpace);
-    const cleanWord = currentWord.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase();
-
-    const matched = currentData.wordSpotlights.find(ws =>
-      ws.words.some(w => w.toLowerCase() === cleanWord)
-    );
-
-    return matched ? matched.spotlight : currentData.spotlight;
+    // Hold the latest named-item spotlight through connecting words such as
+    // "and" instead of flashing the full parent area between items.
+    return latestMatch ? latestMatch.spotlight : currentData.spotlight;
   };
 
   const containerClass = isFullscreen ? 'tutorial-viewer-container fullscreen' : 'tutorial-viewer-container inline';
@@ -1255,11 +1274,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       ) : null}
 
       {/* Native-Style Bottom Control Bar */}
-      <div className={`kmti-native-video-controls ${lessonType || 'video-tutorial'}`}>
+      <div className={`kmti-native-video-controls ${lessonType || 'video-tutorial'} ${isPlaying && !isPaused ? 'is-playing' : ''}`}>
         <button onClick={togglePlayback} title={isPlaying && !isPaused ? "Pause" : "Play"}>
           {isPlaying && !isPaused ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
         </button>
-        <button onClick={handlePrev} disabled={currentStep === 0} title="Previous Step">
+        <button onClick={handlePrev} disabled={currentStep === 0 || isKnowledgeCheckActive} title="Previous Step">
           <SkipBack size={18} fill="currentColor" />
         </button>
         <button onClick={currentStep === steps.length - 1 ? handleClose : handleNext} title={currentStep === steps.length - 1 ? "Finish Tutorial" : "Next Step"}>

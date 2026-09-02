@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { torusTutorialSteps } from '../VideoTutorialData/basicOp1TutorialSteps';
 import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration } from '../../../utils/quizNarration';
 
-describe('Create Torus lesson alignment', () => {
-  const videoSteps = torusTutorialSteps.filter((step) => step.videoSrc);
+describe('Torus lesson alignment', () => {
+  const videoSteps = torusTutorialSteps.filter((step) => step.videoSrc && !step.holdVideo);
   const overlays = new Map(
     videoSteps.flatMap((step) => step.overlays ?? []).map((overlay) => [overlay.id, overlay]),
   );
@@ -18,6 +18,7 @@ describe('Create Torus lesson alignment', () => {
 
   it('follows the established shape-lesson sequence', () => {
     expect(torusTutorialSteps.map((step) => step.id)).toEqual([
+      'torus-0-introduction',
       'torus-1-tool-selection',
       'torus-2-front-view',
       'torus-3-command-options',
@@ -29,12 +30,18 @@ describe('Create Torus lesson alignment', () => {
     ]);
   });
 
+  it('shows the tool-selection instruction after the introduction', () => {
+    expect(torusTutorialSteps[0].holdVideo).toBe(true);
+    expect(torusTutorialSteps[0].customText).not.toContain('To begin');
+    expect(torusTutorialSteps[1].customText).toBe('To begin, open Shape Arrangement, then select Torus.');
+  });
+
   it('highlights the source-observed controls and all Item Entry parameters', () => {
     ['torus-shape-arrangement', 'torus-place-torus', 'torus-front-view', 'torus-opt-torus', 'torus-opt-placement',
       'torus-opt-y-orientation', 'torus-item-entry', 'torus-input-section',
       'torus-input-path', 'torus-input-angle', 'torus-input-origin'].forEach((id) => {
-      expect(overlays.get(id)?.type, id).toBe('highlight');
-    });
+        expect(overlays.get(id)?.type, id).toBe('highlight');
+      });
     expect(overlays.has('torus-opt-dimension')).toBe(false);
   });
 

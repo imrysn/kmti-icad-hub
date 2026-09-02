@@ -9,8 +9,8 @@ import {
   buildTutorialStepNarration,
 } from '../../../utils/quizNarration';
 
-describe('Create Polygon video timing', () => {
-  const videoSteps = polygonTutorialSteps.filter((step) => step.videoSrc);
+describe(' Polygon video timing', () => {
+  const videoSteps = polygonTutorialSteps.filter((step) => step.videoSrc && !step.holdVideo);
   const overlays = new Map(
     videoSteps.flatMap((step) => step.overlays ?? []).map((overlay) => [overlay.id, overlay]),
   );
@@ -19,6 +19,12 @@ describe('Create Polygon video timing', () => {
     expect(videoSteps).not.toHaveLength(0);
     expect(videoSteps.every((step) => step.waitForNarrationBeforeVideo)).toBe(true);
     expect(polygonTutorialSteps.every((step) => step.narrateTitle === false)).toBe(true);
+  });
+
+  it('shows the tool-selection instruction after the introduction', () => {
+    expect(polygonTutorialSteps[0].holdVideo).toBe(true);
+    expect(polygonTutorialSteps[0].customText).not.toContain('To begin');
+    expect(polygonTutorialSteps[1].customText).toBe('To begin, open Shape Placement, then select Polygonal Prism.');
   });
 
   it('covers the complete 33.4-second source with contiguous audited segments', () => {
@@ -96,7 +102,7 @@ describe('Create Polygon video timing', () => {
     const originStep = polygonTutorialSteps.find((step) => step.id === 'poly-5-origin')!;
 
     expect(originStep.customText).toBe(
-      'In the Key Entry Area, enter 0, 0, 0 to position the polygonal prism at the model origin.',
+      'In the Key Entry Area, enter 0, 0, 0 to position the polygonal prism at the model origin. Then click Enter.',
     );
     expect(overlays.get('quiz-poly-dimensions')?.endTime).toBeLessThanOrEqual(
       originStep.videoStart ?? -Infinity,
@@ -144,7 +150,7 @@ describe('Create Polygon video timing', () => {
       expect(narration).toContain(data.question);
       expect(narration).toContain('Choose one answer.');
       data.options.forEach((option, index) => {
-        expect(narration).toContain(`Choice ${index + 1}: ${option.text}.`);
+        expect(narration).toContain(`${String.fromCharCode(65 + index)}: ${option.text}.`);
         const feedback = buildAnswerFeedbackNarration(option.isCorrect, option.feedback);
         expect(feedback).not.toMatch(/not quite\.\s*(?:not quite|incorrect)/i);
         if (option.isCorrect) expect(feedback.match(/correct/gi)).toHaveLength(1);

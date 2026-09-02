@@ -1,6 +1,6 @@
 export const buildKnowledgeCheckNarration = (question: string, choices: string[]) => {
   const narratedChoices = choices
-    .map((choice, index) => `Choice ${index + 1}: ${choice}.`)
+    .map((choice, index) => `${String.fromCharCode(65 + index)}: ${choice}.`)
     .join(' ');
 
   return `Now, let's do a knowledge check. ${question} Choose one answer. ${narratedChoices}`.trim();

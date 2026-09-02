@@ -4,7 +4,7 @@ import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration, buildTutori
 describe('Foundations quiz narration standard', () => {
   it('narrates the transition, question, instruction, and every choice in order', () => {
     expect(buildKnowledgeCheckNarration('Which view is correct?', ['Front', 'Top', 'Left']))
-      .toBe("Now, let's do a knowledge check. Which view is correct? Choose one answer. Choice 1: Front. Choice 2: Top. Choice 3: Left.");
+      .toBe("Now, let's do a knowledge check. Which view is correct? Choose one answer. A: Front. B: Top. C: Left.");
   });
 
   it('uses consistent correct and retry feedback', () => {
@@ -32,7 +32,7 @@ describe('Foundations quiz narration standard', () => {
 
     expect(narration).toContain('Which toolbar section is used to switch between Shading and Wireframe displays?');
     expect(narration).not.toContain('tutorial.toolbars.quiz-tb-2.text');
-    expect(narration).toContain('Choice 1: Shading. Choice 2: Switch Display. Choice 3: 3D View.');
+    expect(narration).toContain('A: Shading. B: Switch Display. C: 3D View.');
   });
 
   it('narrates the recap title and every item when recap step text is empty', () => {
@@ -73,7 +73,7 @@ describe('Foundations quiz narration standard', () => {
       'Knowledge Check',
     );
 
-    expect(narration).toBe("Now, let's do a knowledge check. Which toolbar controls the view? Choose one answer. Choice 1: 3D View.");
+    expect(narration).toBe("Now, let's do a knowledge check. Which toolbar controls the view? Choose one answer. A: 3D View.");
     expect(narration.match(/knowledge check/gi)).toHaveLength(1);
   });
 });

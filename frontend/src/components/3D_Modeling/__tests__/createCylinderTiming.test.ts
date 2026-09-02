@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { cylinderOverlayLayout, cylinderTutorialSteps } from '../VideoTutorialData/basicOp1TutorialSteps';
 import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration, buildTutorialStepNarration } from '../../../utils/quizNarration';
 
-describe('Create Cylinder video timing', () => {
+describe('Cylinder video timing', () => {
   it('waits for every step narration before playing its video segment', () => {
     expect(cylinderTutorialSteps).not.toHaveLength(0);
     expect(cylinderTutorialSteps.every((step) => step.waitForNarrationBeforeVideo)).toBe(true);
@@ -15,24 +15,28 @@ describe('Create Cylinder video timing', () => {
 
   it('introduces the cylinder and its CAD uses before the first video segment', () => {
     const introduction = cylinderTutorialSteps[0];
+    const toolSelection = cylinderTutorialSteps[1];
 
     expect(introduction.videoStart).toBe(0);
+    expect(introduction.holdVideo).toBe(true);
     expect(introduction.waitForNarrationBeforeVideo).toBe(true);
     expect(introduction.customText).toContain('A cylinder is a three-dimensional solid');
     expect(introduction.customText).toContain('In CAD, cylinders are commonly used');
     expect(introduction.customText).toContain('Use a cylinder whenever');
+    expect(introduction.customText).not.toContain('To begin');
+    expect(toolSelection.customText).toBe('To begin, open Shape Placement, then select Place Cylinder.');
     expect(introduction.customText).not.toContain('coordinates zero, zero, zero');
-    expect(cylinderTutorialSteps[4].customText).toContain('After the knowledge check');
-    expect(cylinderTutorialSteps[4].customText).toContain('zero, zero, zero');
+    expect(cylinderTutorialSteps.find((step) => step.id === 'cyl-5-origin')?.customText).toContain('After the knowledge check');
+    expect(cylinderTutorialSteps.find((step) => step.id === 'cyl-5-origin')?.customText).toContain('zero, zero, zero');
   });
 
   it('uses the requested concise Item Entry subtitle and narration', () => {
-    expect(cylinderTutorialSteps[3].customText).toBe(
+    expect(cylinderTutorialSteps.find((step) => step.id === 'cyl-4-dimensions')?.customText).toBe(
       'In the Item Entry area, enter the cylinder diameter and height.',
     );
   });
 
-  it('uses the adjustable Create Cylinder Item Entry highlight geometry', () => {
+  it('uses the adjustable Cylinder Item Entry highlight geometry', () => {
     const itemEntryOverlay = cylinderTutorialSteps
       .flatMap((step) => step.overlays ?? [])
       .find((overlay) => overlay.id === 'item-entry');
@@ -48,7 +52,7 @@ describe('Create Cylinder video timing', () => {
   });
 
   it('announces Correct exactly once for the cylinder knowledge check', () => {
-    const correctFeedback = cylinderTutorialSteps[3].overlays
+    const correctFeedback = cylinderTutorialSteps.find((step) => step.id === 'cyl-4-dimensions')?.overlays
       ?.find((overlay) => overlay.id === 'quiz-cyl-1')
       ?.quizData?.options.find((option) => option.isCorrect)?.feedback ?? '';
     const narration = buildAnswerFeedbackNarration(true, correctFeedback);
@@ -121,7 +125,7 @@ describe('Create Cylinder video timing', () => {
 
     expect(
       cylinderTutorialSteps
-        .filter((step) => step.videoSrc)
+        .filter((step) => step.videoSrc && !step.holdVideo)
         .map(({ id, videoStart, videoEnd }) => [id, videoStart, videoEnd]),
     ).toEqual(expectedSegments);
   });

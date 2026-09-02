@@ -45,31 +45,31 @@ export const basicShapeIntroPanels = {
   cylinder: {
     icon: Database,
     eyebrow: 'Interactive view tour',
-    title: 'Create Cylinder',
+    title: 'Cylinder',
     description: 'Take a guided tour of the Cylinder workflow and learn how to select the tool, enter the diameter and height, and position the completed shape accurately.',
   },
   box: {
     icon: Box,
     eyebrow: 'Interactive view tour',
-    title: 'Create Box',
+    title: 'Box',
     description: 'Take a guided tour of the Box workflow and learn how to enter width, depth, and height before positioning the completed shape accurately.',
   },
   polygon: {
     icon: Hexagon,
     eyebrow: 'Interactive view tour',
-    title: 'Create Polygonal Prism',
+    title: ' Polygonal Prism',
     description: 'Take a guided tour of the Polygonal Prism workflow and learn how the number of sides, path diameter, and height define the completed shape.',
   },
   cone: {
     icon: Triangle,
     eyebrow: 'Interactive view tour',
-    title: 'Create Cone',
+    title: 'Cone',
     description: 'Take a guided tour of the Cone workflow and learn how the base diameter, top face diameter, and height define the completed shape.',
   },
   torus: {
     icon: Donut,
     eyebrow: 'Interactive view tour',
-    title: 'Create Torus',
+    title: 'Torus',
     description: 'Take a guided tour of the Torus workflow and learn how section diameter, path radius, and turn angle define the completed shape.',
   },
 } as const;
@@ -312,16 +312,16 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const { t } = useTranslation();
   const { containerRef, registerText } = useLessonCore(subLessonId);
 
-  
+
 
   const mapSteps = React.useCallback((steps: any[], shapeId: string) => {
     return steps.map(s => {
       const stepNum = s.id.split('-')[1];
       const stepKey = stepNum === '0' ? 'intro' : (stepNum === (steps.length - 1).toString() ? 'outro' : `step${stepNum}`);
-      return { 
-        ...s, 
-        title: s.customTitle || t(`basicOp.${shapeId}.title`), 
-        text: s.customText || t(`basicOp.${shapeId}.${stepKey}`) 
+      return {
+        ...s,
+        title: s.customTitle || t(`basicOp.${shapeId}.title`),
+        text: s.customText || t(`basicOp.${shapeId}.${stepKey}`)
       };
     });
   }, [t]);
@@ -337,7 +337,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
 
-  
+
 
   const handleNext = () => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
@@ -351,80 +351,80 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   return (
     <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
-        {activeTab === 'cylinder' && (
-          <div className="tab-content fade-in">
-            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cylinder.title} description={basicShapeIntroPanels.cylinder.description} steps={mapSteps(cylinderTutorialSteps, 'cylinder').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
-            </FoundationsVideoReadingLayout>
+      {activeTab === 'cylinder' && (
+        <div className="tab-content fade-in">
+          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cylinder.title} description={basicShapeIntroPanels.cylinder.description} steps={mapSteps(cylinderTutorialSteps, 'cylinder').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
+          </FoundationsVideoReadingLayout>
 
-            <div className="lesson-navigation">
-              {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
-              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
-            </div>
+          <div className="lesson-navigation">
+            {onPrevLesson && (
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
+            <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
           </div>
-        )}
+        </div>
+      )}
 
-        {activeTab === 'box' && (
-          <div className="tab-content fade-in">
-            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.box.title} description={basicShapeIntroPanels.box.description} steps={mapSteps(boxTutorialSteps, 'box').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
-            </FoundationsVideoReadingLayout>
+      {activeTab === 'box' && (
+        <div className="tab-content fade-in">
+          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.box.title} description={basicShapeIntroPanels.box.description} steps={mapSteps(boxTutorialSteps, 'box').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
+          </FoundationsVideoReadingLayout>
 
-            <div className="lesson-navigation">
-              {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
-              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
-            </div>
+          <div className="lesson-navigation">
+            {onPrevLesson && (
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
+            <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
           </div>
-        )}
+        </div>
+      )}
 
-        {activeTab === 'polygon' && (
-          <div className="tab-content fade-in">
-            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.polygon.title} description={basicShapeIntroPanels.polygon.description} steps={mapSteps(polygonTutorialSteps, 'polygon').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
-            </FoundationsVideoReadingLayout>
+      {activeTab === 'polygon' && (
+        <div className="tab-content fade-in">
+          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.polygon.title} description={basicShapeIntroPanels.polygon.description} steps={mapSteps(polygonTutorialSteps, 'polygon').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+          </FoundationsVideoReadingLayout>
 
-            <div className="lesson-navigation">
-              {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
-              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
-            </div>
+          <div className="lesson-navigation">
+            {onPrevLesson && (
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
+            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
           </div>
-        )}
+        </div>
+      )}
 
-        {activeTab === 'cone' && (
-          <div className="tab-content fade-in">
-            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cone.title} description={basicShapeIntroPanels.cone.description} steps={mapSteps(coneTutorialSteps, 'cone').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
-            </FoundationsVideoReadingLayout>
+      {activeTab === 'cone' && (
+        <div className="tab-content fade-in">
+          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cone.title} description={basicShapeIntroPanels.cone.description} steps={mapSteps(coneTutorialSteps, 'cone').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
+          </FoundationsVideoReadingLayout>
 
-            <div className="lesson-navigation">
-              {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
-              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
-            </div>
+          <div className="lesson-navigation">
+            {onPrevLesson && (
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
+            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
           </div>
-        )}
+        </div>
+      )}
 
-        {activeTab === 'torus' && (
-          <div className="tab-content fade-in">
-            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.torus.title} description={basicShapeIntroPanels.torus.description} steps={mapSteps(torusTutorialSteps, 'torus').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
-            </FoundationsVideoReadingLayout>
+      {activeTab === 'torus' && (
+        <div className="tab-content fade-in">
+          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.torus.title} description={basicShapeIntroPanels.torus.description} steps={mapSteps(torusTutorialSteps, 'torus').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
+          </FoundationsVideoReadingLayout>
 
-            <div className="lesson-navigation">
-              {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
-              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
-            </div>
+          <div className="lesson-navigation">
+            {onPrevLesson && (
+              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+            )}
+            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
@@ -434,7 +434,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
-  
+
 
   const moveSteps = [
     t('basicOp2.move.step1'),
@@ -490,7 +490,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     return map[tab] ?? deleteSteps;
   };
 
-  
+
 
   const handleNext = () => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
@@ -521,7 +521,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       const currentSteps = getSteps(activeTab as Op2Tab);
       const stepsLength = 3 + currentSteps.length;
       if (lastIndexRef.current === stepsLength - 1) {
-        if (false) {}
+        if (false) { }
       }
     }
     wasSpeakingRef.current = isSpeaking;
@@ -554,7 +554,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      
+
 
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
@@ -645,8 +645,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -731,8 +731,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -803,8 +803,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -877,8 +877,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -910,8 +910,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -942,8 +942,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -994,8 +994,8 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1010,7 +1010,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
-  
+
 
   const sketchSteps = [
     t('basicOp3.sketch.step1'),
@@ -1032,7 +1032,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     t('basicOp3.revolve.step3')
   ];
 
-  
+
 
   const handleNext = () => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
@@ -1068,7 +1068,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         ? 2 + sketchSteps.length
         : 2 + (activeTab === 'extrude' ? extrudeSteps.length : revolveSteps.length);
       if (lastIndexRef.current === stepsLength - 1) {
-        if (false) {}
+        if (false) { }
       }
     }
     wasSpeakingRef.current = isSpeaking;
@@ -1106,7 +1106,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      
+
 
       <section className="lesson-intro">
         {activeTab === 'sketch' ? (
@@ -1186,8 +1186,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1282,8 +1282,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1360,8 +1360,8 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1379,7 +1379,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const { t } = useTranslation();
   const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
 
-  
+
 
   const showHideSteps = [
     t('basicOp4.showHide.title1'),
@@ -1414,7 +1414,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     t('basicOp4.resize.step3')
   ];
 
-  
+
 
   const handleNext = () => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
@@ -1443,7 +1443,7 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      
+
 
       {activeTab === 'showHide' && (
         <section className="lesson-intro">
@@ -1665,8 +1665,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1788,8 +1788,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1864,8 +1864,8 @@ const BasicOperation4: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>
@@ -1881,10 +1881,10 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   // Note: speak and stop are not used in this component's single-tab layout.
   const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex } = useLessonCore(subLessonId);
 
-  
 
 
-  
+
+
 
   return (
     <div className={`course-lesson-container`} ref={containerRef}>
@@ -1892,7 +1892,7 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      
+
 
       <section className="lesson-intro">
         <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
@@ -2000,8 +2000,8 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
             <div className="lesson-navigation">
               {onPrevLesson && (
-  <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('common.previous')}</button>
-)}
+                <button className="nav-button" onClick={onPrevLesson}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
               <button className="nav-button next" onClick={onNextLesson}>{nextLabel || t('common.next')} <ChevronRight size={18} /></button>
             </div>
           </div>

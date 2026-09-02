@@ -6,7 +6,7 @@ import vidTorus from '../../../assets/3D_Video_Tutorial/basicOp_torus.mp4';
 import { TutorialStep } from '../VideoTutorialViewer';
 
 /**
- * Create Cylinder overlay geometry uses normalized video coordinates.
+ * Cylinder overlay geometry uses normalized video coordinates.
  * Adjust x/y to move the highlight and width/height to resize it.
  */
 export const cylinderOverlayLayout = {
@@ -18,27 +18,43 @@ export const cylinderOverlayLayout = {
   },
 };
 
-/** Create Box overlay geometry, isolated from the other basic-shape lessons. */
+/** Box overlay geometry, isolated from the other basic-shape lessons. */
 export const boxOverlayLayout = {
   itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
 };
 
-/** Create Polygon overlay geometry, isolated from the other basic-shape lessons. */
+/**  Polygon overlay geometry, isolated from the other basic-shape lessons. */
 export const polygonOverlayLayout = {
   itemEntryArea: { x: 0.07, y: 0.945, width: 0.23, height: 0.032 },
 };
 
-/** Create Cone overlay geometry, isolated from the other basic-shape lessons. */
+/** Cone overlay geometry, isolated from the other basic-shape lessons. */
 export const coneOverlayLayout = {
   itemEntryArea: { x: 0.07, y: 0.945, width: 0.31, height: 0.032 },
 };
 
 export const cylinderTutorialSteps: TutorialStep[] = [
   {
+    id: "cyl-0-introduction",
+    title: "Cylinder Introduction",
+    text: "",
+    customText: "A cylinder is a three-dimensional solid with two parallel circular faces joined by a curved surface. In CAD, cylinders are commonly used as starting geometry for shafts, pins, rollers, bosses, and cylindrical holes. Use a cylinder whenever a component or feature has a consistent circular profile along its height.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCylinder,
+    videoStart: 0,
+    videoEnd: 3.25,
+    holdVideo: true,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+  },
+  {
     id: "cyl-1-tool-selection",
     title: "Select the Cylinder Tool",
     text: "",
-    customText: "A cylinder is a three-dimensional solid with two parallel circular faces joined by a curved surface. In CAD, cylinders are commonly used as starting geometry for shafts, pins, rollers, bosses, and cylindrical holes. Use a cylinder whenever a component or feature has a consistent circular profile along its height. To begin, open Shape Placement, then select Place Cylinder.",
+    customText: "To begin, open Shape Placement, then select Place Cylinder.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -130,7 +146,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     id: "cyl-5-origin",
     title: "Position the Cylinder",
     text: "",
-    customText: "After the knowledge check, enter the coordinates for the cylinder position. Enter zero, zero, zero to place the cylinder at the model origin.",
+    customText: "After the knowledge check, enter the coordinates for the cylinder position. Enter zero, zero, zero to place the cylinder at the model origin. Then click Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -216,7 +232,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
   },
   {
     id: "cyl-8-recap",
-    title: "Create Cylinder Recap",
+    title: "Cylinder Recap",
     text: "",
     customText: "Let's review. You selected Shape Placement and the Cylinder tool. You specified the cylinder diameter and height in the Item Entry area. After the knowledge check, you entered zero, zero, zero to position the cylinder at the model origin.",
     zoom: "scale(1)",
@@ -226,7 +242,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Create Cylinder Complete",
+      title: "Cylinder Complete",
       items: [
         "Selected Shape Placement and the Cylinder tool.",
         "Entered the cylinder diameter and height.",
@@ -238,10 +254,26 @@ export const cylinderTutorialSteps: TutorialStep[] = [
 
 export const boxTutorialSteps: TutorialStep[] = [
   {
+    id: "box-0-introduction",
+    title: "Box Introduction",
+    text: "",
+    customText: "A box, also called a rectangular solid, is a three-dimensional solid with six rectangular faces. In CAD, boxes are commonly used as starting geometry for blocks, plates, housings, bases, and other rectangular components. Use a box when a component has defined width, depth, and height.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidBox,
+    videoStart: 0,
+    videoEnd: 2.233,
+    holdVideo: true,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+  },
+  {
     id: "box-1-shape-placement",
     title: "Select Shape Placement",
     text: "",
-    customText: "A box, also called a rectangular solid, is a three-dimensional solid with six rectangular faces. In CAD, boxes are commonly used as starting geometry for blocks, plates, housings, bases, and other rectangular components. Use a box when a component has defined width, depth, and height. To begin, open Shape Placement.",
+    customText: "To begin, open Shape Placement.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -391,7 +423,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     id: "box-8-origin",
     title: "Position the Box",
     text: "",
-    customText: "After the knowledge check, enter 0, 0, 0 in the Item Entry area to position the rectangular solid at the model origin.",
+    customText: "After the knowledge check, enter 0, 0, 0 in the Item Entry area to position the rectangular solid at the model origin. Then click Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -402,21 +434,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     videoStart: 25.0,
     videoEnd: 29.883,
     overlays: [
-      { id: "box-input-coords", type: "highlight", startTime: 29.167, endTime: 29.883, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" },
-      {
-        id: "quiz-box-origin",
-        type: "quiz",
-        startTime: 29.383,
-        endTime: 29.883,
-        quizData: {
-          question: "What coordinates are used to position the rectangular solid at the origin in this lesson?",
-          options: [
-            { text: "0 0 0", isCorrect: true, feedback: "Correct! Zero, zero, zero represents the model origin." },
-            { text: "100 100 0", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." },
-            { text: "50 50 50", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." }
-          ]
-        }
-      }
+      { id: "box-input-coords", type: "highlight", startTime: 29.167, endTime: 29.883, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" }
     ]
   },
   {
@@ -432,7 +450,23 @@ export const boxTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     videoStart: 29.883,
-    videoEnd: 33.017
+    videoEnd: 33.017,
+    overlays: [
+      {
+        id: "quiz-box-origin",
+        type: "quiz",
+        startTime: 32.517,
+        endTime: 33.017,
+        quizData: {
+          question: "What coordinates are used to position the rectangular solid at the origin in this lesson?",
+          options: [
+            { text: "0 0 0", isCorrect: true, feedback: "Correct! Zero, zero, zero represents the model origin." },
+            { text: "100 100 0", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." },
+            { text: "50 50 50", isCorrect: false, feedback: "Zero, zero, zero represents the model origin." }
+          ]
+        }
+      }
+    ]
   },
   {
     id: "box-10-explain",
@@ -493,7 +527,7 @@ export const boxTutorialSteps: TutorialStep[] = [
   },
   {
     id: "box-11-recap",
-    title: "Create Box Recap",
+    title: "Box Recap",
     text: "",
     customText: "Let's review. You selected Shape Placement and the Box tool, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the width, depth, and height, and used zero, zero, zero to position the rectangular solid at the model origin.",
     zoom: "scale(1)",
@@ -503,7 +537,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Create Box Complete",
+      title: "Box Complete",
       items: [
         "Selected Shape Placement and the Box tool.",
         "Selected Front View and Y Orientation.",
@@ -516,10 +550,26 @@ export const boxTutorialSteps: TutorialStep[] = [
 
 export const polygonTutorialSteps: TutorialStep[] = [
   {
+    id: "poly-0-introduction",
+    title: "Polygonal Prism Introduction",
+    text: "",
+    customText: "A polygonal prism is a three-dimensional solid with matching polygon-shaped faces connected by rectangular sides. In CAD, it is useful for creating hexagonal bosses, multi-sided shafts, nuts, and other prismatic parts.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidPolygon,
+    videoStart: 0,
+    videoEnd: 4.8,
+    holdVideo: true,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+  },
+  {
     id: "poly-1-tool-selection",
     title: "Select Polygonal Prism",
     text: "",
-    customText: "A polygonal prism is a three-dimensional solid with matching polygon-shaped faces connected by rectangular sides. In CAD, it is useful for creating hexagonal bosses, multi-sided shafts, nuts, and other prismatic parts. To begin, open Shape Placement, then select Polygonal Prism.",
+    customText: "To begin, open Shape Placement, then select Polygonal Prism.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -626,7 +676,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
     id: "poly-5-origin",
     title: "Position the Polygonal Prism",
     text: "",
-    customText: "In the Key Entry Area, enter 0, 0, 0 to position the polygonal prism at the model origin.",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the polygonal prism at the model origin. Then click Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -725,7 +775,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
   },
   {
     id: "poly-8-recap",
-    title: "Create Polygon Recap",
+    title: " Polygon Recap",
     text: "",
     customText: "Let's review. You selected Front View and Polygonal Prism, confirmed the Command Menu settings, entered the number of sides, path diameter, and height, and used zero, zero, zero to position the polygonal prism at the model origin.",
     zoom: "scale(1)",
@@ -735,7 +785,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Create Polygon Complete",
+      title: " Polygon Complete",
       items: [
         "Selected Front View and Polygonal Prism.",
         "Confirmed the required Command Menu settings.",
@@ -748,10 +798,26 @@ export const polygonTutorialSteps: TutorialStep[] = [
 
 export const coneTutorialSteps: TutorialStep[] = [
   {
+    id: "cone-0-introduction",
+    title: "Cone Introduction",
+    text: "",
+    customText: "A cone is a three-dimensional solid with a circular base that tapers toward a smaller top face or a point. In CAD, cones are useful for tapered components, reducers, funnels, nozzles, and conical features.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidCone,
+    videoStart: 0,
+    videoEnd: 3.25,
+    holdVideo: true,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+  },
+  {
     id: "cone-1-tool-selection",
     title: "Select the Cone Tool",
     text: "",
-    customText: "A cone is a three-dimensional solid with a circular base that tapers toward a smaller top face or a point. In CAD, cones are useful for tapered components, reducers, funnels, nozzles, and conical features. To begin, open Shape Arrangement, then select Cone.",
+    customText: "To begin, open Shape Arrangement, then select Cone.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -857,7 +923,7 @@ export const coneTutorialSteps: TutorialStep[] = [
     id: "cone-5-origin",
     title: "Position the Cone",
     text: "",
-    customText: "In the Key Entry Area, enter 0, 0, 0 to position the cone at the model origin.",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the cone at the model origin. Then click Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -923,7 +989,7 @@ export const coneTutorialSteps: TutorialStep[] = [
   },
   {
     id: "cone-8-recap",
-    title: "Create Cone Recap",
+    title: "Cone Recap",
     text: "",
     customText: "Let's review. You opened Shape Arrangement and selected Cone, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the base diameter, top face diameter, and height, and used zero, zero, zero to position the cone at the model origin.",
     zoom: "scale(1)",
@@ -933,7 +999,7 @@ export const coneTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Create Cone Complete",
+      title: "Cone Complete",
       items: [
         "Opened Shape Arrangement and selected the Cone tool.",
         "Selected Front View and Y Orientation.",
@@ -946,10 +1012,26 @@ export const coneTutorialSteps: TutorialStep[] = [
 
 export const torusTutorialSteps: TutorialStep[] = [
   {
+    id: "torus-0-introduction",
+    title: "Torus Introduction",
+    text: "",
+    customText: "A torus is a three-dimensional ring-shaped solid formed by revolving a circular profile around an axis. In CAD, it is useful for creating rings, seals, curved pipes, and similar components.",
+    zoom: "scale(1)",
+    origin: "center",
+    spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
+    subtitlePos: { top: "82%", left: "50%", transform: "translateX(-50%)" },
+    videoSrc: vidTorus,
+    videoStart: 0,
+    videoEnd: 3.25,
+    holdVideo: true,
+    waitForNarrationBeforeVideo: true,
+    narrateTitle: false,
+  },
+  {
     id: "torus-1-tool-selection",
     title: "Select the Torus Tool",
     text: "",
-    customText: "A torus is a three-dimensional ring-shaped solid formed by revolving a circular profile around an axis. In CAD, it is useful for creating rings, seals, curved pipes, and similar components. To begin, open Shape Arrangement, then select Torus.",
+    customText: "To begin, open Shape Arrangement, then select Torus.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -1055,7 +1137,7 @@ export const torusTutorialSteps: TutorialStep[] = [
     id: "torus-5-origin",
     title: "Position the Torus",
     text: "",
-    customText: "In the Key Entry Area, enter 0, 0, 0 to position the torus at the model origin.",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the torus at the model origin. Then click Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -1121,7 +1203,7 @@ export const torusTutorialSteps: TutorialStep[] = [
   },
   {
     id: "torus-8-recap",
-    title: "Create Torus Recap",
+    title: "Torus Recap",
     text: "",
     customText: "Let's review. You selected the Torus tool, selected Front View, confirmed the Command Menu settings and Y Orientation, entered the section diameter, path radius, and turn angle, and used zero, zero, zero to position the torus at the model origin.",
     zoom: "scale(1)",
@@ -1131,7 +1213,7 @@ export const torusTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Create Torus Complete",
+      title: "Torus Complete",
       items: [
         "Selected the Torus tool and Front View.",
         "Confirmed the Command Menu settings and Y Orientation.",

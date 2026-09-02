@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { coneOverlayLayout, coneTutorialSteps } from '../VideoTutorialData/basicOp1TutorialSteps';
 import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration } from '../../../utils/quizNarration';
 
-describe('Create Cone lesson alignment', () => {
-  const videoSteps = coneTutorialSteps.filter((step) => step.videoSrc);
+describe('Cone lesson alignment', () => {
+  const videoSteps = coneTutorialSteps.filter((step) => step.videoSrc && !step.holdVideo);
   const overlays = new Map(
     videoSteps.flatMap((step) => step.overlays ?? []).map((overlay) => [overlay.id, overlay]),
   );
@@ -21,6 +21,7 @@ describe('Create Cone lesson alignment', () => {
 
   it('follows the established shape-lesson sequence', () => {
     expect(coneTutorialSteps.map((step) => step.id)).toEqual([
+      'cone-0-introduction',
       'cone-1-tool-selection',
       'cone-2-front-view',
       'cone-3-command-options',
@@ -30,6 +31,12 @@ describe('Create Cone lesson alignment', () => {
       'cone-7-explain',
       'cone-8-recap',
     ]);
+  });
+
+  it('shows the tool-selection instruction after the introduction', () => {
+    expect(coneTutorialSteps[0].holdVideo).toBe(true);
+    expect(coneTutorialSteps[0].customText).not.toContain('To begin');
+    expect(coneTutorialSteps[1].customText).toBe('To begin, open Shape Arrangement, then select Cone.');
   });
 
   it('highlights every command setting and parameter named by the subtitle', () => {

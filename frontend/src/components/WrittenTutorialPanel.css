@@ -27,9 +27,12 @@
 }
 
 .written-tutorial-panel__header {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.8rem;
+  row-gap: 0.2rem;
+  align-content: center;
   min-height: 88px;
   padding: 1.1rem 1.25rem;
   border-bottom: 1px solid var(--border-color);
@@ -37,10 +40,15 @@
   background: var(--bg-card);
 }
 
+.written-tutorial-panel__header-icon {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+}
 .written-tutorial-panel__header h3,
 .written-tutorial-panel__header p { margin: 0; }
-.written-tutorial-panel__header h3 { color: var(--text-main); font-size: 1.2rem; line-height: 1.25; }
-.written-tutorial-panel__module-label { display: block; margin-bottom: 0.2rem; color: var(--color-primary); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.written-tutorial-panel__header h3 { grid-column: 2; grid-row: 2; color: var(--text-main); font-size: 15.2px; font-weight: 600; line-height: 1.4; }
+.written-tutorial-panel__module-label { grid-column: 2; grid-row: 1; display: block; color: var(--color-primary); font-size: 13.12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 
 .written-tutorial-panel__content {
   height: calc(100% - 88px);
@@ -49,13 +57,6 @@
   scrollbar-width: thin;
 }
 
-.written-tutorial-panel__introduction { margin-bottom: 1.1rem; }
-.written-tutorial-panel__section-heading { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.45rem; color: var(--color-primary); }
-.written-tutorial-panel__section-heading h4 { margin: 0; color: var(--text-main); font-size: 0.88rem; }
-.written-tutorial-panel__introduction p { margin: 0 0 0.4rem; color: var(--text-muted); font-size: 0.86rem; line-height: 1.45; }
-.written-tutorial-panel__goal { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0.65rem; margin-bottom: 1.1rem; padding: 0.85rem; border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent); border-radius: 10px; color: var(--color-primary); background: color-mix(in srgb, var(--color-primary) 7%, var(--bg-card)); }
-.written-tutorial-panel__goal h4 { margin: 0 0 0.25rem; color: var(--color-primary); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.written-tutorial-panel__goal p { margin: 0; color: var(--text-main); font-size: 0.86rem; line-height: 1.45; }
 .written-tutorial-panel__section-title { margin: 0 0 0.8rem; color: var(--text-main); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .written-tutorial-panel__steps { display: grid; gap: 0.8rem; margin: 0; padding: 0; list-style: none; }
 .written-tutorial-panel__step { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 0.75rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border-color); }

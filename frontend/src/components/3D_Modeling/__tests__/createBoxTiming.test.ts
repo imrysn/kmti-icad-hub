@@ -6,7 +6,7 @@ import {
   buildTutorialStepNarration,
 } from '../../../utils/quizNarration';
 
-describe('Create Box video timing', () => {
+describe('Box video timing', () => {
   const overlays = new Map(
     boxTutorialSteps.flatMap((step) => step.overlays ?? []).map((overlay) => [overlay.id, overlay]),
   );
@@ -25,6 +25,8 @@ describe('Create Box video timing', () => {
     expect(introduction.customText).toContain('six rectangular faces');
     expect(introduction.customText).toContain('In CAD, boxes are commonly used');
     expect(introduction.customText).toContain('width, depth, and height');
+    expect(introduction.customText).not.toContain('To begin');
+    expect(boxTutorialSteps[1].customText).toBe('To begin, open Shape Placement.');
     expect(introduction.customText).not.toContain('zero, zero, zero');
   });
 
@@ -44,7 +46,7 @@ describe('Create Box video timing', () => {
 
     expect(
       boxTutorialSteps
-        .filter((step) => step.videoSrc)
+        .filter((step) => step.videoSrc && !step.holdVideo)
         .map(({ id, videoStart, videoEnd }) => [id, videoStart, videoEnd]),
     ).toEqual(expectedSegments);
   });
@@ -115,7 +117,7 @@ describe('Create Box video timing', () => {
     }
   });
 
-  it('uses adjustable, normalized Create Box Item Entry geometry', () => {
+  it('uses adjustable, normalized Box Item Entry geometry', () => {
     expect(overlays.get('box-item-entry')?.target).toEqual(boxOverlayLayout.itemEntryArea);
 
     const { x, y, width, height } = boxOverlayLayout.itemEntryArea;
@@ -135,6 +137,17 @@ describe('Create Box video timing', () => {
     expect(overlays.get('quiz-box-dimensions')?.endTime).toBeLessThanOrEqual(originStep.videoStart!);
   });
 
+  it('shows the origin knowledge check after the result subtitle', () => {
+    const resultStep = boxTutorialSteps.find((step) => step.id === 'box-9-result')!;
+    const originQuiz = overlays.get('quiz-box-origin');
+
+    expect(resultStep.customText).toBe(
+      'The rectangular solid is now created using the specified width, depth, height, and origin position.',
+    );
+    expect(originQuiz?.startTime).toBeGreaterThan(resultStep.videoStart!);
+    expect(originQuiz?.endTime).toBeLessThanOrEqual(resultStep.videoEnd!);
+  });
+
   it('narrates all Box quizzes, choices, and feedback without duplicate result words', () => {
     const quizzes = boxTutorialSteps
       .flatMap((step) => step.overlays ?? [])
@@ -150,7 +163,7 @@ describe('Create Box video timing', () => {
       expect(questionNarration).toContain(data.question);
       expect(questionNarration).toContain('Choose one answer.');
       data.options.forEach((option, index) => {
-        expect(questionNarration).toContain(`Choice ${index + 1}: ${option.text}.`);
+        expect(questionNarration).toContain(`${String.fromCharCode(65 + index)}: ${option.text}.`);
 
         const feedbackNarration = buildAnswerFeedbackNarration(option.isCorrect, option.feedback);
         expect(feedbackNarration).not.toMatch(/not quite\.\s*(?:not quite|incorrect)/i);

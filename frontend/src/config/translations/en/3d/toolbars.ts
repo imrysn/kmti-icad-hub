@@ -6,7 +6,7 @@ export const en_3d_toolbars = {
   "tutorial.toolbars.switch-display.title": "Switch Display",
   "tutorial.toolbars.switch-display.text": "Contains Change Projection Method, Switch Dimensions.",
   "tutorial.toolbars.user-views.title": "User View",
-  "tutorial.toolbars.user-views.text": "Contains User View 1, 2, 3, 4 (User ViewS).",
+  "tutorial.toolbars.user-views.text": "Contains User View 1, 2, 3, 4 (User Views).",
   "tutorial.toolbars.screen-ops.title": "Screen Operations",
   "tutorial.toolbars.screen-ops.text": "Contains Set Zoom Area, Zoom In/Out, Zoom to Fit, Re-Display, Previous Zoom.",
   "tutorial.toolbars.edit.title": "Edit",

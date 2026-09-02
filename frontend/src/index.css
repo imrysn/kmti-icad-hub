@@ -727,7 +727,14 @@ textarea:disabled {
   z-index: 100;
   color: white;
   font-family: sans-serif;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Keep lower subtitles and workspace fields visible during iCAD Foundations
+   playback. The invisible control bar remains the hover target, so controls
+   appear only when the pointer reaches their bottom-screen position. */
+.kmti-native-video-controls.video-tutorial.is-playing:not(:hover):not(:focus-within) {
+  opacity: 0;
 }
 
 .kmti-native-video-controls button {

@@ -5,6 +5,7 @@ export const TOOLBAR_TUTORIAL_STEPS: TutorialStep[] = [
     id: "intro",
     title: "Tool Bars Overview",
     text: "Welcome to the Tool Bars tutorial! In this guide, we will walk through the various quick-access menus at the top of the workspace and explore what each section does.",
+    narrateTitle: false,
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -31,7 +32,7 @@ export const TOOLBAR_TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: "user-views",
     title: "User View",
-    text: "Contains User View 1, 2, 3, 4 (User ViewS).",
+    text: "Contains User View 1, 2, 3, 4 (User Views).",
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "3.3%", left: "17%", width: "6.3%", height: "3.8%", opacity: 1 },

@@ -371,11 +371,11 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     id: 'module-basic-shapes',
     title: 'Creating Basic Shapes',
     children: [
-      { id: 'basic-op-cylinder', title: 'Create Cylinder', content: [] },
-      { id: 'basic-op-box', title: 'Create Box', content: [] },
-      { id: 'basic-op-polygon', title: 'Create Polygon', content: [] },
-      { id: 'basic-op-cone', title: 'Create Cone', content: [] },
-      { id: 'basic-op-torus', title: 'Create Torus', content: [] }
+      { id: 'basic-op-cylinder', title: 'Cylinder', content: [] },
+      { id: 'basic-op-box', title: 'Box', content: [] },
+      { id: 'basic-op-polygon', title: ' Polygon', content: [] },
+      { id: 'basic-op-cone', title: 'Cone', content: [] },
+      { id: 'basic-op-torus', title: 'Torus', content: [] }
     ]
   },
   {

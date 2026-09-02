@@ -34,7 +34,7 @@ When creating or modifying an interactive lesson configuration (e.g., `TutorialS
 - **Requirement**: The `kmti-native-video-controls` component must adapt its styling depending on the type of lesson being viewed.
 - **Implementation**: 
     - **Step-by-Step Tutorial Lesson**: Use the native video controls styling found in the "Understanding the iCAD Screen" module.
-    - **Video Tutorial Lesson**: Use the native video controls styling found in the "Create Box" lesson.
+    - **Video Tutorial Lesson**: Use the native video controls styling found in the "Box" lesson.
 
 ## 8. Quiz Narration Sequence
 - **Requirement**: Every knowledge check must be fully understandable without relying only on visible text.

@@ -108,7 +108,7 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
         );
         expect(quizNarration).toContain('Choose one answer.');
         step.quizData.options.forEach((option, index) => {
-          expect(quizNarration).toContain(`Choice ${index + 1}: ${option.text}.`);
+          expect(quizNarration).toContain(`${String.fromCharCode(65 + index)}: ${option.text}.`);
           const feedback = buildAnswerFeedbackNarration(option.isCorrect, option.feedback);
           const request = parseNarrationUrl(buildFoundationsNarrationUrl(feedback));
           expect(request.searchParams.get('voice')).toBe('openai://nova');

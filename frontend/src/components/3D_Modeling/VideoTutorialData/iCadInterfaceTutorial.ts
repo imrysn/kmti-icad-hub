@@ -4,7 +4,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 0,
     title: "iCAD Interface",
-    text: "Open iCAD\nLaunch iCAD on your computer.\nWait until the main workspace is fully displayed.",
+    text: "Welcome to this iCAD interface tutorial. Today, we'll walk through the workspace, which is divided into several key functional areas designed for maximum modeling efficiency.",
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -13,7 +13,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 1,
     title: "Navigation and Commands",
-    text: "Look at the Main Screen\nBefore clicking anything, familiarize yourself with the interface.\nLocate the following areas:",
+    text: "As we move through this guide, we'll highlight the specific purpose of the command menus, the hierarchical tree view, and the primary 3D viewport where your designs come to life.",
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },

@@ -630,7 +630,7 @@
   letter-spacing: -0.02em;
 }
 
-.learner-sidebar-brand > .sidebar-course-title {
+.learner-sidebar-brand>.sidebar-course-title {
   min-width: 0;
   flex: 1 1 auto;
   overflow: hidden;
@@ -687,8 +687,8 @@
 }
 
 .course-sidebar:not(.open) .learner-sidebar-brand img,
-.course-sidebar:not(.open) .learner-sidebar-brand > .sidebar-course-title,
-.course-sidebar:not(.open) .learner-sidebar-brand-actions > .sidebar-search-wrapper {
+.course-sidebar:not(.open) .learner-sidebar-brand>.sidebar-course-title,
+.course-sidebar:not(.open) .learner-sidebar-brand-actions>.sidebar-search-wrapper {
   display: none;
 }
 
@@ -708,7 +708,7 @@
   object-fit: contain;
 }
 
-.course-sidebar:not(.open) .close-sidebar-btn > svg {
+.course-sidebar:not(.open) .close-sidebar-btn>svg {
   display: none;
 }
 
@@ -716,7 +716,7 @@
   display: none;
 }
 
-.course-sidebar:not(.open) .close-sidebar-btn:hover > svg {
+.course-sidebar:not(.open) .close-sidebar-btn:hover>svg {
   display: block;
 }
 
@@ -875,9 +875,9 @@
   gap: 0.65rem;
 }
 
-.learner-account-menu-summary > div,
-.learner-account-menu-item > span,
-.learner-billing-summary > span {
+.learner-account-menu-summary>div,
+.learner-account-menu-item>span,
+.learner-billing-summary>span {
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -886,10 +886,17 @@
 
 .learner-account-menu-summary strong,
 .learner-account-menu-item strong,
-.learner-billing-summary strong { font-size: 0.76rem; color: var(--text-main); }
+.learner-billing-summary strong {
+  font-size: 0.76rem;
+  color: var(--text-main);
+}
+
 .learner-account-menu-summary small,
 .learner-account-menu-item small,
-.learner-billing-summary small { font-size: 0.63rem; color: var(--text-muted); }
+.learner-billing-summary small {
+  font-size: 0.63rem;
+  color: var(--text-muted);
+}
 
 .learner-account-menu-divider {
   height: 1px;
@@ -912,10 +919,21 @@
   text-align: left;
 }
 
-button.learner-account-menu-item { cursor: pointer; }
-button.learner-account-menu-item:hover { background: color-mix(in srgb, var(--text-main) 7%, transparent); }
-.learner-account-menu-item.plan-item { cursor: default; }
-.learner-account-menu-item > .rotated { transform: rotate(90deg); }
+button.learner-account-menu-item {
+  cursor: pointer;
+}
+
+button.learner-account-menu-item:hover {
+  background: color-mix(in srgb, var(--text-main) 7%, transparent);
+}
+
+.learner-account-menu-item.plan-item {
+  cursor: default;
+}
+
+.learner-account-menu-item>.rotated {
+  transform: rotate(90deg);
+}
 
 .learner-account-settings {
   margin: 0.15rem 0.35rem 0.4rem 1.9rem;
@@ -984,7 +1002,7 @@ button.learner-account-menu-item:hover { background: color-mix(in srgb, var(--te
   background: color-mix(in srgb, var(--text-main) 6%, transparent);
 }
 
-.learner-billing-summary > svg:last-child {
+.learner-billing-summary>svg:last-child {
   color: var(--text-muted);
 }
 
@@ -1074,7 +1092,7 @@ button.learner-account-menu-item:hover { background: color-mix(in srgb, var(--te
 }
 
 .course-sidebar:not(.open) .learner-account-copy,
-.course-sidebar:not(.open) .learner-sidebar-account > svg {
+.course-sidebar:not(.open) .learner-sidebar-account>svg {
   display: none;
 }
 
@@ -1117,7 +1135,13 @@ button.learner-account-menu-item:hover { background: color-mix(in srgb, var(--te
   font-size: 0.78rem;
   font-weight: 800;
 }
-.learner-account-avatar img{width:100%;height:100%;border-radius:inherit;object-fit:cover}
+
+.learner-account-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover
+}
 
 .learner-account-copy {
   min-width: 0;
@@ -1133,8 +1157,16 @@ button.learner-account-menu-item:hover { background: color-mix(in srgb, var(--te
   white-space: nowrap;
 }
 
-.learner-account-copy strong { font-size: 0.78rem; font-weight: 700; }
-.learner-account-copy small { color: var(--text-muted); font-size: 0.65rem; text-transform: capitalize; }
+.learner-account-copy strong {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.learner-account-copy small {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  text-transform: capitalize;
+}
 
 body.learner-course-shell-active .app-header {
   display: none;
@@ -1168,7 +1200,10 @@ body.learner-course-shell-active .course-sidebar {
   font-weight: 750;
 }
 
-.learner-course-loading p { margin: 0; font-size: 0.75rem; }
+.learner-course-loading p {
+  margin: 0;
+  font-size: 0.75rem;
+}
 
 .course-selector-view {
   flex-direction: row;
@@ -1261,7 +1296,10 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 @media (max-width: 760px) {
-  .course-home-sidebar { width: 224px; flex-basis: 224px; }
+  .course-home-sidebar {
+    width: 224px;
+    flex-basis: 224px;
+  }
 }
 
 .course-sidebar:not(.open) .sidebar-course-meta {
@@ -1316,7 +1354,7 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 .course-sidebar:not(.open) .lesson-icon-inner,
-.course-sidebar:not(.open) .lesson-icon-inner > svg {
+.course-sidebar:not(.open) .lesson-icon-inner>svg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2127,15 +2165,15 @@ body.learner-course-shell-active .course-sidebar {
 
 /* Canonical iCAD Foundations alignment, from Getting Started through
    Creating Basic Shapes. Other courses retain their existing lesson layout. */
-.foundations-lesson-content-body > .course-lesson-container,
-.foundations-lesson-content-body > .interactive-video-lesson {
+.foundations-lesson-content-body>.course-lesson-container,
+.foundations-lesson-content-body>.interactive-video-lesson {
   box-sizing: border-box;
   width: min(100%, 1000px);
   max-width: 1000px;
   margin: 2rem auto 0;
 }
 
-.foundations-lesson-content-body > .ivl-objective {
+.foundations-lesson-content-body>.ivl-objective {
   box-sizing: border-box;
   width: min(100%, 1000px);
   min-height: 83px;
@@ -2144,7 +2182,7 @@ body.learner-course-shell-active .course-sidebar {
 
 /* Match the interactive navigation lessons to the standard Foundations
    video-intro layout used by Identify the Main Interface. */
-.foundations-lesson-content-body > .interactive-video-lesson {
+.foundations-lesson-content-body>.interactive-video-lesson {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -2165,17 +2203,17 @@ body.learner-course-shell-active .course-sidebar {
   margin-top: 61.5px;
 }
 
-/* Standard intros follow the actual Create Cylinder measurements: 58px above
+/* Standard intros follow the actual Cylinder measurements: 58px above
    and 61.5px below the 16:9 panel. The
    progress indicator is visually overlaid so the generic course flex gap does
    not create an invisible 56px spacer. */
-.foundations-lesson-content-body > .foundations-standard-intro {
+.foundations-lesson-content-body>.foundations-standard-intro {
   position: relative;
   gap: 0;
   margin-top: 58px;
 }
 
-.foundations-lesson-content-body .foundations-standard-intro > .lesson-progress-container {
+.foundations-lesson-content-body .foundations-standard-intro>.lesson-progress-container {
   position: absolute;
   inset: 0 0 auto;
 }
@@ -2211,15 +2249,15 @@ body.learner-course-shell-active .course-sidebar {
 
 /* The five basic-shape intros intentionally omit the progress indicator.
    Preserve the same 58px panel offset that the original Cylinder layout had. */
-.foundations-lesson-content-body > .basic-shape-intro-no-progress {
+.foundations-lesson-content-body>.basic-shape-intro-no-progress {
   gap: 0;
 }
 
-.foundations-lesson-content-body > .basic-shape-intro-no-progress > .tab-content {
+.foundations-lesson-content-body>.basic-shape-intro-no-progress>.tab-content {
   margin-top: 58px;
 }
 
-.foundations-lesson-content-body > .foundations-video-reading-lesson {
+.foundations-lesson-content-body>.foundations-video-reading-lesson {
   width: min(100%, 1444px);
   max-width: 1444px;
 }
@@ -2276,7 +2314,7 @@ body.learner-course-shell-active .course-sidebar {
     padding-left: 0.75rem;
   }
 
-  .foundations-lesson-content-body > .course-lesson-container {
+  .foundations-lesson-content-body>.course-lesson-container {
     margin-top: 1rem;
   }
 }
@@ -2532,7 +2570,7 @@ body.learner-course-shell-active .course-sidebar {
   flex: 1;
 }
 
-.lesson-title-text-group > span:first-child {
+.lesson-title-text-group>span:first-child {
   font-size: 14px;
 }
 
@@ -2732,14 +2770,14 @@ body.learner-course-shell-active .course-sidebar {
   background: transparent;
 }
 
-.course-sidebar.open .lesson-item .lesson-title-text-group > span:first-child {
+.course-sidebar.open .lesson-item .lesson-title-text-group>span:first-child {
   color: #cbd5e1;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
 }
 
-[data-theme='light'] .course-sidebar.open .lesson-item .lesson-title-text-group > span:first-child {
+[data-theme='light'] .course-sidebar.open .lesson-item .lesson-title-text-group>span:first-child {
   color: #475569;
 }
 
@@ -2747,10 +2785,10 @@ body.learner-course-shell-active .course-sidebar {
   color: var(--text-muted);
 }
 
-.course-sidebar.open .lesson-item:hover .lesson-title-text-group > span:first-child,
-.course-sidebar.open .lesson-item.active .lesson-title-text-group > span:first-child,
-[data-theme='light'] .course-sidebar.open .lesson-item:hover .lesson-title-text-group > span:first-child,
-[data-theme='light'] .course-sidebar.open .lesson-item.active .lesson-title-text-group > span:first-child {
+.course-sidebar.open .lesson-item:hover .lesson-title-text-group>span:first-child,
+.course-sidebar.open .lesson-item.active .lesson-title-text-group>span:first-child,
+[data-theme='light'] .course-sidebar.open .lesson-item:hover .lesson-title-text-group>span:first-child,
+[data-theme='light'] .course-sidebar.open .lesson-item.active .lesson-title-text-group>span:first-child {
   color: var(--primary) !important;
 }
 
@@ -2763,7 +2801,7 @@ body.learner-course-shell-active .course-sidebar {
   background: var(--primary);
 }
 
-.course-sidebar.open .lesson-item.active .lesson-title-text-group > span:first-child {
+.course-sidebar.open .lesson-item.active .lesson-title-text-group>span:first-child {
   font-weight: 700;
 }
 
@@ -2798,11 +2836,13 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .course-card,
   .lesson-item {
     transition: none;
   }
 }
+
 .course-selector-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(270px, 340px);
@@ -2866,7 +2906,34 @@ body.learner-course-shell-active .course-sidebar {
   font-size: .72rem;
   line-height: 1.5;
 }
-.no-entitled-courses { grid-column: 1 / -1; min-height: 220px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--border-color); border-radius: 10px; color: var(--text-muted); background: var(--bg-surface); }.no-entitled-courses h3 { margin: .7rem 0 .3rem; color: var(--text-main); }.no-entitled-courses p { max-width: 520px; margin: 0; font-size: .78rem; line-height: 1.55; }
+
+.no-entitled-courses {
+  grid-column: 1 / -1;
+  min-height: 220px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+}
+
+.no-entitled-courses h3 {
+  margin: .7rem 0 .3rem;
+  color: var(--text-main);
+}
+
+.no-entitled-courses p {
+  max-width: 520px;
+  margin: 0;
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
 @media (max-width: 760px) {
   .course-selector-hero {
     grid-template-columns: 1fr;
