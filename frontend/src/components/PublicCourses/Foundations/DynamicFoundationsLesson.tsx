@@ -5,6 +5,7 @@ import { useLessonCore } from "../../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../../hooks/useTTSAutoplay";
 import { KaraokeLessonText } from "../../KaraokeLessonText";
 import VideoTutorialViewer from "../../3D_Modeling/VideoTutorialViewer";
+import FoundationsVideoReadingLayout from '../../FoundationsVideoReadingLayout';
 import '../../2D_Drawing/CourseLesson.css';
 import "./FoundationsLesson.css";
 import zoomInOutVideo from '../../../assets/3D_INTERACTIVE/zoomin_out.mp4';
@@ -137,10 +138,12 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   );
 
   return (
-    <div className={`course-lesson-container foundations-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson' : ''}`} ref={containerRef}>
-      <div className="lesson-progress-container">
-        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-      </div>
+    <div className={`course-lesson-container foundations-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson foundations-standard-intro' : ''} ${videoId ? 'foundations-video-reading-lesson' : ''}`} ref={containerRef}>
+      {!['lesson-4-1', 'lesson-4-2'].includes(lessonId) && (
+        <div className="lesson-progress-container">
+          <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+        </div>
+      )}
 
       <div className="lesson-grid single-card foundations-lesson-grid">
         <div className={`lesson-card tab-content foundations-lesson-card ${isViewTourLesson ? 'foundations-view-tour-card' : ''}`}>
@@ -239,17 +242,23 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
               {/* Render Video at the bottom of the lesson */}
               {videoId && videoMap[videoId] && (
                 <div className="instruction-step foundations-video-section" style={{ height: '600px', position: 'relative' }}>
-                  <VideoTutorialViewer 
-                    steps={tutorialSteps}
-                    muteSourceVideoAudio={muteSourceVideoAudio}
-                    lessonType="video-tutorial"
-                    introPanel={{
-                      icon: videoIntroEyebrow ? Eye : Play,
-                      eyebrow: videoIntroEyebrow || "Interactive Video",
-                      title: videoIntroTitle || "Watch Video Demonstration",
-                      description: videoIntroDescription || "See this tool in action in the workspace."
-                    }}
-                  />
+                  <FoundationsVideoReadingLayout
+                    title={videoIntroTitle || title}
+                    description={videoIntroDescription || 'Read the video demonstration as a step-by-step tutorial.'}
+                    steps={tutorialSteps.map(step => ({ id: step.id, title: step.title, text: step.text }))}
+                  >
+                    <VideoTutorialViewer 
+                      steps={tutorialSteps}
+                      muteSourceVideoAudio={muteSourceVideoAudio}
+                      lessonType="video-tutorial"
+                      introPanel={{
+                        icon: videoIntroEyebrow ? Eye : Play,
+                        eyebrow: videoIntroEyebrow || "Interactive Video",
+                        title: videoIntroTitle || "Watch Video Demonstration",
+                        description: videoIntroDescription || "See this tool in action in the workspace."
+                      }}
+                    />
+                  </FoundationsVideoReadingLayout>
                 </div>
               )}
             </div>

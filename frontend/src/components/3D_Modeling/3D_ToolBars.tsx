@@ -4,6 +4,7 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import './CourseLesson.css';
 import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
+import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
 
 /* Toolbar image imports */
 
@@ -58,7 +59,7 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 
 
   return (
-    <div className={`course-lesson-container`} ref={containerRef}>
+    <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -70,15 +71,26 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
         <div className="lesson-card tab-content fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer 
-              steps={localizeToolbarTutorialSteps(t, translateContent)}
-              introPanel={{
-                icon: Wrench,
-                eyebrow: "Interactive tool tour",
-                title: "Explore the iCAD Tool Bars",
-                description: "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
-              }}
-            />
+            {(() => {
+              const steps = localizeToolbarTutorialSteps(t, translateContent);
+              return (
+                <FoundationsVideoReadingLayout
+                  title="Explore the iCAD Tool Bars"
+                  description="Review the toolbar commands as a written, step-by-step reference."
+                  steps={steps.map(step => ({ id: step.id, title: step.title, text: step.text }))}
+                >
+                  <VideoTutorialViewer 
+                    steps={steps}
+                    introPanel={{
+                      icon: Wrench,
+                      eyebrow: "Interactive tool tour",
+                      title: "Explore the iCAD Tool Bars",
+                      description: "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
+                    }}
+                  />
+                </FoundationsVideoReadingLayout>
+              );
+            })()}
           </div>
 
           <div className="lesson-navigation">

@@ -995,11 +995,32 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                   );
                 }
                 
-                if (overlay.type === 'dimensionAnnotation' && overlay.line) {
-                  const x1 = videoRect.left + overlay.line.start.x * videoRect.width;
-                  const y1 = videoRect.top + overlay.line.start.y * videoRect.height;
-                  const x2 = videoRect.left + overlay.line.end.x * videoRect.width;
-                  const y2 = videoRect.top + overlay.line.end.y * videoRect.height;
+                if (overlay.type === 'dimensionAnnotation' && (overlay.line || overlay.arc)) {
+                  const x1 = overlay.line ? videoRect.left + overlay.line.start.x * videoRect.width : 0;
+                  const y1 = overlay.line ? videoRect.top + overlay.line.start.y * videoRect.height : 0;
+                  const x2 = overlay.line ? videoRect.left + overlay.line.end.x * videoRect.width : 0;
+                  const y2 = overlay.line ? videoRect.top + overlay.line.end.y * videoRect.height : 0;
+                  const arcGeometry = overlay.arc ? (() => {
+                    const centerX = videoRect.left + overlay.arc.center.x * videoRect.width;
+                    const centerY = videoRect.top + overlay.arc.center.y * videoRect.height;
+                    const radiusX = overlay.arc.radiusX * videoRect.width;
+                    const radiusY = overlay.arc.radiusY * videoRect.height;
+                    const toPoint = (angle: number) => {
+                      const radians = angle * Math.PI / 180;
+                      return { x: centerX + radiusX * Math.cos(radians), y: centerY + radiusY * Math.sin(radians) };
+                    };
+                    const start = toPoint(overlay.arc.startAngle);
+                    const end = toPoint(overlay.arc.endAngle);
+                    const sweep = overlay.arc.endAngle - overlay.arc.startAngle;
+                    const largeArc = Math.abs(sweep) > 180 ? 1 : 0;
+                    const sweepFlag = sweep >= 0 ? 1 : 0;
+                    const middle = toPoint(overlay.arc.startAngle + sweep / 2);
+                    return {
+                      path: `M ${start.x} ${start.y} A ${radiusX} ${radiusY} 0 ${largeArc} ${sweepFlag} ${end.x} ${end.y}`,
+                      labelX: middle.x,
+                      labelY: middle.y,
+                    };
+                  })() : null;
                   
                   return (
                     <svg key={overlay.id} style={{
@@ -1013,10 +1034,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                           <path d="M0,0 L0,6 L9,3 z" fill="rgba(255,0,0,0.9)" />
                         </marker>
                       </defs>
-                      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,0,0,0.9)" strokeWidth="2" markerStart={`url(#arrow-${overlay.id}-start)`} markerEnd={`url(#arrow-${overlay.id}-end)`} />
+                      {arcGeometry ? (
+                        <path d={arcGeometry.path} fill="none" stroke="rgba(255,0,0,0.9)" strokeWidth="2" markerStart={`url(#arrow-${overlay.id}-start)`} markerEnd={`url(#arrow-${overlay.id}-end)`} />
+                      ) : (
+                        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,0,0,0.9)" strokeWidth="2" markerStart={`url(#arrow-${overlay.id}-start)`} markerEnd={`url(#arrow-${overlay.id}-end)`} />
+                      )}
                       {overlay.label && (() => {
-                        const defaultX = (x1 + x2) / 2;
-                        const defaultY = (y1 + y2) / 2 - (overlay.dimensionType === 'horizontal' ? 8 : 0);
+                        const defaultX = arcGeometry?.labelX ?? (x1 + x2) / 2;
+                        const defaultY = arcGeometry?.labelY ?? ((y1 + y2) / 2 - (overlay.dimensionType === 'horizontal' ? 8 : 0));
                         const offsetX = overlay.labelOffset?.x || 0;
                         const offsetY = overlay.labelOffset?.y || 0;
                         const finalX = defaultX + offsetX;

@@ -119,7 +119,8 @@ export const cylinderTutorialSteps: TutorialStep[] = [
           question: "Which properties must be specified when creating a cylinder?",
           options: [
             { text: "Diameter and Height", isCorrect: true, feedback: "Correct! A cylinder requires diameter and height." },
-            { text: "Width, Depth, and Height", isCorrect: false, feedback: "Those are for a box, not a cylinder." }
+            { text: "Width, Depth, and Height", isCorrect: false, feedback: "Those are for a box, not a cylinder." },
+            { text: "Path Radius and Turn Angle", isCorrect: false, feedback: "Those values define a torus, not a cylinder." }
           ]
         }
       }
@@ -150,7 +151,8 @@ export const cylinderTutorialSteps: TutorialStep[] = [
           question: "What does the coordinate set zero, zero, zero represent?",
           options: [
             { text: "The Global Origin", isCorrect: true, feedback: "Correct! Zero, zero, zero represents the global origin." },
-            { text: "The Center of the Cylinder", isCorrect: false, feedback: "Zero, zero, zero represents the global origin." }
+            { text: "The Center of the Cylinder", isCorrect: false, feedback: "Zero, zero, zero represents the global origin." },
+            { text: "The Current Front View", isCorrect: false, feedback: "A viewing direction is not a coordinate position; zero, zero, zero represents the global origin." }
           ]
         }
       }
@@ -224,7 +226,7 @@ export const cylinderTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Lesson Complete",
+      title: "Create Cylinder Complete",
       items: [
         "Selected Shape Placement and the Cylinder tool.",
         "Entered the cylinder diameter and height.",
@@ -501,7 +503,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Lesson Complete",
+      title: "Create Box Complete",
       items: [
         "Selected Shape Placement and the Box tool.",
         "Selected Front View and Y Orientation.",
@@ -733,7 +735,7 @@ export const polygonTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Lesson Complete",
+      title: "Create Polygon Complete",
       items: [
         "Selected Front View and Polygonal Prism.",
         "Confirmed the required Command Menu settings.",
@@ -931,7 +933,7 @@ export const coneTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Lesson Complete",
+      title: "Create Cone Complete",
       items: [
         "Opened Shape Arrangement and selected the Cone tool.",
         "Selected Front View and Y Orientation.",
@@ -947,7 +949,7 @@ export const torusTutorialSteps: TutorialStep[] = [
     id: "torus-1-tool-selection",
     title: "Select the Torus Tool",
     text: "",
-    customText: "A torus is a three-dimensional ring-shaped solid formed by revolving a circular profile around an axis. In CAD, it is useful for creating rings, seals, curved pipes, and similar components. To begin, select Torus from the Shape Arrangement controls.",
+    customText: "A torus is a three-dimensional ring-shaped solid formed by revolving a circular profile around an axis. In CAD, it is useful for creating rings, seals, curved pipes, and similar components. To begin, open Shape Arrangement, then select Torus.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -956,9 +958,10 @@ export const torusTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     videoStart: 0,
-    videoEnd: 3,
+    videoEnd: 3.25,
     overlays: [
-      { id: "torus-place-torus", type: "highlight", startTime: 1.5, endTime: 3, target: { x: 0.0, y: 0.67, width: 0.065, height: 0.026 }, animation: "pulse", label: "Torus", labelPosition: "right" }
+      { id: "torus-shape-arrangement", type: "highlight", startTime: 1.8, endTime: 2.2, target: { x: 0.908, y: 0.123, width: 0.071, height: 0.028 }, animation: "pulse", label: "Shape Arrangement", labelPosition: "top" },
+      { id: "torus-place-torus", type: "highlight", startTime: 2.4, endTime: 3.25, target: { x: 0.926, y: 0.173, width: 0.021, height: 0.037 }, animation: "pulse", label: "Torus", labelPosition: "bottom" }
     ]
   },
   {
@@ -973,10 +976,10 @@ export const torusTutorialSteps: TutorialStep[] = [
     videoSrc: vidTorus,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 3,
-    videoEnd: 5,
+    videoStart: 4,
+    videoEnd: 5.5,
     overlays: [
-      { id: "torus-front-view", type: "highlight", startTime: 3.1, endTime: 5, target: { x: 0.425, y: 0.036, width: 0.018, height: 0.035 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
+      { id: "torus-front-view", type: "highlight", startTime: 4.7, endTime: 5.5, target: { x: 0.438, y: 0.034, width: 0.015, height: 0.035 }, animation: "pulse", label: "Front View", labelPosition: "bottom" }
     ]
   },
   {
@@ -991,17 +994,17 @@ export const torusTutorialSteps: TutorialStep[] = [
     videoSrc: vidTorus,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 5,
-    videoEnd: 10,
+    videoStart: 7,
+    videoEnd: 12.8,
     overlays: [
-      { id: "torus-opt-torus", type: "highlight", startTime: 5.25, endTime: 6.75, target: { x: 0.0, y: 0.67, width: 0.065, height: 0.026 }, animation: "pulse", label: "Torus", labelPosition: "right" },
-      { id: "torus-opt-placement", type: "highlight", startTime: 6.75, endTime: 8.25, target: { x: 0.0, y: 0.815, width: 0.065, height: 0.026 }, animation: "pulse", label: "Placement", labelPosition: "right" },
-      { id: "torus-opt-y-orientation", type: "highlight", startTime: 9.5, endTime: 9.85, target: { x: 0.018, y: 0.866, width: 0.018, height: 0.026 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
+      { id: "torus-opt-torus", type: "highlight", startTime: 7.5, endTime: 8.75, target: { x: 0.0, y: 0.703, width: 0.037, height: 0.026 }, animation: "pulse", label: "Torus", labelPosition: "right" },
+      { id: "torus-opt-placement", type: "highlight", startTime: 8.75, endTime: 10.25, target: { x: 0.0, y: 0.811, width: 0.037, height: 0.026 }, animation: "pulse", label: "Placement", labelPosition: "right" },
+      { id: "torus-opt-y-orientation", type: "highlight", startTime: 10.5, endTime: 11.4, target: { x: 0.018, y: 0.86, width: 0.018, height: 0.026 }, animation: "pulse", label: "Y Orientation", labelPosition: "right" },
       {
         id: "quiz-torus-command",
         type: "quiz",
-        startTime: 9.85,
-        endTime: 10,
+        startTime: 11.9,
+        endTime: 12.8,
         quizData: {
           question: "Which orientation is selected for this torus placement procedure?",
           options: [
@@ -1025,18 +1028,18 @@ export const torusTutorialSteps: TutorialStep[] = [
     videoSrc: vidTorus,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 10,
-    videoEnd: 22,
+    videoStart: 12.8,
+    videoEnd: 22.25,
     overlays: [
-      { id: "torus-item-entry", type: "highlight", startTime: 10, endTime: 10.5, target: { x: 0.07, y: 0.948, width: 0.268, height: 0.03 }, animation: "pulse", label: "Item Entry Area", labelPosition: "top" },
-      { id: "torus-input-section", type: "highlight", startTime: 10.5, endTime: 15, target: { x: 0.07, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Section Diameter (断面直径)", labelPosition: "top" },
-      { id: "torus-input-path", type: "highlight", startTime: 15, endTime: 19, target: { x: 0.16, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Path Radius (経路半径)", labelPosition: "top" },
-      { id: "torus-input-angle", type: "highlight", startTime: 19, endTime: 21.8, target: { x: 0.25, y: 0.948, width: 0.09, height: 0.03 }, animation: "pulse", label: "Turn Angle (回転角)", labelPosition: "top" },
+      { id: "torus-item-entry", type: "highlight", startTime: 12.8, endTime: 13.25, target: { x: 0.07, y: 0.948, width: 0.268, height: 0.03 }, animation: "pulse", label: "Item Entry Area", labelPosition: "top" },
+      { id: "torus-input-section", type: "highlight", startTime: 13.25, endTime: 15, target: { x: 0.07, y: 0.948, width: 0.092, height: 0.03 }, animation: "pulse", label: "Section Diameter (断面直径)", labelPosition: "top" },
+      { id: "torus-input-path", type: "highlight", startTime: 15, endTime: 18, target: { x: 0.161, y: 0.948, width: 0.092, height: 0.03 }, animation: "pulse", label: "Path Radius (経路半径)", labelPosition: "top" },
+      { id: "torus-input-angle", type: "highlight", startTime: 18, endTime: 22, target: { x: 0.252, y: 0.948, width: 0.086, height: 0.03 }, animation: "pulse", label: "Turn Angle (回転角)", labelPosition: "top" },
       {
         id: "quiz-torus-parameters",
         type: "quiz",
-        startTime: 21.8,
-        endTime: 22,
+        startTime: 22,
+        endTime: 22.25,
         quizData: {
           question: "Which values define the torus in this lesson?",
           options: [
@@ -1060,15 +1063,15 @@ export const torusTutorialSteps: TutorialStep[] = [
     videoSrc: vidTorus,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 22,
-    videoEnd: 26,
+    videoStart: 22.25,
+    videoEnd: 28,
     overlays: [
-      { id: "torus-input-origin", type: "highlight", startTime: 22, endTime: 25.75, target: { x: 0.47, y: 0.949, width: 0.53, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0", labelPosition: "top" },
+      { id: "torus-input-origin", type: "highlight", startTime: 22.25, endTime: 27.75, target: { x: 0.47, y: 0.949, width: 0.53, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0", labelPosition: "top" },
       {
         id: "quiz-torus-origin",
         type: "quiz",
-        startTime: 25.75,
-        endTime: 26,
+        startTime: 27.75,
+        endTime: 28,
         quizData: {
           question: "What coordinates position the torus at the model origin?",
           options: [
@@ -1092,8 +1095,8 @@ export const torusTutorialSteps: TutorialStep[] = [
     videoSrc: vidTorus,
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
-    videoStart: 26,
-    videoEnd: 28
+    videoStart: 28,
+    videoEnd: 30
   },
   {
     id: "torus-7-explain",
@@ -1108,12 +1111,12 @@ export const torusTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     advanceOnSourceVideoEnd: true,
     narrateTitle: false,
-    videoStart: 28,
+    videoStart: 30,
     videoEnd: 33.616667,
     overlays: [
-      { id: "torus-dim-section", type: "dimensionAnnotation", startTime: 28.5, endTime: 33.616667, label: "Section Diameter (断面直径)", labelOffset: { x: -55, y: 0 }, dimensionType: "vertical", line: { start: { x: 0.415, y: 0.47 }, end: { x: 0.415, y: 0.53 } } },
-      { id: "torus-dim-path", type: "dimensionAnnotation", startTime: 29.5, endTime: 33.616667, label: "Path Radius (経路半径)", labelOffset: { x: 0, y: 28 }, dimensionType: "horizontal", line: { start: { x: 0.42, y: 0.52 }, end: { x: 0.64, y: 0.52 } } },
-      { id: "torus-dim-angle", type: "dimensionAnnotation", startTime: 30.5, endTime: 33.1, label: "Turn Angle (回転角)", labelOffset: { x: 45, y: -15 }, dimensionType: "diagonal", line: { start: { x: 0.64, y: 0.52 }, end: { x: 0.76, y: 0.40 } } }
+      { id: "torus-dim-section", type: "dimensionAnnotation", startTime: 30.5, endTime: 33.616667, label: "Section Diameter (断面直径)", labelOffset: { x: -105, y: -8 }, dimensionType: "vertical", line: { start: { x: 0.4, y: 0.49 }, end: { x: 0.4, y: 0.54 } } },
+      { id: "torus-dim-path", type: "dimensionAnnotation", startTime: 31.5, endTime: 33.616667, label: "Path Radius (経路半径)", labelOffset: { x: 80, y: 30 }, dimensionType: "diagonal", line: { start: { x: 0.46, y: 0.64 }, end: { x: 0.57, y: 0.52 } } },
+      { id: "torus-dim-angle", type: "dimensionAnnotation", startTime: 32.5, endTime: 33.616667, label: "Turn Angle (回転角)", labelOffset: { x: 10, y: -45 }, dimensionType: "arc", arc: { center: { x: 0.51, y: 0.58 }, radiusX: 0.14, radiusY: 0.18, startAngle: 221, endAngle: 408 } }
     ]
   },
   {
@@ -1128,7 +1131,7 @@ export const torusTutorialSteps: TutorialStep[] = [
     waitForNarrationBeforeVideo: true,
     narrateTitle: false,
     recapData: {
-      title: "Lesson Complete",
+      title: "Create Torus Complete",
       items: [
         "Selected the Torus tool and Front View.",
         "Confirmed the Command Menu settings and Y Orientation.",

@@ -1,11 +1,16 @@
 import React, {
-  useEffect, useRef
+  useEffect
 } from 'react';
 
 import {
+  Box,
   ChevronLeft,
   ChevronRight,
-  Play
+  Database,
+  Donut,
+  Hexagon,
+  Play,
+  Triangle
 } from 'lucide-react';
 import { useLessonCore } from '../../hooks/useLessonCore';
 
@@ -20,6 +25,7 @@ import {
   torusTutorialSteps
 } from './VideoTutorialData/basicOp1TutorialSteps';
 import VideoTutorialViewer from './VideoTutorialViewer';
+import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../assets/3d-images/left_click.png';
@@ -35,9 +41,46 @@ import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 /* Tabs: Cylinder | Box | Polygon | Cone | Torus */
 /* ══════════════════════════════════════════════════════════════════════════ */
 
-import cmdMenu from '../../assets/3d-images/basic_operation1_command_menu.png';
+export const basicShapeIntroPanels = {
+  cylinder: {
+    icon: Database,
+    eyebrow: 'Interactive view tour',
+    title: 'Create Cylinder',
+    description: 'Take a guided tour of the Cylinder workflow and learn how to select the tool, enter the diameter and height, and position the completed shape accurately.',
+  },
+  box: {
+    icon: Box,
+    eyebrow: 'Interactive view tour',
+    title: 'Create Box',
+    description: 'Take a guided tour of the Box workflow and learn how to enter width, depth, and height before positioning the completed shape accurately.',
+  },
+  polygon: {
+    icon: Hexagon,
+    eyebrow: 'Interactive view tour',
+    title: 'Create Polygonal Prism',
+    description: 'Take a guided tour of the Polygonal Prism workflow and learn how the number of sides, path diameter, and height define the completed shape.',
+  },
+  cone: {
+    icon: Triangle,
+    eyebrow: 'Interactive view tour',
+    title: 'Create Cone',
+    description: 'Take a guided tour of the Cone workflow and learn how the base diameter, top face diameter, and height define the completed shape.',
+  },
+  torus: {
+    icon: Donut,
+    eyebrow: 'Interactive view tour',
+    title: 'Create Torus',
+    description: 'Take a guided tour of the Torus workflow and learn how section diameter, path radius, and turn angle define the completed shape.',
+  },
+} as const;
 
-import threeDView from '../../assets/3d-images/basic_operation1_3d_view.png';
+export const basicShapeObjectives = {
+  cylinder: 'Create and position a cylinder by entering its diameter and height, then placing it at the model origin.',
+  box: 'Create and position a box by entering its width, depth, and height, then placing it accurately at the model origin.',
+  polygon: 'Create and position a polygonal prism by defining its number of sides, path diameter, and height.',
+  cone: 'Create and position a cone by defining its base diameter, top face diameter, and height.',
+  torus: 'Create and position a torus by defining its section diameter, path radius, and turn angle.',
+} as const;
 
 
 
@@ -267,7 +310,7 @@ interface SubLessonProps {
 const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const activeTab = subLessonId ? subLessonId.replace('basic-op-', '') : '';
   const { t } = useTranslation();
-  const { scrollProgress, containerRef, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
+  const { containerRef, registerText } = useLessonCore(subLessonId);
 
   
 
@@ -283,44 +326,14 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     });
   }, [t]);
 
-  const videoSectionRef = useRef<HTMLDivElement>(null);
-  const beforeYouStartRef = useRef<HTMLDivElement>(null);
-
-  // ── Unified narrated tour (single script, auto-switches tabs) ────────────
-  // Memoised so the array reference is stable across renders, avoiding
-  // spurious re-registrations in the registerText useEffect below.
-  const lessonSteps = React.useMemo(() => [
-    t('basicOp1.heading'),                                                         // 0 heading
-    t('basicOp1.overview'), // 1 overview
-    t('basicOp1.cylinder.desc'), // 2 ↁEcylinder tab
-    t('basicOp1.box.desc'), // 3 ↁEbox tab
-    t('basicOp1.polygon.desc'), // 4 ↁEpolygon tab
-    t('basicOp1.cone.desc'), // 5 ↁEcone tab
-    t('basicOp1.torus.desc'), // 6 ↁEtorus tab
-    t('basicOp1.start_front_view'), // 7 ↁEback to cylinder, scroll to Before You Start
-    t('basicOp1.arrange_y_orientation'), // 8 ↁEcommand menu step
-    t('basicOp1.video_intro') // 9 ↁEscroll to video
-  ], [t]);
-
-  // Scroll as TTS progresses
-  useEffect(() => {
-    if (!isSpeaking) return;
-    if (currentIndex === 7) {
-      setTimeout(() => {
-        beforeYouStartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 500);
-    } else if (currentIndex === 9) {
-      setTimeout(() => {
-        videoSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 500);
-    }
-  }, [currentIndex, isSpeaking]);
+  const activeObjective = basicShapeObjectives[activeTab as keyof typeof basicShapeObjectives]
+    ?? basicShapeObjectives.cylinder;
 
 
   useEffect(() => {
-    registerText(lessonSteps, 0);
+    registerText([activeObjective], 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerText]);
+  }, [activeObjective, registerText]);
 
 
 
@@ -337,95 +350,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
 
   return (
-    <div className={`course-lesson-container`} ref={containerRef}>
-      <div className="lesson-progress-container">
-        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-      </div>
-
-      
-
-      <section className="lesson-intro">
-        <h3 className={`section-title ${currentIndex === 0 ? 'reading-active' : ''}`} data-reading-index="0">
-          <KaraokeLessonText
-            text={lessonSteps[0]}
-            isActive={isSpeaking && currentIndex === 0}
-            currentCharIndex={currentCharIndex}
-          />
-        </h3>
-
-        {/* TTS index 1  Eoverview narration */}
-        <div className={`instruction-step ${currentIndex === 1 ? 'reading-active' : ''}`} data-reading-index="1" style={{ marginTop: '0.5rem' }}>
-          <KaraokeLessonText
-            text={lessonSteps[1]}
-            isActive={isSpeaking && currentIndex === 1}
-            currentCharIndex={currentCharIndex}
-          />
-        </div>
-
-        {/* Shape intro  Etab-specific, shown here in the main intro card */}
-        {(() => {
-          const tabIntroIdx: Record<string, number> = { cylinder: 2, box: 3, polygon: 4, cone: 5, torus: 6 };
-          const idx = tabIntroIdx[activeTab] ?? 2;
-          return (
-            <div className={`instruction-step ${isSpeaking && currentIndex === idx ? 'reading-active' : ''}`} data-reading-index={idx} style={{ marginTop: '1rem' }}>
-              <KaraokeLessonText
-                text={lessonSteps[idx]}
-                isActive={isSpeaking && currentIndex === idx}
-                currentCharIndex={currentCharIndex}
-              />
-            </div>
-          );
-        })()}
-      </section>
-
-      <div className="lesson-grid single-card">
-        {/* Prerequisite steps card  Ealways visible, scrolled to at TTS step 7 */}
-        <div className={`lesson-card ${isSpeaking && (currentIndex === 7 || currentIndex === 8) ? 'reading-active' : ''}`} ref={beforeYouStartRef}>
-          <div className="card-header">
-            <h4 style={{ margin: 0 }}>{t('lesson.before_you_start')}</h4>
-          </div>
-
-          <div className={`instruction-step ${isSpeaking && currentIndex === 7 ? 'reading-active' : ''}`} data-reading-index="7" style={{ marginTop: '1.5rem' }}>
-            <KaraokeLessonText
-              text={lessonSteps[7]}
-              isActive={isSpeaking && currentIndex === 7}
-              currentCharIndex={currentCharIndex}
-            />
-            <img src={threeDView} alt={t('common.3d_view')} className="software-screenshot mt-8" style={{ width: '350px' }} />
-          </div>
-
-          <div className={`instruction-box mt-8 instruction-step ${isSpeaking && currentIndex === 8 ? 'reading-active' : ''}`} data-reading-index="8">
-            <KaraokeLessonText
-              text={lessonSteps[8]}
-              isActive={isSpeaking && currentIndex === 8}
-              currentCharIndex={currentCharIndex}
-            />
-            <img src={cmdMenu} alt={t('common.command_menu')} className="software-screenshot" style={{ width: '200px', marginTop: '1rem' }} />
-          </div>
-        </div>
-
-
+    <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
         {activeTab === 'cylinder' && (
-          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
-            <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('basicOp.cylinder.title')}</h4>
-            </div>
-
-
-            {/* Watch tutorial prompt  Eshown at step 9 (closing message) */}
-            {currentIndex === 9 && isSpeaking && (
-              <div className={`instruction-step reading-active`} data-reading-index="9" style={{ marginTop: '1rem' }}>
-                <KaraokeLessonText
-                  text={lessonSteps[9]}
-                  isActive={true}
-                  currentCharIndex={currentCharIndex}
-                />
-              </div>
-            )}
-
-            <div ref={videoSectionRef} style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
-            </div>
+          <div className="tab-content fade-in">
+            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cylinder.title} description={basicShapeIntroPanels.cylinder.description} steps={mapSteps(cylinderTutorialSteps, 'cylinder').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
+            </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
               {onPrevLesson && (
@@ -437,15 +367,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'box' && (
-          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
-            <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('basicOp.box.title')}</h4>
-            </div>
-
-
-            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(boxTutorialSteps, 'box')} />
-            </div>
+          <div className="tab-content fade-in">
+            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.box.title} description={basicShapeIntroPanels.box.description} steps={mapSteps(boxTutorialSteps, 'box').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
+            </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
               {onPrevLesson && (
@@ -457,15 +382,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'polygon' && (
-          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
-            <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('basicOp.polygon.title')}</h4>
-            </div>
-
-
-            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
-            </div>
+          <div className="tab-content fade-in">
+            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.polygon.title} description={basicShapeIntroPanels.polygon.description} steps={mapSteps(polygonTutorialSteps, 'polygon').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+            </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
               {onPrevLesson && (
@@ -477,15 +397,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'cone' && (
-          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
-            <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('basicOp.cone.title')}</h4>
-            </div>
-
-
-            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(coneTutorialSteps, 'cone')} />
-            </div>
+          <div className="tab-content fade-in">
+            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cone.title} description={basicShapeIntroPanels.cone.description} steps={mapSteps(coneTutorialSteps, 'cone').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
+            </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
               {onPrevLesson && (
@@ -497,15 +412,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         )}
 
         {activeTab === 'torus' && (
-          <div className="lesson-card tab-content fade-in" style={{ marginTop: '2rem' }}>
-            <div className="card-header">
-              <h4 style={{ margin: 0 }}>{t('basicOp.torus.title')}</h4>
-            </div>
-
-
-            <div style={{ height: '500px', width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={{ icon: Play, eyebrow: "Interactive Video", title: "Watch Video Demonstration", description: "See this tool in action in the workspace." }} steps={mapSteps(torusTutorialSteps, 'torus')} />
-            </div>
+          <div className="tab-content fade-in">
+            <FoundationsVideoReadingLayout title={basicShapeIntroPanels.torus.title} description={basicShapeIntroPanels.torus.description} steps={mapSteps(torusTutorialSteps, 'torus').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
+            </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
               {onPrevLesson && (
@@ -515,9 +425,6 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
             </div>
           </div>
         )}
-
-      </div>
-
     </div>
   );
 };

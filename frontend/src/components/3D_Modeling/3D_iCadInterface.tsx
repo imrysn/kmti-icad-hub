@@ -4,6 +4,7 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import './CourseLesson.css';
 import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
+import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
@@ -53,7 +54,7 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     currentIndex } = useLessonCore('interface', INTERFACE_STEPS);
 
   return (
-    <div className={`course-lesson-container`} ref={containerRef}>
+    <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
@@ -65,15 +66,20 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
 
           <div className="interactive-stage-container">
-            <VideoTutorialViewer
-              steps={localizedTutorialSteps}
-              introPanel={showFoundationsIntro ? {
-                icon: Monitor,
-                eyebrow: "Interactive screen tour",
-                title: "Explore the iCAD Interface",
-                description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
-              } : undefined}
-            />
+            <FoundationsVideoReadingLayout
+              title="Explore the iCAD Interface"
+              steps={localizedTutorialSteps.map(step => ({ id: step.id, title: step.title, text: step.text }))}
+            >
+              <VideoTutorialViewer
+                steps={localizedTutorialSteps}
+                introPanel={showFoundationsIntro ? {
+                  icon: Monitor,
+                  eyebrow: "Interactive screen tour",
+                  title: "Explore the iCAD Interface",
+                  description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
+                } : undefined}
+              />
+            </FoundationsVideoReadingLayout>
           </div>
 
           <div className="lesson-navigation">

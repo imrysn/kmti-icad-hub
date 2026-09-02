@@ -5,6 +5,7 @@ import LessonIntroPanel from '../LessonIntroPanel';
 import LessonQuestionPanel from '../LessonQuestionPanel';
 import LessonVideoSubtitle from '../LessonVideoSubtitle';
 import LessonRecapPanel from '../LessonRecapPanel';
+import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
 import { useTranslation } from '../../context/LanguageContext';
 import { useLessonCore } from '../../hooks/useLessonCore';
 import type { InteractiveVideoLessonConfig, InteractiveVideoQuestion } from './types';
@@ -77,6 +78,13 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
 
   const selectedAnswer = activeQuestion?.choices.find((choice) => choice.id === selectedChoice);
   const isAnswerCorrect = Boolean(selectedAnswer?.isCorrect);
+  const writtenSteps = useMemo(() => [
+    ...config.segments.map(segment => ({
+      id: segment.id,
+      title: segment.label,
+      text: segment.narration.join(' '),
+    })),
+  ], [config]);
 
   const beginNarration = useCallback((text: string | string[], after?: () => void, showSubtitle = true) => {
     const narration = Array.isArray(text) ? text : [text];
@@ -398,11 +406,12 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   };
 
   return (
-    <div className="course-lesson-container interactive-video-lesson" ref={containerRef}>
+    <div className="course-lesson-container interactive-video-lesson foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
+      <FoundationsVideoReadingLayout title={config.title} description={config.introSupportingText} steps={writtenSteps}>
       <section className="ivl-player-card" aria-label={config.videoLabel} ref={playerCardRef}>
         <div className="ivl-video-shell lesson-intro-shell">
           <video
@@ -504,6 +513,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         </div>
 
       </section>
+      </FoundationsVideoReadingLayout>
 
       <div className="lesson-navigation ivl-navigation">
         {onPrevLesson && (

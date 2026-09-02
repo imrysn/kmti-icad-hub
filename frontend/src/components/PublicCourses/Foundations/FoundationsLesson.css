@@ -22,6 +22,10 @@
   gap: 0.75rem;
 }
 
+.foundations-lesson .instruction-step {
+  margin: 0;
+}
+
 .foundations-text-block {
   padding-block: 0.75rem;
 }
@@ -84,7 +88,7 @@
 .foundations-result-text { color: #0f766e; }
 
 .foundations-video-section {
-  margin-top: 1.5rem;
+  margin: 0;
 }
 
 /* View-tour lessons use the dark intro panel as the visual card. Avoid
@@ -98,6 +102,7 @@
 
 .foundations-view-tour-card .foundations-video-section {
   margin-top: 0;
+  padding: 0;
 }
 
 [data-theme='dark'] .foundations-view-tour-card {

@@ -270,18 +270,18 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                             <div className="lesson-icon-wrapper">
                                                 <ProgressCircle
                                                     percentage={subLessonProgress}
-                                                    size={28}
-                                                    strokeWidth={2.5}
+                                                    size={sidebarOpen ? 28 : 36}
+                                                    strokeWidth={sidebarOpen ? 2.5 : 3}
                                                     className="lesson-progress-static"
                                                 />
                                                 <div className="lesson-icon-inner">
                                                     {lesson.children && lesson.children.length > 1 ? (
-                                                        expandedIds.has(lesson.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />
+                                                        expandedIds.has(lesson.id) ? <ChevronDown size={sidebarOpen ? 14 : 18} /> : <ChevronRight size={sidebarOpen ? 14 : 18} />
                                                     ) : (
                                                         moduleStatus.isSelfCompleted ? (
-                                                            <CheckCircle2 size={14} className="lesson-icon--completed" />
+                                                            <CheckCircle2 size={sidebarOpen ? 14 : 18} className="lesson-icon--completed" />
                                                         ) : (
-                                                            <BookOpen size={14} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
+                                                            <BookOpen size={sidebarOpen ? 14 : 18} className={`lesson-icon--dim ${moduleStatus.isLocked ? 'locked-icon' : ''}`} />
                                                         )
                                                     )}
                                                 </div>

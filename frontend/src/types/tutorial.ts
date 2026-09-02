@@ -35,9 +35,17 @@ export interface TutorialOverlay {
     start: NormalizedPoint;
     end: NormalizedPoint;
   };
+  /** Elliptical arc used for angular or perimeter-style dimensions. Angles are in degrees. */
+  arc?: {
+    center: NormalizedPoint;
+    radiusX: number;
+    radiusY: number;
+    startAngle: number;
+    endAngle: number;
+  };
   /** Ordered vertices for a closed polygon outline, using normalized video coordinates. */
   points?: NormalizedPoint[];
-  dimensionType?: 'horizontal' | 'vertical' | 'diagonal';
+  dimensionType?: 'horizontal' | 'vertical' | 'diagonal' | 'arc';
   quizData?: {
     question: string;
     options: { text: string; isCorrect: boolean; feedback: string }[];

@@ -1302,14 +1302,25 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 .course-sidebar:not(.open) .lesson-item-title {
+  width: 100%;
   gap: 0;
   justify-content: center;
 }
 
 .course-sidebar:not(.open) .lesson-icon-wrapper {
+  width: 36px;
+  height: 36px;
   border: 0;
   background: transparent;
   border-radius: 0;
+}
+
+.course-sidebar:not(.open) .lesson-icon-inner,
+.course-sidebar:not(.open) .lesson-icon-inner > svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 
 .course-sidebar:not(.open) .lesson-title-text-group,
@@ -2105,6 +2116,118 @@ body.learner-course-shell-active .course-sidebar {
   padding: 0 2rem 4rem;
 }
 
+.foundations-lesson-content-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 clamp(1rem, 3vw, 2rem) 4rem;
+}
+
+/* Canonical iCAD Foundations alignment, from Getting Started through
+   Creating Basic Shapes. Other courses retain their existing lesson layout. */
+.foundations-lesson-content-body > .course-lesson-container,
+.foundations-lesson-content-body > .interactive-video-lesson {
+  box-sizing: border-box;
+  width: min(100%, 1000px);
+  max-width: 1000px;
+  margin: 2rem auto 0;
+}
+
+.foundations-lesson-content-body > .ivl-objective {
+  box-sizing: border-box;
+  width: min(100%, 1000px);
+  min-height: 83px;
+  margin: 0 auto;
+}
+
+/* Match the interactive navigation lessons to the standard Foundations
+   video-intro layout used by Identify the Main Interface. */
+.foundations-lesson-content-body > .interactive-video-lesson {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.foundations-lesson-content-body .interactive-video-lesson .ivl-player-card {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.foundations-lesson-content-body .interactive-video-lesson .lesson-intro-panel {
+  background: #070b12;
+  backdrop-filter: none;
+}
+
+.foundations-lesson-content-body .interactive-video-lesson .ivl-navigation {
+  margin-top: 61.5px;
+}
+
+/* Standard intros follow the actual Create Cylinder measurements: 58px above
+   and 61.5px below the 16:9 panel. The
+   progress indicator is visually overlaid so the generic course flex gap does
+   not create an invisible 56px spacer. */
+.foundations-lesson-content-body > .foundations-standard-intro {
+  position: relative;
+  gap: 0;
+  margin-top: 58px;
+}
+
+.foundations-lesson-content-body .foundations-standard-intro > .lesson-progress-container {
+  position: absolute;
+  inset: 0 0 auto;
+}
+
+.foundations-lesson-content-body .foundations-standard-intro .lesson-grid {
+  margin-bottom: 0;
+}
+
+.foundations-lesson-content-body .foundations-standard-intro .lesson-card {
+  gap: 0;
+}
+
+.foundations-lesson-content-body .foundations-standard-intro .lesson-card:has(.lesson-navigation) {
+  margin-bottom: 0;
+}
+
+.foundations-lesson-content-body .foundations-standard-intro .lesson-card .lesson-navigation {
+  position: relative;
+  inset: auto;
+  margin-top: 61.5px;
+}
+
+/* The legacy video viewer normally pulls itself upward and dynamic view tours
+   reserve 600px for a 562.5px panel. Remove both offsets in standard intros. */
+.foundations-lesson-content-body .foundations-standard-intro .tutorial-viewer-container.inline {
+  margin-top: 0;
+}
+
+.foundations-lesson-content-body .foundations-video-reading-lesson .foundations-video-section {
+  height: auto !important;
+  aspect-ratio: auto;
+}
+
+/* The five basic-shape intros intentionally omit the progress indicator.
+   Preserve the same 58px panel offset that the original Cylinder layout had. */
+.foundations-lesson-content-body > .basic-shape-intro-no-progress {
+  gap: 0;
+}
+
+.foundations-lesson-content-body > .basic-shape-intro-no-progress > .tab-content {
+  margin-top: 58px;
+}
+
+.foundations-lesson-content-body > .foundations-video-reading-lesson {
+  width: min(100%, 1444px);
+  max-width: 1444px;
+}
+
+.foundations-lesson-content-body .foundations-video-reading-layout .tutorial-viewer-container.inline {
+  margin-top: 0;
+}
+
 .exit-course-btn {
   display: flex;
   align-items: center;
@@ -2144,6 +2267,18 @@ body.learner-course-shell-active .course-sidebar {
     padding-top: 4.5rem;
   }
 
+}
+
+@media (max-width: 640px) {
+  .foundations-lesson-content-body {
+    padding-right: 0.75rem;
+    padding-bottom: 2.5rem;
+    padding-left: 0.75rem;
+  }
+
+  .foundations-lesson-content-body > .course-lesson-container {
+    margin-top: 1rem;
+  }
 }
 
 .sidebar-toggle {

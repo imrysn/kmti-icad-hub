@@ -193,7 +193,11 @@
 .ivl-recap-item span { font-size: 1.05rem; font-weight: 750; line-height: 1.4; }
 .ivl-recap-action { min-width: 132px; margin-top: 1.75rem; }
 
-.ivl-navigation { max-width: 1000px; margin-top: 1.5rem; }
+.ivl-navigation {
+  width: 100%;
+  max-width: none;
+  margin-top: 1.5rem;
+}
 
 @media (max-width: 720px) {
   .ivl-video-shell { min-height: 420px; aspect-ratio: auto; }

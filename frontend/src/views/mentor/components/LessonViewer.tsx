@@ -444,7 +444,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             <div className="lesson-banner-divider"></div>
           </div>
 
-          <div className="lesson-content-body">
+          <div key={activeLessonId} className={`lesson-content-body ${isFoundationsCourse ? 'foundations-lesson-content-body' : ''}`}>
             {isFoundationsCourse && ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId] && (
               <LessonObjective>{ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId]}</LessonObjective>
             )}

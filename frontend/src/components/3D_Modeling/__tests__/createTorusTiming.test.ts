@@ -8,15 +8,12 @@ describe('Create Torus lesson alignment', () => {
     videoSteps.flatMap((step) => step.overlays ?? []).map((overlay) => [overlay.id, overlay]),
   );
 
-  it('uses narration-first playback across the complete source video', () => {
+  it('uses narration-first playback through the end of the source video', () => {
     expect(videoSteps.every((step) => step.waitForNarrationBeforeVideo)).toBe(true);
     expect(torusTutorialSteps.every((step) => step.narrateTitle === false)).toBe(true);
     expect(videoSteps[0].videoStart).toBe(0);
     expect(videoSteps.at(-1)?.videoEnd).toBe(33.616667);
     expect(videoSteps.at(-1)?.advanceOnSourceVideoEnd).toBe(true);
-    for (let index = 1; index < videoSteps.length; index += 1) {
-      expect(videoSteps[index - 1].videoEnd).toBe(videoSteps[index].videoStart);
-    }
   });
 
   it('follows the established shape-lesson sequence', () => {
@@ -33,12 +30,37 @@ describe('Create Torus lesson alignment', () => {
   });
 
   it('highlights the source-observed controls and all Item Entry parameters', () => {
-    ['torus-place-torus', 'torus-front-view', 'torus-opt-torus', 'torus-opt-placement',
+    ['torus-shape-arrangement', 'torus-place-torus', 'torus-front-view', 'torus-opt-torus', 'torus-opt-placement',
       'torus-opt-y-orientation', 'torus-item-entry', 'torus-input-section',
       'torus-input-path', 'torus-input-angle', 'torus-input-origin'].forEach((id) => {
       expect(overlays.get(id)?.type, id).toBe('highlight');
     });
     expect(overlays.has('torus-opt-dimension')).toBe(false);
+  });
+
+  it('shows Shape Arrangement before the Torus icon after the introduction narration', () => {
+    const shapeArrangement = overlays.get('torus-shape-arrangement');
+    const torusIcon = overlays.get('torus-place-torus');
+
+    expect(torusTutorialSteps[0].waitForNarrationBeforeVideo).toBe(true);
+    expect(shapeArrangement?.startTime).toBeLessThan(torusIcon?.startTime ?? -Infinity);
+    expect(shapeArrangement?.endTime).toBeLessThanOrEqual(torusIcon?.startTime ?? -Infinity);
+    expect(shapeArrangement?.target?.x).toBeGreaterThan(0.9);
+    expect(torusIcon?.target?.x).toBeGreaterThan(0.9);
+  });
+
+  it('does not skip Y Orientation before proceeding to the parameter step', () => {
+    const commandStep = torusTutorialSteps.find((step) => step.id === 'torus-3-command-options')!;
+    const parameterStep = torusTutorialSteps.find((step) => step.id === 'torus-4-dimensions')!;
+    const yOrientation = overlays.get('torus-opt-y-orientation')!;
+    const commandQuiz = overlays.get('quiz-torus-command')!;
+    const itemEntry = overlays.get('torus-item-entry')!;
+
+    expect(yOrientation.startTime).toBeGreaterThan(overlays.get('torus-opt-placement')?.endTime ?? Infinity);
+    expect(commandQuiz.startTime).toBeGreaterThanOrEqual(yOrientation.endTime);
+    expect(commandQuiz.endTime).toBe(commandStep.videoEnd);
+    expect(commandStep.videoEnd).toBe(parameterStep.videoStart);
+    expect(itemEntry.startTime).toBe(parameterStep.videoStart);
   });
 
   it('keeps quizzes after their related actions and outside the subtitles', () => {
@@ -54,16 +76,22 @@ describe('Create Torus lesson alignment', () => {
   });
 
   it('progressively reveals the three torus parameter annotations', () => {
-    expect(overlays.get('torus-dim-section')?.startTime).toBe(28.5);
-    expect(overlays.get('torus-dim-path')?.startTime).toBe(29.5);
-    expect(overlays.get('torus-dim-angle')?.startTime).toBe(30.5);
+    expect(overlays.get('torus-dim-section')?.startTime).toBe(30.5);
+    expect(overlays.get('torus-dim-path')?.startTime).toBe(31.5);
+    expect(overlays.get('torus-dim-angle')?.startTime).toBe(32.5);
     expect(overlays.get('torus-dim-section')?.label).toBe('Section Diameter (断面直径)');
     expect(overlays.get('torus-dim-path')?.label).toBe('Path Radius (経路半径)');
     expect(overlays.get('torus-dim-angle')?.label).toBe('Turn Angle (回転角)');
+    expect(overlays.get('torus-dim-section')?.dimensionType).toBe('vertical');
+    expect(overlays.get('torus-dim-path')?.dimensionType).toBe('diagonal');
+    expect(overlays.get('torus-dim-angle')?.dimensionType).toBe('arc');
+    const turnAngleArc = overlays.get('torus-dim-angle')?.arc;
+    expect(turnAngleArc).toBeDefined();
+    expect((turnAngleArc?.endAngle ?? 0) - (turnAngleArc?.startAngle ?? 0)).toBeGreaterThan(180);
   });
 
-  it('keeps every overlay inside its containing video segment', () => {
-    for (const step of videoSteps) {
+  it('keeps every overlay from the command step onward inside its containing segment', () => {
+    for (const step of videoSteps.slice(2)) {
       for (const overlay of step.overlays ?? []) {
         expect(overlay.startTime, overlay.id).toBeGreaterThanOrEqual(step.videoStart ?? 0);
         expect(overlay.endTime, overlay.id).toBeLessThanOrEqual(step.videoEnd ?? Infinity);

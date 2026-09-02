@@ -49,6 +49,11 @@ export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
   'lesson-11-1': 'Recognize and resolve common beginner issues involving navigation, selection, and active commands.',
   'lesson-12-1': 'Apply foundational navigation, selection, geometry, modeling, and file-management skills in a guided challenge.',
   'lesson-13-1': 'Demonstrate that you can independently navigate the iCAD environment and perform its fundamental operations.',
+  'basic-op-cylinder': 'Create and position a cylinder by entering its diameter and height, then placing it at the model origin.',
+  'basic-op-box': 'Create and position a box by entering its width, depth, and height, then placing it accurately at the model origin.',
+  'basic-op-polygon': 'Create and position a polygonal prism by defining its number of sides, path diameter, and height.',
+  'basic-op-cone': 'Create and position a cone by defining its base diameter, top face diameter, and height.',
+  'basic-op-torus': 'Create and position a torus by defining its section diameter, path radius, and turn angle.',
 };
 
 export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
