@@ -1,4 +1,8 @@
 import rotateViewVideo from '../../../assets/3D_INTERACTIVE/scroll.mp4';
+import {
+  ROTATE_VIEW_WRITTEN_TUTORIAL_COPY,
+  ROTATE_VIEW_WRITTEN_TUTORIAL_STEPS,
+} from '../../iCAD_Foundations/WrittenTutorial';
 import type { InteractiveVideoLessonConfig } from '../types';
 
 export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
@@ -85,4 +89,6 @@ export const rotateViewLessonConfig: InteractiveVideoLessonConfig = {
     { action: 'Move the Mouse', result: 'Change Viewing Angle' },
   ],
   completionText: 'You now understand how to rotate the 3D view and inspect a model from different angles.',
+  writtenTutorialSteps: ROTATE_VIEW_WRITTEN_TUTORIAL_STEPS,
+  writtenTutorialCopy: ROTATE_VIEW_WRITTEN_TUTORIAL_COPY,
 };

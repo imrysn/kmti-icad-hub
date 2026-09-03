@@ -5,16 +5,17 @@ import { KaraokeLessonText } from './KaraokeLessonText';
 interface LessonVideoSubtitleProps {
   text: string;
   currentCharIndex?: number;
+  isActive?: boolean;
 }
 
-const LessonVideoSubtitle: React.FC<LessonVideoSubtitleProps> = ({ text, currentCharIndex }) => {
+const LessonVideoSubtitle: React.FC<LessonVideoSubtitleProps> = ({ text, currentCharIndex, isActive = true }) => {
   if (!text) return null;
 
   return (
     <div className="lesson-video-subtitle" role="status" aria-live="polite">
       <KaraokeLessonText 
         text={text} 
-        isActive={true} 
+        isActive={isActive}
         currentCharIndex={currentCharIndex} 
         className="lesson-video-subtitle__text"
         as="p"

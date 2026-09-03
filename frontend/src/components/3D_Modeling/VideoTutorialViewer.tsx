@@ -15,6 +15,7 @@ export type { NormalizedPoint, NormalizedRect, TutorialOverlay, TutorialOverlayT
 // We import the specific image for this tutorial
 import icadInterfaceImg from '../../assets/3D_INTERACTIVE/icad_interface.jpg';
 import { KaraokeLessonText } from '../KaraokeLessonText';
+import LessonVideoSubtitle from '../LessonVideoSubtitle';
 import { buildAnswerFeedbackNarration, buildKnowledgeCheckNarration, buildTutorialStepNarration } from '../../utils/quizNarration';
 import { FOUNDATIONS_NARRATION_PROFILE } from '../../config/foundationsNarration';
 import {
@@ -1242,10 +1243,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
         !activeQuizId &&
         !currentData.quizData &&
         !currentData.recapData && (
-          <div className="tutorial-subtitle-flat">
-            <h2 className="tutorial-title">{currentData.title}</h2>
-            <KaraokeLessonText text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} className="tutorial-description" />
-          </div>
+          <LessonVideoSubtitle text={currentData.text} isActive={isPlaying} currentCharIndex={currentCharIndex} />
         )
       ) : !activeQuizId ? (
         <div

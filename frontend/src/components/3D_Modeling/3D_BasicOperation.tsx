@@ -26,6 +26,19 @@ import {
 } from './VideoTutorialData/basicOp1TutorialSteps';
 import VideoTutorialViewer from './VideoTutorialViewer';
 import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
+import {
+  BOX_WRITTEN_TUTORIAL_COPY,
+  BOX_WRITTEN_TUTORIAL_STEPS,
+  CONE_WRITTEN_TUTORIAL_COPY,
+  CONE_WRITTEN_TUTORIAL_STEPS,
+  CYLINDER_WRITTEN_TUTORIAL_COPY,
+  CYLINDER_WRITTEN_TUTORIAL_STEPS,
+  POLYGON_WRITTEN_TUTORIAL_COPY,
+  POLYGON_WRITTEN_TUTORIAL_STEPS,
+  TORUS_WRITTEN_TUTORIAL_COPY,
+  TORUS_WRITTEN_TUTORIAL_STEPS,
+} from '../iCAD_Foundations/WrittenTutorial';
+
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
 import leftClick from '../../assets/3d-images/left_click.png';
@@ -353,7 +366,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
     <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
       {activeTab === 'cylinder' && (
         <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cylinder.title} description={basicShapeIntroPanels.cylinder.description} steps={mapSteps(cylinderTutorialSteps, 'cylinder').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+          <FoundationsVideoReadingLayout
+            title={basicShapeIntroPanels.cylinder.title}
+            description={basicShapeIntroPanels.cylinder.description}
+            steps={CYLINDER_WRITTEN_TUTORIAL_STEPS}
+            writtenTutorialCopy={CYLINDER_WRITTEN_TUTORIAL_COPY}
+          >
             <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
           </FoundationsVideoReadingLayout>
 
@@ -368,7 +386,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       {activeTab === 'box' && (
         <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.box.title} description={basicShapeIntroPanels.box.description} steps={mapSteps(boxTutorialSteps, 'box').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+          <FoundationsVideoReadingLayout
+            title={basicShapeIntroPanels.box.title}
+            description={basicShapeIntroPanels.box.description}
+            steps={BOX_WRITTEN_TUTORIAL_STEPS}
+            writtenTutorialCopy={BOX_WRITTEN_TUTORIAL_COPY}
+          >
             <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
           </FoundationsVideoReadingLayout>
 
@@ -383,7 +406,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       {activeTab === 'polygon' && (
         <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.polygon.title} description={basicShapeIntroPanels.polygon.description} steps={mapSteps(polygonTutorialSteps, 'polygon').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+          <FoundationsVideoReadingLayout
+            title={basicShapeIntroPanels.polygon.title}
+            description={basicShapeIntroPanels.polygon.description}
+            steps={POLYGON_WRITTEN_TUTORIAL_STEPS}
+            writtenTutorialCopy={POLYGON_WRITTEN_TUTORIAL_COPY}
+          >
             <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
           </FoundationsVideoReadingLayout>
 
@@ -398,7 +426,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       {activeTab === 'cone' && (
         <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.cone.title} description={basicShapeIntroPanels.cone.description} steps={mapSteps(coneTutorialSteps, 'cone').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+          <FoundationsVideoReadingLayout
+            title={basicShapeIntroPanels.cone.title}
+            description={basicShapeIntroPanels.cone.description}
+            steps={CONE_WRITTEN_TUTORIAL_STEPS}
+            writtenTutorialCopy={CONE_WRITTEN_TUTORIAL_COPY}
+          >
             <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
           </FoundationsVideoReadingLayout>
 
@@ -413,7 +446,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
       {activeTab === 'torus' && (
         <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout title={basicShapeIntroPanels.torus.title} description={basicShapeIntroPanels.torus.description} steps={mapSteps(torusTutorialSteps, 'torus').map(step => ({ id: step.id, title: step.title, text: step.text }))}>
+          <FoundationsVideoReadingLayout
+            title={basicShapeIntroPanels.torus.title}
+            description={basicShapeIntroPanels.torus.description}
+            steps={TORUS_WRITTEN_TUTORIAL_STEPS}
+            writtenTutorialCopy={TORUS_WRITTEN_TUTORIAL_COPY}
+          >
             <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
           </FoundationsVideoReadingLayout>
 

@@ -348,42 +348,4 @@
   box-shadow: none !important;
 }
 
-/* Flat simple subtitle styling for Intro/Outro (Movie Subtitle Style) */
-.tutorial-subtitle-flat {
-  position: absolute;
-  bottom: 120px; /* Kept above the floating controls panel (which is bottom: 30px) */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 750px;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  padding: 0 !important;
-  text-align: center;
-  pointer-events: none;
-  z-index: 25;
-}
-
-.tutorial-subtitle-flat .tutorial-title {
-  display: none !important; /* Hide title on movie subtitles */
-}
-
-.tutorial-subtitle-flat .tutorial-description {
-  margin: 0;
-  font-size: 1.35rem !important;
-  font-weight: 600;
-  line-height: 1.5;
-  color: #fff !important;
-}
-
-/* Classic movie subtitle outline shadow on all parts for perfect readability */
-.tutorial-subtitle-flat .tutorial-description span {
-  text-shadow: 
-    -1.5px -1.5px 0 #000,  
-     1.5px -1.5px 0 #000,
-    -1.5px  1.5px 0 #000,
-     1.5px  1.5px 0 #000,
-     0px 2px 4px rgba(0, 0, 0, 0.9) !important;
-}
+/* Bottom narration captions use the shared LessonVideoSubtitle component. */

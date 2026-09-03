@@ -132,9 +132,19 @@ describe('Box video timing', () => {
   it('places origin entry after the dimensions knowledge check', () => {
     const originStep = boxTutorialSteps.find((step) => step.id === 'box-8-origin')!;
 
-    expect(originStep.customText).toContain('After the knowledge check');
-    expect(originStep.customText).toContain('0, 0, 0');
+    expect(originStep.customText).toBe('In the Key Entry Area, enter 0, 0, 0 to position the rectangular solid at the model origin. Then press Enter.');
     expect(overlays.get('quiz-box-dimensions')?.endTime).toBeLessThanOrEqual(originStep.videoStart!);
+  });
+
+  it('highlights Key Entry from the start of the origin instruction through coordinate confirmation', () => {
+    const originStep = boxTutorialSteps.find((step) => step.id === 'box-8-origin')!;
+    const coordinateHighlight = overlays.get('box-input-coords');
+
+    expect(originStep.waitForNarrationBeforeVideo).toBe(true);
+    expect(coordinateHighlight?.startTime).toBe(originStep.videoStart);
+    expect(coordinateHighlight?.endTime).toBe(originStep.videoEnd);
+    expect(coordinateHighlight?.label).toBe('Key Entry Area: 0 0 0, then press Enter');
+    expect(originStep.overlays?.some((overlay) => overlay.id === 'box-input-height')).toBe(false);
   });
 
   it('shows the origin knowledge check after the result subtitle', () => {

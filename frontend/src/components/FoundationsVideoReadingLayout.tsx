@@ -1,19 +1,4 @@
-import React from 'react';
-import WrittenTutorialPanel, { WrittenTutorialCopy, WrittenTutorialStep } from './WrittenTutorialPanel';
+import FoundationsVideoReadingLayout from './iCAD_Foundations/WrittenTutorial/FoundationsVideoReadingLayout';
 
-interface FoundationsVideoReadingLayoutProps {
-  children: React.ReactNode;
-  title: string;
-  description?: string;
-  steps: WrittenTutorialStep[];
-  writtenTutorialCopy?: Partial<WrittenTutorialCopy>;
-}
-
-const FoundationsVideoReadingLayout: React.FC<FoundationsVideoReadingLayoutProps> = ({ children, title, description, steps, writtenTutorialCopy }) => (
-  <div className="foundations-video-reading-layout">
-    <div className="foundations-video-reading-layout__video">{children}</div>
-    <WrittenTutorialPanel title={title} description={description} steps={steps} copy={writtenTutorialCopy} />
-  </div>
-);
-
+export * from './iCAD_Foundations/WrittenTutorial/FoundationsVideoReadingLayout';
 export default FoundationsVideoReadingLayout;

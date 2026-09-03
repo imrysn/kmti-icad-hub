@@ -423,7 +423,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     id: "box-8-origin",
     title: "Position the Box",
     text: "",
-    customText: "After the knowledge check, enter 0, 0, 0 in the Item Entry area to position the rectangular solid at the model origin. Then click Enter.",
+    customText: "In the Key Entry Area, enter 0, 0, 0 to position the rectangular solid at the model origin. Then press Enter.",
     zoom: "scale(1)",
     origin: "center",
     spotlight: { top: "0%", left: "0%", width: "100%", height: "100%", opacity: 0 },
@@ -434,7 +434,7 @@ export const boxTutorialSteps: TutorialStep[] = [
     videoStart: 25.0,
     videoEnd: 29.883,
     overlays: [
-      { id: "box-input-coords", type: "highlight", startTime: 29.167, endTime: 29.883, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Origin Coordinates: 0 0 0" }
+      { id: "box-input-coords", type: "highlight", startTime: 25.0, endTime: 29.883, target: { x: 0.6, y: 0.949, width: 0.4, height: 0.0324 }, animation: "pulse", label: "Key Entry Area: 0 0 0, then press Enter" }
     ]
   },
   {

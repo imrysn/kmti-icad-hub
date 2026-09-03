@@ -79,11 +79,11 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   const selectedAnswer = activeQuestion?.choices.find((choice) => choice.id === selectedChoice);
   const isAnswerCorrect = Boolean(selectedAnswer?.isCorrect);
   const writtenSteps = useMemo(() => [
-    ...config.segments.map(segment => ({
+    ...(config.writtenTutorialSteps ?? config.segments.map(segment => ({
       id: segment.id,
       title: segment.label,
       text: segment.narration.join(' '),
-    })),
+    }))),
   ], [config]);
 
   const beginNarration = useCallback((text: string | string[], after?: () => void, showSubtitle = true) => {
@@ -411,7 +411,12 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <FoundationsVideoReadingLayout title={config.title} description={config.introSupportingText} steps={writtenSteps}>
+      <FoundationsVideoReadingLayout
+        title={config.title}
+        description={config.introSupportingText}
+        steps={writtenSteps}
+        writtenTutorialCopy={config.writtenTutorialCopy}
+      >
       <section className="ivl-player-card" aria-label={config.videoLabel} ref={playerCardRef}>
         <div className="ivl-video-shell lesson-intro-shell">
           <video

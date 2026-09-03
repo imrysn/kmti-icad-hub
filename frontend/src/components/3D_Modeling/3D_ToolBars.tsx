@@ -5,7 +5,6 @@ import './CourseLesson.css';
 import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
 import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
-import type { WrittenTutorialStep } from '../WrittenTutorialPanel';
 
 /* Toolbar image imports */
 
@@ -21,93 +20,16 @@ interface ToolBarsLessonProps {
   nextLabel?: string;
 }
 
-export const TOOLBARS_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
-  {
-    id: 'file',
-    title: 'File',
-    text: 'Contains new, open, save, print.',
-    preserveText: true,
-  },
-  {
-    id: '2d-view',
-    title: '2D View',
-    text: 'Contains Previous View, Switch Views, Next View.',
-    preserveText: true,
-  },
-  {
-    id: 'switch-display',
-    title: 'Switch Display',
-    text: 'Contains Change Projection Method, Switch Dimensions.',
-    preserveText: true,
-  },
-  {
-    id: 'screen-operations',
-    title: 'Screen Operations',
-    text: 'Contains Set Zoom Area, Zoom In, Zoom Out, Zoom to Fit, Re-Display, Previous Zoom.',
-    preserveText: true,
-  },
-  {
-    id: '3d-view',
-    title: '3D View',
-    text: 'Contains Top, Front, Right, Left, Back, Bottom, Set a Plane, Set using 3-Points.',
-    preserveText: true,
-  },
-  {
-    id: 'user-views',
-    title: 'User Views',
-    text: 'Contains User View 1, 2, 3, 4 (ISOMETRIC VIEWS).',
-    preserveText: true,
-  },
-  {
-    id: 'edit',
-    title: 'Edit',
-    text: 'Contains Undo, Redo.',
-    preserveText: true,
-  },
-  {
-    id: 'shading',
-    title: 'Shading',
-    text: 'Contains Shading, Shading with Frame, Hidden Lines Removed, Wireframe.',
-    preserveText: true,
-  },
-  {
-    id: 'section-display',
-    title: 'Section Display',
-    text: 'Contains Open Work Plane, Switch to Section Display.',
-    preserveText: true,
-  },
-  {
-    id: '2d-standard-screen',
-    title: '2D Standard Screen',
-    text: 'Contains Set Standard Screen Range, Set Display Screen, Display Standard Screen.',
-    preserveText: true,
-  },
-  {
-    id: 'system-information',
-    title: 'System Information',
-    text: 'Setting for attributes of entities to be created.',
-    preserveText: true,
-  },
-  {
-    id: 'screen-memory',
-    title: 'Screen Memory',
-    text: 'Stores the currently displayed screen.',
-    preserveText: true,
-  },
-  {
-    id: 'entry-control',
-    title: 'Entry Control',
-    text: 'The method for entity selection and coordinate entry can be specified.',
-    preserveText: true,
-  },
-];
+import {
+  TOOLBARS_WRITTEN_TUTORIAL_COPY,
+  TOOLBARS_WRITTEN_TUTORIAL_STEPS,
+} from '../iCAD_Foundations/WrittenTutorial';
 
-export const TOOLBARS_WRITTEN_TUTORIAL_COPY = {
-  title: 'This lesson introduces the iCAD tool bars and the commands available in each section.',
-  moduleLabel: 'About the Lesson',
-  procedureTitle: 'Procedure',
-  completionText: 'You have completed the iCAD Tool Bars lesson.',
+export {
+  TOOLBARS_WRITTEN_TUTORIAL_COPY,
+  TOOLBARS_WRITTEN_TUTORIAL_STEPS,
 };
+
 
 export const localizeToolbarTutorialSteps = (
   translate: (key: string) => string,

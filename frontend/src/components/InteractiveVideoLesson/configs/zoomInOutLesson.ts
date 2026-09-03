@@ -1,5 +1,10 @@
 import zoomInOutVideo from '../../../assets/3D_INTERACTIVE/zoomin_out.mp4';
+import {
+  ZOOM_IN_OUT_WRITTEN_TUTORIAL_COPY,
+  ZOOM_IN_OUT_WRITTEN_TUTORIAL_STEPS,
+} from '../../iCAD_Foundations/WrittenTutorial';
 import type { InteractiveVideoLessonConfig } from '../types';
+
 
 export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
   id: 'lesson-3-1',
@@ -114,4 +119,6 @@ export const zoomInOutLessonConfig: InteractiveVideoLessonConfig = {
     { action: 'Mouse Wheel Backward ↓', result: 'Zoom Out' },
   ],
   completionText: 'You now understand how to zoom in and zoom out in iCAD.',
+  writtenTutorialSteps: ZOOM_IN_OUT_WRITTEN_TUTORIAL_STEPS,
+  writtenTutorialCopy: ZOOM_IN_OUT_WRITTEN_TUTORIAL_COPY,
 };

@@ -1,27 +1,31 @@
 .lesson-video-subtitle {
   position: absolute;
-  right: clamp(2.5rem, 8vw, 5rem);
-  bottom: clamp(2.85rem, 5vw, 3.55rem);
-  left: clamp(0.75rem, 3vw, 2rem);
-  z-index: 7;
+  /* Canonical caption layout from Understanding the iCAD Interface. */
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 750px;
+  z-index: 25;
   display: flex;
   justify-content: center;
   pointer-events: none;
   text-align: center;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .lesson-video-subtitle__text {
-  width: fit-content;
-  max-width: 750px;
+  width: 100%;
   margin: 0;
   padding: 0;
   border: 0;
   color: #fff;
   background: transparent;
   box-shadow: none;
-  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+  font-size: 1.35rem;
   font-weight: 600;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .lesson-video-subtitle .tts-active-highlight {
@@ -39,14 +43,10 @@
     1.5px -1.5px 0 #000,
     -1.5px 1.5px 0 #000,
     1.5px 1.5px 0 #000,
-    0 2px 4px rgba(0, 0, 0, 0.9);
+    0 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
 
-.lesson-video-subtitle__spoken { color: #fff; }
-.lesson-video-subtitle__active { color: var(--color-primary); font-weight: 800; text-shadow: 0 0 8px var(--color-primary-glow), -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000; }
-.lesson-video-subtitle__upcoming { color: #a3a3a3; }
-
 @media (max-width: 720px) {
-  .lesson-video-subtitle { right: 2.2rem; bottom: 3.05rem; left: 0.5rem; }
-  .lesson-video-subtitle__text { max-width: 92%; font-size: 0.78rem; }
+  .lesson-video-subtitle { bottom: 48px; }
+  .lesson-video-subtitle__text { font-size: 1rem; }
 }

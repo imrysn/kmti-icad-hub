@@ -1,5 +1,10 @@
 import panVideo from '../../../assets/3D_INTERACTIVE/pan.mp4';
+import {
+  PAN_WRITTEN_TUTORIAL_COPY,
+  PAN_WRITTEN_TUTORIAL_STEPS,
+} from '../../iCAD_Foundations/WrittenTutorial';
 import type { InteractiveVideoLessonConfig } from '../types';
+
 
 export const panLessonConfig: InteractiveVideoLessonConfig = {
   id: 'lesson-3-2',
@@ -73,4 +78,6 @@ export const panLessonConfig: InteractiveVideoLessonConfig = {
     { action: 'Drag the Mouse', result: 'Move the View' },
   ],
   completionText: 'You now understand how to pan across the iCAD workspace without moving the model.',
+  writtenTutorialSteps: PAN_WRITTEN_TUTORIAL_STEPS,
+  writtenTutorialCopy: PAN_WRITTEN_TUTORIAL_COPY,
 };

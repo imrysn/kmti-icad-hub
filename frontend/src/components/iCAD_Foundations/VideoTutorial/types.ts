@@ -1,3 +1,13 @@
+import { WrittenTutorialCopy, WrittenTutorialStep } from '../WrittenTutorial/types';
+
+export type {
+  LessonVideoStep,
+  NormalizedPoint,
+  NormalizedRect,
+  TutorialOverlay,
+  TutorialOverlayType
+} from '../../../types/tutorial';
+
 export interface InteractiveVideoChoice {
   id: string;
   label: string;
@@ -43,7 +53,6 @@ export interface InteractiveVideoLessonConfig {
   recapNarration: string;
   recapItems: Array<{ action: string; result: string }>;
   completionText: string;
-  writtenTutorialSteps?: Array<{ id: string | number; title: string; text: string; preserveText?: boolean }>;
-  writtenTutorialCopy?: { moduleLabel?: string; procedureTitle?: string; completionText?: string; title?: string };
+  writtenTutorialSteps?: WrittenTutorialStep[];
+  writtenTutorialCopy?: Partial<WrittenTutorialCopy>;
 }
-
