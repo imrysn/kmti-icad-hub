@@ -32,35 +32,26 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 
 export const USER_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'User View',
-  description: 'Use User View (Isometric) to inspect multiple faces and 3D dimensions simultaneously.',
+  description: 'allows you to quickly display the 3D model from preset isometric viewing angles.',
   moduleLabel: 'About the Lesson',
-  procedureTitle: 'Procedure',
+  procedureTitle: 'ivl-objective',
+  objective: 'By the end of this lesson, you will be able to use User View to inspect a 3D model from different isometric angles.',
   completionText: 'Great job! You have completed the User View lesson.',
+  inlineHeader: true,
+  renderAsObjective: true,
 };
 
 export const USER_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'user-view-step-1',
-    title: 'Locate User View Controls',
-    text: 'Find the User View buttons (User View 1, 2, 3, 4) in the 3D View toolbar.',
+    title: 'User View Options',
+    text: 'iCAD SX provides User View 1, 2, 3, and 4, which show the model from different isometric directions.',
     preserveText: true,
   },
   {
     id: 'user-view-step-2',
-    title: 'Select User View 1',
-    text: 'Click User View 1 to display the standard isometric viewpoint showing width, depth, and height.',
-    preserveText: true,
-  },
-  {
-    id: 'user-view-step-3',
-    title: 'Switch Viewing Angles',
-    text: 'Click User View 2, 3, or 4 to inspect alternate isometric angles without moving the part geometry.',
-    preserveText: true,
-  },
-  {
-    id: 'user-view-step-4',
-    title: 'Confirm Model Orientation',
-    text: 'Verify overall 3D geometry and proportion from your chosen isometric view.',
+    title: 'When to Use User View',
+    text: '\n* See multiple sides of the model at once. \n* Understand the overall 3D shape. \n* Quickly inspect the model from another angle.',
     preserveText: true,
   },
 ];

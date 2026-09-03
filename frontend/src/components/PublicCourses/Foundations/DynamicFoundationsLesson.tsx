@@ -192,11 +192,9 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
   return (
     <div className={`course-lesson-container foundations-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson foundations-standard-intro' : ''} ${videoId ? 'foundations-video-reading-lesson' : ''}`} ref={containerRef}>
-      {!['lesson-4-1', 'lesson-4-2'].includes(lessonId) && (
-        <div className="lesson-progress-container">
-          <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
-        </div>
-      )}
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
 
       <div className="lesson-grid single-card foundations-lesson-grid">
         <div className="lesson-card tab-content fade-in foundations-lesson-card">

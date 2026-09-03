@@ -598,14 +598,13 @@
   left: 0rem;
   top: 0rem;
   bottom: 0rem;
-  width: 70px;
+  width: 320px;
   flex-shrink: 0;
   background: var(--bg-surface);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
   z-index: 1000;
 }
 
@@ -950,6 +949,10 @@ button.learner-account-menu-item:hover {
   font-weight: 750;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.learner-settings-label:not(:first-child) {
+  margin-top: 0.65rem;
 }
 
 .learner-theme-options {
@@ -2080,6 +2083,14 @@ body.learner-course-shell-active .course-sidebar {
   position: relative;
   padding-left: 80px;
   transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.lesson-scroll-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
 }
 
 .course-sidebar.open+.main-content-viewer .lesson-scroll-area {
@@ -2125,8 +2136,8 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 .lesson-header-banner {
-  margin: 0;
-  padding: 1.5rem 2rem 1rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
   position: relative;
   text-align: center;
 }
@@ -2170,7 +2181,7 @@ body.learner-course-shell-active .course-sidebar {
   box-sizing: border-box;
   width: min(100%, 1000px);
   max-width: 1000px;
-  margin: 2rem auto 0;
+  margin: 0 auto;
 }
 
 .foundations-lesson-content-body>.ivl-objective {
@@ -2205,18 +2216,18 @@ body.learner-course-shell-active .course-sidebar {
 }
 
 /* Standard intros follow the actual Cylinder measurements: 58px above
-   and 61.5px below the 16:9 panel. The
-   progress indicator is visually overlaid so the generic course flex gap does
-   not create an invisible 56px spacer. */
+   and 61.5px below the 16:9 panel. */
 .foundations-lesson-content-body>.foundations-standard-intro {
   position: relative;
   gap: 0;
-  margin-top: 1.5rem;
+  margin-top: 0;
 }
 
 .foundations-lesson-content-body .foundations-standard-intro>.lesson-progress-container {
-  position: absolute;
-  inset: 0 0 auto;
+  position: sticky;
+  top: 0;
+  margin: 0 auto 1.5rem;
+  z-index: 1000;
 }
 
 .foundations-lesson-content-body .foundations-standard-intro .lesson-grid {

@@ -62,6 +62,12 @@ export const INTERFACE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
     preserveText: true,
   },
   {
+    id: 'interface-tool-bar',
+    title: 'Tool Bar',
+    text: 'Provides shorcuts to commonly used tools.',
+    preserveText: true,
+  },
+  {
     id: 'interface-message-pane',
     title: 'Message Pane',
     text: 'Displays operational messages, warnings, and error prompts from iCAD during command execution.',

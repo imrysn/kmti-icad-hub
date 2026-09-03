@@ -1,4 +1,4 @@
-import { BookOpen,Bug,CheckCircle2,ChevronDown,ChevronRight,CreditCard,FileText,HelpCircle,Lock,LogOut,Moon,PanelLeftClose,PanelLeftOpen,Search,Settings,Sparkles,Sun,User as UserIcon,X } from 'lucide-react';
+import { BookOpen,Bug,CheckCircle2,ChevronDown,ChevronRight,CreditCard,FileText,HelpCircle,Languages,Lock,LogOut,Moon,Search,Settings,Sparkles,Sun,User as UserIcon,X } from 'lucide-react';
 import React,{ useEffect,useMemo,useRef,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
@@ -80,8 +80,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     isEmployeeSide = false,
     lessons
 }) => {
-    // Search State
-    const { t } = useTranslation();
+    const { language, setLanguage, t } = useTranslation();
     const navigate = useNavigate();
     const { user, logout } = useAuth();
     const { requestConfirmation } = useUI();
@@ -180,13 +179,13 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
     return (
         <aside
-            className={`course-sidebar ${sidebarOpen ? 'open' : ''}`}
+            className="course-sidebar open"
         >
             <div className="learner-sidebar-brand">
                 {!isSearchOpen && <img src={kmtiTrainingHubLogo} alt="KMTI Training Hub" draggable={false} />}
                 {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
                 <div className="learner-sidebar-brand-actions">
-                    <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} ${sidebarOpen ? 'visible' : 'hidden'}`}>
+                    <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} visible`}>
                         {isSearchOpen && (
                             <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
                                 onKeyDown={(e) => {
@@ -198,18 +197,6 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             {isSearchOpen ? <X size={18} /> : <Search size={18} />}
                         </button>
                     </div>
-                    {!isSearchOpen && (
-                        <button
-                            type="button"
-                            className="close-sidebar-btn"
-                            onClick={onToggleSidebar}
-                            title={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-                            aria-label={sidebarOpen ? 'Close lesson sidebar' : 'Open lesson sidebar'}
-                        >
-                            {!sidebarOpen && <img className="collapsed-sidebar-logo" src={kmtiTrainingHubLogo} alt="" aria-hidden="true" />}
-                            {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
-                        </button>
-                    )}
                 </div>
             </div>
             <div className="sidebar-inner-container">
@@ -393,6 +380,11 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                             <div className="learner-theme-options">
                                 <button type="button" className={activeTheme==='light'?'active':''} aria-pressed={activeTheme==='light'} onClick={() => {setActiveTheme('light');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'light' }));}}><Sun size={15} /> Light</button>
                                 <button type="button" className={activeTheme==='dark'?'active':''} aria-pressed={activeTheme==='dark'} onClick={() => {setActiveTheme('dark');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'dark' }));}}><Moon size={15} /> Dark</button>
+                            </div>
+                            <div className="learner-settings-label">Language</div>
+                            <div className="learner-theme-options">
+                                <button type="button" className={language==='en'?'active':''} aria-pressed={language==='en'} onClick={() => setLanguage('en')}><Languages size={15} /> EN</button>
+                                <button type="button" className={language==='ja'?'active':''} aria-pressed={language==='ja'} onClick={() => setLanguage('ja')}><Languages size={15} /> JP</button>
                             </div>
                             <button type="button" className="learner-billing-summary" onClick={() => navigate('/billing')}><CreditCard size={15} /><span><strong>Billing</strong></span><ChevronRight size={14}/></button>
                         </div>}

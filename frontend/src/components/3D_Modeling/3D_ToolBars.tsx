@@ -62,14 +62,15 @@ export const localizeToolbarTutorialSteps = (
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
   const { t, translateContent } = useTranslation();
   const {
-    containerRef } = useLessonCore('toolbars');
-
-
-
-
+    containerRef,
+    scrollProgress,
+  } = useLessonCore('toolbars');
 
   return (
     <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
       {/* Main Interactive Stage */}
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
