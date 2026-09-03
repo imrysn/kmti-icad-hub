@@ -1,6 +1,6 @@
 .lesson-video-subtitle {
   position: absolute;
-  /* Canonical caption layout from Understanding the iCAD Interface. */
+  /* Canonical caption layout from iCAD SX Interface. */
   bottom: 120px;
   left: 50%;
   transform: translateX(-50%);
@@ -47,6 +47,11 @@
 }
 
 @media (max-width: 720px) {
-  .lesson-video-subtitle { bottom: 48px; }
-  .lesson-video-subtitle__text { font-size: 1rem; }
+  .lesson-video-subtitle {
+    bottom: 48px;
+  }
+
+  .lesson-video-subtitle__text {
+    font-size: 1rem;
+  }
 }

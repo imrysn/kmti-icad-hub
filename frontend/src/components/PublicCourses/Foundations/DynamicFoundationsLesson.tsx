@@ -17,6 +17,57 @@ import module5Video from '../../../assets/3D_INTERACTIVE/module5.mp4';
 import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
 import LessonRecapPanel from '../../LessonRecapPanel';
 import { getFoundationsRecap } from './foundationsRecaps';
+import {
+  GETTING_STARTED_WRITTEN_TUTORIAL_COPY,
+  GETTING_STARTED_WRITTEN_TUTORIAL_STEPS,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS,
+  USER_VIEW_WRITTEN_TUTORIAL_COPY,
+  USER_VIEW_WRITTEN_TUTORIAL_STEPS,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_COPY,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS,
+  CREATE_LINE_WRITTEN_TUTORIAL_COPY,
+  CREATE_LINE_WRITTEN_TUTORIAL_STEPS,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_COPY,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_COPY,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS,
+  SAVING_WORK_WRITTEN_TUTORIAL_COPY,
+  SAVING_WORK_WRITTEN_TUTORIAL_STEPS,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS,
+  WrittenTutorialCopy,
+  WrittenTutorialStep,
+} from '../../iCAD_Foundations/WrittenTutorial';
+
+const WRITTEN_TUTORIAL_REGISTRY: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
+  'lesson-1-1': { copy: GETTING_STARTED_WRITTEN_TUTORIAL_COPY, steps: GETTING_STARTED_WRITTEN_TUTORIAL_STEPS },
+  'lesson-4-1': { copy: STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY, steps: STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS },
+  'lesson-4-2': { copy: USER_VIEW_WRITTEN_TUTORIAL_COPY, steps: USER_VIEW_WRITTEN_TUTORIAL_STEPS },
+  'origin-projections': { copy: ORIGIN_AXES_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS },
+  'lesson-5-1': { copy: ORIGIN_AXES_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS },
+  'origin-layout': { copy: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS },
+  'lesson-5-2': { copy: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS },
+  'lesson-6-1': { copy: SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY, steps: SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS },
+  'lesson-7-1': { copy: CREATE_LINE_WRITTEN_TUTORIAL_COPY, steps: CREATE_LINE_WRITTEN_TUTORIAL_STEPS },
+  'lesson-7-2': { copy: CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY, steps: CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS },
+  'lesson-8-1': { copy: INTRO_TO_3D_WRITTEN_TUTORIAL_COPY, steps: INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS },
+  'lesson-9-1': { copy: INSPECT_MODEL_WRITTEN_TUTORIAL_COPY, steps: INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS },
+  'lesson-10-1': { copy: SAVING_WORK_WRITTEN_TUTORIAL_COPY, steps: SAVING_WORK_WRITTEN_TUTORIAL_STEPS },
+  'lesson-11-1': { copy: TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY, steps: TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS },
+  'lesson-12-1': { copy: FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY, steps: FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS },
+  'lesson-13-1': { copy: PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY, steps: PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS },
+};
 
 const videoMap: Record<string, string> = {
   'zoomin_out': zoomInOutVideo,
@@ -75,6 +126,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   useEffect(() => {
     stop();
   }, [lessonId, stop]);
+
+  const writtenModule = WRITTEN_TUTORIAL_REGISTRY[lessonId];
 
   // Combine title with content for TTS
   const fullSteps = useMemo(() => [title, ...content], [title, content]);
@@ -146,9 +199,31 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
       )}
 
       <div className="lesson-grid single-card foundations-lesson-grid">
-        <div className={`lesson-card tab-content foundations-lesson-card ${isViewTourLesson ? 'foundations-view-tour-card' : ''}`}>
-          <div className="fade-in foundations-lesson-content">
-            <div className="foundations-content-stack">
+        <div className="lesson-card tab-content fade-in foundations-lesson-card">
+          {writtenModule ? (
+            <FoundationsVideoReadingLayout
+              title={writtenModule.copy.title}
+              description={writtenModule.copy.description}
+              steps={writtenModule.steps}
+              writtenTutorialCopy={writtenModule.copy}
+            >
+              {videoId && videoMap[videoId] && (
+                <VideoTutorialViewer 
+                  steps={tutorialSteps}
+                  muteSourceVideoAudio={muteSourceVideoAudio}
+                  lessonType="video-tutorial"
+                  introPanel={{
+                    icon: videoIntroEyebrow ? Eye : Play,
+                    eyebrow: videoIntroEyebrow || "Interactive Video",
+                    title: videoIntroTitle || "Watch Video Demonstration",
+                    description: videoIntroDescription || "See this tool in action in the workspace."
+                  }}
+                />
+              )}
+            </FoundationsVideoReadingLayout>
+          ) : (
+            <div className="fade-in foundations-lesson-content">
+              <div className="foundations-content-stack">
               {content.map((step, idx) => {
                 const stepIndex = idx + 1; // offset by 1 because title is at index 0
 
@@ -241,7 +316,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
               {/* Render Video at the bottom of the lesson */}
               {videoId && videoMap[videoId] && (
-                <div className="instruction-step foundations-video-section" style={{ height: '600px', position: 'relative' }}>
+                <div className="instruction-step foundations-video-section" style={{ position: 'relative' }}>
                   <FoundationsVideoReadingLayout
                     title={videoIntroTitle || title}
                     description={videoIntroDescription || 'Read the video demonstration as a step-by-step tutorial.'}
@@ -263,6 +338,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
               )}
             </div>
           </div>
+          )}
 
           <div className="lesson-navigation">
             {onPrevLesson && (

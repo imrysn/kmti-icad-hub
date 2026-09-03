@@ -85,11 +85,11 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-2',
-    title: 'Module 2 - Understanding the iCAD Interface',
+    title: 'Module 2 - Understanding iCAD SX Interface',
     children: [
       {
         id: 'lesson-2-1',
-        title: 'Lesson 2.1 — Identify the Main Interface',
+        title: 'Lesson 2.1 — Understanding iCAD SX Interface',
         content: [
           'Learning Objective: Identify the important areas of the iCAD interface.',
           'Step 1: Open iCAD: Launch iCAD on your computer. Wait until the main workspace is fully displayed.',
@@ -504,7 +504,7 @@ export const ICAD_3D_LESSONS: Lesson[] = [ // cspell:disable-line
     title: 'Tool Bars',
     content: ['File', 'New', 'Open', 'Save', 'Print', '2D View', 'Previous View', 'Switch Views', 'Next View', 'Switch Display', 'Projection Method', 'Switch Dimensions', 'Screen Operations', 'Zoom Area', 'Zoom In/Out', 'Zoom to Fit', 'Re-Display', '3D View', 'Top', 'Front', 'Right', 'Left', 'Back', 'Bottom', 'Plane', 'Isometric', 'User Views', 'Edit', 'Undo', 'Redo', 'Shading', 'Frame', 'Hidden Lines', 'Wireframe', 'Section Display', 'Open Work Plane', 'Switch Section Display', '2D Standard Screen', 'Standard Range', 'System Information', 'Line Type', 'Color', 'Layer', 'Scale', 'Grid', 'Screen Memory', 'Entry Control', 'Entity Selection', 'Coordinate Entry', 'AP', 'Magnet Tools'],
     children: [
-      { id: 'toolbars', title: 'iCAD Tool Bars', content: ['toolbar explorer', 'functional groups', 'quick access'] },
+      { id: 'toolbars', title: 'iCAD SX Tool Bars', content: ['toolbar explorer', 'functional groups', 'quick access'] },
     ],
     quiz: {
       title: 'Tool Bars Mastery',

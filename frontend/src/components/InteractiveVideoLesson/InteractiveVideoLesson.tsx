@@ -411,12 +411,14 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <FoundationsVideoReadingLayout
-        title={config.title}
-        description={config.introSupportingText}
-        steps={writtenSteps}
-        writtenTutorialCopy={config.writtenTutorialCopy}
-      >
+      <div className="lesson-grid single-card">
+        <div className="lesson-card tab-content fade-in">
+          <FoundationsVideoReadingLayout
+            title={config.title}
+            description={config.introSupportingText}
+            steps={writtenSteps}
+            writtenTutorialCopy={config.writtenTutorialCopy}
+          >
       <section className="ivl-player-card" aria-label={config.videoLabel} ref={playerCardRef}>
         <div className="ivl-video-shell lesson-intro-shell">
           <video
@@ -515,12 +517,13 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
             />
           )}
 
+
         </div>
 
       </section>
       </FoundationsVideoReadingLayout>
 
-      <div className="lesson-navigation ivl-navigation">
+      <div className="lesson-navigation">
         {onPrevLesson && (
           <button className="nav-button" onClick={onPrevLesson} disabled={phase === 'question'}>
             <ChevronLeft size={18} /> {t('common.previous')}
@@ -531,5 +534,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
         </button>
       </div>
     </div>
-  );
+  </div>
+</div>
+);
 };

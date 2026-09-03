@@ -1,10 +1,15 @@
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 
 export const INTERFACE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'This lesson introduces the main parts of the iCAD SX interface and their basic function.',
-  moduleLabel: 'About the Lesson',
-  procedureTitle: 'iCAD Main Parts',
+  title: 'iCAD SX Interface',
+  description: 'is the main screen where you create and edit 2D drawings and 3D models. Understanding each part makes it easier to find tools and work efficiently.',
+  moduleLabel: '',
+  procedureTitle: 'ivl-objective',
+  objective: 'By the end of this lesson, you will be able to identify the main parts of the iCAD interface and understand their basic functions.',
   completionText: 'Great job! You have completed the iCAD Interface lesson.',
+  hideStepNumbers: false,
+  inlineHeader: true,
+  renderAsObjective: true,
 };
 
 export const INTERFACE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [

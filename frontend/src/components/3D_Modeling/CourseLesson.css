@@ -6,12 +6,12 @@
 .course-lesson-container {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 2rem;
   animation: fadeInSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  padding-bottom: 8rem;
+  padding-bottom: 5rem;
   max-width: 1000px;
   width: 95%;
-  margin: 2rem auto 0;
+  margin: 1.5rem auto 0;
 }
 
 @keyframes fadeInSlideUp {
@@ -141,7 +141,7 @@
   /* Page-style background for maximum document readability */
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  padding: 3rem;
+  padding: 3rem 3.5rem;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
@@ -230,7 +230,7 @@
   color: white;
   font-weight: 800;
   font-size: 0.9rem;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   flex-shrink: 0;
   box-shadow: 0 4px 10px var(--color-primary-glow);
 }

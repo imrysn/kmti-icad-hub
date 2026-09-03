@@ -73,28 +73,27 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
       </div>
 
       {/* Main Interactive Stage */}
-      <div className="lesson-grid interactive-layout single-card">
+      <div className="lesson-grid single-card">
         <div className={`lesson-card tab-content fade-in ${currentIndex >= 0 ? 'reading-active' : ''}`}
-          data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}
-          style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
+          data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}>
 
-          <div className="interactive-stage-container">
-            <FoundationsVideoReadingLayout
-              title={INTERFACE_WRITTEN_TUTORIAL_COPY.title}
-              writtenTutorialCopy={INTERFACE_WRITTEN_TUTORIAL_COPY}
-              steps={INTERFACE_WRITTEN_TUTORIAL_STEPS.map(step => ({ ...step }))}
-            >
-              <VideoTutorialViewer
-                steps={localizedTutorialSteps}
-                introPanel={showFoundationsIntro ? {
-                  icon: Monitor,
-                  eyebrow: "Interactive screen tour",
-                  title: "Explore the iCAD Interface",
-                  description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
-                } : undefined}
-              />
-            </FoundationsVideoReadingLayout>
-          </div>
+          <FoundationsVideoReadingLayout
+            title={INTERFACE_WRITTEN_TUTORIAL_COPY.title}
+            writtenTutorialCopy={INTERFACE_WRITTEN_TUTORIAL_COPY}
+            steps={INTERFACE_WRITTEN_TUTORIAL_STEPS.map(step => ({ ...step }))}
+          >
+            <VideoTutorialViewer
+              lessonType="video-tutorial"
+              muteSourceVideoAudio
+              steps={localizedTutorialSteps}
+              introPanel={showFoundationsIntro ? {
+                icon: Monitor,
+                eyebrow: "Interactive screen tour",
+                title: "iCAD SX Interface",
+                description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
+              } : undefined}
+            />
+          </FoundationsVideoReadingLayout>
 
           <div className="lesson-navigation">
             {onPrevLesson && (

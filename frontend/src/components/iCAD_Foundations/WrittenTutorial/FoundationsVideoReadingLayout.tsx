@@ -17,13 +17,13 @@ const FoundationsVideoReadingLayout: React.FC<FoundationsVideoReadingLayoutProps
   writtenTutorialCopy,
 }) => (
   <div className="foundations-video-reading-layout">
-    <div className="foundations-video-reading-layout__video">{children}</div>
     <WrittenTutorialPanel
       title={title}
       description={description}
       steps={steps}
       copy={writtenTutorialCopy}
     />
+    <div className="foundations-video-reading-layout__video">{children}</div>
   </div>
 );
 

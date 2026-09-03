@@ -9,7 +9,7 @@ interface LessonObjectiveProps {
 
 const LessonObjective: React.FC<LessonObjectiveProps> = ({
   children,
-  label = 'Learning objective',
+  label = 'learning goal',
 }) => {
   const objectiveId = useId();
 

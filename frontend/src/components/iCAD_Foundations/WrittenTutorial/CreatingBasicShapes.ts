@@ -3,41 +3,43 @@ import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 /* ── Cylinder ────────────────────────────────────────────────────────────── */
 
 export const CYLINDER_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Create and position a cylinder by entering its diameter and height, then placing it at the model origin.',
-  moduleLabel: 'About the Lesson',
-  procedureTitle: 'Procedure',
-  completionText: 'Great job! You have completed the Cylinder lesson.',
+  title: 'Cylinder',
+  description: 'a cylinder is a basic 3D shape with a circular base and height. It is commonly used to create parts such as shafts, pins, pipes, bushings, and spacers.',
+  moduleLabel: 'Introduction',
+  procedureTitle: 'How to Create a Cylinder',
+  completionText: 'Great job! You can now create and position a basic cylinder in iCAD SX.',
+  inlineHeader: true,
 };
 
 export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'cyl-step-1',
-    title: 'Select Cylinder Tool',
-    text: 'Open Shape Placement, then select Place Cylinder.',
+    title: 'Set the View',
+    text: 'Start with the Front View.\nSelect Arrange Solid → Y Orientation.',
     preserveText: true,
   },
   {
     id: 'cyl-step-2',
-    title: 'Set Front View',
-    text: 'Select Front View from the 3D View toolbar.',
+    title: 'Select Cylinder',
+    text: 'From the Icon Menu, select Arrange Cylinder.',
     preserveText: true,
   },
   {
     id: 'cyl-step-3',
-    title: 'Confirm Settings',
-    text: 'In the Command Menu, confirm Cylinder, Placement, and Diameter Specification, then select Y Orientation.',
+    title: 'Enter the Size',
+    text: 'In Item Entry, enter the:\n\nDiameter – width of the cylinder\nHeight – height of the cylinder',
     preserveText: true,
   },
   {
     id: 'cyl-step-4',
-    title: 'Enter Dimensions',
-    text: 'In the Item Entry area, enter the cylinder diameter and height.',
+    title: 'Enter the Position',
+    text: 'In the Key Entry Area, enter the origin coordinates, such as 0, 0, 0.',
     preserveText: true,
   },
   {
     id: 'cyl-step-5',
-    title: 'Position Cylinder at Origin',
-    text: 'Enter coordinates 0, 0, 0 in Key Entry to place the cylinder at the model origin, then press Enter.',
+    title: 'Create the Cylinder',
+    text: 'Confirm the values. The cylinder will appear in the workspace.',
     preserveText: true,
   },
 ];
@@ -45,7 +47,8 @@ export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 /* ── Box ─────────────────────────────────────────────────────────────────── */
 
 export const BOX_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Create and position a box by entering its width, depth, and height, then placing it accurately at the origin.',
+  title: 'Box',
+  description: 'Create and position a box by entering its width, depth, and height, then placing it accurately at the origin.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   completionText: 'Great job! You have completed the Box lesson.',
@@ -87,7 +90,8 @@ export const BOX_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 /* ── Polygonal Prism ─────────────────────────────────────────────────────── */
 
 export const POLYGON_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Create and position a polygonal prism by defining its number of sides, path diameter, and height.',
+  title: 'Polygonal Prism',
+  description: 'Create and position a polygonal prism by defining its number of sides, path diameter, and height.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   completionText: 'Great job! You have completed the Polygonal Prism lesson.',
@@ -129,7 +133,8 @@ export const POLYGON_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 /* ── Cone ────────────────────────────────────────────────────────────────── */
 
 export const CONE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Create and position a cone by defining its base diameter, top face diameter, and height.',
+  title: 'Cone',
+  description: 'Create and position a cone by defining its base diameter, top face diameter, and height.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   completionText: 'Great job! You have completed the Cone lesson.',
@@ -171,7 +176,8 @@ export const CONE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 /* ── Torus ───────────────────────────────────────────────────────────────── */
 
 export const TORUS_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Create and position a torus by defining its section diameter, path radius, and turn angle.',
+  title: 'Torus',
+  description: 'Create and position a torus by defining its section diameter, path radius, and turn angle.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   completionText: 'Great job! You have completed the Torus lesson.',

@@ -91,25 +91,6 @@
   margin: 0;
 }
 
-/* View-tour lessons use the dark intro panel as the visual card. Avoid
-   wrapping it in a second white document card. */
-.foundations-view-tour-card {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.foundations-view-tour-card .foundations-video-section {
-  margin-top: 0;
-  padding: 0;
-}
-
-[data-theme='dark'] .foundations-view-tour-card {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
 
 .foundations-video-frame {
   display: flex;
@@ -146,9 +127,7 @@
     padding: 1.25rem;
   }
 
-  .foundations-view-tour-card {
-    padding: 0;
-  }
+
 
   .foundations-callout {
     padding: 1rem;

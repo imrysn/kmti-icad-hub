@@ -510,7 +510,7 @@ export const en_3d_common = {
   "standard.misc.slotted_drill_hole": "Slotted + Drill hole",
   "standard.misc.fwh_only": "Flatwasher (FWH)",
   "lesson.title.interface": "iCAD Window Structure",
-  "lesson.title.toolbars": "iCAD Tool Bars",
+  "lesson.title.toolbars": "iCAD SX Tool Bars",
   "lesson.title.origin": "Origin Control",
   "lesson.title.basic-op": "Basic Operation",
   "lesson.title.basic-op-1": "Basic Shapes",

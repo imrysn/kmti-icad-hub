@@ -3,7 +3,7 @@ import { buildTutorialStepNarration } from '../../../utils/quizNarration';
 import { TOOLBAR_TUTORIAL_STEPS } from '../VideoTutorialData/ToolBarsTutorial';
 import { localizeToolbarTutorialSteps } from '../3D_ToolBars';
 
-describe('iCAD Tool Bars title narration', () => {
+describe('iCAD SX Tool Bars title narration', () => {
   it('starts the introduction directly with its text', () => {
     const intro = TOOLBAR_TUTORIAL_STEPS.find((step) => step.id === 'intro');
 

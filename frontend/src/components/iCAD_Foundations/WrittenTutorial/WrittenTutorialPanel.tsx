@@ -1,5 +1,5 @@
-import { BookOpen } from 'lucide-react';
 import React from 'react';
+import LessonObjective from '../../LessonObjective';
 import '../../../styles/iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel.css';
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 
@@ -24,52 +24,110 @@ export const simplifyTutorialText = (text: string) => {
   if (!cleanText) return '';
 
   const sentences = cleanText.match(/[^.!?]+[.!?]?/g)?.map(sentence => sentence.trim()).filter(Boolean) ?? [];
-  const actionSentence = sentences.find(sentence => ACTION_START.test(sentence));
-  const conciseSentence = actionSentence ?? sentences[0] ?? cleanText;
-  const words = conciseSentence.split(/\s+/);
+  const actionSentences = sentences.filter(sentence => ACTION_START.test(sentence));
 
-  if (words.length <= 24) return conciseSentence;
-  return `${words.slice(0, 24).join(' ').replace(/[,;:]$/, '')}…`;
+  if (actionSentences.length > 0) {
+    return actionSentences.join(' ');
+  }
+
+  return sentences[0] || cleanText;
 };
 
-const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({ title, steps, copy }) => {
+export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
+  title,
+  description,
+  steps,
+  copy,
+}) => {
   const instructionalSteps = steps
     .filter(step => !/(knowledge\s*check|review|recap|conclusion)/i.test(step.title))
     .map(step => ({ ...step, text: step.preserveText ? step.text : simplifyTutorialText(step.text) }));
 
   const panelCopy: WrittenTutorialCopy = {
-    moduleLabel: 'About the Lesson',
     procedureTitle: 'Procedure',
     completionText: 'Module complete after all steps are finished.',
-    title: copy?.title || title || '',
+    title: copy?.title !== undefined ? copy.title : (title || ''),
+    description: copy?.description !== undefined ? copy.description : (description || ''),
     ...copy,
   };
 
+  let displayTitle = panelCopy.title !== undefined ? panelCopy.title : (title || '');
+  let displayDescription = panelCopy.description !== undefined ? panelCopy.description : (description || '');
+
+  if (!panelCopy.useStepHeaderTitle && !displayDescription && displayTitle.length > 50 && title && title.length < 50) {
+    displayDescription = displayTitle;
+    displayTitle = title;
+  }
+
   return (
-    <aside className="written-tutorial-panel" aria-label={`Written tutorial for ${title}`}>
-      <header className="written-tutorial-panel__header">
-        <BookOpen className="written-tutorial-panel__header-icon" size={24} aria-hidden="true" />
-        <span className="written-tutorial-panel__module-label">{panelCopy.moduleLabel}</span>
-        <h3>{title}</h3>
-      </header>
+    <aside className="written-tutorial-panel" aria-label={`Written tutorial for ${displayTitle || panelCopy.procedureTitle}`}>
+      {(displayTitle || displayDescription) && (
+        <header className="written-tutorial-panel__header">
+          {(panelCopy.inlineHeader || panelCopy.useStepHeaderTitle) && displayTitle && displayDescription ? (
+            <div className="step-header-inline">
+              <h4>{displayTitle}</h4>{' '}
+              <p className="written-tutorial-panel__description">{displayDescription}</p>
+            </div>
+          ) : (
+            <>
+              {displayTitle ? (
+                <div className="step-header">
+                  <h4>{displayTitle}</h4>
+                </div>
+              ) : null}
+              {displayDescription ? (
+                <p className="written-tutorial-panel__description">{displayDescription}</p>
+              ) : null}
+            </>
+          )}
+        </header>
+      )}
 
       <div className="written-tutorial-panel__content">
-        <h4 className="written-tutorial-panel__section-title">{panelCopy.procedureTitle}</h4>
+        {panelCopy.renderAsObjective || panelCopy.procedureTitle === 'ivl-objective' ? (
+          <LessonObjective label={panelCopy.objectiveLabel || 'learning goal'}>
+            {panelCopy.objective || (panelCopy.procedureTitle !== 'ivl-objective' ? panelCopy.procedureTitle : 'Understand how Zoom In and Zoom Out work, and when to use each viewing action in iCAD.')}
+          </LessonObjective>
+        ) : panelCopy.procedureTitle ? (
+          <h4 className="section-title written-tutorial-panel__section-title">{panelCopy.procedureTitle}</h4>
+        ) : null}
         <ol className="written-tutorial-panel__steps">
-          {instructionalSteps.map((step, index) => (
-            <li key={step.id} className="written-tutorial-panel__step">
-              <span className="written-tutorial-panel__number">{index + 1}</span>
-              <div>
-                <h4>{step.title}</h4>
-                {step.text && <p>{step.text}</p>}
-              </div>
-            </li>
-          ))}
+          {instructionalSteps.map((step, index) => {
+            const showNumber = !panelCopy.hideStepNumbers && !step.hideStepNumber;
+            return (
+              <li key={step.id} className={`written-tutorial-panel__step ${!showNumber ? 'no-step-number' : ''}`}>
+                <div className="step-header">
+                  {showNumber && <span className="step-number">{index + 1}</span>}
+                  <h4>{step.title}</h4>
+                </div>
+                {step.text && (() => {
+                  const lines = step.text.split('\n');
+                  const hasBullets = lines.some(l => /^\s*([*•-])\s+/.test(l));
+                  if (!hasBullets) {
+                    return <p>{step.text}</p>;
+                  }
+                  const leadLines: string[] = [];
+                  const bulletLines: string[] = [];
+                  lines.forEach(line => {
+                    if (/^\s*([*•-])\s+/.test(line)) {
+                      bulletLines.push(line.replace(/^\s*([*•-])\s+/, ''));
+                    } else if (line.trim()) {
+                      leadLines.push(line);
+                    }
+                  });
+                  return (
+                    <div className="step-text-content">
+                      {leadLines.map((l, i) => <p key={i}>{l}</p>)}
+                      <ul className="step-bullet-list">
+                        {bulletLines.map((b, i) => <li key={i}>{b}</li>)}
+                      </ul>
+                    </div>
+                  );
+                })()}
+              </li>
+            );
+          })}
         </ol>
-
-        <div className="written-tutorial-panel__complete">
-          <span>{panelCopy.completionText}</span>
-        </div>
       </div>
     </aside>
   );

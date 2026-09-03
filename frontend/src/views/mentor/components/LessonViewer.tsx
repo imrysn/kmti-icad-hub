@@ -62,9 +62,7 @@ const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_
 const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
 import { ReadAloudButton } from '../../../components/ReadAloudButton';
-import LessonObjective from '../../../components/LessonObjective';
 import { useTTSContext } from '../../../context/TTSContext';
-import { ICAD_FOUNDATIONS_OBJECTIVES } from '../mentorConstants';
 
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
@@ -445,9 +443,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
 
           <div key={activeLessonId} className={`lesson-content-body ${isFoundationsCourse ? 'foundations-lesson-content-body' : ''}`}>
-            {isFoundationsCourse && ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId] && (
-              <LessonObjective>{ICAD_FOUNDATIONS_OBJECTIVES[activeLessonId]}</LessonObjective>
-            )}
             <Suspense fallback={
               <div className="lesson-loading-fallback" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', width: '100%' }}>
                 <div className="fallback-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-dim)' }}>

@@ -3,35 +3,27 @@ import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 /* ── Lesson 4.1: 3D View ─────────────────────────────────────────────────── */
 
 export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Display a model from standard engineering viewing directions for clear inspection.',
+  title: '3D View',
+  description: 'tools allow you to view your 3D model from different directions without changing the actual model.',
   moduleLabel: 'About the Lesson',
-  procedureTitle: 'Procedure',
+  procedureTitle: 'ivl-objective',
+  objective: 'By the end of this lesson, you will be able to change the viewing direction of a 3D model.',
   completionText: 'Great job! You have completed the 3D View lesson.',
+  inlineHeader: true,
+  renderAsObjective: true,
 };
 
 export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'view-step-1',
-    title: 'Locate 3D View Toolbar',
-    text: 'Find the standard view icons in the 3D View toolbar at the top of the interface.',
+    title: '3D View Options',
+    text: '\n* Top - View the model from above. \n* Front - View the model from the front. \n* Right - View the model from teh right side. \n* Left - View the model from the left side. \n* Back - View the model from behind. \n* Bottom - View the model from below.',
     preserveText: true,
   },
   {
     id: 'view-step-2',
-    title: 'Select Front View',
-    text: 'Click Front View to align your sightline directly with the front face of the model.',
-    preserveText: true,
-  },
-  {
-    id: 'view-step-3',
-    title: 'Select Top View',
-    text: 'Click Top View to inspect geometry and hole patterns from directly above.',
-    preserveText: true,
-  },
-  {
-    id: 'view-step-4',
-    title: 'Select Side & Bottom Views',
-    text: 'Click Right, Left, or Bottom View to inspect remaining aligned faces.',
+    title: 'When to Use 3D View',
+    text: '\n* check the model from a specific side. \n* See features that are difficult to view from the current angle. \n* Position the view before creating or editing a feature.',
     preserveText: true,
   },
 ];
@@ -39,7 +31,8 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
 /* ── Lesson 4.2: User View ───────────────────────────────────────────────── */
 
 export const USER_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
-  title: 'Use User View (Isometric) to inspect multiple faces and 3D dimensions simultaneously.',
+  title: 'User View',
+  description: 'Use User View (Isometric) to inspect multiple faces and 3D dimensions simultaneously.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   completionText: 'Great job! You have completed the User View lesson.',

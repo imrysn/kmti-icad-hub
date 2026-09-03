@@ -1,6 +1,6 @@
 # iCAD Foundations Written Tutorial Instructions
 
-Apply the same video-and-written-tutorial implementation used in **Understanding the iCAD Interface** to **[LESSON NAME]**.
+Apply the same video-and-written-tutorial implementation used in **iCAD SX Interface** to **[LESSON NAME]**.
 
 ## Lesson Information
 
@@ -143,7 +143,7 @@ While a Knowledge Check is active:
 - Do not restrict navigation to the `1000px` video width.
 - Use consistent spacing, margins, and button alignment.
 - Keep Previous on the left and Next or Next Lesson on the right.
-- Match the standard navigation style used by Understanding the iCAD Interface.
+- Match the standard navigation style used by iCAD SX Interface.
 
 ## 11. Lesson Layout Consistency
 
@@ -161,7 +161,7 @@ After implementation:
 
 - Run TypeScript validation.
 - Run the relevant focused tests.
-- Check the lesson beside Understanding the iCAD Interface or Cylinder.
+- Check the lesson beside iCAD SX Interface or Cylinder.
 - Confirm the video width did not change.
 - Confirm the written panel scrolls vertically.
 - Confirm navigation spans the full combined layout.

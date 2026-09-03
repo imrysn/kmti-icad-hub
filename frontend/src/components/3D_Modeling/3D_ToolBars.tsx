@@ -71,31 +71,30 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
   return (
     <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
       {/* Main Interactive Stage */}
-      <div className="lesson-grid interactive-layout single-card">
-        <div className="lesson-card tab-content fade-in" style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}>
-
-          <div className="interactive-stage-container">
-            {(() => {
-              const steps = localizeToolbarTutorialSteps(t, translateContent);
-              return (
-                <FoundationsVideoReadingLayout
-                  title={TOOLBARS_WRITTEN_TUTORIAL_COPY.title}
-                  steps={TOOLBARS_WRITTEN_TUTORIAL_STEPS}
-                  writtenTutorialCopy={TOOLBARS_WRITTEN_TUTORIAL_COPY}
-                >
-                  <VideoTutorialViewer
-                    steps={steps}
-                    introPanel={{
-                      icon: Wrench,
-                      eyebrow: "Interactive tool tour",
-                      title: "Explore the iCAD Tool Bars",
-                      description: "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
-                    }}
-                  />
-                </FoundationsVideoReadingLayout>
-              );
-            })()}
-          </div>
+      <div className="lesson-grid single-card">
+        <div className="lesson-card tab-content fade-in">
+          {(() => {
+            const steps = localizeToolbarTutorialSteps(t, translateContent);
+            return (
+              <FoundationsVideoReadingLayout
+                title={TOOLBARS_WRITTEN_TUTORIAL_COPY.title}
+                steps={TOOLBARS_WRITTEN_TUTORIAL_STEPS}
+                writtenTutorialCopy={TOOLBARS_WRITTEN_TUTORIAL_COPY}
+              >
+                <VideoTutorialViewer
+                  lessonType="video-tutorial"
+                  muteSourceVideoAudio
+                  steps={steps}
+                  introPanel={{
+                    icon: Wrench,
+                    eyebrow: "Interactive tool tour",
+                    title: "Explore the iCAD SX Tool Bars",
+                    description: "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
+                  }}
+                />
+              </FoundationsVideoReadingLayout>
+            );
+          })()}
 
           <div className="lesson-navigation">
             {onPrevLesson && (

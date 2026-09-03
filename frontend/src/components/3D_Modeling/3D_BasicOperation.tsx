@@ -364,105 +364,107 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 
   return (
     <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
-      {activeTab === 'cylinder' && (
-        <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout
-            title={basicShapeIntroPanels.cylinder.title}
-            description={basicShapeIntroPanels.cylinder.description}
-            steps={CYLINDER_WRITTEN_TUTORIAL_STEPS}
-            writtenTutorialCopy={CYLINDER_WRITTEN_TUTORIAL_COPY}
-          >
-            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
-          </FoundationsVideoReadingLayout>
+      <div className="lesson-grid single-card">
+        {activeTab === 'cylinder' && (
+          <div className="lesson-card tab-content fade-in">
+            <FoundationsVideoReadingLayout
+              title={basicShapeIntroPanels.cylinder.title}
+              description={basicShapeIntroPanels.cylinder.description}
+              steps={CYLINDER_WRITTEN_TUTORIAL_STEPS}
+              writtenTutorialCopy={CYLINDER_WRITTEN_TUTORIAL_COPY}
+            >
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
+            </FoundationsVideoReadingLayout>
 
-          <div className="lesson-navigation">
-            {onPrevLesson && (
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            )}
-            <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
+            <div className="lesson-navigation">
+              {onPrevLesson && (
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'box' && (
-        <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout
-            title={basicShapeIntroPanels.box.title}
-            description={basicShapeIntroPanels.box.description}
-            steps={BOX_WRITTEN_TUTORIAL_STEPS}
-            writtenTutorialCopy={BOX_WRITTEN_TUTORIAL_COPY}
-          >
-            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
-          </FoundationsVideoReadingLayout>
+        {activeTab === 'box' && (
+          <div className="lesson-card tab-content fade-in">
+            <FoundationsVideoReadingLayout
+              title={basicShapeIntroPanels.box.title}
+              description={basicShapeIntroPanels.box.description}
+              steps={BOX_WRITTEN_TUTORIAL_STEPS}
+              writtenTutorialCopy={BOX_WRITTEN_TUTORIAL_COPY}
+            >
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
+            </FoundationsVideoReadingLayout>
 
-          <div className="lesson-navigation">
-            {onPrevLesson && (
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            )}
-            <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
+            <div className="lesson-navigation">
+              {onPrevLesson && (
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')}<ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'polygon' && (
-        <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout
-            title={basicShapeIntroPanels.polygon.title}
-            description={basicShapeIntroPanels.polygon.description}
-            steps={POLYGON_WRITTEN_TUTORIAL_STEPS}
-            writtenTutorialCopy={POLYGON_WRITTEN_TUTORIAL_COPY}
-          >
-            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
-          </FoundationsVideoReadingLayout>
+        {activeTab === 'polygon' && (
+          <div className="lesson-card tab-content fade-in">
+            <FoundationsVideoReadingLayout
+              title={basicShapeIntroPanels.polygon.title}
+              description={basicShapeIntroPanels.polygon.description}
+              steps={POLYGON_WRITTEN_TUTORIAL_STEPS}
+              writtenTutorialCopy={POLYGON_WRITTEN_TUTORIAL_COPY}
+            >
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+            </FoundationsVideoReadingLayout>
 
-          <div className="lesson-navigation">
-            {onPrevLesson && (
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            )}
-            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            <div className="lesson-navigation">
+              {onPrevLesson && (
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'cone' && (
-        <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout
-            title={basicShapeIntroPanels.cone.title}
-            description={basicShapeIntroPanels.cone.description}
-            steps={CONE_WRITTEN_TUTORIAL_STEPS}
-            writtenTutorialCopy={CONE_WRITTEN_TUTORIAL_COPY}
-          >
-            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
-          </FoundationsVideoReadingLayout>
+        {activeTab === 'cone' && (
+          <div className="lesson-card tab-content fade-in">
+            <FoundationsVideoReadingLayout
+              title={basicShapeIntroPanels.cone.title}
+              description={basicShapeIntroPanels.cone.description}
+              steps={CONE_WRITTEN_TUTORIAL_STEPS}
+              writtenTutorialCopy={CONE_WRITTEN_TUTORIAL_COPY}
+            >
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
+            </FoundationsVideoReadingLayout>
 
-          <div className="lesson-navigation">
-            {onPrevLesson && (
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            )}
-            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            <div className="lesson-navigation">
+              {onPrevLesson && (
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'torus' && (
-        <div className="tab-content fade-in">
-          <FoundationsVideoReadingLayout
-            title={basicShapeIntroPanels.torus.title}
-            description={basicShapeIntroPanels.torus.description}
-            steps={TORUS_WRITTEN_TUTORIAL_STEPS}
-            writtenTutorialCopy={TORUS_WRITTEN_TUTORIAL_COPY}
-          >
-            <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
-          </FoundationsVideoReadingLayout>
+        {activeTab === 'torus' && (
+          <div className="lesson-card tab-content fade-in">
+            <FoundationsVideoReadingLayout
+              title={basicShapeIntroPanels.torus.title}
+              description={basicShapeIntroPanels.torus.description}
+              steps={TORUS_WRITTEN_TUTORIAL_STEPS}
+              writtenTutorialCopy={TORUS_WRITTEN_TUTORIAL_COPY}
+            >
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
+            </FoundationsVideoReadingLayout>
 
-          <div className="lesson-navigation">
-            {onPrevLesson && (
-              <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
-            )}
-            <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            <div className="lesson-navigation">
+              {onPrevLesson && (
+                <button className="nav-button" onClick={handlePrev}><ChevronLeft size={18} /> {t('common.previous')}</button>
+              )}
+              <button className="nav-button next" onClick={handleNext}>{t('common.next')} <ChevronRight size={18} /></button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -1,16 +1,16 @@
 # Foundations subtitle style audit
 
-Reference: Understanding the iCAD Interface. Audited September 3, 2026.
+Reference: iCAD SX Interface. Audited September 3, 2026.
 
 ## Coverage and findings
 
 | Lesson | Rendering path | Finding and change |
 | --- | --- | --- |
-| Understanding the iCAD Interface | VideoTutorialViewer | Reference; bottom captions now delegate to the shared component. Spotlight cards retained. |
+| iCAD SX Interface | VideoTutorialViewer | Reference; bottom captions now delegate to the shared component. Spotlight cards retained. |
 | Zoom In and Zoom Out | InteractiveVideoLesson | Smaller font and asymmetric/lower placement replaced with reference layout. |
 | Pan | InteractiveVideoLesson | Same correction as Zoom. |
 | Rotate the 3D View | InteractiveVideoLesson | Same correction as Zoom. |
-| iCAD Tool Bars | VideoTutorialViewer | Uses shared reference captions; spotlight cards retained. |
+| iCAD SX Tool Bars | VideoTutorialViewer | Uses shared reference captions; spotlight cards retained. |
 | 3D View | DynamicFoundationsLesson → VideoTutorialViewer | Uses shared reference captions. Direction labels remain action overlays, not narration subtitles. |
 | User View | DynamicFoundationsLesson → VideoTutorialViewer | Uses shared reference captions. |
 | Cylinder, Box, Polygon, Cone, Torus | 3D_BasicOperation → VideoTutorialViewer | All five use shared reference captions. |

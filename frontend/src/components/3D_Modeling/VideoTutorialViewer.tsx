@@ -800,7 +800,27 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const viewerJSX = (
     <div className={containerClass} ref={containerRef}>
       {!hasStarted && introPanel ? (
-        <div className="lesson-intro-shell" style={{ padding: '2rem', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="lesson-intro-shell" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+          {currentData?.videoSrc ? (
+            <video
+              src={`${currentData.videoSrc}#t=0.1`}
+              className="lesson-intro-video-bg"
+              playsInline
+              muted
+              preload="auto"
+              aria-hidden="true"
+              onLoadedMetadata={(e) => {
+                e.currentTarget.currentTime = 0.05;
+              }}
+            />
+          ) : (
+            <img
+              src={icadInterfaceImg}
+              alt=""
+              className="lesson-intro-video-bg"
+              aria-hidden="true"
+            />
+          )}
           <LessonIntroPanel
             icon={introPanel.icon}
             eyebrow={introPanel.eyebrow}

@@ -1,172 +1,418 @@
 /* Shared & Global styles for iCAD Foundations Written Tutorial Panel & Reading Layout */
 
 .foundations-video-reading-layout {
-  display: grid;
-  grid-template-columns: 1000px minmax(360px, 420px);
-  gap: 24px;
-  align-items: start;
-  width: max-content;
-  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  width: 100%;
+  max-width: 1000px;
   margin-inline: auto;
-}
-
-.foundations-video-reading-layout__video {
-  width: 1000px;
-  height: 562.5px;
-  min-width: 0;
+  align-items: center;
 }
 
 .written-tutorial-panel {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  height: 562.5px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
+  max-width: 1000px;
+  height: auto;
+  overflow: visible;
+  border: none;
   border-radius: 14px;
   color: var(--text-main);
-  background: var(--bg-card);
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+  background: transparent;
 }
 
 .written-tutorial-panel__header {
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: 0.8rem;
-  row-gap: 0.2rem;
-  align-content: center;
-  min-height: 88px;
-  padding: 1.1rem 1.25rem;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--color-primary);
-  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0 0 1.25rem 0;
+  border-bottom: none;
+  background: transparent;
 }
 
-.written-tutorial-panel__header-icon {
-  grid-column: 1;
-  grid-row: 1;
-  align-self: center;
-}
-
-.written-tutorial-panel__header h3,
-.written-tutorial-panel__header p {
-  margin: 0;
-}
-
-.written-tutorial-panel__header h3 {
-  grid-column: 2;
-  grid-row: 2;
-  color: var(--text-main);
-  font-size: 15.2px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
+.written-tutorial-panel__header-icon,
 .written-tutorial-panel__module-label {
-  grid-column: 2;
-  grid-row: 1;
+  display: none;
+}
+
+.written-tutorial-panel__header .step-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.written-tutorial-panel__header .step-header h4 {
+  margin: 0;
+  color: var(--text-main, #0f172a);
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+}
+
+[data-theme='dark'] .written-tutorial-panel__header .step-header h4 {
+  color: var(--text-white, #f8fafc);
+}
+
+.written-tutorial-panel__header .step-header-inline {
   display: block;
-  color: var(--color-primary);
-  font-size: 13.12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  line-height: 1.7;
+  width: 100%;
+  max-width: 960px;
+}
+
+.written-tutorial-panel__header .step-header-inline h4 {
+  display: inline;
+  margin: 0 0.35rem 0 0;
+  color: var(--text-main, #0f172a);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: inherit;
+  letter-spacing: 0.2px;
+}
+
+.written-tutorial-panel__header .step-header-inline .written-tutorial-panel__description {
+  display: inline;
+  margin: 0;
+  color: var(--text-main, #0f172a);
+  font-size: 1.03rem;
+  line-height: inherit;
+}
+
+[data-theme='dark'] .written-tutorial-panel__header .step-header-inline h4,
+[data-theme='dark'] .written-tutorial-panel__header .step-header-inline .written-tutorial-panel__description {
+  color: var(--text-white, #f8fafc);
+}
+
+.written-tutorial-panel__description {
+  margin: 0;
+  color: var(--text-main, #0f172a);
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.65;
+  max-width: 960px;
+}
+
+[data-theme='dark'] .written-tutorial-panel__description {
+  color: var(--text-white, #f8fafc);
 }
 
 .written-tutorial-panel__content {
-  height: calc(100% - 88px);
-  padding: 1.25rem;
-  overflow-y: auto;
-  scrollbar-width: thin;
+  height: auto;
+  overflow: visible;
+  padding: 0;
+}
+
+.written-tutorial-panel__content .ivl-objective {
+  width: 100%;
+  margin: 1.5rem 0 2rem 0;
 }
 
 .written-tutorial-panel__section-title {
-  margin: 0 0 0.8rem;
-  color: var(--text-main);
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: none;
+  letter-spacing: 0.05em;
+  margin: 2.5rem 0 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.written-tutorial-panel__section-title::before {
+  content: '';
+  width: 5px;
+  height: 1.2em;
+  background: var(--primary);
+  border-radius: 2px;
+  box-shadow: none;
 }
 
 .written-tutorial-panel__steps {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 2rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .written-tutorial-panel__step {
-  display: grid;
-  grid-template-columns: 2rem 1fr;
-  gap: 0.85rem;
-  align-items: start;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.written-tutorial-panel__step:last-child {
-  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
   border-bottom: none;
 }
 
+.written-tutorial-panel__step .step-header,
+.written-tutorial-panel__step-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.written-tutorial-panel .step-number,
 .written-tutorial-panel__number {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.85rem;
-  height: 1.85rem;
-  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 8px;
   color: #fff;
-  background: var(--color-primary);
-  font-size: 0.82rem;
-  font-weight: 700;
+  background: var(--primary, var(--color-primary));
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px var(--color-primary-glow, rgba(25, 118, 210, 0.3));
 }
 
 .written-tutorial-panel__step h4 {
-  margin: 0.05rem 0 0.25rem;
+  margin: 0;
   color: var(--text-main);
-  font-size: 0.94rem;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
 }
 
 .written-tutorial-panel__step p {
   margin: 0;
+  padding-left: calc(32px + 1rem);
   color: var(--text-dim);
-  font-size: 0.84rem;
-  line-height: 1.45;
+  font-size: 1.02rem;
+  font-weight: 400;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.written-tutorial-panel__step.no-step-number .step-header,
+.written-tutorial-panel__step:not(:has(.step-number)) .step-header {
+  gap: 0;
+}
+
+.written-tutorial-panel__step.no-step-number p,
+.written-tutorial-panel__step:not(:has(.step-number)) p {
+  padding-left: 0;
+}
+
+.written-tutorial-panel__step .step-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.written-tutorial-panel__step .step-bullet-list {
+  margin: 0.25rem 0 0 0;
+  padding-left: calc(32px + 2.25rem);
+  list-style-type: disc;
+  color: var(--text-dim);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.written-tutorial-panel__step.no-step-number .step-bullet-list,
+.written-tutorial-panel__step:not(:has(.step-number)) .step-bullet-list {
+  padding-left: 1.5rem;
+}
+
+.written-tutorial-panel__step .step-bullet-list li {
+  margin-bottom: 0.35rem;
+  padding-left: 0.25rem;
 }
 
 .written-tutorial-panel__complete {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.2rem;
-  padding: 0.85rem 1rem;
-  border: 1px dashed var(--border-color);
-  border-radius: 10px;
-  color: var(--color-primary);
-  background: rgba(37, 99, 235, 0.04);
-  font-size: 0.84rem;
-  font-weight: 500;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  color: var(--primary, var(--color-primary));
+  background: rgba(124, 58, 237, 0.07);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.6;
 }
 
-@media (max-width: 1440px) {
+.foundations-video-reading-layout__video {
+  width: 100%;
+  max-width: 1000px;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.foundations-video-reading-layout__video>* {
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
   .foundations-video-reading-layout {
-    grid-template-columns: 1fr;
     width: 100%;
-    max-width: 1000px;
+    max-width: 100%;
+    padding-inline: 1rem;
   }
 
   .foundations-video-reading-layout__video {
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
   }
+}
 
-  .written-tutorial-panel {
-    height: auto;
-    max-height: 520px;
+/* Card padding & spacing refinement so content feels cohesive, open, and comfortable */
+.lesson-card.tab-content,
+.lesson-card-tab-content,
+.foundations-video-reading-lesson .lesson-card {
+  padding: 3rem 3.5rem;
+  gap: 2.5rem;
+}
+
+@media (max-width: 768px) {
+
+  .lesson-card.tab-content,
+  .lesson-card-tab-content,
+  .foundations-video-reading-lesson .lesson-card {
+    padding: 1.75rem 1.5rem;
+    gap: 1.75rem;
   }
+}
+
+/* Seamless integration when rendered inside .lesson-card tab-content */
+.lesson-card .foundations-video-reading-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+
+.lesson-card .written-tutorial-panel {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.lesson-card .written-tutorial-panel__header {
+  background: transparent;
+  border-bottom: none;
+  padding: 0 0 0.5rem 0;
+}
+
+.lesson-card .written-tutorial-panel__content {
+  padding: 0;
+}
+
+.lesson-card .foundations-video-reading-layout__video {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.lesson-card .foundations-video-reading-layout__video>* {
+  width: 100%;
+}
+
+/* Position and style lesson-navigation in the footer inside .lesson-card tab-content */
+.lesson-card.tab-content:has(.lesson-navigation),
+.lesson-card-tab-content:has(.lesson-navigation),
+.foundations-video-reading-lesson .lesson-card:has(.lesson-navigation) {
+  margin-bottom: 0 !important;
+}
+
+.lesson-card.tab-content .lesson-navigation,
+.lesson-card-tab-content .lesson-navigation,
+.foundations-video-reading-lesson .lesson-card .lesson-navigation {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  inset: auto !important;
+  margin-top: 2rem !important;
+  padding: 0.5rem 0 0 0 !important;
+  border-top: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.lesson-card .nav-button,
+.lesson-card.tab-content .nav-button,
+.lesson-card-tab-content .nav-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  min-height: 40px !important;
+  padding: 0.55rem 1.4rem !important;
+  font-family: var(--font-heading) !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.lesson-card .nav-button:not(.next),
+.lesson-card.tab-content .nav-button:not(.next),
+.lesson-card-tab-content .nav-button:not(.next) {
+  background: transparent !important;
+  color: var(--text-main, #334155) !important;
+  border: 1.5px solid var(--border-color, #cbd5e1) !important;
+}
+
+.lesson-card .nav-button:not(.next):hover,
+.lesson-card.tab-content .nav-button:not(.next):hover,
+.lesson-card-tab-content .nav-button:not(.next):hover {
+  border-color: #2563eb !important;
+  color: #2563eb !important;
+  background: rgba(37, 99, 235, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+.lesson-card .nav-button.next,
+.lesson-card.tab-content .nav-button.next,
+.lesson-card-tab-content .nav-button.next {
+  margin-left: auto !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: 1.5px solid #2563eb !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+
+.lesson-card .nav-button.next:hover,
+.lesson-card.tab-content .nav-button.next:hover,
+.lesson-card-tab-content .nav-button.next:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.48) !important;
+  transform: translateY(-2px) !important;
 }
