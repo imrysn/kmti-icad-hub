@@ -175,18 +175,20 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   };
 
   useEffect(() => {
-    registerText(fullSteps, 0);
-  }, [registerText, fullSteps]);
+    if (!writtenModule) {
+      registerText(fullSteps, 0);
+    }
+  }, [registerText, fullSteps, writtenModule]);
 
   useTTSAutoplay(
     isSpeaking,
     currentIndex,
     "content",
-    fullSteps.length,
+    writtenModule ? 0 : fullSteps.length,
     [{ id: 'content' }],
     beginRecapOrAdvance,
     speak,
-    fullSteps,
+    writtenModule ? [] : fullSteps,
     0
   );
 

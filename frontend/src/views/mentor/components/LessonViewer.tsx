@@ -61,7 +61,6 @@ const NormalMirrorPartsLesson = lazy(() => import('../../../components/2D_Drawin
 const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_RevisionCode'));
 const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
-import { ReadAloudButton } from '../../../components/ReadAloudButton';
 import { useTTSContext } from '../../../context/TTSContext';
 
 interface LessonViewerProps {
@@ -108,64 +107,12 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     .replace('{current}', String(currentLessonIndex + 1))
     .replace('{total}', String(allLessonIdsLength));
   useAuth();
-  const { speak, stop, isSpeaking, currentText, currentStartIndex, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
-  const [isTutorialPlaying, setIsTutorialPlaying] = useState(false);
-
+  const { stop, isSpeaking, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
   useEffect(() => {
-    const handleTutorialPlay = () => setIsTutorialPlaying(true);
-    const handleTutorialStop = () => setIsTutorialPlaying(false);
-
-    window.addEventListener('kmti-tutorial-playing', handleTutorialPlay);
-    window.addEventListener('kmti-tutorial-stopped', handleTutorialStop);
-
-    return () => {
-      window.removeEventListener('kmti-tutorial-playing', handleTutorialPlay);
-      window.removeEventListener('kmti-tutorial-stopped', handleTutorialStop);
-    };
-  }, []);
-
-  const handleStop = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'lesson-2-1') {
-      window.dispatchEvent(new CustomEvent('kmti-stop-tutorial'));
-    }
     stop();
   }, [activeLessonId, stop]);
 
-  const speakCurrent = useCallback(() => {
-    if (activeLessonId === 'interface' || activeLessonId === 'toolbars' || activeLessonId === 'lesson-2-1') {
-      window.dispatchEvent(new CustomEvent('kmti-play-tutorial'));
-      return;
-    }
 
-    // If the active lesson has already explicitly registered custom text paragraphs
-    if (currentText && currentText.length > 0) {
-      speak(currentText, currentStartIndex);
-      return;
-    }
-
-    // Dynamic Fallback: Scrape the DOM of the active lesson page for premium readable content
-    const container = document.querySelector('.course-lesson-container');
-    if (container) {
-      const elements = container.querySelectorAll('.section-title, p, .card-header, .step-header, .step-label, .p-flush');
-      const paragraphs: string[] = [];
-      elements.forEach(el => {
-        // Skip parent elements that contain another matched child to prevent duplicates (e.g. .step-header containing .step-label)
-        const hasMatchedChild = Array.from(elements).some(child => child !== el && el.contains(child));
-        if (hasMatchedChild) return;
-
-        const text = el.getAttribute('data-tts-text') || el.textContent?.trim();
-        // Ignore buttons, navigation elements, or headers that are not part of lesson narration
-        if (text && text.length > 2 && !el.closest('.lesson-navigation') && !el.closest('.lesson-tabs') && !el.closest('.tab-button')) {
-          if (!paragraphs.includes(text)) {
-            paragraphs.push(text);
-          }
-        }
-      });
-      if (paragraphs.length > 0) {
-        speak(paragraphs);
-      }
-    }
-  }, [speak, currentText, activeLessonId, currentStartIndex]);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [activeQuiz, setActiveQuiz] = useState<any>(null);
@@ -414,25 +361,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     <main className="main-content-viewer">
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
-          {/* Sticky TTS button container: sits next to title initially, freezes on scroll */}
-          <div style={{
-            position: 'sticky',
-            top: '-1.5rem',
-            float: 'right',
-            marginRight: '2rem',
-            zIndex: 100,
-            height: 0,
-            pointerEvents: 'none'
-          }}>
-            <div style={{
-              position: 'absolute',
-              right: 0,
-              top: '3rem',
-              pointerEvents: 'auto'
-            }}>
-              <ReadAloudButton isSpeaking={isSpeaking || isTutorialPlaying} onStart={speakCurrent} onStop={handleStop} />
-            </div>
-          </div>
 
           <div className="lesson-header-banner">
             <p className="lesson-indicator">{lessonIndicator}</p>

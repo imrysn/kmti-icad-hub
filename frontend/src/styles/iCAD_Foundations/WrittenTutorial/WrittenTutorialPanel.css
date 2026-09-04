@@ -92,6 +92,11 @@
   color: var(--text-white, #f8fafc);
 }
 
+.written-tutorial-panel__header .step-header-inline .written-tutorial-panel__description--secondary {
+  display: block;
+  margin-top: 0.85rem;
+}
+
 .written-tutorial-panel__description {
   margin: 0;
   color: var(--text-main, #0f172a);
@@ -99,6 +104,7 @@
   font-weight: 400;
   line-height: 1.65;
   max-width: 960px;
+  white-space: pre-line;
 }
 
 [data-theme='dark'] .written-tutorial-panel__description {
@@ -200,6 +206,25 @@
   white-space: pre-line;
 }
 
+.written-tutorial-panel__step p strong,
+.written-tutorial-panel__step p b,
+.written-tutorial-panel__step .step-bullet-list li strong,
+.written-tutorial-panel__step .step-bullet-list li b,
+.written-tutorial-panel__description strong,
+.written-tutorial-panel__description b {
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+[data-theme='dark'] .written-tutorial-panel__step p strong,
+[data-theme='dark'] .written-tutorial-panel__step p b,
+[data-theme='dark'] .written-tutorial-panel__step .step-bullet-list li strong,
+[data-theme='dark'] .written-tutorial-panel__step .step-bullet-list li b,
+[data-theme='dark'] .written-tutorial-panel__description strong,
+[data-theme='dark'] .written-tutorial-panel__description b {
+  color: var(--text-white, #f8fafc);
+}
+
 .written-tutorial-panel__step.no-step-number .step-header,
 .written-tutorial-panel__step:not(:has(.step-number)) .step-header {
   gap: 0;
@@ -233,6 +258,34 @@
 .written-tutorial-panel__step .step-bullet-list li {
   margin-bottom: 0.35rem;
   padding-left: 0.25rem;
+}
+
+.written-tutorial-panel__quick-review {
+  margin-top: 2.25rem;
+}
+
+.written-tutorial-panel__quick-review .written-tutorial-panel__section-title {
+  margin: 0 0 0.85rem 0;
+}
+
+.written-tutorial-panel__quick-review-text {
+  margin: 0;
+  padding-left: calc(5px + 0.75rem);
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.written-tutorial-panel__quick-review-text strong,
+.written-tutorial-panel__quick-review-text b {
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+[data-theme='dark'] .written-tutorial-panel__quick-review-text strong,
+[data-theme='dark'] .written-tutorial-panel__quick-review-text b {
+  color: var(--text-white, #f8fafc);
 }
 
 .written-tutorial-panel__complete {

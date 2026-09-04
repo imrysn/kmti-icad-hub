@@ -5,7 +5,6 @@ import { useLessonCore } from "../../hooks/useLessonCore";
 import { useTTSAutoplay } from "../../hooks/useTTSAutoplay";
 import './CourseLesson.css';
 import { KaraokeLessonText } from "../KaraokeLessonText";
-import { ReadAloudButton } from "../ReadAloudButton";
 
 /* Shared Assets */
 import mirrorNotes from "../../assets/3d-images/mirrored_notes.png";
@@ -159,10 +158,6 @@ const MirroredPartLesson: React.FC<MirroredPartLessonProps> = ({ subLessonId = "
             isActive={isSpeaking && currentIndex === 0}
             currentCharIndex={currentCharIndex}
           />
-          <ReadAloudButton isSpeaking={isSpeaking} onStart={() => {
-            const steps = activeTab === 'mirrored-part' ? mirrored1Steps : mirrored2Steps;
-          speak([introTitle, introSubtitle, ...steps], 0);
-          }} onStop={stop} />
         </h3>
         <KaraokeLessonText
           className={`lesson-subtitle ${currentIndex === 1 ? "reading-active" : ""}`}

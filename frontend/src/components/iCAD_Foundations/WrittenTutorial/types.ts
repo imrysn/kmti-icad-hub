@@ -12,6 +12,7 @@ export interface WrittenTutorialCopy {
   completionText: string;
   title: string;
   description?: string;
+  description2?: string;
   hideStepNumbers?: boolean;
   hideTitleBorder?: boolean;
   useStepHeaderTitle?: boolean;
@@ -19,6 +20,8 @@ export interface WrittenTutorialCopy {
   renderAsObjective?: boolean;
   objective?: string;
   objectiveLabel?: string;
+  quickReviewTitle?: string;
+  quickReviewText?: string;
 }
 
 export interface WrittenTutorialModule {
