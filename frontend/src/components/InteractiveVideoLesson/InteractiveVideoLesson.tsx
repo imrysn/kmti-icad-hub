@@ -31,7 +31,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
   onComplete,
   nextLabel,
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerCardRef = useRef<HTMLElement>(null);
   const firedEventsRef = useRef(new Set<string>());
@@ -486,7 +486,7 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
           {phase === 'intro' && (
             <LessonIntroPanel
               icon={Mouse}
-              eyebrow="Interactive navigation lesson"
+              eyebrow={language === 'ja' ? 'インタラクティブ操作レッスン' : 'Interactive navigation lesson'}
               title={config.title}
               description={config.introSupportingText}
               onStart={startIntro}

@@ -101,8 +101,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     ? getActiveLessonTitle(lessons, activeLessonId)
     : translatedLessonTitle;
 
-  // Remove "Lesson X.Y — " or "Lesson X.Y - " prefix
-  activeLessonTitle = activeLessonTitle.replace(/^Lesson\s+[\d\.]+\s*(—|-)\s*/i, '');
+  // Remove "Lesson X.Y — ", "Module X - ", or "レッスン X.Y — " prefix in English and Japanese
+  activeLessonTitle = activeLessonTitle.replace(/^(?:module|lesson|モジュール|レッスン)\s*[\d\.]*\s*(?:—|-|–|:)\s*/i, '').trim();
   const lessonIndicator = t('lesson.indicator')
     .replace('{current}', String(currentLessonIndex + 1))
     .replace('{total}', String(allLessonIdsLength));

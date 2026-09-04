@@ -8,4 +8,4 @@ export {
   polygonOverlayLayout,
   polygonTutorialSteps,
   torusTutorialSteps,
-} from '../../iCAD_Foundations/VideoTutorial/CreatingBasicShapesVideo';
+} from '../../iCAD_Foundations/VideoTutorial_EN/CreatingBasicShapesVideo';

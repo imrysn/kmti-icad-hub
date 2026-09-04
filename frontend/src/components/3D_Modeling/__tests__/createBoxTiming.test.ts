@@ -26,7 +26,7 @@ describe('Box video timing', () => {
     expect(introduction.customText).toContain('In CAD, boxes are commonly used');
     expect(introduction.customText).toContain('width, depth, and height');
     expect(introduction.customText).not.toContain('To begin');
-    expect(boxTutorialSteps[1].customText).toBe('To begin, open Shape Placement.');
+    expect(boxTutorialSteps[1].customText).toBe('To begin, from the Icon Menu, open Shape Placement.');
     expect(introduction.customText).not.toContain('zero, zero, zero');
   });
 
@@ -132,7 +132,7 @@ describe('Box video timing', () => {
   it('places origin entry after the dimensions knowledge check', () => {
     const originStep = boxTutorialSteps.find((step) => step.id === 'box-8-origin')!;
 
-    expect(originStep.customText).toBe('In the Key Entry Area, enter 0, 0, 0 to position the rectangular solid at the model origin. Then press Enter.');
+    expect(originStep.customText).toBe('In the Key Entry Area, enter 0, 0, 0 to position the box at the model origin. Then click Enter.');
     expect(overlays.get('quiz-box-dimensions')?.endTime).toBeLessThanOrEqual(originStep.videoStart!);
   });
 
@@ -152,7 +152,7 @@ describe('Box video timing', () => {
     const originQuiz = overlays.get('quiz-box-origin');
 
     expect(resultStep.customText).toBe(
-      'The rectangular solid is now created using the specified width, depth, height, and origin position.',
+      'The box is now created using the specified width, depth, height, and origin position.',
     );
     expect(originQuiz?.startTime).toBeGreaterThan(resultStep.videoStart!);
     expect(originQuiz?.endTime).toBeLessThanOrEqual(resultStep.videoEnd!);

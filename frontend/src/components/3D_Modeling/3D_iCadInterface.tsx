@@ -16,21 +16,26 @@ interface IcadInterfaceLessonProps {
 import { useTranslation } from '../../context/LanguageContext';
 
 import { TUTORIAL_STEPS } from "./VideoTutorialData/iCadInterfaceTutorial";
+import {
+  TUTORIAL_STEPS as TUTORIAL_STEPS_JP,
+} from '../iCAD_Foundations/VideoTutorial_JP/UnderstandingTheIcadInterfaceVideo';
 
 import {
-  INTERFACE_WRITTEN_TUTORIAL_COPY,
-  INTERFACE_WRITTEN_TUTORIAL_STEPS,
-} from '../iCAD_Foundations/WrittenTutorial';
+  INTERFACE_WRITTEN_TUTORIAL_COPY as INTERFACE_COPY_EN,
+  INTERFACE_WRITTEN_TUTORIAL_STEPS as INTERFACE_STEPS_EN,
+} from '../iCAD_Foundations/WrittenTutorial_EN';
 
-export {
-  INTERFACE_WRITTEN_TUTORIAL_COPY,
-  INTERFACE_WRITTEN_TUTORIAL_STEPS,
-};
+import {
+  INTERFACE_WRITTEN_TUTORIAL_COPY as INTERFACE_COPY_JP,
+  INTERFACE_WRITTEN_TUTORIAL_STEPS as INTERFACE_STEPS_JP,
+} from '../iCAD_Foundations/WrittenTutorial_JP';
 
-
+export const INTERFACE_WRITTEN_TUTORIAL_COPY = INTERFACE_COPY_EN;
+export const INTERFACE_WRITTEN_TUTORIAL_STEPS = INTERFACE_STEPS_EN;
 
 const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, showFoundationsIntro = false }) => {
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
+  const isJapanese = language === 'ja';
 
   const INTERFACE_STEPS = React.useMemo(() => [
     t('icad.step0'),
@@ -47,19 +52,31 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     t('icad.step11')
   ], [t]);
 
-  const localizedTutorialSteps = React.useMemo(() => TUTORIAL_STEPS.map((step) => {
-    const titleKey = `tutorial.icad.${step.id}.title`;
-    const textKey = `tutorial.icad.${step.id}.text`;
-    const translatedTitle = t(titleKey);
-    const translatedText = t(textKey);
+  const activeCopy = isJapanese ? INTERFACE_COPY_JP : INTERFACE_COPY_EN;
+  const activeWrittenSteps = isJapanese ? INTERFACE_STEPS_JP : INTERFACE_STEPS_EN;
 
-    return {
-      ...step,
-      title: translatedTitle === titleKey ? step.title : translatedTitle,
-      text: translatedText === textKey ? step.text : translatedText,
-      narrateTitle: false,
-    };
-  }), [t]);
+  const localizedTutorialSteps = React.useMemo(() => {
+    if (isJapanese) {
+      return TUTORIAL_STEPS_JP.map((step) => ({
+        ...step,
+        narrateTitle: false,
+      }));
+    }
+
+    return TUTORIAL_STEPS.map((step) => {
+      const titleKey = `tutorial.icad.${step.id}.title`;
+      const textKey = `tutorial.icad.${step.id}.text`;
+      const translatedTitle = t(titleKey);
+      const translatedText = t(textKey);
+
+      return {
+        ...step,
+        title: translatedTitle === titleKey ? step.title : translatedTitle,
+        text: translatedText === textKey ? step.text : translatedText,
+        narrateTitle: false,
+      };
+    });
+  }, [isJapanese, t]);
 
   const {
     scrollProgress,
@@ -78,9 +95,9 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
           data-reading-index={currentIndex >= 0 && currentIndex <= 11 ? "0" : undefined}>
 
           <FoundationsVideoReadingLayout
-            title={INTERFACE_WRITTEN_TUTORIAL_COPY.title}
-            writtenTutorialCopy={INTERFACE_WRITTEN_TUTORIAL_COPY}
-            steps={INTERFACE_WRITTEN_TUTORIAL_STEPS.map(step => ({ ...step }))}
+            title={activeCopy.title}
+            writtenTutorialCopy={activeCopy}
+            steps={activeWrittenSteps.map(step => ({ ...step }))}
           >
             <VideoTutorialViewer
               lessonType="video-tutorial"
@@ -88,9 +105,11 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
               steps={localizedTutorialSteps}
               introPanel={showFoundationsIntro ? {
                 icon: Monitor,
-                eyebrow: "Interactive screen tour",
-                title: "iCAD SX Interface",
-                description: "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
+                eyebrow: isJapanese ? "画面ツアー" : "Interactive screen tour",
+                title: isJapanese ? "iCAD SX インターフェース" : "iCAD SX Interface",
+                description: isJapanese
+                  ? "ワークスペースのガイド付きツアーで、iCAD トレーニング全体で使用する主要な画面領域の配置を学びます。"
+                  : "Take a guided tour of the workspace and learn where to find the main screen areas used throughout your iCAD training."
               } : undefined}
             />
           </FoundationsVideoReadingLayout>

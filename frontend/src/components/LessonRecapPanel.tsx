@@ -1,5 +1,6 @@
 import { CheckCircle2, ChevronRight, X } from 'lucide-react';
 import React from 'react';
+import { useTranslation } from '../context/LanguageContext';
 
 export interface LessonRecapItem {
   action?: string;
@@ -28,6 +29,8 @@ const LessonRecapPanel: React.FC<LessonRecapPanelProps> = ({
   disabled = false,
   error,
 }) => {
+  const { language } = useTranslation();
+  const isJapanese = language === 'ja';
   const visibleTitle = title?.trim().toLowerCase() === 'remember' ? '' : title?.trim();
   const cleanedSummary = summary
     ?.trim()
@@ -41,7 +44,7 @@ const LessonRecapPanel: React.FC<LessonRecapPanelProps> = ({
   return (
     <div className="ivl-stage-panel ivl-recap-panel" role="status" aria-live="polite">
       <CheckCircle2 size={30} aria-hidden="true" />
-      <p className="ivl-eyebrow">Lesson recap</p>
+      <p className="ivl-eyebrow">{isJapanese ? 'レッスンのおさらい' : 'Lesson recap'}</p>
       {visibleTitle && <h3>{visibleTitle}</h3>}
       {visibleSummary && <p className="ivl-recap-summary">{visibleSummary}</p>}
       <div className="ivl-recap-items">

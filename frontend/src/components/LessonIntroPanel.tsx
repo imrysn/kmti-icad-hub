@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Play } from 'lucide-react';
 import React, { useId } from 'react';
+import { useTranslation } from '../context/LanguageContext';
 import './LessonIntroPanel.css';
 
 interface LessonIntroPanelProps {
@@ -18,9 +19,13 @@ const LessonIntroPanel: React.FC<LessonIntroPanelProps> = ({
   title,
   description,
   onStart,
-  startLabel = 'Start lesson',
+  startLabel,
 }) => {
   const titleId = useId();
+  const { language } = useTranslation();
+  const isJapanese = language === 'ja';
+  const defaultLabel = isJapanese ? 'レッスンを開始' : 'Start lesson';
+  const label = (!startLabel || startLabel === 'Start lesson') ? defaultLabel : startLabel;
 
   return (
     <section className="lesson-intro-panel" aria-labelledby={titleId}>
@@ -29,7 +34,7 @@ const LessonIntroPanel: React.FC<LessonIntroPanelProps> = ({
       <h3 id={titleId}>{title}</h3>
       <p className="lesson-intro-panel__description">{description}</p>
       <button className="lesson-intro-panel__button" type="button" onClick={onStart}>
-        <Play size={17} aria-hidden="true" /> {startLabel}
+        <Play size={17} aria-hidden="true" /> {label}
       </button>
     </section>
   );

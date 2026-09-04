@@ -24,7 +24,7 @@ describe('Cylinder video timing', () => {
     expect(introduction.customText).toContain('In CAD, cylinders are commonly used');
     expect(introduction.customText).toContain('Use a cylinder whenever');
     expect(introduction.customText).not.toContain('To begin');
-    expect(toolSelection.customText).toBe('To begin, open Shape Placement, then select Place Cylinder.');
+    expect(toolSelection.customText).toBe('From the Icon Menu, open Shape Placement, then select Place Cylinder.');
     expect(introduction.customText).not.toContain('coordinates zero, zero, zero');
     expect(cylinderTutorialSteps.find((step) => step.id === 'cyl-5-origin')?.customText).toContain('After the knowledge check');
     expect(cylinderTutorialSteps.find((step) => step.id === 'cyl-5-origin')?.customText).toContain('zero, zero, zero');

@@ -18,55 +18,111 @@ import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
 import LessonRecapPanel from '../../LessonRecapPanel';
 import { getFoundationsRecap } from './foundationsRecaps';
 import {
-  GETTING_STARTED_WRITTEN_TUTORIAL_COPY,
-  GETTING_STARTED_WRITTEN_TUTORIAL_STEPS,
-  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY,
-  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS,
-  USER_VIEW_WRITTEN_TUTORIAL_COPY,
-  USER_VIEW_WRITTEN_TUTORIAL_STEPS,
-  ORIGIN_AXES_WRITTEN_TUTORIAL_COPY,
-  ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS,
-  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY,
-  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS,
-  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY,
-  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS,
-  CREATE_LINE_WRITTEN_TUTORIAL_COPY,
-  CREATE_LINE_WRITTEN_TUTORIAL_STEPS,
-  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY,
-  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS,
-  INTRO_TO_3D_WRITTEN_TUTORIAL_COPY,
-  INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS,
-  INSPECT_MODEL_WRITTEN_TUTORIAL_COPY,
-  INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS,
-  SAVING_WORK_WRITTEN_TUTORIAL_COPY,
-  SAVING_WORK_WRITTEN_TUTORIAL_STEPS,
-  TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY,
-  TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS,
-  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY,
-  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS,
-  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY,
-  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS,
+  GETTING_STARTED_WRITTEN_TUTORIAL_COPY as GETTING_STARTED_COPY_EN,
+  GETTING_STARTED_WRITTEN_TUTORIAL_STEPS as GETTING_STARTED_STEPS_EN,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY as STANDARD_3D_VIEW_COPY_EN,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS as STANDARD_3D_VIEW_STEPS_EN,
+  USER_VIEW_WRITTEN_TUTORIAL_COPY as USER_VIEW_COPY_EN,
+  USER_VIEW_WRITTEN_TUTORIAL_STEPS as USER_VIEW_STEPS_EN,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_COPY as ORIGIN_AXES_COPY_EN,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS as ORIGIN_AXES_STEPS_EN,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY as ORIGIN_LAYOUT_COPY_EN,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS as ORIGIN_LAYOUT_STEPS_EN,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY as SELECTING_GEOMETRY_COPY_EN,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS as SELECTING_GEOMETRY_STEPS_EN,
+  CREATE_LINE_WRITTEN_TUTORIAL_COPY as CREATE_LINE_COPY_EN,
+  CREATE_LINE_WRITTEN_TUTORIAL_STEPS as CREATE_LINE_STEPS_EN,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY as CREATE_CIRCLE_RECT_COPY_EN,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS as CREATE_CIRCLE_RECT_STEPS_EN,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_COPY as INTRO_TO_3D_COPY_EN,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS as INTRO_TO_3D_STEPS_EN,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_COPY as INSPECT_MODEL_COPY_EN,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS as INSPECT_MODEL_STEPS_EN,
+  SAVING_WORK_WRITTEN_TUTORIAL_COPY as SAVING_WORK_COPY_EN,
+  SAVING_WORK_WRITTEN_TUTORIAL_STEPS as SAVING_WORK_STEPS_EN,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY as TROUBLESHOOTING_COPY_EN,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS as TROUBLESHOOTING_STEPS_EN,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY as FINAL_GUIDED_EXERCISE_COPY_EN,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS as FINAL_GUIDED_EXERCISE_STEPS_EN,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY as PRACTICAL_ASSESSMENT_COPY_EN,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS as PRACTICAL_ASSESSMENT_STEPS_EN,
   WrittenTutorialCopy,
   WrittenTutorialStep,
-} from '../../iCAD_Foundations/WrittenTutorial';
+} from '../../iCAD_Foundations/WrittenTutorial_EN';
+import {
+  GETTING_STARTED_WRITTEN_TUTORIAL_COPY as GETTING_STARTED_COPY_JP,
+  GETTING_STARTED_WRITTEN_TUTORIAL_STEPS as GETTING_STARTED_STEPS_JP,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY as STANDARD_3D_VIEW_COPY_JP,
+  STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS as STANDARD_3D_VIEW_STEPS_JP,
+  USER_VIEW_WRITTEN_TUTORIAL_COPY as USER_VIEW_COPY_JP,
+  USER_VIEW_WRITTEN_TUTORIAL_STEPS as USER_VIEW_STEPS_JP,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_COPY as ORIGIN_AXES_COPY_JP,
+  ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS as ORIGIN_AXES_STEPS_JP,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY as ORIGIN_LAYOUT_COPY_JP,
+  ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS as ORIGIN_LAYOUT_STEPS_JP,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY as SELECTING_GEOMETRY_COPY_JP,
+  SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS as SELECTING_GEOMETRY_STEPS_JP,
+  CREATE_LINE_WRITTEN_TUTORIAL_COPY as CREATE_LINE_COPY_JP,
+  CREATE_LINE_WRITTEN_TUTORIAL_STEPS as CREATE_LINE_STEPS_JP,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY as CREATE_CIRCLE_RECT_COPY_JP,
+  CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS as CREATE_CIRCLE_RECT_STEPS_JP,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_COPY as INTRO_TO_3D_COPY_JP,
+  INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS as INTRO_TO_3D_STEPS_JP,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_COPY as INSPECT_MODEL_COPY_JP,
+  INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS as INSPECT_MODEL_STEPS_JP,
+  SAVING_WORK_WRITTEN_TUTORIAL_COPY as SAVING_WORK_COPY_JP,
+  SAVING_WORK_WRITTEN_TUTORIAL_STEPS as SAVING_WORK_STEPS_JP,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY as TROUBLESHOOTING_COPY_JP,
+  TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS as TROUBLESHOOTING_STEPS_JP,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY as FINAL_GUIDED_EXERCISE_COPY_JP,
+  FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS as FINAL_GUIDED_EXERCISE_STEPS_JP,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY as PRACTICAL_ASSESSMENT_COPY_JP,
+  PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS as PRACTICAL_ASSESSMENT_STEPS_JP,
+} from '../../iCAD_Foundations/WrittenTutorial_JP';
+import {
+  STANDARD_3D_VIEW_VIDEO_STEPS as STANDARD_3D_VIEW_VIDEO_STEPS_JP,
+  USER_VIEW_VIDEO_STEPS as USER_VIEW_VIDEO_STEPS_JP,
+} from '../../iCAD_Foundations/VideoTutorial_JP/StandardViewsVideo';
+import {
+  ORIGIN_AXES_VIDEO_STEPS as ORIGIN_AXES_VIDEO_STEPS_JP,
+} from '../../iCAD_Foundations/VideoTutorial_JP/OriginAndCoordinatesVideo';
 
-const WRITTEN_TUTORIAL_REGISTRY: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
-  'lesson-1-1': { copy: GETTING_STARTED_WRITTEN_TUTORIAL_COPY, steps: GETTING_STARTED_WRITTEN_TUTORIAL_STEPS },
-  'lesson-4-1': { copy: STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY, steps: STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS },
-  'lesson-4-2': { copy: USER_VIEW_WRITTEN_TUTORIAL_COPY, steps: USER_VIEW_WRITTEN_TUTORIAL_STEPS },
-  'origin-projections': { copy: ORIGIN_AXES_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS },
-  'lesson-5-1': { copy: ORIGIN_AXES_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_AXES_WRITTEN_TUTORIAL_STEPS },
-  'origin-layout': { copy: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS },
-  'lesson-5-2': { copy: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY, steps: ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS },
-  'lesson-6-1': { copy: SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY, steps: SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS },
-  'lesson-7-1': { copy: CREATE_LINE_WRITTEN_TUTORIAL_COPY, steps: CREATE_LINE_WRITTEN_TUTORIAL_STEPS },
-  'lesson-7-2': { copy: CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY, steps: CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_STEPS },
-  'lesson-8-1': { copy: INTRO_TO_3D_WRITTEN_TUTORIAL_COPY, steps: INTRO_TO_3D_WRITTEN_TUTORIAL_STEPS },
-  'lesson-9-1': { copy: INSPECT_MODEL_WRITTEN_TUTORIAL_COPY, steps: INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS },
-  'lesson-10-1': { copy: SAVING_WORK_WRITTEN_TUTORIAL_COPY, steps: SAVING_WORK_WRITTEN_TUTORIAL_STEPS },
-  'lesson-11-1': { copy: TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY, steps: TROUBLESHOOTING_WRITTEN_TUTORIAL_STEPS },
-  'lesson-12-1': { copy: FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY, steps: FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_STEPS },
-  'lesson-13-1': { copy: PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY, steps: PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_STEPS },
+const WRITTEN_TUTORIAL_REGISTRY_EN: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
+  'lesson-1-1': { copy: GETTING_STARTED_COPY_EN, steps: GETTING_STARTED_STEPS_EN },
+  'lesson-4-1': { copy: STANDARD_3D_VIEW_COPY_EN, steps: STANDARD_3D_VIEW_STEPS_EN },
+  'lesson-4-2': { copy: USER_VIEW_COPY_EN, steps: USER_VIEW_STEPS_EN },
+  'origin-projections': { copy: ORIGIN_AXES_COPY_EN, steps: ORIGIN_AXES_STEPS_EN },
+  'lesson-5-1': { copy: ORIGIN_AXES_COPY_EN, steps: ORIGIN_AXES_STEPS_EN },
+  'origin-layout': { copy: ORIGIN_LAYOUT_COPY_EN, steps: ORIGIN_LAYOUT_STEPS_EN },
+  'lesson-5-2': { copy: ORIGIN_LAYOUT_COPY_EN, steps: ORIGIN_LAYOUT_STEPS_EN },
+  'lesson-6-1': { copy: SELECTING_GEOMETRY_COPY_EN, steps: SELECTING_GEOMETRY_STEPS_EN },
+  'lesson-7-1': { copy: CREATE_LINE_COPY_EN, steps: CREATE_LINE_STEPS_EN },
+  'lesson-7-2': { copy: CREATE_CIRCLE_RECT_COPY_EN, steps: CREATE_CIRCLE_RECT_STEPS_EN },
+  'lesson-8-1': { copy: INTRO_TO_3D_COPY_EN, steps: INTRO_TO_3D_STEPS_EN },
+  'lesson-9-1': { copy: INSPECT_MODEL_COPY_EN, steps: INSPECT_MODEL_STEPS_EN },
+  'lesson-10-1': { copy: SAVING_WORK_COPY_EN, steps: SAVING_WORK_STEPS_EN },
+  'lesson-11-1': { copy: TROUBLESHOOTING_COPY_EN, steps: TROUBLESHOOTING_STEPS_EN },
+  'lesson-12-1': { copy: FINAL_GUIDED_EXERCISE_COPY_EN, steps: FINAL_GUIDED_EXERCISE_STEPS_EN },
+  'lesson-13-1': { copy: PRACTICAL_ASSESSMENT_COPY_EN, steps: PRACTICAL_ASSESSMENT_STEPS_EN },
+};
+
+const WRITTEN_TUTORIAL_REGISTRY_JP: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
+  'lesson-1-1': { copy: GETTING_STARTED_COPY_JP, steps: GETTING_STARTED_STEPS_JP },
+  'lesson-4-1': { copy: STANDARD_3D_VIEW_COPY_JP, steps: STANDARD_3D_VIEW_STEPS_JP },
+  'lesson-4-2': { copy: USER_VIEW_COPY_JP, steps: USER_VIEW_STEPS_JP },
+  'origin-projections': { copy: ORIGIN_AXES_COPY_JP, steps: ORIGIN_AXES_STEPS_JP },
+  'lesson-5-1': { copy: ORIGIN_AXES_COPY_JP, steps: ORIGIN_AXES_STEPS_JP },
+  'origin-layout': { copy: ORIGIN_LAYOUT_COPY_JP, steps: ORIGIN_LAYOUT_STEPS_JP },
+  'lesson-5-2': { copy: ORIGIN_LAYOUT_COPY_JP, steps: ORIGIN_LAYOUT_STEPS_JP },
+  'lesson-6-1': { copy: SELECTING_GEOMETRY_COPY_JP, steps: SELECTING_GEOMETRY_STEPS_JP },
+  'lesson-7-1': { copy: CREATE_LINE_COPY_JP, steps: CREATE_LINE_STEPS_JP },
+  'lesson-7-2': { copy: CREATE_CIRCLE_RECT_COPY_JP, steps: CREATE_CIRCLE_RECT_STEPS_JP },
+  'lesson-8-1': { copy: INTRO_TO_3D_COPY_JP, steps: INTRO_TO_3D_STEPS_JP },
+  'lesson-9-1': { copy: INSPECT_MODEL_COPY_JP, steps: INSPECT_MODEL_STEPS_JP },
+  'lesson-10-1': { copy: SAVING_WORK_COPY_JP, steps: SAVING_WORK_STEPS_JP },
+  'lesson-11-1': { copy: TROUBLESHOOTING_COPY_JP, steps: TROUBLESHOOTING_STEPS_JP },
+  'lesson-12-1': { copy: FINAL_GUIDED_EXERCISE_COPY_JP, steps: FINAL_GUIDED_EXERCISE_STEPS_JP },
+  'lesson-13-1': { copy: PRACTICAL_ASSESSMENT_COPY_JP, steps: PRACTICAL_ASSESSMENT_STEPS_JP },
 };
 
 const videoMap: Record<string, string> = {
@@ -109,7 +165,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   onNextLesson,
   nextLabel,
 }) => {
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
+  const isJapanese = language === 'ja';
   const [showRecap, setShowRecap] = useState(false);
 
   const {
@@ -127,7 +184,17 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
     stop();
   }, [lessonId, stop]);
 
-  const writtenModule = WRITTEN_TUTORIAL_REGISTRY[lessonId];
+  const writtenRegistry = isJapanese ? WRITTEN_TUTORIAL_REGISTRY_JP : WRITTEN_TUTORIAL_REGISTRY_EN;
+  const writtenModule = writtenRegistry[lessonId];
+
+  const activeVideoSteps = useMemo(() => {
+    if (isJapanese) {
+      if (lessonId === 'lesson-4-1') return STANDARD_3D_VIEW_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-4-2') return USER_VIEW_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-5-1' || lessonId === 'origin-projections') return ORIGIN_AXES_VIDEO_STEPS_JP;
+    }
+    return videoSteps;
+  }, [isJapanese, lessonId, videoSteps]);
 
   // Combine title with content for TTS
   const fullSteps = useMemo(() => [title, ...content], [title, content]);
@@ -139,8 +206,9 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
 
     return lessonText || title;
   }, [content, title]);
+
   const tutorialSteps = useMemo(() => {
-    const configuredSteps = videoSteps?.length ? videoSteps : [{
+    const configuredSteps = activeVideoSteps?.length ? activeVideoSteps : [{
       id: '1', title, customText: videoNarration, videoStart: 0, videoEnd: 9999, overlays: videoOverlays
     }];
 
@@ -153,10 +221,31 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
       subtitlePos: { bottom: '20px' },
       videoSrc: videoMap[videoId || ''],
     }));
-  }, [title, videoId, videoNarration, videoOverlays, videoSteps]);
+  }, [title, videoId, videoNarration, videoOverlays, activeVideoSteps]);
+
   const isViewTourLesson = Boolean(videoIntroEyebrow);
   const fallbackRecap = useMemo(() => getFoundationsRecap(lessonId), [lessonId]);
-  const hasEmbeddedRecap = Boolean(videoSteps?.some((step) => step.recapData));
+  const hasEmbeddedRecap = Boolean(activeVideoSteps?.some((step) => step.recapData));
+
+  const activeIntroEyebrow = isJapanese
+    ? (videoIntroEyebrow ? '視図ツアー' : '動画チュートリアル')
+    : (videoIntroEyebrow || 'Interactive Video');
+
+  const activeIntroTitle = isJapanese
+    ? (lessonId === 'lesson-4-1'
+        ? '3D ビューの確認'
+        : lessonId === 'lesson-4-2'
+          ? 'ユーザービューの確認'
+          : (videoIntroTitle ? '動画デモンストレーション' : '動画デモンストレーション'))
+    : (videoIntroTitle || 'Watch Video Demonstration');
+
+  const activeIntroDescription = isJapanese
+    ? (lessonId === 'lesson-4-1'
+        ? '3D ビューのガイド付きツアーで、正面・上面・底面・右面・左面の各方向からモデルを正確に検査する方法を学びます。'
+        : lessonId === 'lesson-4-2'
+          ? 'ユーザービューのガイド付きツアーで、モデルの幅・高さ・奥行きを把握しながら複数の面を同時に検査する方法を学びます。'
+          : (videoIntroDescription ? 'ワークスペースでこのツールの実際の動作を確認します。' : 'ワークスペースでこのツールの実際の動作を確認します。'))
+    : (videoIntroDescription || 'See this tool in action in the workspace.');
 
   const beginRecapOrAdvance = () => {
     if (fallbackRecap && !hasEmbeddedRecap) {
@@ -214,9 +303,9 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                   lessonType="video-tutorial"
                   introPanel={{
                     icon: videoIntroEyebrow ? Eye : Play,
-                    eyebrow: videoIntroEyebrow || "Interactive Video",
-                    title: videoIntroTitle || "Watch Video Demonstration",
-                    description: videoIntroDescription || "See this tool in action in the workspace."
+                    eyebrow: activeIntroEyebrow,
+                    title: activeIntroTitle,
+                    description: activeIntroDescription
                   }}
                 />
               )}

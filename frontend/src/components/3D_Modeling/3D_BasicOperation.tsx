@@ -24,6 +24,13 @@ import {
   polygonTutorialSteps,
   torusTutorialSteps
 } from './VideoTutorialData/basicOp1TutorialSteps';
+import {
+  cylinderTutorialSteps as cylinderTutorialStepsJP,
+  boxTutorialSteps as boxTutorialStepsJP,
+  polygonTutorialSteps as polygonTutorialStepsJP,
+  coneTutorialSteps as coneTutorialStepsJP,
+  torusTutorialSteps as torusTutorialStepsJP,
+} from '../iCAD_Foundations/VideoTutorial_JP/CreatingBasicShapesVideo';
 import VideoTutorialViewer from './VideoTutorialViewer';
 import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
 import {
@@ -37,7 +44,19 @@ import {
   POLYGON_WRITTEN_TUTORIAL_STEPS,
   TORUS_WRITTEN_TUTORIAL_COPY,
   TORUS_WRITTEN_TUTORIAL_STEPS,
-} from '../iCAD_Foundations/WrittenTutorial';
+} from '../iCAD_Foundations/WrittenTutorial_EN';
+import {
+  BOX_WRITTEN_TUTORIAL_COPY as BOX_COPY_JP,
+  BOX_WRITTEN_TUTORIAL_STEPS as BOX_STEPS_JP,
+  CONE_WRITTEN_TUTORIAL_COPY as CONE_COPY_JP,
+  CONE_WRITTEN_TUTORIAL_STEPS as CONE_STEPS_JP,
+  CYLINDER_WRITTEN_TUTORIAL_COPY as CYLINDER_COPY_JP,
+  CYLINDER_WRITTEN_TUTORIAL_STEPS as CYLINDER_STEPS_JP,
+  POLYGON_WRITTEN_TUTORIAL_COPY as POLYGON_COPY_JP,
+  POLYGON_WRITTEN_TUTORIAL_STEPS as POLYGON_STEPS_JP,
+  TORUS_WRITTEN_TUTORIAL_COPY as TORUS_COPY_JP,
+  TORUS_WRITTEN_TUTORIAL_STEPS as TORUS_STEPS_JP,
+} from '../iCAD_Foundations/WrittenTutorial_JP';
 
 /* ── Shared Asset Imports ────────────────────────────────────────────────── */
 
@@ -87,12 +106,53 @@ export const basicShapeIntroPanels = {
   },
 } as const;
 
+export const basicShapeIntroPanelsJP = {
+  cylinder: {
+    icon: Database,
+    eyebrow: '視図ツアー',
+    title: '円柱',
+    description: '円柱コマンドのガイド付きツアーで、ツールの選択、直径・高さの入力、完成形状の正確な配置方法を学びます。',
+  },
+  box: {
+    icon: Box,
+    eyebrow: '視図ツアー',
+    title: '直方体',
+    description: '直方体コマンドのガイド付きツアーで、幅・奥行き・高さを入力し、完成形状を正確に配置する方法を学びます。',
+  },
+  polygon: {
+    icon: Hexagon,
+    eyebrow: '視図ツアー',
+    title: '多角柱',
+    description: '多角柱コマンドのガイド付きツアーで、角数、通過径、高さを定義して形状を完成させる方法を学びます。',
+  },
+  cone: {
+    icon: Triangle,
+    eyebrow: '視図ツアー',
+    title: '円錐',
+    description: '円錐コマンドのガイド付きツアーで、底面径、上面径、高さを定義して形状を完成させる方法を学びます。',
+  },
+  torus: {
+    icon: Donut,
+    eyebrow: '視図ツアー',
+    title: '円環体',
+    description: '円環体コマンドのガイド付きツアーで、断面径、回転半径、回転角度を定義して形状を完成させる方法を学びます。',
+  },
+} as const;
+
 export const basicShapeObjectives = {
   cylinder: 'Create and position a cylinder by entering its diameter and height, then placing it at the model origin.',
   box: 'Create and position a box by entering its width, depth, and height, then placing it accurately at the model origin.',
   polygon: 'Create and position a polygonal prism by defining its number of sides, path diameter, and height.',
   cone: 'Create and position a cone by defining its base diameter, top face diameter, and height.',
   torus: 'Create and position a torus by defining its section diameter, path radius, and turn angle.',
+} as const;
+
+export const basicShapeObjectivesJP = {
+  cylinder: '直径と高さを入力し、モデル原点に正確に配置して円柱を作成します。',
+  box: '幅、奥行き、高さを入力し、モデル原点に正確に配置して直方体を作成します。',
+  polygon: '角数、通過径、高さを定義して、正多角柱を作成します。',
+  cone: '底面径、上面径、高さを定義して、円錐を作成します。',
+  torus: '断面径、回転半径、回転角度を定義して、円環体を作成します。',
 } as const;
 
 
@@ -322,10 +382,31 @@ interface SubLessonProps {
 
 const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson }) => {
   const activeTab = subLessonId ? subLessonId.replace('basic-op-', '') : '';
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
+  const isJapanese = language === 'ja';
   const { containerRef, registerText } = useLessonCore(subLessonId);
 
+  const activePanels = isJapanese ? basicShapeIntroPanelsJP : basicShapeIntroPanels;
 
+  const cylinderCopy = isJapanese ? CYLINDER_COPY_JP : CYLINDER_WRITTEN_TUTORIAL_COPY;
+  const cylinderSteps = isJapanese ? CYLINDER_STEPS_JP : CYLINDER_WRITTEN_TUTORIAL_STEPS;
+  const cylinderVideo = isJapanese ? cylinderTutorialStepsJP : cylinderTutorialSteps;
+
+  const boxCopy = isJapanese ? BOX_COPY_JP : BOX_WRITTEN_TUTORIAL_COPY;
+  const boxSteps = isJapanese ? BOX_STEPS_JP : BOX_WRITTEN_TUTORIAL_STEPS;
+  const boxVideo = isJapanese ? boxTutorialStepsJP : boxTutorialSteps;
+
+  const polygonCopy = isJapanese ? POLYGON_COPY_JP : POLYGON_WRITTEN_TUTORIAL_COPY;
+  const polygonSteps = isJapanese ? POLYGON_STEPS_JP : POLYGON_WRITTEN_TUTORIAL_STEPS;
+  const polygonVideo = isJapanese ? polygonTutorialStepsJP : polygonTutorialSteps;
+
+  const coneCopy = isJapanese ? CONE_COPY_JP : CONE_WRITTEN_TUTORIAL_COPY;
+  const coneSteps = isJapanese ? CONE_STEPS_JP : CONE_WRITTEN_TUTORIAL_STEPS;
+  const coneVideo = isJapanese ? coneTutorialStepsJP : coneTutorialSteps;
+
+  const torusCopy = isJapanese ? TORUS_COPY_JP : TORUS_WRITTEN_TUTORIAL_COPY;
+  const torusSteps = isJapanese ? TORUS_STEPS_JP : TORUS_WRITTEN_TUTORIAL_STEPS;
+  const torusVideo = isJapanese ? torusTutorialStepsJP : torusTutorialSteps;
 
   const mapSteps = React.useCallback((steps: any[], shapeId: string) => {
     return steps.map(s => {
@@ -333,34 +414,23 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       const stepKey = stepNum === '0' ? 'intro' : (stepNum === (steps.length - 1).toString() ? 'outro' : `step${stepNum}`);
       return {
         ...s,
-        title: s.customTitle || t(`basicOp.${shapeId}.title`),
-        text: s.customText || t(`basicOp.${shapeId}.${stepKey}`)
+        title: s.customTitle || (isJapanese ? s.title : t(`basicOp.${shapeId}.title`)),
+        text: s.customText || (isJapanese ? s.text : t(`basicOp.${shapeId}.${stepKey}`))
       };
     });
-  }, [t]);
+  }, [isJapanese, t]);
 
-  const activeObjective = basicShapeObjectives[activeTab as keyof typeof basicShapeObjectives]
-    ?? basicShapeObjectives.cylinder;
-
+  const objectives = isJapanese ? basicShapeObjectivesJP : basicShapeObjectives;
+  const activeObjective = objectives[activeTab as keyof typeof objectives]
+    ?? objectives.cylinder;
 
   useEffect(() => {
     registerText([activeObjective], 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeObjective, registerText]);
 
-
-
-
-
   const handleNext = () => { if (onNextLesson) onNextLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-
   const handlePrev = () => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-
-
-
-
-
-
 
   return (
     <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
@@ -368,12 +438,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cylinder' && (
           <div className="lesson-card tab-content fade-in">
             <FoundationsVideoReadingLayout
-              title={basicShapeIntroPanels.cylinder.title}
-              description={basicShapeIntroPanels.cylinder.description}
-              steps={CYLINDER_WRITTEN_TUTORIAL_STEPS}
-              writtenTutorialCopy={CYLINDER_WRITTEN_TUTORIAL_COPY}
+              title={activePanels.cylinder.title}
+              description={activePanels.cylinder.description}
+              steps={cylinderSteps}
+              writtenTutorialCopy={cylinderCopy}
             >
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cylinder} steps={mapSteps(cylinderTutorialSteps, 'cylinder')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={activePanels.cylinder} steps={mapSteps(cylinderVideo, 'cylinder')} />
             </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
@@ -388,12 +458,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'box' && (
           <div className="lesson-card tab-content fade-in">
             <FoundationsVideoReadingLayout
-              title={basicShapeIntroPanels.box.title}
-              description={basicShapeIntroPanels.box.description}
-              steps={BOX_WRITTEN_TUTORIAL_STEPS}
-              writtenTutorialCopy={BOX_WRITTEN_TUTORIAL_COPY}
+              title={activePanels.box.title}
+              description={activePanels.box.description}
+              steps={boxSteps}
+              writtenTutorialCopy={boxCopy}
             >
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.box} steps={mapSteps(boxTutorialSteps, 'box')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={activePanels.box} steps={mapSteps(boxVideo, 'box')} />
             </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
@@ -408,12 +478,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'polygon' && (
           <div className="lesson-card tab-content fade-in">
             <FoundationsVideoReadingLayout
-              title={basicShapeIntroPanels.polygon.title}
-              description={basicShapeIntroPanels.polygon.description}
-              steps={POLYGON_WRITTEN_TUTORIAL_STEPS}
-              writtenTutorialCopy={POLYGON_WRITTEN_TUTORIAL_COPY}
+              title={activePanels.polygon.title}
+              description={activePanels.polygon.description}
+              steps={polygonSteps}
+              writtenTutorialCopy={polygonCopy}
             >
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.polygon} steps={mapSteps(polygonTutorialSteps, 'polygon')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={activePanels.polygon} steps={mapSteps(polygonVideo, 'polygon')} />
             </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
@@ -428,12 +498,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'cone' && (
           <div className="lesson-card tab-content fade-in">
             <FoundationsVideoReadingLayout
-              title={basicShapeIntroPanels.cone.title}
-              description={basicShapeIntroPanels.cone.description}
-              steps={CONE_WRITTEN_TUTORIAL_STEPS}
-              writtenTutorialCopy={CONE_WRITTEN_TUTORIAL_COPY}
+              title={activePanels.cone.title}
+              description={activePanels.cone.description}
+              steps={coneSteps}
+              writtenTutorialCopy={coneCopy}
             >
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.cone} steps={mapSteps(coneTutorialSteps, 'cone')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={activePanels.cone} steps={mapSteps(coneVideo, 'cone')} />
             </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">
@@ -448,12 +518,12 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
         {activeTab === 'torus' && (
           <div className="lesson-card tab-content fade-in">
             <FoundationsVideoReadingLayout
-              title={basicShapeIntroPanels.torus.title}
-              description={basicShapeIntroPanels.torus.description}
-              steps={TORUS_WRITTEN_TUTORIAL_STEPS}
-              writtenTutorialCopy={TORUS_WRITTEN_TUTORIAL_COPY}
+              title={activePanels.torus.title}
+              description={activePanels.torus.description}
+              steps={torusSteps}
+              writtenTutorialCopy={torusCopy}
             >
-              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={basicShapeIntroPanels.torus} steps={mapSteps(torusTutorialSteps, 'torus')} />
+              <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio introPanel={activePanels.torus} steps={mapSteps(torusVideo, 'torus')} />
             </FoundationsVideoReadingLayout>
 
             <div className="lesson-navigation">

@@ -33,7 +33,7 @@ describe('Torus lesson alignment', () => {
   it('shows the tool-selection instruction after the introduction', () => {
     expect(torusTutorialSteps[0].holdVideo).toBe(true);
     expect(torusTutorialSteps[0].customText).not.toContain('To begin');
-    expect(torusTutorialSteps[1].customText).toBe('To begin, open Shape Arrangement, then select Torus.');
+    expect(torusTutorialSteps[1].customText).toBe('From the Icon Menu, open Shape Placement, then select Place Torus.');
   });
 
   it('highlights the source-observed controls and all Item Entry parameters', () => {

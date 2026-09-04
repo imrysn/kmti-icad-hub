@@ -2,10 +2,10 @@ import type { LessonVideoStep, TutorialOverlay } from '../../types/tutorial';
 import {
   STANDARD_3D_VIEW_VIDEO_STEPS,
   USER_VIEW_VIDEO_STEPS,
-} from '../../components/iCAD_Foundations/VideoTutorial/StandardViewsVideo';
+} from '../../components/iCAD_Foundations/VideoTutorial_EN/StandardViewsVideo';
 import {
   ORIGIN_AXES_VIDEO_STEPS,
-} from '../../components/iCAD_Foundations/VideoTutorial/OriginAndCoordinatesVideo';
+} from '../../components/iCAD_Foundations/VideoTutorial_EN/OriginAndCoordinatesVideo';
 
 
 export type QuizQuestion = {

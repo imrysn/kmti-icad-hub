@@ -13,6 +13,8 @@ export const en_components_course_selector = {
   "course.desc_3d_prac": "Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.",
   "course.title_2d": "2D Detailing",
   "course.desc_2d": "Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.",
+  "course.title_foundations": "iCAD Foundations",
+  "course.desc_foundations": "Master the fundamental layout, tools, and basic navigation of iCAD. Learn to explore the software and create simple 3D primitives.",
   "course.title_2d_assessment": "2D Detailing Assessment",
   "course.desc_2d_assessment": "Apply layout, section views, and mechanical tolerances in standard test sets to verify drafting precision.",
 };

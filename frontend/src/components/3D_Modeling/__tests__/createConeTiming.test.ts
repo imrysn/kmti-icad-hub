@@ -36,7 +36,7 @@ describe('Cone lesson alignment', () => {
   it('shows the tool-selection instruction after the introduction', () => {
     expect(coneTutorialSteps[0].holdVideo).toBe(true);
     expect(coneTutorialSteps[0].customText).not.toContain('To begin');
-    expect(coneTutorialSteps[1].customText).toBe('To begin, open Shape Arrangement, then select Cone.');
+    expect(coneTutorialSteps[1].customText).toBe('From the Icon Menu, open Shape Placement, then select Place Cone.');
   });
 
   it('highlights every command setting and parameter named by the subtitle', () => {

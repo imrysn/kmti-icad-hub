@@ -24,7 +24,7 @@ describe(' Polygon video timing', () => {
   it('shows the tool-selection instruction after the introduction', () => {
     expect(polygonTutorialSteps[0].holdVideo).toBe(true);
     expect(polygonTutorialSteps[0].customText).not.toContain('To begin');
-    expect(polygonTutorialSteps[1].customText).toBe('To begin, open Shape Placement, then select Polygonal Prism.');
+    expect(polygonTutorialSteps[1].customText).toBe('From the Icon Menu, open Shape Placement, then select Place Polygonal Prism.');
   });
 
   it('covers the complete 33.4-second source with contiguous audited segments', () => {
@@ -94,7 +94,7 @@ describe(' Polygon video timing', () => {
     const commandStep = polygonTutorialSteps.find((step) => step.id === 'poly-3-command-options')!;
 
     expect(commandStep.customText).toBe(
-      'In the Command Menu, confirm Polygonal Prism, Placement, and Dimension Specification, then select Y Orientation.',
+      'From the Command Menu, confirm Polygonal Prism, Placement, and Dimension Specification, then select Y Orientation.',
     );
   });
 

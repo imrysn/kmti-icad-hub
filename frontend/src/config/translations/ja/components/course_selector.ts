@@ -13,6 +13,8 @@ export const ja_components_course_selector = {
   "course.desc_3d_prac": "構造注記とモデリング精度を検証するため、iJCAD で 10 セットの実技製図タスクとモデリング検証に取り組みます。",
   "course.title_2d": "2D詳細設計",
   "course.desc_2d": "テクニカルドラフティングの技術を習得します。生の3Dジオメトリを製造準備完了の図面に変換します。断面ビュー、アイソメ詳細、注記、標準部品表（BOM）、機械的幾何公差に焦点が当てられます。",
+  "course.title_foundations": "iCAD 基礎",
+  "course.desc_foundations": "iCAD SX の基本レイアウト、ツール、基本ナビゲーションを習得します。ソフトウェアの操作やシンプルな 3D プリミティブの作成ができるようになります。",
   "course.title_2d_assessment": "2D詳細設計評価",
   "course.desc_2d_assessment": "標準テストセットでレイアウト、断面図、機械公差を適用し、製図精度を検証します。",
 };

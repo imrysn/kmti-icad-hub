@@ -40,8 +40,18 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     effectiveAccess,
     planLoading
 }) => {
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const { user } = useAuth();
+
+    const getRoleLabel = (role?: string) => {
+        if (!role) return '';
+        if (language !== 'ja') return role;
+        const lower = role.toLowerCase();
+        if (lower === 'trainee') return '研修生';
+        if (lower === 'mentor') return 'メンター';
+        if (lower === 'admin') return '管理者';
+        return role;
+    };
 
     if (loading || planLoading) {
         return (
@@ -95,8 +105,8 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     const activeCards = [
         ...(courseFoundations ? [{
             ...courseFoundations,
-            title: courseFoundations.title,
-            description: courseFoundations.description
+            title: t('course.title_foundations') || courseFoundations.title,
+            description: t('course.desc_foundations') || courseFoundations.description
         }] : []),
         ...(course3D ? [{
             ...course3D,
@@ -145,7 +155,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                 </div>
 
                 <div className="course-home-navigation">
-                    <div className="course-home-nav-heading">Courses</div>
+                    <div className="course-home-nav-heading">{language === 'ja' ? 'コース一覧' : 'Courses'}</div>
                     {allCourses.map((course) => (
                         <button key={course.id} type="button" disabled={isCourseLocked(course as Course)} onClick={() => setSelectedCourse(course as Course)}>
                             {isCourseLocked(course as Course) ? <Lock size={16} /> : <BookOpen size={16} />}
@@ -155,11 +165,11 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                 </div>
 
                 {!isEmployeeSide && <div className="learner-plan-summary course-home-plan">
-                    <div><span>CURRENT ACCESS PLAN</span><strong>{effectiveAccess?.plan?.name || 'No active plan'}</strong></div>
+                    <div><span>{language === 'ja' ? '現在のアクセスプラン' : 'CURRENT ACCESS PLAN'}</span><strong>{effectiveAccess?.plan?.name || (language === 'ja' ? 'アクティブなプランなし' : 'No active plan')}</strong></div>
                     {effectiveAccess?.plan ? <p>
                         Active from {effectiveAccess.starts_at ? new Date(effectiveAccess.starts_at.endsWith('Z') ? effectiveAccess.starts_at : `${effectiveAccess.starts_at}Z`).toLocaleDateString() : 'now'}
                         {' · '}{effectiveAccess.ends_at ? `Expires ${new Date(effectiveAccess.ends_at.endsWith('Z') ? effectiveAccess.ends_at : `${effectiveAccess.ends_at}Z`).toLocaleDateString()}` : 'No expiration'}
-                    </p> : <p>Contact KMTI administration to activate training access.</p>}
+                    </p> : <p>{language === 'ja' ? '管理者にお問い合わせいただき、トレーニングアクセスを有効化してください。' : 'Contact KMTI administration to activate training access.'}</p>}
                 </div>}
 
                 <div className="course-home-sidebar-footer">
@@ -169,7 +179,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                         onClick={() => window.dispatchEvent(new CustomEvent('kmti-open-profile-settings'))}
                     >
                         <span className="learner-account-avatar">{(user?.full_name || user?.username || 'U').trim().charAt(0).toUpperCase()}</span>
-                        <span className="learner-account-copy"><strong>{user?.full_name || user?.username}</strong><small>{user?.role}</small></span>
+                        <span className="learner-account-copy"><strong>{user?.full_name || user?.username}</strong><small>{getRoleLabel(user?.role)}</small></span>
                         <Settings size={16} />
                     </button>
                 </div>

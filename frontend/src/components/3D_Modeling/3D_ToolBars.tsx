@@ -21,15 +21,21 @@ interface ToolBarsLessonProps {
 }
 
 import {
-  TOOLBARS_WRITTEN_TUTORIAL_COPY,
-  TOOLBARS_WRITTEN_TUTORIAL_STEPS,
-} from '../iCAD_Foundations/WrittenTutorial';
+  TOOLBARS_WRITTEN_TUTORIAL_COPY as TOOLBARS_COPY_EN,
+  TOOLBARS_WRITTEN_TUTORIAL_STEPS as TOOLBARS_STEPS_EN,
+} from '../iCAD_Foundations/WrittenTutorial_EN';
 
-export {
-  TOOLBARS_WRITTEN_TUTORIAL_COPY,
-  TOOLBARS_WRITTEN_TUTORIAL_STEPS,
-};
+import {
+  TOOLBARS_WRITTEN_TUTORIAL_COPY as TOOLBARS_COPY_JP,
+  TOOLBARS_WRITTEN_TUTORIAL_STEPS as TOOLBARS_STEPS_JP,
+} from '../iCAD_Foundations/WrittenTutorial_JP';
 
+import {
+  TOOLBAR_TUTORIAL_STEPS as TOOLBAR_TUTORIAL_STEPS_JP,
+} from '../iCAD_Foundations/VideoTutorial_JP/ToolBarsVideo';
+
+export const TOOLBARS_WRITTEN_TUTORIAL_COPY = TOOLBARS_COPY_EN;
+export const TOOLBARS_WRITTEN_TUTORIAL_STEPS = TOOLBARS_STEPS_EN;
 
 export const localizeToolbarTutorialSteps = (
   translate: (key: string) => string,
@@ -60,11 +66,16 @@ export const localizeToolbarTutorialSteps = (
 });
 
 const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
-  const { t, translateContent } = useTranslation();
+  const { language, t, translateContent } = useTranslation();
+  const isJapanese = language === 'ja';
   const {
     containerRef,
     scrollProgress,
   } = useLessonCore('toolbars');
+
+  const activeCopy = isJapanese ? TOOLBARS_COPY_JP : TOOLBARS_COPY_EN;
+  const activeWrittenSteps = isJapanese ? TOOLBARS_STEPS_JP : TOOLBARS_STEPS_EN;
+  const steps = isJapanese ? TOOLBAR_TUTORIAL_STEPS_JP : localizeToolbarTutorialSteps(t, translateContent);
 
   return (
     <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
@@ -74,28 +85,25 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
       {/* Main Interactive Stage */}
       <div className="lesson-grid single-card">
         <div className="lesson-card tab-content fade-in">
-          {(() => {
-            const steps = localizeToolbarTutorialSteps(t, translateContent);
-            return (
-              <FoundationsVideoReadingLayout
-                title={TOOLBARS_WRITTEN_TUTORIAL_COPY.title}
-                steps={TOOLBARS_WRITTEN_TUTORIAL_STEPS}
-                writtenTutorialCopy={TOOLBARS_WRITTEN_TUTORIAL_COPY}
-              >
-                <VideoTutorialViewer
-                  lessonType="video-tutorial"
-                  muteSourceVideoAudio
-                  steps={steps}
-                  introPanel={{
-                    icon: Wrench,
-                    eyebrow: "Interactive tool tour",
-                    title: "Explore the iCAD SX Tool Bars",
-                    description: "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
-                  }}
-                />
-              </FoundationsVideoReadingLayout>
-            );
-          })()}
+          <FoundationsVideoReadingLayout
+            title={activeCopy.title}
+            steps={activeWrittenSteps}
+            writtenTutorialCopy={activeCopy}
+          >
+            <VideoTutorialViewer
+              lessonType="video-tutorial"
+              muteSourceVideoAudio
+              steps={steps}
+              introPanel={{
+                icon: Wrench,
+                eyebrow: isJapanese ? "ツールツアー" : "Interactive tool tour",
+                title: isJapanese ? "iCAD SX ツールバーの確認" : "Explore the iCAD SX Tool Bars",
+                description: isJapanese
+                  ? "ツールバーのガイド付きツアーで、iCAD ワークフロー全体で使用する基本コマンドの配置を学びます。"
+                  : "Take a guided tour of the Tool Bars and learn where to find the essential commands used throughout your iCAD workflow."
+              }}
+            />
+          </FoundationsVideoReadingLayout>
 
           <div className="lesson-navigation">
             {onPrevLesson && (

@@ -1,4 +1,4 @@
-import WrittenTutorialPanel from './iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel';
+import WrittenTutorialPanel from './iCAD_Foundations/WrittenTutorial_EN/WrittenTutorialPanel';
 
-export * from './iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel';
+export * from './iCAD_Foundations/WrittenTutorial_EN/WrittenTutorialPanel';
 export default WrittenTutorialPanel;

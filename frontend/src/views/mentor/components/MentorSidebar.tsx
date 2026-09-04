@@ -49,8 +49,8 @@ const ProgressCircle: React.FC<{ percentage: number; size?: number; strokeWidth?
     );
 };
 
-const formatSidebarLessonTitle = (title: string) =>
-    title.replace(/^(?:module|lesson)\s+\d+(?:\.\d+)*\s*(?:[-–—:]\s*)?/i, '').trim();
+export const formatSidebarLessonTitle = (title: string) =>
+    title.replace(/^(?:module|lesson|モジュール|レッスン)\s*[\d\.]*\s*(?:[-–—:]\s*)?/i, '').trim();
 
 interface MentorSidebarProps {
     selectedCourse: Course;
@@ -91,6 +91,38 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     const [activeTheme, setActiveTheme] = useState<'light'|'dark'>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
     const searchInputRef = useRef<HTMLInputElement>(null);
     const avatarUrl = user?.avatar_url ? `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}${user.avatar_url}` : null;
+    const isJapanese = language === 'ja';
+
+    const getCourseDisplayTitle = (course: Course) => {
+        if (!course) return '';
+        const id = course.id?.toString();
+        if (course.course_type === 'iCAD_Foundations' || course.title === 'iCAD Foundations' || id === 'foundations') {
+            return isJapanese ? 'iCAD 基礎' : 'iCAD Foundations';
+        }
+        if (course.course_type === '3D_Modeling' || id === '1' || course.title === '3D Modeling') {
+            return isJapanese ? '3Dモデリング' : '3D Modeling';
+        }
+        if (course.course_type === '2D_Drawing' || id === '2' || course.title === '2D Detailing') {
+            return isJapanese ? '2D詳細設計' : '2D Detailing';
+        }
+        if (id === 'practical-assessment' || course.course_type === 'Practical') {
+            return isJapanese ? '3D実技評価' : '3D Practical Assessment';
+        }
+        if (id === '2d-assessment' || course.course_type === 'Practical_2D') {
+            return isJapanese ? '2D詳細設計評価' : '2D Detailing Assessment';
+        }
+        return course.title;
+    };
+
+    const getRoleLabel = (role?: string) => {
+        if (!role) return '';
+        if (!isJapanese) return role;
+        const lower = role.toLowerCase();
+        if (lower === 'trainee') return '研修生';
+        if (lower === 'mentor') return 'メンター';
+        if (lower === 'admin') return '管理者';
+        return role;
+    };
 
     const handleExitCourse = async () => {
         const confirmed = await requestConfirmation({
@@ -104,9 +136,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
     const handleLogout = async () => {
         const confirmed = await requestConfirmation({
-            title: 'Log out?',
-            message: 'You will need to sign in again to continue your training.',
-            confirmText: 'Log out',
+            title: isJapanese ? 'ログアウトしますか？' : 'Log out?',
+            message: isJapanese ? 'トレーニングを続けるには再度サインインする必要があります。' : 'You will need to sign in again to continue your training.',
+            confirmText: isJapanese ? 'ログアウト' : 'Log out',
             type: 'danger'
         });
         if (confirmed) logout();
@@ -183,17 +215,17 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
         >
             <div className="learner-sidebar-brand">
                 {!isSearchOpen && <img src={kmtiTrainingHubLogo} alt="KMTI Training Hub" draggable={false} />}
-                {!isSearchOpen && <h2 className="sidebar-course-title">{selectedCourse.title}</h2>}
+                {!isSearchOpen && <h2 className="sidebar-course-title">{getCourseDisplayTitle(selectedCourse)}</h2>}
                 <div className="learner-sidebar-brand-actions">
                     <div className={`sidebar-search-wrapper ${isSearchOpen ? 'expanded' : ''} visible`}>
                         {isSearchOpen && (
-                            <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder="Search lessons..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                            <input ref={searchInputRef} type="text" className="sidebar-search-input" placeholder={isJapanese ? 'レッスンを検索...' : 'Search lessons...'} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Escape') setIsSearchOpen(false);
                                 }}
                             />
                         )}
-                        <button type="button" className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)} title={isSearchOpen ? 'Close Search' : 'Search Lessons'} aria-label={isSearchOpen ? 'Close lesson search' : 'Search lessons'}>
+                        <button type="button" className="sidebar-search-btn-top" onClick={() => setIsSearchOpen(!isSearchOpen)} title={isSearchOpen ? (isJapanese ? '検索を閉じる' : 'Close Search') : (isJapanese ? 'レッスンを検索' : 'Search Lessons')} aria-label={isSearchOpen ? (isJapanese ? 'レッスン検索を閉じる' : 'Close lesson search') : (isJapanese ? 'レッスンを検索' : 'Search lessons')}>
                             {isSearchOpen ? <X size={18} /> : <Search size={18} />}
                         </button>
                     </div>
@@ -251,7 +283,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 }
                                             }
                                         }}
-                                        aria-label={!sidebarOpen ? (t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)) : undefined}
+                                        aria-label={!sidebarOpen ? formatSidebarLessonTitle(t('lesson.title.' + lesson.id) === 'lesson.title.' + lesson.id ? lesson.title : t('lesson.title.' + lesson.id)) : undefined}
                                     >
                                         <div className="lesson-item-title">
                                             <div className="lesson-icon-wrapper">
@@ -278,7 +310,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                 {searchTerms.length > 0 &&
                                                  !searchTerms.every(t => lesson.title.toLowerCase().includes(t)) &&
                                                  searchTerms.some(t => lesson.content?.some(c => c.toLowerCase().includes(t)) || lesson.quiz?.title.toLowerCase().includes(t) || lesson.quiz?.description.toLowerCase().includes(t) || lesson.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
-                                                    <span className="search-match-badge">Found in Content</span>
+                                                    <span className="search-match-badge">{isJapanese ? '本文で一致' : 'Found in Content'}</span>
                                                 )}
                                             </div>
                                         </div>
@@ -304,7 +336,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                            setActiveLessonId(child.id);
                                                        }
                                                     }}
-                                                    aria-label={!sidebarOpen ? child.title : undefined}
+                                                    aria-label={!sidebarOpen ? formatSidebarLessonTitle(t('lesson.title.' + child.id) === 'lesson.title.' + child.id ? child.title : t('lesson.title.' + child.id)) : undefined}
                                                 >
                                                     <div className="sub-lesson-connector" />
                                                     {!sidebarOpen ? (
@@ -321,7 +353,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                                                                 {searchTerms.length > 0 &&
                                                                  !searchTerms.every(t => child.title.toLowerCase().includes(t)) &&
                                                                  searchTerms.some(t => child.content?.some(c => c.toLowerCase().includes(t)) || child.quiz?.title.toLowerCase().includes(t) || child.quiz?.description.toLowerCase().includes(t) || child.quiz?.questions.some(q => q.text.toLowerCase().includes(t) || q.explanation.toLowerCase().includes(t) || q.options.some(o => o.toLowerCase().includes(t)))) && (
-                                                                    <span className="search-match-badge sub">Found in Content</span>
+                                                                    <span className="search-match-badge sub">{isJapanese ? '本文で一致' : 'Found in Content'}</span>
                                                                  )}
                                                             </div>
                                                         </div>
@@ -338,9 +370,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                         })
                     ) : (
                         <div className="sidebar-search-empty">
-                            <p>No lessons found match "{searchTerm}"</p>
+                            <p>{isJapanese ? `「${searchTerm}」に一致するレッスンは見つかりませんでした` : `No lessons found match "${searchTerm}"`}</p>
                             <button className="clear-search-btn" onClick={() => setSearchTerm('')}>
-                                Clear search
+                                {isJapanese ? '検索をクリア' : 'Clear search'}
                             </button>
                         </div>
                     )}
@@ -366,43 +398,43 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
 
                         <button type="button" className="learner-account-menu-item plan-item" onClick={() => navigate('/plans')}>
                             <Sparkles size={17} />
-                            <span><strong>Upgrade Plan</strong></span>
+                            <span><strong>{isJapanese ? 'プランのアップグレード' : 'Upgrade Plan'}</strong></span>
                         </button>
                         <button type="button" className="learner-account-menu-item" onClick={() => { setIsAccountMenuOpen(false); window.dispatchEvent(new CustomEvent('kmti-open-profile-settings')); }}>
-                            <UserIcon size={17} /><span><strong>Profile</strong></span>
+                            <UserIcon size={17} /><span><strong>{isJapanese ? 'プロフィール' : 'Profile'}</strong></span>
                         </button>
                         <button type="button" className="learner-account-menu-item" onClick={() => { setIsSettingsOpen(open => !open); setIsHelpOpen(false); }}>
-                            <Settings size={17} /><span><strong>Settings</strong></span><ChevronRight size={15} className={isSettingsOpen ? 'rotated' : ''} />
+                            <Settings size={17} /><span><strong>{isJapanese ? '設定' : 'Settings'}</strong></span><ChevronRight size={15} className={isSettingsOpen ? 'rotated' : ''} />
                         </button>
 
                         {isSettingsOpen && <div className="learner-account-settings">
-                            <div className="learner-settings-label">Appearance</div>
+                            <div className="learner-settings-label">{isJapanese ? '外観' : 'Appearance'}</div>
                             <div className="learner-theme-options">
-                                <button type="button" className={activeTheme==='light'?'active':''} aria-pressed={activeTheme==='light'} onClick={() => {setActiveTheme('light');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'light' }));}}><Sun size={15} /> Light</button>
-                                <button type="button" className={activeTheme==='dark'?'active':''} aria-pressed={activeTheme==='dark'} onClick={() => {setActiveTheme('dark');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'dark' }));}}><Moon size={15} /> Dark</button>
+                                <button type="button" className={activeTheme==='light'?'active':''} aria-pressed={activeTheme==='light'} onClick={() => {setActiveTheme('light');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'light' }));}}><Sun size={15} /> {isJapanese ? 'ライト' : 'Light'}</button>
+                                <button type="button" className={activeTheme==='dark'?'active':''} aria-pressed={activeTheme==='dark'} onClick={() => {setActiveTheme('dark');window.dispatchEvent(new CustomEvent('kmti-set-theme', { detail: 'dark' }));}}><Moon size={15} /> {isJapanese ? 'ダーク' : 'Dark'}</button>
                             </div>
-                            <div className="learner-settings-label">Language</div>
+                            <div className="learner-settings-label">{isJapanese ? '言語' : 'Language'}</div>
                             <div className="learner-theme-options">
                                 <button type="button" className={language==='en'?'active':''} aria-pressed={language==='en'} onClick={() => setLanguage('en')}><Languages size={15} /> EN</button>
                                 <button type="button" className={language==='ja'?'active':''} aria-pressed={language==='ja'} onClick={() => setLanguage('ja')}><Languages size={15} /> JP</button>
                             </div>
-                            <button type="button" className="learner-billing-summary" onClick={() => navigate('/billing')}><CreditCard size={15} /><span><strong>Billing</strong></span><ChevronRight size={14}/></button>
+                            <button type="button" className="learner-billing-summary" onClick={() => navigate('/billing')}><CreditCard size={15} /><span><strong>{isJapanese ? '請求・プラン' : 'Billing'}</strong></span><ChevronRight size={14}/></button>
                         </div>}
 
                         <div className="learner-account-menu-divider" />
 
                         <button type="button" className="learner-account-menu-item" onClick={() => { setIsHelpOpen(open => !open); setIsSettingsOpen(false); }}>
-                            <HelpCircle size={17} /><span><strong>Help</strong></span><ChevronRight size={15} className={isHelpOpen ? 'rotated' : ''} />
+                            <HelpCircle size={17} /><span><strong>{isJapanese ? 'ヘルプ' : 'Help'}</strong></span><ChevronRight size={15} className={isHelpOpen ? 'rotated' : ''} />
                         </button>
                         {isHelpOpen && <div className="learner-help-flyout">
-                            <button type="button" onClick={() => navigate('/help')}><HelpCircle size={17} /><span>Help center</span></button>
+                            <button type="button" onClick={() => navigate('/help')}><HelpCircle size={17} /><span>{isJapanese ? 'ヘルプセンター' : 'Help center'}</span></button>
                             <div className="learner-account-menu-divider" />
-                            <button type="button" onClick={() => navigate('/terms')}><FileText size={17} /><span>Terms of Service</span></button>
-                            <button type="button" onClick={() => navigate('/privacy')}><FileText size={17} /><span>Privacy Policy</span></button>
-                            <button type="button" className="report-bug" onClick={() => window.dispatchEvent(new CustomEvent('kmti-open-bug-report'))}><Bug size={17} /><span>Report a bug</span></button>
+                            <button type="button" onClick={() => navigate('/terms')}><FileText size={17} /><span>{isJapanese ? '利用規約' : 'Terms of Service'}</span></button>
+                            <button type="button" onClick={() => navigate('/privacy')}><FileText size={17} /><span>{isJapanese ? 'プライバシーポリシー' : 'Privacy Policy'}</span></button>
+                            <button type="button" className="report-bug" onClick={() => window.dispatchEvent(new CustomEvent('kmti-open-bug-report'))}><Bug size={17} /><span>{isJapanese ? 'バグを報告' : 'Report a bug'}</span></button>
                         </div>}
                         <button type="button" className="learner-account-menu-item learner-logout-menu-item" onClick={handleLogout}>
-                            <LogOut size={17} /><span><strong>Log out</strong></span>
+                            <LogOut size={17} /><span><strong>{isJapanese ? 'ログアウト' : 'Log out'}</strong></span>
                         </button>
                     </div>
                 )}
@@ -421,7 +453,7 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                     </span>
                     <span className="learner-account-copy">
                         <strong>{user?.full_name || user?.username}</strong>
-                        <small>{user?.role}</small>
+                        <small>{getRoleLabel(user?.role)}</small>
                     </span>
                 </button>
             </div>
