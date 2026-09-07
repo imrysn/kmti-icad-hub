@@ -136,7 +136,18 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
                   const lines = step.text.split('\n');
                   const hasBullets = lines.some(l => /^\s*([*•-])\s+/.test(l));
                   if (!hasBullets) {
-                    return <p>{renderFormattedText(step.text)}</p>;
+                    return (
+                      <div className={`step-text-content ${step.image ? 'has-step-image' : ''}`}>
+                        <div className="step-text-left">
+                          <p>{renderFormattedText(step.text)}</p>
+                        </div>
+                        {step.image && (
+                          <div className="step-image-container">
+                            <img src={step.image} alt={step.imageAlt || step.title} className="step-inline-image" />
+                          </div>
+                        )}
+                      </div>
+                    );
                   }
                   const leadLines: string[] = [];
                   const bulletLines: string[] = [];
@@ -148,11 +159,18 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
                     }
                   });
                   return (
-                    <div className="step-text-content">
-                      {leadLines.map((l, i) => <p key={i}>{renderFormattedText(l)}</p>)}
-                      <ul className="step-bullet-list">
-                        {bulletLines.map((b, i) => <li key={i}>{renderFormattedText(b)}</li>)}
-                      </ul>
+                    <div className={`step-text-content ${step.image ? 'has-step-image' : ''}`}>
+                      <div className="step-text-left">
+                        {leadLines.map((l, i) => <p key={i}>{renderFormattedText(l)}</p>)}
+                        <ul className="step-bullet-list">
+                          {bulletLines.map((b, i) => <li key={i}>{renderFormattedText(b)}</li>)}
+                        </ul>
+                      </div>
+                      {step.image && (
+                        <div className="step-image-container">
+                          <img src={step.image} alt={step.imageAlt || step.title} className="step-inline-image" />
+                        </div>
+                      )}
                     </div>
                   );
                 })()}

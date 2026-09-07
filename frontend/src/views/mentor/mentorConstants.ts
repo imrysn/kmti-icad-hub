@@ -4,8 +4,12 @@ import {
   USER_VIEW_VIDEO_STEPS,
 } from '../../components/iCAD_Foundations/VideoTutorial_EN/StandardViewsVideo';
 import {
-  ORIGIN_AXES_VIDEO_STEPS,
+  ORIGIN_LAYOUT_VIDEO_STEPS,
 } from '../../components/iCAD_Foundations/VideoTutorial_EN/OriginAndCoordinatesVideo';
+import {
+  SELECTING_GEOMETRY_VIDEO_STEPS,
+} from '../../components/iCAD_Foundations/VideoTutorial_EN/SelectingGeometryVideo';
+
 
 
 export type QuizQuestion = {
@@ -74,22 +78,25 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
         title: 'Lesson 1.1 — What is iCAD?',
         content: [
           'Learning Objective: By the end of this lesson, you should understand what iCAD is and how it is used in engineering design.',
-          'What is iCAD?',
-          'iCAD is a mechanical CAD system used to create and manage engineering designs.',
-          'Engineers can use iCAD to: Create 2D geometry, Create 3D mechanical parts, Build assemblies, Produce engineering drawings, Add dimensions and annotations, Modify existing designs, Review machine and component designs.',
-          'Typical Workflow: A basic engineering workflow may look like: Create/Open Drawing → Create Geometry → Build 3D Model → Create Assembly → Prepare 2D Drawing → Review → Save.',
-          'You will learn these processes gradually throughout the iCAD training courses.'
+          'iCAD SX Tutorial: What is iCAD SX?',
+          'Different design objects require different software for optimal design. Many 3D design software programs excel at handling complex shapes and surfaces, but struggle with large assemblies.',
+          'iCAD SX is a 3D design software developed for machine and equipment design, focusing on processes with thousands or tens of thousands of components.',
+          'iCAD SX is a 3D CAD tool that processes data 200 times faster than other 3D software. This 3D design software can process 1 million parts in just 0.2 seconds.',
+          'Pre-Manufacturing Digital Verification: Thanks to the digitization of design information, we can now easily verify safety, examine the assembly of entire components, confirm user operation of the machine, and estimate the cost and machining method of a component using iCAD SX, before the machine is actually manufactured.',
+          'Unified Mechanical, Electrical & Control Integration: iCAD SX integrates mechanical, electrical, and control design into a single software. This creates a unified design environment, centralizes design information, links data, allows simultaneous review and use of the latest information from each other, and improves design performance and efficiency.',
+          'Standard Engineering Workflow: A basic engineering workflow follows: Create/Open Drawing → 2D Geometry Sketch → Build 3D Model → Create Assembly → Prepare 2D Drawing → Review → Save.',
+          'Guide Notice (V7): This guide is translated from the tutorial for iCAD SX version V7. Due to the urgency of learning the software, coupled with language limitations and limited user experience, some inaccuracies may occur during the compilation process. Please send any feedback to your training lead or CAD administrator.'
         ]
       }
     ]
   },
   {
     id: 'module-2',
-    title: 'Module 2 - Understanding iCAD SX Interface',
+    title: 'Module 2 -  iCAD SX Interface',
     children: [
       {
         id: 'lesson-2-1',
-        title: 'Lesson 2.1 — Understanding iCAD SX Interface',
+        title: 'Lesson 2.1 —  iCAD SX Interface',
         content: [
           'Learning Objective: Identify the important areas of the iCAD interface.',
           'Step 1: Open iCAD: Launch iCAD on your computer. Wait until the main workspace is fully displayed.',
@@ -106,7 +113,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-3',
-    title: 'Mouse Controls and Model Navigation',
+    title: 'Mouse Controls & Navigation',
     children: [
       {
         id: 'lesson-3-1',
@@ -191,29 +198,17 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-5',
-    title: 'Module 5 - Understanding the Origin and Coordinates',
+    title: 'Module 5 - Understanding the Origin ',
     children: [
       {
         id: 'origin-projections',
-        title: 'Lesson 5.1 — The Origin & Axes',
-        videoId: 'module5',
-        videoSteps: ORIGIN_AXES_VIDEO_STEPS,
+        title: 'Understanding the Origin',
         content: [
-          'The Origin: Every CAD model requires a reference location. The main reference point is called the Origin. The origin is: X = 0, Y = 0, Z = 0. Therefore: Origin = (0, 0, 0).',
-          'X, Y, and Z: A 3D model uses three main directions. X-Axis: Generally represents one horizontal direction. Y-Axis: Represents the second direction on the working plane. Z-Axis: Provides the third dimension.',
-          'Together: X + Y + Z = Position in 3D Space',
-          'Try It Yourself.',
-          'Step 1: Open the training workspace.',
-          'Step 2: Locate the coordinate/origin indicator.',
-          'Step 3: Identify: X, Y, Z.',
-          'Step 4: Rotate the view.',
-          'Step 5: Observe how the coordinate reference helps you understand the model orientation.'
+          'Understanding the Origin',
+          'A point where the coordinates of the X,Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.',
+          'To set the origin in the workspace, place your first object (such as a Box or Cylinder) and enter 0, 0, 0 in the Key Entry Area to anchor it at the origin.',
+          'Important Note: The origin must be in the same position in both 3D and 2D.'
         ]
-      },
-      {
-        id: 'origin-layout',
-        title: 'Lesson 5.2 — Change 3D Part Layout',
-        content: []
       }
     ]
   },
@@ -221,11 +216,36 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     id: 'module-basic-shapes',
     title: 'Creating Basic Shapes',
     children: [
-      { id: 'basic-op-cylinder', title: 'Cylinder', content: [] },
       { id: 'basic-op-box', title: 'Box', content: [] },
-      { id: 'basic-op-polygon', title: ' Polygon', content: [] },
+      { id: 'basic-op-cylinder', title: 'Cylinder', content: [] },
       { id: 'basic-op-cone', title: 'Cone', content: [] },
+      { id: 'basic-op-polygon', title: 'Polygon', content: [] },
       { id: 'basic-op-torus', title: 'Torus', content: [] }
+    ]
+  },
+  {
+    id: 'module-part-layout',
+    title: 'Change 3D Part Layout',
+    children: [
+      {
+        id: 'origin-layout',
+        title: 'Change 3D Part Layout',
+        videoId: '3dplacement',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Change 3D Part Layout Demonstration',
+        videoIntroDescription: 'Watch the step-by-step demonstration of defining a new origin and orienting the X and Y axes.',
+        videoSteps: ORIGIN_LAYOUT_VIDEO_STEPS,
+        content: [
+          'Learning Objective: Relocate the origin and define the orientation of the X and Y axes using the Change 3D Part Layout tool.',
+          'Change 3D Part Layout',
+          'Use this tool to set the location of origin.',
+          'Step 1: Select the Change 3D Part Layout from the icon menu.',
+          'Step 2: Right-click to show the current location of the origin.',
+          'Step 3: Left-click on the point of the desired new location of origin.',
+          'Step 4: Left-click on a 2nd point to set the X-axis.',
+          'Step 5: Left-click on a 3rd point to set the Y-axis. The XY-plane will be the front view.'
+        ]
+      }
     ]
   },
   {
@@ -234,26 +254,21 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
     children: [
       {
         id: 'lesson-6-1',
-        title: 'Lesson 6.1 — Basic Selection',
+        title: 'Lesson 6.1 — Selecting Geometry',
+        videoId: 'basicOp_move',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Selecting Geometry (Move Component)',
+        videoIntroDescription: 'Learn how to initiate an operation, inspect pre-selection highlights, select 3D geometry, confirm with GO, and execute modifications using the Move Component tool.',
+        videoSteps: SELECTING_GEOMETRY_VIDEO_STEPS,
         content: [
-          'Learning Objective: Correctly select geometry before performing an operation.',
-          'How to Select an Object.',
-          'Step 1: Move your mouse pointer over the desired object.',
-          'Step 2: Confirm that the pointer is over the correct geometry.',
-          'Step 3: Left-click the object.',
-          'Step 4: Observe the selection/highlight.',
-          'Before Continuing: Ask yourself: "Is this the object I actually want to modify?" Only continue when the correct geometry is selected.',
-          'Selecting Faces: A Face is a surface of a 3D object. Practice.',
-          'Step 1: Open the provided 3D block.',
-          'Step 2: Move your mouse over the top surface.',
-          'Step 3: Select the top face.',
-          'Step 4: Observe the selection.',
-          'Step 5: Select a side face.',
-          'Step 6: Select another face.',
-          'Selecting Edges: An Edge is the boundary where surfaces meet. Practice.',
-          'Step 1: Move your pointer over one edge of the training block.',
-          'Step 2: Select the edge.',
-          'Step 3: Observe how the selection differs from selecting an entire face.'
+          'Learning Objective: Identify guidance prompts, verify yellow pre-selection highlights, select 3D geometry, and confirm selections in iCAD SX.',
+          'Before you can move, copy, or edit a part in iCAD SX, you must select it. The Move command demonstrates this essential selection workflow.',
+          'Step 1: Select Move from the right icon menu under Move / Copy / Delete.',
+          'Step 2: Check the guidance prompt at the bottom: "Target Element: GO".',
+          'Step 3: Move your cursor over the 3D part and check the yellow highlight outline.',
+          'Step 4: Left-click the highlighted part to select it.',
+          'Step 5: Click GO (or press Enter) to finish selecting.',
+          'Step 6: Enter the movement distance (X, Y, Z) and press Enter to complete the move.'
         ]
       }
     ]

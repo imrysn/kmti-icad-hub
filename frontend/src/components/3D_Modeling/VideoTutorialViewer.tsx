@@ -31,6 +31,7 @@ export interface TutorialStep { quizData?: { question: string; options: { text: 
   text: string;
   customText?: string;
   customTitle?: string;
+  narrationText?: string;
   zoom: string;
   origin: string;
   spotlight: {
@@ -105,6 +106,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   const tutorialVideoRef = useRef<HTMLVideoElement | null>(null);
   const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const stepStartTimeRef = useRef<number>(Date.now());
   const isKnowledgeCheckActive = Boolean(activeQuizId || steps[currentStep]?.quizData);
 
   useEffect(() => {
@@ -269,8 +271,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
   useEffect(() => {
     if (!isPlaying || isPaused) return;
 
+    const effectiveTime = currentData?.videoStart !== undefined
+      ? Math.max(videoTime, currentData.videoStart)
+      : videoTime;
+
     const cue = steps[currentStep]?.overlays?.find(overlay =>
-      overlay.narrate && overlay.label && videoTime >= overlay.startTime && videoTime <= overlay.endTime
+      overlay.narrate && overlay.label && (currentData?.holdVideo || (effectiveTime >= overlay.startTime && effectiveTime <= overlay.endTime))
     );
     if (!cue?.label || narratedOverlayIdsRef.current.has(cue.id)) return;
 
@@ -312,9 +318,13 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     if (tutorialVideoRef.current && currentData) {
       const video = tutorialVideoRef.current;
       const start = currentData.videoStart || 0;
+      const maxSeek = Number.isFinite(video.duration) && video.duration > 0
+        ? Math.max(0, video.duration - 0.05)
+        : start;
+      const targetTime = Math.min(start, maxSeek);
       // Seek to step's videoStart if out of range, then play
-      if (video.currentTime < start || video.currentTime > (currentData.videoEnd || 9999)) {
-        video.currentTime = start;
+      if (video.currentTime < targetTime || video.currentTime > (currentData.videoEnd || 9999)) {
+        video.currentTime = targetTime;
       }
       const canPlayVideo = !currentData.waitForNarrationBeforeVideo || narrationCompletedStep === currentStep;
       if (isPlaying && !isPaused && !currentData.holdVideo && canPlayVideo) {
@@ -366,13 +376,14 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     }
     setCurrentCharIndex(0);
     setIsPaused(false);
+    stepStartTimeRef.current = Date.now();
 
     if (steps[currentStep].narrationEnabled === false) {
       return;
     }
 
 
-    const stepText = (steps[currentStep].customText || steps[currentStep].text || '').trim();
+    const stepText = (steps[currentStep].narrationText || steps[currentStep].customText || steps[currentStep].text || '').trim();
     const text = buildTutorialStepNarration(
       stepText,
       steps[currentStep].quizData,
@@ -392,6 +403,9 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     const isBackendVoice = savedVoice.startsWith('kokoro://') || savedVoice.startsWith('openai://');
     const savedRate = getFoundationsNarrationRate();
 
+    const subtitleText = (steps[currentStep].customText || steps[currentStep].text || '').trim();
+    const highlightTarget = subtitleText || text;
+
     if (isBackendVoice) {
       const textAudio = createFoundationsNarrationAudio(spokenText, {
         rate: savedRate,
@@ -401,7 +415,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       if (!textAudio) return;
       audioRef.current = textAudio;
 
-      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const words = highlightTarget.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (text.length * 60) / savedRate;
 
       let wordIdx = 0;
@@ -415,13 +429,13 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           ? textAudio.duration
           : (estimatedDuration / 1000);
         const totalMs = durationSec * 1000;
-        const msPerChar = totalMs / (text.length || 1);
+        const msPerChar = totalMs / (highlightTarget.length || 1);
 
         const highlightNextWord = () => {
           if (!isPlaying) return;
           if (wordIdx < words.length) {
             const currentWord = words[wordIdx];
-            const wordStart = text.indexOf(currentWord, searchFrom);
+            const wordStart = highlightTarget.indexOf(currentWord, searchFrom);
             if (wordStart !== -1) {
               setCurrentCharIndex(wordStart);
               searchFrom = wordStart + currentWord.length;
@@ -463,10 +477,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           setIsPlaying(false);
           setIsPaused(true);
         } else if (currentStep < steps.length - 1) {
+          const elapsed = Date.now() - stepStartTimeRef.current;
+          const plannedDurationMs = (steps[currentStep].videoEnd && steps[currentStep].videoStart && steps[currentStep].videoEnd > steps[currentStep].videoStart)
+            ? (steps[currentStep].videoEnd - steps[currentStep].videoStart) * 1000
+            : 0;
+          const remainingDelay = Math.max(400, plannedDurationMs - elapsed);
           // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
-          }, 400);
+          }, remainingDelay);
         } else {
           // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
@@ -499,7 +518,7 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
       });
       if (!textUtterance) return;
 
-      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const words = highlightTarget.split(/\s+/).filter(w => w.length > 0);
       const estimatedDuration = (text.length * 60) / textUtterance.rate;
       let boundaryFired = false;
 
@@ -527,12 +546,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
           if (!boundaryFired && synthRef.current) {
             let wordIdx = 0;
             let searchFrom = 0;
-            const msPerChar = estimatedDuration / (text.length || 1);
+            const msPerChar = estimatedDuration / (highlightTarget.length || 1);
 
             const highlightNextWord = () => {
               if (wordIdx < words.length) {
                 const currentWord = words[wordIdx];
-                const wordStart = text.indexOf(currentWord, searchFrom);
+                const wordStart = highlightTarget.indexOf(currentWord, searchFrom);
                 if (wordStart !== -1) {
                   setCurrentCharIndex(wordStart);
                   searchFrom = wordStart + currentWord.length;
@@ -554,7 +573,12 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
             clearTimeout(activeIntervalRef.current);
             activeIntervalRef.current = null;
           }
-          setCurrentCharIndex(getOriginalIndex(e.charIndex));
+          if (steps[currentStep].narrationText) {
+            const ratio = e.charIndex / (spokenText.length || 1);
+            setCurrentCharIndex(Math.min(highlightTarget.length, Math.floor(ratio * highlightTarget.length)));
+          } else {
+            setCurrentCharIndex(getOriginalIndex(e.charIndex));
+          }
         }
       };
 
@@ -576,10 +600,15 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
         }
 
         if (currentStep < steps.length - 1) {
+          const elapsed = Date.now() - stepStartTimeRef.current;
+          const plannedDurationMs = (steps[currentStep].videoEnd && steps[currentStep].videoStart && steps[currentStep].videoEnd > steps[currentStep].videoStart)
+            ? (steps[currentStep].videoEnd - steps[currentStep].videoStart) * 1000
+            : 0;
+          const remainingDelay = Math.max(400, plannedDurationMs - elapsed);
           // Advance to next step; video resumes from its videoStart via the step-change useEffect
           setTimeout(() => {
             setCurrentStep(prev => prev + 1);
-          }, 400);
+          }, remainingDelay);
         } else {
           // Last step: if there is no video, stop playback automatically
           if (!steps[currentStep].videoSrc) {
@@ -908,18 +937,19 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                 }
               }}
               onEnded={(e) => {
+                const video = e.currentTarget;
+                video.pause();
                 if (currentData.advanceOnSourceVideoEnd && currentStep < steps.length - 1) {
-                  const video = e.currentTarget;
-                  video.pause();
                   setCurrentStep(prev => prev + 1);
+                  return;
+                }
+                if (currentData.holdVideo || currentStep < steps.length - 1) {
                   return;
                 }
                 setIsPlaying(false);
                 setCurrentStep(0);
                 setCurrentCharIndex(0);
-                const video = e.currentTarget;
                 video.currentTime = 0;
-                video.pause();
               }}
             />
           ) : (
@@ -946,7 +976,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
               overflow: 'hidden'
             }}>
               {currentData.overlays.map(overlay => {
-                if (videoTime < overlay.startTime || videoTime > overlay.endTime) return null;
+                const effectiveTime = currentData.videoStart !== undefined
+                  ? Math.max(videoTime, currentData.videoStart)
+                  : videoTime;
+                const isVisible = currentData.holdVideo || (effectiveTime >= overlay.startTime && effectiveTime <= overlay.endTime);
+                if (!isVisible) return null;
 
                 if (overlay.type === 'highlight' && overlay.target) {
                   const left = videoRect.left + overlay.target.x * videoRect.width;
@@ -1098,6 +1132,92 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                         );
                       })()}
                     </svg>
+                  );
+                }
+
+                if (overlay.type === 'arrow' && overlay.line) {
+                  const x1 = videoRect.left + overlay.line.start.x * videoRect.width;
+                  const y1 = videoRect.top + overlay.line.start.y * videoRect.height;
+                  const x2 = videoRect.left + overlay.line.end.x * videoRect.width;
+                  const y2 = videoRect.top + overlay.line.end.y * videoRect.height;
+                  const cx = overlay.line.controlPoint
+                    ? videoRect.left + overlay.line.controlPoint.x * videoRect.width
+                    : undefined;
+                  const cy = overlay.line.controlPoint
+                    ? videoRect.top + overlay.line.controlPoint.y * videoRect.height
+                    : undefined;
+
+                  const pathD = cx !== undefined && cy !== undefined
+                    ? `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`
+                    : `M ${x1} ${y1} L ${x2} ${y2}`;
+
+                  const labelPos = overlay.labelPosition || 'bottom';
+                  let labelStyle: React.CSSProperties = {
+                    position: 'absolute',
+                    left: `${x1 + (overlay.labelOffset?.x || 0)}px`,
+                    top: `${y1 + (overlay.labelOffset?.y || 0)}px`,
+                    background: 'rgba(0, 0, 0, 0.75)',
+                    color: 'white',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                    zIndex: 11,
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)'
+                  };
+
+                  if (labelPos === 'top') {
+                    labelStyle.transform = 'translate(-50%, -100%)';
+                    labelStyle.marginTop = '-6px';
+                  } else if (labelPos === 'bottom') {
+                    labelStyle.transform = 'translate(-50%, 0)';
+                    labelStyle.marginTop = '6px';
+                  } else if (labelPos === 'left') {
+                    labelStyle.transform = 'translate(-100%, -50%)';
+                    labelStyle.marginLeft = '-6px';
+                  } else if (labelPos === 'right') {
+                    labelStyle.transform = 'translate(0, -50%)';
+                    labelStyle.marginLeft = '6px';
+                  }
+
+                  return (
+                    <React.Fragment key={overlay.id}>
+                      <svg style={{
+                        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10
+                      }}>
+                        <defs>
+                          <marker
+                            id={`arrowhead-${overlay.id}`}
+                            markerWidth="10"
+                            markerHeight="10"
+                            refX="7"
+                            refY="3.5"
+                            orient="auto"
+                          >
+                            <polygon points="0 0, 9 3.5, 0 7" fill="rgba(255, 0, 0, 0.9)" />
+                          </marker>
+                        </defs>
+                        <path
+                          d={pathD}
+                          fill="none"
+                          stroke="rgba(255, 0, 0, 0.9)"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          markerEnd={`url(#arrowhead-${overlay.id})`}
+                          className={overlay.animation === 'pulse' ? 'overlay-pulse' : undefined}
+                          style={{
+                            filter: 'drop-shadow(0 0 4px rgba(255, 0, 0, 0.6))'
+                          }}
+                        />
+                      </svg>
+                      {overlay.label && (
+                        <div style={labelStyle}>
+                          {overlay.label}
+                        </div>
+                      )}
+                    </React.Fragment>
                   );
                 }
 

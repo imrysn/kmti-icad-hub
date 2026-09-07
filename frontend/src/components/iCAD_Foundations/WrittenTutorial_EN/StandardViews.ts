@@ -19,7 +19,7 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'view-step-1',
     title: '3D View Options',
-    text: '\n* Top - View the model from above. \n* Front - View the model from the front. \n* Right - View the model from the right side. \n* Left - View the model from the left side. \n* Back - View the model from behind. \n* Bottom - View the model from below.',
+    text: '\n* <b>Top</b> - View the model from above. \n* <b>Front</b> - View the model from the front. \n* <b>Right</b> - View the model from the right side. \n* <b>Left</b> - View the model from the left side. \n* <b>Back</b> - View the model from behind. \n* <b>Bottom</b> - View the model from below.',
     preserveText: true,
   },
   {
@@ -30,7 +30,7 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   },
 ];
 
-/* ── Lesson 4.2: User View ───────────────────────────────────────────────── */
+/* ── Lesson 4.2: User View ───────────────────────────────────────────────── */  
 
 export const USER_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'User View',
@@ -39,7 +39,7 @@ export const USER_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'ivl-objective',
   objective: 'By the end of this lesson, you will be able to use User View to inspect a 3D model from different isometric angles.',
   quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>User View Toolbar</b> → <b>Select User View (1 / 2 / 3 / 4)</b> → <b>Inspect Model</b>',
+  quickReviewText: '<b>User View Toolbar</b> → <b>Select User View</b> <b>(1 / 2 / 3 / 4)</b> → <b>Inspect Model</b>',
   completionText: 'Great job! You have completed the User View lesson.',
   inlineHeader: true,
   renderAsObjective: true,
@@ -49,7 +49,7 @@ export const USER_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'user-view-step-1',
     title: 'User View Options',
-    text: 'iCAD SX provides User View 1, 2, 3, and 4, which show the model from different isometric directions.',
+    text: 'iCAD SX provides <b>User View 1, 2, 3, and 4</b>, which show the model from different isometric directions.',
     preserveText: true,
   },
   {

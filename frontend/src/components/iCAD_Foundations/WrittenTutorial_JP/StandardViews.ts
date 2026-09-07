@@ -19,7 +19,7 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'view-step-1',
     title: '3D視図の選択肢',
-    text: '\n* 上面 - モデルを真上から見ます。\n* 正面 - モデルを正面から見ます。\n* 右側面 - モデルを右真横から見ます。\n* 左側面 - モデルを左真横から見ます。\n* 背面 - モデルを真後ろから見ます。\n* 下面 - モデルを真下から見ます。',
+    text: '\n* <b>上面</b> - モデルを真上から見ます。\n* <b>正面</b> - モデルを正面から見ます。\n* <b>右側面</b> - モデルを右真横から見ます。\n* <b>左側面</b> - モデルを左真横から見ます。\n* <b>背面</b> - モデルを真後ろから見ます。\n* <b>下面</b> - モデルを真下から見ます。',
     preserveText: true,
   },
   {
@@ -49,7 +49,7 @@ export const USER_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'user-view-step-1',
     title: 'ユーザ視図の種類',
-    text: 'iCAD SX には「ユーザ視図 1」「ユーザ視図 2」「ユーザ視図 3」「ユーザ視図 4」が用意されており、それぞれ異なる斜め等角方向からモデルを表示します。',
+    text: 'iCAD SX には<b>「ユーザ視図 1」「ユーザ視図 2」「ユーザ視図 3」「ユーザ視図 4」</b>が用意されており、それぞれ異なる斜め等角方向からモデルを表示します。',
     preserveText: true,
   },
   {

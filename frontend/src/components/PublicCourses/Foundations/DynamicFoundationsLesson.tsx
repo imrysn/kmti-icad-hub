@@ -14,6 +14,9 @@ import scrollVideo from '../../../assets/3D_INTERACTIVE/scroll.mp4';
 import lesson41Video from '../../../assets/3D_INTERACTIVE/lesson4.1.mp4';
 import lesson42Video from '../../../assets/3D_INTERACTIVE/lesson4.2.mp4';
 import module5Video from '../../../assets/3D_INTERACTIVE/module5.mp4';
+import placement3dVideo from '../../../assets/3D_Video_Tutorial/3dplacement.mp4';
+import basicOpMoveVideo from '../../../assets/3D_Video_Tutorial/basicOp_move.mp4';
+import originOverview from '../../../assets/3d-images/origin.png';
 import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
 import LessonRecapPanel from '../../LessonRecapPanel';
 import { getFoundationsRecap } from './foundationsRecaps';
@@ -85,7 +88,11 @@ import {
 } from '../../iCAD_Foundations/VideoTutorial_JP/StandardViewsVideo';
 import {
   ORIGIN_AXES_VIDEO_STEPS as ORIGIN_AXES_VIDEO_STEPS_JP,
+  ORIGIN_LAYOUT_VIDEO_STEPS as ORIGIN_LAYOUT_VIDEO_STEPS_JP,
 } from '../../iCAD_Foundations/VideoTutorial_JP/OriginAndCoordinatesVideo';
+import {
+  SELECTING_GEOMETRY_VIDEO_STEPS as SELECTING_GEOMETRY_VIDEO_STEPS_JP,
+} from '../../iCAD_Foundations/VideoTutorial_JP/SelectingGeometryVideo';
 
 const WRITTEN_TUTORIAL_REGISTRY_EN: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
   'lesson-1-1': { copy: GETTING_STARTED_COPY_EN, steps: GETTING_STARTED_STEPS_EN },
@@ -132,6 +139,8 @@ const videoMap: Record<string, string> = {
   'lesson4.1': lesson41Video,
   'lesson4.2': lesson42Video,
   'module5': module5Video,
+  '3dplacement': placement3dVideo,
+  'basicOp_move': basicOpMoveVideo,
 };
 
 interface DynamicLessonProps {
@@ -192,6 +201,8 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
       if (lessonId === 'lesson-4-1') return STANDARD_3D_VIEW_VIDEO_STEPS_JP;
       if (lessonId === 'lesson-4-2') return USER_VIEW_VIDEO_STEPS_JP;
       if (lessonId === 'lesson-5-1' || lessonId === 'origin-projections') return ORIGIN_AXES_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-5-2' || lessonId === 'origin-layout') return ORIGIN_LAYOUT_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-1') return SELECTING_GEOMETRY_VIDEO_STEPS_JP;
     }
     return videoSteps;
   }, [isJapanese, lessonId, videoSteps]);
@@ -296,7 +307,17 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
               steps={writtenModule.steps}
               writtenTutorialCopy={writtenModule.copy}
             >
-              {videoId && videoMap[videoId] && (
+              {(lessonId === 'origin-projections' || lessonId === 'lesson-5-1') && (
+                <div className="foundations-origin-image-container" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                  <img
+                    src={originOverview}
+                    alt="Origin and View Orientation"
+                    className="software-screenshot screenshot-wide"
+                    style={{ width: '100%', maxWidth: '850px', height: 'auto', border: 'none', boxShadow: 'none', background: 'transparent' }}
+                  />
+                </div>
+              )}
+              {lessonId !== 'origin-projections' && lessonId !== 'lesson-5-1' && videoId && videoMap[videoId] && (
                 <VideoTutorialViewer 
                   steps={tutorialSteps}
                   muteSourceVideoAudio={muteSourceVideoAudio}

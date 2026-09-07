@@ -241,6 +241,55 @@
   gap: 0.5rem;
 }
 
+.written-tutorial-panel__step .step-text-content.has-step-image {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 850px;
+}
+
+.written-tutorial-panel__step .step-text-content.has-step-image .step-text-left {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.written-tutorial-panel__step .step-image-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin-right: 3.5rem;
+}
+
+[data-theme='dark'] .written-tutorial-panel__step .step-image-container {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.written-tutorial-panel__step .step-inline-image {
+  max-width: 140px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .written-tutorial-panel__step .step-text-content.has-step-image {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
 .written-tutorial-panel__step .step-bullet-list {
   margin: 0.25rem 0 0 0;
   padding-left: calc(32px + 2.25rem);

@@ -1,6 +1,7 @@
 export const en_3d_origin = {
   "origin.title": "ORIGIN",
   "origin.subtitle": "A point where the coordinates of the X,Y and Z-axis are (0, 0, 0). It also sets the layout/orientation of views of an object/entity. Origin location is a case-by-case basis. It depends on the shape/structure of the part.",
+  "origin.keyEntryNote": "To set the origin in your workspace, place your first object (such as a Box or Cylinder) and enter 0, 0, 0 in the Key Entry Area to anchor it at the origin.",
   "origin.importantNotes": "※ The origin must be in the same position 3D and 2D",
   "origin.layout.title": "CHANGE 3D PART LAYOUT",
   "origin.layout.subtitle": "Use this tool to set the location of origin.",

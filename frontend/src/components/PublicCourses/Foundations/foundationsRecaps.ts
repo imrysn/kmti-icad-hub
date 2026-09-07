@@ -5,10 +5,11 @@ export interface FoundationsRecapContent {
 
 const FOUNDATIONS_RECAPS: Record<string, FoundationsRecapContent> = {
   'lesson-1-1': {
-    narration: 'Great work. Remember: iCAD SX supports precise engineering design through an organized workspace, guided commands, and dependable modeling tools.',
+    narration: 'Great work. Remember: iCAD SX is specialized for machine and equipment design, handling 1 million parts in 0.2 seconds and unifying mechanical, electrical, and control engineering.',
     items: [
-      { action: 'Purpose', result: 'Create and inspect engineering geometry' },
-      { action: 'Workflow', result: 'Follow the workspace and command guidance' },
+      { action: 'Performance', result: 'Processes data 200x faster (1M parts in 0.2s)' },
+      { action: 'Pre-Verification', result: 'Verify assembly, safety, and operation before manufacturing' },
+      { action: 'Unified CAD', result: 'Integrates mechanical, electrical, and control design' },
     ],
   },
   'origin-projections': {
@@ -18,18 +19,12 @@ const FOUNDATIONS_RECAPS: Record<string, FoundationsRecapContent> = {
       { action: 'Axes', result: 'Read X, Y, and Z orientation' },
     ],
   },
-  'origin-layout': {
-    narration: 'Great work. Remember: use the layout controls and coordinate references to reposition the 3D part accurately, then verify the resulting orientation.',
-    items: [
-      { action: 'Choose the control', result: 'Start the required layout operation' },
-      { action: 'Verify the result', result: 'Confirm position and orientation' },
-    ],
-  },
   'lesson-6-1': {
-    narration: 'Great work. Remember: verify the highlighted object, face, or edge before starting any operation so only the intended geometry is changed.',
+    narration: 'Great work. Remember: always verify the yellow highlight before selecting geometry, and confirm your selection with GO before entering movement values.',
     items: [
-      { action: 'Before an operation', result: 'Confirm the correct selection' },
-      { action: 'Selection types', result: 'Distinguish objects, faces, and edges' },
+      { action: 'Hover Geometry', result: 'Verify yellow selection boundary' },
+      { action: 'Left-Click & GO', result: 'Lock in target entity for the operation' },
+      { action: 'Item Entry', result: 'Specify X, Y, Z translation distance' },
     ],
   },
   'lesson-7-1': {

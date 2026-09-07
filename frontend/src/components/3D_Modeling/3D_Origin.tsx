@@ -52,6 +52,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
     projections: {
       title: t('origin.title'),
       subtitle: t('origin.subtitle'),
+      keyEntryNote: t('origin.keyEntryNote'),
       importantNotes: t('origin.importantNotes')
     },
     layout: {
@@ -97,6 +98,7 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
   const projectionsSteps = [
     LESSON_DATA.projections.title,
     LESSON_DATA.projections.subtitle,
+    LESSON_DATA.projections.keyEntryNote,
     LESSON_DATA.projections.importantNotes,
   ];
 
@@ -157,11 +159,22 @@ const OriginLesson: React.FC<OriginLessonProps> = ({
               </div>
 
               <div className={`instruction-step ${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
-                <div className="red-text" style={{ marginBottom: "2rem", marginTop: "-1rem" }}>
+                <div style={{ marginBottom: "1.5rem", marginTop: "0.25rem" }}>
+                  <KaraokeLessonText
+                    as="p"
+                    text={LESSON_DATA.projections.keyEntryNote}
+                    isActive={isSpeaking && currentIndex === 2}
+                    currentCharIndex={currentCharIndex}
+                  />
+                </div>
+              </div>
+
+              <div className={`instruction-step ${currentIndex === 3 ? 'reading-active' : ''}`} data-reading-index="3">
+                <div className="red-text" style={{ marginBottom: "2rem", marginTop: "-0.5rem" }}>
                   <KaraokeLessonText
                     as="p"
                     text={LESSON_DATA.projections.importantNotes}
-                    isActive={isSpeaking && currentIndex === 2}
+                    isActive={isSpeaking && currentIndex === 3}
                     currentCharIndex={currentCharIndex}
                   />
                 </div>

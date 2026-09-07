@@ -1,6 +1,7 @@
 export type TutorialOverlayType =
   | 'highlight'
   | 'callout'
+  | 'arrow'
   | 'dimensionAnnotation'
   | 'polygonOutline'
   | 'quiz'
@@ -34,6 +35,7 @@ export interface TutorialOverlay {
   line?: {
     start: NormalizedPoint;
     end: NormalizedPoint;
+    controlPoint?: NormalizedPoint;
   };
   /** Elliptical arc used for angular or perimeter-style dimensions. Angles are in degrees. */
   arc?: {
@@ -60,9 +62,15 @@ export interface LessonVideoStep {
   id: string | number;
   title: string;
   customText: string;
+  narrationText?: string;
   videoStart: number;
   videoEnd: number;
   holdVideo?: boolean;
+  /** When enabled, narrate the step completely before starting its video segment. */
+  waitForNarrationBeforeVideo?: boolean;
+  /** Advance to the following lesson step when the source MP4 itself ends. */
+  advanceOnSourceVideoEnd?: boolean;
+  narrateTitle?: boolean;
   narrationEnabled?: boolean;
   quizData?: TutorialOverlay['quizData'];
   recapData?: TutorialOverlay['recapData'];

@@ -15,6 +15,7 @@ const EMBEDDED_RECAP_LESSONS = new Set([
   'basic-op-polygon',
   'basic-op-cone',
   'basic-op-torus',
+  'origin-layout',
 ]);
 
 describe('iCAD Foundations recap coverage', () => {

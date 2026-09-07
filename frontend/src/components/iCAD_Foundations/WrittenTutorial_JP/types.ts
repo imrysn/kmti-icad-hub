@@ -4,6 +4,8 @@ export interface WrittenTutorialStep {
   text: string;
   preserveText?: boolean;
   hideStepNumber?: boolean;
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface WrittenTutorialCopy {

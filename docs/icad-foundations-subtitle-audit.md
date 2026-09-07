@@ -15,7 +15,7 @@ Reference: iCAD SX Interface. Audited September 3, 2026.
 | User View | DynamicFoundationsLesson → VideoTutorialViewer | Uses shared reference captions. |
 | Cylinder, Box, Polygon, Cone, Torus | 3D_BasicOperation → VideoTutorialViewer | All five use shared reference captions. |
 
-Mouse Controls and Model Navigation, Standard Views, and Creating Basic Shapes are lesson groups. Their child lessons are covered above; the group labels do not define separate caption styles.
+Mouse Controls & Navigation, Standard Views, and Creating Basic Shapes are lesson groups. Their child lessons are covered above; the group labels do not define separate caption styles.
 
 ## Shared caption standard
 

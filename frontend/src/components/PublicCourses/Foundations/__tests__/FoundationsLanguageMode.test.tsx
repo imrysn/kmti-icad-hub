@@ -60,9 +60,9 @@ describe('Foundations Language Mode', () => {
       title.replace(/^(?:module|lesson|モジュール|レッスン)\s*[\d\.]*\s*(?:—|-|–|:)\s*/i, '').trim();
 
     // English
-    expect(formatSidebarLessonTitle('Lesson 2.1 — Understanding iCAD SX Interface')).toBe('Understanding iCAD SX Interface');
+    expect(formatSidebarLessonTitle('Lesson 2.1 — iCAD SX Interface')).toBe('iCAD SX Interface');
     expect(formatSidebarLessonTitle('Module 1 - Getting Started with iCAD')).toBe('Getting Started with iCAD');
-    expect(stripBannerPrefix('Lesson 2.1 — Understanding iCAD SX Interface')).toBe('Understanding iCAD SX Interface');
+    expect(stripBannerPrefix('Lesson 2.1 — iCAD SX Interface')).toBe('iCAD SX Interface');
 
     // Japanese - no extra prefixes left
     expect(formatSidebarLessonTitle('レッスン 2.1 — iCAD SX インターフェースの理解')).toBe('iCAD SX インターフェースの理解');
@@ -116,7 +116,7 @@ describe('Foundations Language Mode', () => {
         eyebrow="Interactive view tour"
         title="Cylinder"
         description="Take a tour"
-        onStart={() => {}}
+        onStart={() => { }}
       />
     );
     expect(screen.getByText('Start lesson')).toBeInTheDocument();
@@ -129,7 +129,7 @@ describe('Foundations Language Mode', () => {
         eyebrow="視図ツアー"
         title="円柱"
         description="円柱コマンドのツアー"
-        onStart={() => {}}
+        onStart={() => { }}
       />
     );
     expect(screen.getByText('レッスンを開始')).toBeInTheDocument();

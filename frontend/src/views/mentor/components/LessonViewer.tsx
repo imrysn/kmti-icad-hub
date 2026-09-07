@@ -438,7 +438,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 if (exactMatch) return exactMatch();
 
                 // Check for dynamic foundation lesson
-                if (isFoundationsCourse && activeLessonId && activeLessonId.startsWith('lesson-')) {
+                if (isFoundationsCourse && activeLessonId && (
+                  activeLessonId.startsWith('lesson-') ||
+                  activeLessonId === 'origin-projections' ||
+                  activeLessonId === 'origin-layout'
+                )) {
                   let foundLesson: any = null;
                   for (const mod of lessons) {
                     if (mod.id === activeLessonId) foundLesson = mod;
