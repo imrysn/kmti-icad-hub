@@ -20,11 +20,127 @@ const FOUNDATIONS_RECAPS: Record<string, FoundationsRecapContent> = {
     ],
   },
   'lesson-6-1': {
-    narration: 'Great work. Remember: always verify the yellow highlight before selecting geometry, and confirm your selection with GO before entering movement values.',
+    narration: 'Great work. Remember: select Move from the Icon Menu, select the object, enter the movement distance for X, Y, and Z axes, and press Enter to move the object.',
     items: [
-      { action: 'Hover Geometry', result: 'Verify yellow selection boundary' },
-      { action: 'Left-Click & GO', result: 'Lock in target entity for the operation' },
-      { action: 'Item Entry', result: 'Specify X, Y, Z translation distance' },
+      { action: 'Select Move', result: 'From the Icon Menu, select Move' },
+      { action: 'Select Object', result: 'Left-click the object you want to move' },
+      { action: 'Enter Movement Distance', result: 'In Item Entry, enter X, Y, Z distance and press Enter' },
+    ],
+  },
+  'move': {
+    narration: 'Great work. Remember: select Move from the Icon Menu, select the object, enter the movement distance for X, Y, and Z axes, and press Enter to move the object.',
+    items: [
+      { action: 'Select Move', result: 'From the Icon Menu, select Move' },
+      { action: 'Select Object', result: 'Left-click the object you want to move' },
+      { action: 'Enter Movement Distance', result: 'In Item Entry, enter X, Y, Z distance and press Enter' },
+    ],
+  },
+  'lesson-6-2': {
+    narration: 'Great work. Remember: select Rotate from the Icon Menu, select the object, define the rotation axis with two points, and enter the angle to rotate.',
+    items: [
+      { action: 'Select Rotate', result: 'From the Icon Menu, select Rotate' },
+      { action: 'Select Object', result: 'Left-click the object you want to rotate' },
+      { action: 'Set Axis', result: 'Select 2 points to define the rotation axis' },
+      { action: 'Enter Angle', result: 'In Item Entry, enter angle (e.g. 90°) and press Enter' },
+    ],
+  },
+  'rotate': {
+    narration: 'Great work. Remember: select Rotate from the Icon Menu, select the object, define the rotation axis with two points, and enter the angle to rotate.',
+    items: [
+      { action: 'Select Rotate', result: 'From the Icon Menu, select Rotate' },
+      { action: 'Select Object', result: 'Left-click the object you want to rotate' },
+      { action: 'Set Axis', result: 'Select 2 points to define the rotation axis' },
+      { action: 'Enter Angle', result: 'In Item Entry, enter angle (e.g. 90°) and press Enter' },
+    ],
+  },
+  'lesson-6-3': {
+    narration: 'Great work. Remember: select Mirror from the Icon Menu, select the object, define the mirror plane with 3 points or a face, and confirm to mirror.',
+    items: [
+      { action: 'Select Mirror', result: 'From the Icon Menu, select Mirror' },
+      { action: 'Select Object', result: 'Left-click the object you want to mirror' },
+      { action: 'Select Mirror Plane', result: 'Select 3 points or click a face' },
+      { action: 'Confirm', result: 'Confirm to create the mirrored result' },
+    ],
+  },
+  'mirror': {
+    narration: 'Great work. Remember: select Mirror from the Icon Menu, select the object, define the mirror plane with 3 points or a face, and confirm to mirror.',
+    items: [
+      { action: 'Select Mirror', result: 'From the Icon Menu, select Mirror' },
+      { action: 'Select Object', result: 'Left-click the object you want to mirror' },
+      { action: 'Select Mirror Plane', result: 'Select 3 points or click a face' },
+      { action: 'Confirm', result: 'Confirm to create the mirrored result' },
+    ],
+  },
+  'lesson-6-4': {
+    narration: 'Great work. Remember: select Copy from the Icon Menu, select the object, enter the X, Y, Z movement distance and number of copies, then press Enter to confirm.',
+    items: [
+      { action: 'Select Copy', result: 'From the Icon Menu, select Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy' },
+      { action: 'Enter Distance & Copies', result: 'Enter X, Y, Z distance and copy count' },
+      { action: 'Confirm', result: 'Press Enter to complete the command' },
+    ],
+  },
+  'copy': {
+    narration: 'Great work. Remember: select Copy from the Icon Menu, select the object, enter the X, Y, Z movement distance and number of copies, then press Enter to confirm.',
+    items: [
+      { action: 'Select Copy', result: 'From the Icon Menu, select Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy' },
+      { action: 'Enter Distance & Copies', result: 'Enter X, Y, Z distance and copy count' },
+      { action: 'Confirm', result: 'Press Enter to complete the command' },
+    ],
+  },
+  'lesson-6-5': {
+    narration: 'Great work. Remember: select Rotate Copy from the Icon Menu, select the object, set 2 points for the axis, enter the angle and count, then press Enter to confirm.',
+    items: [
+      { action: 'Select Rotate Copy', result: 'From the Icon Menu, select Rotate Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy and rotate' },
+      { action: 'Set Rotation Axis', result: 'Select 2 points to define the axis' },
+      { action: 'Enter Angle & Count', result: 'Enter the desired angle and count' },
+      { action: 'Confirm', result: 'Press Enter to create the rotated copy' },
+    ],
+  },
+  'rotate-copy': {
+    narration: 'Great work. Remember: select Rotate Copy from the Icon Menu, select the object, set 2 points for the axis, enter the angle and count, then press Enter to confirm.',
+    items: [
+      { action: 'Select Rotate Copy', result: 'From the Icon Menu, select Rotate Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy and rotate' },
+      { action: 'Set Rotation Axis', result: 'Select 2 points to define the axis' },
+      { action: 'Enter Angle & Count', result: 'Enter the desired angle and count' },
+      { action: 'Confirm', result: 'Press Enter to create the rotated copy' },
+    ],
+  },
+  'lesson-6-6': {
+    narration: 'Great work. Remember: select Mirror Copy from the Icon Menu, select the object, define the mirror plane with 3 points or a face, and confirm to mirror copy.',
+    items: [
+      { action: 'Select Mirror Copy', result: 'From the Icon Menu, select Mirror Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy and mirror' },
+      { action: 'Set Mirror Plane', result: 'Select 3 points or a face' },
+      { action: 'Confirm', result: 'Confirm the selection to create the mirrored copy' },
+    ],
+  },
+  'mirror-copy': {
+    narration: 'Great work. Remember: select Mirror Copy from the Icon Menu, select the object, define the mirror plane with 3 points or a face, and confirm to mirror copy.',
+    items: [
+      { action: 'Select Mirror Copy', result: 'From the Icon Menu, select Mirror Copy' },
+      { action: 'Select Object', result: 'Left-click the object you want to copy and mirror' },
+      { action: 'Set Mirror Plane', result: 'Select 3 points or a face' },
+      { action: 'Confirm', result: 'Confirm the selection to create the mirrored copy' },
+    ],
+  },
+  'lesson-6-7': {
+    narration: 'Great work. Remember: select Delete from the Icon Menu, select the object, and confirm to remove it from the model.',
+    items: [
+      { action: 'Select Delete', result: 'From the Icon Menu, select Delete' },
+      { action: 'Select Object', result: 'Left-click the object you want to remove' },
+      { action: 'Confirm', result: 'Confirm the selection to delete the object' },
+    ],
+  },
+  'delete': {
+    narration: 'Great work. Remember: select Delete from the Icon Menu, select the object, and confirm to remove it from the model.',
+    items: [
+      { action: 'Select Delete', result: 'From the Icon Menu, select Delete' },
+      { action: 'Select Object', result: 'Left-click the object you want to remove' },
+      { action: 'Confirm', result: 'Confirm the selection to delete the object' },
     ],
   },
   'lesson-7-1': {

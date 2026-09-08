@@ -15,7 +15,13 @@ import lesson41Video from '../../../assets/3D_INTERACTIVE/lesson4.1.mp4';
 import lesson42Video from '../../../assets/3D_INTERACTIVE/lesson4.2.mp4';
 import module5Video from '../../../assets/3D_INTERACTIVE/module5.mp4';
 import placement3dVideo from '../../../assets/3D_Video_Tutorial/3dplacement.mp4';
-import basicOpMoveVideo from '../../../assets/3D_Video_Tutorial/basicOp_move.mp4';
+import basicMoveVideo from '../../../assets/3D_Video_Tutorial/basicMove.mp4';
+import basicRotateVideo from '../../../assets/3D_Video_Tutorial/basicRotate.mp4';
+import basicMirrorVideo from '../../../assets/3D_Video_Tutorial/basicMirror.mp4';
+import basicCopyVideo from '../../../assets/3D_Video_Tutorial/basicCopy.mp4';
+import basicRotateCopyVideo from '../../../assets/3D_Video_Tutorial/basicRotateCopy.mp4';
+import basicMirrorCopyVideo from '../../../assets/3D_Video_Tutorial/basicMirrorCopy.mp4';
+import basicDeleteVideo from '../../../assets/3D_Video_Tutorial/basicDelete.mp4';
 import originOverview from '../../../assets/3d-images/origin.png';
 import type { LessonVideoStep, TutorialOverlay } from '../../../types/tutorial';
 import LessonRecapPanel from '../../LessonRecapPanel';
@@ -33,6 +39,18 @@ import {
   ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS as ORIGIN_LAYOUT_STEPS_EN,
   SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY as SELECTING_GEOMETRY_COPY_EN,
   SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS as SELECTING_GEOMETRY_STEPS_EN,
+  ROTATE_WRITTEN_TUTORIAL_COPY as ROTATE_COPY_EN,
+  ROTATE_WRITTEN_TUTORIAL_STEPS as ROTATE_STEPS_EN,
+  MIRROR_WRITTEN_TUTORIAL_COPY as MIRROR_COPY_EN,
+  MIRROR_WRITTEN_TUTORIAL_STEPS as MIRROR_STEPS_EN,
+  COPY_WRITTEN_TUTORIAL_COPY as COPY_COPY_EN,
+  COPY_WRITTEN_TUTORIAL_STEPS as COPY_STEPS_EN,
+  ROTATE_COPY_WRITTEN_TUTORIAL_COPY as ROTATE_COPY_COPY_EN,
+  ROTATE_COPY_WRITTEN_TUTORIAL_STEPS as ROTATE_COPY_STEPS_EN,
+  MIRROR_COPY_WRITTEN_TUTORIAL_COPY as MIRROR_COPY_COPY_EN,
+  MIRROR_COPY_WRITTEN_TUTORIAL_STEPS as MIRROR_COPY_STEPS_EN,
+  DELETE_WRITTEN_TUTORIAL_COPY as DELETE_COPY_EN,
+  DELETE_WRITTEN_TUTORIAL_STEPS as DELETE_STEPS_EN,
   CREATE_LINE_WRITTEN_TUTORIAL_COPY as CREATE_LINE_COPY_EN,
   CREATE_LINE_WRITTEN_TUTORIAL_STEPS as CREATE_LINE_STEPS_EN,
   CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY as CREATE_CIRCLE_RECT_COPY_EN,
@@ -65,6 +83,18 @@ import {
   ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS as ORIGIN_LAYOUT_STEPS_JP,
   SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY as SELECTING_GEOMETRY_COPY_JP,
   SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS as SELECTING_GEOMETRY_STEPS_JP,
+  ROTATE_WRITTEN_TUTORIAL_COPY as ROTATE_COPY_JP,
+  ROTATE_WRITTEN_TUTORIAL_STEPS as ROTATE_STEPS_JP,
+  MIRROR_WRITTEN_TUTORIAL_COPY as MIRROR_COPY_JP,
+  MIRROR_WRITTEN_TUTORIAL_STEPS as MIRROR_STEPS_JP,
+  COPY_WRITTEN_TUTORIAL_COPY as COPY_COPY_JP,
+  COPY_WRITTEN_TUTORIAL_STEPS as COPY_STEPS_JP,
+  ROTATE_COPY_WRITTEN_TUTORIAL_COPY as ROTATE_COPY_COPY_JP,
+  ROTATE_COPY_WRITTEN_TUTORIAL_STEPS as ROTATE_COPY_STEPS_JP,
+  MIRROR_COPY_WRITTEN_TUTORIAL_COPY as MIRROR_COPY_COPY_JP,
+  MIRROR_COPY_WRITTEN_TUTORIAL_STEPS as MIRROR_COPY_STEPS_JP,
+  DELETE_WRITTEN_TUTORIAL_COPY as DELETE_COPY_JP,
+  DELETE_WRITTEN_TUTORIAL_STEPS as DELETE_STEPS_JP,
   CREATE_LINE_WRITTEN_TUTORIAL_COPY as CREATE_LINE_COPY_JP,
   CREATE_LINE_WRITTEN_TUTORIAL_STEPS as CREATE_LINE_STEPS_JP,
   CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY as CREATE_CIRCLE_RECT_COPY_JP,
@@ -92,7 +122,22 @@ import {
 } from '../../iCAD_Foundations/VideoTutorial_JP/OriginAndCoordinatesVideo';
 import {
   SELECTING_GEOMETRY_VIDEO_STEPS as SELECTING_GEOMETRY_VIDEO_STEPS_JP,
-} from '../../iCAD_Foundations/VideoTutorial_JP/SelectingGeometryVideo';
+  ROTATE_VIDEO_STEPS as ROTATE_VIDEO_STEPS_JP,
+  MIRROR_VIDEO_STEPS as MIRROR_VIDEO_STEPS_JP,
+  COPY_VIDEO_STEPS as COPY_VIDEO_STEPS_JP,
+  ROTATE_COPY_VIDEO_STEPS as ROTATE_COPY_VIDEO_STEPS_JP,
+  MIRROR_COPY_VIDEO_STEPS as MIRROR_COPY_VIDEO_STEPS_JP,
+  DELETE_VIDEO_STEPS as DELETE_VIDEO_STEPS_JP,
+} from '../../iCAD_Foundations/VideoTutorial_JP/MoveCopyDeleteVideo';
+import {
+  SELECTING_GEOMETRY_VIDEO_STEPS as SELECTING_GEOMETRY_VIDEO_STEPS_EN,
+  ROTATE_VIDEO_STEPS as ROTATE_VIDEO_STEPS_EN,
+  MIRROR_VIDEO_STEPS as MIRROR_VIDEO_STEPS_EN,
+  COPY_VIDEO_STEPS as COPY_VIDEO_STEPS_EN,
+  ROTATE_COPY_VIDEO_STEPS as ROTATE_COPY_VIDEO_STEPS_EN,
+  MIRROR_COPY_VIDEO_STEPS as MIRROR_COPY_VIDEO_STEPS_EN,
+  DELETE_VIDEO_STEPS as DELETE_VIDEO_STEPS_EN,
+} from '../../iCAD_Foundations/VideoTutorial_EN/MoveCopyDeleteVideo';
 
 const WRITTEN_TUTORIAL_REGISTRY_EN: Record<string, { copy: WrittenTutorialCopy; steps: WrittenTutorialStep[] }> = {
   'lesson-1-1': { copy: GETTING_STARTED_COPY_EN, steps: GETTING_STARTED_STEPS_EN },
@@ -103,6 +148,19 @@ const WRITTEN_TUTORIAL_REGISTRY_EN: Record<string, { copy: WrittenTutorialCopy; 
   'origin-layout': { copy: ORIGIN_LAYOUT_COPY_EN, steps: ORIGIN_LAYOUT_STEPS_EN },
   'lesson-5-2': { copy: ORIGIN_LAYOUT_COPY_EN, steps: ORIGIN_LAYOUT_STEPS_EN },
   'lesson-6-1': { copy: SELECTING_GEOMETRY_COPY_EN, steps: SELECTING_GEOMETRY_STEPS_EN },
+  'move': { copy: SELECTING_GEOMETRY_COPY_EN, steps: SELECTING_GEOMETRY_STEPS_EN },
+  'lesson-6-2': { copy: ROTATE_COPY_EN, steps: ROTATE_STEPS_EN },
+  'rotate': { copy: ROTATE_COPY_EN, steps: ROTATE_STEPS_EN },
+  'lesson-6-3': { copy: MIRROR_COPY_EN, steps: MIRROR_STEPS_EN },
+  'mirror': { copy: MIRROR_COPY_EN, steps: MIRROR_STEPS_EN },
+  'lesson-6-4': { copy: COPY_COPY_EN, steps: COPY_STEPS_EN },
+  'copy': { copy: COPY_COPY_EN, steps: COPY_STEPS_EN },
+  'lesson-6-5': { copy: ROTATE_COPY_COPY_EN, steps: ROTATE_COPY_STEPS_EN },
+  'rotate-copy': { copy: ROTATE_COPY_COPY_EN, steps: ROTATE_COPY_STEPS_EN },
+  'lesson-6-6': { copy: MIRROR_COPY_COPY_EN, steps: MIRROR_COPY_STEPS_EN },
+  'mirror-copy': { copy: MIRROR_COPY_COPY_EN, steps: MIRROR_COPY_STEPS_EN },
+  'lesson-6-7': { copy: DELETE_COPY_EN, steps: DELETE_STEPS_EN },
+  'delete': { copy: DELETE_COPY_EN, steps: DELETE_STEPS_EN },
   'lesson-7-1': { copy: CREATE_LINE_COPY_EN, steps: CREATE_LINE_STEPS_EN },
   'lesson-7-2': { copy: CREATE_CIRCLE_RECT_COPY_EN, steps: CREATE_CIRCLE_RECT_STEPS_EN },
   'lesson-8-1': { copy: INTRO_TO_3D_COPY_EN, steps: INTRO_TO_3D_STEPS_EN },
@@ -122,6 +180,19 @@ const WRITTEN_TUTORIAL_REGISTRY_JP: Record<string, { copy: WrittenTutorialCopy; 
   'origin-layout': { copy: ORIGIN_LAYOUT_COPY_JP, steps: ORIGIN_LAYOUT_STEPS_JP },
   'lesson-5-2': { copy: ORIGIN_LAYOUT_COPY_JP, steps: ORIGIN_LAYOUT_STEPS_JP },
   'lesson-6-1': { copy: SELECTING_GEOMETRY_COPY_JP, steps: SELECTING_GEOMETRY_STEPS_JP },
+  'move': { copy: SELECTING_GEOMETRY_COPY_JP, steps: SELECTING_GEOMETRY_STEPS_JP },
+  'lesson-6-2': { copy: ROTATE_COPY_JP, steps: ROTATE_STEPS_JP },
+  'rotate': { copy: ROTATE_COPY_JP, steps: ROTATE_STEPS_JP },
+  'lesson-6-3': { copy: MIRROR_COPY_JP, steps: MIRROR_STEPS_JP },
+  'mirror': { copy: MIRROR_COPY_JP, steps: MIRROR_STEPS_JP },
+  'lesson-6-4': { copy: COPY_COPY_JP, steps: COPY_STEPS_JP },
+  'copy': { copy: COPY_COPY_JP, steps: COPY_STEPS_JP },
+  'lesson-6-5': { copy: ROTATE_COPY_COPY_JP, steps: ROTATE_COPY_STEPS_JP },
+  'rotate-copy': { copy: ROTATE_COPY_COPY_JP, steps: ROTATE_COPY_STEPS_JP },
+  'lesson-6-6': { copy: MIRROR_COPY_COPY_JP, steps: MIRROR_COPY_STEPS_JP },
+  'mirror-copy': { copy: MIRROR_COPY_COPY_JP, steps: MIRROR_COPY_STEPS_JP },
+  'lesson-6-7': { copy: DELETE_COPY_JP, steps: DELETE_STEPS_JP },
+  'delete': { copy: DELETE_COPY_JP, steps: DELETE_STEPS_JP },
   'lesson-7-1': { copy: CREATE_LINE_COPY_JP, steps: CREATE_LINE_STEPS_JP },
   'lesson-7-2': { copy: CREATE_CIRCLE_RECT_COPY_JP, steps: CREATE_CIRCLE_RECT_STEPS_JP },
   'lesson-8-1': { copy: INTRO_TO_3D_COPY_JP, steps: INTRO_TO_3D_STEPS_JP },
@@ -140,7 +211,20 @@ const videoMap: Record<string, string> = {
   'lesson4.2': lesson42Video,
   'module5': module5Video,
   '3dplacement': placement3dVideo,
-  'basicOp_move': basicOpMoveVideo,
+  'basicMove': basicMoveVideo,
+  'basicOp_move': basicMoveVideo,
+  'basicRotate': basicRotateVideo,
+  'basicOp_rotate': basicRotateVideo,
+  'basicMirror': basicMirrorVideo,
+  'basicOp_mirror': basicMirrorVideo,
+  'basicCopy': basicCopyVideo,
+  'basicOp_copy': basicCopyVideo,
+  'basicRotateCopy': basicRotateCopyVideo,
+  'basicOp_rotateCopy': basicRotateCopyVideo,
+  'basicMirrorCopy': basicMirrorCopyVideo,
+  'basicOp_mirrorCopy': basicMirrorCopyVideo,
+  'basicDelete': basicDeleteVideo,
+  'basicOp_delete': basicDeleteVideo,
 };
 
 interface DynamicLessonProps {
@@ -202,7 +286,34 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
       if (lessonId === 'lesson-4-2') return USER_VIEW_VIDEO_STEPS_JP;
       if (lessonId === 'lesson-5-1' || lessonId === 'origin-projections') return ORIGIN_AXES_VIDEO_STEPS_JP;
       if (lessonId === 'lesson-5-2' || lessonId === 'origin-layout') return ORIGIN_LAYOUT_VIDEO_STEPS_JP;
-      if (lessonId === 'lesson-6-1') return SELECTING_GEOMETRY_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-1' || lessonId === 'move') return SELECTING_GEOMETRY_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-2' || lessonId === 'rotate') return ROTATE_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-3' || lessonId === 'mirror') return MIRROR_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-4' || lessonId === 'copy') return COPY_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') return ROTATE_COPY_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') return MIRROR_COPY_VIDEO_STEPS_JP;
+      if (lessonId === 'lesson-6-7' || lessonId === 'delete') return DELETE_VIDEO_STEPS_JP;
+    }
+    if ((lessonId === 'lesson-6-1' || lessonId === 'move') && (!videoSteps || videoSteps.length === 0)) {
+      return SELECTING_GEOMETRY_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-2' || lessonId === 'rotate') && (!videoSteps || videoSteps.length === 0)) {
+      return ROTATE_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-3' || lessonId === 'mirror') && (!videoSteps || videoSteps.length === 0)) {
+      return MIRROR_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-4' || lessonId === 'copy') && (!videoSteps || videoSteps.length === 0)) {
+      return COPY_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') && (!videoSteps || videoSteps.length === 0)) {
+      return ROTATE_COPY_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') && (!videoSteps || videoSteps.length === 0)) {
+      return MIRROR_COPY_VIDEO_STEPS_EN;
+    }
+    if ((lessonId === 'lesson-6-7' || lessonId === 'delete') && (!videoSteps || videoSteps.length === 0)) {
+      return DELETE_VIDEO_STEPS_EN;
     }
     return videoSteps;
   }, [isJapanese, lessonId, videoSteps]);
@@ -242,21 +353,92 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
     ? (videoIntroEyebrow ? '視図ツアー' : '動画チュートリアル')
     : (videoIntroEyebrow || 'Interactive Video');
 
-  const activeIntroTitle = isJapanese
-    ? (lessonId === 'lesson-4-1'
-        ? '3D ビューの確認'
-        : lessonId === 'lesson-4-2'
-          ? 'ユーザービューの確認'
-          : (videoIntroTitle ? '動画デモンストレーション' : '動画デモンストレーション'))
-    : (videoIntroTitle || 'Watch Video Demonstration');
+  const resolvedIntroTitleEN = useMemo(() => {
+    if (videoIntroTitle) return videoIntroTitle;
+    if (lessonId === 'lesson-6-1' || lessonId === 'move') return 'Move';
+    if (lessonId === 'lesson-6-2' || lessonId === 'rotate') return 'Rotate';
+    if (lessonId === 'lesson-6-3' || lessonId === 'mirror') return 'Mirror';
+    if (lessonId === 'lesson-6-4' || lessonId === 'copy') return 'Copy';
+    if (lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') return 'Rotate Copy';
+    if (lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') return 'Mirror Copy';
+    if (lessonId === 'lesson-6-7' || lessonId === 'delete') return 'Delete';
+    if (writtenModule?.copy?.title) return writtenModule.copy.title;
+    return title || 'Watch Video Demonstration';
+  }, [videoIntroTitle, lessonId, writtenModule, title]);
 
-  const activeIntroDescription = isJapanese
-    ? (lessonId === 'lesson-4-1'
-        ? '3D ビューのガイド付きツアーで、正面・上面・底面・右面・左面の各方向からモデルを正確に検査する方法を学びます。'
-        : lessonId === 'lesson-4-2'
-          ? 'ユーザービューのガイド付きツアーで、モデルの幅・高さ・奥行きを把握しながら複数の面を同時に検査する方法を学びます。'
-          : (videoIntroDescription ? 'ワークスペースでこのツールの実際の動作を確認します。' : 'ワークスペースでこのツールの実際の動作を確認します。'))
-    : (videoIntroDescription || 'See this tool in action in the workspace.');
+  const resolvedIntroDescEN = useMemo(() => {
+    if (videoIntroDescription) return videoIntroDescription;
+    if (lessonId === 'lesson-6-1' || lessonId === 'move') {
+      return 'The Move command is used to change the position of a 3D object without changing its size or shape.';
+    }
+    if (lessonId === 'lesson-6-2' || lessonId === 'rotate') {
+      return 'The Rotate command is used to turn a 3D object around a selected axis without changing its size or shape.';
+    }
+    if (lessonId === 'lesson-6-3' || lessonId === 'mirror') {
+      return 'The Mirror command is used to create a mirrored copy of a 3D object across a selected plane.';
+    }
+    if (lessonId === 'lesson-6-4' || lessonId === 'copy') {
+      return 'The Copy command is used to create one or more duplicates of a 3D object while keeping the original object.';
+    }
+    if (lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') {
+      return 'The Rotate Copy command works like the Rotate tool, but it creates a rotated duplicate while keeping the original object.';
+    }
+    if (lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') {
+      return 'The Mirror Copy command works like the Mirror tool, but it creates a mirrored duplicate while keeping the original object.';
+    }
+    if (lessonId === 'lesson-6-7' || lessonId === 'delete') {
+      return 'The Delete command is used to remove an unwanted object from the 3D model.';
+    }
+    if (writtenModule?.copy?.description) {
+      return writtenModule.copy.description;
+    }
+    return 'See this tool in action in the workspace.';
+  }, [videoIntroDescription, lessonId, writtenModule]);
+
+  const resolvedIntroTitleJP = useMemo(() => {
+    if (lessonId === 'lesson-4-1') return '3D ビューの確認';
+    if (lessonId === 'lesson-4-2') return 'ユーザービューの確認';
+    if (lessonId === 'lesson-6-1' || lessonId === 'move') return '移動';
+    if (lessonId === 'lesson-6-2' || lessonId === 'rotate') return '回転';
+    if (lessonId === 'lesson-6-3' || lessonId === 'mirror') return 'ミラー';
+    if (lessonId === 'lesson-6-4' || lessonId === 'copy') return 'コピー';
+    if (lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') return '回転複写';
+    if (lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') return 'ミラー複写';
+    if (lessonId === 'lesson-6-7' || lessonId === 'delete') return '削除';
+    if (writtenModule?.copy?.title) return writtenModule.copy.title;
+    return videoIntroTitle || '動画デモンストレーション';
+  }, [lessonId, writtenModule, videoIntroTitle]);
+
+  const resolvedIntroDescJP = useMemo(() => {
+    if (lessonId === 'lesson-4-1') return '3D ビューのガイド付きツアーで、正面・上面・底面・右面・左面の各方向からモデルを正確に検査する方法を学びます。';
+    if (lessonId === 'lesson-4-2') return 'ユーザービューのガイド付きツアーで、モデルの幅・高さ・奥行きを把握しながら複数の面を同時に検査する方法を学びます。';
+    if (lessonId === 'lesson-6-1' || lessonId === 'move') {
+      return '移動コマンドは、サイズや形状を変えずに、3Dオブジェクトの位置を変更するために使用します。';
+    }
+    if (lessonId === 'lesson-6-2' || lessonId === 'rotate') {
+      return '回転コマンドは、3Dオブジェクトのサイズや形状を変えずに、選択した軸を中心に回転させるために使用します。';
+    }
+    if (lessonId === 'lesson-6-3' || lessonId === 'mirror') {
+      return 'ミラーコマンドは、選択した平面を基準にして3Dオブジェクトの対称コピーを作成するために使用します。';
+    }
+    if (lessonId === 'lesson-6-4' || lessonId === 'copy') {
+      return 'コピーコマンドは、元のオブジェクトを残したまま、3Dオブジェクトの複製を1つまたは複数作成するために使用します。';
+    }
+    if (lessonId === 'lesson-6-5' || lessonId === 'rotate-copy') {
+      return '回転複写コマンドは回転ツールと同様に機能しますが、元のオブジェクトを残したまま回転した複製を作成します。';
+    }
+    if (lessonId === 'lesson-6-6' || lessonId === 'mirror-copy') {
+      return 'ミラー複写コマンドはミラーツールと同様に機能しますが、元のオブジェクトを残したまま鏡像複製を作成するために使用します。';
+    }
+    if (lessonId === 'lesson-6-7' || lessonId === 'delete') {
+      return '削除コマンドは、3Dモデルから不要なオブジェクトを取り除くために使用します。';
+    }
+    if (writtenModule?.copy?.description) return writtenModule.copy.description;
+    return videoIntroDescription || 'ワークスペースでこのツールの実際の動作を確認します。';
+  }, [lessonId, writtenModule, videoIntroDescription]);
+
+  const activeIntroTitle = isJapanese ? resolvedIntroTitleJP : resolvedIntroTitleEN;
+  const activeIntroDescription = isJapanese ? resolvedIntroDescJP : resolvedIntroDescEN;
 
   const beginRecapOrAdvance = () => {
     if (fallbackRecap && !hasEmbeddedRecap) {
@@ -430,7 +612,7 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
                   <FoundationsVideoReadingLayout
                     title={videoIntroTitle || title}
                     description={videoIntroDescription || 'Read the video demonstration as a step-by-step tutorial.'}
-                    steps={tutorialSteps.map(step => ({ id: step.id, title: step.title, text: step.text }))}
+                    steps={tutorialSteps.map(step => ({ id: step.id, title: step.title, text: step.text, preserveText: (step as any).preserveText }))}
                   >
                     <VideoTutorialViewer 
                       steps={tutorialSteps}

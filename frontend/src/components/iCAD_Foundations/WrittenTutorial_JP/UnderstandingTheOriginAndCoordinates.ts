@@ -67,7 +67,7 @@ export const ORIGIN_LAYOUT_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'layout-step-1',
     title: 'パーツのレイアウトを変更する',
-    text: 'From the icon menu, navigate to <b>パーツ (3D PARTS )</b> → <b>パーツのレイアウトを変更する</b> (Change 3D Part Layout).',
+    text: 'アイコンメニューから<b>パーツ (3D PARTS )</b> → <b>パーツのレイアウトを変更する</b>を選択します。',
     preserveText: true,
   },
   {

@@ -52,6 +52,22 @@ describe('Foundations Language Mode', () => {
     expect(jaTranslations['lesson.title.basic-op-torus']).toBe('円環体');
     expect(enTranslations['lesson.title.module-basic-shapes']).toBe('Creating Basic Shapes');
     expect(enTranslations['lesson.title.basic-op-cylinder']).toBe('Cylinder');
+    expect(enTranslations['lesson.title.module-6']).toBe('Move Copy Delete');
+    expect(enTranslations['lesson.title.lesson-6-1']).toBe('Move');
+    expect(enTranslations['lesson.title.lesson-6-2']).toBe('Rotate');
+    expect(enTranslations['lesson.title.lesson-6-3']).toBe('Mirror');
+    expect(enTranslations['lesson.title.lesson-6-4']).toBe('Copy');
+    expect(enTranslations['lesson.title.lesson-6-5']).toBe('Rotate Copy');
+    expect(enTranslations['lesson.title.lesson-6-6']).toBe('Mirror Copy');
+    expect(enTranslations['lesson.title.lesson-6-7']).toBe('Delete');
+    expect(jaTranslations['lesson.title.module-6']).toBe('移動・コピー・削除');
+    expect(jaTranslations['lesson.title.lesson-6-1']).toBe('移動');
+    expect(jaTranslations['lesson.title.lesson-6-2']).toBe('回転');
+    expect(jaTranslations['lesson.title.lesson-6-3']).toBe('ミラー');
+    expect(jaTranslations['lesson.title.lesson-6-4']).toBe('コピー');
+    expect(jaTranslations['lesson.title.lesson-6-5']).toBe('回転複写');
+    expect(jaTranslations['lesson.title.lesson-6-6']).toBe('ミラー複写');
+    expect(jaTranslations['lesson.title.lesson-6-7']).toBe('削除');
   });
 
   it('correctly strips lesson and module prefixes for sidebar and banner in both EN and JA', async () => {

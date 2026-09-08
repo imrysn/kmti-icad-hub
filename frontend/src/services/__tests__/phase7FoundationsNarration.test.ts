@@ -59,9 +59,9 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
 
   beforeEach(() => localStorage.clear());
 
-  it('covers the complete 24-lesson Foundations inventory in English and Japanese', () => {
+  it('covers the complete 30-lesson Foundations inventory in English and Japanese', () => {
     const lessons = leafLessons(ICAD_FOUNDATIONS_LESSONS);
-    expect(lessons).toHaveLength(24);
+    expect(lessons).toHaveLength(30);
 
     for (const lesson of lessons) {
       const sourceText = lesson.content?.find((text) => text.trim()) || lesson.title;

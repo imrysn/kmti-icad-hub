@@ -63,6 +63,7 @@ export interface LessonVideoStep {
   title: string;
   customText: string;
   narrationText?: string;
+  preserveText?: boolean;
   videoStart: number;
   videoEnd: number;
   holdVideo?: boolean;

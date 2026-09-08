@@ -9,4 +9,4 @@ export * from './ToolBarsVideo';
 export * from './StandardViewsVideo';
 export * from './OriginAndCoordinatesVideo';
 export * from './CreatingBasicShapesVideo';
-export * from './SelectingGeometryVideo';
+export * from './MoveCopyDeleteVideo';

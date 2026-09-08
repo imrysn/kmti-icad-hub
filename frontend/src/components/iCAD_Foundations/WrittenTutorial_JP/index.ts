@@ -10,7 +10,7 @@ export * from './ToolBars';
 export * from './StandardViews';
 export * from './UnderstandingTheOriginAndCoordinates';
 export * from './CreatingBasicShapes';
-export * from './SelectingGeometry';
+export * from './MoveCopyDelete';
 export * from './Basic2DGeometry';
 export * from './IntroductionTo3D';
 export * from './InspectYourFirstModel';

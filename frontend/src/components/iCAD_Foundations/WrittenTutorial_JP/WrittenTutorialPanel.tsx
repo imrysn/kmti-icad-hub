@@ -86,7 +86,19 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
             <div className="step-header-inline">
               <div className="step-header-inline__lead">
                 <h4>{displayTitle}</h4>{' '}
-                <p className="written-tutorial-panel__description">{renderFormattedText(displayDescription)}</p>
+                <p className="written-tutorial-panel__description">
+                  {renderFormattedText(
+                    panelCopy.inlineHeader
+                      ? (() => {
+                          const trimmed = displayTitle.trim();
+                          if (displayDescription.startsWith(trimmed)) {
+                            return displayDescription.slice(trimmed.length);
+                          }
+                          return displayDescription;
+                        })()
+                      : displayDescription
+                  )}
+                </p>
               </div>
               {panelCopy.description2 ? (
                 <p className="written-tutorial-panel__description written-tutorial-panel__description--secondary">
@@ -149,22 +161,53 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
                       </div>
                     );
                   }
-                  const leadLines: string[] = [];
-                  const bulletLines: string[] = [];
+                  const blocks: Array<{ type: 'text' | 'ul'; content: string | string[] }> = [];
+                  let currentBullets: string[] = [];
+                  let currentTextLines: string[] = [];
+
+                  const flushText = () => {
+                    if (currentTextLines.length > 0) {
+                      const textBlock = currentTextLines.join('\n').trim();
+                      if (textBlock) {
+                        blocks.push({ type: 'text', content: textBlock });
+                      }
+                      currentTextLines = [];
+                    }
+                  };
+
+                  const flushBullets = () => {
+                    if (currentBullets.length > 0) {
+                      blocks.push({ type: 'ul', content: currentBullets });
+                      currentBullets = [];
+                    }
+                  };
+
                   lines.forEach(line => {
                     if (/^\s*([*•-])\s+/.test(line)) {
-                      bulletLines.push(line.replace(/^\s*([*•-])\s+/, ''));
-                    } else if (line.trim()) {
-                      leadLines.push(line);
+                      flushText();
+                      currentBullets.push(line.replace(/^\s*([*•-])\s+/, ''));
+                    } else {
+                      flushBullets();
+                      currentTextLines.push(line);
                     }
                   });
+                  flushText();
+                  flushBullets();
+
                   return (
                     <div className={`step-text-content ${step.image ? 'has-step-image' : ''}`}>
                       <div className="step-text-left">
-                        {leadLines.map((l, i) => <p key={i}>{renderFormattedText(l)}</p>)}
-                        <ul className="step-bullet-list">
-                          {bulletLines.map((b, i) => <li key={i}>{renderFormattedText(b)}</li>)}
-                        </ul>
+                        {blocks.map((block, bIdx) =>
+                          block.type === 'ul' ? (
+                            <ul key={bIdx} className="step-bullet-list">
+                              {(block.content as string[]).map((b, i) => (
+                                <li key={i}>{renderFormattedText(b)}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p key={bIdx}>{renderFormattedText(block.content as string)}</p>
+                          )
+                        )}
                       </div>
                       {step.image && (
                         <div className="step-image-container">

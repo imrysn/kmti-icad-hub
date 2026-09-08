@@ -8,7 +8,13 @@ import {
 } from '../../components/iCAD_Foundations/VideoTutorial_EN/OriginAndCoordinatesVideo';
 import {
   SELECTING_GEOMETRY_VIDEO_STEPS,
-} from '../../components/iCAD_Foundations/VideoTutorial_EN/SelectingGeometryVideo';
+  ROTATE_VIDEO_STEPS,
+  MIRROR_VIDEO_STEPS,
+  COPY_VIDEO_STEPS,
+  ROTATE_COPY_VIDEO_STEPS,
+  MIRROR_COPY_VIDEO_STEPS,
+  DELETE_VIDEO_STEPS,
+} from '../../components/iCAD_Foundations/VideoTutorial_EN/MoveCopyDeleteVideo';
 
 
 
@@ -52,7 +58,23 @@ export const ICAD_FOUNDATIONS_OBJECTIVES: Record<string, string> = {
   'lesson-4-1': 'Display a model from standard engineering viewing directions to make its geometry easier to understand and inspect.',
   'lesson-4-2': 'Use an User View to inspect multiple sides of a 3D object at the same time.',
   'lesson-5-1': 'Identify the origin and the X, Y, and Z axes used to locate and orient geometry in 3D space.',
-  'lesson-6-1': 'Correctly select geometry before performing an operation.',
+  'origin-projections': 'Identify the origin and the X, Y, and Z axes used to locate and orient geometry in 3D space.',
+  'origin-layout': 'Relocate the origin and define the orientation of the X and Y axes using the Change 3D Part Layout tool.',
+  'lesson-5-2': 'Relocate the origin and define the orientation of the X and Y axes using the Change 3D Part Layout tool.',
+  'lesson-6-1': 'Identify guidance prompts, verify yellow pre-selection highlights, select 3D geometry, confirm with GO, and move components in iCAD SX.',
+  'move': 'Identify guidance prompts, verify yellow pre-selection highlights, select 3D geometry, confirm with GO, and move components in iCAD SX.',
+  'lesson-6-2': 'Rotate 3D entities around a user-defined axis by selecting two points and entering an angle in iCAD SX.',
+  'rotate': 'Rotate 3D entities around a user-defined axis by selecting two points and entering an angle in iCAD SX.',
+  'lesson-6-3': 'Mirror 3D entities across a reflection plane defined by three points or a planar face in iCAD SX.',
+  'mirror': 'Mirror 3D entities across a reflection plane defined by three points or a planar face in iCAD SX.',
+  'lesson-6-4': 'Create duplicate copies of 3D entities placed at specified X, Y, and Z distances while retaining the original object in iCAD SX.',
+  'copy': 'Create duplicate copies of 3D entities placed at specified X, Y, and Z distances while retaining the original object in iCAD SX.',
+  'lesson-6-5': 'Create rotated copies of 3D entities around a user-defined axis at specified angles while retaining the original object in iCAD SX.',
+  'rotate-copy': 'Create rotated copies of 3D entities around a user-defined axis at specified angles while retaining the original object in iCAD SX.',
+  'lesson-6-6': 'Create mirrored copies of 3D entities across a user-defined reflection plane while retaining the original object in iCAD SX.',
+  'mirror-copy': 'Create mirrored copies of 3D entities across a user-defined reflection plane while retaining the original object in iCAD SX.',
+  'lesson-6-7': 'Remove unwanted 3D entities from the model by selecting the object and confirming in iCAD SX.',
+  'delete': 'Remove unwanted 3D entities from the model by selecting the object and confirming in iCAD SX.',
   'lesson-7-1': 'Create your first simple 2D line geometry in iCAD.',
   'lesson-7-2': 'Create basic circle and rectangle geometry using the appropriate iCAD commands.',
   'lesson-8-1': 'Create a basic rectangular 3D block from a dimensioned 2D profile.',
@@ -250,25 +272,135 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-6',
-    title: 'Module 6 - Selecting Geometry',
+    title: 'Move Copy Delete',
     children: [
       {
         id: 'lesson-6-1',
-        title: 'Lesson 6.1 — Selecting Geometry',
-        videoId: 'basicOp_move',
+        title: 'Move',
+        videoId: 'basicMove',
         muteSourceVideoAudio: true,
-        videoIntroTitle: 'Selecting Geometry (Move Component)',
-        videoIntroDescription: 'Learn how to initiate an operation, inspect pre-selection highlights, select 3D geometry, confirm with GO, and execute modifications using the Move Component tool.',
+        videoIntroTitle: 'Move',
+        videoIntroDescription: 'The Move command is used to change the position of a 3D object without changing its size or shape.',
         videoSteps: SELECTING_GEOMETRY_VIDEO_STEPS,
         content: [
-          'Learning Objective: Identify guidance prompts, verify yellow pre-selection highlights, select 3D geometry, and confirm selections in iCAD SX.',
-          'Before you can move, copy, or edit a part in iCAD SX, you must select it. The Move command demonstrates this essential selection workflow.',
-          'Step 1: Select Move from the right icon menu under Move / Copy / Delete.',
-          'Step 2: Check the guidance prompt at the bottom: "Target Element: GO".',
-          'Step 3: Move your cursor over the 3D part and check the yellow highlight outline.',
-          'Step 4: Left-click the highlighted part to select it.',
-          'Step 5: Click GO (or press Enter) to finish selecting.',
-          'Step 6: Enter the movement distance (X, Y, Z) and press Enter to complete the move.'
+          'Learning Goal: By the end of this lesson, you will be able to select 3D geometry, confirm your selection with GO, and move components using the Move tool in iCAD SX.',
+          'The Move command is used to change the position of a 3D object without changing its size or shape.',
+          'Step 1: From the Icon Menu, select Move.',
+          'Step 2: Left-click the object you want to move.',
+          'Step 3: In the Item Entry, enter the movement distance for X-axis, Y-axis, Z-axis, then press Enter to move the object.',
+          'Quick Review: Select Move → Select Object → Enter Movement Distance → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-2',
+        title: 'Rotate',
+        videoId: 'basicRotate',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Rotate',
+        videoIntroDescription: 'The Rotate command is used to turn a 3D object around a selected axis without changing its size or shape.',
+        videoSteps: ROTATE_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to rotate a 3D object to the desired angle in iCAD SX.',
+          'The Rotate command is used to turn a 3D object around a selected axis without changing its size or shape.',
+          'Step 1: Select Rotate from the Icon Menu.',
+          'Step 2: Left-click the object you want to rotate.',
+          'Step 3: Select 2 points to define the axis where the object will rotate.',
+          'Step 4: In the Item Entry, enter the desired rotation angle (Example: 90°) and press Enter to complete the rotation.',
+          'When to Use Rotate: Change the orientation of a part, position a component correctly, or turn an object to a specific angle.',
+          'Quick Review: Select Rotate → Select Object → Set Axis → Enter Angle → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-3',
+        title: 'Mirror',
+        videoId: 'basicMirror',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Mirror',
+        videoIntroDescription: 'The Mirror command is used to create a mirrored copy of a 3D object across a selected plane.',
+        videoSteps: MIRROR_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to mirror a 3D object to the opposite side in iCAD SX.',
+          'The Mirror command is used to create a mirrored copy of a 3D object across a selected plane.',
+          'Step 1: Select Mirror from the Icon Menu.',
+          'Step 2: Left-click the object you want to mirror.',
+          'Step 3: Select 3 points to define the plane where the object will be mirrored (or left-click a face to use that face as the mirror plane).',
+          'Step 4: Confirm the selection to create the mirrored result.',
+          'When to Use Mirror: Create symmetrical parts, repeat features on the opposite side, or save time instead of creating the same feature again.',
+          'Quick Review: Select Mirror → Select Object → Select Mirror Plane → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-4',
+        title: 'Copy',
+        videoId: 'basicCopy',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Copy',
+        videoIntroDescription: 'The Copy command is used to create one or more duplicates of a 3D object while keeping the original object.',
+        videoSteps: COPY_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to copy a 3D object and place the copies at a specified distance.',
+          'The Copy command is used to create one or more duplicates of a 3D object while keeping the original object.',
+          'Step 1: From the Icon Menu, select Copy.',
+          'Step 2: Left-click the object you want to copy.',
+          'Step 3: In the Item Entry, enter the movement distance for X-axis, Y-axis, Z-axis, then enter the number of copies and press Enter to complete the command.',
+          'When to Use Copy: Create repeated parts, duplicate the same object, or place several identical objects at a fixed distance.',
+          'Quick Review: Select Copy → Select Object → Enter X, Y, Z Distance → Enter Number of Copies → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-5',
+        title: 'Rotate Copy',
+        videoId: 'basicRotateCopy',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Rotate Copy',
+        videoIntroDescription: 'The Rotate Copy command works like the Rotate tool, but it creates a rotated duplicate while keeping the original object.',
+        videoSteps: ROTATE_COPY_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to create a rotated copy of a 3D object in iCAD SX.',
+          'The Rotate Copy command works like the Rotate tool, but it creates a rotated duplicate while keeping the original object.',
+          'Step 1: From the Icon Menu, select Rotate Copy.',
+          'Step 2: Left-click the object you want to copy and rotate.',
+          'Step 3: Select 2 points to define the axis of rotation.',
+          'Step 4: In the Item Entry, enter the desired angle (Example: 90°) and press Enter to create the rotated copy.',
+          'When to Use Rotate Copy: Create repeated parts around an axis, make a duplicate at a different angle, or keep the original object while creating another rotated version.',
+          'Quick Review: Select Rotate Copy → Select Object → Set Axis → Enter Angle → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-6',
+        title: 'Mirror Copy',
+        videoId: 'basicMirrorCopy',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Mirror Copy',
+        videoIntroDescription: 'The Mirror Copy command works like the Mirror tool, but it creates a mirrored duplicate while keeping the original object.',
+        videoSteps: MIRROR_COPY_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to create a mirrored copy of a 3D object in iCAD SX.',
+          'The Mirror Copy command works like the Mirror tool, but it creates a mirrored duplicate while keeping the original object.',
+          'Step 1: From the Icon Menu, select Mirror Copy.',
+          'Step 2: Left-click the object you want to copy and mirror.',
+          'Step 3: Select 3 points to define the mirror plane (or select a face to use as the mirror plane).',
+          'Step 4: Confirm the selection to create the mirrored copy.',
+          'When to Use Mirror Copy: Create symmetrical parts, duplicate a feature on the opposite side, or keep the original object while creating its mirrored version.',
+          'Quick Review: Select Mirror Copy → Select Object → Set Mirror Plane → Confirm'
+        ]
+      },
+      {
+        id: 'lesson-6-7',
+        title: 'Delete',
+        videoId: 'basicDelete',
+        muteSourceVideoAudio: true,
+        videoIntroTitle: 'Delete',
+        videoIntroDescription: 'The Delete command is used to remove an unwanted object from the 3D model.',
+        videoSteps: DELETE_VIDEO_STEPS,
+        content: [
+          'Learning Goal: By the end of this lesson, you will be able to delete a selected object in iCAD SX.',
+          'The Delete command is used to remove an unwanted object from the 3D model.',
+          'Step 1: From the Icon Menu, select Delete.',
+          'Step 2: Left-click the object you want to remove.',
+          'Step 3: Confirm the selection to delete the object.',
+          'When to Use Delete: Remove an incorrect object, remove an unwanted part or feature, or clean up the model.',
+          'Quick Review: Select Delete → Select Object → Confirm'
         ]
       }
     ]
