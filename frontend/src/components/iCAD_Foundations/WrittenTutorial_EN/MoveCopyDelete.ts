@@ -39,6 +39,13 @@ export const SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = 
     text: 'In the Item Entry, enter the movement distance for:\n* X-axis\n* Y-axis\n* Z-axis\n\nThen press <b>Enter</b> to move the object.\n\n<b>Example</b>:\n <b>X= 50mm</b>, <b>Y= 0mm</b>, <b>Z= 0mm</b>\n',
     preserveText: true,
   },
+  {
+    id: 'select-step-4',
+    title: 'When to Use Move',
+    text: 'Use Move when you need to:\n* Reposition a part.\n* Adjust the location of an object.\n* Place components in the correct position.',
+    hideStepNumber: true,
+    preserveText: true,
+  },
 ];
 
 export const MOVE_WRITTEN_TUTORIAL_STEPS = SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS;
@@ -81,7 +88,7 @@ export const ROTATE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'rotate-step-4',
     title: 'Enter the Rotation Angle',
-    text: 'In the Item Entry, enter the desired rotation angle.\n\nExample: 90°\n\nPress Enter to complete the rotation.',
+    text: 'In the Item Entry, enter the desired rotation angle.\n\n<b>Example</b>: <b>90°</b>\n\n Then press <b>Enter</b> to complete the rotation.',
     preserveText: true,
   },
   {
@@ -125,7 +132,7 @@ export const MIRROR_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'mirror-step-3',
     title: 'Set the Mirror Plane',
-    text: 'Choose one method to define the mirror plane:\n* Select 3 points to define the plane, or\n* Left-click any flat face on the model.',
+    text: 'Choose one method to define the mirror plane:\n* Select 3 points to define the plane or\n* Left-click the face where the entity will be mirrored.',
     preserveText: true,
   },
   {
@@ -225,7 +232,7 @@ export const ROTATE_COPY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'rotate-copy-step-4',
     title: 'Enter the Rotation Angle',
-    text: 'In the Item Entry, enter the desired angle.\n\nExample: 90°\n\nPress Enter to create the rotated copy.',
+    text: 'In the Item Entry, enter the desired angle.\n\nExample: 90°\n\nThen press <b>Enter</b> to create the rotated copy.',
     preserveText: true,
   },
   {

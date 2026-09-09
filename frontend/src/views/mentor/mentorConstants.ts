@@ -135,7 +135,7 @@ export const ICAD_FOUNDATIONS_LESSONS: Lesson[] = [
   },
   {
     id: 'module-3',
-    title: 'Mouse Controls & Navigation',
+    title: 'Mouse Opertaions',
     children: [
       {
         id: 'lesson-3-1',

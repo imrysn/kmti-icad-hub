@@ -575,7 +575,7 @@ export const en_3d_common = {
   "lesson.title.lesson-1-1": "Lesson 1.1 — What is iCAD?",
   "lesson.title.module-2": "Module 2 -  iCAD SX Interface",
   "lesson.title.lesson-2-1": "Lesson 2.1 —  iCAD SX Interface",
-  "lesson.title.module-3": "Module 3 - Mouse Controls & Navigation",
+  "lesson.title.module-3": "Module 3 - Mouse Opertaions",
   "lesson.title.lesson-3-1": "Lesson 3.1 — Zoom In and Zoom Out",
   "lesson.title.lesson-3-2": "Lesson 3.2 — Pan",
   "lesson.title.lesson-3-3": "Lesson 3.3 — Rotate the 3D View",

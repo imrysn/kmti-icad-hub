@@ -32,4 +32,13 @@ describe('shared Foundations narration captions', () => {
     const { container } = render(<LessonVideoSubtitle text="" />);
     expect(container).toBeEmptyDOMElement();
   });
+
+  it('strips HTML tags and prevents literal tags from displaying', () => {
+    const { container } = render(<LessonVideoSubtitle text="Press <b>Enter</b> to confirm." currentCharIndex={6} />);
+    expect(screen.getByRole('status')).not.toHaveTextContent('<b>');
+    expect(screen.getByRole('status')).not.toHaveTextContent('</b>');
+    expect(screen.getByRole('status')).toHaveTextContent('Press Enter to confirm.');
+    expect(container.querySelector('.karaoke-lesson-text__spoken')).toHaveTextContent('Press');
+    expect(container.querySelector('.karaoke-lesson-text__active')).toHaveTextContent('Enter');
+  });
 });

@@ -139,9 +139,12 @@ describe('DynamicFoundationsLesson', () => {
     expect(viewerProps.steps[0].title).toBe('Move Introduction');
     expect(viewerProps.steps[1].title).toBe('1. Select Move Tool');
     expect(viewerProps.steps[2].title).toBe('2. Select the Object');
-    expect(viewerProps.steps[3].title).toBe('Knowledge Check: Selection Confirmation');
-    expect(viewerProps.steps[4].title).toBe('3. Enter Movement Distance');
-    expect(viewerProps.steps[5].title).toBe('4. Confirm & Verify Movement');
+    expect(viewerProps.steps[3].title).toBe('3. Enter Movement Distance');
+    expect(viewerProps.steps[3].customText).toBe('In the Item Entry, enter the movement distance for X-axis, Y-axis, and Z-axis, then press Enter to move the object.');
+    expect(viewerProps.steps[3].customText).not.toContain('<b>');
+    expect(viewerProps.steps[3].waitForNarrationBeforeVideo).toBe(true);
+    expect(viewerProps.steps[4].title).toBe('4. Confirm & Verify Movement');
+    expect(viewerProps.steps[5].title).toBe('Knowledge Check: Move Command');
     expect(viewerProps.steps[6].title).toBe('Move Recap');
   });
 

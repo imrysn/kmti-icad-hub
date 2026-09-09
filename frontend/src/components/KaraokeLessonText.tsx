@@ -20,16 +20,17 @@ export const KaraokeLessonText: React.FC<KaraokeLessonTextProps> = ({
     as: Tag = 'p'
 }) => {
     const { translateContent } = useTranslation();
-    const translatedText = translateContent(text || "");
+    const rawTranslated = translateContent(text || "");
+    const cleanTranslated = rawTranslated.replace(/<[^>]+>/g, '');
     const stripRegex = /^\s*(?:step|\u30b9\u30c6\u30c3\u30d7)\s*\d+\s*[:\uff1a.\-]?\s*/i;
-    const match = translatedText.match(stripRegex);
+    const match = cleanTranslated.match(stripRegex);
     const strippedLength = match ? match[0].length : 0;
-    const displayText = translatedText.slice(strippedLength);
+    const displayText = cleanTranslated.slice(strippedLength);
 
     if (!isActive || currentCharIndex === 0) {
         return (
             <Tag className={`karaoke-lesson-text ${className}`.trim()} style={style}>
-                <span dangerouslySetInnerHTML={{ __html: displayText }} />
+                <span>{displayText}</span>
             </Tag>
         );
     }
