@@ -1358,7 +1358,7 @@ def get_trainer_trainees_progress(
         scores = db.query(QuizScore).filter(QuizScore.user_id == trainee.id).all()
 
         # Calculate completion metrics
-        # Course 1 is 3D Modeling, Course 2 is 2D Drawing
+        # Course 1 is 3D Modeling, Course 2 is 2D Detailing
         completed_3d = [s for s in scores if s.course_id == "1" and s.score >= 80.0]
         completed_2d = [s for s in scores if s.course_id == "2" and s.score >= 80.0]
 

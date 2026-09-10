@@ -51,7 +51,7 @@ def sync_parasolid_quiz():
             },
             {
                 "text": "According to the \"Level Settings\" for lightening solids, what is the direct consequence of selecting \"Change forms\"?",
-                "options": ["The part becomes a 2D drawing", "B-rep solid entities are converted into sheets", "The specific gravity of the material is reset", "The file size increases due to triangle surface data"],
+                "options": ["The part becomes a 2D Detailing", "B-rep solid entities are converted into sheets", "The specific gravity of the material is reset", "The file size increases due to triangle surface data"],
                 "correct_answer": 1,
                 "explanation": "\"Change forms\" significantly reduces complexity but may convert solid volumes into lightweight surface sheets."
             },

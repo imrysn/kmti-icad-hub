@@ -14,7 +14,7 @@ def sync_2d_line_props_quiz():
         # 1. New Question Data (as updated in mentorConstants.ts)
         new_questions = [
             {
-                "text": "Identify the standardized line type, color, and thickness used specifically for representing Hidden Lines in a 2D drawing.",
+                "text": "Identify the standardized line type, color, and thickness used specifically for representing Hidden Lines in a 2D Detailing.",
                 "options": ["Solid Line, White (1), Thick (0.5mm)", "Broken Line, Green (3), Thin (0.1mm)", "Chain Line, Yellow (4), Thin (0.18mm)", "Dotted Line, Blue (5), Medium (0.3mm)"],
                 "correct_answer": 1,
                 "explanation": "Hidden lines (Edges obscured by foreground geometry) are strictly defined as Green broken lines in the KEMCO drafting standard."

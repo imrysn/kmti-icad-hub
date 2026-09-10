@@ -56,7 +56,7 @@ def sync_2d_command_menu_quiz():
                 "explanation": "Removing extremely close parallel lines (like small chamfers) improves drawing clarity and prevents \"bleeding\" during printing."
             },
             {
-                "text": "Scenario: You are working on a 2D drawing and want to ensure that your selection tool ignores all line weights and colors while searching. Which icon in the line properties settings should you click to achieve this?",
+                "text": "Scenario: You are working on a 2D Detailing and want to ensure that your selection tool ignores all line weights and colors while searching. Which icon in the line properties settings should you click to achieve this?",
                 "options": ["The blue icon (Select All)", "The grey icon (Unselect All)", "The \"Next View\" icon on the tool bar", "The \"SmartDraw\" icon in the command menu"],
                 "correct_answer": 1,
                 "explanation": "Unselecting all property filters allows for universal selection regardless of the entity's visual attributes."

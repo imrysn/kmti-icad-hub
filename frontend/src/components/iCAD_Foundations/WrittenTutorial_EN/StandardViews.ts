@@ -9,7 +9,7 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'ivl-objective',
   objective: 'By the end of this lesson, you will be able to change the viewing direction of a 3D model.',
   quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>3D View Toolbar</b> → <b>Select Orientation (Front / Top / Right)</b> → <b>Inspect Face</b>',
+  quickReviewText: '<b>3D View Toolsbar</b> → <b>Select Orientation (Front / Top / Right)</b> → <b>Inspect Face</b>',
   completionText: 'Great job! You have completed the 3D View lesson.',
   inlineHeader: true,
   renderAsObjective: true,
@@ -30,7 +30,7 @@ export const STANDARD_3D_VIEW_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   },
 ];
 
-/* ── Lesson 4.2: User View ───────────────────────────────────────────────── */  
+/* ── Lesson 4.2: User View ───────────────────────────────────────────────── */
 
 export const USER_VIEW_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'User View',

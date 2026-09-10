@@ -106,7 +106,7 @@ Use this checklist against the exact release candidate that will be packaged and
 ## 7. Trainee learning and manuals
 
 - [ ] Course list, lesson list, lesson content, images, video, and interactive content load correctly.
-- [ ] 2D Drawing and 3D Modeling modules open every available lesson without missing assets.
+- [ ] 2D Detailing and 3D Modeling modules open every available lesson without missing assets.
 - [ ] Lesson progress is saved for the correct trainee and remains after logout/restart.
 - [ ] Progress is isolated between users and courses.
 - [ ] Locked/unlocked lesson rules and completion indicators are Correct!

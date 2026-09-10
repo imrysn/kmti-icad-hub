@@ -377,6 +377,135 @@
   }
 }
 
+.foundations-authored-reading .step-text-left > p,
+.foundations-authored-reading .written-tutorial-panel__quick-review p {
+  white-space: pre-line;
+}
+
+/* Native top-layer modal blocks sidebar, lesson controls and keyboard escape. */
+.foundations-quiz-modal {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow-y: auto;
+}
+.foundations-quiz-modal[open] { display: grid; align-items: center; }
+.foundations-quiz-modal::backdrop {
+  background: rgba(2, 6, 23, 0.64);
+  backdrop-filter: blur(8px);
+}
+.foundations-quiz-modal .foundations-knowledge-check { padding: 24px 0; }
+/* Content determines panel height; the full-screen modal scrolls on small screens. */
+.foundations-knowledge-check { width: 100%; min-width: 0; }
+.foundations-knowledge-check .ivl-question-backdrop {
+  position: static;
+  inset: auto;
+  padding: clamp(12px, 3vw, 32px);
+  background: transparent;
+  backdrop-filter: none;
+}
+.foundations-knowledge-check .ivl-question-panel {
+  box-sizing: border-box;
+  width: min(640px, 100%);
+  max-height: none;
+  overflow: visible;
+  padding: clamp(20px, 3vw, 32px);
+}
+.foundations-knowledge-check .ivl-option { min-width: 0; }
+.foundations-knowledge-check .ivl-option input { flex-shrink: 0; }
+.foundations-knowledge-check .ivl-option span { overflow-wrap: anywhere; }
+.foundations-knowledge-check__error {
+  margin: 12px auto;
+  max-width: 640px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #9f1239;
+}
+
+/* F1.3: reference-inspired numbered workflow, scoped to this lesson. */
+.foundations-workflow .written-tutorial-panel__steps {
+  gap: 22px;
+  padding: 16px 12px 24px 92px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.foundations-workflow .written-tutorial-panel__step {
+  --workflow-color: #1686b4;
+  --workflow-shadow: #105a7a;
+  position: relative;
+  min-height: 94px;
+  justify-content: center;
+  gap: 5px;
+  padding: 16px 24px;
+  border-radius: 20px;
+  background: var(--workflow-color);
+  box-shadow: -12px 9px 0 var(--workflow-shadow);
+}
+
+.foundations-workflow .written-tutorial-panel__step:nth-child(2) { --workflow-color: #b64b15; --workflow-shadow: #80380f; }
+.foundations-workflow .written-tutorial-panel__step:nth-child(3) { --workflow-color: #cf344b; --workflow-shadow: #942638; }
+.foundations-workflow .written-tutorial-panel__step:nth-child(4) { --workflow-color: #9940b0; --workflow-shadow: #6c2d7e; }
+.foundations-workflow .written-tutorial-panel__step:nth-child(5) { --workflow-color: #7044da; --workflow-shadow: #4c2f97; }
+
+.foundations-workflow .written-tutorial-panel__step::before {
+  content: '';
+  position: absolute;
+  left: -80px;
+  top: 4px;
+  bottom: -4px;
+  width: 5px;
+  border-radius: 4px;
+  background: var(--workflow-color);
+}
+
+.foundations-workflow .written-tutorial-panel__step::after {
+  content: '';
+  position: absolute;
+  left: -86px;
+  top: calc(50% - 8px);
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--workflow-color);
+}
+
+.foundations-workflow .written-tutorial-panel__step .step-number {
+  position: absolute;
+  left: -56px;
+  top: 9px;
+  bottom: -9px;
+  width: 56px;
+  height: auto;
+  border-radius: 18px 0 0 18px;
+  background: var(--workflow-shadow);
+  box-shadow: none;
+  color: #fff;
+  font-size: 2.8rem;
+}
+
+.foundations-workflow .written-tutorial-panel__step .step-header { justify-content: center; }
+.foundations-workflow .written-tutorial-panel__step h4 { color: #fff; text-align: center; font-size: 1.2rem; }
+.foundations-workflow .written-tutorial-panel__step p { color: #fff; padding: 0; text-align: center; line-height: 1.5; }
+
+@media (max-width: 600px) {
+  .foundations-workflow .written-tutorial-panel__steps { padding-left: 60px; padding-right: 0; }
+  .foundations-workflow .written-tutorial-panel__step { padding: 14px 12px; border-radius: 14px; }
+  .foundations-workflow .written-tutorial-panel__step::before { left: -58px; }
+  .foundations-workflow .written-tutorial-panel__step::after { left: -64px; }
+  .foundations-workflow .written-tutorial-panel__step .step-number { left: -40px; width: 40px; min-width: 40px; font-size: 2rem; }
+  .foundations-workflow .written-tutorial-panel__step h4 { font-size: 1.05rem; }
+}
+
 /* Card padding & spacing refinement so content feels cohesive, open, and comfortable */
 .lesson-card.tab-content,
 .lesson-card-tab-content,

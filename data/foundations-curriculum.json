@@ -1,0 +1,2451 @@
+{
+  "version": 2,
+  "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
+  "modules": [
+    {
+      "id": "F1",
+      "title": {
+        "en": "Introduction to iCAD SX",
+        "ja": "iCAD SX の概要"
+      },
+      "lessons": [
+        {
+          "id": "F1.1",
+          "moduleId": "F1",
+          "title": {
+            "en": "What is iCAD SX?",
+            "ja": "iCAD SX とは？"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "lesson-1-1"
+          ],
+          "completionAliases": [
+            "lesson-1-1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "iCAD SX is a **Computer-Aided Design (CAD) software** used for mechanical engineering design.",
+              "description2": "It allows engineers to create, view, and manage both **3D models** and **2D engineering drawings**.",
+              "practice": "By the end of this lesson, you should be able to explain what iCAD SX is and identify its two main design environments.",
+              "sections": [
+                {
+                  "title": "What is CAD?",
+                  "text": "**CAD** means **Computer-Aided Design**.\n\nIt is the use of computer software to create and modify engineering designs accurately."
+                },
+                {
+                  "title": "What is iCAD SX?",
+                  "text": "iCAD SX is a CAD system for mechanical design.\n\nIt supports two main types of work:\n- **3D Modeling** — creating three-dimensional parts and assemblies.\n- **2D Detailing** — creating engineering drawings used for documentation and manufacturing."
+                }
+              ],
+              "quickReview": "**iCAD SX** → Mechanical CAD Software\n**3D** → Models and Assemblies\n**2D** → Engineering Drawings"
+            },
+            "ja": {
+              "explanation": "iCAD SX は、機械設計に使用する **CAD（コンピューター支援設計）ソフトウェア**です。",
+              "description2": "**3D モデル**と **2D の設計図面**の作成、表示、管理ができます。",
+              "practice": "このレッスンを終えると、iCAD SX がどのようなソフトウェアかを説明し、二つの主な設計環境を挙げられるようになります。",
+              "sections": [
+                {
+                  "title": "CAD とは？",
+                  "text": "**CAD** は **Computer-Aided Design（コンピューター支援設計）**の略です。\n\nコンピューターのソフトウェアを使い、設計を正確に作成・変更することを意味します。"
+                },
+                {
+                  "title": "iCAD SX とは？",
+                  "text": "iCAD SX は、機械設計のための CAD システムです。\n\n主に次の二つの作業に対応しています。\n- **3D モデリング** — 三次元の部品やアセンブリを作成します。\n- **2D 図面** — 設計の記録や製造に使用する図面を作成します。"
+                }
+              ],
+              "quickReview": "**iCAD SX** → 機械設計用 CAD ソフトウェア\n**3D** → モデルとアセンブリ\n**2D** → 設計図面"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F1.2",
+          "moduleId": "F1",
+          "title": {
+            "en": "What iCAD SX is Used For",
+            "ja": "iCAD SX の用途"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "iCAD SX is used by engineers to create, edit, and manage mechanical designs.",
+              "description2": "It supports both **3D modeling** and **2D Detailing**, making it useful throughout the design process.",
+              "practice": "By the end of this lesson, you should be able to identify the main engineering tasks that can be performed using iCAD SX.",
+              "sections": [
+                {
+                  "title": "Common Uses of iCAD SX",
+                  "text": "iCAD SX can be used for:\n- **Creating 3D Parts** — building mechanical components in a 3D environment.\n- **Creating Assemblies** — combining multiple parts into one complete design.\n- **Editing Designs** — modifying size, position, shape, and other design details.\n- **Checking Models** — inspecting the model from different views and measuring geometry.\n- **Creating 2D Detailings** — producing engineering drawings based on the 3D model.\n- **Preparing Manufacturing Information** — adding dimensions, notes, symbols, and other drawing details."
+                },
+                {
+                  "title": "Why It Is Useful",
+                  "text": "Using iCAD SX helps engineers organize design work in one system.\n\nA model can be created in 3D, checked, and then used to prepare the required 2D engineering drawing."
+                }
+              ],
+              "quickReview": "**iCAD SX can be used to:**\n\n**Create Parts → Build Assemblies → Edit Designs → Check Models → Create 2D Detailings**"
+            },
+            "ja": {
+              "explanation": "iCAD SX は、機械設計の作成、編集、管理に使用されます。",
+              "description2": "**3D モデリング**と **2D 図面作成**の両方に対応しており、設計のさまざまな工程で役立ちます。",
+              "practice": "このレッスンを終えると、iCAD SX で行える主な設計作業を挙げられるようになります。",
+              "sections": [
+                {
+                  "title": "iCAD SX の主な用途",
+                  "text": "iCAD SX では、次の作業ができます。\n- **3D 部品の作成** — 3D 環境で機械部品を作成します。\n- **アセンブリの作成** — 複数の部品を組み合わせて、一つの設計を完成させます。\n- **設計の編集** — サイズ、位置、形状などの設計内容を変更します。\n- **モデルの確認** — さまざまな方向からモデルを確認し、形状を測定します。\n- **2D 図面の作成** — 3D モデルを基に設計図面を作成します。\n- **製造情報の準備** — 寸法、注記、記号などの図面情報を追加します。"
+                },
+                {
+                  "title": "役立つ理由",
+                  "text": "iCAD SX を使うと、一つのシステムで設計作業をまとめて管理できます。\n\n3D でモデルを作成・確認し、そのモデルを使って必要な 2D 設計図面を準備できます。"
+                }
+              ],
+              "quickReview": "**iCAD SX でできること：**\n\n**部品の作成 → アセンブリの構築 → 設計の編集 → モデルの確認 → 2D 図面の作成**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F1.3",
+          "moduleId": "F1",
+          "title": {
+            "en": "Basic Workflow: 3D → 2D",
+            "ja": "基本的な流れ：3D → 2D"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A common iCAD SX workflow starts with a **3D model** and continues to a **2D engineering drawing**.",
+              "description2": "The 3D model shows the shape of the design, while the 2D Detailing communicates the information needed for production and documentation.",
+              "practice": "By the end of this lesson, you should be able to understand the basic flow from 3D modeling to 2D Detailing creation.",
+              "sections": [
+                {
+                  "title": "Create or Open the 3D Model",
+                  "text": "Start with the required part or assembly in the 3D environment."
+                },
+                {
+                  "title": "Check the Model",
+                  "text": "Review the shape, position, dimensions, and overall design."
+                },
+                {
+                  "title": "Create the 2D Detailing",
+                  "text": "Generate drawing views from the 3D model."
+                },
+                {
+                  "title": "Add Drawing Information",
+                  "text": "Add the required dimensions, notes, symbols, and other details."
+                },
+                {
+                  "title": "Review and Save",
+                  "text": "Check the completed drawing and save the final file."
+                }
+              ],
+              "quickReview": "**3D Model → Check → Create 2D Detailing → Add Information → Review and Save**"
+            },
+            "ja": {
+              "explanation": "一般的な iCAD SX の作業は、**3D モデル**から始まり、**2D 設計図面**の作成へと進みます。",
+              "description2": "3D モデルは設計の形状を表し、2D 図面は製造と記録に必要な情報を伝えます。",
+              "practice": "このレッスンを終えると、3D モデリングから 2D 図面作成までの基本的な流れを理解できるようになります。",
+              "sections": [
+                {
+                  "title": "3D モデルを作成または開く",
+                  "text": "3D 環境で、必要な部品またはアセンブリから作業を始めます。"
+                },
+                {
+                  "title": "モデルを確認する",
+                  "text": "形状、位置、寸法、設計全体を確認します。"
+                },
+                {
+                  "title": "2D 図面を作成する",
+                  "text": "3D モデルから図面ビューを生成します。"
+                },
+                {
+                  "title": "図面情報を追加する",
+                  "text": "必要な寸法、注記、記号などの詳細情報を追加します。"
+                },
+                {
+                  "title": "確認して保存する",
+                  "text": "完成した図面を確認し、最終ファイルを保存します。"
+                }
+              ],
+              "quickReview": "**3D モデル → 確認 → 2D 図面の作成 → 情報の追加 → 確認と保存**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F1.4",
+          "moduleId": "F1",
+          "title": {
+            "en": "Starting iCAD SX",
+            "ja": "iCAD SX の起動"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "This lesson explains how to open iCAD SX and prepare the application for use.",
+              "practice": "By the end of this lesson, you should be able to start iCAD SX and confirm that the main workspace has opened correctly.",
+              "sections": [
+                {
+                  "title": "Locate iCAD SX",
+                  "text": "Find the **iCAD SX** shortcut on the desktop or from the Windows Start menu."
+                },
+                {
+                  "title": "Open the Application",
+                  "text": "Double-click the **iCAD SX** icon."
+                },
+                {
+                  "title": "Wait for the System to Load",
+                  "text": "Allow the application to finish loading before selecting any commands."
+                },
+                {
+                  "title": "Confirm the Workspace",
+                  "text": "Check that the iCAD SX main screen is displayed and ready for use."
+                }
+              ],
+              "quickReview": "**Locate iCAD SX → Open the Application → Wait for Loading → Confirm the Workspace**"
+            },
+            "ja": {
+              "explanation": "このレッスンでは、iCAD SX を起動して使用できる状態にする方法を説明します。",
+              "practice": "このレッスンを終えると、iCAD SX を起動し、メインの作業画面が正しく開いたことを確認できるようになります。",
+              "sections": [
+                {
+                  "title": "iCAD SX を探す",
+                  "text": "デスクトップまたは Windows のスタートメニューで **iCAD SX** のショートカットを探します。"
+                },
+                {
+                  "title": "アプリケーションを開く",
+                  "text": "**iCAD SX** のアイコンをダブルクリックします。"
+                },
+                {
+                  "title": "読み込みが完了するまで待つ",
+                  "text": "コマンドを選択する前に、アプリケーションの読み込みが完了するまで待ちます。"
+                },
+                {
+                  "title": "作業画面を確認する",
+                  "text": "iCAD SX のメイン画面が表示され、使用できる状態であることを確認します。"
+                }
+              ],
+              "quickReview": "**iCAD SX を探す → アプリケーションを開く → 読み込みを待つ → 作業画面を確認する**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F1.5",
+          "moduleId": "F1",
+          "title": {
+            "en": "Closing iCAD SX",
+            "ja": "iCAD SX の終了"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "This lesson explains how to close iCAD SX safely after finishing your work.",
+              "practice": "By the end of this lesson, you should be able to exit iCAD SX without losing unsaved changes.",
+              "sections": [
+                {
+                  "title": "Check Your Work",
+                  "text": "Make sure any important changes have been saved."
+                },
+                {
+                  "title": "Close iCAD SX",
+                  "text": "Use the **Exit** command from the File menu or click the **X** button in the upper-right corner of the application window."
+                },
+                {
+                  "title": "Respond to the Save Message",
+                  "text": "If iCAD SX detects unsaved changes, choose whether to save them before closing."
+                },
+                {
+                  "title": "Confirm the Application is Closed",
+                  "text": "Wait until the iCAD SX window completely disappears."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Always check for unsaved work before exiting the application."
+                }
+              ],
+              "quickReview": "**Check Work → Close iCAD SX → Save if Required → Exit**"
+            },
+            "ja": {
+              "explanation": "このレッスンでは、作業を終えた後に iCAD SX を安全に終了する方法を説明します。",
+              "practice": "このレッスンを終えると、未保存の変更を失わずに iCAD SX を終了できるようになります。",
+              "sections": [
+                {
+                  "title": "作業内容を確認する",
+                  "text": "重要な変更が保存されていることを確認します。"
+                },
+                {
+                  "title": "iCAD SX を閉じる",
+                  "text": "ファイルメニューの **Exit** コマンドを使用するか、アプリケーションウィンドウの右上にある **X** ボタンをクリックします。"
+                },
+                {
+                  "title": "保存メッセージに応答する",
+                  "text": "未保存の変更が検出された場合は、終了前に保存するかどうかを選択します。"
+                },
+                {
+                  "title": "終了したことを確認する",
+                  "text": "iCAD SX のウィンドウが完全に消えるまで待ちます。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "終了する前に、未保存の作業がないか必ず確認してください。"
+                }
+              ],
+              "quickReview": "**作業の確認 → iCAD SX を閉じる → 必要に応じて保存 → 終了**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F1.6",
+          "moduleId": "F1",
+          "title": {
+            "en": "Introduction to iCAD SX Help",
+            "ja": "iCAD SX ヘルプの紹介"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "iCAD SX includes a built-in Help system that provides information about commands, tools, and operations.",
+              "description2": "It can be used when you need guidance while working in the application.",
+              "practice": "By the end of this lesson, you should be able to open iCAD SX Help and understand how it can support your work.",
+              "sections": [
+                {
+                  "title": "Open the Help Menu",
+                  "text": "From the iCAD SX menu bar, select **Help**."
+                },
+                {
+                  "title": "Open the Help System",
+                  "text": "Choose the available Help option to open the iCAD SX documentation."
+                },
+                {
+                  "title": "Find the Topic You Need",
+                  "text": "Browse the available categories or use the search function to look for a command or operation."
+                },
+                {
+                  "title": "Read the Instructions",
+                  "text": "Review the explanation and procedure for the selected topic."
+                },
+                {
+                  "title": "When to Use Help",
+                  "text": "Use iCAD SX Help when you:\n- Forget how a command works.\n- Need information about a tool.\n- Want to check an operation procedure.\n- Need more details about an iCAD SX function."
+                }
+              ],
+              "quickReview": "**Open Help → Find a Topic → Read the Instructions → Continue Your Work**"
+            },
+            "ja": {
+              "explanation": "iCAD SX には、コマンド、ツール、操作に関する情報を提供するヘルプシステムが組み込まれています。",
+              "description2": "アプリケーションで作業中に、操作の案内が必要なときに利用できます。",
+              "practice": "このレッスンを終えると、iCAD SX のヘルプを開き、作業にどのように役立つかを理解できるようになります。",
+              "sections": [
+                {
+                  "title": "ヘルプメニューを開く",
+                  "text": "iCAD SX のメニューバーから **Help** を選択します。"
+                },
+                {
+                  "title": "ヘルプシステムを開く",
+                  "text": "利用できるヘルプ項目を選び、iCAD SX のドキュメントを開きます。"
+                },
+                {
+                  "title": "必要なトピックを探す",
+                  "text": "カテゴリを参照するか、検索機能を使ってコマンドや操作を探します。"
+                },
+                {
+                  "title": "説明を読む",
+                  "text": "選択したトピックの説明と手順を確認します。"
+                },
+                {
+                  "title": "ヘルプを使う場面",
+                  "text": "次のような場合に iCAD SX のヘルプを使います。\n- コマンドの使い方を忘れたとき。\n- ツールについての情報が必要なとき。\n- 操作手順を確認したいとき。\n- iCAD SX の機能について詳しく知りたいとき。"
+                }
+              ],
+              "quickReview": "**ヘルプを開く → トピックを探す → 説明を読む → 作業を続ける**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "title": {
+        "en": "Understanding the iCAD SX Interface",
+        "ja": "iCAD SX の画面構成"
+      },
+      "lessons": [
+        {
+          "id": "F2.1",
+          "moduleId": "F2",
+          "title": {
+            "en": "iCAD SX Screen Layout",
+            "ja": "iCAD SX の画面構成"
+          },
+          "type": "interactive",
+          "renderer": "lesson-2-1",
+          "video": null,
+          "routeAliases": [
+            "lesson-2-1"
+          ],
+          "completionAliases": [
+            "lesson-2-1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "The iCAD SX screen is divided into different areas that help you access commands, work with models, enter values, and view system information.",
+              "description2": "Understanding the screen layout makes it easier to know where to look while using iCAD SX.",
+              "practice": "By the end of this lesson, you should be able to identify the main areas of the iCAD SX screen and understand their basic purpose.",
+              "sections": [
+                {
+                  "title": "Main Areas of the Screen",
+                  "text": "**Menu Bar**\nContains the main menus used to access iCAD SX commands and settings.\n\n**Toolbars**\nProvide quick access to commonly used tools and operations.\n\n**Working / Modeling Area**\nThe main area where you view and work with 3D models and 2D Detailings.\n\n**Input Area**\nUsed to enter values or options required by the current command.\n\n**Information / Message Area**\nDisplays instructions, system messages, and operation guidance.\n\n**Tree / Model Structure View**\nShows the structure of parts, components, and other model information."
+                },
+                {
+                  "title": "Why the Screen Layout is Important",
+                  "text": "Knowing the location of each area helps you:\n- Find commands more easily.\n- Understand where to enter information.\n- Follow instructions shown by iCAD SX.\n- Navigate the workspace with more confidence."
+                }
+              ],
+              "quickReview": "**Menu Bar → Toolbars → Working Area → Input Area → Information Area → Model Structure**"
+            },
+            "ja": {
+              "explanation": "iCAD SX の画面は、コマンドの選択、モデルの操作、値の入力、システム情報の確認に役立つ複数の領域に分かれています。",
+              "description2": "画面構成を理解すると、iCAD SX の使用中にどこを確認すればよいか分かりやすくなります。",
+              "practice": "このレッスンを終えると、iCAD SX の画面の主な領域を識別し、それぞれの基本的な役割を理解できるようになります。",
+              "sections": [
+                {
+                  "title": "画面の主な領域",
+                  "text": "**メニューバー**\niCAD SX のコマンドや設定にアクセスするためのメニューがあります。\n\n**ツールバー**\nよく使うツールや操作にすばやくアクセスできます。\n\n**作業／モデリング領域**\n3D モデルや 2D 図面を表示し、操作する主な領域です。\n\n**入力領域**\n現在のコマンドに必要な値やオプションを入力します。\n\n**情報／メッセージ領域**\n指示、システムメッセージ、操作の案内を表示します。\n\n**ツリー／モデル構造ビュー**\n部品や構成要素の構造など、モデルの情報を表示します。"
+                },
+                {
+                  "title": "画面構成が重要な理由",
+                  "text": "各領域の位置を知ると、次のことに役立ちます。\n- コマンドを見つけやすくなります。\n- 情報の入力場所が分かります。\n- iCAD SX に表示される指示に従えます。\n- より自信を持って作業画面を操作できます。"
+                }
+              ],
+              "quickReview": "**メニューバー → ツールバー → 作業領域 → 入力領域 → 情報領域 → モデル構造**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F2.9",
+          "moduleId": "F2",
+          "title": {
+            "en": "Understanding the Toolbar",
+            "ja": "ツールバーの理解"
+          },
+          "type": "interactive",
+          "renderer": "toolbars",
+          "video": null,
+          "routeAliases": [
+            "toolbars"
+          ],
+          "completionAliases": [
+            "toolbars"
+          ],
+          "content": {
+            "en": {
+              "explanation": "The **Toolbar** provides quick access to frequently used iCAD SX commands.",
+              "description2": "Each toolbar groups related tools together, making it easier to find the command you need while working.",
+              "practice": "By the end of this lesson, you should be able to recognize the main iCAD SX toolbars and understand their basic purpose.",
+              "sections": [
+                {
+                  "title": "File",
+                  "text": "Provides quick access to common file operations such as creating, opening, and saving drawings."
+                },
+                {
+                  "title": "2D View",
+                  "text": "Contains tools used to control and work with 2D Detailing views."
+                },
+                {
+                  "title": "Switch Display",
+                  "text": "Used to change how objects or drawing information are displayed on the screen."
+                },
+                {
+                  "title": "Screen Operations",
+                  "text": "Contains tools for navigating the workspace, such as zooming, panning, and adjusting the displayed area."
+                },
+                {
+                  "title": "3D View",
+                  "text": "Used to change the viewing direction and orientation of a 3D model."
+                },
+                {
+                  "title": "User View",
+                  "text": "Allows you to use and manage custom viewing positions."
+                },
+                {
+                  "title": "Edit",
+                  "text": "Provides common editing functions used while working with model or drawing data."
+                },
+                {
+                  "title": "Shading",
+                  "text": "Changes how the surfaces of a 3D model are visually displayed."
+                },
+                {
+                  "title": "Section Display",
+                  "text": "Allows you to view the inside of a model by displaying a sectional view."
+                },
+                {
+                  "title": "2D Standard Screen",
+                  "text": "Provides standard screen and display controls for 2D Detailing work."
+                },
+                {
+                  "title": "System Information",
+                  "text": "Provides access to information related to the current iCAD SX system or working environment."
+                },
+                {
+                  "title": "Screen Memory",
+                  "text": "Allows specific screen or view conditions to be stored and recalled when needed."
+                },
+                {
+                  "title": "Entry Control",
+                  "text": "Controls input conditions and options used while performing commands."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "You do not need to memorize every toolbar icon yet.\n\nFor now, focus on recognizing **which toolbar contains the type of command you need**. Each important operation will be explained in later lessons."
+                }
+              ],
+              "quickReview": "**File** → File operations\n**2D View** → 2D viewing\n**Switch Display** → Display control\n**Screen Operations** → Navigation\n**3D View** → 3D orientation\n**User View** → Custom views\n**Edit** → Editing tools\n**Shading** → Surface display\n**Section Display** → Internal view\n**2D Standard Screen** → 2D screen controls\n**System Information** → System details\n**Screen Memory** → Saved screen conditions\n**Entry Control** → Input settings"
+            },
+            "ja": {
+              "explanation": "**ツールバー**から、よく使う iCAD SX のコマンドにすばやくアクセスできます。",
+              "description2": "関連するツールがまとめられているため、作業中に必要なコマンドを見つけやすくなります。",
+              "practice": "このレッスンを終えると、iCAD SX の主なツールバーを識別し、それぞれの基本的な役割を理解できるようになります。",
+              "sections": [
+                {
+                  "title": "File",
+                  "text": "図面の新規作成、読み込み、保存などの一般的なファイル操作にすばやくアクセスできます。"
+                },
+                {
+                  "title": "2D View",
+                  "text": "2D 図面ビューの操作や制御に使用するツールがあります。"
+                },
+                {
+                  "title": "Switch Display",
+                  "text": "画面上の物体や図面情報の表示方法を変更します。"
+                },
+                {
+                  "title": "Screen Operations",
+                  "text": "ズーム、パン、表示範囲の調整など、作業画面を操作するツールがあります。"
+                },
+                {
+                  "title": "3D View",
+                  "text": "3D モデルを見る方向や向きを変更します。"
+                },
+                {
+                  "title": "User View",
+                  "text": "カスタムの視点を使用・管理できます。"
+                },
+                {
+                  "title": "Edit",
+                  "text": "モデルや図面データを扱う際の一般的な編集機能を提供します。"
+                },
+                {
+                  "title": "Shading",
+                  "text": "3D モデルの表面の表示方法を変更します。"
+                },
+                {
+                  "title": "Section Display",
+                  "text": "断面表示によってモデルの内部を確認できます。"
+                },
+                {
+                  "title": "2D Standard Screen",
+                  "text": "2D 図面作業用の標準的な画面・表示操作を提供します。"
+                },
+                {
+                  "title": "System Information",
+                  "text": "現在の iCAD SX システムや作業環境に関する情報にアクセスできます。"
+                },
+                {
+                  "title": "Screen Memory",
+                  "text": "特定の画面や表示の状態を保存し、必要なときに呼び出せます。"
+                },
+                {
+                  "title": "Entry Control",
+                  "text": "コマンド実行中に使用する入力条件やオプションを制御します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "今はすべてのツールバーアイコンを暗記する必要はありません。\n\nまずは、**必要な種類のコマンドがどのツールバーにあるか**を理解しましょう。重要な操作は、後のレッスンで説明します。"
+                }
+              ],
+              "quickReview": "**File** → ファイル操作\n**2D View** → 2D 表示\n**Switch Display** → 表示制御\n**Screen Operations** → 画面操作\n**3D View** → 3D の向き\n**User View** → カスタムビュー\n**Edit** → 編集ツール\n**Shading** → 表面表示\n**Section Display** → 内部の表示\n**2D Standard Screen** → 2D 画面制御\n**System Information** → システム詳細\n**Screen Memory** → 保存した画面状態\n**Entry Control** → 入力設定"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review"
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "title": {
+        "en": "Mouse and Basic Navigation",
+        "ja": "マウスと基本的な画面操作"
+      },
+      "lessons": [
+        {
+          "id": "F3.1",
+          "moduleId": "F3",
+          "title": {
+            "en": "Basic Mouse Operations",
+            "ja": "マウスの基本操作"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The mouse is one of the main tools used to interact with iCAD SX.",
+              "description2": "You use it to point to objects, select items, choose commands, and work inside the drawing or modeling area.",
+              "practice": "By the end of this lesson, you should be able to use the basic mouse controls when working in iCAD SX.",
+              "sections": [
+                {
+                  "title": "Move the Mouse",
+                  "text": "Move the pointer to the command, object, or location you want to work with."
+                },
+                {
+                  "title": "Left-Click",
+                  "text": "Used to select commands, objects, or points on the screen."
+                },
+                {
+                  "title": "Mouse Wheel",
+                  "text": "Used for view-related operations. You will learn how to use it for zooming in the next lesson."
+                },
+                {
+                  "title": "Right-Click",
+                  "text": "Used for command-related actions depending on the operation currently being performed."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The function of a mouse button may change depending on the active iCAD SX command.\n\nAlways check the instructions shown on the screen while performing an operation."
+                }
+              ],
+              "quickReview": "**Move Pointer → Select Command or Object → Follow the Current Operation**"
+            },
+            "ja": {
+              "explanation": "マウスは iCAD SX の操作に使用する主な道具の一つです。",
+              "description2": "対象を指し示す、項目を選択する、コマンドを選ぶ、図面やモデリング領域で作業するために使います。",
+              "practice": "このレッスンを終えると、iCAD SX で基本的なマウス操作ができるようになります。",
+              "sections": [
+                {
+                  "title": "マウスを動かす",
+                  "text": "操作したいコマンド、対象、位置にポインターを移動します。"
+                },
+                {
+                  "title": "左クリック",
+                  "text": "画面上のコマンド、対象、点を選択します。"
+                },
+                {
+                  "title": "マウスホイール",
+                  "text": "表示に関する操作に使用します。次のレッスンでズームへの使い方を学びます。"
+                },
+                {
+                  "title": "右クリック",
+                  "text": "現在実行している操作に応じて、コマンドに関する動作を行います。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "マウスボタンの役割は、実行中の iCAD SX コマンドによって変わる場合があります。\n\n操作中は、画面に表示される指示を必ず確認してください。"
+                }
+              ],
+              "quickReview": "**ポインターを移動 → コマンドや対象を選択 → 現在の操作に従う**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F3.3",
+          "moduleId": "F3",
+          "title": {
+            "en": "Zoom In and Zoom Out",
+            "ja": "ズームインとズームアウト"
+          },
+          "type": "video",
+          "renderer": "lesson-3-1",
+          "video": "zoomin_out",
+          "routeAliases": [
+            "lesson-3-1",
+            "F3.4"
+          ],
+          "completionAliases": [
+            "lesson-3-1",
+            "F3.4"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Zoom allows you to change how closely you view a model or drawing without changing its actual size.",
+              "description2": "Use **Zoom In** to see a smaller area in more detail, and **Zoom Out** to see a larger area of the workspace.",
+              "practice": "By the end of this lesson, you should be able to zoom in and out while working in iCAD SX.",
+              "sections": [
+                {
+                  "title": "Zoom In",
+                  "text": "Use **Zoom In** when you need a closer view of a specific part of the model or drawing.\n\nThis is useful when checking small features or details."
+                },
+                {
+                  "title": "Zoom Out",
+                  "text": "Use **Zoom Out** when you want to see more of the model or drawing on the screen.\n\nThis helps you understand the overall layout and position of objects."
+                },
+                {
+                  "title": "Using the Mouse Wheel",
+                  "text": "Move the mouse pointer over the area you want to view, then use the **mouse wheel** to zoom in or out.\n\nThe model itself does not change size. Only the screen view changes."
+                }
+              ],
+              "quickReview": "**Zoom In** → View more detail\n**Zoom Out** → View a larger area"
+            },
+            "ja": {
+              "explanation": "ズームは、モデルや図面の実際のサイズを変えずに、表示の近さを変更します。",
+              "description2": "**ズームイン**で狭い範囲を詳しく確認し、**ズームアウト**で作業領域を広く表示します。",
+              "practice": "このレッスンを終えると、iCAD SX でズームインとズームアウトができるようになります。",
+              "sections": [
+                {
+                  "title": "ズームイン",
+                  "text": "モデルや図面の特定の部分を近くで確認したいときは、**ズームイン**を使います。\n\n小さな形状や詳細を確認するときに役立ちます。"
+                },
+                {
+                  "title": "ズームアウト",
+                  "text": "モデルや図面を画面上で広く表示したいときは、**ズームアウト**を使います。\n\n全体の配置や対象の位置を把握しやすくなります。"
+                },
+                {
+                  "title": "マウスホイールの使い方",
+                  "text": "表示したい領域にマウスポインターを移動し、**マウスホイール**でズームインまたはズームアウトします。\n\nモデル自体のサイズは変わりません。画面の表示だけが変わります。"
+                }
+              ],
+              "quickReview": "**ズームイン** → 詳細を確認\n**ズームアウト** → 広い範囲を表示"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F3.5",
+          "moduleId": "F3",
+          "title": {
+            "en": "Pan",
+            "ja": "パン"
+          },
+          "type": "video",
+          "renderer": "lesson-3-2",
+          "video": "pan",
+          "routeAliases": [
+            "lesson-3-2"
+          ],
+          "completionAliases": [
+            "lesson-3-2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Pan allows you to move the screen view without changing the actual position or size of the model.",
+              "practice": "By the end of this lesson, you should be able to use the mouse to pan around the iCAD SX workspace.",
+              "sections": [
+                {
+                  "title": "Place the Pointer",
+                  "text": "Move the mouse pointer inside the modeling area."
+                },
+                {
+                  "title": "Hold the Scroll Wheel",
+                  "text": "Press and hold the **mouse scroll wheel / middle mouse button**."
+                },
+                {
+                  "title": "Move the Mouse",
+                  "text": "While holding the scroll wheel, move the mouse in the direction you want to shift the view."
+                },
+                {
+                  "title": "Release the Scroll Wheel",
+                  "text": "Release the scroll wheel when the model is positioned where you want it on the screen."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Panning only changes what you see on the screen.\n\nIt does **not** move or modify the actual model."
+                }
+              ],
+              "quickReview": "**Hold Scroll Wheel → Move Mouse → Release**"
+            },
+            "ja": {
+              "explanation": "パンは、モデルの実際の位置やサイズを変えずに、画面の表示位置を移動する操作です。",
+              "practice": "このレッスンを終えると、マウスを使って iCAD SX の作業画面をパンできるようになります。",
+              "sections": [
+                {
+                  "title": "ポインターを置く",
+                  "text": "モデリング領域内にマウスポインターを移動します。"
+                },
+                {
+                  "title": "ホイールを押したままにする",
+                  "text": "**マウスホイール／中央ボタン**を押したままにします。"
+                },
+                {
+                  "title": "マウスを動かす",
+                  "text": "ホイールを押したまま、表示を移動したい方向にマウスを動かします。"
+                },
+                {
+                  "title": "ホイールを放す",
+                  "text": "モデルが画面上の目的の位置に表示されたら、ホイールを放します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "パンは画面上の見え方だけを変更します。\n\n実際のモデルを移動したり変更したりすることは**ありません**。"
+                }
+              ],
+              "quickReview": "**ホイールを押したままにする → マウスを動かす → 放す**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F3.6",
+          "moduleId": "F3",
+          "title": {
+            "en": "Rotate the 3D View",
+            "ja": "3D ビューの回転"
+          },
+          "type": "video",
+          "renderer": "lesson-3-3",
+          "video": "scroll",
+          "routeAliases": [
+            "lesson-3-3"
+          ],
+          "completionAliases": [
+            "lesson-3-3"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Rotate the 3D View allows you to look at a model from different angles without changing the model itself.",
+              "practice": "By the end of this lesson, you should be able to rotate the 3D view using either mouse control method available in iCAD SX.",
+              "sections": [
+                {
+                  "title": "How to Rotate the 3D View",
+                  "text": "**Method 1 — Scroll Wheel + Right-Click**\n\n**Step 1 — Place the Pointer**\nMove the mouse pointer inside the 3D modeling area.\n\n**Step 2 — Hold the Scroll Wheel and Right Mouse Button**\nPress and hold the **scroll wheel / middle mouse button** and the **right mouse button** at the same time.\n\n**Step 3 — Move the Mouse**\nMove the mouse to rotate the 3D view.\n\n**Step 4 — Release the Buttons**\nRelease the buttons when the model is shown at the angle you want."
+                },
+                {
+                  "title": "Alternative Method — Alt + Left-Click",
+                  "text": "**Step 1 — Hold Alt**\nPress and hold the **Alt** key on the keyboard.\n\n**Step 2 — Hold the Left Mouse Button**\nWhile holding Alt, press and hold the **left mouse button** inside the modeling area.\n\n**Step 3 — Move the Mouse**\nMove the mouse to rotate the view.\n\n**Step 4 — Release**\nRelease the mouse button and Alt key when the desired angle is reached."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Rotating the 3D view only changes your viewing direction.\n\nIt does **not** rotate or modify the actual model geometry."
+                }
+              ],
+              "quickReview": "**Scroll Wheel + Right-Click → Move Mouse → Rotate View**\n\nor\n\n**Alt + Left-Click → Move Mouse → Rotate View**"
+            },
+            "ja": {
+              "explanation": "3D ビューの回転は、モデル自体を変えずに、さまざまな角度からモデルを見るための操作です。",
+              "practice": "このレッスンを終えると、iCAD SX で利用できる二つのマウス操作方法のどちらでも 3D ビューを回転できるようになります。",
+              "sections": [
+                {
+                  "title": "3D ビューを回転する方法",
+                  "text": "**方法 1 — ホイール + 右クリック**\n\n**ステップ 1 — ポインターを置く**\n3D モデリング領域内にマウスポインターを移動します。\n\n**ステップ 2 — ホイールと右ボタンを押したままにする**\n**ホイール／中央ボタン**と**右ボタン**を同時に押したままにします。\n\n**ステップ 3 — マウスを動かす**\nマウスを動かして 3D ビューを回転します。\n\n**ステップ 4 — ボタンを放す**\n目的の角度でモデルが表示されたら、ボタンを放します。"
+                },
+                {
+                  "title": "別の方法 — Alt + 左クリック",
+                  "text": "**ステップ 1 — Alt を押したままにする**\nキーボードの **Alt** キーを押したままにします。\n\n**ステップ 2 — 左ボタンを押したままにする**\nAlt を押しながら、モデリング領域内で**左ボタン**を押したままにします。\n\n**ステップ 3 — マウスを動かす**\nマウスを動かしてビューを回転します。\n\n**ステップ 4 — 放す**\n目的の角度になったら、マウスボタンと Alt キーを放します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "3D ビューの回転は、見る方向だけを変えます。\n\n実際のモデル形状を回転したり変更したりすることは**ありません**。"
+                }
+              ],
+              "quickReview": "**ホイール + 右クリック → マウスを動かす → ビューを回転**\n\nまたは\n\n**Alt + 左クリック → マウスを動かす → ビューを回転**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review"
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "title": {
+        "en": "3D Views and User Views",
+        "ja": "3D ビューとユーザービュー"
+      },
+      "lessons": [
+        {
+          "id": "F4.1",
+          "moduleId": "F4",
+          "title": {
+            "en": "3D VIEWS",
+            "ja": "3D ビュー"
+          },
+          "type": "video",
+          "renderer": "lesson-4-1",
+          "video": "lesson4.1",
+          "routeAliases": [
+            "lesson-4-1",
+            "F4.2",
+            "F4.3",
+            "F4.4",
+            "F4.5"
+          ],
+          "completionAliases": [
+            "lesson-4-1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "The **3D View Toolsbar** lets you look at a model from different directions.",
+              "description2": "You can choose a standard view or use the model itself to define a viewing direction.",
+              "practice": "By the end of this lesson, you should be able to identify the available 3D View Tools and choose the correct view when inspecting a model.",
+              "sections": [
+                {
+                  "title": "3D View Tools",
+                  "text": "**Top View — 平面図**\nShows the model from above.\n\n**Front View — 正面図**\nShows the model from the front.\n\n**Right Side View — 右側面図**\nShows the model from the right side.\n\n**Left Side View — 左側面図**\nShows the model from the left side.\n\n**Back View — 背面図**\nShows the model from behind.\n\n**Bottom View — 下面図**\nShows the model from underneath.\n\n**Specify Face — 面指定**\nLets you select a model face to set the viewing direction.\n\n**Specify 3 Points — 3点指定**\nLets you define a viewing direction by selecting three points."
+                },
+                {
+                  "title": "How to Use a Standard 3D View",
+                  "text": "**Step 1 — Find the 3D View Toolsbar**\nLocate the toolbar with the view icons.\n\n**Step 2 — Choose a View**\nSelect **Top, Front, Right, Left, Back, or Bottom**.\n\nThe model will immediately appear from the selected direction."
+                },
+                {
+                  "title": "Other Viewing Options",
+                  "text": "Use **Specify Face** when you want the view to follow a particular face of the model.\n\nUse **Specify 3 Points** when you need to define a viewing direction using three selected points."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "3D View Tools only change **how the model is displayed**. They do not change the model's actual geometry or position."
+                }
+              ],
+              "quickReview": "**Top** → Above\n**Front** → Front\n**Right** → Right side\n**Left** → Left side\n**Back** → Behind\n**Bottom** → Underneath\n**Specify Face** → View based on a selected face\n**Specify 3 Points** → View based on three selected points"
+            },
+            "ja": {
+              "explanation": "**3D View ツールバー**を使うと、モデルをさまざまな方向から見ることができます。",
+              "description2": "標準ビューを選択するか、モデルを使って表示方向を指定できます。",
+              "practice": "このレッスンを終えると、利用できる 3D View コマンドを識別し、モデルを確認するときに適切なビューを選べるようになります。",
+              "sections": [
+                {
+                  "title": "3D View コマンド",
+                  "text": "**Top View — 平面図**\nモデルを上から表示します。\n\n**Front View — 正面図**\nモデルを正面から表示します。\n\n**Right Side View — 右側面図**\nモデルを右側から表示します。\n\n**Left Side View — 左側面図**\nモデルを左側から表示します。\n\n**Back View — 背面図**\nモデルを後ろから表示します。\n\n**Bottom View — 下面図**\nモデルを下から表示します。\n\n**Specify Face — 面指定**\nモデルの面を選択して表示方向を設定します。\n\n**Specify 3 Points — 3点指定**\n三つの点を選択して表示方向を指定します。"
+                },
+                {
+                  "title": "標準 3D ビューの使い方",
+                  "text": "**ステップ 1 — 3D View ツールバーを探す**\nビューのアイコンが並んでいるツールバーを探します。\n\n**ステップ 2 — ビューを選ぶ**\n**平面図、正面図、右側面図、左側面図、背面図、下面図**から選択します。\n\nモデルは選択した方向からすぐに表示されます。"
+                },
+                {
+                  "title": "その他の表示方法",
+                  "text": "モデルの特定の面に合わせて表示するには、**面指定**を使います。\n\n三つの点を選択して表示方向を決めるには、**3点指定**を使います。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "3D View コマンドで変わるのは**モデルの表示方法**だけです。モデルの実際の形状や位置は変わりません。"
+                }
+              ],
+              "quickReview": "**平面図** → 上から\n**正面図** → 正面から\n**右側面図** → 右側から\n**左側面図** → 左側から\n**背面図** → 後ろから\n**下面図** → 下から\n**面指定** → 選択した面を基準に表示\n**3点指定** → 選択した三つの点を基準に表示"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F4.6",
+          "moduleId": "F4",
+          "title": {
+            "en": "USER VIEWS",
+            "ja": "ユーザービュー"
+          },
+          "type": "video",
+          "renderer": "lesson-4-2",
+          "video": "lesson4.2",
+          "routeAliases": [
+            "lesson-4-2",
+            "F4.7",
+            "F4.8",
+            "F4.9",
+            "F4.10",
+            "F4.11"
+          ],
+          "completionAliases": [
+            "lesson-4-2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "The **User View toolbar** in iCAD SX provides four preset 3D viewing directions.",
+              "description2": "These views let you quickly look at the model from different angled perspectives without manually rotating the screen.",
+              "practice": "By the end of this lesson, you should be able to identify **User View 1 to User View 4** and use them to inspect a 3D model from different angles.",
+              "sections": [
+                {
+                  "title": "User View Commands",
+                  "text": "The toolbar contains four preset views:\n\n**User View 1 — ユーザビュー1**\nDisplays the model using the first preset viewing direction.\n\n**User View 2 — ユーザビュー2**\nChanges the model display to the second preset direction.\n\n**User View 3 — ユーザビュー3**\nShows the model from the third preset angle.\n\n**User View 4 — ユーザビュー4**\nShows the model from the fourth preset angle.\n\nEach view provides a different perspective, helping you see multiple sides and features of the model more clearly."
+                },
+                {
+                  "title": "How to Use User Views",
+                  "text": "**Step 1 — Locate the User View Toolbar**\nFind the four blue User View icons.\n\n**Step 2 — Select a User View**\nClick **User View 1, 2, 3, or 4**.\n\nThe model will immediately appear from the selected viewing direction."
+                },
+                {
+                  "title": "When to Use User Views",
+                  "text": "User Views are useful when you want to:\n- Quickly inspect the overall 3D shape.\n- Look at the model from another angle.\n- Check features that are difficult to see from a standard front, top, or side view.\n- Return to a consistent angled view after freely rotating the screen."
+                },
+                {
+                  "title": "3D View vs. User View",
+                  "text": "**3D View**\nUses fixed directions such as Top, Front, Right, Left, Back, and Bottom.\n\n**User View**\nProvides four preset angled views for inspecting the model in 3D."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "User Views only change **how the model is displayed**. They do not change the model's actual geometry or position."
+                }
+              ],
+              "quickReview": "**User View Toolbar → Select View 1, 2, 3, or 4 → Inspect the Model**"
+            },
+            "ja": {
+              "explanation": "iCAD SX の **User View ツールバー**には、四つのプリセット 3D 表示方向があります。",
+              "description2": "画面を手動で回転させずに、モデルをさまざまな斜め方向からすばやく確認できます。",
+              "practice": "このレッスンを終えると、**ユーザビュー1～ユーザビュー4**を識別し、モデルをさまざまな角度から確認できるようになります。",
+              "sections": [
+                {
+                  "title": "User View コマンド",
+                  "text": "ツールバーには四つのプリセットビューがあります。\n\n**User View 1 — ユーザビュー1**\n最初のプリセット表示方向でモデルを表示します。\n\n**User View 2 — ユーザビュー2**\nモデルの表示を二番目のプリセット方向に切り替えます。\n\n**User View 3 — ユーザビュー3**\n三番目のプリセット角度からモデルを表示します。\n\n**User View 4 — ユーザビュー4**\n四番目のプリセット角度からモデルを表示します。\n\nそれぞれ異なる方向から表示するため、モデルの複数の面や特徴を確認しやすくなります。"
+                },
+                {
+                  "title": "User View の使い方",
+                  "text": "**ステップ 1 — User View ツールバーを探す**\n四つの青い User View アイコンを探します。\n\n**ステップ 2 — ユーザビューを選ぶ**\n**ユーザビュー1、2、3、4**のいずれかをクリックします。\n\nモデルは選択した方向からすぐに表示されます。"
+                },
+                {
+                  "title": "User View を使う場面",
+                  "text": "User View は次のような場面で役立ちます。\n- 全体の立体形状をすばやく確認する。\n- 別の角度からモデルを見る。\n- 正面、上面、側面から見えにくい特徴を確認する。\n- 自由に画面を回転させた後、一定の斜め方向の表示に戻る。"
+                },
+                {
+                  "title": "3D View と User View の違い",
+                  "text": "**3D View**\n平面図、正面図、右側面図、左側面図、背面図、下面図などの固定方向を使います。\n\n**User View**\nモデルを立体的に確認するための四つのプリセット斜めビューを提供します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "User View で変わるのは**モデルの表示方法**だけです。モデルの実際の形状や位置は変わりません。"
+                }
+              ],
+              "quickReview": "**User View ツールバー → ビュー1、2、3、4を選択 → モデルを確認**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "embedded-or-reading-review",
+          "displayId": "F4.2"
+        },
+        {
+          "id": "F4.12",
+          "moduleId": "F4",
+          "title": {
+            "en": "SHADING",
+            "ja": "シェーディング"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "F4.13"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Shading toolbar** controls how a 3D model appears on the screen.",
+              "description2": "You can display the model with solid surfaces, visible edges, transparency, or wireframe lines depending on what you need to inspect.",
+              "practice": "By the end of this lesson, you should be able to recognize the main Shading modes and select the appropriate display for viewing a 3D model.",
+              "sections": [
+                {
+                  "title": "Shading Modes",
+                  "text": "**GC View – Green Line — CG表示 線緑**\nDisplays the model using CG shading with green line display.\n\n**GC View – No Lines — CG表示 線なし**\nDisplays solid shaded surfaces without edge lines, giving the model a clean appearance.\n\n**GC View – With Lines — CG表示 線あり**\nDisplays shaded surfaces together with visible edge lines. This makes the shape and boundaries easier to recognize.\n\n**Transparent Display — 透過表示**\nMakes the model surfaces transparent so you can see geometry behind or inside the visible surfaces.\n\n**Wire Display — WIRE表示**\nDisplays the model mainly using edges and lines instead of solid shaded surfaces."
+                },
+                {
+                  "title": "How to Change the Shading",
+                  "text": "**Step 1 — Locate the Shading Toolbar**\nFind the toolbar containing the five shading icons.\n\n**Step 2 — Select a Display Mode**\nClick the shading mode you want to use.\n\nThe model display changes immediately to the selected mode."
+                },
+                {
+                  "title": "When to Use Each Mode",
+                  "text": "- **GC View – No Lines** → Use for a clean solid view.\n- **GC View – With Lines** → Use when you need to see edges clearly.\n- **Transparent Display** → Use when inspecting geometry behind visible surfaces.\n- **Wire Display** → Use when you want to focus on the model's edges and structure."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Shading only changes **how the model looks on the screen**. It does not change the actual shape or geometry of the model."
+                }
+              ],
+              "quickReview": "**Shading → Select Display Mode → Inspect the Model**\n\n**No Lines** → Clean solid display\n**With Lines** → Solid display with visible edges\n**Transparent** → See through surfaces\n**Wire** → Display edges and lines"
+            },
+            "ja": {
+              "explanation": "**Shading ツールバー**は、画面上での 3D モデルの見え方を制御します。",
+              "description2": "確認したい内容に応じて、ソリッドの面、エッジ、透過表示、ワイヤー線でモデルを表示できます。",
+              "practice": "このレッスンを終えると、主なシェーディングモードを識別し、3D モデルの確認に適した表示を選べるようになります。",
+              "sections": [
+                {
+                  "title": "シェーディングモード",
+                  "text": "**GC View – Green Line — CG表示 線緑**\n緑色の線表示を伴う CG シェーディングでモデルを表示します。\n\n**GC View – No Lines — CG表示 線なし**\nエッジ線を表示せずにソリッドの面を表示し、すっきりした外観にします。\n\n**GC View – With Lines — CG表示 線あり**\nシェーディングされた面とエッジ線を一緒に表示し、形状や境界を確認しやすくします。\n\n**Transparent Display — 透過表示**\nモデルの面を透過させ、面の奥や内部にある形状を確認できるようにします。\n\n**Wire Display — WIRE表示**\nソリッドの面ではなく、主にエッジと線でモデルを表示します。"
+                },
+                {
+                  "title": "シェーディングの変更方法",
+                  "text": "**ステップ 1 — Shading ツールバーを探す**\n五つのシェーディングアイコンがあるツールバーを探します。\n\n**ステップ 2 — 表示モードを選ぶ**\n使用したいシェーディングモードをクリックします。\n\n選択したモードにモデルの表示がすぐに切り替わります。"
+                },
+                {
+                  "title": "各モードを使う場面",
+                  "text": "- **CG表示 線なし** → すっきりしたソリッド表示に使います。\n- **CG表示 線あり** → エッジをはっきり確認したいときに使います。\n- **透過表示** → 見えている面の奥にある形状の確認に使います。\n- **WIRE表示** → モデルのエッジや構造に注目したいときに使います。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "シェーディングで変わるのは**画面上でのモデルの見え方**だけです。実際の形状やジオメトリは変わりません。"
+                }
+              ],
+              "quickReview": "**Shading → 表示モードを選択 → モデルを確認**\n\n**線なし** → すっきりしたソリッド表示\n**線あり** → エッジ線付きのソリッド表示\n**透過** → 面を通して見る\n**WIRE** → エッジと線を表示"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared",
+          "displayId": "F4.3"
+        }
+      ]
+    },
+    {
+      "id": "F5",
+      "title": {
+        "en": "Keyboard and Coordinate Basics",
+        "ja": "キーボードと座標の基礎"
+      },
+      "lessons": [
+        {
+          "id": "F5.1",
+          "moduleId": "F5",
+          "title": {
+            "en": "Keyboard Basics",
+            "ja": "キーボードの基礎"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "F5.2"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "In iCAD SX, the keyboard is mainly used to **enter exact values and control an active command**.",
+              "description2": "Knowing a few basic keys will make it easier to follow modeling operations later in the course.",
+              "practice": "By the end of this lesson, you should understand the basic keyboard actions used when entering information in iCAD SX.",
+              "sections": [
+                {
+                  "title": "Basic Keyboard Actions",
+                  "text": "**Number Keys**\nUsed to enter exact values such as dimensions, distances, angles, and coordinates.\nExample:\n**100** → Enter a length of 100\n**45** → Enter an angle or other required value of 45\n\n**Enter**\nUsed to confirm a value or complete an input when required by the active command.\n\n**Esc**\nUsed to cancel or leave the current operation when needed.\n\n**Backspace / Delete**\nUsed to correct a value while typing.\n\n**Alt**\nCan be combined with mouse controls for specific operations.\nFor example:\n**Alt + Left-Click + Move Mouse** → Rotate the 3D View"
+                },
+                {
+                  "title": "Using the Keyboard During a Command",
+                  "text": "When iCAD SX asks for a value:\n\n**Select the Item Entry → Type the Required Value → Press Enter**\n\nFor example, when a command asks for a dimension, type the exact number instead of estimating the size with the mouse."
+                },
+                {
+                  "title": "Why Keyboard Input is Important",
+                  "text": "Keyboard input helps you work with **exact measurements**.\n\nThis is especially useful when entering:\n- Dimensions\n- Distances\n- Angles\n- Coordinates"
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The available keyboard action depends on the command you are using. Follow the input request shown by iCAD SX before entering a value."
+                }
+              ],
+              "quickReview": "**Type Value → Confirm with Enter**\n\n**Esc** → Cancel an operation\n**Alt + Left-Click** → Used with the mouse to rotate the 3D view"
+            },
+            "ja": {
+              "explanation": "iCAD SX では、キーボードを主に**正確な値の入力や実行中のコマンドの操作**に使います。",
+              "description2": "基本的なキーをいくつか知っておくと、後のモデリング操作を学びやすくなります。",
+              "practice": "このレッスンを終えると、iCAD SX で情報を入力するときの基本的なキーボード操作を理解できるようになります。",
+              "sections": [
+                {
+                  "title": "基本的なキーボード操作",
+                  "text": "**数字キー**\n寸法、距離、角度、座標などの正確な値を入力します。\n例：\n**100** → 長さ 100 を入力\n**45** → 角度やその他の必要な値として 45 を入力\n\n**Enter**\n実行中のコマンドに応じて、値を確定したり入力を完了したりします。\n\n**Esc**\n必要に応じて現在の操作をキャンセル、または終了します。\n\n**Backspace / Delete**\n入力中の値を修正します。\n\n**Alt**\n特定の操作ではマウス操作と組み合わせます。\n例：\n**Alt + 左クリック + マウス移動** → 3D ビューを回転"
+                },
+                {
+                  "title": "コマンド実行中のキーボード操作",
+                  "text": "iCAD SX から値の入力を求められたら：\n\n**入力欄を選択 → 必要な値を入力 → Enter を押す**\n\nたとえば寸法の入力を求められた場合は、マウスで大きさを推測せず、正確な数値を入力します。"
+                },
+                {
+                  "title": "キーボード入力が重要な理由",
+                  "text": "キーボード入力は**正確な数値**で作業するために役立ちます。\n\n特に次の入力に便利です。\n- 寸法\n- 距離\n- 角度\n- 座標"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "使用できるキー操作は実行中のコマンドによって異なります。値を入力する前に、iCAD SX の入力要求に従ってください。"
+                }
+              ],
+              "quickReview": "**値を入力 → Enter で確定**\n\n**Esc** → 操作をキャンセル\n**Alt + 左クリック** → マウスと組み合わせて 3D ビューを回転"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F5.4",
+          "moduleId": "F5",
+          "title": {
+            "en": "Understanding Coordinates and the Origin",
+            "ja": "座標と原点の理解"
+          },
+          "type": "reading",
+          "renderer": "origin-projections",
+          "video": null,
+          "routeAliases": [
+            "origin-projections",
+            "lesson-5-1",
+            "F5.3",
+            "F5.5"
+          ],
+          "completionAliases": [
+            "origin-projections",
+            "lesson-5-1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "iCAD SX uses **X, Y, and Z coordinates** to define locations in 3D space.",
+              "description2": "These axes meet at a reference point called the **origin**.",
+              "practice": "By the end of this lesson, you should be able to identify the X, Y, and Z axes and understand how the origin is used.",
+              "sections": [
+                {
+                  "title": "Coordinate Axes",
+                  "text": "iCAD SX uses three axes:\n\n**X Axis — Red**\nRepresents the X direction.\n\n**Y Axis — Blue**\nRepresents the Y direction.\n\n**Z Axis — Yellow**\nRepresents the Z direction.\n\nTogether, these axes define a position in 3D space."
+                },
+                {
+                  "title": "What is the Origin?",
+                  "text": "The **origin** is the point where the X, Y, and Z axes meet.\n\nIts coordinate is:\n\n**X = 0, Y = 0, Z = 0**\n\nIt is used as the reference point for locating geometry."
+                },
+                {
+                  "title": "Coordinate Example",
+                  "text": "A point can be written as:\n\n**X = 100, Y = 50, Z = 20**\n\nEach value tells iCAD SX where the point is located along its corresponding axis."
+                }
+              ],
+              "quickReview": "**X → Red**\n**Y → Blue**\n**Z → Yellow**\n**Origin → 0, 0, 0**"
+            },
+            "ja": {
+              "explanation": "iCAD SX は **X、Y、Z 座標**を使って 3D 空間の位置を定義します。",
+              "description2": "これらの軸が交わる基準点を**原点**と呼びます。",
+              "practice": "このレッスンを終えると、X、Y、Z 軸を識別し、原点の使い方を理解できるようになります。",
+              "sections": [
+                {
+                  "title": "座標軸",
+                  "text": "iCAD SX は三つの軸を使います。\n\n**X 軸 — 赤**\nX 方向を表します。\n\n**Y 軸 — 青**\nY 方向を表します。\n\n**Z 軸 — 黄**\nZ 方向を表します。\n\nこれらの軸を組み合わせて 3D 空間の位置を定義します。"
+                },
+                {
+                  "title": "原点とは？",
+                  "text": "**原点**は X、Y、Z 軸が交わる点です。\n\n座標は次のとおりです。\n\n**X = 0, Y = 0, Z = 0**\n\n形状の位置を指定するための基準点として使います。"
+                },
+                {
+                  "title": "座標の例",
+                  "text": "点は次のように表せます。\n\n**X = 100, Y = 50, Z = 20**\n\n各値は、対応する軸に沿って点がどこに位置するかを iCAD SX に伝えます。"
+                }
+              ],
+              "quickReview": "**X → 赤**\n**Y → 青**\n**Z → 黄**\n**原点 → 0, 0, 0**"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared",
+          "displayId": "F5.2"
+        },
+        {
+          "id": "F5.6",
+          "moduleId": "F5",
+          "title": {
+            "en": "Specifying Coordinates",
+            "ja": "座標の指定"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "F5.7"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "In iCAD SX, coordinates are based on the **origin**.",
+              "description2": "The **origin** is the point where the coordinates of the **X, Y, and Z axes are [0, 0, 0]**. It also sets the **layout and orientation of the views** of an object.\n\nThe origin location is not always the same. It depends on the **shape and structure of the part**.\n\n**Important:**\n**The origin must be in the same position in 3D and 2D.**",
+              "practice": "By the end of this lesson, you should be able to understand how the origin is used and how to change the 3D part layout by selecting points.",
+              "sections": [
+                {
+                  "title": "Origin and View Orientation",
+                  "text": "The position of the origin affects the standard views of the part, such as:\n\n- **Top View**\n- **Front View**\n- **Right Side View**\n- **Left Side View**\n- **Back View**\n- **Bottom View**\n\nBecause of this, the origin must be placed correctly."
+                },
+                {
+                  "title": "Change 3D Part Layout",
+                  "text": "Use this tool to set the location of the origin.\n\n**Step 1 — Select the Tool**\nSelect **Change 3D Part Layout** from the icon in the **3D Parts** menu.\n\n**Step 2 — Show the Current Origin**\n**Right-click** to show the current location of the origin.\n\n**Step 3 — Set the New Origin**\n**Left-click** on a point to set the **new location of the origin**.\nThis is **Point 1**.\n\n**Step 4 — Set the X-Axis**\n**Left-click** on a second point to set the **X-axis**.\nThis is **Point 2**.\n\n**Step 5 — Set the Y-Axis**\n**Left-click** on a third point to set the **Y-axis**.\nThis is **Point 3**.\n\n**Step 6 — Confirm the New Origin Location**\nCheck that the origin is now at **Point 1**, with the axes following the directions you selected."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "After setting the origin and axes:\n\n- the new origin becomes the reference point of the part\n- the **X-axis** is based on the second point\n- the **Y-axis** is based on the third point\n- the **XY plane will be the Front View**"
+                }
+              ],
+              "quickReview": "**Origin** → **[0, 0, 0]**\n**Point 1** → New origin location\n**Point 2** → X-axis\n**Point 3** → Y-axis\n**XY plane** → Front View"
+            },
+            "ja": {
+              "explanation": "iCAD SX の座標は**原点**を基準にします。",
+              "description2": "**原点**は **X、Y、Z 軸の座標が [0, 0, 0]** となる点です。オブジェクトの**ビューの配置と向き**も設定します。\n\n原点の位置は常に同じではなく、**部品の形状と構造**によって異なります。\n\n**重要：**\n**3D と 2D で原点を同じ位置にする必要があります。**",
+              "practice": "このレッスンを終えると、原点の使い方を理解し、点を選択して 3D 部品の配置を変更できるようになります。",
+              "sections": [
+                {
+                  "title": "原点とビューの向き",
+                  "text": "原点の位置は、次のような部品の標準ビューに影響します。\n\n- **平面図**\n- **正面図**\n- **右側面図**\n- **左側面図**\n- **背面図**\n- **下面図**\n\nそのため、原点を正しく配置する必要があります。"
+                },
+                {
+                  "title": "3D 部品の配置変更",
+                  "text": "このツールを使って原点の位置を設定します。\n\n**ステップ 1 — ツールを選択**\n**3D Parts** メニューのアイコンから **Change 3D Part Layout** を選択します。\n\n**ステップ 2 — 現在の原点を表示**\n**右クリック**して現在の原点の位置を表示します。\n\n**ステップ 3 — 新しい原点を設定**\n点を**左クリック**して**新しい原点の位置**を設定します。\nこれが**点 1**です。\n\n**ステップ 4 — X 軸を設定**\n二つ目の点を**左クリック**して **X 軸**を設定します。\nこれが**点 2**です。\n\n**ステップ 5 — Y 軸を設定**\n三つ目の点を**左クリック**して **Y 軸**を設定します。\nこれが**点 3**です。\n\n**ステップ 6 — 新しい原点の位置を確認**\n原点が**点 1**に移り、各軸が選択した方向になっていることを確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "原点と軸を設定すると：\n\n- 新しい原点が部品の基準点になります\n- **X 軸**は二つ目の点を基準にします\n- **Y 軸**は三つ目の点を基準にします\n- **XY 平面が正面図になります**"
+                }
+              ],
+              "quickReview": "**原点** → **[0, 0, 0]**\n**点 1** → 新しい原点の位置\n**点 2** → X 軸\n**点 3** → Y 軸\n**XY 平面** → 正面図"
+            }
+          },
+          "contentReview": "user-supplied-english; japanese-instructor-review-required",
+          "recapMode": "shared",
+          "displayId": "F5.3"
+        }
+      ]
+    },
+    {
+      "id": "F6",
+      "title": {
+        "en": "Selecting Objects",
+        "ja": "要素の選択"
+      },
+      "lessons": [
+        {
+          "id": "F6.1",
+          "moduleId": "F6",
+          "title": {
+            "en": "What is an Element?",
+            "ja": "要素とは？"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "An element is an item that a command can act on, such as geometry in a drawing. The selectable item depends on the current selection type.",
+              "practice": "Point to geometry and observe what highlights. Describe whether the target is a small item or a larger collection."
+            },
+            "ja": {
+              "explanation": "要素は、図面内の形状など、操作の対象になる項目です。選択できる対象は選択の種類によって異なります。",
+              "practice": "形状にポインターを合わせ、強調表示が一つの要素か、まとまりかを確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.2",
+          "moduleId": "F6",
+          "title": {
+            "en": "Basic Element Selection",
+            "ja": "要素の基本選択"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Check the pre-selection highlight before confirming a target. The visible highlight is your opportunity to catch a wrong selection.",
+              "practice": "Select one element in a practice model and compare its highlight with the intended target."
+            },
+            "ja": {
+              "explanation": "選択を確定する前に強調表示を確認します。間違った対象を選んでいないか判断できます。",
+              "practice": "練習用モデルで要素を一つ選び、意図した対象と強調表示を比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.3",
+          "moduleId": "F6",
+          "title": {
+            "en": "Selecting Multiple Elements",
+            "ja": "複数要素の選択"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Some commands accept several elements. Read the prompt and verify the full selection before confirming the operation.",
+              "practice": "Use the current command's multiple-selection method to select two practice elements. Check that both are included."
+            },
+            "ja": {
+              "explanation": "複数の要素を対象にできるコマンドがあります。案内を読み、確定前に選択全体を確認します。",
+              "practice": "現在のコマンドの方法で練習用の要素を二つ選び、両方が含まれることを確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.4",
+          "moduleId": "F6",
+          "title": {
+            "en": "Selecting a Part",
+            "ja": "部品の選択"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Selecting a part can target a named collection rather than a single visible face. Verify the extent of the highlight.",
+              "practice": "Choose a named part in the training model and compare the tree entry with the highlighted geometry."
+            },
+            "ja": {
+              "explanation": "部品の選択では、見えている面一つではなく、名前のあるまとまりが対象になる場合があります。強調表示の範囲を確認します。",
+              "practice": "練習用モデルの部品を選び、ツリーの項目と強調表示を比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.5",
+          "moduleId": "F6",
+          "title": {
+            "en": "Selecting a Solid Component",
+            "ja": "立体要素の選択"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A solid component is the actual solid geometry you inspect or modify. Confirm that the selection reaches the intended solid, not a different level of the model.",
+              "practice": "Use the selection type provided for solids and select one practice shape. Observe the highlighted boundary."
+            },
+            "ja": {
+              "explanation": "立体の形状を選択するときは、モデル内の別のまとまりではなく、意図した立体が対象か確認します。",
+              "practice": "立体を対象とする選択の種類を確認し、練習用の形状を一つ選んで表示を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.6",
+          "moduleId": "F6",
+          "title": {
+            "en": "Part vs. Solid Component",
+            "ja": "部品と立体要素の違い"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A part organizes model content; a solid describes physical shape. Changing the selection level can change how much geometry an operation affects.",
+              "practice": "Compare selecting a part with selecting one solid inside it. Explain the difference in the highlighted extent."
+            },
+            "ja": {
+              "explanation": "部品はモデルの内容をまとめ、立体は形状を表します。選択する階層で操作の対象範囲が変わります。",
+              "practice": "部品の選択と、その中の立体一つの選択を比べ、範囲の違いを説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.7",
+          "moduleId": "F6",
+          "title": {
+            "en": "Search / Selection Type",
+            "ja": "検索・選択の種類"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Selection type limits which items a command can find. If the intended item will not highlight, inspect this setting and the active command.",
+              "practice": "Compare two available selection types on a practice model and describe which targets each allows."
+            },
+            "ja": {
+              "explanation": "選択の種類によって対象が絞られます。意図した項目が選べない場合は、設定と実行中のコマンドを確認します。",
+              "practice": "練習用モデルで二つの選択の種類を比べ、選べる対象を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.8",
+          "moduleId": "F6",
+          "title": {
+            "en": "Clearing a Selection",
+            "ja": "選択の解除"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Clearing a selection removes the current targets from the selection set. It should not delete the model.",
+              "practice": "Select a practice element, clear the selection using the current command's controls and verify the geometry remains."
+            },
+            "ja": {
+              "explanation": "選択解除は、現在の対象指定を取り消す操作です。モデルを削除する操作ではありません。",
+              "practice": "練習用の要素を選び、現在の操作の案内に従って選択を解除し、形状が残ることを確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F6.9",
+          "moduleId": "F6",
+          "title": {
+            "en": "Selection Practice",
+            "ja": "選択の練習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A reliable selection routine is to choose the target type, inspect the highlight and confirm only the intended items.",
+              "practice": "Select one solid, clear it, then select two intended items. Explain how you checked each selection."
+            },
+            "ja": {
+              "explanation": "選択の種類を確認し、強調表示を見て、必要な対象だけを確定します。",
+              "practice": "立体を一つ選んで解除し、次に二つの対象を選び、確認方法を説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F7",
+      "title": {
+        "en": "Basic iCAD Structure and Concepts",
+        "ja": "iCAD の基本構造と考え方"
+      },
+      "lessons": [
+        {
+          "id": "F7.1",
+          "moduleId": "F7",
+          "title": {
+            "en": "Drawing File Structure",
+            "ja": "図面ファイルの構造"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A drawing file stores design information, including model content and related drawing views. The visible screen is only one view of that information.",
+              "practice": "Open a training file and identify model content and view information without editing either."
+            },
+            "ja": {
+              "explanation": "図面ファイルには、モデルや関連するビューなどの設計情報が保存されます。画面はその情報の一つの表示です。",
+              "practice": "練習用ファイルを開き、変更せずにモデルとビューの情報を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.2",
+          "moduleId": "F7",
+          "title": {
+            "en": "Understanding a 3D Drawing",
+            "ja": "3D 図面の理解"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A 3D drawing describes objects positioned in three dimensions. Different viewing directions display the same underlying model.",
+              "practice": "Inspect a model from two directions and identify an unchanged component in both."
+            },
+            "ja": {
+              "explanation": "3D 図面は三次元の位置と形状を表します。見る方向を変えても、元のモデルは同じです。",
+              "practice": "モデルを二方向から見て、同じ部品を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.3",
+          "moduleId": "F7",
+          "title": {
+            "en": "What is a Part?",
+            "ja": "部品とは？"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A part is a way to organize related model content. Names and structure help you find the intended part in a larger design.",
+              "practice": "Find a named part in an existing model and describe the geometry associated with it."
+            },
+            "ja": {
+              "explanation": "部品は関連するモデルの内容をまとめる単位です。名前と構造を使って、設計内の対象を見つけます。",
+              "practice": "既存モデルで名前のある部品を探し、含まれる形状を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.4",
+          "moduleId": "F7",
+          "title": {
+            "en": "How Parts are Specified",
+            "ja": "部品の指定方法"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Before acting on a part, identify it by its visible geometry or structure entry and check that the selection is at the intended level.",
+              "practice": "Select a part from the structure view and verify the matching highlight in the working area."
+            },
+            "ja": {
+              "explanation": "部品を操作する前に、形状や構造の項目から対象を特定し、選択の階層を確認します。",
+              "practice": "構造の表示から部品を選び、作業領域の強調表示と照合しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.5",
+          "moduleId": "F7",
+          "title": {
+            "en": "Parts vs. Actual / Solid Components",
+            "ja": "部品と実体・立体要素"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The organizational part and the solid shape are related but serve different purposes. One name in a tree does not necessarily mean one solid.",
+              "practice": "Inspect an instructor-provided part and identify its solid content. Compare the two selection levels."
+            },
+            "ja": {
+              "explanation": "構造上の部品と立体形状は関係していますが、役割が異なります。ツリーの一つの名前が立体一つとは限りません。",
+              "practice": "指定された部品の立体形状を確認し、二つの選択階層を比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.6",
+          "moduleId": "F7",
+          "title": {
+            "en": "Introduction to Groups",
+            "ja": "グループの紹介"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A group keeps selected items together for organization or handling. Inspect an existing group before changing its contents.",
+              "practice": "Locate a group in a training file and identify which items belong to it. Do not create an assembly exercise."
+            },
+            "ja": {
+              "explanation": "グループは、項目をまとめて整理や操作に使います。内容を変える前に既存のグループを確認します。",
+              "practice": "練習用ファイルのグループを確認し、含まれる項目を見つけましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.7",
+          "moduleId": "F7",
+          "title": {
+            "en": "Introduction to 2D Detailings",
+            "ja": "2D 図面の紹介"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A 2D Detailing communicates a design using flat views. Foundations focuses on recognizing these views, while detailed drawing creation is later training.",
+              "practice": "Look at a provided 2D Detailing and locate the front and top views without creating new geometry."
+            },
+            "ja": {
+              "explanation": "2D 図面は平面のビューで設計を伝えます。基礎では見方を学び、詳細な作図は次の研修で扱います。",
+              "practice": "用意された 2D 図面で、作図せずに正面図と上面図を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F7.8",
+          "moduleId": "F7",
+          "title": {
+            "en": "Relationship Between 3D and 2D",
+            "ja": "3D と 2D の関係"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Related 2D views should describe the same shape as the 3D model. Compare corresponding features to understand their relationship.",
+              "practice": "Find the same edge or hole in a supplied model and drawing. Explain why it appears different from another direction."
+            },
+            "ja": {
+              "explanation": "関連する 2D ビューは 3D モデルと同じ形状を表します。対応する箇所を比べて関係を確認します。",
+              "practice": "用意されたモデルと図面で同じ端や穴を探し、方向による見え方の違いを説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F8",
+      "title": {
+        "en": "Basic File Operations",
+        "ja": "基本的なファイル操作"
+      },
+      "lessons": [
+        {
+          "id": "F8.1",
+          "moduleId": "F8",
+          "title": {
+            "en": "Create a New File",
+            "ja": "新規ファイルの作成"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "New starts a drawing using the available setup or template. Choose the training setup specified for your workstation.",
+              "practice": "Choose New, select the instructed setup and check that a new drawing is active."
+            },
+            "ja": {
+              "explanation": "新規作成では、用意された設定やテンプレートで図面を開始します。研修で指定された設定を選びます。",
+              "practice": "新規作成で指定の設定を選び、新しい図面がアクティブになったことを確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F8.2",
+          "moduleId": "F8",
+          "title": {
+            "en": "Open an Existing File",
+            "ja": "既存ファイルを開く"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Open loads an existing drawing. Check the folder, filename and file type before selecting it.",
+              "practice": "Open a supplied practice file and check the active filename before editing."
+            },
+            "ja": {
+              "explanation": "開く操作で既存の図面を読み込みます。フォルダー、名前、形式を確認して選びます。",
+              "practice": "指定の練習用ファイルを開き、編集前にファイル名を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F8.3",
+          "moduleId": "F8",
+          "title": {
+            "en": "Save",
+            "ja": "保存"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "lesson-10-1"
+          ],
+          "completionAliases": [
+            "lesson-10-1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Save records changes to the current file. Confirm the intended file and location, especially when saving for the first time.",
+              "practice": "Save a practice drawing to the required training location, then verify the filename."
+            },
+            "ja": {
+              "explanation": "保存で現在のファイルに変更を記録します。特に初回は、名前と保存先を確認します。",
+              "practice": "練習用図面を指定の場所に保存し、ファイル名を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F8.4",
+          "moduleId": "F8",
+          "title": {
+            "en": "Save As",
+            "ja": "名前を付けて保存"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Save As lets you save under a different name or location. Use it when you need a separate practice copy.",
+              "practice": "Save a supplied practice file under a new name and confirm which file is now active."
+            },
+            "ja": {
+              "explanation": "名前を付けて保存すると、別の名前や場所で保存できます。練習用の複製を作る際に使います。",
+              "practice": "練習用ファイルを別名で保存し、現在アクティブなファイルを確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F8.5",
+          "moduleId": "F8",
+          "title": {
+            "en": "Close a Drawing",
+            "ja": "図面を閉じる"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Closing a drawing ends work on that file while the application may remain open. Read any unsaved-change prompt.",
+              "practice": "Save and close one practice drawing. Confirm another open drawing or the application remains available."
+            },
+            "ja": {
+              "explanation": "図面を閉じると、そのファイルでの作業を終えます。未保存の変更がある場合は、確認をよく読みます。",
+              "practice": "練習用図面を保存して閉じ、別の図面やアプリケーションの状態を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F8.6",
+          "moduleId": "F8",
+          "title": {
+            "en": "Basic File Management Practices",
+            "ja": "基本的なファイル管理"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Clear names and agreed folders help others find the correct work. Keep the supplied source file separate from your practice copy.",
+              "practice": "Check a practice filename, folder and saved state against your training instructions."
+            },
+            "ja": {
+              "explanation": "分かりやすい名前と指定のフォルダーを使うと、必要な作業を探せます。配布された元ファイルと練習用の複製を区別します。",
+              "practice": "練習用ファイルの名前、フォルダー、保存状態を研修の指示と照合しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F9",
+      "title": {
+        "en": "Introduction to 3D Modeling",
+        "ja": "3D モデリング入門"
+      },
+      "lessons": [
+        {
+          "id": "F9.1",
+          "moduleId": "F9",
+          "title": {
+            "en": "Understanding Basic 3D Shapes",
+            "ja": "基本的な 3D 形状"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Box, Cylinder and Polygon are the basic shapes used in this course. Their dimensions define their size; placement defines their position.",
+              "practice": "Identify a box, cylinder and polygonal prism in the examples and describe one dimension of each."
+            },
+            "ja": {
+              "explanation": "このコースでは Box、Cylinder、Polygon を使います。寸法で大きさを、配置で位置を指定します。",
+              "practice": "例の直方体、円柱、多角柱を確認し、それぞれの寸法を一つ説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.2",
+          "moduleId": "F9",
+          "title": {
+            "en": "Understanding Tool Selection",
+            "ja": "ツール選択の理解"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Choose the intended shape or operation before supplying values. Check the active command and its prompt so input goes to the right tool.",
+              "practice": "Select Box and verify its input fields. Cancel before choosing Cylinder and compare the requested values."
+            },
+            "ja": {
+              "explanation": "値を入力する前に、目的の形状や操作を選びます。現在のコマンドと案内を確認します。",
+              "practice": "Box の入力欄を確認してキャンセルし、Cylinder の入力内容と比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.3",
+          "moduleId": "F9",
+          "title": {
+            "en": "Understanding Dimension Input",
+            "ja": "寸法入力の理解"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Shape dimensions control size. Read each parameter label and the drawing units before entering values.",
+              "practice": "For a practice box, enter the instructed width, depth and height, then inspect the resulting proportions."
+            },
+            "ja": {
+              "explanation": "形状の寸法で大きさを指定します。入力前に各項目の名称と図面の単位を確認します。",
+              "practice": "練習用の直方体に指定の幅、奥行き、高さを入力し、形を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.4",
+          "moduleId": "F9",
+          "title": {
+            "en": "Understanding Origin Input",
+            "ja": "原点入力の理解"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Placement input sets where a new shape is located. A size value and a position value serve different purposes.",
+              "practice": "After entering shape dimensions, identify the placement prompt and place the shape at the current origin."
+            },
+            "ja": {
+              "explanation": "配置の入力で新しい形状の位置を指定します。大きさの値と位置の値は役割が異なります。",
+              "practice": "寸法入力後に配置の案内を確認し、現在の原点に形状を配置しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.5",
+          "moduleId": "F9",
+          "title": {
+            "en": "Creating a Box",
+            "ja": "直方体の作成"
+          },
+          "type": "video",
+          "renderer": "basic-op-box",
+          "video": "box",
+          "routeAliases": [
+            "basic-op-box"
+          ],
+          "completionAliases": [
+            "basic-op-box"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Box creates a rectangular solid using width, depth and height. Enter dimensions, choose the placement and confirm.",
+              "practice": "Follow the verified Box lesson, then inspect the created shape from another view."
+            },
+            "ja": {
+              "explanation": "Box では幅、奥行き、高さで直方体を作成します。寸法を入力し、位置を指定して確定します。",
+              "practice": "Box のチュートリアルで作成し、別のビューから形状を確認しましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F9.6",
+          "moduleId": "F9",
+          "title": {
+            "en": "Creating a Cylinder",
+            "ja": "円柱の作成"
+          },
+          "type": "video",
+          "renderer": "basic-op-cylinder",
+          "video": "cylinder",
+          "routeAliases": [
+            "basic-op-cylinder"
+          ],
+          "completionAliases": [
+            "basic-op-cylinder"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Cylinder creates a round solid using diameter and height. Check both values before placing it.",
+              "practice": "Follow the verified Cylinder lesson and identify the circular end and the height direction."
+            },
+            "ja": {
+              "explanation": "Cylinder では直径と高さで円柱を作成します。両方の値を確認して配置します。",
+              "practice": "Cylinder のチュートリアルで、円形の端面と高さ方向を確認しましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F9.7",
+          "moduleId": "F9",
+          "title": {
+            "en": "Creating a Polygon",
+            "ja": "多角柱の作成"
+          },
+          "type": "video",
+          "renderer": "basic-op-polygon",
+          "video": "polygon",
+          "routeAliases": [
+            "basic-op-polygon"
+          ],
+          "completionAliases": [
+            "basic-op-polygon"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Polygon creates a polygonal prism from the required side count and size values. Read the active parameter labels before confirming.",
+              "practice": "Follow the verified Polygon lesson and count the sides on the resulting end face."
+            },
+            "ja": {
+              "explanation": "Polygon では辺の数や大きさを指定して多角柱を作成します。入力項目の名称を確認して確定します。",
+              "practice": "Polygon のチュートリアルで作成し、端面の辺の数を確認しましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "F9.8",
+          "moduleId": "F9",
+          "title": {
+            "en": "Selecting a Created Shape",
+            "ja": "作成した形状の選択"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "After creation, verify that the intended shape is selected before starting another operation.",
+              "practice": "Select the shape you just created, check the highlight and clear the selection without changing it."
+            },
+            "ja": {
+              "explanation": "作成後、次の操作を始める前に、意図した形状が選ばれていることを確認します。",
+              "practice": "作成した形状を選び、強調表示を確認して、変更せずに選択を解除しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.9",
+          "moduleId": "F9",
+          "title": {
+            "en": "Basic Move",
+            "ja": "基本的な移動"
+          },
+          "type": "video",
+          "renderer": "lesson-6-1",
+          "video": "basicMove",
+          "routeAliases": [
+            "lesson-6-1",
+            "move"
+          ],
+          "completionAliases": [
+            "lesson-6-1",
+            "move"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Move changes an object's position without changing its shape. Choose Move, select the target, enter movement values and confirm.",
+              "practice": "Follow the existing Move tutorial and compare the object's position before and after."
+            },
+            "ja": {
+              "explanation": "Move は形状を変えずに位置を変えます。Move、対象、移動量を順に指定して確定します。",
+              "practice": "Move のチュートリアルで、操作前後の位置を比べましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.10",
+          "moduleId": "F9",
+          "title": {
+            "en": "Basic Copy",
+            "ja": "基本的なコピー"
+          },
+          "type": "video",
+          "renderer": "lesson-6-4",
+          "video": "basicCopy",
+          "routeAliases": [
+            "lesson-6-4",
+            "copy"
+          ],
+          "completionAliases": [
+            "lesson-6-4",
+            "copy"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Copy creates another object while retaining the original. Verify the target and the displacement before confirming.",
+              "practice": "Follow the existing Copy tutorial and identify both the original and the copy."
+            },
+            "ja": {
+              "explanation": "Copy は元の対象を残して複製します。対象と移動量を確認して確定します。",
+              "practice": "Copy のチュートリアルで、元の形状と複製を確認しましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.11",
+          "moduleId": "F9",
+          "title": {
+            "en": "Basic Delete",
+            "ja": "基本的な削除"
+          },
+          "type": "video",
+          "renderer": "lesson-6-7",
+          "video": "basicDelete",
+          "routeAliases": [
+            "lesson-6-7",
+            "delete"
+          ],
+          "completionAliases": [
+            "lesson-6-7",
+            "delete"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Delete removes selected geometry. Inspect the selection before confirming and use only disposable practice objects.",
+              "practice": "Follow the existing Delete tutorial and confirm that only the intended practice object disappears."
+            },
+            "ja": {
+              "explanation": "Delete は選択した形状を削除します。確定前に対象を確認し、不要な練習用形状だけで行います。",
+              "practice": "Delete のチュートリアルで、指定した練習用形状だけが消えたことを確認しましょう。"
+            }
+          },
+          "contentReview": "existing-tutorial-with-new-summary",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.12",
+          "moduleId": "F9",
+          "title": {
+            "en": "Undoing an Operation",
+            "ja": "操作の取り消し"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Undo reverses a supported recent operation. Inspect the result after each undo rather than assuming every action can be reversed.",
+              "practice": "Move a disposable practice shape, use Undo and compare its position with the original."
+            },
+            "ja": {
+              "explanation": "Undo は対応する直前の操作を取り消します。すべての操作が戻せるとは限らないため、その都度結果を確認します。",
+              "practice": "不要な練習用形状を移動して Undo を使い、元の位置と比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F9.13",
+          "moduleId": "F9",
+          "title": {
+            "en": "Basic Measurement",
+            "ja": "基本的な測定"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Measurement reads a value from existing geometry. It does not resize the model; target selection and units determine how to interpret the result.",
+              "practice": "Use the measurement command on a known box edge and compare the displayed value with the value used to create it."
+            },
+            "ja": {
+              "explanation": "測定は既存の形状から値を読み取ります。モデルの大きさは変わりません。対象と単位を確認します。",
+              "practice": "既知の直方体の辺を測定し、作成時の値と表示値を比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F10",
+      "title": {
+        "en": "Foundation Review",
+        "ja": "基礎の復習"
+      },
+      "lessons": [
+        {
+          "id": "F10.1",
+          "moduleId": "F10",
+          "title": {
+            "en": "Interface Review",
+            "ja": "画面構成の復習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A reliable workflow starts by identifying the active file, command, input fields and guidance message.",
+              "practice": "Without the tour, locate the menu bar, toolbar, working area and message display. Explain what each is for."
+            },
+            "ja": {
+              "explanation": "作業では、現在のファイル、コマンド、入力欄、案内メッセージを確認します。",
+              "practice": "動画を見ずにメニュー、ツールバー、作業領域、メッセージを探し、役割を説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F10.2",
+          "moduleId": "F10",
+          "title": {
+            "en": "Navigation Review",
+            "ja": "画面操作の復習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Zoom, pan and view rotation change what you see. They do not move or resize model geometry.",
+              "practice": "Zoom to an edge, pan it to the center, rotate the view and restore a whole-model view."
+            },
+            "ja": {
+              "explanation": "ズーム、パン、ビュー回転は見え方を変えます。モデル形状の位置や寸法は変わりません。",
+              "practice": "端を拡大し、中央にパンし、ビューを回転してから全体表示に戻しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F10.3",
+          "moduleId": "F10",
+          "title": {
+            "en": "Coordinate Review",
+            "ja": "座標の復習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Use the origin and X, Y, Z indicators to interpret a position. Check signs and the reference before confirming numeric input.",
+              "practice": "Explain 0, 0, 0 and compare two positions that differ only in the sign of X."
+            },
+            "ja": {
+              "explanation": "原点と X、Y、Z の表示で位置を確認します。数値を確定する前に符号と基準を確認します。",
+              "practice": "0、0、0 を説明し、X の符号だけが異なる二つの位置を比べましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F10.4",
+          "moduleId": "F10",
+          "title": {
+            "en": "Selection Review",
+            "ja": "選択の復習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The selection type and highlighted extent determine the target of an operation. Clear uncertain selections and try again.",
+              "practice": "Select a part, then one solid, and explain how you know which is selected."
+            },
+            "ja": {
+              "explanation": "選択の種類と強調表示で操作対象を確認します。不明な場合は解除して選び直します。",
+              "practice": "部品と立体をそれぞれ選び、対象をどう確認したか説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F10.5",
+          "moduleId": "F10",
+          "title": {
+            "en": "Basic Modeling Review",
+            "ja": "基本モデリングの復習"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create a basic shape by selecting a tool, entering dimensions, specifying position and confirming. Inspect the result before editing.",
+              "practice": "Describe the workflow for Box, Cylinder or Polygon, then explain the different results of Move, Copy and Delete."
+            },
+            "ja": {
+              "explanation": "ツール、寸法、位置を指定して基本形状を作成します。編集前に結果を確認します。",
+              "practice": "Box、Cylinder、Polygon のいずれかの手順と、Move、Copy、Delete の結果の違いを説明しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "F10.6",
+          "moduleId": "F10",
+          "title": {
+            "en": "Foundation Knowledge Check",
+            "ja": "基礎の理解度チェック"
+          },
+          "type": "quiz",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "This knowledge check reviews the beginner course. It is a learning review and does not award a practical certification.",
+              "practice": "Answer questions about the interface, navigation, coordinates, selection and basic modeling. Review the feedback before continuing."
+            },
+            "ja": {
+              "explanation": "この理解度チェックは基礎コースの復習です。実技認定ではありません。",
+              "practice": "画面、表示操作、座標、選択、基本モデリングの問題に答え、解説を確認しましょう。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        }
+      ]
+    }
+  ]
+}

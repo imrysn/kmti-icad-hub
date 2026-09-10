@@ -41,7 +41,7 @@ def sync_3d_part_quiz():
                 "text": "What occurs if there is a discrepancy between a 3D part name and its corresponding 2D part name?",
                 "options": ["The 2D dimension will automatically update to match the 3D name", "The material description will switch to a \"Rubber\" format", "The link between the 3D and 2D data will be severed", "The Tree View will highlight the part in red"],
                 "correct_answer": 2,
-                "explanation": "Mismatching names breaks the digital link between the 3D solid and its 2D drawing data."
+                "explanation": "Mismatching names breaks the digital link between the 3D solid and its 2D Detailing data."
             },
             {
                 "text": "When using the \"Change 3D Part Name\" tool, what does checking the box for \"Batch change same name data\" accomplish?",

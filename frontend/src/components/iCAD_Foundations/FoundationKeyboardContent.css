@@ -1,0 +1,12 @@
+.foundation-keyboard-actions .foundations-uses__grid { grid-template-columns: repeat(5,minmax(0,1fr)); }
+.foundation-keyboard-actions kbd { padding: 6px 10px; border: 1.5px solid var(--use-outline); border-bottom-width: 4px; border-radius: 6px; color: var(--text-main); font: 600 0.95rem var(--font-main); white-space: nowrap; }
+.foundation-keyboard-actions .foundations-use-card__body p { white-space: pre-line; }
+.foundation-keyboard-input > p { margin-block: 16px; }
+.foundation-keyboard-input .foundations-starting-steps--keyboard { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 840px; margin: 24px auto; padding-top: 20px; }
+@container (max-width: 600px) {
+  .foundation-keyboard-input .foundations-starting-steps--keyboard { grid-template-columns: minmax(0,1fr); max-width: 340px; padding-top: 16px; }
+  .foundation-keyboard-input .foundations-starting-step { transform: none; }
+}
+@container (max-width: 750px) { .foundation-keyboard-actions .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@container (max-width: 500px) { .foundation-keyboard-actions .foundations-uses__grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@container (max-width: 300px) { .foundation-keyboard-actions .foundations-uses__grid { grid-template-columns: minmax(0,1fr); } }

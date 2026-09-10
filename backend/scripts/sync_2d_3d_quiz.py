@@ -14,7 +14,7 @@ def sync_2d_3d_quiz():
         # 1. New Question Data (as updated in mentorConstants.ts)
         new_questions = [
             {
-                "text": "Name the command required to initialize a 2D drawing surface within a 3D environment.",
+                "text": "Name the command required to initialize a 2D Detailing surface within a 3D environment.",
                 "options": ["Create Part", "Open Work Plane", "New Sketch", "Drafting Palette"],
                 "correct_answer": 1,
                 "explanation": "The \"Open Work Plane\" command is necessary to create the 2D surface where sketches are drawn before conversion."

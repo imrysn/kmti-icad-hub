@@ -15,7 +15,9 @@ const resolveApiBaseUrl = (): string => {
 
     // 2. Local development fallback
     if (typeof import.meta.env !== 'undefined' && import.meta.env.DEV) {
-        return `http://${getBrowserHost()}:3002`;
+        return typeof window !== 'undefined' && /^https?:$/.test(window.location.protocol)
+            ? normalizeUrl(window.location.origin)
+            : `http://${getBrowserHost()}:5173`;
     }
 
     // 3. Production browser environment (relative to current domain)

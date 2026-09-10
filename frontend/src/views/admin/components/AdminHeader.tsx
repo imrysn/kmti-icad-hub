@@ -1,7 +1,7 @@
-import { Box,FileText,LayoutDashboard,PenTool,Settings,Users } from 'lucide-react';
+import { Box, FileText, LayoutDashboard, PenTool, Settings, Users } from 'lucide-react';
 import React from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
-import { SystemStats,TraineeProgress } from '../../../services/adminService';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SystemStats, TraineeProgress } from '../../../services/adminService';
 import { AdminTab } from '../AdminMode';
 
 interface AdminHeaderProps {
@@ -58,7 +58,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ activeTab, stats, sele
             {activeTab === 'assessments' && (
                 <div className="header-right" style={{ display: 'flex', gap: '10px' }}>
                     <button className={`sub-tab-btn ${subtab === '3D_Modeling' ? 'active' : ''}`} onClick={() => navigate('/admin/content/assessments?subtab=3D_Modeling')}><Box size={16} /> 3D Modeling</button>
-                    <button className={`sub-tab-btn ${subtab === '2D_Drawing' ? 'active' : ''}`} onClick={() => navigate('/admin/content/assessments?subtab=2D_Drawing')}><PenTool size={16} /> 2D Drawing</button>
+                    <button className={`sub-tab-btn ${subtab === '2D_Drawing' ? 'active' : ''}`} onClick={() => navigate('/admin/content/assessments?subtab=2D_Drawing')}><PenTool size={16} /> 2D Detailing</button>
                 </div>
             )}
             {activeTab === 'practical' && (

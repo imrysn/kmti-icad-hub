@@ -5,12 +5,14 @@ import './CourseLesson.css';
 import '../LessonIntroPanel.css';
 import VideoTutorialViewer from "./VideoTutorialViewer";
 import FoundationsVideoReadingLayout from '../FoundationsVideoReadingLayout';
+import './InterfaceNumberedRows.css';
 
 interface IcadInterfaceLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
   showFoundationsIntro?: boolean;
+  tutorialOnly?: boolean;
 }
 
 import { useTranslation } from '../../context/LanguageContext';
@@ -33,7 +35,7 @@ import {
 export const INTERFACE_WRITTEN_TUTORIAL_COPY = INTERFACE_COPY_EN;
 export const INTERFACE_WRITTEN_TUTORIAL_STEPS = INTERFACE_STEPS_EN;
 
-const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, showFoundationsIntro = false }) => {
+const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, showFoundationsIntro = false, tutorialOnly = false }) => {
   const { language, t } = useTranslation();
   const isJapanese = language === 'ja';
 
@@ -83,8 +85,13 @@ const IcadInterfaceLesson: React.FC<IcadInterfaceLessonProps> = ({ onNextLesson,
     containerRef,
     currentIndex } = useLessonCore('interface', INTERFACE_STEPS);
 
+  if (tutorialOnly) return <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio steps={localizedTutorialSteps}
+    introPanel={{ icon: Monitor, eyebrow: isJapanese ? '画面ツアー' : 'Interactive screen tour',
+      title: isJapanese ? 'iCAD SX インターフェース' : 'iCAD SX Interface',
+      description: isJapanese ? 'ワークスペースのガイド付きツアーで、主要な画面領域を確認しましょう。' : 'Take a guided tour of the workspace and learn where to find the main screen areas.' }} />;
+
   return (
-    <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
+    <div className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson${showFoundationsIntro ? ' foundations-interface-rows' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>

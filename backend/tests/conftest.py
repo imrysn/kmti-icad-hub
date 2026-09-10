@@ -158,7 +158,7 @@ def auth_headers(token: str) -> dict:
 
 @pytest.fixture()
 def seed_quiz(db, trainee_user) -> Quiz:
-    course = Course(title="2D Drawing", course_type="2D_Drawing", order=1)
+    course = Course(title="2D Detailing", course_type="2D_Drawing", order=1)
     plan = AccessPlan(code="test-foundations", name="Test Foundations", is_active=True)
     db.add_all([course, plan])
     db.flush()

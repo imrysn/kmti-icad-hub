@@ -24,7 +24,7 @@ describe('iCAD Foundations recap coverage', () => {
       module.children?.map((lesson) => lesson.id) || [module.id],
     );
 
-    expect(lessonIds).toHaveLength(30);
+    expect(lessonIds).toHaveLength(60);
 
     const missing = lessonIds.filter(
       (lessonId) => !EMBEDDED_RECAP_LESSONS.has(lessonId) && !getFoundationsRecap(lessonId),
@@ -46,4 +46,3 @@ describe('iCAD Foundations recap coverage', () => {
     }
   });
 });
-

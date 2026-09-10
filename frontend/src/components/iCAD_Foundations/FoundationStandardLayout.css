@@ -1,0 +1,109 @@
+/* One typography and spacing scale for every Foundations lesson. */
+.foundations-consistent-lesson {
+  --foundation-body-size: 1rem;
+  --foundation-body-leading: 1.7;
+  --foundation-section-size: 1.4rem;
+  --foundation-card-title-size: 1.05rem;
+  --foundation-section-gap: 2.5rem;
+  font-family: var(--font-main);
+}
+.foundations-consistent-lesson .written-tutorial-panel p:not(.ivl-objective__eyebrow),
+.foundations-consistent-lesson .written-tutorial-panel .step-bullet-list,
+.foundations-consistent-lesson .written-tutorial-panel .step-bullet-list li {
+  font-family: var(--font-main);
+  font-size: var(--foundation-body-size);
+  line-height: var(--foundation-body-leading);
+}
+.foundations-consistent-lesson .written-tutorial-panel__step.no-step-number > .step-header h4 {
+  color: var(--primary);
+  border-left: 0;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+.foundations-consistent-lesson .written-tutorial-panel .section-title,
+.foundations-consistent-lesson .written-tutorial-panel__step > .step-header h4 {
+  font-family: var(--font-heading);
+  font-size: var(--foundation-section-size);
+  font-weight: 800;
+  line-height: 1.35;
+}
+.foundations-consistent-lesson .written-tutorial-panel h5,
+.foundations-consistent-lesson .foundations-interface-rows .written-tutorial-panel__step > .step-header h4 {
+  font-family: var(--font-heading);
+  font-size: var(--foundation-card-title-size);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.foundations-consistent-lesson .written-tutorial-panel__steps {
+  gap: var(--foundation-section-gap);
+}
+.foundations-consistent-lesson .written-tutorial-panel__section-title {
+  margin-block: var(--foundation-section-gap) 1.5rem;
+}
+.foundations-consistent-lesson .written-tutorial-panel__quick-review,
+.foundations-consistent-lesson .foundation-mouse-controls > section,
+.foundations-consistent-lesson .foundation-rotation-reminder,
+.foundations-consistent-lesson .foundations-help-when,
+.foundations-consistent-lesson .foundations-interface-rows + section,
+.foundations-consistent-lesson .foundation-rotation-method + .foundation-rotation-method {
+  margin-top: var(--foundation-section-gap);
+}
+.foundations-consistent-lesson .written-tutorial-panel li:not(.written-tutorial-panel__step) {
+  font-family: var(--font-main);
+  font-size: var(--foundation-body-size);
+  line-height: var(--foundation-body-leading);
+}
+.foundations-consistent-lesson .written-tutorial-panel__content { container-type: inline-size; }
+@container (max-width: 750px) {
+  .foundations-consistent-lesson .foundations-starting-steps { grid-template-columns: repeat(2,minmax(0,1fr)); padding-top: 20px; }
+  .foundations-consistent-lesson .foundations-starting-step:nth-child(n) { transform: none; }
+}
+@container (max-width: 420px) {
+  .foundations-consistent-lesson .foundations-starting-steps { grid-template-columns: minmax(0,1fr); }
+}
+.foundations-consistent-lesson .written-tutorial-panel__quick-review > h4,
+.foundations-consistent-lesson .foundation-rotation-reminder > h4,
+.foundations-consistent-lesson .foundation-mouse-controls > section > h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+.foundations-consistent-lesson .written-tutorial-panel__step.no-step-number p {
+  padding-left: 0;
+}
+.foundations-consistent-lesson .foundations-workflow .written-tutorial-panel__step h4 {
+  font-size: var(--foundation-card-title-size);
+}
+@media (max-width: 600px) {
+  .foundations-consistent-lesson { --foundation-section-gap: 2rem; }
+}
+
+/* Shared flat card styling across the Foundations lessons. */
+.foundations-consistent-lesson .ivl-objective {
+  border-left: 0;
+  border-color: #86c99c;
+  background: #eef8f1;
+  border-radius: 0;
+}
+.foundations-consistent-lesson .ivl-objective__icon,
+.foundations-consistent-lesson .ivl-objective__eyebrow { color: #228348; }
+.foundations-consistent-lesson .section-title,
+.foundations-consistent-lesson .written-tutorial-panel__section-title { border-left: 0; padding-left: 0; }
+.foundations-consistent-lesson .section-title::before,
+.foundations-consistent-lesson .written-tutorial-panel__section-title::before { display: none; }
+.foundations-consistent-lesson .foundations-use-card__title {
+  background: transparent;
+  color: var(--text-main, #233c51);
+}
+.foundations-consistent-lesson [class*="card"]:not(.foundations-use-card__number),
+.foundations-consistent-lesson [class*="card"]::before,
+.foundations-consistent-lesson [class*="card"]::after,
+.foundations-consistent-lesson .foundations-starting-step,
+.foundations-consistent-lesson .foundations-starting-step::before,
+.foundations-consistent-lesson .foundations-starting-step__body,
+.foundations-consistent-lesson .written-tutorial-panel,
+.foundations-consistent-lesson .written-tutorial-panel__step {
+  border-radius: 0 !important;
+}
+[data-theme='dark'] .foundations-consistent-lesson .ivl-objective { background: #172f24; border-color: #3d8056; }
+[data-theme='dark'] .foundations-consistent-lesson .ivl-objective__icon,
+[data-theme='dark'] .foundations-consistent-lesson .ivl-objective__eyebrow { color: #80daa0; }

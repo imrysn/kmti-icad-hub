@@ -26,7 +26,7 @@ export const INSPECT_MODEL_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'inspect-step-3',
     title: 'Switch Standard Views',
-    text: 'Cycle through Front View, Top View, and Right Side View using the 3D View toolbar.',
+    text: 'Cycle through Front View, Top View, and Right Side View using the 3D View Toolsbar.',
     preserveText: true,
   },
   {

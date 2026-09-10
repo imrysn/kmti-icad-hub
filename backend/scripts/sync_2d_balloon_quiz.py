@@ -14,7 +14,7 @@ def sync_2d_balloon_quiz():
         # 1. New Question Data
         new_questions = [
             {
-                "text": "Identify the specific document that must be properly linked with the 2D drawing properties to enable the automatic appearance of balloon letters or numbers.",
+                "text": "Identify the specific document that must be properly linked with the 2D Detailing properties to enable the automatic appearance of balloon letters or numbers.",
                 "options": ["Specific Gravity table", "Bill of Materials (BOM)", "Assembly Tree View", "Material hardness chart"],
                 "correct_answer": 1,
                 "explanation": "The BOM acts as the data source for all automated part identification labels (balloons) in the 2D workspace."

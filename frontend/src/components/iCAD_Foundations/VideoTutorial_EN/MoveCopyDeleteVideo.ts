@@ -26,7 +26,7 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
     overlays: [
       {
         id: 'highlight-move-group',
-        type: 'highlight',
+        type: 'highlight',  
         startTime: 0.3,
         endTime: 2.4,
         target: { x: 0.91, y: 0.362, width: 0.07, height: 0.025 },

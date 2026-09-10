@@ -17,7 +17,7 @@ def sync_2d_welding_symbol_quiz():
                 "text": "Identify the specific graphical representation that must be placed on the drawing before the welding symbol to represent the actual fabrication.",
                 "options": ["Center lines", "Welding hatches", "Reference dimensions", "Title blocks"],
                 "correct_answer": 1,
-                "explanation": "Welding hatches are the visual indicators of the weld deposit location on the 2D drawing."
+                "explanation": "Welding hatches are the visual indicators of the weld deposit location on the 2D Detailing."
             },
             {
                 "text": "According to the instructional notes, which drafting element acts as a representation of the \"welding torch\" on the actual job site?",

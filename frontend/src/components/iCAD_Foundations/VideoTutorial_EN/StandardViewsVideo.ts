@@ -4,7 +4,7 @@ export const STANDARD_3D_VIEW_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'standard-view-introduction',
     title: 'Choose a standard direction',
-    customText: 'Use the 3D View toolbar to switch to an exact engineering direction, such as front, side, top, or bottom.',
+    customText: 'Use the 3D View Toolsbar to switch to an exact engineering direction, such as front, side, top, or bottom.',
     videoStart: 0,
     videoEnd: 0.01,
     holdVideo: true,
@@ -97,7 +97,7 @@ export const STANDARD_3D_VIEW_VIDEO_STEPS: LessonVideoStep[] = [
     quizData: {
       question: 'Which control changes the model to a front, side, top, or bottom viewing direction?',
       options: [
-        { text: 'The 3D View toolbar', isCorrect: true, feedback: 'Correct! Standard directions are selected from the 3D View toolbar.' },
+        { text: 'The 3D View Toolsbar', isCorrect: true, feedback: 'Correct! Standard directions are selected from the 3D View Toolsbar.' },
         { text: 'The geometry creation toolbar', isCorrect: false, feedback: 'That toolbar creates model geometry; it does not change the viewing direction.' },
         { text: 'The layer visibility list', isCorrect: false, feedback: 'Layer visibility controls what is shown, not the viewing direction.' },
       ],
@@ -129,7 +129,7 @@ export const STANDARD_3D_VIEW_VIDEO_STEPS: LessonVideoStep[] = [
     recapData: {
       title: '3D View Recap',
       items: [
-        'Choose front, side, top, or bottom from the 3D View toolbar.',
+        'Choose front, side, top, or bottom from the 3D View Toolsbar.',
         'A standard view changes only your viewing direction.',
         'Use aligned views to inspect faces, holes, and edges clearly.',
       ],
@@ -141,7 +141,7 @@ export const USER_VIEW_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'isometric-multiple-faces',
     title: 'Display multiple faces',
-    customText: 'Select an isometric direction from the 3D View toolbar to see the model width, height, and depth together.',
+    customText: 'Select an isometric direction from the 3D View Toolsbar to see the model width, height, and depth together.',
     videoStart: 0,
     videoEnd: 6,
     overlays: [
@@ -207,7 +207,7 @@ export const USER_VIEW_VIDEO_STEPS: LessonVideoStep[] = [
     recapData: {
       title: 'User View Recap',
       items: [
-        'Choose an isometric direction from the 3D View toolbar.',
+        'Choose an isometric direction from the 3D View Toolsbar.',
         'See several faces and all three spatial directions together.',
         'Changing the view never changes the component geometry.',
       ],

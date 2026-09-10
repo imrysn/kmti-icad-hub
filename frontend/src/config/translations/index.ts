@@ -1,3 +1,4 @@
+import { foundationTranslations } from '../../components/iCAD_Foundations/curriculum';
 import { en_2d_common } from './en/2d/common';
 import { ja_2d_common } from './ja/2d/common';
 import { en_3d_annotation } from './en/3d/annotation';
@@ -68,6 +69,7 @@ import { en_3d_boolean } from './en/3d/boolean';
 import { ja_3d_boolean } from './ja/3d/boolean';
 
 export const enTranslations: Record<string, string> = {
+  ...foundationTranslations('en'),
   ...en_3d_annotation,
   ...en_3d_fairing,
   ...en_3d_holedetails,
@@ -105,6 +107,7 @@ export const enTranslations: Record<string, string> = {
 };
 
 export const jaTranslations: Record<string, string> = {
+  ...foundationTranslations('ja'),
   ...ja_3d_annotation,
   ...ja_3d_fairing,
   ...ja_3d_holedetails,

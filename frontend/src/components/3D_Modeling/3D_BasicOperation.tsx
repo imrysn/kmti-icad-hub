@@ -384,7 +384,7 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const activeTab = subLessonId ? subLessonId.replace('basic-op-', '') : '';
   const { language, t } = useTranslation();
   const isJapanese = language === 'ja';
-  const { containerRef, registerText } = useLessonCore(subLessonId);
+  const { scrollProgress, containerRef, registerText } = useLessonCore(subLessonId);
 
   const activePanels = isJapanese ? basicShapeIntroPanelsJP : basicShapeIntroPanels;
 
@@ -433,7 +433,10 @@ const BasicOperation1: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   const handlePrev = () => { if (onPrevLesson) onPrevLesson(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
   return (
-    <div className="course-lesson-container basic-shape-intro-no-progress foundations-video-reading-lesson" ref={containerRef}>
+    <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
+      <div className="lesson-progress-container">
+        <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
+      </div>
       <div className="lesson-grid single-card">
         {activeTab === 'cylinder' && (
           <div className="lesson-card tab-content fade-in">

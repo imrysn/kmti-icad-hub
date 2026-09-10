@@ -1,13 +1,13 @@
-import { AlertCircle,CheckCircle2,ChevronLeft,ChevronRight,Edit2,FileText,Plus,Save,Search,Trash2 } from 'lucide-react';
-import React,{ useCallback,useEffect,useMemo,useState } from 'react';
+import { AlertCircle, CheckCircle2, ChevronLeft, ChevronRight, Edit2, FileText, Plus, Save, Search, Trash2 } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Modal } from '../../../components/Modal';
 import { useNotification } from '../../../context/NotificationContext';
 import { useUI } from '../../../context/UIContext';
 import { useLessons } from '../../../hooks/useLessons';
-import { adminService,Question,Quiz } from '../../../services/adminService';
+import { adminService, Question, Quiz } from '../../../services/adminService';
 import './AssessmentManagement.css';
-import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from '../../mentor/mentorConstants';
+import { ICAD_2D_LESSONS, ICAD_3D_LESSONS, Lesson } from '../../mentor/mentorConstants';
 
 export const AssessmentManagement: React.FC = () => {
     const { requestConfirmation } = useUI();
@@ -77,7 +77,7 @@ export const AssessmentManagement: React.FC = () => {
     }, [selectedQuiz]);
 
     // Fetch lessons for ordering - use DB for content but constants for canonical ordering
-    useLessons(assessmentTab==='3D_Modeling'? 1:2);
+    useLessons(assessmentTab === '3D_Modeling' ? 1 : 2);
 
     const globalOrder = useMemo(() => {
         const ids: string[] = [];
@@ -268,7 +268,7 @@ export const AssessmentManagement: React.FC = () => {
     const filteredQuizzes = quizzes
         .filter(q => {
             const matchesSearch = q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                 q.slug.toLowerCase().includes(searchQuery.toLowerCase());
+                q.slug.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesTab = q.course_type === assessmentTab;
             return matchesSearch && matchesTab;
         })
@@ -373,7 +373,7 @@ export const AssessmentManagement: React.FC = () => {
                         <label>Question Text</label>
                         <textarea
                             value={currentQuestion.text || ''}
-                            onChange={e => setCurrentQuestion({...currentQuestion, text: e.target.value})}
+                            onChange={e => setCurrentQuestion({ ...currentQuestion, text: e.target.value })}
                             placeholder="Enter the question..."
                         />
                     </div>
@@ -386,7 +386,7 @@ export const AssessmentManagement: React.FC = () => {
                                         type="radio"
                                         name="correct"
                                         checked={currentQuestion.correct_answer === i}
-                                        onChange={() => setCurrentQuestion({...currentQuestion, correct_answer: i})}
+                                        onChange={() => setCurrentQuestion({ ...currentQuestion, correct_answer: i })}
                                     />
                                     <input
                                         type="text"
@@ -417,7 +417,7 @@ export const AssessmentManagement: React.FC = () => {
                         <label>Explanation (Optional)</label>
                         <textarea
                             value={currentQuestion.explanation || ''}
-                            onChange={e => setCurrentQuestion({...currentQuestion, explanation: e.target.value})}
+                            onChange={e => setCurrentQuestion({ ...currentQuestion, explanation: e.target.value })}
                             placeholder="Explain why this is the correct answer..."
                         />
                     </div>
@@ -484,22 +484,22 @@ export const AssessmentManagement: React.FC = () => {
             >
                 <div className="form-group">
                     <label>Title</label>
-                    <input type="text" value={currentQuiz.title || ''} onChange={e => setCurrentQuiz({...currentQuiz, title: e.target.value})} placeholder="e.g. iCAD Interface Mastery" />
+                    <input type="text" value={currentQuiz.title || ''} onChange={e => setCurrentQuiz({ ...currentQuiz, title: e.target.value })} placeholder="e.g. iCAD Interface Mastery" />
                 </div>
                 <div className="form-group">
                     <label>Slug (Lesson ID)</label>
-                    <input type="text" value={currentQuiz.slug || ''} onChange={e => setCurrentQuiz({...currentQuiz, slug: e.target.value})} placeholder="e.g. interface" />
+                    <input type="text" value={currentQuiz.slug || ''} onChange={e => setCurrentQuiz({ ...currentQuiz, slug: e.target.value })} placeholder="e.g. interface" />
                 </div>
                 <div className="form-group">
                     <label>Course Type</label>
-                    <select value={currentQuiz.course_type || ''} onChange={e => setCurrentQuiz({...currentQuiz, course_type: e.target.value})}>
-                        <option value="2D_Drawing">2D Drawing</option>
+                    <select value={currentQuiz.course_type || ''} onChange={e => setCurrentQuiz({ ...currentQuiz, course_type: e.target.value })}>
+                        <option value="2D_Drawing">2D Detailing</option>
                         <option value="3D_Modeling">3D Modeling</option>
                     </select>
                 </div>
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea value={currentQuiz.description || ''} onChange={e => setCurrentQuiz({...currentQuiz, description: e.target.value})} placeholder="Briefly describe what this quiz assesses..." />
+                    <textarea value={currentQuiz.description || ''} onChange={e => setCurrentQuiz({ ...currentQuiz, description: e.target.value })} placeholder="Briefly describe what this quiz assesses..." />
                 </div>
                 <div className="global-modal-footer">
                     <button className="cancel-btn" onClick={() => setIsEditingQuiz(false)}>Cancel</button>

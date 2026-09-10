@@ -1,0 +1,40 @@
+.foundations-screen-areas { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px 24px; list-style: none; padding: 16px 0; margin: 0; }
+.foundations-screen-area { --area-bg: #f8d9da; --area-accent: #a72c35; position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; padding: 18px; background: var(--area-bg); min-width: 0; }
+.foundations-screen-area:nth-child(2) { --area-bg: #fff0df; --area-accent: #986010; }
+.foundations-screen-area:nth-child(3) { --area-bg: #e9eddb; --area-accent: #527125; }
+.foundations-screen-area:nth-child(4) { --area-bg: #dbeee8; --area-accent: #176d59; }
+.foundations-screen-area:nth-child(5) { --area-bg: #e2e7f5; --area-accent: #3c5a97; }
+.foundations-screen-area:nth-child(6) { --area-bg: #eddfef; --area-accent: #814a91; }
+.foundations-screen-area:not(:nth-child(3n))::after { content: ''; position: absolute; top: 0; bottom: 0; right: -13px; border-right: 2px dotted #978b9b; }
+.foundations-screen-area:nth-child(n+4)::before { content: ''; position: absolute; top: -15px; left: 0; right: 0; border-top: 2px solid #978b9b; }
+.foundations-screen-area h5 { display: flex; align-items: center; gap: 10px; font-size: 1rem; line-height: 1.35; color: var(--area-accent); margin: 0 0 16px; }
+.foundations-screen-area h5 span { font-size: 2.7rem; font-weight: 900; line-height: 1; }
+.foundations-authored-reading .foundations-screen-area p { margin: 0; padding: 0; font-size: 0.95rem; line-height: 1.6; color: #263343; }
+.foundations-screen-area__image { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; background: transparent; }
+.screen-image-viewer { min-width: 0; width: 100%; }
+.screen-image-viewport { height: 180px; width: 100%; overflow: auto; background: transparent; overscroll-behavior: contain; }
+.screen-image-canvas { min-width: 100%; }
+.screen-image-controls { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; color: #263343; }
+.screen-image-controls button { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 1px solid currentColor; border-radius: 6px; background: transparent; color: #263343; cursor: pointer; }
+.screen-image-controls button:disabled { opacity: 0.35; cursor: default; }
+.screen-image-controls output { font-size: 0.85rem; min-width: 42px; text-align: center; }
+.screen-image-controls button:focus-visible, .screen-image-viewport:focus-visible { outline: 2px solid var(--area-accent); outline-offset: 3px; }
+.foundations-interface-image { display: block; width: 100%; height: auto; border-radius: 12px; margin-bottom: 24px; }
+.foundations-preserved-tutorial { margin-top: 28px; }
+@media(max-width: 700px) {
+  .foundations-screen-areas { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+  .foundations-screen-area::before, .foundations-screen-area::after { display: none; }
+}
+@media(max-width: 450px) { .foundations-screen-areas { grid-template-columns: minmax(0,1fr); } }
+.screen-image-open { display: block; width: 100%; height: 180px; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+.screen-image-open:focus-visible { outline: 2px solid var(--area-accent); outline-offset: 4px; }
+.screen-image-fullscreen { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; box-sizing: border-box; margin: 0; padding: 16px; border: 0; background: #101722f2; color: white; }
+.screen-image-fullscreen[open] { display: flex; flex-direction: column; gap: 12px; }
+.screen-image-fullscreen::backdrop { background: #101722cc; backdrop-filter: blur(6px); }
+.screen-image-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.screen-image-header button { display: grid; place-items: center; flex-shrink: 0; padding: 8px; background: transparent; border: 0; border-radius: 6px; color: white; cursor: pointer; }
+.screen-image-fullscreen .screen-image-viewport { flex: 1; height: 0; min-height: 0; }
+.screen-image-fullscreen .screen-image-controls { color: white; flex-shrink: 0; margin: 0; }
+.screen-image-fullscreen .screen-image-controls button { color: white; width: 42px; height: 42px; border: 0; }
+.screen-image-fullscreen .screen-image-controls button:focus-visible, .screen-image-header button:focus-visible, .screen-image-fullscreen .screen-image-viewport:focus-visible { outline: 2px solid #60a5fa; outline-offset: 2px; }
+

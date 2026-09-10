@@ -95,7 +95,7 @@ const AdditionalViewLesson: React.FC<AdditionalViewLessonProps> = ({
       title: t('2d.additional.title'),
       subtitle: t('2d.additional.isometric_subtitle'),
       steps: [
-        "User View: Follow the projection steps to place a 3D isometric representation on your 2D drawing.",
+        "User View: Follow the projection steps to place a 3D isometric representation on your 2D Detailing.",
         "There are some instances that the cross-sectional view have parts which is not related to the desired view to be seen, we can set the cross-sectional depth to eliminate the unnecessary parts."
       ]
     },

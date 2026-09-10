@@ -1,0 +1,14 @@
+.foundation-view-comparison { container-type: inline-size; }
+.foundation-view-comparison__cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 640px; margin: 24px auto 32px; }
+.foundation-view-comparison__card { --back: #86d65c; --icon: #428523; position: relative; isolation: isolate; display: flex; padding: 0 8px 28px; min-width: 0; }
+.foundation-view-comparison__card:nth-child(2) { --back: #ffbd60; --icon: #9e650d; }
+.foundation-view-comparison__card::before { content: ''; position: absolute; inset: 52px 0 0; border-radius: 26px; background: var(--back); z-index: -1; }
+.foundation-view-comparison__front { width: 100%; box-sizing: border-box; padding: 24px 20px 28px; border-radius: 18px; background: linear-gradient(160deg,#efefef,#fff 85%); text-align: center; }
+.foundation-view-comparison__front > svg { color: var(--icon); margin-bottom: 14px; }
+.foundation-view-comparison__front h5 { margin: 0 0 16px; font-size: 1.05rem; line-height: 1.4; color: #202937; }
+.foundation-view-comparison .foundation-view-comparison__front p { padding: 0; margin: 0; color: #404b5b; font-size: 1rem; line-height: 1.6; text-align: left; }
+[data-theme='dark'] .foundation-view-comparison__front { background: linear-gradient(160deg,#303e52,#202b3c); }
+[data-theme='dark'] .foundation-view-comparison__front h5,
+[data-theme='dark'] .foundation-view-comparison .foundation-view-comparison__front p { color: #edf2fa; }
+[data-theme='dark'] .foundation-view-comparison__front > svg { color: var(--back); }
+@container(max-width: 420px) { .foundation-view-comparison__cards { grid-template-columns: minmax(0,1fr); } }

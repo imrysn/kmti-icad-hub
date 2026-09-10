@@ -633,7 +633,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
             showNotification(`Submission opened.`, 'success');
         } catch (err: any) {
             console.error('Download and Open Error:', err);
-            
+
             if (err.code === 'OPERATION_IN_PROGRESS') {
                 showNotification('File is already downloading or open.', 'info');
             } else if (err.code !== 'APP_LAUNCH_FAILED' && err.code !== 'WRITE_ERROR') {
@@ -916,7 +916,7 @@ export const PracticalTrainerDashboard: React.FC = () => {
                                         className={`filter-tab-btn ${activeType === '2D' ? 'active' : ''}`}
                                         onClick={() => setActiveType('2D')}
                                     >
-                                        <PenTool size={16} /> 2D Drawing Sets
+                                        <PenTool size={16} /> 2D Detailing Sets
                                     </button>
                                 </div>
                             )}

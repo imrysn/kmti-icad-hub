@@ -20,6 +20,11 @@ class CourseService:
         return CourseList(courses=course_responses)
 
     def get_user_progress(self, db: Session, course_id: str, user_id: str) -> CourseProgress:
+        from .foundations_curriculum import find_foundations_course, progress_percentage
+        foundations = find_foundations_course(db, course_id)
+        if foundations:
+            return CourseProgress(course_id=course_id, user_id=user_id,
+                                  progress_percentage=progress_percentage(db, user_id, foundations))
         progress = db.query(UserProgress).filter(
             UserProgress.user_id == user_id, 
             UserProgress.course_id == course_id
@@ -36,6 +41,9 @@ class CourseService:
     def get_course_lessons(self, db: Session, course_id: str, lang: str = "en"):
         """Fetch lessons for a course in a hierarchical structure."""
         from ..models import Lesson, Quiz, AssessmentTask
+        from .foundations_curriculum import find_foundations_course, lesson_tree
+        if find_foundations_course(db, course_id):
+            return lesson_tree(lang)
         
         # Handle Special Case: Practical Assessment
         if course_id == "practical-assessment":

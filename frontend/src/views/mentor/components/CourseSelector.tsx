@@ -1,8 +1,9 @@
-import { BookOpen,Lock,PlayCircle,Settings } from 'lucide-react';
+import { BookOpen, Lock, PlayCircle, Settings } from 'lucide-react';
 import React from 'react';
 import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
 import { useAuth } from '../../../context/AuthContext';
 import { useTranslation } from '../../../context/LanguageContext';
+import { FOUNDATION_MODULES, FOUNDATION_TOTAL } from '../../../components/iCAD_Foundations/curriculum';
 import drawing2DUrl from '../../../assets/2D.png';
 import drawing2DAssessmentUrl from '../../../assets/2d-images/2D_balloon_assembly_drawing_1.png';
 import practical3DImgUrl from '../../../assets/froming4.webp';
@@ -106,7 +107,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         ...(courseFoundations ? [{
             ...courseFoundations,
             title: t('course.title_foundations') || courseFoundations.title,
-            description: t('course.desc_foundations') || courseFoundations.description
+            description: `${FOUNDATION_MODULES.length} ${language === 'ja' ? 'モジュール' : 'modules'} · ${FOUNDATION_TOTAL} ${language === 'ja' ? 'レッスン' : 'lessons'}. ${t('course.desc_foundations') || courseFoundations.description}`
         }] : []),
         ...(course3D ? [{
             ...course3D,
@@ -194,69 +195,69 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                 </div>
 
                 <div className="course-selection">
-                <div className="course-grid">
-                    {allCourses.length === 0 && <div className="no-entitled-courses"><Lock size={28} /><h3>No training content is available</h3><p>Your account is active, but its access plan does not currently include any published courses or practical sets.</p></div>}
-                    {allCourses.map((course) => {
-                        const isLocked = isCourseLocked(course as Course);
+                    <div className="course-grid">
+                        {allCourses.length === 0 && <div className="no-entitled-courses"><Lock size={28} /><h3>No training content is available</h3><p>Your account is active, but its access plan does not currently include any published courses or practical sets.</p></div>}
+                        {allCourses.map((course) => {
+                            const isLocked = isCourseLocked(course as Course);
 
-                        return (
-                            <div
-                                key={course.id}
-                                className={`course-card ${course.id.toString() === '1' ? 'card-3d' : ''} ${course.id.toString() === '2' ? 'card-2d' : ''} ${course.id.toString() === 'practical-assessment' ? 'card-practical-3d card-practical' : ''} ${course.id.toString() === '2d-assessment' ? 'card-practical-2d card-practical' : ''} ${isLocked ? 'locked' : ''}`}
-                            >
-                                {isLocked && (
-                                    <div className="locked-overlay">
-                                        <div className="locked-overlay-inner">
-                                            <Lock size={36} className="overlay-lock-icon" />
-                                            <span>{t('course.locked') || 'Locked'}</span>
-                                            <p className="locked-hint">
-                                                {course.id.toString() === 'practical-assessment'
-                                                    ? (t('course.unlock_3d_prac') || 'Complete 3D Modeling to unlock')
-                                                    : course.id.toString() === '2d-assessment'
-                                                        ? (t('course.unlock_2d_det') || 'Complete 2D Detailing to unlock')
-                                                        : (t('course.unlock_3d_det') || 'Complete 3D Practical Assessment to unlock')}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-                                <div className="card-header">
-                                    <h3>{course.title}</h3>
-                                </div>
-
-                                <p>{course.description}</p>
-
-                                {course.id.toString() === '1' ? (
-                                    <div className="card-graphic-container">
-                                        <ModelViewer3D glbUrl={uncoilerUrl} />
-                                    </div>
-                                ) : course.id.toString() === '2' ? (
-                                    <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={drawing2DUrl} alt="2D Drawing" className="card-2d-image" />
-                                    </div>
-                                ) : course.id.toString() === 'practical-assessment' ? (
-                                    <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={practical3DImgUrl} alt="3D Practical" className="card-2d-image" />
-                                    </div>
-                                ) : (
-                                    <div className="card-graphic-container card-2d-graphic-container">
-                                        <img src={drawing2DAssessmentUrl} alt="2D Assessment" className="card-2d-image" />
-                                    </div>
-                                )}
-
-                                <button
-                                    className={`primary ${isLocked ? 'disabled' : ''}`}
-                                    disabled={isLocked}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        if (!isLocked) setSelectedCourse(course as any);
-                                    }}
+                            return (
+                                <div
+                                    key={course.id}
+                                    className={`course-card ${course.id.toString() === '1' ? 'card-3d' : ''} ${course.id.toString() === '2' ? 'card-2d' : ''} ${course.id.toString() === 'practical-assessment' ? 'card-practical-3d card-practical' : ''} ${course.id.toString() === '2d-assessment' ? 'card-practical-2d card-practical' : ''} ${isLocked ? 'locked' : ''}`}
                                 >
-                                    {isLocked ? (t('course.locked') || 'Locked') : (t('course.launch') || 'Launch Module')} <PlayCircle size={18} />
-                                </button>
-                            </div>
-                        );
-                    })}
-                </div>
+                                    {isLocked && (
+                                        <div className="locked-overlay">
+                                            <div className="locked-overlay-inner">
+                                                <Lock size={36} className="overlay-lock-icon" />
+                                                <span>{t('course.locked') || 'Locked'}</span>
+                                                <p className="locked-hint">
+                                                    {course.id.toString() === 'practical-assessment'
+                                                        ? (t('course.unlock_3d_prac') || 'Complete 3D Modeling to unlock')
+                                                        : course.id.toString() === '2d-assessment'
+                                                            ? (t('course.unlock_2d_det') || 'Complete 2D Detailing to unlock')
+                                                            : (t('course.unlock_3d_det') || 'Complete 3D Practical Assessment to unlock')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="card-header">
+                                        <h3>{course.title}</h3>
+                                    </div>
+
+                                    <p>{course.description}</p>
+
+                                    {course.id.toString() === '1' ? (
+                                        <div className="card-graphic-container">
+                                            <ModelViewer3D glbUrl={uncoilerUrl} />
+                                        </div>
+                                    ) : course.id.toString() === '2' ? (
+                                        <div className="card-graphic-container card-2d-graphic-container">
+                                            <img src={drawing2DUrl} alt="2D Detailing" className="card-2d-image" />
+                                        </div>
+                                    ) : course.id.toString() === 'practical-assessment' ? (
+                                        <div className="card-graphic-container card-2d-graphic-container">
+                                            <img src={practical3DImgUrl} alt="3D Practical" className="card-2d-image" />
+                                        </div>
+                                    ) : (
+                                        <div className="card-graphic-container card-2d-graphic-container">
+                                            <img src={drawing2DAssessmentUrl} alt="2D Assessment" className="card-2d-image" />
+                                        </div>
+                                    )}
+
+                                    <button
+                                        className={`primary ${isLocked ? 'disabled' : ''}`}
+                                        disabled={isLocked}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (!isLocked) setSelectedCourse(course as any);
+                                        }}
+                                    >
+                                        {isLocked ? (t('course.locked') || 'Locked') : (t('course.launch') || 'Launch Module')} <PlayCircle size={18} />
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

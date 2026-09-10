@@ -6,6 +6,7 @@ import icadInterfacePreview from '../../assets/3D_INTERACTIVE/icad_interface.jpg
 import kmtiLogo from '../../assets/logo/kmti_logo.png';
 import kmtiTrainingHubLogo from '../../assets/logo/kmti-training-hub.png';
 import './LandingView.css';
+import { FOUNDATION_LESSONS, FOUNDATION_TOTAL } from '../../components/iCAD_Foundations/curriculum';
 
 const PLAN_MARKETING: Record<string, { outcome: string; features: string[]; popular?: boolean }> = {
   'icad-foundations': {
@@ -227,13 +228,13 @@ export const LandingView: React.FC = () => {
                 <div className="mockup-sidebar">
                   <span className="mockup-course-label">iCAD Foundations</span>
                   <div className="mockup-progress"><span /></div>
-                  <div className="mockup-lesson active"><CheckCircle size={14} /> What is iCAD?</div>
-                  <div className="mockup-lesson"><BookOpen size={14} /> Screen layout</div>
-                  <div className="mockup-lesson"><Lock size={14} /> Model navigation</div>
+                  <div className="mockup-lesson active"><CheckCircle size={14} /> {FOUNDATION_LESSONS[0].id} {FOUNDATION_LESSONS[0].title.en}</div>
+                  <div className="mockup-lesson"><BookOpen size={14} /> {FOUNDATION_LESSONS[1].id} {FOUNDATION_LESSONS[1].title.en}</div>
+                  <div className="mockup-lesson"><Lock size={14} /> {FOUNDATION_LESSONS[2].id} {FOUNDATION_LESSONS[2].title.en}</div>
                 </div>
                 <div className="mockup-content">
                   <div className="mockup-lesson-header">
-                    <div><span>Lesson 1 of 17</span><strong>What is iCAD?</strong></div>
+                    <div><span>Lesson 1 of {FOUNDATION_TOTAL}</span><strong>{FOUNDATION_LESSONS[0].title.en}</strong></div>
                     <div className="mockup-tts"><PlayCircle size={15} /> Read lesson</div>
                   </div>
                   <div className="mockup-learning-card">

@@ -152,7 +152,7 @@ export const en_3d_common = {
   "common.material_settings_window": "Material Settings Window",
   "common.material_distinction_result": "Material Distinction result",
   "common.material_overwrite_dialog": "Material Overwrite Dialog",
-  "common.2d_drawing_reference": "2D Drawing Reference",
+  "common.2d_drawing_reference": "2D Detailing Reference",
   "common.3d_information_verification": "3D Information Verification",
   "common.normal_part_example": "Normal Part Example",
   "common.mirror_part_a_and_b": "Mirror Part A and B",

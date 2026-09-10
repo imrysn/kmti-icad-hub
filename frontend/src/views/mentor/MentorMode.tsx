@@ -1,3 +1,5 @@
+import { useTranslation } from '../../context/LanguageContext';
+import { createFoundationLessons, resolveFoundationLesson, migrateFoundationCompletion } from '../../components/iCAD_Foundations/curriculum';
 import { Lock } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
@@ -7,7 +9,7 @@ import { useLessons } from '../../hooks/useLessons';
 import { assessmentService } from '../../services/assessmentService';
 import { authService, EffectiveEntitlements } from '../../services/authService';
 import { Course } from '../../types';
-import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,ICAD_FOUNDATIONS_LESSONS,Lesson } from './mentorConstants';
+import { ICAD_2D_LESSONS,ICAD_3D_LESSONS,Lesson } from './mentorConstants';
 
 // Extracted Components
 import { CourseSelector } from './components/CourseSelector';
@@ -28,6 +30,7 @@ interface MentorModeProps {
 
 const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
     const { isConnected, sendMessage } = useWebSocket();
+    const { language } = useTranslation();
     const lastActivityRef = useRef<string>('');
 
     // Router hooks for header mode-switcher integration
@@ -127,9 +130,9 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (!selectedCourse) return [];
         if (selectedCourse.course_type === '2D_Drawing') return ICAD_2D_LESSONS;
         if (selectedCourse.course_type === '3D_Modeling') return ICAD_3D_LESSONS;
-        if (selectedCourse.course_type === 'iCAD_Foundations') return ICAD_FOUNDATIONS_LESSONS;
+        if (selectedCourse.course_type === 'iCAD_Foundations') return createFoundationLessons(language === 'ja' ? 'ja' : 'en');
         return dbLessons;
-    }, [selectedCourse, dbLessons]);
+    }, [selectedCourse, dbLessons, language]);
 
     const allLessonIds = useMemo(() => {
         const ids: string[] = [];
@@ -181,9 +184,11 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     setSelectedCourse(course);
                     if (savedLessonId) {
                         console.log('Restoring lesson:', savedLessonId);
-                        setActiveLessonId(savedLessonId);
+                        setActiveLessonId(course.course_type === 'iCAD_Foundations' ? (resolveFoundationLesson(savedLessonId)?.id || savedLessonId) : savedLessonId);
                     }
-                    if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
+                    if (course.course_type === 'iCAD_Foundations') {
+                        setExpandedIds(new Set([resolveFoundationLesson(savedLessonId || '')?.moduleId || 'F1']));
+                    } else if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
                 } else {
                     console.warn('Could not find course in list for ID:', savedCourseId);
                     if (!isEmployeeSide) {
@@ -355,7 +360,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             }
 
 
-            setCompletedLessons(ids);
+            setCompletedLessons(selectedCourse.course_type === 'iCAD_Foundations' ? migrateFoundationCompletion(ids) : ids);
 
             // If we are currently loading progress for Course '1', update isAnnotationCompleted as well
             if (selectedCourse.id.toString() === '1') {
@@ -379,8 +384,8 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (!selectedCourse || activeLessonId) return;
 
         if (isFoundationsCourse) {
-            setActiveLessonId('lesson-1-1');
-            setExpandedIds(new Set(['module-1']));
+            setActiveLessonId('F1.1');
+            setExpandedIds(new Set(['F1']));
         } else if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
@@ -577,9 +582,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 return nextSet;
             });
         } else {
-            console.debug('Cannot go to next lesson: already at end of course.');
+            if (isFoundationsCourse) { setSelectedCourse(null); setActiveLessonId(''); }
+            else console.debug('Cannot go to next lesson: already at end of course.');
         }
-    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons]);
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons, isFoundationsCourse]);
 
     const goToPrevLesson = useCallback(() => {
         if (currentLessonIndex > 0) {

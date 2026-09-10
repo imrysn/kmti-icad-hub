@@ -25,7 +25,7 @@ export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'cyl-step-2',
     title: 'Set the View',
-    text: 'Select Front View from the 3D View toolbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
+    text: 'Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
     preserveText: true,
   },
   {
@@ -73,7 +73,7 @@ export const BOX_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'box-step-2',
     title: 'Set the View',
-    text: 'Select Front View from the 3D View toolbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
+    text: 'Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
     preserveText: true,
   },
   {
@@ -120,7 +120,7 @@ export const POLYGON_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'poly-step-2',
     title: 'Set the View',
-    text: 'Select Front View from the 3D View toolbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
+    text: 'Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
     preserveText: true,
   },
   {
@@ -167,7 +167,7 @@ export const CONE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'cone-step-2',
     title: 'Set the View',
-    text: 'Select Front View from the 3D View toolbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
+    text: 'Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
     preserveText: true,
   },
   {
@@ -214,7 +214,7 @@ export const TORUS_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'torus-step-2',
     title: 'Set the View',
-    text: 'Select Front View from the 3D View toolbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
+    text: 'Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n <b>Arrange Solid</b> > <b>Y Orientation</b> ',
     preserveText: true,
   },
   {

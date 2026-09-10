@@ -319,7 +319,7 @@ class ChatService:
         lower_query = query.lower().strip()
         for key, response in small_talk_patterns.items():
             if key in lower_query:
-                return f"### HEY THERE!\n\n{response}\n\n---\n\n**Try asking:** Anything about 2D Drawing, 3D Modeling, or BOM management!"
+                return f"### HEY THERE!\n\n{response}\n\n---\n\n**Try asking:** Anything about 2D Detailing, 3D Modeling, or BOM management!"
 
         # Persona logic: Wit + Empathy-Candor + Instruction-style rephrasing
         summary = "### ALRIGHT, I'VE DUG AROUND FOR YOU...\n\n"
@@ -403,7 +403,7 @@ class ChatService:
     def _fallback_suggestions(self, sources) -> List[str]:
         """Generate static suggestions from source metadata when Gemini is offline."""
         if not sources:
-            return ["Tell me about 2D Drawing", "How do I start a 3D Part?", "What is BOM management?"]
+            return ["Tell me about 2D Detailing", "How do I start a 3D Part?", "What is BOM management?"]
 
         suggestions = []
         topics = set()

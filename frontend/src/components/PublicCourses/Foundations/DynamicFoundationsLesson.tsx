@@ -475,13 +475,13 @@ const DynamicFoundationsLesson: React.FC<DynamicLessonProps> = ({
   );
 
   return (
-    <div className={`course-lesson-container foundations-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson foundations-standard-intro' : ''} ${videoId ? 'foundations-video-reading-lesson' : ''}`} ref={containerRef}>
+    <div className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson ${isViewTourLesson ? 'foundations-view-tour-lesson' : ''}`} ref={containerRef}>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      <div className="lesson-grid single-card foundations-lesson-grid">
-        <div className="lesson-card tab-content fade-in foundations-lesson-card">
+      <div className="lesson-grid single-card">
+        <div className="lesson-card tab-content fade-in">
           {writtenModule ? (
             <FoundationsVideoReadingLayout
               title={writtenModule.copy.title}

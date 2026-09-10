@@ -1,3 +1,8 @@
+import { FoundationCompletionContext } from '../../../components/iCAD_Foundations/FoundationCompletionContext';
+import LessonRecapPanel from '../../../components/LessonRecapPanel';
+import { resolveFoundationLesson, foundationRecap } from '../../../components/iCAD_Foundations/curriculum';
+import { PRESERVED_FOUNDATIONS_LESSONS } from '../mentorConstants';
+const FoundationReadingLesson = lazy(() => import('../../../components/iCAD_Foundations/FoundationReadingLesson'));
 import { BookOpen, ChevronLeft, ChevronRight, Loader2, Video } from 'lucide-react';
 import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
@@ -94,7 +99,11 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onLessonComplete,
   isEmployeeSide = false
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const [showFoundationReview, setShowFoundationReview] = useState(false);
+  const [completionError, setCompletionError] = useState(false);
+  const [savingCompletion, setSavingCompletion] = useState(false);
+  useEffect(() => { setCompletionError(false); setShowFoundationReview(false); }, [activeLessonId, language]);
   const lessonTitleKey = `lesson.title.${activeLessonId}`;
   const translatedLessonTitle = t(lessonTitleKey);
   let activeLessonTitle = translatedLessonTitle === lessonTitleKey
@@ -107,7 +116,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     .replace('{current}', String(currentLessonIndex + 1))
     .replace('{total}', String(allLessonIdsLength));
   useAuth();
-  const { stop, isSpeaking, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
+  const { stop, speak, isSpeaking, currentIndex, setCurrentIndex, activeParagraphText } = useTTSContext();
   useEffect(() => {
     stop();
   }, [activeLessonId, stop]);
@@ -327,14 +336,29 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   const handleInteractiveLessonComplete = useCallback(async () => {
     await api.post('/auth/submit-quiz', {
       course_id: courseId,
-      lesson_id: activeLessonId,
+      lesson_id: isFoundationsCourse ? (resolveFoundationLesson(activeLessonId)?.id || activeLessonId) : activeLessonId,
       score: 100,
       answers: [],
     });
-    onLessonComplete(activeLessonId);
-  }, [activeLessonId, courseId, onLessonComplete]);
+    onLessonComplete(isFoundationsCourse ? (resolveFoundationLesson(activeLessonId)?.id || activeLessonId) : activeLessonId);
+  }, [activeLessonId, courseId, onLessonComplete, isFoundationsCourse]);
 
   const handleNextAction = async () => {
+    if (isFoundationsCourse && resolveFoundationLesson(activeLessonId)) {
+      const canonical = resolveFoundationLesson(activeLessonId)!;
+      if (canonical.recapMode === 'embedded-or-reading-review' && !showFoundationReview) {
+        setShowFoundationReview(true);
+        speak([foundationRecap(canonical.id, language === 'ja' ? 'ja' : 'en')!.narration], 0);
+        return;
+      }
+      stop();
+      if (savingCompletion) return;
+      setSavingCompletion(true); setCompletionError(false);
+      try { await handleInteractiveLessonComplete(); goToNextLesson(); }
+      catch { setCompletionError(true); }
+      finally { setSavingCompletion(false); }
+      return;
+    }
     if (hasQuiz && !isModuleCompleted && !isEmployeeSide) {
       setIsLoadingQuiz(true);
       try {
@@ -362,6 +386,10 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
       <div className="lesson-split-layout">
         <div className="lesson-scroll-area">
 
+          {completionError && <div role="alert">
+            <p>{language === 'ja' ? '学習記録を保存できませんでした。再試行してください。' : 'Completion could not be saved. Retry to continue.'}</p>
+            <button disabled={savingCompletion} onClick={handleNextAction}>{language === 'ja' ? '再試行' : 'Retry'}</button>
+          </div>}
           <div className="lesson-header-banner">
             <p className="lesson-indicator">{lessonIndicator}</p>
             <h2 className="lesson-banner-title">
@@ -371,134 +399,198 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
           </div>
 
           <div key={activeLessonId} className={`lesson-content-body ${isFoundationsCourse ? 'foundations-lesson-content-body' : ''}`}>
-            <Suspense fallback={
-              <div className="lesson-loading-fallback" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', width: '100%' }}>
-                <div className="fallback-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-dim)' }}>
-                  <Loader2 className="animate-spin" size={48} style={{ color: 'var(--color-primary)' }} />
-                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500 }}>Preparing lesson modules...</p>
+            <FoundationCompletionContext.Provider value={isFoundationsCourse ? {
+              complete: handleInteractiveLessonComplete, advance: goToNextLesson, nextLabel: language === 'ja' ? '次へ' : 'Next',
+            } : null}>
+              <Suspense fallback={
+                <div className="lesson-loading-fallback" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '350px', width: '100%' }}>
+                  <div className="fallback-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: 'var(--text-dim)' }}>
+                    <Loader2 className="animate-spin" size={48} style={{ color: 'var(--color-primary)' }} />
+                    <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500 }}>Preparing lesson modules...</p>
+                  </div>
                 </div>
-              </div>
-            }>
-              {(() => {
-                const registry: Record<string, () => React.ReactNode> = {
-                  'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                  'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                };
+              }>
+                {(() => {
+                  const registry: Record<string, () => React.ReactNode> = {
+                    'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                    'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                    'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
+                    'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  };
 
-                const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
-                  'origin': (id) => <OriginLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                };
+                  const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
+                    'origin': (id) => <OriginLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                    '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
+                  };
 
-                // Preserve explicitly mapped interactive lessons, including the
-                // existing Foundations Module 2 iCAD Interface experience.
-                const exactMatch = activeLessonId ? registry[activeLessonId] : null;
-                if (exactMatch) return exactMatch();
+                  // Canonical routing is allowlisted before any legacy/prefix routing.
+                  if (isFoundationsCourse) {
+                    const canonical = resolveFoundationLesson(activeLessonId);
+                    if (!canonical) return <div role="status">
+                      <p>{language === 'ja' ? 'この旧レッスンは基礎コースの対象外です。サイドバーからレッスンを選んでください。学習記録は保持されています。' : 'This legacy lesson is no longer part of Foundations. Choose a lesson from the sidebar. Your previous records are preserved.'}</p>
+                    </div>;
+                    const renderer = canonical.renderer;
+                    if (canonical.id === 'F4.1') {
+                      const original = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === 'lesson-4-1')!;
+                      return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                        onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                        tutorial={<FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial"><DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...original, content: original.content || [] })} /></div></FoundationCompletionContext.Provider>} />;
+                    }
+                    if (canonical.id === 'F3.6') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                      tutorial={<div className="foundations-zoom-tutorial"><RotateViewInteractiveLesson /></div>} />;
+                    if (canonical.id === 'F3.5') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                      tutorial={<div className="foundations-zoom-tutorial"><PanInteractiveLesson /></div>} />;
+                    if (canonical.id === 'F3.3') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                      tutorial={<div className="foundations-zoom-tutorial"><ZoomInOutInteractiveLesson /></div>} />;
+                    if (canonical.id === 'F2.9') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                      tutorial={<FoundationCompletionContext.Provider value={null}><ToolBarsLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
+                    if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
+                      tutorial={<FoundationCompletionContext.Provider value={null}><IcadInterfaceLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
+                    if (!renderer) return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson}
+                      onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'} />;
+                    const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === renderer);
+                    const preservedTutorial = renderer.startsWith('basic-op-')
+                      ? <BasicOperationLesson subLessonId={renderer} />
+                      : source ? <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...source, content: source.content || [] })} /> : null;
+                    return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'}
+                      tutorial={preservedTutorial && <FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial">{preservedTutorial}</div></FoundationCompletionContext.Provider>} />;
 
-                // Check for dynamic foundation lesson
-                if (isFoundationsCourse && activeLessonId && (
-                  activeLessonId.startsWith('lesson-') ||
-                  activeLessonId === 'origin-projections' ||
-                  activeLessonId === 'origin-layout'
-                )) {
-                  let foundLesson: any = null;
-                  for (const mod of lessons) {
-                    if (mod.id === activeLessonId) foundLesson = mod;
-                    if (mod.children) {
-                      const child = mod.children.find(c => c.id === activeLessonId);
-                      if (child) foundLesson = child;
+                  }
+
+                  // Preserve explicitly mapped interactive lessons, including the
+                  // existing Foundations Module 2 iCAD Interface experience.
+                  const exactMatch = activeLessonId ? registry[activeLessonId] : null;
+                  if (exactMatch) return exactMatch();
+
+                  // Check for dynamic foundation lesson
+                  if (isFoundationsCourse && activeLessonId && (
+                    activeLessonId.startsWith('lesson-') ||
+                    activeLessonId === 'origin-projections' ||
+                    activeLessonId === 'origin-layout'
+                  )) {
+                    let foundLesson: any = null;
+                    for (const mod of lessons) {
+                      if (mod.id === activeLessonId) foundLesson = mod;
+                      if (mod.children) {
+                        const child = mod.children.find(c => c.id === activeLessonId);
+                        if (child) foundLesson = child;
+                      }
+                    }
+                    if (foundLesson && foundLesson.content) {
+                      return <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps(foundLesson)} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
                     }
                   }
-                  if (foundLesson && foundLesson.content) {
-                    return <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps(foundLesson)} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
+
+                  // Try exact match in prefixRegistry first (for lessons with dashes in name but no sub-lesson suffix)
+                  if (activeLessonId && typeof prefixRegistry[activeLessonId] === 'function') {
+                    return prefixRegistry[activeLessonId](activeLessonId);
                   }
-                }
 
-                // Try exact match in prefixRegistry first (for lessons with dashes in name but no sub-lesson suffix)
-                if (activeLessonId && typeof prefixRegistry[activeLessonId] === 'function') {
-                  return prefixRegistry[activeLessonId](activeLessonId);
-                }
+                  const prefix = activeLessonId?.includes('-')
+                    ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-'))
+                    : activeLessonId;
 
-                const prefix = activeLessonId?.includes('-')
-                  ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-'))
-                  : activeLessonId;
+                  if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
+                    return prefixRegistry[prefix](activeLessonId);
+                  }
 
-                if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
-                  return prefixRegistry[prefix](activeLessonId);
-                }
-
-                // Check for dynamic DB content as primary fallback
-                if (dbContent.length > 0) {
-                  return (
-                    <div className="dynamic-lesson-view">
-                      <div className="modular-content">
-                        {dbContent.map((item, idx) => (
-                          <div key={idx} className={`content-block ${item.content_type}`}>
-                            {item.content_type === 'text' && <p className="instruction-text">{item.data}</p>}
-                            {item.content_type === 'image' && <img className="instruction-image" src={item.data} alt="Curriculum Fig" />}
-                          </div>
-                        ))}
+                  // Check for dynamic DB content as primary fallback
+                  if (dbContent.length > 0) {
+                    return (
+                      <div className="dynamic-lesson-view">
+                        <div className="modular-content">
+                          {dbContent.map((item, idx) => (
+                            <div key={idx} className={`content-block ${item.content_type}`}>
+                              {item.content_type === 'text' && <p className="instruction-text">{item.data}</p>}
+                              {item.content_type === 'image' && <img className="instruction-image" src={item.data} alt="Curriculum Fig" />}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="lesson-navigation" style={{ marginTop: '3rem', justifyContent: 'center', gap: '1.5rem' }}>
+                          <button className="nav-button" onClick={goToPrevLesson}>
+                            <ChevronLeft size={18} /> Previous Module
+                          </button>
+                          <button className="nav-button next" onClick={handleNextAction}>
+                            {nextLabel} <ChevronRight size={18} />
+                          </button>
+                        </div>
                       </div>
-                      <div className="lesson-navigation" style={{ marginTop: '3rem', justifyContent: 'center', gap: '1.5rem' }}>
-                        <button className="nav-button" onClick={goToPrevLesson}>
-                          <ChevronLeft size={18} /> Previous Module
-                        </button>
-                        <button className="nav-button next" onClick={handleNextAction}>
-                          {nextLabel} <ChevronRight size={18} />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                }
+                    );
+                  }
 
-                if (is2DDrawingCourse) {
+                  if (is2DDrawingCourse) {
+                    return (
+                      <div className="content-2d-placeholder">
+                        <BookOpen size={48} strokeWidth={1.5} />
+                        <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Detailing</h3>
+                        <p className="content-2d-placeholder__text">Content will be available soon.</p>
+
+                        <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
+                          <button className="nav-button" onClick={goToPrevLesson}>
+                            <ChevronLeft size={18} /> Previous
+                          </button>
+                          <button className="nav-button next" onClick={handleNextAction}>
+                            {nextLabel} <ChevronRight size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  }
+
                   return (
-                    <div className="content-2d-placeholder">
-                      <BookOpen size={48} strokeWidth={1.5} />
-                      <h3 className="content-2d-placeholder__title">iCAD Operation Manual 2D Drawing</h3>
-                      <p className="content-2d-placeholder__text">Content will be available soon.</p>
+                    <div className="content-placeholder">
+                      <Video size={48} className="content-placeholder__icon" />
+                      <p>{t('lesson.coming_soon')} <strong>{activeLessonId}</strong></p>
+                      <p className="content-placeholder__note">
+                        This area will host the instructional text, video demonstrations, and active testing prompts.
+                      </p>
 
                       <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
                         <button className="nav-button" onClick={goToPrevLesson}>
@@ -510,28 +602,14 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                       </div>
                     </div>
                   );
-                }
-
-                return (
-                  <div className="content-placeholder">
-                    <Video size={48} className="content-placeholder__icon" />
-                    <p>{t('lesson.coming_soon')} <strong>{activeLessonId}</strong></p>
-                    <p className="content-placeholder__note">
-                      This area will host the instructional text, video demonstrations, and active testing prompts.
-                    </p>
-
-                    <div className="lesson-navigation" style={{ marginTop: '2rem', justifyContent: 'center', gap: '1rem' }}>
-                      <button className="nav-button" onClick={goToPrevLesson}>
-                        <ChevronLeft size={18} /> Previous
-                      </button>
-                      <button className="nav-button next" onClick={handleNextAction}>
-                        {nextLabel} <ChevronRight size={18} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })()}
-            </Suspense>
+                })()}
+              </Suspense>
+            </FoundationCompletionContext.Provider>
+            {showFoundationReview && <div className="foundations-recap-overlay"><LessonRecapPanel
+              summary={foundationRecap(activeLessonId, language === 'ja' ? 'ja' : 'en')!.narration}
+              items={foundationRecap(activeLessonId, language === 'ja' ? 'ja' : 'en')!.items}
+              actionLabel={language === 'ja' ? '次へ' : 'Next'} onAction={handleNextAction} disabled={savingCompletion}
+              error={completionError ? (language === 'ja' ? '保存できませんでした。もう一度お試しください。' : 'Completion could not be saved. Please try again.') : undefined} /></div>}
 
 
             {/* Premium Quiz Modal */}

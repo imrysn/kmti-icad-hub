@@ -23,6 +23,7 @@ venv\Scripts\python.exe -m PyInstaller --onefile --console ^
     --name KMTI_iCAD_Server ^
     --icon=kmti_logo.ico ^
     --add-data="kmti_logo.ico;." ^
+    --add-data="..\data\foundations-curriculum.json;data" ^
     --distpath=dist ^
     --workpath=build ^
     --hidden-import=uvicorn.logging ^

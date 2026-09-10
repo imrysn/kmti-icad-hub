@@ -4,7 +4,8 @@ import {
   buildFoundationsNarrationUrl,
   createFoundationsBrowserUtterance,
 } from '../foundationsNarrationService';
-import { ICAD_FOUNDATIONS_LESSONS, type Lesson } from '../../views/mentor/mentorConstants';
+import { ICAD_FOUNDATIONS_LESSONS, PRESERVED_FOUNDATIONS_LESSONS, type Lesson } from '../../views/mentor/mentorConstants';
+import { createFoundationLessons } from '../../components/iCAD_Foundations/curriculum';
 import { TOOLBAR_TUTORIAL_STEPS } from '../../components/3D_Modeling/VideoTutorialData/ToolBarsTutorial';
 import { TUTORIAL_STEPS as INTERFACE_TUTORIAL_STEPS } from '../../components/3D_Modeling/VideoTutorialData/iCadInterfaceTutorial';
 import {
@@ -32,7 +33,7 @@ const tutorialSteps = [
   ...polygonTutorialSteps,
   ...coneTutorialSteps,
   ...torusTutorialSteps,
-  ...leafLessons(ICAD_FOUNDATIONS_LESSONS).flatMap((lesson) => lesson.videoSteps || []),
+  ...leafLessons(PRESERVED_FOUNDATIONS_LESSONS).flatMap((lesson) => lesson.videoSteps || []),
 ];
 
 const parseNarrationUrl = (value: string | null) => {
@@ -59,9 +60,10 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
 
   beforeEach(() => localStorage.clear());
 
-  it('covers the complete 30-lesson Foundations inventory in English and Japanese', () => {
+  it('covers the complete 60-lesson Foundations inventory in English and Japanese', () => {
     const lessons = leafLessons(ICAD_FOUNDATIONS_LESSONS);
-    expect(lessons).toHaveLength(30);
+    const japaneseLessons = leafLessons(createFoundationLessons('ja'));
+    expect(lessons).toHaveLength(60);
 
     for (const lesson of lessons) {
       const sourceText = lesson.content?.find((text) => text.trim()) || lesson.title;
@@ -69,7 +71,7 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
         language: FOUNDATIONS_NARRATION_PROFILE.englishLanguage,
       }));
       const japanese = parseNarrationUrl(buildFoundationsNarrationUrl(
-        `日本語ナレーション。${sourceText}`,
+        japaneseLessons.find(item => item.id === lesson.id)!.content![0],
         { language: FOUNDATIONS_NARRATION_PROFILE.japaneseLanguage },
       ));
 
@@ -81,7 +83,7 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
       }
       expect(english.searchParams.get('lang'), lesson.id).toBe('en-US');
       expect(japanese.searchParams.get('lang'), lesson.id).toBe('ja-JP');
-      expect(japanese.searchParams.get('text'), lesson.id).toContain('日本語ナレーション');
+      expect(japanese.searchParams.get('text'), lesson.id).toMatch(/[\u3040-\u30ff]/);
     }
   });
 

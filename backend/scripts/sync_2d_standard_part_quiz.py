@@ -26,7 +26,7 @@ def sync_2d_standard_part_quiz():
                 "explanation": "Relief details on precision shafts require a Grinding process (G) finish to ensure surface integrity at the transition."
             },
             {
-                "text": "According to the KEMCO standard for PCD (Pitch Center Diameter), what specific visual element must replace the \"PCD\" text on a 2D drawing to prevent fabrication misinterpretation?",
+                "text": "According to the KEMCO standard for PCD (Pitch Center Diameter), what specific visual element must replace the \"PCD\" text on a 2D Detailing to prevent fabrication misinterpretation?",
                 "options": ["The word \"CENTER\"", "Diameter symbol (Ø)", "A red box", "No symbol is required"],
                 "correct_answer": 1,
                 "explanation": "The Diameter symbol (Ø) is the mandatory KEMCO indicator for PCD measurements to ensure international standards compliance."

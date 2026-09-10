@@ -62,7 +62,7 @@ def sync_2d_surface_coating_quiz():
                 "explanation": "For thick plating like Hard Chromate, both pre-process and post-process dimensions are required for quality control."
             },
             {
-                "text": "Scenario: You are working on a 2D drawing for a very large welded part. The welding details are too crowded to be placed near the joint. Based on the Special Notes lesson, how should you handle this information?",
+                "text": "Scenario: You are working on a 2D Detailing for a very large welded part. The welding details are too crowded to be placed near the joint. Based on the Special Notes lesson, how should you handle this information?",
                 "options": ["Use the \"Autoballoon\" tool to force the details into the assembly.", "Move the welding details to the \"Special Notes\" section in the template.", "Delete the welding hatch to make room for text.", "Place the notes at the origin (0,0,0) of the 3D space."],
                 "correct_answer": 1,
                 "explanation": "The Special Notes section provides a centralized location for detailed instructions when on-joint annotation is impractical."

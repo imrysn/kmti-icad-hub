@@ -212,12 +212,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     except Exception:
         serialized_errors = exc.errors()
 
-    error_details = {
-        "detail": serialized_errors,
-        "body": str(exc.body) if hasattr(exc, "body") else "No body"
-    }
-    with open("scratch/error_log.txt", "w") as f:
-        json.dump(error_details, f, default=str)
     return JSONResponse(status_code=422, content={"detail": serialized_errors})
 
 # System Status Endpoint

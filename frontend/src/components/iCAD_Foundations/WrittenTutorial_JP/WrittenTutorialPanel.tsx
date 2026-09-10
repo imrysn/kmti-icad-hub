@@ -1,5 +1,6 @@
 import React from 'react';
 import LessonObjective from '../../LessonObjective';
+import QuickReviewFlow from '../QuickReviewFlow';
 import '../../../styles/iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel.css';
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 
@@ -227,9 +228,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
               {panelCopy.quickReviewTitle || 'Quick Review'}
             </h4>
             {panelCopy.quickReviewText && (
-              <p className="written-tutorial-panel__quick-review-text">
-                {renderFormattedText(panelCopy.quickReviewText)}
-              </p>
+              <QuickReviewFlow text={panelCopy.quickReviewText} />
             )}
           </div>
         )}

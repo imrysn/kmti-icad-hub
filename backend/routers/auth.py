@@ -23,7 +23,6 @@ from ..identity import normalize_email_address
 import hashlib
 import json
 import os
-import re
 import secrets
 import uuid
 
@@ -462,6 +461,12 @@ async def submit_quiz_score(
     If score >= 80%, the lesson is effectively marked as passed.
     """
     course = require_course_access(db, current_user, submission.course_id)
+    if course and course.course_type == "iCAD_Foundations":
+        from ..services.foundations_curriculum import resolve_lesson_id
+        canonical_id = resolve_lesson_id(submission.lesson_id)
+        if not canonical_id:
+            raise HTTPException(status_code=404, detail="Lesson is not in the current Foundations curriculum")
+        submission.lesson_id = canonical_id
     try:
         require_lesson_access(db, current_user, submission.lesson_id)
     except HTTPException as exc:
@@ -471,7 +476,7 @@ async def submit_quiz_score(
         is_foundations_lesson = bool(
             course
             and course.course_type == "iCAD_Foundations"
-            and re.fullmatch(r"lesson-\d+-\d+", submission.lesson_id)
+            and resolve_lesson_id(submission.lesson_id)
         )
         if exc.status_code != status.HTTP_404_NOT_FOUND or not is_foundations_lesson:
             raise
@@ -539,7 +544,7 @@ async def submit_quiz_score(
         try:
             quiz = db.query(Quiz).filter(Quiz.slug == submission.lesson_id).first()
             quiz_title = quiz.title if quiz else submission.lesson_id
-            course_name = "3D Modeling" if submission.course_id == "1" else "2D Drawing" if submission.course_id == "2" else "Curriculum"
+            course_name = "3D Modeling" if submission.course_id == "1" else "2D Detailing" if submission.course_id == "2" else "Curriculum"
 
             mapping = db.query(TrainerTraineeMapping).filter(TrainerTraineeMapping.trainee_id == current_user.id).first()
             if mapping:

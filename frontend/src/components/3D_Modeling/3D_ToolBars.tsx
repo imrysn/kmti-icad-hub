@@ -18,6 +18,7 @@ interface ToolBarsLessonProps {
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
   nextLabel?: string;
+  tutorialOnly?: boolean;
 }
 
 import {
@@ -65,7 +66,7 @@ export const localizeToolbarTutorialSteps = (
   };
 });
 
-const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel }) => {
+const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLesson, nextLabel, tutorialOnly = false }) => {
   const { language, t, translateContent } = useTranslation();
   const isJapanese = language === 'ja';
   const {
@@ -76,6 +77,11 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
   const activeCopy = isJapanese ? TOOLBARS_COPY_JP : TOOLBARS_COPY_EN;
   const activeWrittenSteps = isJapanese ? TOOLBARS_STEPS_JP : TOOLBARS_STEPS_EN;
   const steps = isJapanese ? TOOLBAR_TUTORIAL_STEPS_JP : localizeToolbarTutorialSteps(t, translateContent);
+
+  if (tutorialOnly) return <VideoTutorialViewer lessonType="video-tutorial" muteSourceVideoAudio steps={steps}
+    introPanel={{ icon: Wrench, eyebrow: isJapanese ? 'ツールツアー' : 'Interactive tool tour',
+      title: isJapanese ? 'iCAD SX ツールバーの確認' : 'Explore the iCAD SX Tool Bars',
+      description: isJapanese ? 'ツールバーのガイド付きツアーで、基本コマンドの配置を学びます。' : 'Take a guided tour of the Tool Bars and learn where to find the essential commands.' }} />;
 
   return (
     <div className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson" ref={containerRef}>
@@ -119,4 +125,3 @@ const ToolBarsLesson: React.FC<ToolBarsLessonProps> = ({ onNextLesson, onPrevLes
 };
 
 export default ToolBarsLesson;
-

@@ -3,6 +3,7 @@ from PyInstaller.utils.hooks import collect_all
 
 import os
 datas = []
+datas += [('data/foundations-curriculum.json', 'data')]
 binaries = []
 hiddenimports = ['uvicorn.logging', 'uvicorn.loops', 'uvicorn.loops.auto', 'uvicorn.protocols', 'uvicorn.protocols.http', 'uvicorn.protocols.http.auto', 'uvicorn.protocols.websockets', 'uvicorn.protocols.websockets.auto', 'uvicorn.lifespan', 'uvicorn.lifespan.on', 'pymysql']
 tmp_ret = collect_all('chromadb')

@@ -1,4 +1,4 @@
-import { Award,BarChart3 } from 'lucide-react';
+import { Award, BarChart3 } from 'lucide-react';
 import React from 'react';
 import { TraineeProgress } from '../../../services/adminService';
 
@@ -71,7 +71,7 @@ export const ProgressReportPrint: React.FC<ProgressReportPrintProps> = ({ traine
                         {trainee.quizzes_history.map((q, idx) => (
                             <tr key={idx}>
                                 <td>{q.lesson_id}</td>
-                                <td>{q.course_id === '1' ? '3D Modeling' : '2D Drawing'}</td>
+                                <td>{q.course_id === '1' ? '3D Modeling' : '2D Detailing'}</td>
                                 <td>{q.score}%</td>
                                 <td>{q.attempts_count}</td>
                                 <td className={q.score >= 80 ? 'pass' : 'fail'}>

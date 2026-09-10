@@ -1,0 +1,5 @@
+.foundation-coordinate-axes .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); margin-block: 24px; }
+.foundation-coordinate-axes .foundations-use-card__icon-frame { height: 128px; padding-block: 16px; box-sizing: border-box; }
+.foundation-coordinate-axes .foundations-use-card__icon-frame svg { display: block; width: 96px; height: 96px; flex-shrink: 0; }
+.foundation-coordinate-axes__label { fill: inherit; }
+@container (max-width: 450px) { .foundation-coordinate-axes .foundations-uses__grid { grid-template-columns: minmax(0,1fr); } }

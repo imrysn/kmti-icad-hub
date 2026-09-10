@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from '../../../context/LanguageContext';
 import LessonObjective from '../../LessonObjective';
+import QuickReviewFlow from '../QuickReviewFlow';
 import '../../../styles/iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel.css';
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 
@@ -11,6 +12,8 @@ interface WrittenTutorialPanelProps {
   description?: string;
   steps: WrittenTutorialStep[];
   copy?: Partial<WrittenTutorialCopy>;
+  renderStepText?: (step: WrittenTutorialStep, index: number) => React.ReactNode;
+  stepsContent?: React.ReactNode;
 }
 
 const ACTION_START = /^(open|select|click|choose|enter|type|set|confirm|locate|look|find|use|move|drag|scroll|zoom|rotate|place|position|check|view|press|go|wait)\b/i;
@@ -58,6 +61,8 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
   description,
   steps,
   copy,
+  renderStepText,
+  stepsContent,
 }) => {
   const { language } = useTranslation();
   const isJapanese = language === 'ja';
@@ -143,7 +148,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
         {panelCopy.procedureTitle && panelCopy.procedureTitle !== 'ivl-objective' && (!panelCopy.renderAsObjective || panelCopy.objective) && (
           <h4 className="section-title written-tutorial-panel__section-title">{panelCopy.procedureTitle}</h4>
         )}
-        <ol className="written-tutorial-panel__steps">
+        {stepsContent ?? <ol className="written-tutorial-panel__steps">
           {instructionalSteps.map((step, index) => {
             const showNumber = !panelCopy.hideStepNumbers && !step.hideStepNumber;
             return (
@@ -153,6 +158,8 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
                   <h4>{step.title}</h4>
                 </div>
                 {step.text && (() => {
+                  const customContent = renderStepText?.(step, index);
+                  if (customContent != null) return customContent;
                   const lines = step.text.split('\n');
                   const hasBullets = lines.some(l => /^\s*([*•-])\s+/.test(l));
                   if (!hasBullets) {
@@ -228,16 +235,14 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
               </li>
             );
           })}
-        </ol>
+        </ol>}
         {(panelCopy.quickReviewText || panelCopy.quickReviewTitle) && (
           <div className="written-tutorial-panel__quick-review">
             <h4 className="section-title written-tutorial-panel__section-title">
               {panelCopy.quickReviewTitle || 'Quick Review'}
             </h4>
             {panelCopy.quickReviewText && (
-              <p className="written-tutorial-panel__quick-review-text">
-                {renderFormattedText(panelCopy.quickReviewText)}
-              </p>
+              <QuickReviewFlow text={panelCopy.quickReviewText} />
             )}
           </div>
         )}

@@ -283,7 +283,7 @@ Each environment must have separate API settings, database, storage bucket/conta
 The first public pilot should include:
 
 - Browser sign-in and Japanese/English interface
-- 2D Drawing lessons and existing TTS content
+- 2D Detailing lessons and existing TTS content
 - One complete practical CAD assessment
 - Source CAD download and completed CAD upload
 - Trainer local iCAD review

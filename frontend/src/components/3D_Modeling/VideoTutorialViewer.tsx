@@ -1,6 +1,7 @@
 import { LucideIcon, Maximize, Minimize, Pause, Play, X, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import React,{ useEffect,useRef,useState } from 'react';
+import React,{ useContext,useEffect,useRef,useState } from 'react';
+import { FoundationCompletionContext } from '../iCAD_Foundations/FoundationCompletionContext';
 import { useTranslation } from '../../context/LanguageContext';
 import './VideoTutorialViewer.css';
 import '../LessonQuestionPanel.css';
@@ -82,7 +83,10 @@ interface VideoTutorialViewerProps {
 }
 
 const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introPanel, lessonType, muteSourceVideoAudio = false }) => {
-  const { t } = useTranslation();
+  const foundationCompletion = useContext(FoundationCompletionContext);
+  const [savingFoundation, setSavingFoundation] = useState(false);
+  const [foundationSaveError, setFoundationSaveError] = useState('');
+  const { t, language } = useTranslation();
   const [hasStarted, setHasStarted] = useState(!introPanel);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -776,6 +780,20 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
     }
   };
 
+  const handleRecapAction = async () => {
+    if (!foundationCompletion || currentStep < steps.length - 1) { handleNext(); return; }
+    if (savingFoundation) return;
+    handleStop(); setSavingFoundation(true); setFoundationSaveError('');
+    try {
+      await foundationCompletion.complete();
+      if (document.fullscreenElement) await document.exitFullscreen();
+      finishTutorial();
+      foundationCompletion.advance();
+    } catch {
+      setFoundationSaveError(language === 'ja' ? '保存できませんでした。もう一度お試しください。' : 'Completion could not be saved. Please try again.');
+    } finally { setSavingFoundation(false); }
+  };
+
   const toggleFullscreen = async () => {
     const shouldOpen = !isFullscreen;
     setIsFullscreen(shouldOpen);
@@ -1310,9 +1328,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
                         title={overlay.recapData.title}
                         summary={currentData.text}
                         items={overlay.recapData.items.map((text) => ({ text }))}
-                        actionLabel={currentStep === steps.length - 1 ? 'Close' : 'Next'}
-                        actionType={currentStep === steps.length - 1 ? 'close' : 'next'}
-                        onAction={handleNext}
+                        actionLabel={foundationCompletion && currentStep === steps.length - 1 ? foundationCompletion.nextLabel : currentStep === steps.length - 1 ? 'Close' : 'Next'}
+                        actionType={foundationCompletion ? 'next' : currentStep === steps.length - 1 ? 'close' : 'next'}
+                        onAction={handleRecapAction}
+                        disabled={savingFoundation}
+                        error={foundationSaveError}
                       />
                     </div>
                   );
@@ -1369,9 +1389,11 @@ const VideoTutorialViewer: React.FC<VideoTutorialViewerProps> = ({ steps, introP
             title={currentData.recapData.title}
             summary={currentData.text}
             items={currentData.recapData.items.map((text) => ({ text }))}
-            actionLabel={currentStep === steps.length - 1 ? 'Close' : 'Next'}
-            actionType={currentStep === steps.length - 1 ? 'close' : 'next'}
-            onAction={handleNext}
+            actionLabel={foundationCompletion && currentStep === steps.length - 1 ? foundationCompletion.nextLabel : currentStep === steps.length - 1 ? 'Close' : 'Next'}
+            actionType={foundationCompletion ? 'next' : currentStep === steps.length - 1 ? 'close' : 'next'}
+            onAction={handleRecapAction}
+            disabled={savingFoundation}
+            error={foundationSaveError}
           />
         </div>
       )}

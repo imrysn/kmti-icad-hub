@@ -42,7 +42,7 @@ export const GETTING_STARTED_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'start-step-5',
     title: 'Create or Open Drawing',
-    text: 'Start a new project or open an existing CAD document from the training directory. The basic workflow proceeds: Create/Open Drawing → 2D Sketch → 3D Model → Assembly → 2D Drawing → Review & Save.',
+    text: 'Start a new project or open an existing CAD document from the training directory. The basic workflow proceeds: Create/Open Drawing → 2D Sketch → 3D Model → Assembly → 2D Detailing → Review & Save.',
     preserveText: true,
   },
   {

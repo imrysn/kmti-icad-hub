@@ -1,3 +1,5 @@
+import { foundationRecap } from '../../iCAD_Foundations/curriculum';
+
 export interface FoundationsRecapContent {
   narration: string;
   items: Array<{ action: string; result: string }>;
@@ -202,4 +204,4 @@ const FOUNDATIONS_RECAPS: Record<string, FoundationsRecapContent> = {
 };
 
 export const getFoundationsRecap = (lessonId: string): FoundationsRecapContent | undefined =>
-  FOUNDATIONS_RECAPS[lessonId];
+  FOUNDATIONS_RECAPS[lessonId] || foundationRecap(lessonId);
