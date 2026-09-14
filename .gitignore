@@ -63,3 +63,6 @@ backend/media/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local visual review output (screenshots, browser profiles)
+artifacts/
