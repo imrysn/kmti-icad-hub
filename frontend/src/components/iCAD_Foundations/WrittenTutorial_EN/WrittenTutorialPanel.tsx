@@ -14,6 +14,7 @@ interface WrittenTutorialPanelProps {
   copy?: Partial<WrittenTutorialCopy>;
   renderStepText?: (step: WrittenTutorialStep, index: number) => React.ReactNode;
   stepsContent?: React.ReactNode;
+  afterDescription?: React.ReactNode;
 }
 
 const ACTION_START = /^(open|select|click|choose|enter|type|set|confirm|locate|look|find|use|move|drag|scroll|zoom|rotate|place|position|check|view|press|go|wait)\b/i;
@@ -63,6 +64,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
   copy,
   renderStepText,
   stepsContent,
+  afterDescription,
 }) => {
   const { language } = useTranslation();
   const isJapanese = language === 'ja';
@@ -139,6 +141,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
         </header>
       )}
 
+      {afterDescription}
       <div className="written-tutorial-panel__content">
         {(panelCopy.objective || panelCopy.renderAsObjective || panelCopy.procedureTitle === 'ivl-objective') && (
           <LessonObjective label={panelCopy.objectiveLabel || (isJapanese ? '学習目標' : 'learning goal')}>

@@ -5,6 +5,11 @@
   --foundation-section-size: 1.4rem;
   --foundation-card-title-size: 1.05rem;
   --foundation-section-gap: 2.5rem;
+  --foundation-card-title-min-height: 64px;
+  --foundation-icon-frame-height: 144px;
+  --foundation-icon-size: 64px;
+  --foundation-detail-icon-size: 120px;
+  --foundation-icon-frame-padding: 11px 4px;
   font-family: var(--font-main);
 }
 .foundations-consistent-lesson .written-tutorial-panel p:not(.ivl-objective__eyebrow),
@@ -73,19 +78,119 @@
 .foundations-consistent-lesson .foundations-workflow .written-tutorial-panel__step h4 {
   font-size: var(--foundation-card-title-size);
 }
+.foundations-consistent-lesson .foundations-workflow .written-tutorial-panel__steps {
+  width: 100%;
+  max-width: 660px;
+  box-sizing: border-box;
+  margin-inline: auto;
+}
 @media (max-width: 600px) {
   .foundations-consistent-lesson { --foundation-section-gap: 2rem; }
 }
 
 /* Shared flat card styling across the Foundations lessons. */
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+  width: 100%;
+  gap: 20px;
+  box-sizing: border-box;
+}
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__step:nth-child(n) {
+  grid-template-columns: 56px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  column-gap: 14px;
+  row-gap: 6px;
+  min-height: 90px;
+  padding: 16px;
+  text-align: left;
+}
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__step:nth-child(n)::before { inset: 0; border-radius: 0; }
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__step:nth-child(n) .step-number {
+  grid-column: 1;
+  width: 56px;
+  height: 56px;
+  font-size: 1.7rem;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__step:nth-child(n) h4 { grid-column: 2; align-self: start; justify-content: flex-start; margin: 0; }
+.foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__step:nth-child(n) .step-text-content { grid-column: 2; align-self: start; }
+@container (max-width: 700px) {
+  .foundations-consistent-lesson .foundations-interface-rows--two-columns .written-tutorial-panel__steps { grid-template-columns: minmax(0, 1fr); }
+}
+.foundations-consistent-lesson .foundations-starting-step__body p,
+.foundations-consistent-lesson .foundation-view-comparison .foundation-view-comparison__front p {
+  text-align: center;
+  text-align-last: center;
+}
+.foundations-consistent-lesson .foundations-use-card__icon-frame,
+.foundations-consistent-lesson .foundation-mouse-control-icon {
+  width: 96%;
+  height: var(--foundation-icon-frame-height);
+  box-sizing: border-box;
+  padding: var(--foundation-icon-frame-padding);
+  margin-bottom: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+.foundations-consistent-lesson .foundations-use-card__icon-frame > svg,
+.foundations-consistent-lesson .foundation-mouse-control-icon svg {
+  display: block;
+  width: var(--foundation-icon-size);
+  height: var(--foundation-icon-size);
+  max-width: 100%;
+  object-fit: contain;
+}
+.foundations-consistent-lesson .foundation-wheel-direction {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--foundation-icon-size);
+  height: var(--foundation-icon-size);
+}
+.foundations-consistent-lesson .foundation-wheel-direction > :not(:first-child) {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  white-space: nowrap;
+}
+.foundations-consistent-lesson .foundation-wheel-direction > kbd { font: 600 .8rem var(--font-main); }
+.foundations-consistent-lesson .foundation-wheel-direction > svg:not(.foundation-mouse-diagram) { width: 20px; height: 20px; flex-shrink: 0; }
+.foundations-consistent-lesson .foundation-wheel-direction > svg:only-child { width: var(--foundation-icon-size); height: var(--foundation-icon-size); }
+.foundations-consistent-lesson .foundations-use-card__icon-frame > kbd,
+.foundations-consistent-lesson .foundation-alt-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 44px;
+  height: 40px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--use-outline, #647084);
+  border-bottom-width: 4px;
+  border-radius: 6px;
+  font: 600 .95rem var(--font-main);
+  color: var(--text-main);
+}
+.foundations-consistent-lesson .foundations-use-card__icon-frame > .foundation-current-origin-icon { width: var(--foundation-detail-icon-size); height: var(--foundation-detail-icon-size); }
+.foundations-consistent-lesson .foundations-use-card__icon-frame > .foundation-part-layout-menu-reference { width: auto; height: var(--foundation-detail-icon-size); max-width: 100%; }
+.foundations-consistent-lesson .foundation-coordinate-axes .foundations-use-card__icon-frame > svg { width: var(--foundation-detail-icon-size); height: var(--foundation-detail-icon-size); }
 .foundations-consistent-lesson .ivl-objective {
-  border-left: 0;
-  border-color: #86c99c;
-  background: #eef8f1;
+  border: 1px solid #29cf65;
+  background: #effff3;
   border-radius: 0;
 }
 .foundations-consistent-lesson .ivl-objective__icon,
-.foundations-consistent-lesson .ivl-objective__eyebrow { color: #228348; }
+.foundations-consistent-lesson .ivl-objective__eyebrow { color: #159c42; }
 .foundations-consistent-lesson .section-title,
 .foundations-consistent-lesson .written-tutorial-panel__section-title { border-left: 0; padding-left: 0; }
 .foundations-consistent-lesson .section-title::before,
@@ -94,6 +199,42 @@
   background: transparent;
   color: var(--text-main, #233c51);
 }
+.foundations-consistent-lesson .foundation-mouse-control-title {
+  background: transparent;
+  border-radius: 0;
+}
+.foundations-consistent-lesson .foundation-mouse-control-title h5 { color: var(--text-main, #233c51); }
+.foundations-consistent-lesson .foundations-use-card__title,
+.foundations-consistent-lesson .foundation-mouse-control-title {
+  min-height: var(--foundation-card-title-min-height);
+  padding: 8px 10px;
+  margin: 0;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+.foundations-consistent-lesson .foundations-use-card__number,
+.foundations-consistent-lesson .foundation-mouse-control-number { margin-bottom: 16px; }
+.foundations-consistent-lesson .foundations-use-card__body,
+.foundations-consistent-lesson .foundation-mouse-controls > ul > li > p { padding: 18px 12px; }
+.foundations-consistent-lesson .foundations-uses__grid,
+.foundations-consistent-lesson .foundation-mouse-controls > ul { column-gap: 16px; row-gap: 24px; }
+.foundations-consistent-lesson .foundation-mouse-control-icon,
+.foundations-consistent-lesson .foundation-mouse-controls > ul > li > p { border-radius: 0; }
+.foundations-consistent-lesson .foundations-use-card,
+.foundations-consistent-lesson .foundation-mouse-controls > ul > li {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  justify-items: center;
+  align-items: stretch;
+}
+.foundations-consistent-lesson .foundations-use-card__number,
+.foundations-consistent-lesson .foundation-mouse-control-number,
+.foundations-consistent-lesson .foundations-use-card__icon-frame,
+.foundations-consistent-lesson .foundation-mouse-control-icon { align-self: start; }
+.foundations-consistent-lesson .foundations-use-card:not(:has(.foundations-use-card__body)) { grid-row: span 2; }
+.foundations-consistent-lesson .foundations-use-card:has(.foundations-use-card__icon-frame):not(:has(.foundations-use-card__body)) { grid-row: span 3; }
 .foundations-consistent-lesson [class*="card"]:not(.foundations-use-card__number),
 .foundations-consistent-lesson [class*="card"]::before,
 .foundations-consistent-lesson [class*="card"]::after,
@@ -104,6 +245,9 @@
 .foundations-consistent-lesson .written-tutorial-panel__step {
   border-radius: 0 !important;
 }
-[data-theme='dark'] .foundations-consistent-lesson .ivl-objective { background: #172f24; border-color: #3d8056; }
+[data-theme='dark'] .foundations-consistent-lesson .ivl-objective { background: #12351f; border-color: #29cf65; }
 [data-theme='dark'] .foundations-consistent-lesson .ivl-objective__icon,
-[data-theme='dark'] .foundations-consistent-lesson .ivl-objective__eyebrow { color: #80daa0; }
+[data-theme='dark'] .foundations-consistent-lesson .ivl-objective__eyebrow { color: #55ed89; }
+
+
+.foundations-lesson-connection { margin: 24px 0 0; color: var(--text-main); font: 400 1rem/1.6 var(--font-main); }

@@ -1,0 +1,57 @@
+.foundation-modeling-process .foundations-uses__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 24px; }
+.foundation-modeling-process--measurement .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.foundation-modeling-process .foundations-use-card__body p + p { margin-top: 12px; }
+.foundation-modeling-process .foundations-use-card__body ul { margin: 12px 0 0; padding-left: 20px; }
+@container (max-width: 750px) { .foundation-modeling-process .foundations-uses__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (max-width: 380px) { .foundation-modeling-process .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Keep the four-part F9 recap together on desktop, then wrap evenly. */
+.foundations-modeling-lesson .quick-review-flow__row:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@container (max-width: 620px) { .foundations-modeling-lesson .quick-review-flow__row:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (max-width: 380px) { .foundations-modeling-lesson .quick-review-flow__row:has(> :nth-child(4):last-child) { grid-template-columns: minmax(0, 1fr); } }
+
+/* Match F2.1's shared detail-icon sizing inside the standard 144px frame. */
+.foundation-modeling-process .foundations-use-card__icon-frame:has(.foundation-modeling-input-icon) { display: flex; align-items: center; justify-content: center; }
+.foundation-modeling-process .foundation-modeling-input-icon { height: 100%; align-items: center; align-self: center; }
+.foundation-modeling-process .foundation-modeling-input-icon .foundation-interface-icon-button { height: 100%; min-height: 0; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; }
+.foundation-modeling-process .foundation-modeling-input-icon .foundation-interface-icon-button > svg { display: block; width: 100%; max-width: 280px; height: var(--foundation-detail-icon-size, 120px); max-height: 100%; flex-shrink: 0; }
+
+.foundation-modeling-input-static { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.foundation-modeling-input-static > svg { display: block; width: 100%; max-width: 280px; height: var(--foundation-detail-icon-size, 120px); max-height: 100%; }
+
+.foundation-modeling-input-static--enter > svg { width: 140px; max-width: 100%; height: 58px; }
+
+.foundation-box-setup { margin-bottom: 24px; }
+.foundation-box-setup__controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 680px; margin-inline: auto; text-align: center; }
+.foundation-box-setup .foundation-file-menu-icon { height: 76px; }
+.foundation-box-setup .foundation-file-menu-icon svg { height: 60px; }
+@container (max-width:420px) { .foundation-box-setup__controls { grid-template-columns: 1fr; } }
+
+.foundation-box-setup--orientation { margin: 14px 0 0; }
+.foundation-box-setup--orientation .foundation-file-menu-icon { height: 42px; margin-bottom: 10px; }
+.foundation-box-setup--orientation .foundation-file-menu-icon svg { height: 36px; }
+
+.foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: repeat(6,minmax(0,1fr)); }
+.foundation-modeling-process--box .foundations-use-card { overflow-wrap: anywhere; }
+.foundation-modeling-process--box .foundations-use-card__icon-frame .foundation-box-setup { width: 100%; margin: 0; }
+
+
+
+.foundation-box-setup--orientation .foundation-file-menu-icon svg { width: 123px; max-width: 100%; height: 24px; }
+
+/* Give all six shape-procedure previews the same visual band. */
+.foundation-modeling-process--box .foundations-use-card__icon-frame { display: flex; align-items: center; justify-content: center; }
+.foundation-modeling-process--box .foundation-box-setup,
+.foundation-modeling-process--box .foundation-box-setup__controls,
+.foundation-modeling-process--box .foundation-box-setup__controls > div,
+.foundation-modeling-process--box .foundation-file-menu-icon,
+.foundation-modeling-process--box .foundation-modeling-input-static { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; }
+.foundation-modeling-process--box .foundation-interface-icon-button { height: 100%; padding: 0; display: flex; align-items: center; justify-content: center; }
+.foundations-consistent-lesson .foundation-modeling-process--box .foundations-use-card__icon-frame svg { display: block; width: 100%; max-width: 160px; height: 40px; max-height: 40px; object-fit: contain; }
+
+/* Wrap the sequence within the available lesson width while retaining one desktop row. */
+@container (max-width: 900px) { .foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@container (max-width: 600px) { .foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (max-width: 400px) { .foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); } }
+.foundations-consistent-lesson .foundation-modeling-process--box .foundations-use-card__icon-frame svg.foundation-modeling-size-fields { height: 80px; max-height: 80px; }
+.foundation-modeling-process__video-note { margin-top: 20px; }

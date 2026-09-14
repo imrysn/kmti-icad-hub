@@ -2,8 +2,10 @@ import { fireEvent, render, screen, waitFor, cleanup, within } from '@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import FoundationReadingLesson from '../FoundationReadingLesson';
 import FoundationScreenAreas from '../FoundationScreenAreas';
+import FoundationInterfaceContent from '../FoundationInterfaceContent';
 import { FOUNDATION_LESSON_IDS, resolveFoundationLesson } from '../curriculum';
 import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+import confetti from 'canvas-confetti';
 
 const state = vi.hoisted(() => ({language:'en', speak:vi.fn(), stop:vi.fn(), register:vi.fn()}));
 vi.mock('../../../context/LanguageContext', () => ({useTranslation: () => ({language:state.language, t:(s:string)=>s, translateContent:(s:string)=>s})}));
@@ -20,8 +22,88 @@ describe('Foundations written completion and knowledge check', () => {
   });
   afterEach(cleanup);
 
+  it.each(['en', 'ja'] as const)('shows the F10 review as a ten-topic checklist in %s', language => {
+    state.language = language;
+    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F10.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
+    const list = container.querySelector('.quick-review-checklist')!;
+    expect(list.querySelectorAll('li')).toHaveLength(10);
+    expect(list.textContent).not.toContain('→');
+  });
+
+  it('uses two SVG file controls and locates each on the new-menu screenshot', () => {
+    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F8.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
+    expect(document.querySelectorAll('.foundation-create-item-cards .foundations-use-card')).toHaveLength(2);
+    for (const title of ['File (F)', 'New (N)']) {
+      const button = screen.getByRole('button', {name: 'Enlarge: ' + title});
+      expect(button.querySelector('svg')).not.toBeNull();
+      expect(button.querySelector('img')).toBeNull();
+      fireEvent.click(button);
+      const dialog = screen.getByRole('dialog', {name: title});
+      const image = within(dialog).getByRole('img', {name: 'Full iCAD SX interface'});
+      expect(image).toHaveAttribute('src', expect.stringContaining('file-new-menu.png'));
+      fireEvent.load(image);
+      fireEvent.click(within(dialog).getByRole('button', {name: 'Show location'}));
+      expect(dialog).toHaveAttribute('data-phase', 'moving');
+      fireEvent.click(within(dialog).getByRole('button', {name: 'Close enlarged icon'}));
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    }
+  });
+
+  it('renders six authored Cylinder cards while keeping the tutorial available', () => {
+    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F9.6')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Preserved cylinder video</div>} />);
+    expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(6);
+    expect(screen.getByRole('heading', { name: 'Select Cylinder' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Enter the Size' })).toBeVisible();
+    expect(screen.getByText('Diameter (直径): 10 mm')).toBeVisible();
+    expect(screen.getByText('Preserved cylinder video')).toBeInTheDocument();
+  });
+
+  it.each(['en', 'ja'] as const)('renders authored F9 procedures and practice in %s without legacy duplication', language => {
+    state.language = language;
+    for (const id of ['F9.1', 'F9.5', 'F9.6', 'F9.7', 'F9.9', 'F9.10', 'F9.11', 'F9.13']) {
+      const lesson = resolveFoundationLesson(id)!;
+      expect(lesson.content.ja.sections?.length).toBe(lesson.content.en.sections?.length);
+      const { container, unmount } = render(<FoundationReadingLesson lesson={lesson} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Existing tutorial</div>} />);
+      expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(id === 'F9.13' ? 3 : ['F9.5','F9.6','F9.7'].includes(id) ? 6 : 4);
+      expect(screen.getByRole('heading', { name: language === 'ja' ? 'やってみましょう' : 'Try It' })).toBeVisible();
+      expect(screen.getByText('Existing tutorial')).toBeInTheDocument();
+      expect(container.querySelectorAll('.foundation-modeling-process')).toHaveLength(1);
+      unmount();
+    }
+  });
+
+  it.each(['en', 'ja'] as const)('keeps all four F7 lessons and their examples aligned in %s', language => {
+    state.language = language;
+    for (const [id, cardCount] of [['F7.1', 3], ['F7.3', 4], ['F7.6', 2], ['F7.8', 2]] as const) {
+      const lesson = resolveFoundationLesson(id)!;
+      expect(lesson.content.ja.sections?.length).toBe(lesson.content.en.sections?.length);
+      const { container, unmount } = render(<FoundationReadingLesson lesson={lesson} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
+      expect(container.querySelectorAll('.foundations-use-card, .foundations-starting-step')).toHaveLength(cardCount);
+      if (id === 'F7.1' || id === 'F7.3') {
+        fireEvent.click(screen.getByRole('button', { name: language === 'ja' ? '画像を全画面表示' : 'View image fullscreen' }));
+        expect(screen.getByRole('dialog', { name: language === 'ja' ? '全画面の実例' : 'Full-size example' })).toBeVisible();
+        fireEvent.click(screen.getByRole('button', { name: language === 'ja' ? '画像を閉じる' : 'Close image' }));
+      }
+      if (id === 'F7.8') expect(container.textContent).toContain(language === 'ja' ? '同じ設計を異なる方法で表します' : 'describe the same design in different ways');
+      unmount();
+    }
+  });
+
+  it('shows native interface vectors and opens their full detail', () => {
+    const {container}=render(<FoundationInterfaceContent japanese={false}/>);
+    expect(container.querySelector('svg image')).toBeNull();
+    fireEvent.click(screen.getByRole('button',{name:'Enlarge: Icon Menu'}));
+    const viewer=screen.getByRole('dialog',{name:'Icon Menu'});
+    expect(within(viewer).getByRole('img',{name:'Icon Menu'})).toHaveAttribute('viewBox','0 0 173 365');
+    expect(viewer.querySelector('image')).toBeNull();
+    expect(document.body.style.overflow).toBe('hidden');
+    fireEvent.click(within(viewer).getByRole('button',{name:'Close enlarged icon'}));
+    expect(screen.queryByRole('dialog',{name:'Icon Menu'})).not.toBeInTheDocument();
+    expect(document.body.style.overflow).not.toBe('hidden');
+  });
+
   it('opens a screen image full-screen, zooms, resets, and closes', () => {
-    render(<FoundationScreenAreas text={resolveFoundationLesson('F2.1')!.content.en.sections![0].text} />);
+    render(<FoundationScreenAreas text={resolveFoundationLesson('F2.1')!.content.en.sections!.slice(1, 2).map(section => `**${section.title}**\n${section.text}`).join('\n\n')} />);
     fireEvent.click(screen.getByRole('button', { name: 'Open full-screen image: Menu Bar' }));
     const viewer = screen.getByRole('dialog', { name: 'Menu Bar' });
     expect(viewer.parentElement).toBe(document.body);
@@ -44,13 +126,17 @@ describe('Foundations written completion and knowledge check', () => {
     render(<FoundationReadingLesson lesson={resolveFoundationLesson(id)!} onComplete={complete} onNext={next} isLast={false} />);
     expect(screen.queryByRole('button', { name: 'Review lesson' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
-    const modal = document.querySelector('dialog')!;
+    let modal = document.querySelector<HTMLDialogElement>('dialog[open]')!;
     expect(modal.open).toBe(true);
     expect(modal.parentElement).toBe(document.body);
     expect(document.body.style.overflow).toBe('hidden');
     const cancel = new Event('cancel', { cancelable: true });
-    modal.dispatchEvent(cancel);
+    fireEvent(modal, cancel);
     expect(cancel.defaultPrevented).toBe(true);
+    expect(document.querySelector('dialog[open]')).toBeNull();
+    expect(complete).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
+    modal = document.querySelector<HTMLDialogElement>('dialog[open]')!;
     const question = foundationKnowledgeQuestions('en', id)[0];
     expect(screen.getByRole('heading', { name: question.prompt, level: 3 })).toBeInTheDocument();
     expect(screen.getAllByRole('radio')).toHaveLength(4);
@@ -77,20 +163,24 @@ describe('Foundations written completion and knowledge check', () => {
     render(<FoundationReadingLesson lesson={resolveFoundationLesson('F10.6')!} onComplete={complete} onNext={next} isLast />);
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     const questions=foundationKnowledgeQuestions('en');
+    expect(screen.getByText('Question 1 of 12')).toBeVisible();
     fireEvent.click(screen.getByLabelText(questions[0].choices.find(c=>!c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
     expect(screen.queryByRole('button',{name:'Continue Lesson'})).not.toBeInTheDocument();
     expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining('Not quite.')],0);
     fireEvent.click(screen.getByRole('button',{name:'Retry'}));
     for(const question of questions) {
+      expect(screen.getByText(`Question ${questions.indexOf(question) + 1} of 12`)).toBeVisible();
       expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining(question.prompt)],0);
       fireEvent.click(screen.getByLabelText(question.choices.find(c=>c.isCorrect)!.label));
       fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
       expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining('Correct!')],0);
+      expect(confetti).not.toHaveBeenCalled();
       fireEvent.click(screen.getByRole('button',{name:question === questions[questions.length - 1] ? 'Close' : 'Continue Lesson'}));
     }
     await waitFor(()=>expect(next).toHaveBeenCalledOnce());
     expect(complete).toHaveBeenCalledOnce();
+    expect(confetti).toHaveBeenCalledOnce();
   });
 
   it('renders Japanese reading and knowledge check without falling back to English', () => {
@@ -103,6 +193,8 @@ describe('Foundations written completion and knowledge check', () => {
     expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining(foundationKnowledgeQuestions('ja', lesson.id)[0].prompt)],0);
   });
 });
+
+
 
 
 

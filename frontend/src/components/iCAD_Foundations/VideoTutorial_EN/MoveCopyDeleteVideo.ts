@@ -24,9 +24,9 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
     videoStart: 0,
     videoEnd: 2.5,
     overlays: [
-      {
+      { 
         id: 'highlight-move-group',
-        type: 'highlight',  
+        type: 'highlight',
         startTime: 0.3,
         endTime: 2.4,
         target: { x: 0.91, y: 0.362, width: 0.07, height: 0.025 },
@@ -49,8 +49,8 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'select-geo-step-2',
     title: '2. Select the Object',
-    customText: 'Left-click the object you want to move.',
-    narrationText: 'Left-click the object you want to move.',
+    customText: 'Left-click the object you want to move, check the highlight, then right-click (GO) to confirm the selection.',
+    narrationText: 'Left-click the object you want to move, check the highlight, then right-click (GO) to confirm the selection.',
     narrateTitle: false,
     videoStart: 2.5,
     videoEnd: 6.0,
@@ -121,7 +121,7 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
         {
           text: 'Right-click the empty workspace',
           isCorrect: false,
-          feedback: 'Incorrect. Right-clicking is used for contextual menus or origin display.',
+          feedback: 'Incorrect. In this procedure, right-click (GO) confirms the target selection; Enter applies the movement distances.',
         },
       ],
     },
@@ -137,7 +137,7 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
       title: 'Move (How to Use Move)',
       items: [
         'From the Icon Menu, select Move',
-        'Left-click the object you want to move',
+        'Left-click the object, check the highlight, then right-click (GO)',
         'In the Item Entry, enter the movement distance (X, Y, Z)',
         'Press Enter to move the object',
       ],
@@ -536,8 +536,8 @@ export const COPY_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'copy-step-2',
     title: '2. Select the Object',
-    customText: 'Left-click the object you want to copy, then confirm with GO.',
-    narrationText: 'Left-click the object you want to copy, then click GO to confirm your selection.',
+    customText: 'Left-click the object, check the highlight, then right-click (GO) to confirm the selection.',
+    narrationText: 'Left-click the object, check the highlight, then right-click (GO) to confirm the selection.',
     narrateTitle: false,
     videoStart: 3.0,
     videoEnd: 5.5,
@@ -1111,8 +1111,8 @@ export const DELETE_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'delete-step-3',
     title: '3. Confirm & Verify Deletion',
-    customText: 'Confirm the selection to remove the unwanted object from the 3D model.',
-    narrationText: 'Confirm the selection to delete the object.',
+    customText: 'After checking the selected object, right-click (GO) to delete it. Check what remains.',
+    narrationText: 'Check the selected object, then right-click (GO) to delete it.',
     narrateTitle: false,
     videoStart: 8.4,
     videoEnd: 11.917,

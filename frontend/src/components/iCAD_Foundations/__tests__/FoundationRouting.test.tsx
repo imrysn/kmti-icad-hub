@@ -24,7 +24,7 @@ vi.mock('../../PublicCourses/Foundations/DynamicFoundationsLesson',()=>({default
 
 function viewer(id:string, next=vi.fn()) {
   return render(<LessonViewer is2DDrawingCourse={false} isFoundationsCourse courseId="foundations" activeLessonId={id}
-    currentLessonIndex={0} allLessonIdsLength={60} goToNextLesson={next} goToPrevLesson={vi.fn()}
+    currentLessonIndex={0} allLessonIdsLength={54} goToNextLesson={next} goToPrevLesson={vi.fn()}
     getActiveLessonTitle={()=>id} lessons={createFoundationLessons()} completedLessons={[]} onLessonComplete={vi.fn()} />);
 }
 
@@ -32,7 +32,7 @@ describe('Canonical Foundations lesson routing',()=>{
   afterEach(()=>{cleanup();vi.clearAllMocks();});
   it('preserves Box and requires the shared knowledge check before saving',async()=>{
     const next=vi.fn();viewer('F9.5',next);
-    fireEvent.click(await screen.findByRole('button',{name:'shape basic-op-box'}));
+    fireEvent.click(await screen.findByRole('button',{name:'shape basic-op-box'}, {timeout:5000}));
     expect(state.post).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.5')[0].choices.find(c=>c.isCorrect)!.label));

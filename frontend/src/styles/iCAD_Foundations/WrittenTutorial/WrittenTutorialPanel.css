@@ -399,7 +399,7 @@
 }
 .foundations-quiz-modal[open] { display: grid; align-items: center; }
 .foundations-quiz-modal::backdrop {
-  background: rgba(2, 6, 23, 0.64);
+  background: var(--lesson-modal-backdrop);
   backdrop-filter: blur(8px);
 }
 .foundations-quiz-modal .foundations-knowledge-check { padding: 24px 0; }
@@ -647,3 +647,9 @@
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.48) !important;
   transform: translateY(-2px) !important;
 }
+
+.foundations-knowledge-check__progress { margin: 0 0 12px; text-align: center; color: var(--text-main); font: 600 0.9rem/1.5 var(--font-main); }
+
+.foundations-knowledge-check__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.foundations-knowledge-check__header .nav-button { padding: 8px 12px; font-size: .85rem; }
+.foundations-knowledge-check__header .foundations-knowledge-check__progress { margin: 0; }

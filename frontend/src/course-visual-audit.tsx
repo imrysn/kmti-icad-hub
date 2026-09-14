@@ -1,0 +1,12 @@
+import {createRoot} from 'react-dom/client';
+import {LanguageProvider} from './context/LanguageContext';
+import {TTSProvider} from './context/TTSContext';
+import Reader from './components/iCAD_Foundations/FoundationReadingLesson';
+import {FOUNDATION_LESSONS} from './components/iCAD_Foundations/curriculum';
+import * as en from './components/iCAD_Foundations/VideoTutorial_EN';
+import * as ja from './components/iCAD_Foundations/VideoTutorial_JP';
+import './index.css';
+const q=new URLSearchParams(location.search);localStorage.setItem('kmti_lang',q.get('lang')||'en');
+const lesson=FOUNDATION_LESSONS.find(l=>l.id===q.get('id'))||FOUNDATION_LESSONS[0];
+Object.assign(window,{auditLessons:FOUNDATION_LESSONS,auditVideos:{en,ja}});
+createRoot(document.getElementById('root')!).render(<LanguageProvider><TTSProvider><Reader lesson={lesson} onComplete={async()=>{}} onNext={()=>{}} isLast={lesson.id==='F10.6'}/></TTSProvider></LanguageProvider>);

@@ -2007,6 +2007,20 @@ body.learner-course-shell-active .course-sidebar {
   opacity: 0.9;
 }
 
+/* Open sidebar communicates lesson status through text instead of icons. */
+.course-sidebar.open .lesson-icon-wrapper,
+.course-sidebar.open .sub-lesson-icon,
+.course-sidebar.open .sub-lesson-icon--completed { display: none; }
+.course-sidebar.open .sub-lesson-item.completed .lesson-title-text-group > span:first-child {
+  color: #159447;
+}
+.course-sidebar.open .sub-lesson-item.active .lesson-title-text-group > span:first-child {
+  color: #147bd1;
+  font-weight: 600;
+}
+[data-theme='dark'] .course-sidebar.open .sub-lesson-item.completed:not(.active) .lesson-title-text-group > span:first-child { color: #4ade80; }
+[data-theme='dark'] .course-sidebar.open .sub-lesson-item.active .lesson-title-text-group > span:first-child { color: #60a5fa; }
+
 .sub-lesson-lock {
   color: var(--color-warning);
   opacity: 0.6;

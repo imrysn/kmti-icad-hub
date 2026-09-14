@@ -1,3 +1,4 @@
+import { FOUNDATION_TOTAL } from '../../components/iCAD_Foundations/curriculum';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FOUNDATIONS_NARRATION_PROFILE } from '../../config/foundationsNarration';
 import {
@@ -60,10 +61,10 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
 
   beforeEach(() => localStorage.clear());
 
-  it('covers the complete 60-lesson Foundations inventory in English and Japanese', () => {
+  it('covers the complete active Foundations inventory in English and Japanese', () => {
     const lessons = leafLessons(ICAD_FOUNDATIONS_LESSONS);
     const japaneseLessons = leafLessons(createFoundationLessons('ja'));
-    expect(lessons).toHaveLength(60);
+    expect(lessons).toHaveLength(FOUNDATION_TOTAL);
 
     for (const lesson of lessons) {
       const sourceText = lesson.content?.find((text) => text.trim()) || lesson.title;

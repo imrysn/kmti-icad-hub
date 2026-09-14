@@ -1,3 +1,4 @@
+import { FOUNDATION_TOTAL } from '../../../iCAD_Foundations/curriculum';
 import { describe, expect, it } from 'vitest';
 import { ICAD_FOUNDATIONS_LESSONS } from '../../../../views/mentor/mentorConstants';
 import { getFoundationsRecap } from '../foundationsRecaps';
@@ -24,7 +25,7 @@ describe('iCAD Foundations recap coverage', () => {
       module.children?.map((lesson) => lesson.id) || [module.id],
     );
 
-    expect(lessonIds).toHaveLength(60);
+    expect(lessonIds).toHaveLength(FOUNDATION_TOTAL);
 
     const missing = lessonIds.filter(
       (lessonId) => !EMBEDDED_RECAP_LESSONS.has(lessonId) && !getFoundationsRecap(lessonId),

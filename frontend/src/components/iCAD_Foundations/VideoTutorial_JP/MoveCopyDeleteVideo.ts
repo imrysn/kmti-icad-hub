@@ -49,8 +49,8 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'select-geo-step-2',
     title: '2. オブジェクトの選択',
-    customText: '移動したいオブジェクトを左クリックします。',
-    narrationText: '移動したいオブジェクトを左クリックします。',
+    customText: '移動したいオブジェクトを左クリックし、ハイライトを確認してから右クリック（GO）で選択を確定します。',
+    narrationText: '移動したいオブジェクトを左クリックし、ハイライトを確認してから右クリック（GO）で選択を確定します。',
     narrateTitle: false,
     videoStart: 2.5,
     videoEnd: 6.0,
@@ -131,7 +131,7 @@ export const SELECTING_GEOMETRY_VIDEO_STEPS: LessonVideoStep[] = [
         {
           text: '余白を右クリックする',
           isCorrect: false,
-          feedback: '不正解です。右クリックはコンテキストメニューの呼び出しや原点表示等に使用されます。',
+          feedback: '不正解です。この手順では右クリック（GO）で対象選択を確定し、Enter で移動量を適用します。',
         },
       ],
     },
@@ -578,8 +578,8 @@ export const COPY_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'copy-step-2',
     title: '2. オブジェクトの選択',
-    customText: 'コピーしたいオブジェクトを左クリックし、「GO」をクリック（またはEnterキー）して選択を確定します。',
-    narrationText: 'コピーしたいオブジェクトを左クリックします。',
+    customText: 'コピーしたいオブジェクトを左クリックし、ハイライトを確認して右クリック（GO）で選択を確定します。',
+    narrationText: 'コピーしたいオブジェクトを左クリックし、ハイライトを確認して右クリック（GO）で選択を確定します。',
     narrateTitle: false,
     videoStart: 3.0,
     videoEnd: 5.5,
@@ -1163,8 +1163,8 @@ export const DELETE_VIDEO_STEPS: LessonVideoStep[] = [
   {
     id: 'delete-step-3',
     title: '3. 確定と削除結果の確認',
-    customText: '選択を確定して、不要なオブジェクトが3Dモデルから削除されたことを確認します。',
-    narrationText: '選択を確定してオブジェクトを削除します。',
+    customText: '選択した対象を確認し、右クリック（GO）で削除します。残ったモデルを確認します。',
+    narrationText: '選択した対象を確認し、右クリック（GO）で削除します。',
     narrateTitle: false,
     videoStart: 8.4,
     videoEnd: 11.917,

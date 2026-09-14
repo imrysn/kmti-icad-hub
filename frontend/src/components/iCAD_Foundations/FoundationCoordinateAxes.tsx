@@ -6,12 +6,27 @@ export default function FoundationCoordinateAxes({text, origin=false}: {text:str
   const blocks=text.split('\n\n');
   if (origin) return <div className="foundations-uses foundation-coordinate-axes">
     {blocks.map(block => /^\*\*X = 0, Y = 0, Z = 0\*\*$/.test(block.trim())
-      ? <ol className="foundations-uses__grid" key={block}>
-          {['X = 0','Y = 0','Z = 0'].map((value,index)=><li className="foundations-use-card" key={value}>
-            <span className="foundations-use-card__number" aria-hidden="true">{index+1}</span>
-            <h5 className="foundations-use-card__title">{value}</h5>
-          </li>)}
-        </ol>
+      ? <figure className="foundation-origin-diagram" key={block}>
+          <svg width="300" height="190" viewBox="0 0 300 190" role="img" aria-label={text.includes('原点') ? 'X、Y、Z 軸が交わる点が原点です' : 'The origin is the point where the X, Y, and Z axes meet'}>
+            <g strokeWidth="5" strokeLinecap="round">
+              <path d="M130 108V40" stroke="#165dff" />
+              <path d="M130 108 193 145" stroke="#ff2424" />
+              <path d="M130 108 67 145" stroke="#f2cc00" />
+            </g>
+            <path d="M130 28 122 44H138Z" fill="#165dff" />
+            <path d="M205 152 185 150 194 136Z" fill="#ff2424" />
+            <path d="M55 152 75 150 66 136Z" fill="#f2cc00" />
+            <g fontSize="18" fontWeight="700" textAnchor="middle">
+              <text x="130" y="20" fill="#165dff">Y</text>
+              <text x="215" y="171" fill="#ff2424">X</text>
+              <text x="45" y="171" fill="#b28d00">Z</text>
+            </g>
+            <path d="M137 103 173 78H193" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="130" cy="108" r="6" fill="currentColor" stroke="white" strokeWidth="2" />
+            <text x="199" y="83" fill="currentColor" fontSize="17" fontWeight="600">{text.includes('原点') ? '原点' : 'Origin'}</text>
+          </svg>
+          <figcaption>(0, 0, 0)</figcaption>
+        </figure>
       : <p key={block}>{renderFormattedText(block)}</p>)}
   </div>;
   return <div className="foundations-uses foundation-coordinate-axes">
@@ -31,7 +46,7 @@ export default function FoundationCoordinateAxes({text, origin=false}: {text:str
               </g>)}
             </svg>
           </div>
-          <div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div>
+          {body.some(line => line.trim()) && <div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div>}
         </li>;
       })}
     </ul>

@@ -1,6 +1,6 @@
 .foundations-help-layout { container-type: inline-size; }
-.foundations-help-steps { display: flex; flex-direction: column-reverse; gap: 22px; list-style: none; padding: 20px 0 32px; margin: 0; }
-.foundations-help-step { --ribbon: #168b94; position: relative; display: grid; grid-template-columns: minmax(200px,1.1fr) minmax(170px,1fr); align-items: center; gap: 20px; width: 73%; }
+.foundations-help-steps { display: flex; flex-direction: column; gap: 22px; list-style: none; padding: 20px 0 32px; margin: 0; }
+.foundations-help-step { --ribbon: #168b94; position: relative; display: grid; grid-template-columns: minmax(200px,1fr) minmax(170px,1.2fr); align-items: center; gap: 24px; width: 73%; }
 .foundations-help-step:nth-child(2) { --ribbon: #65549b; margin-left: 9%; }
 .foundations-help-step:nth-child(3) { --ribbon: #ac328b; margin-left: 18%; }
 .foundations-help-step:nth-child(4) { --ribbon: #d9501c; margin-left: 27%; }

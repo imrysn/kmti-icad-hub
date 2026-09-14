@@ -26,7 +26,7 @@ export const SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = 
   {
     id: 'select-step-2',
     title: 'オブジェクトの選択',
-    text: '移動したいオブジェクトを左クリックします。',
+    text: '移動したいオブジェクトを左クリックし、ハイライトを確認したら右クリック（GO）で確定します。',
     preserveText: true,
   },
   {
@@ -169,7 +169,7 @@ export const COPY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'copy-step-2',
     title: 'オブジェクトの選択',
-    text: 'コピーしたいオブジェクトを左クリックします。',
+    text: 'コピーしたいオブジェクトを左クリックし、ハイライトを確認したら右クリック（GO）で確定します。',
     preserveText: true,
   },
   {
@@ -322,7 +322,7 @@ export const DELETE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'delete-step-3',
     title: '確定',
-    text: '選択を確定してオブジェクトを削除します。',
+    text: '右クリックまたは<b>GO</b>を押して、選択したオブジェクトの削除を確定します。',
     preserveText: true,
   },
   {

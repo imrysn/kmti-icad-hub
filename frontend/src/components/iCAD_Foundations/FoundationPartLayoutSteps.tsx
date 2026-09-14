@@ -1,12 +1,14 @@
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationUsesCards.css';
 import './FoundationPartLayoutSteps.css';
-import PartLayoutIcon from './PartLayoutIcon';
+import PartLayoutMenuIcon from './PartLayoutMenuIcon';
 import CurrentOriginIcon from './CurrentOriginIcon';
+import placedShape from '../../assets/icad-foundations/shape-placed.png';
+import shownOrigin from '../../assets/icad-foundations/shape-origin-shown.png';
 
-export default function FoundationPartLayoutSteps({text}:{text:string}) {
+export default function FoundationPartLayoutSteps({text, placement=false}:{text:string; placement?:boolean}) {
   const [intro,...steps]=text.split('\n\n');
-  return <div className="foundations-uses foundation-part-layout-steps">
+  return <div className={`foundations-uses foundation-part-layout-steps${placement ? ' foundation-part-layout-steps--placement' : ''}`}>
     <p>{renderFormattedText(intro)}</p>
     <ol className="foundations-uses__grid">
       {steps.map((step,index)=>{
@@ -14,7 +16,12 @@ export default function FoundationPartLayoutSteps({text}:{text:string}) {
         return <li className="foundations-use-card" key={title}>
           <span className="foundations-use-card__number" aria-hidden="true">{index+1}</span>
           <h5 className="foundations-use-card__title">{title.replaceAll('**','').replace(/^.*?—\s*/,'')}</h5>
-          <div className="foundations-use-card__icon-frame">{index === 0 ? <PartLayoutIcon /> : <CurrentOriginIcon markOrigin={index === 2} markXAxis={index === 3} markYAxis={index === 4} newOrigin={index === 5} />}</div>
+          <div className="foundations-use-card__icon-frame">{placement ? (
+            index === 0 ? <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 20 32 7 56 20 56 45 32 58 8 45Z M8 20 32 34 56 20 M32 34V58" fill="none" stroke="currentColor" strokeWidth="3" /></svg>
+            : index === 1 ? <kbd className="foundation-placement-key-entry">0 0 0</kbd>
+            : index === 3 ? <PartLayoutMenuIcon />
+            : <img className="foundation-placement-step-image" src={index === 2 ? placedShape : shownOrigin} alt={index === 2 ? 'Placed shape' : 'Shape with its origin displayed'} />
+          ) : index === 0 ? <PartLayoutMenuIcon /> : <CurrentOriginIcon markOrigin={index === 2} markXAxis={index === 3} markYAxis={index === 4} newOrigin={index === 5} />}</div>
           <div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div>
         </li>;
       })}

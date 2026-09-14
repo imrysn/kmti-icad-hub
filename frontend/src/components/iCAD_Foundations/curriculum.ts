@@ -8,6 +8,7 @@ export interface FoundationLessonContent {
   description2?: string;
   sections?: Array<{ title: string; text: string }>;
   quickReview?: string;
+  connection?: string;
 }
 export interface FoundationLesson {
   id: string;
@@ -64,7 +65,7 @@ export function createFoundationLessons(language: FoundationLanguage = 'en'): Le
 
 export function foundationReadingText(content: FoundationLessonContent): string[] {
   return [content.explanation, content.description2, content.practice,
-    ...(content.sections || []).flatMap(section => [section.title, section.text]), content.quickReview]
+    ...(content.sections || []).flatMap(section => [section.title, section.text]), content.quickReview, content.connection]
     .filter((text): text is string => Boolean(text)).map(text => text.replace(/\*\*/g, ''));
 }
 

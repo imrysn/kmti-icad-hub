@@ -1,0 +1,12 @@
+.foundation-drawing-structure { container-type: inline-size; }
+.foundation-drawing-structure__example { margin: 24px 0; }
+.foundation-drawing-structure__example img { display: block; width: 100%; height: auto; }
+.foundation-drawing-structure__example a { display: block; cursor: zoom-in; }
+.foundation-drawing-structure__example figcaption { margin-top: 12px; color: var(--text-dim); font-size: .9rem; line-height: 1.6; }
+.foundation-drawing-structure .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.foundation-drawing-structure > section + section { margin-top: var(--foundation-section-gap, 2.5rem); }
+.foundation-drawing-structure .foundations-use-card__body > div + div { margin-top: 12px; }
+.foundation-drawing-structure .foundations-use-card__body ul { padding-left: 20px; margin-bottom: 0; }
+@container (max-width: 650px) {
+  .foundation-drawing-structure .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); }
+}

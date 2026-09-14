@@ -1,0 +1,11 @@
+.foundation-image-preview-trigger { display: block; width: 100%; height: auto; max-height: none; padding: 0; border: 0; background: transparent; cursor: zoom-in; line-height: 0; box-shadow: none; }
+.foundation-image-preview-trigger:hover:not(:disabled),
+.foundation-image-preview-trigger:active:not(:disabled) { transform: none; background: transparent; box-shadow: none; }
+.foundation-image-preview-trigger:focus-visible { outline: 2px solid #087af5; outline-offset: 3px; }
+.foundation-image-preview-trigger img { display: block; width: 100%; height: auto; }
+.foundation-image-preview { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #fff; overflow: hidden; }
+.foundation-image-preview[open] { display: grid; place-items: center; }
+.foundation-image-preview::backdrop { background: #fff; }
+.foundation-image-preview[open] > img { width: 100%; height: 100%; object-fit: contain; min-height: 0; }
+.foundation-image-preview-close { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid #ffffffb3; border-radius: 50%; color: white; background: #1f2d3dcc; cursor: pointer; }
+.foundation-image-preview-close:focus-visible { outline: 2px solid #087af5; outline-offset: 3px; }

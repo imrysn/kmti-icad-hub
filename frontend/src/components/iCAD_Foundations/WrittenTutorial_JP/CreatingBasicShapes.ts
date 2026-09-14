@@ -10,42 +10,48 @@ export const CYLINDER_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   objective: 'このレッスンの終了時までに、iCAD SX で円柱を作成し、意図した座標へ配置できるようになります。',
   procedureTitle: '円柱の作成手順',
   quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>円柱の選択</b> → <b>寸法入力</b> → <b>配置位置の指定</b> → <b>作成確定</b>',
+  quickReviewText: "正面図 → 円柱 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！iCAD SX での基本円柱の作成と配置ができるようになりました。',
   inlineHeader: true,
 };
 
 export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
-    id: 'cyl-step-1',
-    title: '円柱の選択',
-    text: 'アイコンメニューから「立体配置」を開き、「円柱配置」を選択します。',
-    preserveText: true,
+    "id": "cyl-step-1",
+    "title": "正面図を選ぶ",
+    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'cyl-step-2',
-    title: '視図の設定',
-    text: '3D視図ツールバーから「正面」を選択します。\n\nコマンドメニューから以下を選択します：\n<b>立体配置</b> > <b>Y方向</b>',
-    preserveText: true,
+    "id": "cyl-step-2",
+    "title": "円柱を選ぶ",
+    "text": "画面右側の<b>アイコンメニュー</b>の<b>形状配置</b>から<b>円柱</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'cyl-step-3',
-    title: '寸法の入力',
-    text: '項目入力で以下を入力します：\n\n<b>直径</b> – 円柱の幅\n<b>高さ</b> – 円柱の高さ\n\n<b>例:</b> 直径 = 10, 高さ = 10',
-    preserveText: true,
+    "id": "cyl-step-3",
+    "title": "Y 方向を選ぶ",
+    "text": "円柱を選択すると、<b>画面左側のコマンドメニュー</b>に方向ボタンが表示されます。寸法を入力する前に <b>Y</b> を選びます。",
+    "preserveText": true
   },
   {
-    id: 'cyl-step-4',
-    title: '配置位置の指定',
-    text: 'キー入力エリアで、円柱を配置する基準点の座標値を入力します。\n<b>例: 0, 0, 0</b>',
-    preserveText: true,
+    "id": "cyl-step-4",
+    "title": "大きさを入力する",
+    "text": "<b>項目入力</b>に以下を入力します。\n<b>直径：10 mm</b>\n<b>高さ：10 mm</b>",
+    "preserveText": true
   },
   {
-    id: 'cyl-step-5',
-    title: '円柱の作成',
-    text: '項目入力エリアの入力値を確認し、<b>ENTER キー</b>を押します。\n作業領域に円柱が生成されます。',
-    preserveText: true,
+    "id": "cyl-step-5",
+    "title": "位置を入力する",
+    "text": "<b>キー入力</b>に、各数値の間にスペースを入れて <b>0 0 0</b> と入力し、現在の原点に配置します。",
+    "preserveText": true
   },
+  {
+    "id": "cyl-step-6",
+    "title": "作成して確認する",
+    "text": "<b>キー入力</b>が有効な状態で <b>Enter</b> を押します。円柱が一つ表示されることを確認します。",
+    "preserveText": true
+  }
 ];
 
 /* ── Box ─────────────────────────────────────────────────────────────────── */
@@ -58,42 +64,48 @@ export const BOX_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   objective: 'このレッスンの終了時までに、iCAD SX で直方体を作成し、配置できるようになります。',
   procedureTitle: '直方体の作成手順',
   quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>直方体の選択</b> → <b>寸法入力</b> → <b>配置位置の指定</b> → <b>作成確定</b>',
+  quickReviewText: "正面図 → 直方体 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！「直方体」レッスンを完了しました。',
   inlineHeader: true,
 };
 
 export const BOX_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
-    id: 'box-step-1',
-    title: '直方体の選択',
-    text: 'アイコンメニューから「立体配置」を開き、「直方体配置」を選択します。',
-    preserveText: true,
+    "id": "box-step-1",
+    "title": "正面図を選ぶ",
+    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'box-step-2',
-    title: '視図の設定',
-    text: '3D視図ツールバーから「正面」を選択します。\n\nコマンドメニューから以下を選択します：\n<b>立体配置</b> > <b>Y方向</b>',
-    preserveText: true,
+    "id": "box-step-2",
+    "title": "直方体を選ぶ",
+    "text": "画面右側の<b>アイコンメニュー</b>で<b>形状配置</b>から<b>直方体</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'box-step-3',
-    title: '寸法の入力',
-    text: '項目入力で以下を入力します：\n\n<b>奥行き</b> – 直方体の奥行き寸法\n<b>幅</b> – 直方体の幅寸法\n<b>高さ</b> – 直方体の高さ寸法\n\n<b>例:</b> 奥行き = 20, 幅 = 30, 高さ = 10',
-    preserveText: true,
+    "id": "box-step-3",
+    "title": "Y 方向を選ぶ",
+    "text": "直方体を選択すると、<b>画面左側のコマンドメニュー</b>に方向ボタンが表示されます。寸法を入力する前に <b>Y</b> を選びます。",
+    "preserveText": true
   },
   {
-    id: 'box-step-4',
-    title: '配置位置の指定',
-    text: 'キー入力エリアで、直方体を配置する座標値を入力します。\n<b>例: 0, 0, 0</b>',
-    preserveText: true,
+    "id": "box-step-4",
+    "title": "大きさを入力する",
+    "text": "<b>項目入力</b>に以下を入力します。\n<b>奥行き：20 mm</b>\n<b>幅：30 mm</b>\n<b>高さ：10 mm</b>",
+    "preserveText": true
   },
   {
-    id: 'box-step-5',
-    title: '直方体の作成',
-    text: '項目入力エリアの数値を確認し、<b>ENTER キー</b>を押します。\n作業領域に直方体が生成されます。',
-    preserveText: true,
+    "id": "box-step-5",
+    "title": "位置を入力する",
+    "text": "<b>キー入力</b>に、各数値の間にスペースを入れて <b>0 0 0</b> と入力し、直方体を現在の原点に配置します。",
+    "preserveText": true
   },
+  {
+    "id": "box-step-6",
+    "title": "作成して確認する",
+    "text": "<b>キー入力</b>が有効な状態で <b>Enter</b> を押して直方体を作成します。直方体が一つ表示されることを確認します。",
+    "preserveText": true
+  }
 ];
 
 /* ── Polygonal Prism ─────────────────────────────────────────────────────── */
@@ -105,42 +117,48 @@ export const POLYGON_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   objective: 'このレッスンの終了時までに、iCAD SX で正多角形柱を作成し、配置できるようになります。',
   procedureTitle: '正多角形柱の作成手順',
   quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>正多角形柱の選択</b> → <b>角数・寸法入力</b> → <b>配置位置の指定</b> → <b>作成確定</b>',
+  quickReviewText: "正面図 → 多角柱 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！「正多角形柱」レッスンを完了しました。',
   inlineHeader: true,
 };
 
 export const POLYGON_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
-    id: 'poly-step-1',
-    title: '正多角形柱の選択',
-    text: 'アイコンメニューから「立体配置」を開き、「正多角形柱配置」を選択します。',
-    preserveText: true,
+    "id": "polygon-step-1",
+    "title": "正面図を選ぶ",
+    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'poly-step-2',
-    title: '視図の設定',
-    text: '3D視図ツールバーから「正面」を選択します。\n\nコマンドメニューから以下を選択します：\n<b>立体配置</b> > <b>Y方向</b>',
-    preserveText: true,
+    "id": "polygon-step-2",
+    "title": "多角柱を選ぶ",
+    "text": "画面右側の<b>アイコンメニュー</b>の<b>形状配置</b>から<b>多角柱</b>を選択します。",
+    "preserveText": true
   },
   {
-    id: 'poly-step-3',
-    title: '寸法の入力',
-    text: '項目入力で以下を入力します：\n\n<b>角数</b> - 多角形の面の数を指定します。\n<b>直径</b> - 多角形の外接・内接直径を指定します。\n<b>高さ</b> - 柱の高さを指定します。\n\n<b>例:</b> 角数 = 6, 直径 = 10, 高さ = 10',
-    preserveText: true,
+    "id": "polygon-step-3",
+    "title": "Y 方向を選ぶ",
+    "text": "多角柱を選択すると、<b>画面左側のコマンドメニュー</b>に方向ボタンが表示されます。寸法を入力する前に <b>Y</b> を選びます。",
+    "preserveText": true
   },
   {
-    id: 'poly-step-4',
-    title: '配置位置の指定',
-    text: 'キー入力エリアで、正多角形柱を配置する座標値を入力します。\n<b>例: 0, 0, 0</b>',
-    preserveText: true,
+    "id": "polygon-step-4",
+    "title": "大きさを入力する",
+    "text": "<b>項目入力</b>に以下を入力します。\n<b>頂点数：6</b>\n<b>直径：10 mm</b>\n<b>高さ：10 mm</b>",
+    "preserveText": true
   },
   {
-    id: 'poly-step-5',
-    title: '正多角形柱の作成',
-    text: '項目入力エリアの数値を確認し、<b>ENTER キー</b>を押します。\n作業領域に正多角形柱が生成されます。',
-    preserveText: true,
+    "id": "polygon-step-5",
+    "title": "位置を入力する",
+    "text": "<b>キー入力</b>に、各数値の間にスペースを入れて <b>0 0 0</b> と入力し、現在の原点に配置します。",
+    "preserveText": true
   },
+  {
+    "id": "polygon-step-6",
+    "title": "作成して確認する",
+    "text": "<b>キー入力</b>が有効な状態で <b>Enter</b> を押します。多角柱が一つ表示されることを確認します。",
+    "preserveText": true
+  }
 ];
 
 /* ── Cone ────────────────────────────────────────────────────────────────── */

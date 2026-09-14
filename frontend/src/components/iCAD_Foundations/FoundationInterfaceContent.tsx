@@ -1,15 +1,22 @@
-import { INTERFACE_WRITTEN_TUTORIAL_STEPS as en } from './WrittenTutorial_EN/UnderstandingTheIcadInterface';
-import { INTERFACE_WRITTEN_TUTORIAL_STEPS as ja } from './WrittenTutorial_JP/UnderstandingTheIcadInterface';
+import { resolveFoundationLesson } from './curriculum';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
-import '../3D_Modeling/InterfaceNumberedRows.css';
+import InterfaceIconPreview from './InterfaceIconPreview';
+import './FoundationUsesCards.css';
+import './FoundationInterfaceCards.css';
 
-export default function FoundationInterfaceContent({ japanese, why, sections }: { japanese: boolean; why?: { title: string; text: string }; sections?: Array<{title: string; text: string}> }) {
-  const steps = sections ? sections.map((section, index) => ({...section, id: index})) : japanese ? ja : en;
+
+export default function FoundationInterfaceContent({ japanese, why, sections, toolbar = false }: { japanese: boolean; why?: { title: string; text: string }; sections?: Array<{title: string; text: string}>; toolbar?: boolean }) {
+  const source = sections || resolveFoundationLesson('F2.1')!.content[japanese ? 'ja' : 'en'].sections!.slice(0, 10);
+  const steps = source.map((section, index) => ({...section, id: index}));
   return <>
-    <div className="foundations-interface-rows"><ol className="written-tutorial-panel__steps">
-      {steps.map((step, index) => <li key={step.id} className="written-tutorial-panel__step">
-        <div className="step-header"><span className="step-number">{index + 1}</span><h4>{step.title}</h4></div>
-        <div className="step-text-content"><p>{renderFormattedText(step.text)}</p></div>
+    <div className={`foundations-uses foundation-interface-cards${toolbar ? ' foundation-interface-cards--toolbar' : ''}`}><ol className="foundations-uses__grid">
+      {steps.map((step, index) => <li key={step.id} className="foundations-use-card">
+        <span className="foundations-use-card__number" aria-hidden="true">{index + 1}</span>
+        <h5 className="foundations-use-card__title">{step.title}</h5>
+        <div className="foundations-use-card__icon-frame">
+          <InterfaceIconPreview index={index} toolbar={toolbar} title={step.title} japanese={japanese} />
+        </div>
+        <div className="foundations-use-card__body"><p>{renderFormattedText(step.text)}</p></div>
       </li>)}
     </ol></div>
     {why && <section><h4 className="section-title">{why.title}</h4>
@@ -17,3 +24,6 @@ export default function FoundationInterfaceContent({ japanese, why, sections }: 
     </section>}
   </>;
 }
+
+
+

@@ -11,6 +11,8 @@ const originalSteps: Record<string, string> = {
 /** Keep the original instructions while presenting every lesson in the same shell. */
 export function standardLessonContent(lesson: FoundationLesson, language: FoundationLanguage) {
   const content = lesson.content[language];
+  // Authored shape instructions replace the older written tutorial, not its video.
+  if (['F9.5', 'F9.6', 'F9.7', 'F9.9', 'F9.10', 'F9.11'].includes(lesson.id) && content.sections?.length) return { ...content, sections: content.sections };
   const source = (language === 'ja' ? ja : en) as unknown as Record<string, WrittenTutorialStep[]>;
   const preserved = source[`${originalSteps[lesson.id]}_WRITTEN_TUTORIAL_STEPS`];
   const originalCopy = (language === 'ja' ? ja : en) as unknown as Record<string, WrittenTutorialCopy>;

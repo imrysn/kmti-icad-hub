@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import type { InteractiveVideoQuestion } from './InteractiveVideoLesson/types';
 import './LessonQuestionPanel.css';
+import './LessonModalTheme.css';
 
 interface LessonQuestionPanelProps {
   question: InteractiveVideoQuestion;
@@ -12,6 +13,8 @@ interface LessonQuestionPanelProps {
   onCheckAnswer: () => void;
   onRetry: () => void;
   onContinue: () => void;
+  embedded?: boolean;
+  header?: React.ReactNode;
   eyebrow?: string;
   continueLabel?: string;
 }
@@ -24,6 +27,8 @@ const LessonQuestionPanel: React.FC<LessonQuestionPanelProps> = ({
   onCheckAnswer,
   onRetry,
   onContinue,
+  embedded = false,
+  header,
   eyebrow,
   continueLabel,
 }) => {
@@ -42,15 +47,19 @@ const LessonQuestionPanel: React.FC<LessonQuestionPanelProps> = ({
 
   return (
     <div className="ivl-question-backdrop">
-      <div ref={panelRef} className="ivl-question-panel" role="dialog" aria-modal="true" aria-labelledby={`${question.id}-title`} tabIndex={-1}>
+      <div ref={panelRef} className="ivl-question-panel lesson-modal-surface" role={embedded ? undefined : "dialog"} aria-modal={embedded ? undefined : true} aria-labelledby={`${question.id}-title`} tabIndex={-1}>
+        {header}
         <p className="ivl-eyebrow">{displayEyebrow}</p>
         <h3 id={`${question.id}-title`}>{question.prompt}</h3>
         <fieldset className="ivl-options">
           <legend className="sr-only">{isJapanese ? '回答を1つ選択してください' : 'Choose one answer'}</legend>
           {question.choices.map((choice) => (
             <label key={choice.id} className={`ivl-option ${selectedChoice === choice.id ? 'selected' : ''}`}>
-              <input type="radio" name={question.id} value={choice.id} checked={selectedChoice === choice.id} disabled={answerChecked} onChange={() => onSelectChoice(choice.id)} />
-              <span>{choice.label}</span>
+              <input type="radio" aria-label={choice.label} name={question.id} value={choice.id} checked={selectedChoice === choice.id} disabled={answerChecked} onChange={() => onSelectChoice(choice.id)} />
+              <span className="ivl-option-content">{/^[A-D]\.\s+/.test(choice.label) ? <>
+                <span className="ivl-option-letter">{choice.label.slice(0, 2)}</span>
+                <span className="ivl-option-text">{choice.label.replace(/^[A-D]\.\s+/, '')}</span>
+              </> : <span className="ivl-option-text">{choice.label}</span>}</span>
             </label>
           ))}
         </fieldset>

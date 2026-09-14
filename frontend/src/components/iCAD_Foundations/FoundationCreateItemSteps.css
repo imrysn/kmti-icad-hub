@@ -1,0 +1,2 @@
+.foundations-consistent-lesson .foundation-create-item-cards .foundations-uses__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; margin-inline: auto; }
+@container (max-width: 420px) { .foundations-consistent-lesson .foundation-create-item-cards .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); } }

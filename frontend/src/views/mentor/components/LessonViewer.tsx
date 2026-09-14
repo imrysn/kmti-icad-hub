@@ -491,7 +491,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<FoundationCompletionContext.Provider value={null}><IcadInterfaceLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
-                    if (!renderer) return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson}
                       onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'} />;
                     const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === renderer);

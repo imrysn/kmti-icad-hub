@@ -1,3 +1,11 @@
+import FoundationSaveSteps from './FoundationSaveSteps';
+import FoundationModelingProcess from './FoundationModelingProcess';
+import FoundationSaveComparison from './FoundationSaveComparison';
+import FoundationCreateItemSteps from './FoundationCreateItemSteps';
+import FoundationDrawingComparison from './FoundationDrawingComparison';
+import FoundationPlateExample from './FoundationPlateExample';
+import FoundationPartExamples from './FoundationPartExamples';
+import FoundationDrawingStructure from './FoundationDrawingStructure';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import confetti from 'canvas-confetti';
 import { useTranslation } from '../../context/LanguageContext';
@@ -13,7 +21,7 @@ import { standardLessonContent } from './standardLessonContent';
 import FoundationUsesCards from './FoundationUsesCards';
 import FoundationStartingSteps from './FoundationStartingSteps';
 import FoundationHelpSteps from './FoundationHelpSteps';
-import FoundationScreenAreas from './FoundationScreenAreas';
+
 import FoundationInterfaceContent from './FoundationInterfaceContent';
 import FoundationMouseControls from './FoundationMouseControls';
 import FoundationRotationControls from './FoundationRotationControls';
@@ -21,7 +29,13 @@ import FoundationViewExamples from './FoundationViewExamples';
 import FoundationStandardViewSteps from './FoundationStandardViewSteps';
 import FoundationKeyboardContent from './FoundationKeyboardContent';
 import FoundationCoordinateAxes from './FoundationCoordinateAxes';
+import FoundationElementCards from './FoundationElementCards';
+import FoundationSelectionSteps from './FoundationSelectionSteps';
+import FoundationSelectionTypes from './FoundationSelectionTypes';
 import FoundationPartLayoutSteps from './FoundationPartLayoutSteps';
+import FoundationOriginViews from './FoundationOriginViews';
+import FoundationPlacementComparison from './FoundationPlacementComparison';
+
 import FoundationViewComparison from './FoundationViewComparison';
 import '../3D_Modeling/CourseLesson.css';
 import '../PublicCourses/Foundations/FoundationsLesson.css';
@@ -71,20 +85,22 @@ export default function FoundationReadingLesson({ lesson, onComplete, onNext, on
   };
   const finishReading = () => {
     stop();
-    setStage('quiz'); narrateQuestion(0);
+    setStage('quiz'); narrateQuestion(questionIndex);
   };
   useTTSAutoplay(isSpeaking, currentIndex, 'reading', stage === 'reading' ? text.length : 0,
     [{ id: 'reading' }], finishReading, speak, stage === 'reading' ? text : [], 0);
 
+  const returnToLesson = () => { if (!saving) { stop(); setStage('reading'); } };
+
   const finish = async () => {
     if (saving) return;
     stop(); setSaving(true); setError('');
-    try { await onComplete(); onNext(); }
+    try { await onComplete(); if (lesson.id === 'F10.6') confetti({ particleCount: 70, spread: 60 }); onNext(); }
     catch { setError(ja ? '保存できませんでした。もう一度お試しください。' : 'Completion could not be saved. Please try again.'); }
     finally { setSaving(false); }
   };
 
-  return <div ref={containerRef} className="course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson">
+  return <div ref={containerRef} className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson${lesson.moduleId === 'F9' ? ' foundations-modeling-lesson' : ''}`}>
     <>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
@@ -93,13 +109,14 @@ export default function FoundationReadingLesson({ lesson, onComplete, onNext, on
         <div className="lesson-card tab-content fade-in">
           <div className={`foundations-video-reading-layout${content.sections ? ' foundations-authored-reading' : ''}${isWorkflow ? ' foundations-workflow' : ''}`}>
             <WrittenTutorialPanel title={title} description={content.explanation}
-              stepsContent={lesson.id === 'F3.6' ? <FoundationRotationControls sections={content.sections || []} /> : lesson.id === 'F3.5' ? <FoundationMouseControls sections={content.sections || []} pan /> : lesson.id === 'F3.3' ? <FoundationMouseControls sections={content.sections || []} zoom /> : lesson.id === 'F3.1' ? <FoundationMouseControls sections={content.sections || []} /> : lesson.id === 'F2.9' ? <FoundationInterfaceContent japanese={ja} sections={content.sections?.slice(0, 13)} why={content.sections?.[13]} /> : lesson.id === 'F2.1' ? <FoundationInterfaceContent japanese={ja} why={content.sections?.[1]} /> : isHelp ? <FoundationHelpSteps sections={content.sections || []} /> : isStarting || isClosing ? <>
+              afterDescription={lesson.id === 'F1.1' ? <p className="foundation-product-link"><a href="https://dipro.jp.fujitsu.com/product/icadsx" target="_blank" rel="noopener noreferrer">{ja ? 'iCAD SX の詳細 — 公式製品ページ（日本語・新しいタブで開きます）' : 'Learn more about iCAD SX — Official product page (Japanese, opens in a new tab)'}</a></p> : undefined}
+              stepsContent={lesson.id === 'F7.1' && content.sections?.length === 5 ? <FoundationDrawingStructure sections={content.sections} japanese={ja} /> : lesson.id === 'F3.6' ? <FoundationRotationControls sections={content.sections || []} /> : lesson.id === 'F3.5' ? <FoundationMouseControls sections={content.sections || []} pan /> : lesson.id === 'F3.3' ? <FoundationMouseControls sections={content.sections || []} zoom /> : lesson.id === 'F3.1' ? <FoundationMouseControls sections={content.sections || []} /> : lesson.id === 'F2.9' ? <FoundationInterfaceContent toolbar japanese={ja} sections={content.sections?.slice(0, 13)} why={content.sections?.[13]} /> : lesson.id === 'F2.1' ? <FoundationInterfaceContent japanese={ja} sections={content.sections?.slice(0, 10)} why={content.sections?.[10]} /> : isHelp ? <FoundationHelpSteps sections={content.sections || []} /> : isStarting || isClosing ? <>
                 <FoundationStartingSteps sections={(content.sections || []).slice(0, 4)} japanese={ja} closing={isClosing} />
                 {isClosing && content.sections?.[4] && <div className="written-tutorial-panel__quick-review">
                   <h4 className="section-title">{content.sections[4].title}</h4><p>{content.sections[4].text}</p>
                 </div>}
               </> : undefined}
-              renderStepText={lesson.id === 'F5.6' ? (step,index) => index === 1 ? <FoundationPartLayoutSteps text={step.text} /> : undefined : lesson.id === 'F5.4' ? (step,index) => index < 2 ? <FoundationCoordinateAxes text={step.text} origin={index===1} /> : undefined : lesson.id === 'F5.1' ? (step,index) => index < 2 ? <FoundationKeyboardContent text={step.text} inputFlow={index===1} /> : undefined : lesson.id === 'F1.1' ? (step, index) => index === 1 ? <FoundationViewComparison text={step.text} designEnvironments /> : undefined : ['F4.1','F4.6','F4.12'].includes(lesson.id) ? (step, index) => index === 0 ? <FoundationViewExamples text={step.text} commands userViews={lesson.id === 'F4.6'} shading={lesson.id === 'F4.12'} /> : index === 1 ? <FoundationStandardViewSteps text={step.text} japanese={ja} /> : undefined : lesson.id === 'F2.1' ? (step, index) => index === 0 ? <FoundationScreenAreas text={step.text} /> : undefined : lesson.id === 'F1.2' ? (step, index) => index === 0 ? <FoundationUsesCards text={step.text} /> : undefined : undefined}
+              renderStepText={lesson.id === 'F9.13' ? (step,index) => index === 1 ? <FoundationModelingProcess text={step.text} measurement /> : undefined : lesson.id === 'F9.11' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} deleting /> : undefined : lesson.id === 'F9.10' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} copy /> : undefined : lesson.id === 'F9.9' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} move /> : undefined : lesson.id === 'F9.7' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} polygon japanese={ja} /> : undefined : lesson.id === 'F9.6' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} cylinder japanese={ja} /> : undefined : lesson.id === 'F9.5' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} inputAreas box japanese={ja} /> : undefined : lesson.id === 'F9.1' ? (step,index) => index === 0 ? <FoundationModelingProcess text={step.text} inputAreas japanese={ja} /> : undefined : lesson.id === 'F8.5' ? (step,index) => index === 0 ? <FoundationCreateItemSteps text={step.text} closing japanese={ja} /> : undefined : lesson.id === 'F8.3' ? (step,index) => index < 2 ? <FoundationSaveSteps text={step.text} saveAs={index === 1} japanese={ja}/> : index === 2 ? <FoundationSaveComparison text={step.text} /> : undefined : lesson.id === 'F8.1' ? (step,index) => index === 0 ? <FoundationCreateItemSteps text={step.text} japanese={ja} /> : undefined : lesson.id === 'F7.8' ? (step,index) => index === 2 ? <FoundationDrawingComparison text={step.text} /> : undefined : lesson.id === 'F7.6' ? (step,index) => index === 2 ? <FoundationStandardViewSteps text={step.text} japanese={ja} comparison /> : undefined : lesson.id === 'F7.3' ? (step,index) => index === 0 ? <FoundationPartExamples text={step.text} /> : index === 2 ? <FoundationPlateExample text={step.text} japanese={ja} /> : undefined : lesson.id === 'F6.7' ? (step,index) => index === 0 ? <FoundationSelectionTypes text={step.text} /> : index === 1 ? <FoundationStandardViewSteps text={step.text} japanese={ja} /> : undefined : lesson.id === 'F6.4' ? (step,index) => index === 2 ? <FoundationStandardViewSteps text={step.text} japanese={ja} comparison /> : index === 3 ? <FoundationSelectionSteps text={step.text} /> : undefined : lesson.id === 'F6.2' ? (step,index) => index === 0 ? <FoundationElementCards text={step.text} japanese={ja} /> : index === 1 ? <FoundationStandardViewSteps text={step.text} japanese={ja} /> : undefined : lesson.id === 'F5.6' ? (step,index) => index === 0 ? <FoundationPartLayoutSteps text={step.text} placement /> : index === 2 ? <><p>{step.text}</p><FoundationOriginViews japanese={ja} /></> : index === 1 ? <FoundationPartLayoutSteps text={step.text} /> : undefined : lesson.id === 'F5.4' ? (step,index) => index < 2 ? <FoundationCoordinateAxes text={step.text} origin={index===1} /> : index === 2 ? <FoundationPlacementComparison text={step.text} japanese={ja} /> : undefined : lesson.id === 'F5.1' ? (step,index) => index < 2 ? <FoundationKeyboardContent text={step.text} inputFlow={index===1} /> : undefined : lesson.id === 'F1.1' ? (step, index) => index === 0 ? <FoundationViewComparison text={step.text} designEnvironments /> : undefined : ['F4.1','F4.6','F4.12'].includes(lesson.id) ? (step, index) => index === 0 ? <FoundationViewExamples text={step.text} commands userViews={lesson.id === 'F4.6'} shading={lesson.id === 'F4.12'} /> : index === 1 ? <FoundationStandardViewSteps text={step.text} japanese={ja} /> : undefined : lesson.id === 'F1.2' ? (step, index) => index === 0 ? <FoundationUsesCards text={step.text} /> : undefined : undefined}
               copy={{ objectiveLabel: ja ? '学習目標' : 'Learning objective', objective: content.practice,
                 description2: content.description2,
                 hideStepNumbers: Boolean(content.sections) && !isWorkflow,
@@ -109,6 +126,7 @@ export default function FoundationReadingLesson({ lesson, onComplete, onNext, on
               steps={content.sections ? content.sections.map((section, index) => ({ ...section, id: index + 1, preserveText: true })) :
                 [{ id: 1, title: ja ? '理解する' : 'Understand', text: content.explanation, preserveText: true },
                 { id: 2, title: ja ? 'やってみる' : 'Try it', text: content.practice, preserveText: true }]} />
+            {content.connection && <p className="foundations-lesson-connection">{content.connection}</p>}
             {tutorial && <div className="foundations-preserved-tutorial">{tutorial}</div>}
           </div>
           {isSpeaking && <KaraokeLessonText text={text[currentIndex] || ''} isActive currentCharIndex={currentCharIndex} />}
@@ -119,13 +137,16 @@ export default function FoundationReadingLesson({ lesson, onComplete, onNext, on
         </div>
       </div>
     </>
-    {stage === 'quiz' && <FoundationQuizModal><div className="foundations-knowledge-check"><LessonQuestionPanel question={question} selectedChoice={choice} answerChecked={checked}
+    {stage === 'quiz' && <FoundationQuizModal onClose={returnToLesson}><div className="foundations-knowledge-check">
+      <LessonQuestionPanel embedded header={<div className="foundations-knowledge-check__header">      <button className="nav-button" disabled={saving} onClick={returnToLesson}>{ja ? 'レッスンに戻る' : 'Return to lesson'}</button>
+      {questions.length > 1 && <p className="foundations-knowledge-check__progress" aria-live="polite">{ja ? `全${questions.length}問中 ${questionIndex + 1}問目` : `Question ${questionIndex + 1} of ${questions.length}`}</p>}
+</div>} question={question} selectedChoice={choice} answerChecked={checked}
       continueLabel={questionIndex === questions.length - 1 ? (saving ? (ja ? '保存中…' : 'Saving…') : error ? (ja ? '保存を再試行' : 'Retry saving') : isLast ? (ja ? '閉じる' : 'Close') : (ja ? '次へ' : 'Next')) : undefined}
       onSelectChoice={setChoice} onCheckAnswer={() => {
         const selected = question.choices.find(item => item.id === choice);
         if (!selected) return;
         setChecked(true);
-        if (selected.isCorrect) confetti({ particleCount: 70, spread: 60 });
+        if (selected.isCorrect && lesson.id !== 'F10.6') confetti({ particleCount: 70, spread: 60 });
         speak([selected.isCorrect ? `${ja ? '正解です。' : 'Correct! '}${selected.feedback}` :
           `${ja ? '違います。' : 'Not quite. '}${selected.feedback}${ja ? 'もう一度お試しください。' : ' Please try again.'}`], 0);
       }}
@@ -137,6 +158,20 @@ export default function FoundationReadingLesson({ lesson, onComplete, onNext, on
       }} />{error && <div role="alert" className="foundations-knowledge-check__error">{error}</div>}</div></FoundationQuizModal>}
   </div>;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

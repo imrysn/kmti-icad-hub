@@ -2,63 +2,285 @@ import type { InteractiveVideoQuestion } from '../InteractiveVideoLesson/types';
 import type { FoundationLanguage } from './curriculum';
 import { FOUNDATION_LESSONS, resolveFoundationLesson } from './curriculum';
 
-const copy = {
-  en: [
-    ['Where should you read what an active command needs next?', 'The message display', 'The filename', 'The model color', 'The message display provides guidance for the next input.'],
-    ['Which action changes your view without moving the part?', 'Pan', 'Move', 'Delete', 'Pan changes the view; it leaves the part position unchanged.'],
-    ['What coordinates identify the current origin?', '0, 0, 0', '1, 1, 1', '10, 10, 10', 'All three coordinates are zero at the current origin.'],
-    ['What should you check before confirming a selection?', 'The highlighted target and selection type', 'Only the filename', 'Only the screen size', 'The highlight and selection type show what the operation will affect.'],
-    ['Which operation retains the original and creates another object?', 'Copy', 'Move', 'Delete', 'Copy retains the original object and creates a duplicate.'],
-  ],
-  ja: [
-    ['現在のコマンドに必要な次の入力は、どこで確認しますか？', 'メッセージ表示', 'ファイル名', 'モデルの色', 'メッセージ表示で次に必要な入力を確認できます。'],
-    ['部品を移動せずに表示位置を変える操作はどれですか？', 'パン', 'Move', 'Delete', 'パンは表示位置を変え、部品の位置は変えません。'],
-    ['現在の原点を表す座標はどれですか？', '0、0、0', '1、1、1', '10、10、10', '現在の原点では三つの座標がすべてゼロです。'],
-    ['選択を確定する前に、何を確認しますか？', '強調表示の対象と選択の種類', 'ファイル名だけ', '画面の大きさだけ', '強調表示と選択の種類で、操作の対象を確認できます。'],
-    ['元の対象を残して、もう一つ作る操作はどれですか？', 'Copy', 'Move', 'Delete', 'Copy は元の形状を残して複製します。'],
-  ],
-};
+import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 
 export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F10.6'): InteractiveVideoQuestion[] {
+  if (lessonId === 'F10.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['ツール選択 → 寸法入力 → 位置指定 → 確定', '保存 → 削除 → 回転 → 閉じる', 'ビュー選択 → シェーディング → 印刷 → 終了', 'パン → コピー → 閉じる → 測定']
+      : ['Select Tool → Enter Size → Specify Position → Confirm', 'Save → Delete → Rotate → Close', 'Select View → Shade → Print → Exit', 'Pan → Copy → Close → Measure'];
+    return [{
+      id: 'F10.1-knowledge-check', prompt: ja ? '基本的な 3D 形状を作成する手順として正しいものはどれですか？' : 'Which sequence best represents the basic process for creating a simple 3D shape?',
+      choices: labels.map((label, index) => ({
+        id: `F10.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F9.13') {
+    const ja = language === 'ja';
+    const labels = ja ? ['モデルの大きさを変更する', '寸法や距離を確認する', '新しい部品を作成する', '表示を変更する']
+      : ['To change the size of the model', 'To check dimensions or distances', 'To create a new part', 'To change the view'];
+    return [{
+      id: 'F9.13-knowledge-check', prompt: ja ? '測定ツールの主な目的は何ですか？' : 'What is the main purpose of the Measurement tool?',
+      choices: labels.map((label, index) => ({
+        id: `F9.13-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.7 Basic Delete.
+  if (lessonId === 'F9.11') {
+    const ja = language === 'ja';
+    const labels = ja ? ['コピーを作成する', '対象を移動する', '選択した対象を削除する', 'モデルの表示を変更する']
+      : ['Creates a copy', 'Moves the object', 'Removes the selected object', 'Changes the model view'];
+    return [{
+      id: 'F9.11-knowledge-check', prompt: ja ? 'Delete コマンドは何をしますか？' : 'What does the Delete command do?',
+      choices: labels.map((label, index) => ({
+        id: `F9.11-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2,
+        feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.6 Basic Copy.
+  if (lessonId === 'F9.10') {
+    const ja = language === 'ja';
+    const labels = ja ? ['元の対象が削除される', '対象が移動する', '複製が作成される', '対象の大きさが変わる']
+      : ['The original object is deleted', 'The object is moved', 'A duplicate is created', 'The object changes size'];
+    return [{
+      id: 'F9.10-knowledge-check', prompt: ja ? 'Copy コマンドを使うとどうなりますか？' : 'What happens when you use the Copy command?',
+      choices: labels.map((label, index) => ({
+        id: `F9.10-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2,
+        feedback: index === 2 ? (ja ? '正解：C. 複製が作成される。レッスン完了：iCAD SX で対象をコピーする方法を学びました。' : 'Correct Answer: C. A duplicate is created.\n\nLesson Complete\nYou now know how to copy an object in iCAD SX.') : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.5 Basic Move.
+  if (lessonId === 'F9.9') {
+    const ja = language === 'ja';
+    const labels = ja ? ['対象の大きさ', '対象の位置', '対象の色', '対象のシェーディング']
+      : ["The object's size", "The object's position", "The object's color", "The object's shading"];
+    return [{
+      id: 'F9.9-knowledge-check', prompt: ja ? 'Move コマンドは何を変更しますか？' : 'What does the Move command change?',
+      choices: labels.map((label, index) => ({
+        id: `F9.9-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.4 Creating a Polygon.
+  if (lessonId === 'F9.7') {
+    const ja = language === 'ja';
+    const labels = ja ? ['頂点数、直径、高さ', '直径のみ', '表示方向と色', 'ファイル名と保存先']
+      : ['Number of sides, Diameter, and Height', 'Diameter only', 'View direction and color', 'File name and folder'];
+    return [{
+      id: 'F9.7-knowledge-check', prompt: ja ? 'この練習で多角柱を作成するために入力する値はどれですか？' : 'Which inputs are needed to create the Polygonal Prism in this exercise?',
+      choices: labels.map((label, index) => ({
+        id: `F9.7-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.3 Creating a Cylinder.
+  if (lessonId === 'F9.6') {
+    const ja = language === 'ja';
+    const labels = ja ? ['直径と高さ', '長さと幅のみ', '半径と色', 'ビューとシェーディング']
+      : ['Diameter and Height', 'Length and Width only', 'Radius and Color', 'View and Shading'];
+    return [{
+      id: 'F9.6-knowledge-check', prompt: ja ? '円柱の作成に一般的に必要な値はどれですか？' : 'Which values are commonly needed to create a Cylinder?',
+      choices: labels.map((label, index) => ({
+        id: `F9.6-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F9.2 Creating a Box.
+  if (lessonId === 'F9.5') {
+    const ja = language === 'ja';
+    const labels = ja ? ['奥行き（長さ）、幅、高さ', '半径のみ', '直径と角度', 'ビューとシェーディング']
+      : ['Depth (length), Width, and Height', 'Radius only', 'Diameter and Angle', 'View and Shading'];
+    return [{
+      id: 'F9.5-knowledge-check', prompt: ja ? '直方体の作成に通常必要な値はどれですか？' : 'Which values are normally needed to create a Box?',
+      choices: labels.map((label, index) => ({
+        id: `F9.5-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F9.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['iCAD SX を終了する', '必要な寸法を入力する', 'シェーディングモードを変更する', 'モデルを削除する']
+      : ['Close iCAD SX', 'Enter the required dimensions', 'Change the shading mode', 'Delete the model'];
+    return [{
+      id: 'F9.1-knowledge-check', prompt: ja ? '3D 形状ツールを選択した後、通常は何をしますか？' : 'What should you normally do after selecting a 3D shape tool?',
+      choices: labels.map((label, index) => ({
+        id: `F9.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F8.3 Closing a Drawing.
+  if (lessonId === 'F8.5') {
+    const ja = language === 'ja';
+    const labels = ja ? ['シェーディングモードを変更する', '作業内容が保存されているか確認する', 'モデルを回転する', '新しいビューを作成する']
+      : ['Change the shading mode', 'Check that your work is saved', 'Rotate the model', 'Create a new view'];
+    return [{
+      id: 'F8.5-knowledge-check', prompt: ja ? '図面を閉じる前に何をすべきですか？' : 'What should you do before closing a drawing?',
+      choices: labels.map((label, index) => ({
+        id: `F8.5-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F8.2 Saving Your Work.
+  if (lessonId === 'F8.3') {
+    const ja = language === 'ja';
+    const labels = ja ? ['保存', '名前を付けて保存', '閉じる', '開く'] : ['Save', 'Save As', 'Close', 'Open'];
+    return [{
+      id: 'F8.3-knowledge-check',
+      prompt: ja ? '元のファイルを残して別のコピーを作成するには、どのコマンドを使いますか？' : 'Which command should you use if you want to keep the original file and create a separate copy?',
+      choices: labels.map((label, index) => ({
+        id: `F8.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F8.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['新しい設計を始めるとき', '既存のモデルを回転するとき', 'シェーディングモードを変更するとき', 'モデルの面を選択するとき']
+      : ['When starting a new design', 'When rotating an existing model', 'When changing the shading mode', 'When selecting a model face'];
+    return [{
+      id: 'F8.1-knowledge-check', prompt: ja ? '新しいアイテムを作成するのはどのようなときですか？' : 'When should you create a new item?',
+      choices: labels.map((label, index) => ({
+        id: `F8.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F7.4 Understanding 3D and 2D Drawings.
+  if (lessonId === 'F7.8') {
+    const ja = language === 'ja';
+    const labels = ja ? ['3D モデル', '2D 図面', 'ユーザービュー', 'シェーディング'] : ['3D Model', '2D Drawing', 'User View', 'Shading'];
+    return [{
+      id: 'F7.8-knowledge-check',
+      prompt: ja ? '寸法、注記などの設計情報を伝えるために主に使われるものはどれですか？' : 'Which one is mainly used to communicate dimensions, notes, and other engineering information?',
+      choices: labels.map((label, index) => ({
+        id: `F7.8-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // Stable ID for the displayed F7.3 Introduction to Groups.
+  if (lessonId === 'F7.6') {
+    const ja = language === 'ja';
+    const labels = ja ? ['表示方向を変更する', '関連する要素を一つのまとまりにする', '座標値を変更する', '図面を保存する']
+      : ['To change the view direction', 'To combine related elements into one organized set', 'To change coordinate values', 'To save the drawing'];
+    return [{
+      id: 'F7.6-knowledge-check', prompt: ja ? 'iCAD SX のグループの目的は何ですか？' : 'What is the purpose of a Group in iCAD SX?',
+      choices: labels.map((label, index) => ({
+        id: `F7.6-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  // F7.3 is the stable lesson ID for the displayed F7.2 Understanding Parts.
+  if (lessonId === 'F7.3') {
+    const ja = language === 'ja';
+    const labels = ja ? ['表示方向', 'モデル形状を整理するための構成部品', 'シェーディングモード', '座標値']
+      : ['A viewing direction', 'A component used to organize model geometry', 'A shading mode', 'A coordinate value'];
+    return [{
+      id: 'F7.3-knowledge-check', prompt: ja ? 'iCAD SX の部品とは何ですか？' : 'What is a Part in iCAD SX?',
+      choices: labels.map((label, index) => ({
+        id: `F7.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F7.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['モデル形状', '部品', '図面ファイル', '面'] : ['Model Geometry', 'Part', 'Drawing File', 'Face'];
+    return [{
+      id: 'F7.1-knowledge-check',
+      prompt: ja ? 'iCAD 図面の基本構造で最上位にあるものは何ですか？' : 'What is at the highest level of the basic iCAD drawing structure?',
+      choices: labels.map((label, index) => ({
+        id: `F7.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2,
+        feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F6.7') {
+    const ja = language === 'ja';
+    const labels = ja ? ['モデルの色を変更する', '選択できる対象の種類を指定する', 'ビューを回転する', '図面を保存する']
+      : ['To change the model color', 'To control what type of object can be selected', 'To rotate the view', 'To save the drawing'];
+    return [{
+      id: 'F6.7-knowledge-check', prompt: ja ? '検索・選択の種類の目的は何ですか？' : 'What is the purpose of Search / Selection Type?',
+      choices: labels.map((label, index) => ({
+        id: `F6.7-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F6.4') {
+    const ja = language === 'ja';
+    const labels = ja ? ['部品全体を操作したいとき', '部品内の特定の立体一つを操作したいとき', '画面の表示方向を変更したいとき', '図面を保存したいとき']
+      : ['When you want to work with the whole Part', 'When you want to work with one specific solid inside a Part', 'When you want to change the screen view', 'When you want to save the drawing'];
+    return [{
+      id: 'F6.4-knowledge-check', prompt: ja ? '立体要素を選択するのはどのようなときですか？' : 'When should you select a Solid Component?',
+      choices: labels.map((label, index) => ({
+        id: `F6.4-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F6.2') {
+    const ja = language === 'ja';
+    const labels = ja ? ['要素を左クリックする', 'マウスホイールを回す', 'Alt だけを押す', 'ツールバーをダブルクリックする']
+      : ['Left-click the element', 'Scroll the mouse wheel', 'Press Alt only', 'Double-click the toolbar'];
+    return [{
+      id: 'F6.2-knowledge-check', prompt: ja ? 'iCAD SX で通常、要素をどのように選択しますか？' : 'How do you normally select an element in iCAD SX?',
+      choices: labels.map((label, index) => ({
+        id: `F6.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
   if (lessonId === 'F5.6') {
     const ja = language === 'ja';
-    const labels = ja ? ['原点', 'X 軸', 'Y 軸', 'シェーディングモード'] : ['The origin', 'The X-axis', 'The Y-axis', 'The shading mode'];
+    const labels = ja ? ["ズーム","Change 3D Part Layout","シェーディング","保存"] : ["Zoom","Change 3D Part Layout","Shading","Save"];
     return [{
-      id: 'F5.6-knowledge-check', prompt: ja ? 'Change 3D Part Layout で点 2 は何を設定しますか？' : 'What does Point 2 set in Change 3D Part Layout?',
+      id: 'F5.6-knowledge-check', prompt: ja ? "0, 0, 0 に配置した後で部品の原点を変更するには、何を使いますか？" : "You placed a shape at 0, 0, 0 and now want to change the part’s origin. What should you use?",
       choices: labels.map((label, index) => ({
         id: `F5.6-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
-        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.',
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
       })),
     }];
   }
   if (lessonId === 'F5.4') {
     const ja = language === 'ja';
-    const labels = ja ? ['モデルの最も高い点', 'X、Y、Z 軸が交わる点', 'すべての部品の中心', '保存された表示位置']
-      : ['The highest point of a model', 'The point where the X, Y, and Z axes meet', 'The center of every part', 'A saved viewing position'];
+    const labels = ja ? ["原点を画面中央へ移動する","形状の配置点を現在の原点に合わせる","必ず形状の中心を原点に合わせる","表示方向を変える"] : ["Moves the origin to the screen center","Places the shape’s placement point at the current origin","Always places the shape’s center at the origin","Changes the viewing direction"];
     return [{
-      id: 'F5.4-knowledge-check', prompt: ja ? 'iCAD SX の原点とは何ですか？' : 'What is the origin in iCAD SX?',
+      id: 'F5.4-knowledge-check', prompt: ja ? "例で配置点に 0, 0, 0 を入力すると、どうなりますか？" : "In the example, what does entering 0, 0, 0 for the placement point do?",
       choices: labels.map((label, index) => ({
         id: `F5.4-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
-        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.',
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
       })),
     }];
   }
   if (lessonId === 'F5.1') {
     const ja = language === 'ja';
-    const labels = ja ? ['正確な値を入力するため', 'モニターの大きさを変えるため', 'コンピューターを移動するため', 'モデルを自動的に変更するため']
-      : ['To enter exact values', 'To change the monitor size', 'To move the computer', 'To change the model automatically'];
+    const labels = ['Enter', 'Esc', 'Backspace', 'Alt'];
     return [{
-      id: 'F5.1-knowledge-check', prompt: ja ? 'iCAD SX でキーボード入力が役立つ理由は何ですか？' : 'Why is keyboard input useful in iCAD SX?',
+      id: 'F5.1-knowledge-check', prompt: ja ? "入力を確定するキーはどれですか？" : "Which key confirms your input?",
       choices: labels.map((label, index) => ({
         id: `F5.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
-        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.',
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
       })),
     }];
   }
   if (lessonId === 'F4.12') {
     const ja = language === 'ja';
     const labels = ja ? ['CG表示 線なし', 'CG表示 線あり', '透過表示', 'WIRE表示']
-      : ['GC View – No Lines', 'GC View – With Lines', 'Transparent Display', 'Wire Display'];
+      : ['CG View – No Lines', 'CG View – With Lines', 'Transparent Display', 'Wire Display'];
     return [{
       id: 'F4.12-knowledge-check', prompt: ja ? 'モデルの面の奥にある形状を確認するには、どのシェーディングモードを使いますか？' : 'Which Shading mode should you use when you need to see geometry behind a model surface?',
       choices: labels.map((label, index) => ({
@@ -210,16 +432,17 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
     const intro = lessonId === 'F1.1';
     const prompt = intro
       ? (ja ? 'iCAD SX とは何ですか？' : 'What is iCAD SX?')
-      : (ja ? 'iCAD SX の一般的な用途はどれですか？' : 'Which of the following is a common use of iCAD SX?');
+      : (ja ? '個々の部品を組み合わせて一つの機械設計にする作業はどれですか？' : 'Which task combines individual parts into a complete mechanical design?');
     const labels = intro
       ? (ja ? ['表計算アプリケーション', '機械設計用 CAD システム', '写真編集アプリケーション', 'プレゼンテーションアプリケーション']
         : ['A spreadsheet application', 'A mechanical CAD system', 'A photo editing application', 'A presentation application'])
-      : (ja ? ['写真の編集', '機械部品と設計図面の作成', '文書の作成', 'メールの管理']
-        : ['Editing photos', 'Creating mechanical parts and engineering drawings', 'Writing documents', 'Managing email']);
+      : (ja ? ['アセンブリの作成', '図面への注記の追加', '形状の測定', '表示方向の変更']
+        : ['Creating assemblies', 'Adding drawing notes', 'Measuring geometry', 'Changing the viewing direction']);
+    const correctIndex = intro ? 1 : 0;
     return [{
       id: `${lessonId}-knowledge-check`, prompt, choices: labels.map((label, index) => ({
-        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
-        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correctIndex,
+        feedback: index === correctIndex ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correctIndex]}. ${labels[correctIndex]}`
           : (ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.'),
       }))
     }];
@@ -248,13 +471,5 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       })),
     }];
   }
-  return copy[language].map(([prompt, correct, wrong1, wrong2, explanation], index) => {
-    const choices = [correct, wrong1, wrong2].map((label, i) => ({
-      id: `F10.6-${index}-${i}`, label, isCorrect: i === 0,
-      feedback: i === 0 ? explanation : `${language === 'ja' ? 'もう一度確認しましょう。' : 'Review the concept. '}${explanation}`,
-    }));
-    // Stable rotation avoids teaching an answer-position pattern.
-    return { id: `F10.6-q${index + 1}`, prompt, choices: [...choices.slice(index % 3), ...choices.slice(0, index % 3)] };
-  });
+  return finalKnowledgeCheck(language);
 }
-

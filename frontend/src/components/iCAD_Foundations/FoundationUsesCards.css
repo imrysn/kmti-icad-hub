@@ -1,6 +1,6 @@
 .foundations-uses { margin-top: 12px; container-type: inline-size; }
 .foundations-uses .foundations-uses__intro { padding: 0; margin-bottom: 24px; }
-.foundations-uses__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 30px 14px; list-style: none; margin: 0; padding: 0; overflow: hidden; }
+.foundations-uses__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px 16px; list-style: none; margin: 0; padding: 0; overflow: hidden; }
 .foundations-use-card { --use-accent: #bd512f; --use-outline: #58616f; position: relative; display: flex; flex-direction: column; align-items: center; min-width: 0; color: var(--text-main,#233c51); }
 .foundations-use-card::before { content: ''; position: absolute; top: 20px; left: -8px; right: -8px; height: 2px; background: var(--use-outline); }
 .foundations-use-card:nth-child(2) { --use-accent: #287d96; }
@@ -8,12 +8,22 @@
 .foundations-use-card:nth-child(4) { --use-accent: #4d53b1; }
 .foundations-use-card:nth-child(5) { --use-accent: #348268; }
 .foundations-use-card:nth-child(6) { --use-accent: #8054a3; }
-.foundations-use-card__number { position: relative; display: grid; place-items: center; width: 54px; height: 40px; box-sizing: border-box; border: 2px solid var(--use-outline); border-radius: 24px; background: var(--use-accent); color: white; font-size: 1.4rem; font-weight: 800; margin-bottom: 22px; }
-.foundations-use-card__title { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 84px; box-sizing: border-box; margin: 0; padding: 10px 12px; border: 2px solid var(--use-outline); border-radius: 7px 7px 16px 16px; background: var(--use-accent); color: #fff; font-size: 0.95rem; line-height: 1.3; text-align: center; }
-.foundations-use-card__icon-frame { display: grid; place-items: center; width: 60%; height: 78px; border-bottom: 2px solid var(--use-outline); border-radius: 0 0 6px 6px; margin-bottom: -8px; }
-.foundations-use-card__icon { color: var(--use-accent); width: 38px; height: 38px; }
-.foundations-use-card__body { flex: 1; width: 100%; box-sizing: border-box; padding: 26px 12px 18px; border: 2px solid var(--use-outline); border-top: 0; border-radius: 0 0 12px 12px; }
+.foundations-use-card__number { position: relative; display: grid; place-items: center; width: 54px; height: 40px; box-sizing: border-box; border: 2px solid var(--use-outline); border-radius: 24px; background: var(--use-accent); color: white; font-size: 1.4rem; font-weight: 800; margin-bottom: 16px; }
+.foundations-use-card__title { display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--foundation-card-title-min-height,64px); box-sizing: border-box; margin: 0; padding: 8px 10px; border: 2px solid var(--use-outline); border-radius: 7px 7px 16px 16px; background: var(--use-accent); color: #fff; font-size: 0.95rem; line-height: 1.35; text-align: center; }
+.foundations-use-card__icon-frame { display: grid; place-items: center; width: 96%; height: var(--foundation-icon-frame-height,144px); padding: var(--foundation-icon-frame-padding,11px 4px); box-sizing: border-box; border-bottom: 2px solid var(--use-outline); margin-bottom: 0; }
+.foundations-use-card__icon { color: var(--use-accent); width: var(--foundation-icon-size,64px); height: var(--foundation-icon-size,64px); }
+.foundations-use-card__body { flex: 1; width: 100%; box-sizing: border-box; padding: 18px 12px; border: 2px solid var(--use-outline); border-top: 0; border-radius: 0 0 12px 12px; }
 .foundations-uses .foundations-use-card__body p { padding: 0; margin: 0; font-size: 0.9rem; line-height: 1.5; text-align: center; }
+.foundations-uses--aligned .foundations-use-card {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  justify-items: center;
+  align-items: stretch;
+}
+.foundations-uses--aligned .foundations-use-card__number { align-self: start; }
+.foundations-uses--aligned .foundations-use-card__icon-frame { align-self: start; }
 [data-theme='dark'] .foundations-use-card { --use-outline: #a1afbf; }
 [data-theme='dark'] .foundations-use-card__icon { color: #c4d9ed; }
 @container (min-width: 850px) { .foundations-uses__grid { grid-template-columns: repeat(6,minmax(0,1fr)); } }

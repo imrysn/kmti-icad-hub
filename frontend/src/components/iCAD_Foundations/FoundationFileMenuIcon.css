@@ -1,0 +1,8 @@
+.foundation-file-menu-icon { width: 100%; height: 48px; display: flex; justify-content: center; }
+.foundation-file-menu-icon .foundation-interface-icon-button { display: flex; align-items: center; justify-content: center; width: 100%; padding: 4px; border: 0; background: transparent; cursor: zoom-in; }
+.foundation-file-menu-icon svg { width: auto; max-width: 100%; height: 32px; transition: transform 180ms ease-out; }
+.foundation-file-menu-icon--fields { height: 76px; }
+.foundation-file-menu-icon--fields svg { width: 320px; max-width: 100%; height: auto; max-height: 66px; }
+.foundation-file-menu-icon .foundation-interface-icon-button:hover svg { transform: scale(1.08); }
+.foundation-file-menu-icon .foundation-interface-icon-button:focus-visible { outline: 2px solid #147bd1; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .foundation-file-menu-icon svg { transition: none; } }

@@ -19,15 +19,23 @@ export function quickReviewGroups(text: string): string[][] {
 }
 
 export default function QuickReviewFlow({text}: {text:string}) {
-  const items = quickReviewGroups(text).flat();
+  const checklist = text.split('\n').map(line => line.trim()).filter(Boolean);
+  if (checklist.length && checklist.every(line => line.startsWith('- '))) {
+    return <div className="quick-review-flow"><ul className="quick-review-checklist">
+      {checklist.map(item => <li key={item}>{formatted(item.slice(2))}</li>)}
+    </ul></div>;
+  }
+  const groups = quickReviewGroups(text);
   return <div className="quick-review-flow">
-    <ol className="quick-review-flow__row">
+    {groups.map((items, groupIndex) => items.length === 1 && /^(or|または|For multiple elements:|複数の要素の場合：)$/i.test(items[0])
+      ? <p className="quick-review-flow__label" key={groupIndex}>{items[0]}</p>
+      : <ol className="quick-review-flow__row" key={groupIndex}>
       {items.map((item,index) => <li className="quick-review-flow__segment" key={index}>
-        <svg className="quick-review-flow__outline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <polygon points={index === 0 ? '1,1 90,1 99,50 90,99 1,99' : '1,1 90,1 99,50 90,99 1,99 10,50'} fill="none" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
-        </svg>
-        <div className="quick-review-flow__text">{formatted(item)}</div>
+        {item.split('→').length === 2 ? <>
+          <strong className="quick-review-flow__key">{item.split('→')[0].replace(/\*\*|<\/?(?:b|strong)>/g, '').trim()}</strong>
+          <span className="quick-review-flow__detail">{item.split('→')[1].replace(/\*\*|<\/?(?:b|strong)>/g, '').trim()}</span>
+        </> : <div className="quick-review-flow__text">{formatted(item)}</div>}
       </li>)}
-    </ol>
+    </ol>)}
   </div>;
 }

@@ -30,7 +30,7 @@ export const SELECTING_GEOMETRY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = 
   {
     id: 'select-step-2',
     title: 'Select the Object',
-    text: 'Left-click the object you want to move.',
+    text: 'Left-click the object you want to move, check the highlight, then right-click (GO) to confirm the selection.',
     preserveText: true,
   },
   {
@@ -176,7 +176,7 @@ export const COPY_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'copy-step-2',
     title: 'Select the Object',
-    text: 'Left-click the object you want to copy.',
+    text: 'Left-click the object you want to copy, check the highlight, then right-click (GO) to confirm the selection.',
     preserveText: true,
   },
   {
@@ -326,7 +326,7 @@ export const DELETE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'delete-step-3',
     title: 'Confirm',
-    text: 'Confirm the selection to delete the object.',
+    text: 'Right-click or press <b>GO</b> to confirm deletion of the selected object.',
     preserveText: true,
   },
   {

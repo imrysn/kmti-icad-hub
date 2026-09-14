@@ -1,6 +1,6 @@
 import toolbar from '../../assets/icad-foundations/toolbar.jpg';
 import menu from '../../assets/icad-foundations/menu-bar.jpg';
-import working from '../../assets/icad-foundations/working-area.jpg';
+import working from '../../assets/icad-foundations/workspace.jpg';
 import input from '../../assets/icad-foundations/inputarea.jpg';
 import message from '../../assets/icad-foundations/message-area.jpg';
 import tree from '../../assets/icad-foundations/treeview.jpg';
