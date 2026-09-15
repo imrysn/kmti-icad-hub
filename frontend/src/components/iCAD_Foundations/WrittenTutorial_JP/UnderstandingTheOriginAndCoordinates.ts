@@ -1,5 +1,5 @@
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
-import originAxesImage from '../../../assets/icad-foundations/origin.png';
+import originAxesImage from '../../../assets/icad-foundations/origin-placement/origin.png';
 
 /* ── レッスン 5: 原点 ────────────────────────────────────────────────────── */
 

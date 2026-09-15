@@ -1,5 +1,5 @@
 import FoundationImagePreview from './FoundationImagePreview';
-import drawingExample from '../../assets/icad-foundations/drawing-structure-single-part.png';
+import drawingExample from '../../assets/icad-foundations/drawing/drawing-structure-single-part.png';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationDrawingStructure.css';
 

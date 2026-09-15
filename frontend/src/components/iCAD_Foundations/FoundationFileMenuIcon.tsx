@@ -1,7 +1,7 @@
 import InterfaceIconPreview from './InterfaceIconPreview';
-import saveAsScreen from '../../assets/icad-foundations/file-save-as-menu.png';
-import newScreen from '../../assets/icad-foundations/file-new-menu.png';
-import saveScreen from '../../assets/icad-foundations/file-save-menu.png';
+import saveAsScreen from '../../assets/icad-foundations/file-operations/file-save-as-menu.png';
+import newScreen from '../../assets/icad-foundations/file-operations/file-new-menu.png';
+import saveScreen from '../../assets/icad-foundations/file-operations/file-save-menu.png';
 import './FoundationInterfaceCards.css';
 import './FoundationFileMenuIcon.css';
 
@@ -19,5 +19,5 @@ export default function FoundationFileMenuIcon({newItem=false,japanese=false,sav
     <text x={command?12:8} y="22" fill="#000" fontFamily="Meiryo, MS Gothic, sans-serif" fontSize="16">{saveAs?'名前を付けて保存(A)...':save?'上書き保存(S)':newItem?'新規作成(N)':'ファイル(F)'}</text>
     {command && <text x={artWidth-12} y="22" textAnchor="end" fill="#000" fontFamily="Arial, sans-serif" fontSize="14">{saveAs?'Ctrl+Shift+S':save?'Ctrl+S':'Ctrl+N'}</text>}
   </svg>;
-  return <div className="foundation-file-menu-icon"><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:saveAs?saveAsScreen:useSaveScreen?saveScreen:newScreen,region:{bounds:region,landing:region},aspectRatio:width/height}}/></div>;
+  return <div className="foundation-file-menu-icon"><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:saveAs?saveAsScreen:useSaveScreen?saveScreen:newScreen,region:{bounds:region,landing:region}}}/></div>;
 }

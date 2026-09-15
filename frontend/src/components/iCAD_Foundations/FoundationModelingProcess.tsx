@@ -12,8 +12,8 @@ function Cylinder() {
   </svg>;
 }
 
-export default function FoundationModelingProcess({ text, cylinder = false, polygon = false, move = false, copy = false, deleting = false, inputAreas = false, box = false, japanese = false }: { text: string; cylinder?: boolean; polygon?: boolean; move?: boolean; copy?: boolean; deleting?: boolean; inputAreas?: boolean; box?: boolean; japanese?: boolean }) {
-  const shapeFlow = box || cylinder || polygon;
+export default function FoundationModelingProcess({ text, cylinder = false, polygon = false, cone = false, torus = false, professional = false, move = false, copy = false, deleting = false, inputAreas = false, box = false, japanese = false }: { text: string; cylinder?: boolean; polygon?: boolean; cone?: boolean; torus?: boolean; professional?: boolean; move?: boolean; copy?: boolean; deleting?: boolean; inputAreas?: boolean; box?: boolean; japanese?: boolean }) {
+  const shapeFlow = box || cylinder || polygon || cone || torus;
   const blocks = text.split('\n\n');
   const hasIntro = !/^\*\*(?:Step|ステップ) \d+/.test(blocks[0]);
   const intro = hasIntro ? blocks[0] : '';
@@ -28,7 +28,7 @@ export default function FoundationModelingProcess({ text, cylinder = false, poly
         return <li className="foundations-use-card" key={heading}>
           <span className="foundations-use-card__number" aria-hidden="true">{index + 1}</span>
           <h5 className="foundations-use-card__title">{heading.replace(/\*\*/g, '').replace(/^(?:(?:Step|ステップ) \d+ —\s*|\d+\.\s*)/, '')}</h5>
-          <div className="foundations-use-card__icon-frame">{shapeFlow && (index===0 || index===2) ? <FoundationBoxSetup japanese={japanese} orientation={index===2} cylinder={cylinder} polygon={polygon} iconOnly/> : (inputAreas || cylinder || polygon) ? <FoundationModelingInputIcon index={shapeFlow ? (index===1 ? 0 : index-2) : index} japanese={japanese} box={box} cylinder={cylinder} polygon={polygon}/> : <Icon aria-hidden="true" strokeWidth={1.6} />}</div>
+          <div className="foundations-use-card__icon-frame">{shapeFlow && (index===0 || index===2) ? <FoundationBoxSetup japanese={japanese} orientation={index===2} cylinder={cylinder} polygon={polygon} cone={cone} torus={torus} professional={professional} iconOnly/> : (inputAreas || shapeFlow) ? <FoundationModelingInputIcon index={shapeFlow ? (index===1 ? 0 : index-2) : index} japanese={japanese} box={box} cylinder={cylinder} polygon={polygon} cone={cone} torus={torus} professional={professional}/> : <Icon aria-hidden="true" strokeWidth={1.6} />}</div>
           <div className="foundations-use-card__body">
             {lines.filter(line => !line.startsWith('- ')).map(line => <p key={line}>{renderFormattedText(line)}</p>)}
             

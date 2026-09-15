@@ -1,7 +1,7 @@
-import saveAsScreen from '../../assets/icad-foundations/save-as-dialog.png';
-import firstSaveScreen from '../../assets/icad-foundations/first-save-dialog.png';
+import saveAsScreen from '../../assets/icad-foundations/file-operations/save-as-dialog.png';
+import firstSaveScreen from '../../assets/icad-foundations/file-operations/first-save-dialog.png';
 import InterfaceIconPreview from './InterfaceIconPreview';
-import screen from '../../assets/icad-foundations/save-dialog.png';
+import screen from '../../assets/icad-foundations/file-operations/save-dialog.png';
 import './FoundationInterfaceCards.css';
 import './FoundationFileMenuIcon.css';
 
@@ -21,5 +21,5 @@ export default function FoundationSaveDialogIcon({confirm=false,japanese=false,f
     <rect x="86" y="37" width="227" height="22" fill="#fff" stroke="#0087ef"/>
     <text x="93" y="53" fontFamily="Arial, sans-serif" fontSize="13" fill="#000">{saveAs?'Training_Box_01_Copy':'Training_Box_01'}</text>
   </svg>;
-  return <div className={`foundation-file-menu-icon${confirm ? '' : ' foundation-file-menu-icon--fields'}`}><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,highlightColor: confirm ? undefined : '#0087ef',screen:saveAs?saveAsScreen:firstSave?firstSaveScreen:screen,region:{bounds:region,landing:region},aspectRatio:saveAs?1911/1078:1920/1080}}/></div>;
+  return <div className={`foundation-file-menu-icon${confirm ? '' : ' foundation-file-menu-icon--fields'}`}><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,highlightColor: confirm ? undefined : '#0087ef',screen:saveAs?saveAsScreen:firstSave?firstSaveScreen:screen,region:{bounds:region,landing:region}}}/></div>;
 }

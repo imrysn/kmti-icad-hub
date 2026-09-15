@@ -25,6 +25,11 @@ class CourseService:
         if foundations:
             return CourseProgress(course_id=course_id, user_id=user_id,
                                   progress_percentage=progress_percentage(db, user_id, foundations))
+        from .professional_curriculum import find_professional_course, progress_percentage as professional_progress
+        professional = find_professional_course(db, course_id)
+        if professional:
+            return CourseProgress(course_id=course_id, user_id=user_id,
+                                  progress_percentage=professional_progress(db, user_id, professional))
         progress = db.query(UserProgress).filter(
             UserProgress.user_id == user_id, 
             UserProgress.course_id == course_id
@@ -44,6 +49,9 @@ class CourseService:
         from .foundations_curriculum import find_foundations_course, lesson_tree
         if find_foundations_course(db, course_id):
             return lesson_tree(lang)
+        from .professional_curriculum import find_professional_course, lesson_tree as professional_lesson_tree
+        if find_professional_course(db, course_id):
+            return professional_lesson_tree(lang)
         
         # Handle Special Case: Practical Assessment
         if course_id == "practical-assessment":

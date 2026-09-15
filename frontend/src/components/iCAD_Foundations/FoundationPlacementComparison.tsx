@@ -1,5 +1,5 @@
-import away from '../../assets/icad-foundations/placement-away-origin.png';
-import at from '../../assets/icad-foundations/placement-at-origin.png';
+import away from '../../assets/icad-foundations/origin-placement/placement-away-origin.png';
+import at from '../../assets/icad-foundations/origin-placement/placement-at-origin.png';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationPlacementComparison.css';
 

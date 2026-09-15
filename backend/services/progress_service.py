@@ -101,9 +101,13 @@ def update_user_course_progress(db: Session, user_id: int, course_id: str):
     from datetime import datetime, timezone
 
     from .foundations_curriculum import find_foundations_course, progress_percentage
+    from .professional_curriculum import find_professional_course, progress_percentage as professional_progress
     foundations = find_foundations_course(db, course_id)
+    professional = None if foundations else find_professional_course(db, course_id)
     if foundations:
         progress_pct = progress_percentage(db, user_id, foundations)
+    elif professional:
+        progress_pct = professional_progress(db, user_id, professional)
     else:
         course_type = "3D_Modeling" if course_id == "1" else "2D_Drawing"
         total_quizzes = db.query(Quiz).filter(Quiz.course_type == course_type).count()
@@ -123,7 +127,7 @@ def update_user_course_progress(db: Session, user_id: int, course_id: str):
         UserProgress.course_id == course_id
     ).first()
 
-    if progress_pct > 0.0 or foundations:
+    if progress_pct > 0.0 or foundations or professional:
         if not progress_record:
             progress_record = UserProgress(
                 user_id=user_id,

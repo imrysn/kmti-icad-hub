@@ -134,9 +134,11 @@ try:
         if "access_plans" in table_names:
             from sqlalchemy.orm import sessionmaker
             from .services.access_plan_service import canonicalize_access_plans
+            from .services.professional_curriculum import ensure_professional_course
             compatibility_session = sessionmaker(bind=db_engine)()
             try:
                 canonicalize_access_plans(compatibility_session)
+                ensure_professional_course(compatibility_session)
                 compatibility_session.commit()
             finally:
                 compatibility_session.close()

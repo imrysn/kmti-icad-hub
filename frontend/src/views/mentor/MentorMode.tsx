@@ -1,6 +1,7 @@
 import { useTranslation } from '../../context/LanguageContext';
 import { createFoundationLessons, resolveFoundationLesson, migrateFoundationCompletion } from '../../components/iCAD_Foundations/curriculum';
-import { Lock } from 'lucide-react';
+import { createProfessionalLessons, PROFESSIONAL_COURSE_TYPE } from '../../components/iCAD_Professional/curriculum';
+import { BookOpen, Lock } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../../context/WebSocketContext';
@@ -53,8 +54,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Global State
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-    const is2DDrawingCourse = selectedCourse?.id?.toString() === '2' || selectedCourse?.course_type === '2D_Drawing';
+    // Match by course_type: database ids differ between installs (e.g. Professional can have id 2).
+    const is2DDrawingCourse = selectedCourse?.course_type === '2D_Drawing';
     const isFoundationsCourse = selectedCourse?.course_type === 'iCAD_Foundations';
+    const isProfessionalCourse = selectedCourse?.course_type === PROFESSIONAL_COURSE_TYPE;
 
     // UI/Interaction State
     const [activeLessonId, setActiveLessonId] = useState<string>('');
@@ -131,6 +134,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (selectedCourse.course_type === '2D_Drawing') return ICAD_2D_LESSONS;
         if (selectedCourse.course_type === '3D_Modeling') return ICAD_3D_LESSONS;
         if (selectedCourse.course_type === 'iCAD_Foundations') return createFoundationLessons(language === 'ja' ? 'ja' : 'en');
+        if (selectedCourse.course_type === PROFESSIONAL_COURSE_TYPE) return createProfessionalLessons(language === 'ja' ? 'ja' : 'en');
         return dbLessons;
     }, [selectedCourse, dbLessons, language]);
 
@@ -363,7 +367,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             setCompletedLessons(selectedCourse.course_type === 'iCAD_Foundations' ? migrateFoundationCompletion(ids) : ids);
 
             // If we are currently loading progress for Course '1', update isAnnotationCompleted as well
-            if (selectedCourse.id.toString() === '1') {
+            if (selectedCourse.course_type === '3D_Modeling') {
                 const annotationDone = ids.includes('annotation');
                 setIsAnnotationCompleted(annotationDone);
                 localStorage.setItem(authService.getStorageKey('annotationCompleted'), annotationDone.toString());
@@ -386,6 +390,12 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
         if (isFoundationsCourse) {
             setActiveLessonId('F1.1');
             setExpandedIds(new Set(['F1']));
+        } else if (isProfessionalCourse) {
+            const firstModule = currentLessons[0];
+            if (firstModule?.children?.[0]) {
+                setActiveLessonId(firstModule.children[0].id);
+                setExpandedIds(new Set([firstModule.id]));
+            }
         } else if (is2DDrawingCourse) {
             setActiveLessonId('2d-orthographic-1');
             setExpandedIds(new Set(['2d-orthographic']));
@@ -393,7 +403,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             setActiveLessonId('interface');
             setExpandedIds(new Set());
         }
-    }, [selectedCourse?.id, is2DDrawingCourse, isFoundationsCourse, activeLessonId]);
+    }, [selectedCourse?.id, is2DDrawingCourse, isFoundationsCourse, isProfessionalCourse, currentLessons, activeLessonId]);
 
     useEffect(() => {
         const viewer = document.querySelector('.lesson-scroll-area');
@@ -582,10 +592,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                 return nextSet;
             });
         } else {
-            if (isFoundationsCourse) { setSelectedCourse(null); setActiveLessonId(''); }
+            if (isFoundationsCourse || isProfessionalCourse) { setSelectedCourse(null); setActiveLessonId(''); }
             else console.debug('Cannot go to next lesson: already at end of course.');
         }
-    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons, isFoundationsCourse]);
+    }, [currentLessonIndex, allLessonIds, activeLessonId, currentLessons, isFoundationsCourse, isProfessionalCourse]);
 
     const goToPrevLesson = useCallback(() => {
         if (currentLessonIndex > 0) {
@@ -617,6 +627,48 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
 
     // Render Composition
     // Only show CourseSelector/Loader if we don't have courses loaded yet, or if no course is selected
+    // A learner whose plan has no courses yet has nothing to auto-open, so show the empty course list instead of waiting.
+    const hasNoCourses = !loading && !planLoading && courses.length === 0;
+    if (!isEmployeeSide && !error && !selectedCourse && hasNoCourses) {
+        const planName = effectiveAccess?.plan?.name;
+        return (
+            <div className="mentor-mode">
+                <div className="course-view-container">
+                    <MentorSidebar
+                        selectedCourse={{ id: 'no-course', title: planName || 'KMTI Training Hub', description: '', course_type: 'None', order: 0 }}
+                        is2DDrawingCourse={false}
+                        sidebarOpen={sidebarOpen}
+                        onToggleSidebar={() => setSidebarOpen(open => !open)}
+                        activeLessonId=""
+                        setActiveLessonId={setActiveLessonId}
+                        expandedIds={expandedIds}
+                        toggleExpand={toggleExpand}
+                        setSelectedCourse={setSelectedCourse}
+                        completedLessons={[]}
+                        isEmployeeSide={false}
+                        lessons={[]}
+                        emptyMessage={language === 'ja' ? '利用できるコースはまだありません。' : 'No courses are available yet.'}
+                    />
+                    <main className="main-content-viewer">
+                        <div className="lesson-split-layout">
+                            <div className="lesson-scroll-area">
+                                <div className="lesson-header-banner">
+                                    <p className="lesson-indicator">{planName || (language === 'ja' ? 'アクティブなプランなし' : 'No active plan')}</p>
+                                    <h2 className="lesson-banner-title">{language === 'ja' ? 'トレーニングコンテンツはまだありません' : 'No training content is available yet'}</h2>
+                                    <div className="lesson-banner-divider"></div>
+                                </div>
+                                <div className="no-entitled-courses" role="status">
+                                    <Lock size={28} />
+                                    <h3>{planName ? (language === 'ja' ? `${planName} プランは有効です` : `Your ${planName} plan is active`) : (language === 'ja' ? 'アクセスプランが有効ではありません' : 'Your account has no active access plan')}</h3>
+                                    <p>{language === 'ja' ? 'コースが公開されると、ここに表示されます。' : 'Courses will appear here as soon as they are published for your plan.'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        );
+    }
     if ((loading && courses.length === 0) || error || (!selectedCourse && isEmployeeSide)) {
         return (
             <CourseSelector
@@ -717,10 +769,28 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                             onBack={() => { setSelectedCourse(null); navigate('/mentor?mode=manual'); }}
                         />
                     )
+                ) : isProfessionalCourse && allLessonIds.length === 0 ? (
+                    <main className="main-content-viewer">
+                        <div className="lesson-split-layout">
+                            <div className="lesson-scroll-area">
+                                <div className="lesson-header-banner">
+                                    <p className="lesson-indicator">{language === 'ja' ? 'iCAD プロフェッショナル' : 'iCAD Professional'}</p>
+                                    <h2 className="lesson-banner-title">{language === 'ja' ? 'レッスンを準備中です' : 'Lessons are coming soon'}</h2>
+                                    <div className="lesson-banner-divider"></div>
+                                </div>
+                                <div className="no-entitled-courses" role="status">
+                                    <BookOpen size={28} />
+                                    <h3>{language === 'ja' ? 'iCAD プロフェッショナルプランは有効です' : 'Your iCAD Professional plan is active'}</h3>
+                                    <p>{language === 'ja' ? 'レッスンが公開されると、サイドバーに表示されます。' : 'New lessons will appear in the sidebar as soon as they are published.'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
                 ) : (
                     <LessonViewer
                         is2DDrawingCourse={is2DDrawingCourse}
                         isFoundationsCourse={isFoundationsCourse}
+                        isProfessionalCourse={isProfessionalCourse}
                         courseId={selectedCourse.id.toString()}
                         activeLessonId={activeLessonId}
                         currentLessonIndex={currentLessonIndex}

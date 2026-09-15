@@ -1,6 +1,6 @@
 import InterfaceIconPreview from './InterfaceIconPreview';
-import menuScreen from '../../assets/icad-foundations/file-close-menu.png';
-import windowScreen from '../../assets/icad-foundations/drawing-close-window.png';
+import menuScreen from '../../assets/icad-foundations/file-operations/file-close-menu.png';
+import windowScreen from '../../assets/icad-foundations/file-operations/drawing-close-window.png';
 import './FoundationFileMenuIcon.css';
 
 export default function FoundationCloseOptions({japanese=false}:{japanese?:boolean}) {
@@ -13,7 +13,7 @@ export default function FoundationCloseOptions({japanese=false}:{japanese?:boole
         <text x={window?19:8} y="22" textAnchor={window?'middle':'start'} fontFamily="Meiryo, sans-serif" fontSize="16" fill="#000">{window?'×':'閉じる(C)'}</text>
       </svg>;
       return <div className="foundation-file-menu-icon" key={title} style={{flex:window?'0 0 46px':1}}>
-        <InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:window?windowScreen:menuScreen,region:{bounds:region,landing:region},aspectRatio:1920/1080,highlightColor:'#0087ef'}}/>
+        <InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:window?windowScreen:menuScreen,region:{bounds:region,landing:region},highlightColor:'#0087ef'}}/>
       </div>;
     })}
   </div>;

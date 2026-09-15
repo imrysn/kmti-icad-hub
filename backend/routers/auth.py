@@ -461,6 +461,10 @@ async def submit_quiz_score(
     If score >= 80%, the lesson is effectively marked as passed.
     """
     course = require_course_access(db, current_user, submission.course_id)
+    from ..services.professional_curriculum import COURSE_TYPE as PROFESSIONAL_COURSE_TYPE, LESSON_IDS as PROFESSIONAL_LESSON_IDS
+    is_professional_course = bool(course and course.course_type == PROFESSIONAL_COURSE_TYPE)
+    if is_professional_course and submission.lesson_id not in PROFESSIONAL_LESSON_IDS:
+        raise HTTPException(status_code=404, detail="Lesson is not in the current Professional curriculum")
     if course and course.course_type == "iCAD_Foundations":
         from ..services.foundations_curriculum import resolve_lesson_id
         canonical_id = resolve_lesson_id(submission.lesson_id)
@@ -478,7 +482,7 @@ async def submit_quiz_score(
             and course.course_type == "iCAD_Foundations"
             and resolve_lesson_id(submission.lesson_id)
         )
-        if exc.status_code != status.HTTP_404_NOT_FOUND or not is_foundations_lesson:
+        if exc.status_code != status.HTTP_404_NOT_FOUND or not (is_foundations_lesson or is_professional_course):
             raise
     # Check if a score already exists for this lesson
     existing_score = db.query(QuizScore).filter(

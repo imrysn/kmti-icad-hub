@@ -4,6 +4,7 @@ import kmtiTrainingHubLogo from '../../../assets/logo/kmti-training-hub.png';
 import { useAuth } from '../../../context/AuthContext';
 import { useTranslation } from '../../../context/LanguageContext';
 import { FOUNDATION_MODULES, FOUNDATION_TOTAL } from '../../../components/iCAD_Foundations/curriculum';
+import { PROFESSIONAL_COURSE_TYPE } from '../../../components/iCAD_Professional/curriculum';
 import drawing2DUrl from '../../../assets/2D.png';
 import drawing2DAssessmentUrl from '../../../assets/2d-images/2D_balloon_assembly_drawing_1.png';
 import practical3DImgUrl from '../../../assets/froming4.webp';
@@ -82,6 +83,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     }
 
     const courseFoundations = courses.find(c => c.course_type === 'iCAD_Foundations');
+    const courseProfessional = courses.find(c => c.course_type === PROFESSIONAL_COURSE_TYPE);
 
     const course3D = courses.find(c => c.course_type === '3D_Modeling') || (isEmployeeSide ? {
         id: '1',
@@ -109,6 +111,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
             title: t('course.title_foundations') || courseFoundations.title,
             description: `${FOUNDATION_MODULES.length} ${language === 'ja' ? 'モジュール' : 'modules'} · ${FOUNDATION_TOTAL} ${language === 'ja' ? 'レッスン' : 'lessons'}. ${t('course.desc_foundations') || courseFoundations.description}`
         }] : []),
+        ...(courseProfessional ? [courseProfessional] : []),
         ...(course3D ? [{
             ...course3D,
             title: t('course.title_3d') || course3D.title,
@@ -142,7 +145,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
         const is2DAssessmentLocked = !is2DCompleted && !canBypass;
         const id = course.id.toString();
         return id === 'practical-assessment' ? isPracticalLocked
-            : id === '2' ? (isPracticalLocked || isCourse2Locked)
+            : course.course_type === '2D_Drawing' ? (isPracticalLocked || isCourse2Locked)
                 : id === '2d-assessment' ? (isPracticalLocked || isCourse2Locked || is2DAssessmentLocked)
                     : false;
     };
@@ -203,7 +206,7 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                             return (
                                 <div
                                     key={course.id}
-                                    className={`course-card ${course.id.toString() === '1' ? 'card-3d' : ''} ${course.id.toString() === '2' ? 'card-2d' : ''} ${course.id.toString() === 'practical-assessment' ? 'card-practical-3d card-practical' : ''} ${course.id.toString() === '2d-assessment' ? 'card-practical-2d card-practical' : ''} ${isLocked ? 'locked' : ''}`}
+                                    className={`course-card ${course.course_type === '3D_Modeling' ? 'card-3d' : ''} ${course.course_type === '2D_Drawing' ? 'card-2d' : ''} ${course.id.toString() === 'practical-assessment' ? 'card-practical-3d card-practical' : ''} ${course.id.toString() === '2d-assessment' ? 'card-practical-2d card-practical' : ''} ${isLocked ? 'locked' : ''}`}
                                 >
                                     {isLocked && (
                                         <div className="locked-overlay">
@@ -226,11 +229,11 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
 
                                     <p>{course.description}</p>
 
-                                    {course.id.toString() === '1' ? (
+                                    {course.course_type === '3D_Modeling' ? (
                                         <div className="card-graphic-container">
                                             <ModelViewer3D glbUrl={uncoilerUrl} />
                                         </div>
-                                    ) : course.id.toString() === '2' ? (
+                                    ) : course.course_type === '2D_Drawing' ? (
                                         <div className="card-graphic-container card-2d-graphic-container">
                                             <img src={drawing2DUrl} alt="2D Detailing" className="card-2d-image" />
                                         </div>
@@ -238,11 +241,11 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
                                         <div className="card-graphic-container card-2d-graphic-container">
                                             <img src={practical3DImgUrl} alt="3D Practical" className="card-2d-image" />
                                         </div>
-                                    ) : (
+                                    ) : course.id.toString() === '2d-assessment' ? (
                                         <div className="card-graphic-container card-2d-graphic-container">
                                             <img src={drawing2DAssessmentUrl} alt="2D Assessment" className="card-2d-image" />
                                         </div>
-                                    )}
+                                    ) : null}
 
                                     <button
                                         className={`primary ${isLocked ? 'disabled' : ''}`}

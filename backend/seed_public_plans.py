@@ -49,7 +49,8 @@ def seed_public_plans():
                 "name": "iCAD Professionals",
                 "description": "For advanced users needing technical 3D modeling skills.",
                 "is_publicly_requestable": True,
-                "entitlements": [foundations_course.id] + ([advanced_3d.id] if advanced_3d else []) + ([advanced_2d.id] if advanced_2d else [])
+                # The iCAD Professional curriculum is not built yet, so this plan has no course content.
+                "entitlements": []
             },
             {
                 "code": "complete",

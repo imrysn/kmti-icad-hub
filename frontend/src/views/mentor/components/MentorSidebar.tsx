@@ -65,6 +65,8 @@ interface MentorSidebarProps {
     completedLessons: string[];
     isEmployeeSide?: boolean;
     lessons: Lesson[];
+    /** Shown instead of the default "coming soon" text when there are no lessons. */
+    emptyMessage?: string;
 }
 
 export const MentorSidebar: React.FC<MentorSidebarProps> = ({
@@ -78,7 +80,8 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
     setSelectedCourse,
     completedLessons,
     isEmployeeSide = false,
-    lessons
+    lessons,
+    emptyMessage
 }) => {
     const { language, setLanguage, t } = useTranslation();
     const navigate = useNavigate();
@@ -98,6 +101,9 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
         const id = course.id?.toString();
         if (course.course_type === 'iCAD_Foundations' || course.title === 'iCAD Foundations' || id === 'foundations') {
             return isJapanese ? 'iCAD 基礎' : 'iCAD Foundations';
+        }
+        if (course.course_type === 'iCAD_Professional') {
+            return isJapanese ? 'iCAD プロフェッショナル' : 'iCAD Professional';
         }
         if (course.course_type === '3D_Modeling' || id === '1' || course.title === '3D Modeling') {
             return isJapanese ? '3Dモデリング' : '3D Modeling';
@@ -370,10 +376,10 @@ export const MentorSidebar: React.FC<MentorSidebarProps> = ({
                         })
                     ) : (
                         <div className="sidebar-search-empty">
-                            <p>{isJapanese ? `「${searchTerm}」に一致するレッスンは見つかりませんでした` : `No lessons found match "${searchTerm}"`}</p>
-                            <button className="clear-search-btn" onClick={() => setSearchTerm('')}>
+                            <p>{lessons.length === 0 ? (emptyMessage || (isJapanese ? 'レッスンは準備中です。' : 'Lessons are coming soon.')) : isJapanese ? `「${searchTerm}」に一致するレッスンは見つかりませんでした` : `No lessons found match "${searchTerm}"`}</p>
+                            {lessons.length > 0 && <button className="clear-search-btn" onClick={() => setSearchTerm('')}>
                                 {isJapanese ? '検索をクリア' : 'Clear search'}
-                            </button>
+                            </button>}
                         </div>
                     )}
                 </div>

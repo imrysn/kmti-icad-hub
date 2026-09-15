@@ -1,6 +1,7 @@
 import { FoundationCompletionContext } from '../../../components/iCAD_Foundations/FoundationCompletionContext';
 import LessonRecapPanel from '../../../components/LessonRecapPanel';
 import { resolveFoundationLesson, foundationRecap } from '../../../components/iCAD_Foundations/curriculum';
+import { professionalRenderLesson } from '../../../components/iCAD_Professional/curriculum';
 import { PRESERVED_FOUNDATIONS_LESSONS } from '../mentorConstants';
 const FoundationReadingLesson = lazy(() => import('../../../components/iCAD_Foundations/FoundationReadingLesson'));
 import { BookOpen, ChevronLeft, ChevronRight, Loader2, Video } from 'lucide-react';
@@ -71,6 +72,7 @@ import { useTTSContext } from '../../../context/TTSContext';
 interface LessonViewerProps {
   is2DDrawingCourse: boolean;
   isFoundationsCourse?: boolean;
+  isProfessionalCourse?: boolean;
   courseId: string;
   activeLessonId: string;
   currentLessonIndex: number;
@@ -87,6 +89,7 @@ interface LessonViewerProps {
 export const LessonViewer: React.FC<LessonViewerProps> = ({
   is2DDrawingCourse,
   isFoundationsCourse = false,
+  isProfessionalCourse = false,
   courseId,
   activeLessonId,
   currentLessonIndex,
@@ -136,7 +139,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     // Fetch dynamic content if available
     const fetchDbContent = async () => {
-      if (!activeLessonId || isFoundationsCourse) return;
+      if (!activeLessonId || isFoundationsCourse || isProfessionalCourse) return;
 
       setIsDbLoading(true);
       try {
@@ -193,7 +196,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
     setTimeout(performScrollReset, 10);
     setTimeout(performScrollReset, 100); // Second pass for slow rendering
-  }, [activeLessonId, isFoundationsCourse]);
+  }, [activeLessonId, isFoundationsCourse, isProfessionalCourse]);
 
   // Persist showQuiz state
   const activeLessonIdRef = useRef(activeLessonId);
@@ -398,8 +401,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
             <div className="lesson-banner-divider"></div>
           </div>
 
-          <div key={activeLessonId} className={`lesson-content-body ${isFoundationsCourse ? 'foundations-lesson-content-body' : ''}`}>
-            <FoundationCompletionContext.Provider value={isFoundationsCourse ? {
+          <div key={activeLessonId} className={`lesson-content-body ${isFoundationsCourse || isProfessionalCourse ? 'foundations-lesson-content-body' : ''}`}>
+            <FoundationCompletionContext.Provider value={isFoundationsCourse || isProfessionalCourse ? {
               complete: handleInteractiveLessonComplete, advance: goToNextLesson, nextLabel: language === 'ja' ? '次へ' : 'Next',
             } : null}>
               <Suspense fallback={
@@ -464,38 +467,40 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                   };
 
                   // Canonical routing is allowlisted before any legacy/prefix routing.
-                  if (isFoundationsCourse) {
-                    const canonical = resolveFoundationLesson(activeLessonId);
+                  if (isFoundationsCourse || isProfessionalCourse) {
+                    // Professional lessons render with their Foundations source layout; completion keeps the P id.
+                    const canonical = isProfessionalCourse ? professionalRenderLesson(activeLessonId) : resolveFoundationLesson(activeLessonId);
+                    const completionId = isProfessionalCourse ? activeLessonId : canonical?.id || '';
                     if (!canonical) return <div role="status">
                       <p>{language === 'ja' ? 'この旧レッスンは基礎コースの対象外です。サイドバーからレッスンを選んでください。学習記録は保持されています。' : 'This legacy lesson is no longer part of Foundations. Choose a lesson from the sidebar. Your previous records are preserved.'}</p>
                     </div>;
                     const renderer = canonical.renderer;
                     if (canonical.id === 'F4.1') {
                       const original = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === 'lesson-4-1')!;
-                      return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                      return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                         onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                         tutorial={<FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial"><DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...original, content: original.content || [] })} /></div></FoundationCompletionContext.Provider>} />;
                     }
-                    if (canonical.id === 'F3.6') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    if (canonical.id === 'F3.6') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<div className="foundations-zoom-tutorial"><RotateViewInteractiveLesson /></div>} />;
-                    if (canonical.id === 'F3.5') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    if (canonical.id === 'F3.5') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<div className="foundations-zoom-tutorial"><PanInteractiveLesson /></div>} />;
-                    if (canonical.id === 'F2.9') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    if (canonical.id === 'F2.9') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<FoundationCompletionContext.Provider value={null}><ToolBarsLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
-                    if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<FoundationCompletionContext.Provider value={null}><IcadInterfaceLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
-                    if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson}
                       onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'} />;
                     const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === renderer);
                     const preservedTutorial = renderer.startsWith('basic-op-')
                       ? <BasicOperationLesson subLessonId={renderer} />
                       : source ? <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...source, content: source.content || [] })} /> : null;
-                    return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
+                    return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'}
                       tutorial={preservedTutorial && <FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial">{preservedTutorial}</div></FoundationCompletionContext.Provider>} />;
 

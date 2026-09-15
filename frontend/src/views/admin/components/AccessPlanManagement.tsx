@@ -47,13 +47,16 @@ export const AccessPlanManagement: React.FC = () => {
         finally { setSavingId(null); }
     };
 
-    const toggleCourse = async (plan: AccessPlan, courseType: string, included: boolean) => {
+    const courseRefs = (course: { id: number | string; course_type: string }) => [course.course_type, String(course.id)];
+
+    const toggleCourse = async (plan: AccessPlan, course: { id: number | string; course_type: string }, included: boolean) => {
         setSavingId(plan.id); setError(null);
         try {
             const other = plan.entitlements.filter((item) => item.resource_type !== 'course')
                 .map(({ resource_type, resource_id, permission_code, limits_json }) => ({ resource_type, resource_id, permission_code, limits_json }));
             const selected = new Set(plan.entitlements.filter((item) => item.resource_type === 'course').map((item) => item.resource_id));
-            included ? selected.add(courseType) : selected.delete(courseType);
+            courseRefs(course).forEach((ref) => selected.delete(ref));
+            if (included) selected.add(course.course_type);
             const courseEntitlements = Array.from(selected).map((resource_id) => ({ resource_type: 'course', resource_id, permission_code: 'view' }));
             const updated = await adminService.replaceAccessPlanEntitlements(plan.id, [...other, ...courseEntitlements]);
             setPlans((current) => current.map((item) => item.id === updated.id ? updated : item));
@@ -93,8 +96,8 @@ export const AccessPlanManagement: React.FC = () => {
                     {courses.length === 0 && <span className="access-plan-empty">No curriculum courses are available yet.</span>}
                     {courses.map((course) => <label key={course.id}>
                         <input type="checkbox"
-                            checked={plan.entitlements.some((item) => item.resource_type === 'course' && item.resource_id === course.course_type)}
-                            onChange={(event) => toggleCourse(plan, course.course_type, event.target.checked)} />
+                            checked={plan.entitlements.some((item) => item.resource_type === 'course' && courseRefs(course).includes(item.resource_id))}
+                            onChange={(event) => toggleCourse(plan, course, event.target.checked)} />
                         <span>{course.title}</span>
                     </label>)}
                 </fieldset>

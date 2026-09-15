@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor, cleanup, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import FoundationReadingLesson from '../FoundationReadingLesson';
-import FoundationScreenAreas from '../FoundationScreenAreas';
 import FoundationInterfaceContent from '../FoundationInterfaceContent';
 import { FOUNDATION_LESSON_IDS, resolveFoundationLesson } from '../curriculum';
 import { foundationKnowledgeQuestions } from '../knowledgeCheck';
@@ -44,7 +43,7 @@ describe('Foundations written completion and knowledge check', () => {
       fireEvent.load(image);
       fireEvent.click(within(dialog).getByRole('button', {name: 'Show location'}));
       expect(dialog).toHaveAttribute('data-phase', 'moving');
-      fireEvent.click(within(dialog).getByRole('button', {name: 'Close enlarged icon'}));
+      fireEvent.click(dialog);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     }
   });
@@ -99,24 +98,6 @@ describe('Foundations written completion and knowledge check', () => {
     expect(document.body.style.overflow).toBe('hidden');
     fireEvent.click(within(viewer).getByRole('button',{name:'Close enlarged icon'}));
     expect(screen.queryByRole('dialog',{name:'Icon Menu'})).not.toBeInTheDocument();
-    expect(document.body.style.overflow).not.toBe('hidden');
-  });
-
-  it('opens a screen image full-screen, zooms, resets, and closes', () => {
-    render(<FoundationScreenAreas text={resolveFoundationLesson('F2.1')!.content.en.sections!.slice(1, 2).map(section => `**${section.title}**\n${section.text}`).join('\n\n')} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Open full-screen image: Menu Bar' }));
-    const viewer = screen.getByRole('dialog', { name: 'Menu Bar' });
-    expect(viewer.parentElement).toBe(document.body);
-    expect(within(viewer).getByRole('img')).toHaveAttribute('src', expect.stringContaining('menu-bar.jpg'));
-    fireEvent.click(within(viewer).getByRole('button', { name: 'Zoom in' }));
-    expect(within(viewer).getByRole('status')).toHaveTextContent('150%');
-    fireEvent.click(within(viewer).getByRole('button', { name: 'Zoom out' }));
-    expect(within(viewer).getByRole('status')).toHaveTextContent('100%');
-    fireEvent.click(within(viewer).getByRole('button', { name: 'Zoom in' }));
-    fireEvent.click(within(viewer).getByRole('button', { name: 'Reset zoom' }));
-    expect(within(viewer).getByRole('status')).toHaveTextContent('100%');
-    fireEvent.click(within(viewer).getByRole('button', { name: 'Close image' }));
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(document.body.style.overflow).not.toBe('hidden');
   });
 

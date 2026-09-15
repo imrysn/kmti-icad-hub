@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefO
 import { createPortal } from 'react-dom';
 import { LocateFixed, X } from 'lucide-react';
 import InterfaceSvgIcon from './InterfaceSvgIcon';
-import interfaceImage from '../../assets/icad-foundations/icadinterface.jpg';
+import interfaceImage from '../../assets/icad-foundations/interface/icad-interface.jpg';
 import { interfaceIconRegion, regionStyle } from './interfaceIconLocations';
 import '../LessonModalTheme.css';
 
@@ -10,7 +10,6 @@ export interface CustomIconPreview {
   artwork: ReactNode;
   screen: string;
   region: ReturnType<typeof interfaceIconRegion>;
-  aspectRatio: number;
   highlightColor?: string;
 }
 export default function InterfaceIconPreview({index,toolbar,title,japanese,custom}: {index:number;toolbar:boolean;title:string;japanese:boolean;custom?:CustomIconPreview}) {
@@ -69,7 +68,6 @@ export default function InterfaceIconPreview({index,toolbar,title,japanese,custo
 
 function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {custom?:CustomIconPreview;dialog:RefObject<HTMLDialogElement>;index:number;toolbar:boolean;title:string;japanese:boolean;onClose:()=>void}) {
   const enlargedIcon=useRef<HTMLDivElement>(null);
-  const fullscreenClose=useRef<HTMLButtonElement>(null);
   const movingIcon=useRef<HTMLDivElement>(null);
   const stage=useRef<HTMLDivElement>(null);
   const startRect=useRef<DOMRect | null>(null);
@@ -79,7 +77,7 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
   const region=custom?.region ?? interfaceIconRegion(index,toolbar);
   const atLocation=phase!=='enlarged';
   useEffect(()=>{
-    if(atLocation) fullscreenClose.current?.focus({preventScroll:true});
+    if(atLocation) dialog.current?.focus({preventScroll:true});
   },[atLocation]);
   const beginLocation=()=>{
     startRect.current=enlargedIcon.current?.getBoundingClientRect() ?? null;
@@ -111,15 +109,15 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
     node.showModal();
     return ()=>{node.close();document.body.style.overflow=overflow;};
   },[]);
-  return createPortal(<dialog ref={dialog} className="foundation-interface-icon-dialog" data-phase={phase} aria-label={title} onCancel={event=>{event.preventDefault();onClose();}}>
-    <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase} style={custom ? {aspectRatio:custom.aspectRatio,width:`min(100vw, calc(100dvh * ${custom.aspectRatio}))`,height:`min(100dvh, calc(100vw / ${custom.aspectRatio}))`} : undefined}>
+  return createPortal(<dialog ref={dialog} className="foundation-interface-icon-dialog" data-phase={phase} aria-label={title} onCancel={event=>{event.preventDefault();onClose();}} onClick={atLocation?onClose:undefined} tabIndex={-1}>
+    <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase}>
       <img className="foundation-interface-icon-dialog__screen" src={custom?.screen ?? interfaceImage} alt={japanese?'iCAD SX の画面全体':'Full iCAD SX interface'} onLoad={()=>setImageReady(true)} onError={()=>setImageFailed(true)}/>
       <div ref={movingIcon} className="foundation-interface-icon-dialog__moving-icon" style={regionStyle(region.landing)} aria-hidden="true">
         {custom?.artwork ?? <InterfaceSvgIcon index={index} toolbar={toolbar} title={title} expanded/>}
       </div>
       <div className="foundation-interface-icon-dialog__location" style={{...regionStyle(region.bounds), ...(custom?.highlightColor ? {borderColor:custom.highlightColor} : {})}} aria-hidden="true"/>
     </div>
-    {atLocation ? <button ref={fullscreenClose} className="foundation-interface-fullscreen-close" type="button" onClick={onClose} aria-label={japanese?'閉じる':'Close enlarged icon'}><X size={22}/></button> : <div className="foundation-interface-preview-panel lesson-modal-surface">
+    {atLocation ? <p className="foundation-interface-fullscreen-hint">{japanese?'画面をクリックするか Esc キーを押すと閉じます。':'Click anywhere or press Esc to close.'}</p> : <div className="foundation-interface-preview-panel lesson-modal-surface">
     <header>
       <p className="foundation-interface-preview-eyebrow">{japanese?'アイコンの確認':'Icon preview'}</p>
       <h3>{title}</h3>

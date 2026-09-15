@@ -5,6 +5,22 @@ import { FOUNDATION_LESSONS, resolveFoundationLesson } from './curriculum';
 import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 
 export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F10.6'): InteractiveVideoQuestion[] {
+  // iCAD Professional P7.4 Cone and P7.5 Torus have no Foundations source lesson.
+  if (lessonId === 'P7.5' || lessonId === 'P7.4') {
+    const ja = language === 'ja';
+    const torus = lessonId === 'P7.5';
+    const labels = torus
+      ? (ja ? ['断面直径、経路半径、回転角', '直径と高さのみ', '奥行き、幅、高さ', '頂点数、直径、高さ'] : ['Section Diameter, Path Radius, and Turn Angle', 'Diameter and Height only', 'Depth, Width, and Height', 'Number of sides, Diameter, and Height'])
+      : (ja ? ['底面直径、上面直径、高さ', '直径のみ', '奥行き、幅、高さ', '断面直径と回転角'] : ['Base Diameter, Top Diameter, and Height', 'Diameter only', 'Depth, Width, and Height', 'Section Diameter and Turn Angle']);
+    const shapeName = torus ? (ja ? 'トーラス' : 'Torus') : (ja ? '円錐台' : 'Cone');
+    return [{
+      id: `${lessonId}-knowledge-check`, prompt: ja ? `この練習で${shapeName}を作成するために入力する値はどれですか？` : `Which values are entered to create the ${shapeName} in this exercise?`,
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
   if (lessonId === 'F10.1') {
     const ja = language === 'ja';
     const labels = ja ? ['ツール選択 → 寸法入力 → 位置指定 → 確定', '保存 → 削除 → 回転 → 閉じる', 'ビュー選択 → シェーディング → 印刷 → 終了', 'パン → コピー → 閉じる → 測定']

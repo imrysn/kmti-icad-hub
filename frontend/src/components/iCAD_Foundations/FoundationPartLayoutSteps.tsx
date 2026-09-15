@@ -3,8 +3,8 @@ import './FoundationUsesCards.css';
 import './FoundationPartLayoutSteps.css';
 import PartLayoutMenuIcon from './PartLayoutMenuIcon';
 import CurrentOriginIcon from './CurrentOriginIcon';
-import placedShape from '../../assets/icad-foundations/shape-placed.png';
-import shownOrigin from '../../assets/icad-foundations/shape-origin-shown.png';
+import placedShape from '../../assets/icad-foundations/origin-placement/shape-placed.png';
+import shownOrigin from '../../assets/icad-foundations/origin-placement/shape-origin-shown.png';
 
 export default function FoundationPartLayoutSteps({text, placement=false}:{text:string; placement?:boolean}) {
   const [intro,...steps]=text.split('\n\n');

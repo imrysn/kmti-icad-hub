@@ -71,10 +71,10 @@ describe('Interface icon location preview', () => {
     advance(1000);
     expect(stage).toHaveAttribute('data-phase', 'located');
     expect(dialog.querySelector('.foundation-interface-preview-panel')).toBeNull();
-    expect(within(dialog).getByRole('button', { name: 'Close enlarged icon' })).toBeEnabled();
+    expect(within(dialog).queryByRole('button')).not.toBeInTheDocument();
   });
 
-  it('can show the location immediately and leave only the close control over the screenshot', () => {
+  it('can show the location immediately with no controls over the screenshot and close on click', () => {
     const { dialog, image, stage } = openPreview();
     fireEvent.load(image);
     advance(400);
@@ -84,8 +84,10 @@ describe('Interface icon location preview', () => {
     expect(stage).toHaveAttribute('data-phase', 'located');
 
     expect(within(dialog).queryByRole('heading')).not.toBeInTheDocument();
-    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
-    expect(within(dialog).getByRole('button', { name: 'Close enlarged icon' })).toHaveFocus();
+    expect(within(dialog).queryByRole('button')).not.toBeInTheDocument();
+    expect(dialog).toHaveFocus();
+    fireEvent.click(dialog);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it.each(['close', 'escape'] as const)('cleans up the pending animation and restores scrolling on %s', (method) => {
@@ -117,7 +119,7 @@ describe('Interface icon location preview', () => {
     advance(1000);
     expect(stage).toHaveAttribute('data-phase', 'located');
     expect(vi.getTimerCount()).toBe(0);
-    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
+    expect(within(dialog).queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('runs a one-second placement animation and cancels it when the preview closes', () => {
@@ -128,9 +130,16 @@ describe('Interface icon location preview', () => {
     fireEvent.load(image);
     advance(1000);
     expect(moving.animate).toHaveBeenCalledWith(expect.any(Array), expect.objectContaining({ duration: 1000 }));
-    fireEvent.click(within(dialog).getByRole('button', { name: 'Close enlarged icon' }));
+    fireEvent.click(dialog);
     expect(cancel).toHaveBeenCalledOnce();
     expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('uses the same stage size for custom screenshots as the toolbar preview', () => {
+    render(<InterfaceIconPreview index={0} toolbar={false} title="Custom" japanese={false} custom={{ artwork: <svg role="img" aria-label="Custom" />, screen: 'custom.png', region: { bounds: [0, 0, 10, 10], landing: [0, 0, 10, 10] } }} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Enlarge: Custom' }));
+    const stage = screen.getByRole('dialog', { name: 'Custom' }).querySelector('.foundation-interface-icon-dialog__stage')!;
+    expect(stage.getAttribute('style')).toBeNull();
   });
 
   it('keeps the enlarged vector available when the interface image cannot load', () => {
