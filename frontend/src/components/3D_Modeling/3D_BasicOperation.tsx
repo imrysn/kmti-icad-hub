@@ -76,31 +76,31 @@ import vidRotate from '../../assets/3D_Video_Tutorial/basicOp_rotate.mp4';
 export const basicShapeIntroPanels = {
   cylinder: {
     icon: Database,
-    eyebrow: 'Interactive view tour',
+    eyebrow: 'Interactive video',
     title: 'Cylinder',
     description: 'Take a guided tour of the Cylinder workflow and learn how to select the tool, enter the diameter and height, and position the completed shape accurately.',
   },
   box: {
     icon: Box,
-    eyebrow: 'Interactive view tour',
+    eyebrow: 'Interactive video',
     title: 'Box',
     description: 'Take a guided tour of the Box workflow and learn how to enter width, depth, and height before positioning the completed shape accurately.',
   },
   polygon: {
     icon: Hexagon,
-    eyebrow: 'Interactive view tour',
+    eyebrow: 'Interactive video',
     title: ' Polygonal Prism',
     description: 'Take a guided tour of the Polygonal Prism workflow and learn how the number of sides, path diameter, and height define the completed shape.',
   },
   cone: {
     icon: Triangle,
-    eyebrow: 'Interactive view tour',
+    eyebrow: 'Interactive video',
     title: 'Cone',
     description: 'Take a guided tour of the Cone workflow and learn how the base diameter, top face diameter, and height define the completed shape.',
   },
   torus: {
     icon: Donut,
-    eyebrow: 'Interactive view tour',
+    eyebrow: 'Interactive video',
     title: 'Torus',
     description: 'Take a guided tour of the Torus workflow and learn how section diameter, path radius, and turn angle define the completed shape.',
   },
@@ -109,31 +109,31 @@ export const basicShapeIntroPanels = {
 export const basicShapeIntroPanelsJP = {
   cylinder: {
     icon: Database,
-    eyebrow: '視図ツアー',
+    eyebrow: '動画チュートリアル',
     title: '円柱',
     description: '円柱コマンドのガイド付きツアーで、ツールの選択、直径・高さの入力、完成形状の正確な配置方法を学びます。',
   },
   box: {
     icon: Box,
-    eyebrow: '視図ツアー',
+    eyebrow: '動画チュートリアル',
     title: '直方体',
     description: '直方体コマンドのガイド付きツアーで、幅・奥行き・高さを入力し、完成形状を正確に配置する方法を学びます。',
   },
   polygon: {
     icon: Hexagon,
-    eyebrow: '視図ツアー',
+    eyebrow: '動画チュートリアル',
     title: '多角柱',
     description: '多角柱コマンドのガイド付きツアーで、角数、通過径、高さを定義して形状を完成させる方法を学びます。',
   },
   cone: {
     icon: Triangle,
-    eyebrow: '視図ツアー',
+    eyebrow: '動画チュートリアル',
     title: '円錐',
     description: '円錐コマンドのガイド付きツアーで、底面径、上面径、高さを定義して形状を完成させる方法を学びます。',
   },
   torus: {
     icon: Donut,
-    eyebrow: '視図ツアー',
+    eyebrow: '動画チュートリアル',
     title: '円環体',
     description: '円環体コマンドのガイド付きツアーで、断面径、回転半径、回転角度を定義して形状を完成させる方法を学びます。',
   },

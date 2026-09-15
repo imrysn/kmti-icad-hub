@@ -523,16 +523,19 @@ export const InteractiveVideoLesson: React.FC<InteractiveVideoLessonProps> = ({
       </section>
       </FoundationsVideoReadingLayout>
 
-      <div className="lesson-navigation">
+      {/* Embedded in a Foundations lesson (no handlers), the host lesson owns navigation. */}
+      {(onPrevLesson || onNextLesson) && <div className="lesson-navigation">
         {onPrevLesson && (
           <button className="nav-button" onClick={onPrevLesson} disabled={phase === 'question'}>
             <ChevronLeft size={18} /> {t('common.previous')}
           </button>
         )}
-        <button className="nav-button next" onClick={onNextLesson}>
-          {nextLabel || t('lesson.next_lesson')} <ChevronRight size={18} />
-        </button>
-      </div>
+        {onNextLesson && (
+          <button className="nav-button next" onClick={onNextLesson}>
+            {nextLabel || t('lesson.next_lesson')} <ChevronRight size={18} />
+          </button>
+        )}
+      </div>}
     </div>
   </div>
 </div>

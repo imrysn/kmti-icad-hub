@@ -47,7 +47,7 @@
   width: 100%;
 }
 
-.written-tutorial-panel__header .step-header h4 {
+.written-tutorial-panel__header .step-header h2, .written-tutorial-panel__header .step-header h4 {
   margin: 0;
   color: var(--text-main, #0f172a);
   font-family: var(--font-heading);
@@ -57,7 +57,7 @@
   letter-spacing: 0.2px;
 }
 
-[data-theme='dark'] .written-tutorial-panel__header .step-header h4 {
+[data-theme='dark'] .written-tutorial-panel__header .step-header h2, [data-theme='dark'] .written-tutorial-panel__header .step-header h4 {
   color: var(--text-white, #f8fafc);
 }
 
@@ -68,7 +68,7 @@
   max-width: 960px;
 }
 
-.written-tutorial-panel__header .step-header-inline h4 {
+.written-tutorial-panel__header .step-header-inline h2, .written-tutorial-panel__header .step-header-inline h4 {
   display: inline;
   margin: 0 0.35rem 0 0;
   color: var(--text-main, #0f172a);
@@ -87,7 +87,7 @@
   line-height: inherit;
 }
 
-[data-theme='dark'] .written-tutorial-panel__header .step-header-inline h4,
+[data-theme='dark'] .written-tutorial-panel__header .step-header-inline h2, [data-theme='dark'] .written-tutorial-panel__header .step-header-inline h4,
 [data-theme='dark'] .written-tutorial-panel__header .step-header-inline .written-tutorial-panel__description {
   color: var(--text-white, #f8fafc);
 }

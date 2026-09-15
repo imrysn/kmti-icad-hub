@@ -81,7 +81,7 @@
                   "text": "Using iCAD SX helps engineers organize design work in one system.\n\nA model can be created in 3D, checked, and then used to prepare the required 2D engineering drawing.\n\nThese are capabilities you can use as needed, rather than a fixed sequence of steps."
                 }
               ],
-              "quickReview": "**Create Parts**\n**Build Assemblies**\n**Edit Designs**\n**Check Models**\n**Create 2D Drawings**\n**Prepare Manufacturing Information**"
+              "quickReview": "**Creating 3D Parts**\n**Creating Assemblies**\n**Editing Designs**\n**Checking Models**\n**Creating 2D Drawings**\n**Preparing Manufacturing Information**"
             },
             "ja": {
               "explanation": "iCAD SX は、機械設計の作成、編集、管理に使用されます。",
@@ -97,7 +97,7 @@
                   "text": "iCAD SX を使うと、一つのシステムで設計作業をまとめて管理できます。\n\n3D でモデルを作成・確認し、そのモデルを使って必要な 2D 設計図面を準備できます。\n\nこれらは決まった順序の手順ではなく、必要に応じて使う機能です。"
                 }
               ],
-              "quickReview": "**部品の作成**\n**アセンブリの構築**\n**設計の編集**\n**モデルの確認**\n**2D 図面の作成**\n**製造情報の準備**"
+              "quickReview": "**3D 部品の作成**\n**アセンブリの作成**\n**設計の編集**\n**モデルの確認**\n**2D 図面の作成**\n**製造情報の準備**"
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -118,7 +118,7 @@
           "content": {
             "en": {
               "explanation": "A common iCAD SX workflow starts with a **3D model** and continues to a **2D engineering drawing**.",
-              "description2": "The 3D model shows the shape of the design, while the 2D Detailing communicates the information needed for production and documentation.",
+              "description2": "The 3D model shows the shape of the design, while the 2D drawing communicates the information needed for production and documentation.",
               "practice": "By the end of this lesson, you should be able to describe the basic flow from a 3D model to a 2D engineering drawing.",
               "sections": [
                 {
@@ -130,7 +130,7 @@
                   "text": "Review the shape, position, dimensions, and overall design."
                 },
                 {
-                  "title": "Create the 2D Detailing",
+                  "title": "Create the 2D Drawing",
                   "text": "Generate drawing views from the 3D model."
                 },
                 {
@@ -142,7 +142,7 @@
                   "text": "Check the completed drawing and save the final file."
                 }
               ],
-              "quickReview": "**3D Model → Check → Create 2D Detailing → Add Information → Review and Save**"
+              "quickReview": "**3D Model → Check → Create 2D Drawing → Add Information → Review and Save**"
             },
             "ja": {
               "explanation": "一般的な iCAD SX の作業は、**3D モデル**から始まり、**2D 設計図面**の作成へと進みます。",
@@ -199,7 +199,7 @@
                 },
                 {
                   "title": "Open the Application",
-                  "text": "Double-click the desktop shortcut, or select iCAD SX from the Windows Start menu."
+                  "text": "Double-click the shortcut to start iCAD SX."
                 },
                 {
                   "title": "Wait for the System to Load",
@@ -222,7 +222,7 @@
                 },
                 {
                   "title": "アプリケーションを開く",
-                  "text": "デスクトップのショートカットをダブルクリックするか、Windows のスタートメニューから iCAD SX を選びます。"
+                  "text": "ショートカットをダブルクリックして iCAD SX を起動します。"
                 },
                 {
                   "title": "読み込みが完了するまで待つ",
@@ -262,7 +262,7 @@
                 },
                 {
                   "title": "Close iCAD SX",
-                  "text": "Use the **Exit** command from the File menu or click the **X** button in the upper-right corner of the application window."
+                  "text": "Select **File (ファイル(F)) → Exit (終了(X))** from the menu bar, or click the **X** button in the upper-right corner of the iCAD SX window."
                 },
                 {
                   "title": "Respond to the Save Message",
@@ -277,7 +277,7 @@
                   "text": "Always check for unsaved work before exiting the application."
                 }
               ],
-              "quickReview": "**Check Work → Close iCAD SX → Save if Required → Exit**"
+              "quickReview": "**Check Work → Close iCAD SX → Save if Asked → Confirm It Closed**"
             },
             "ja": {
               "explanation": "このレッスンでは、作業を終えた後に iCAD SX を安全に終了する方法を説明します。",
@@ -289,7 +289,7 @@
                 },
                 {
                   "title": "iCAD SX を閉じる",
-                  "text": "ファイルメニューの **Exit** コマンドを使用するか、アプリケーションウィンドウの右上にある **X** ボタンをクリックします。"
+                  "text": "メニューバーの **ファイル(F) → 終了(X)** を選択するか、iCAD SX ウィンドウの右上にある **X** ボタンをクリックします。"
                 },
                 {
                   "title": "保存メッセージに応答する",
@@ -304,7 +304,7 @@
                   "text": "終了する前に、未保存の作業がないか必ず確認してください。"
                 }
               ],
-              "quickReview": "**作業の確認 → iCAD SX を閉じる → 必要に応じて保存 → 終了**"
+              "quickReview": "**作業の確認 → iCAD SX を閉じる → 確認されたら保存 → 終了を確認**"
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -330,7 +330,7 @@
               "sections": [
                 {
                   "title": "Open the Help Menu",
-                  "text": "From the iCAD SX menu bar, select **Help**."
+                  "text": "From the iCAD SX menu bar, select **Help (ヘルプ(H))**."
                 },
                 {
                   "title": "Open the Help System",
@@ -338,7 +338,7 @@
                 },
                 {
                   "title": "Find the Topic You Need",
-                  "text": "Browse the available categories or use the search function to look for a command or operation."
+                  "text": "Use the **Contents (目次)** tab to browse topics, or the **Search (検索)** tab: enter a keyword, click **Start Search (検索開始)**, and select a page title."
                 },
                 {
                   "title": "Read the Instructions",
@@ -346,7 +346,7 @@
                 },
                 {
                   "title": "When to Use Help",
-                  "text": "Use iCAD SX Help when you:\n- Forget how a command works.\n- Need information about a tool.\n- Want to check an operation procedure.\n- Need more details about an iCAD SX function."
+                  "text": "Use iCAD SX Help when you:\n- Forget how a command works.\n- Need information about a tool.\n- Want to check an operation procedure.\n- Need more details about an iCAD SX function.\n\n**Tip:** Press **F1** while a command is selected to open the help page for that command."
                 }
               ],
               "quickReview": "**Open Help → Find a Topic → Read the Instructions → Continue Your Work**",
@@ -359,7 +359,7 @@
               "sections": [
                 {
                   "title": "ヘルプメニューを開く",
-                  "text": "iCAD SX のメニューバーから **Help** を選択します。"
+                  "text": "iCAD SX のメニューバーから **ヘルプ(H)** を選択します。"
                 },
                 {
                   "title": "ヘルプシステムを開く",
@@ -367,7 +367,7 @@
                 },
                 {
                   "title": "必要なトピックを探す",
-                  "text": "カテゴリを参照するか、検索機能を使ってコマンドや操作を探します。"
+                  "text": "**目次**タブで項目を選ぶか、**検索**タブでキーワードを入力して**検索開始**をクリックし、表示されたページのタイトルを選びます。"
                 },
                 {
                   "title": "説明を読む",
@@ -375,7 +375,7 @@
                 },
                 {
                   "title": "ヘルプを使う場面",
-                  "text": "次のような場合に iCAD SX のヘルプを使います。\n- コマンドの使い方を忘れたとき。\n- ツールについての情報が必要なとき。\n- 操作手順を確認したいとき。\n- iCAD SX の機能について詳しく知りたいとき。"
+                  "text": "次のような場合に iCAD SX のヘルプを使います。\n- コマンドの使い方を忘れたとき。\n- ツールについての情報が必要なとき。\n- 操作手順を確認したいとき。\n- iCAD SX の機能について詳しく知りたいとき。\n\n**ヒント：** コマンドを選択中に **F1** キーを押すと、そのコマンドのヘルプページが表示されます。"
                 }
               ],
               "quickReview": "**ヘルプを開く → トピックを探す → 説明を読む → 作業を続ける**",

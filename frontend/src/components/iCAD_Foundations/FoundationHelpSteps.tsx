@@ -11,8 +11,10 @@ export default function FoundationHelpSteps({ sections }: { sections: Array<{ ti
     </ol>
     {sections[4] && <section className="foundations-help-when">
       <h4 className="section-title">{sections[4].title}</h4>
-      <p>{sections[4].text.split('\n')[0]}</p>
-      <ul>{sections[4].text.split('\n').slice(1).map(line => <li key={line}>{line.replace(/^- /, '')}</li>)}</ul>
+      <p>{renderFormattedText(sections[4].text.split('\n')[0])}</p>
+      {/* "- " lines are the list; any other non-empty line (such as a tip) is a paragraph after it. */}
+      <ul>{sections[4].text.split('\n').slice(1).filter(line => line.startsWith('- ')).map(line => <li key={line}>{renderFormattedText(line.slice(2))}</li>)}</ul>
+      {sections[4].text.split('\n').slice(1).filter(line => line.trim() && !line.startsWith('- ')).map(line => <p key={line}>{renderFormattedText(line)}</p>)}
     </section>}
   </div>;
 }

@@ -397,7 +397,7 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
     const labels = ja ? ['3D モデルの作成または読み込み', '図面の印刷', 'ソフトウェアの終了', '表計算シートの作成']
       : ['Creating or opening the 3D model', 'Printing the drawing', 'Closing the software', 'Creating a spreadsheet'];
     return [{
-      id: 'F1.3-knowledge-check', prompt: ja ? 'iCAD SX で 2D 図面を作成する前に、通常は何を行いますか？' : 'What normally comes before creating a 2D Detailing in iCAD SX?',
+      id: 'F1.3-knowledge-check', prompt: ja ? 'iCAD SX で 2D 図面を作成する前に、通常は何を行いますか？' : 'What normally comes before creating a 2D drawing in iCAD SX?',
       choices: labels.map((label, index) => ({
         id: `F1.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
         feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.'),

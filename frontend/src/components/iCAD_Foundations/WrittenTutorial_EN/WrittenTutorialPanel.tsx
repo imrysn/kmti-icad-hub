@@ -95,7 +95,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
           {(panelCopy.inlineHeader || panelCopy.useStepHeaderTitle) && displayTitle && displayDescription ? (
             <div className="step-header-inline">
               <div className="step-header-inline__lead">
-                <h4>{displayTitle}</h4>{' '}
+                <h2>{displayTitle}</h2>{' '}
                 <p className="written-tutorial-panel__description">
                   {renderFormattedText(
                     panelCopy.inlineHeader
@@ -125,7 +125,7 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
             <>
               {displayTitle ? (
                 <div className="step-header">
-                  <h4>{displayTitle}</h4>
+                  <h2>{displayTitle}</h2>
                 </div>
               ) : null}
               {displayDescription ? (

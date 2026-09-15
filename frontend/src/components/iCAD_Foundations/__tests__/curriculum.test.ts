@@ -71,7 +71,7 @@ describe('Excel Foundations curriculum', () => {
       expect(enTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.en);
       expect(jaTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.ja);
       // F4, F8, and F9 (including the 移動コピー削除 Icon Menu section) intentionally include the user-supplied Japanese CAD UI command and dialog names.
-      if (!['F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      if (!['F1.5','F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
       for (const lang of ['en','ja'] as const) {
         const content = lesson.content[lang];
         expect(content.explanation.length).toBeGreaterThan(15);

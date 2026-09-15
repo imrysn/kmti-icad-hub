@@ -251,3 +251,29 @@
 
 
 .foundations-lesson-connection { margin: 24px 0 0; color: var(--text-main); font: 400 1rem/1.6 var(--font-main); }
+
+/* Embedded tutorials (F3.2, F3.3, F4.1, F4.2, F9.2-F9.7) show only their intro/player,
+   placed and sized like the F2.1 tutorial. Loaded for every Foundations lesson. */
+.foundations-preserved-tutorial .foundations-zoom-tutorial .written-tutorial-panel,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .lesson-navigation,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .lesson-progress-container,
+/* More specific than the shared .lesson-card.tab-content .lesson-navigation !important rule. */
+.foundations-preserved-tutorial .foundations-zoom-tutorial .lesson-card.tab-content .lesson-navigation { display: none !important; }
+.foundations-preserved-tutorial .foundations-zoom-tutorial,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .course-lesson-container,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .lesson-grid,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .lesson-card.tab-content,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .foundations-video-reading-layout,
+.foundations-preserved-tutorial .foundations-zoom-tutorial .foundations-video-reading-layout__video {
+  position: static;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  border: 0;
+  box-shadow: none;
+  /* No slide-in entrance: appear in place like the F2.1 tutorial. */
+  animation: none;
+  transform: none;
+}

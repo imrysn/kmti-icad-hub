@@ -24,7 +24,7 @@ export default function FoundationViewExamples({ text, commands = false, userVie
   const blocks = text.split('\n\n');
   if (commands) return <div className={`foundations-uses foundations-view-commands${userViews ? ' foundations-user-view-commands' : ''}${shading ? ' foundations-shading-commands' : ''}`}>
     {userViews && <p>{renderFormattedText(blocks[0])}</p>}
-    <div className="foundations-view-commands__content">{!userViews && !shading && '3D View Tools'}
+    <div className="foundations-view-commands__content">
       <ul className="foundations-uses__grid foundations-view-commands__grid">
         {(userViews ? blocks.slice(1,5) : blocks).map((block, index) => {
           const [heading, ...body] = block.split('\n');
