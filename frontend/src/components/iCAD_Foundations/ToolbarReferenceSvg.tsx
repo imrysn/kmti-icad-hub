@@ -4,7 +4,7 @@ import { useId, type CSSProperties } from 'react';
 export default function ToolbarReferenceSvg({ index, title, overview = false, highlightFront = false }: { index: number; title: string; overview?: boolean; highlightFront?: boolean }) {
   const id = useId().replace(/:/g, '');
   const paint = (name: string) => `url(#${id}-${name})`;
-  const widths = [108, 84, 56, 160, 210, 104, 256, 128, 184, 84, 60, 60, 264];
+  const widths = [108, 84, 56, 160, 210, 104, 60, 128, 60, 84, 264, 184, 520];
   const width = widths[index] ?? 84;
   const ink = '#3f4d72';
   const cube = (x: number, face: number) => <g transform={`translate(${x} 6)`} stroke="#637992" strokeWidth=".75" strokeLinejoin="round">
@@ -32,18 +32,27 @@ export default function ToolbarReferenceSvg({ index, title, overview = false, hi
     <circle cx="12" cy="9" r="7" fill={paint('lens')} stroke="#778483" strokeWidth="1.2" />
     {sign && <path d={sign === '+' ? 'M8 9H16 M12 5V13' : 'M8 9H16'} fill="none" stroke={ink} strokeWidth="1.7" />}
   </g>;
-  const memoryArrow = (x: number, mirrored = false) => <g transform={`translate(${x} 5) ${mirrored ? 'translate(22 0) scale(-1 1)' : ''}`}>
+  const undoArrow = (x: number, mirrored = false) => <g transform={`translate(${x} 5) ${mirrored ? 'translate(22 0) scale(-1 1)' : ''}`}>
     <path d="M2 6 8 0V4C23 2 24 13 18 22C19 12 14 10 8 11V16Z" fill={paint('navy')} stroke="#677791" strokeWidth=".65" />
   </g>;
+  const field = (x: number, y: number, w: number, value = '') => <g>
+    <rect x={x} y={y} width={w} height="12" fill="#fff" stroke="#8a8a88" strokeWidth=".7" />
+    {value && <text x={x + 3} y={y + 9.5}>{value}</text>}
+    <path d={`M${x + w - 8} ${y + 4.5} ${x + w - 5.5} ${y + 7} ${x + w - 3} ${y + 4.5}`} fill="none" stroke="#555" strokeWidth=".8" />
+  </g>;
+  const checkbox = (x: number, y: number) => <g>
+    <rect x={x} y={y + 1.5} width="9" height="9" fill="#fff" stroke="#555" strokeWidth=".7" />
+    <path d={`M${x + 1.8} ${y + 6} ${x + 4} ${y + 8.5} ${x + 7.8} ${y + 3.3}`} fill="none" stroke="#222" strokeWidth="1.3" />
+  </g>;
   if (overview) {
-    const rows = [[1, 0, 2, 10, 11, 5, 3, 4, 7, 8], [9, 6, 12]];
+    const rows = [[1, 0, 2, 8, 6, 5, 3, 4, 7, 11], [9, 12]];
     return <svg className="foundation-native-interface-icon" viewBox="0 0 1254 98" role="img" aria-label={title}>
       <rect width="1254" height="98" fill="#eee" stroke="#bcbcb8" />
       {rows.map((row, r) => row.map((group, n) => <svg key={`${r}-${group}`} x={row.slice(0, n).reduce((sum, item) => sum + widths[item], 0)} y={r * 34} width={widths[group]} height="34" viewBox={`0 0 ${widths[group]} 34`}>
         <ToolbarReferenceSvg index={group} title={title} />
       </svg>))}
       <path d="M0 68H1254" stroke="#a3a3a0" />
-      <g fontSize="13" fontFamily="'MS UI Gothic', 'Yu Gothic', sans-serif" fill="#262626">
+      <g fontSize="13" fontFamily="'MS UI Gothic', 'Yu Gothic', sans-serif" fill="#262626" className="notranslate">
         <text x="4" y="87">線種</text><rect x="38" y="74" width="50" height="16" fill="#858583" /><path d="M43 81H81" stroke="white" strokeWidth="2" /><text x="92" y="87">⌄　線色　□　レイヤ　1　⌄　グリッド　0.0　⌄　尺度　1/1　⌄　中心マーク　パーツ　⌄　☑ ナビ　☑ クロス</text>
       </g>
     </svg>;
@@ -90,7 +99,7 @@ export default function ToolbarReferenceSvg({ index, title, overview = false, hi
       <g transform="translate(186 7)"><path d="M2 20 8 9 16 11 12 23Z" fill="#788da7" stroke="#506b85" /><path d="M4 22 9 12 14 14" fill="none" stroke="#edf5ff" /><circle cx="7" cy="3" r="3" fill="#c73128" /><circle cx="16" cy="7" r="3" fill="#df4430" /><circle cx="19" cy="1" r="2" fill="#df4430" /></g>
     </>}
     {index === 5 && <>{[0, 1, 2, 3].map(n => <g key={n}>{steppedSolid(10 + 23 * n, n)}</g>)}</>}
-    {index === 6 && <g stroke="#969d9c" fill="#d4d7d2" strokeWidth="1">
+    {index === 12 && <g stroke="#969d9c" fill="#d4d7d2" strokeWidth="1">
       <path d="M15 7 21 5 26 10 22 16 28 23 23 27 17 22 13 23 11 18 14 14Z" fill="#b0b3b0" />
       <path d="M36 7H56V27H36Z M40 11H52V23H40Z" fill="none" strokeWidth="2" /><path d="M40 10 48 13 45 16 50 22 46 24 42 18 39 21Z" fill="#aaafaa" />
       <path d="M65 11H84V24H65Z M72 5V29 M61 17H89" fill="none" strokeWidth="2" /><path d="M68 8 72 4 76 8 M69 26 72 30 76 26 M64 13 60 17 64 21 M86 13 90 17 86 21" fill="#aebecd" stroke="#a0afbe" />
@@ -102,7 +111,7 @@ export default function ToolbarReferenceSvg({ index, title, overview = false, hi
       <path d="M221 8H239V27H221Z M232 12 225 18 232 23V20H238V16H232Z" fill="none" strokeWidth="2" /><path d="M246 7H252V28H246Z M248 11H250 M248 24H250" fill="none" />
     </g>}
     {index === 7 && <>{[0, 1, 2, 3, 4].map(n => <g key={n}>{cylinder(10 + n * 23, n)}</g>)}</>}
-    {index === 8 && <>{['m', '1', '2', '3', '4', '5', '6'].map((label, n) => <g key={label}>
+    {index === 11 && <>{['m', '1', '2', '3', '4', '5', '6'].map((label, n) => <g key={label}>
       <rect x={10 + n * 24} y="8" width="21" height="21" fill={paint('button')} stroke="#d9e2f2" />
       <path d={`M${11 + n * 24} 28V9H${30 + n * 24}`} fill="none" stroke="#f1f5fb" />
       <text x={20.5 + n * 24} y="24" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="17" fontWeight="700" fill="#3e578b">{label}</text>
@@ -112,13 +121,24 @@ export default function ToolbarReferenceSvg({ index, title, overview = false, hi
       <rect x="37" y="8" width="20" height="19" fill={paint('navy')} /><rect x="41" y="12" width="12" height="11" fill="#d3e1ef" />
       <rect x="63" y="8" width="18" height="19" fill="#b9cee4" /><path d="M67 12H70 M67 12V15 M76 12H73 M76 12V15 M67 23H70 M67 23V20 M76 23H73 M76 23V20" fill="none" stroke="#486893" />
     </g>}
-    {index === 10 && <>
+    {index === 8 && <>
       <path d="M12 25 12 8 19 12 19 25 12 25 27 29 27 14 19 12 M12 25 21 22" fill="#e4eaf0" stroke="#8896a2" strokeWidth=".8" />
       <path d="M17 23V14 M17 23 24 26 M17 23 12 26" stroke="#507cab" strokeWidth="1.5" />
       <g stroke="#bb9455" strokeWidth=".8"><path d="M40 11V23C40 29 54 29 54 23V11" fill="#e5c785" /><ellipse cx="47" cy="11" rx="7" ry="4" fill="#ffe7ad" /><ellipse cx="47" cy="23" rx="7" ry="4" fill="#f0be64" /><path d="M42 15H52" stroke="#f0edbd" /></g><path d="M42 7 45 4 49 4 52 7" stroke="#adcecf" fill="none" />
     </>}
-    {index === 11 && <>{memoryArrow(10)}{memoryArrow(34, true)}</>}
-    {index === 12 && <g strokeLinejoin="round">
+    {index === 6 && <>{undoArrow(10)}{undoArrow(34, true)}</>}
+    {index === 10 && <g fontSize="9" fontFamily="'MS UI Gothic', 'Yu Gothic', sans-serif" fill="#262626" className="notranslate">
+      <text x="10" y="13.5">線種</text>{field(30, 4, 44)}<path d="M33 10H64" stroke="#333" strokeWidth="1.5" />
+      <text x="80" y="13.5">線色</text><rect x="100" y="4" width="16" height="12" fill="#858583" /><rect x="104" y="7" width="8" height="6" fill="#fff" />
+      <text x="122" y="13.5">レイヤ</text>{field(150, 4, 30, '1')}
+      <text x="186" y="13.5">グリッド</text>{field(223, 4, 36, '0.0')}
+      <text x="10" y="27.5">尺度</text>{field(30, 18, 36, '1/1')}
+      <text x="72" y="27.5">中ボタン</text>{field(109, 18, 60, 'パンニング')}
+      {checkbox(176, 18)}<text x="187" y="27.5">ナビ</text>
+      {checkbox(210, 18)}<text x="221" y="27.5">クロス</text>
+    </g>}
+    {index === 12 && <g strokeLinejoin="round" transform="translate(256 0)">
+      <path d="M4 5V29" stroke="#a3a39e" strokeDasharray="1 3" /><path d="M6 5V29" stroke="white" strokeDasharray="1 3" />
       <g stroke="#474a4b" strokeWidth="1.4"><path d="M36 24H58 M65 20H87 M92 20H114 M126 8V29 M117 19H136 M179 7V29 M170 18H192" /><path d="M203 12 210 18 203 24" fill="none" strokeWidth="4" /></g>
       {[22, 45, 76, 103, 126, 180, 203].map((x, n) => <circle key={x} cx={x} cy={n === 1 ? 22 : 19} r="2.3" fill="#d73d36" stroke="#ed9b8c" strokeWidth=".5" />)}
       <rect x="140" y="6" width="23" height="24" fill="#f1c55d" stroke="#a08a55" /><rect x="143" y="8" width="17" height="20" fill="#ffe595" stroke="#f7f3bd" /><text x="151.5" y="24" fontSize="15" fontFamily="Arial, sans-serif" textAnchor="middle" fill="#685138">AP</text>

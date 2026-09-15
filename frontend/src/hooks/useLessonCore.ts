@@ -50,7 +50,8 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
         // Step identifiers are structural labels, not lesson copy.  Keeping them
         // untouched prevents a text-only translation match from expanding a
         // compact marker such as "a" inside its fixed-size badge.
-        if (textNode.parentElement?.closest('.step-number')) return;
+        // .notranslate marks reproduced iCAD UI text that must match the real screen.
+        if (textNode.parentElement?.closest('.step-number, .notranslate')) return;
         const translated = translateContent(textNode.nodeValue || '');
         if (translated !== textNode.nodeValue) textNode.nodeValue = translated;
       });

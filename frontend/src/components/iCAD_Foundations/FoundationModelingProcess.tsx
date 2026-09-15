@@ -1,6 +1,6 @@
 import FoundationBoxSetup from './FoundationBoxSetup';
 import FoundationModelingInputIcon from './FoundationModelingInputIcon';
-import { Box, Hexagon, Ruler, MapPin, CheckCircle, Move, MousePointer2, Copy, Trash2, CheckSquare } from 'lucide-react';
+import { Box, Hexagon, Ruler, MapPin, CheckCircle, Move, MousePointer2, Copy, Trash2, CheckSquare, Undo2 } from 'lucide-react';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationUsesCards.css';
 import './FoundationModelingProcess.css';
@@ -12,14 +12,14 @@ function Cylinder() {
   </svg>;
 }
 
-export default function FoundationModelingProcess({ text, cylinder = false, polygon = false, move = false, copy = false, deleting = false, measurement = false, inputAreas = false, box = false, japanese = false }: { text: string; cylinder?: boolean; polygon?: boolean; move?: boolean; copy?: boolean; deleting?: boolean; measurement?: boolean; inputAreas?: boolean; box?: boolean; japanese?: boolean }) {
+export default function FoundationModelingProcess({ text, cylinder = false, polygon = false, move = false, copy = false, deleting = false, inputAreas = false, box = false, japanese = false }: { text: string; cylinder?: boolean; polygon?: boolean; move?: boolean; copy?: boolean; deleting?: boolean; inputAreas?: boolean; box?: boolean; japanese?: boolean }) {
   const shapeFlow = box || cylinder || polygon;
   const blocks = text.split('\n\n');
   const hasIntro = !/^\*\*(?:Step|ステップ) \d+/.test(blocks[0]);
   const intro = hasIntro ? blocks[0] : '';
   const steps = hasIntro ? blocks.slice(1) : blocks;
-  const icons = measurement ? [Ruler, MousePointer2, CheckSquare] : deleting ? [Trash2, MousePointer2, CheckSquare, CheckCircle] : move || copy ? [copy ? Copy : Move, MousePointer2, MapPin, CheckCircle] : [polygon ? Hexagon : cylinder ? Cylinder : Box, Ruler, MapPin, CheckCircle];
-  return <div className={`foundations-uses foundation-modeling-process${measurement ? ' foundation-modeling-process--measurement' : ''}${shapeFlow ? ' foundation-modeling-process--box' : ''}`}>
+  const icons = deleting ? [Trash2, MousePointer2, CheckSquare, Undo2] : move || copy ? [copy ? Copy : Move, MousePointer2, MapPin, CheckCircle] : [polygon ? Hexagon : cylinder ? Cylinder : Box, Ruler, MapPin, CheckCircle];
+  return <div className={`foundations-uses foundation-modeling-process${shapeFlow ? ' foundation-modeling-process--box' : ''}`}>
     {intro && <p>{renderFormattedText(intro)}</p>}
     <ol className="foundations-uses__grid">
       {steps.map((step, index) => {

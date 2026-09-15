@@ -400,9 +400,9 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'The Delete command is used to remove an unwanted object from the 3D model.',
           'Step 1: From the Icon Menu, select Delete.',
           'Step 2: Left-click the object you want to remove.',
-          'Step 3: Confirm the selection to delete the object.',
+          'Step 3: The object is deleted immediately; check what remains and press Ctrl+Z to undo a mistake.',
           'When to Use Delete: Remove an incorrect object, remove an unwanted part or feature, or clean up the model.',
-          'Quick Review: Select Delete → Select Object → Confirm'
+          'Quick Review: Select Delete → Left-Click Object → Check Result'
         ]
       }
     ]

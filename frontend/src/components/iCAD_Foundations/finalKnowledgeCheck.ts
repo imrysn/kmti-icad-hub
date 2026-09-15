@@ -4,15 +4,15 @@ import type { FoundationLanguage } from './curriculum';
 const questions: Record<FoundationLanguage, Array<[string, string[], number, string]>> = {
   "en": [
     [
-      "Which area is mainly used to work with a 3D model or 2D drawing?",
+      "Which area is used for 3D modeling and assembly operations?",
       [
         "Menu Bar",
-        "Message Area",
-        "Working / Modeling Area",
+        "Message Pane",
+        "Workspace",
         "Help Menu"
       ],
       2,
-      "The working area is where you view and work with models and drawings. Menus and toolbars provide commands."
+      "The Workspace is where 3D modeling and assembly operations are done. Menus and toolbars provide commands."
     ],
     [
       "How do you zoom in and out in iCAD SX?",
@@ -40,11 +40,11 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
       "Which control can be used to rotate the 3D view?",
       [
         "Hold the wheel button and right mouse button, then move the mouse",
-        "Either of these button combinations",
         "Hold Alt and the left mouse button, then move the mouse",
+        "Either A or B",
         "Left-click only"
       ],
-      1,
+      2,
       "Both button combinations rotate the view when held while moving the mouse. Rotation changes the view, not the model geometry."
     ],
     [
@@ -67,7 +67,7 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
         "Green"
       ],
       2,
-      "The axis colors taught in this course are X red, Y blue, and Z yellow."
+      "In iCAD SX, the X axis is red, the Y axis is blue, and the Z axis is yellow."
     ],
     [
       "What is the coordinate of the origin?",
@@ -125,28 +125,28 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
       "Choose the shape tool, enter its size, set the position, and confirm creation. Size and position are different inputs."
     ],
     [
-      "What is the main purpose of the Measurement tools?",
+      "Which keyboard shortcut undoes the last operation?",
       [
-        "To check dimensions and distances",
-        "To modify model geometry",
-        "To create a new Part",
-        "To change the viewing direction"
+        "Ctrl+Z",
+        "Ctrl+Y",
+        "Enter",
+        "Esc"
       ],
       0,
-      "Measurement reads dimensions and distances from existing geometry without changing it."
+      "Ctrl+Z undoes the last operation and Ctrl+Y redoes it. Enter confirms an input; Esc cancels the current operation."
     ]
   ],
   "ja": [
     [
-      "3D モデルや 2D 図面を主に操作する領域はどこですか？",
+      "3D モデリングやアセンブリの操作を行う領域はどこですか？",
       [
         "メニューバー",
         "メッセージ領域",
-        "作業／モデリング領域",
+        "作業領域",
         "ヘルプメニュー"
       ],
       2,
-      "作業領域でモデルや図面を表示・操作します。メニューやツールバーではコマンドを選びます。"
+      "作業領域で 3D モデリングやアセンブリの操作を行います。メニューやツールバーではコマンドを選びます。"
     ],
     [
       "iCAD SX で拡大・縮小するには、どうしますか？",
@@ -174,11 +174,11 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
       "3D ビューの回転に使える操作はどれですか？",
       [
         "ホイールと右ボタンを押したままマウスを動かす",
-        "この二つの組み合わせのどちらでもよい",
         "Alt と左ボタンを押したままマウスを動かす",
+        "A と B のどちらでもよい",
         "左クリックのみ"
       ],
-      1,
+      2,
       "どちらの組み合わせも、押したままマウスを動かすとビューを回転します。モデル形状は変わりません。"
     ],
     [
@@ -201,7 +201,7 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
         "緑"
       ],
       2,
-      "このコースの軸の色は、X が赤、Y が青、Z が黄です。"
+      "iCAD SX では、X 軸が赤、Y 軸が青、Z 軸が黄です。"
     ],
     [
       "原点の座標はどれですか？",
@@ -259,15 +259,15 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
       "形状ツールを選び、大きさと位置を指定して作成を確定します。大きさと位置は異なる入力です。"
     ],
     [
-      "測定ツールの主な目的は何ですか？",
+      "直前の操作を元に戻すショートカットはどれですか？",
       [
-        "寸法や距離を確認する",
-        "モデル形状を変更する",
-        "新しい部品を作成する",
-        "表示方向を変える"
+        "Ctrl+Z",
+        "Ctrl+Y",
+        "Enter",
+        "Esc"
       ],
       0,
-      "測定は既存の形状から寸法や距離を読み取り、形状を変更しません。"
+      "Ctrl+Z で直前の操作を元に戻し、Ctrl+Y でやり直します。Enter は入力の確定、Esc は操作の取り消しです。"
     ]
   ]
 };

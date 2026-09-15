@@ -79,7 +79,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 6,
     title: "ツリービュー",
-    text: "その隣にあるのが「ツリービュー」です。図面内のすべての3D部品やグループを、見やすい階層構造で整理・表示します。",
+    text: "その隣にあるのが「ツリービュー」です。図面内のすべての3D部品やアセンブリを、見やすい階層構造で整理・表示します。",
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "9.2%", left: "7.5%", width: "13.1%", height: "86.4%", opacity: 1 },

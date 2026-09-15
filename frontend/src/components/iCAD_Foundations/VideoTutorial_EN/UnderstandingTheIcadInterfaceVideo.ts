@@ -79,7 +79,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     id: 6,
     title: "Tree View",
-    text: "Next to it is the Tree View. This pane organizes and displays all the 3D parts and groups for your current drawing in an easy-to-read hierarchical structure.",
+    text: "Next to it is the Tree View. This pane organizes and displays all the 3D parts and assemblies for your current drawing in an easy-to-read hierarchical structure.",
     zoom: "scale(1)",
     origin: "50% 50%",
     spotlight: { top: "9.2%", left: "7.5%", width: "13.1%", height: "86.4%", opacity: 1 },

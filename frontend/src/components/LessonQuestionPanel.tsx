@@ -17,6 +17,7 @@ interface LessonQuestionPanelProps {
   header?: React.ReactNode;
   eyebrow?: string;
   continueLabel?: string;
+  continueDisabled?: boolean;
 }
 
 const LessonQuestionPanel: React.FC<LessonQuestionPanelProps> = ({
@@ -31,6 +32,7 @@ const LessonQuestionPanel: React.FC<LessonQuestionPanelProps> = ({
   header,
   eyebrow,
   continueLabel,
+  continueDisabled = false,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const { language } = useTranslation();
@@ -69,7 +71,7 @@ const LessonQuestionPanel: React.FC<LessonQuestionPanelProps> = ({
         <div className="ivl-question-actions">
           {!answerChecked && <button className="ivl-primary-button" type="button" disabled={!selectedChoice} onClick={onCheckAnswer}>{isJapanese ? '回答を確認' : 'Check Answer'}</button>}
           {answerChecked && !isAnswerCorrect && <button className="ivl-secondary-button" type="button" onClick={onRetry}><RefreshCcw size={17} aria-hidden="true" /> {isJapanese ? '再試行' : 'Retry'}</button>}
-          {answerChecked && isAnswerCorrect && <button className="ivl-primary-button" type="button" onClick={onContinue}>{displayContinueLabel} <ChevronRight size={17} aria-hidden="true" /></button>}
+          {answerChecked && isAnswerCorrect && <button className="ivl-primary-button" type="button" disabled={continueDisabled} onClick={onContinue}>{displayContinueLabel} <ChevronRight size={17} aria-hidden="true" /></button>}
         </div>
       </div>
     </div>

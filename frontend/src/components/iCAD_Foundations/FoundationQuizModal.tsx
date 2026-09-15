@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 /** Native modal makes the entire app inert and contains keyboard focus. */
-export default function FoundationQuizModal({ children, onClose }: { children: ReactNode; onClose: () => void }) {
+export default function FoundationQuizModal({ children, onClose }: { children: ReactNode; onClose?: () => void }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = dialogRef.current!;
@@ -17,7 +17,7 @@ export default function FoundationQuizModal({ children, onClose }: { children: R
     };
   }, []);
   return createPortal(<dialog ref={dialogRef} className="foundations-quiz-modal"
-    aria-label="Knowledge Check" onCancel={event => { event.preventDefault(); onClose(); }}>
+    aria-label="Knowledge Check" onCancel={event => { event.preventDefault(); onClose?.(); }}>
     {children}
   </dialog>, document.body);
 }

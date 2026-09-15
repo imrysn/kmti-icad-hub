@@ -30,13 +30,13 @@ export const INTERFACE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'interface-command-menu',
     title: 'Command Menu',
-    text: 'Contains sets of available commands associated with different functions. Preferably used in 2D.',
+    text: 'Contains sets of available commands associated with different functions. Mainly used for 2D drawing work.',
     preserveText: true,
   },
   {
     id: 'interface-tree-view',
     title: 'Tree View',
-    text: 'Displays the 3D parts and groups for the drawing currently being worked on.',
+    text: 'Displays the Parts in the current drawing as a tree, including the child parts of assemblies.',
     preserveText: true,
   },
   {

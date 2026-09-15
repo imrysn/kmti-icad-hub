@@ -265,7 +265,7 @@ describe('DynamicFoundationsLesson', () => {
     expect(screen.getAllByText('Select Copy').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('From the Icon Menu, select Copy.')).toBeInTheDocument();
     expect(screen.getAllByText('Select the Object').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText('Left-click the object you want to copy.')).toBeInTheDocument();
+    expect(screen.getByText('Left-click the object you want to copy, check the highlight, then right-click (GO) to confirm the selection.')).toBeInTheDocument();
     expect(screen.getByText('Enter the Copy Distance')).toBeInTheDocument();
     expect(screen.getByText('When to Use Copy')).toBeInTheDocument();
 
@@ -402,8 +402,9 @@ describe('DynamicFoundationsLesson', () => {
     expect(screen.getAllByText('Select Delete').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('From the Icon Menu, select Delete.')).toBeInTheDocument();
     expect(screen.getAllByText('Select the Object').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText('Left-click the object you want to remove.')).toBeInTheDocument();
-    expect(screen.getByText('Confirm the selection to delete the object.')).toBeInTheDocument();
+    expect(screen.getByText('Left-click the object you want to remove. It is deleted immediately; no GO is needed.')).toBeInTheDocument();
+    // Delete acts on left-click; the check step bolds Ctrl+Z, so match the element's full text.
+    expect(screen.getAllByText((_, element) => element?.textContent === 'Check what remains. If you deleted the wrong object, press Ctrl+Z to undo.').length).toBeGreaterThan(0);
     expect(screen.getByText('When to Use Delete')).toBeInTheDocument();
 
     // Verify video tutorial viewer received DELETE_VIDEO_STEPS and introPanel
@@ -416,8 +417,8 @@ describe('DynamicFoundationsLesson', () => {
     expect(viewerProps.steps[0].customText).toContain('The Delete command is used to remove an unwanted object');
     expect(viewerProps.steps[1].title).toBe('1. Select Delete');
     expect(viewerProps.steps[2].title).toBe('2. Select the Object');
-    expect(viewerProps.steps[3].title).toBe('Knowledge Check: Delete Confirmation');
-    expect(viewerProps.steps[4].title).toBe('3. Confirm & Verify Deletion');
+    expect(viewerProps.steps[3].title).toBe('Knowledge Check: How Delete Works');
+    expect(viewerProps.steps[4].title).toBe('3. Check the Result');
     expect(viewerProps.steps[5].title).toBe('Delete Recap');
   });
 });

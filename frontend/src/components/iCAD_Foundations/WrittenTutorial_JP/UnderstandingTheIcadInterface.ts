@@ -36,7 +36,7 @@ export const INTERFACE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'interface-tree-view',
     title: 'ツリービュー',
-    text: '現在編集中の図面内の3D部品やグループの階層構造を表示します。',
+    text: '現在編集中の図面内の3D部品と、アセンブリの子部品を階層構造で表示します。',
     preserveText: true,
   },
   {

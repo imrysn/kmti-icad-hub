@@ -650,6 +650,5 @@
 
 .foundations-knowledge-check__progress { margin: 0 0 12px; text-align: center; color: var(--text-main); font: 600 0.9rem/1.5 var(--font-main); }
 
-.foundations-knowledge-check__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-.foundations-knowledge-check__header .nav-button { padding: 8px 12px; font-size: .85rem; }
+.foundations-knowledge-check__header { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
 .foundations-knowledge-check__header .foundations-knowledge-check__progress { margin: 0; }

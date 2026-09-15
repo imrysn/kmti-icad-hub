@@ -305,7 +305,7 @@ export const DELETE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to delete a selected object in iCAD SX.',
   quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Delete</b> → <b>Select Object</b> → <b>Confirm</b>',
+  quickReviewText: '<b>Select Delete</b> → <b>Left-Click Object</b> → <b>Check Result</b>',
   completionText: 'Great job! You have mastered deleting objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -320,13 +320,13 @@ export const DELETE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'delete-step-2',
     title: 'Select the Object',
-    text: 'Left-click the object you want to remove.',
+    text: 'Left-click the object you want to remove. It is deleted immediately; no GO is needed.',
     preserveText: true,
   },
   {
     id: 'delete-step-3',
-    title: 'Confirm',
-    text: 'Right-click or press <b>GO</b> to confirm deletion of the selected object.',
+    title: 'Check the Result',
+    text: 'Check what remains. If you deleted the wrong object, press <b>Ctrl+Z</b> to undo.',
     preserveText: true,
   },
   {

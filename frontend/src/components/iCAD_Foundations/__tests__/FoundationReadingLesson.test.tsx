@@ -60,11 +60,11 @@ describe('Foundations written completion and knowledge check', () => {
 
   it.each(['en', 'ja'] as const)('renders authored F9 procedures and practice in %s without legacy duplication', language => {
     state.language = language;
-    for (const id of ['F9.1', 'F9.5', 'F9.6', 'F9.7', 'F9.9', 'F9.10', 'F9.11', 'F9.13']) {
+    for (const id of ['F9.1', 'F9.5', 'F9.6', 'F9.7', 'F9.9', 'F9.10', 'F9.11']) {
       const lesson = resolveFoundationLesson(id)!;
       expect(lesson.content.ja.sections?.length).toBe(lesson.content.en.sections?.length);
       const { container, unmount } = render(<FoundationReadingLesson lesson={lesson} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Existing tutorial</div>} />);
-      expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(id === 'F9.13' ? 3 : ['F9.5','F9.6','F9.7'].includes(id) ? 6 : 4);
+      expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(['F9.5','F9.6','F9.7'].includes(id) ? 6 : 4);
       expect(screen.getByRole('heading', { name: language === 'ja' ? 'やってみましょう' : 'Try It' })).toBeVisible();
       expect(screen.getByText('Existing tutorial')).toBeInTheDocument();
       expect(container.querySelectorAll('.foundation-modeling-process')).toHaveLength(1);
@@ -126,35 +126,39 @@ describe('Foundations written completion and knowledge check', () => {
     render(<FoundationReadingLesson lesson={resolveFoundationLesson(id)!} onComplete={complete} onNext={next} isLast={false} />);
     expect(screen.queryByRole('button', { name: 'Review lesson' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
-    let modal = document.querySelector<HTMLDialogElement>('dialog[open]')!;
+    const modal = document.querySelector<HTMLDialogElement>('dialog[open]')!;
     expect(modal.open).toBe(true);
     expect(modal.parentElement).toBe(document.body);
     expect(document.body.style.overflow).toBe('hidden');
     const cancel = new Event('cancel', { cancelable: true });
     fireEvent(modal, cancel);
     expect(cancel.defaultPrevented).toBe(true);
-    expect(document.querySelector('dialog[open]')).toBeNull();
+    expect(document.querySelector('dialog[open]')).toBe(modal);
     expect(complete).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
-    modal = document.querySelector<HTMLDialogElement>('dialog[open]')!;
+    expect(screen.queryByRole('button', { name: 'Return to lesson' })).not.toBeInTheDocument();
+    expect(modal.querySelector('.foundations-knowledge-check__header')).toBeNull();
     const question = foundationKnowledgeQuestions('en', id)[0];
     expect(screen.getByRole('heading', { name: question.prompt, level: 3 })).toBeInTheDocument();
     expect(screen.getAllByRole('radio')).toHaveLength(4);
     fireEvent.click(screen.getByLabelText(question.choices.find(c => !c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button', { name: 'Check Answer' }));
-    expect(screen.queryByRole('button', { name: 'Next' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Complete lesson' })).not.toBeInTheDocument();
     expect(complete).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
     const correct = question.choices.find(c => c.isCorrect)!;
     fireEvent.click(screen.getByLabelText(correct.label));
     fireEvent.click(screen.getByRole('button', { name: 'Check Answer' }));
     expect(within(modal).getByRole('status')).toHaveTextContent(`Correct Answer: ${correct.label}`);
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete lesson' }));
     await screen.findByRole('alert');
     expect(next).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Retry saving' }));
-    await waitFor(() => expect(next).toHaveBeenCalledOnce());
+    await waitFor(() => expect(document.querySelector('dialog[open]')).toBeNull());
     expect(complete).toHaveBeenCalledTimes(2);
+    expect(next).not.toHaveBeenCalled();
+    expect(screen.queryByRole('button', { name: 'Start knowledge check' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Next lesson' }));
+    expect(next).toHaveBeenCalledOnce();
     expect(screen.queryByText('Lesson Recap')).not.toBeInTheDocument();
   });
 
@@ -166,21 +170,24 @@ describe('Foundations written completion and knowledge check', () => {
     expect(screen.getByText('Question 1 of 12')).toBeVisible();
     fireEvent.click(screen.getByLabelText(questions[0].choices.find(c=>!c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
-    expect(screen.queryByRole('button',{name:'Continue Lesson'})).not.toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:'Next question'})).not.toBeInTheDocument();
     expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining('Not quite.')],0);
     fireEvent.click(screen.getByRole('button',{name:'Retry'}));
     for(const question of questions) {
       expect(screen.getByText(`Question ${questions.indexOf(question) + 1} of 12`)).toBeVisible();
       expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining(question.prompt)],0);
+      expect(state.speak.mock.lastCall![0][0].includes("Now, let's do a knowledge check")).toBe(question === questions[0]);
       fireEvent.click(screen.getByLabelText(question.choices.find(c=>c.isCorrect)!.label));
       fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
       expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining('Correct!')],0);
       expect(confetti).not.toHaveBeenCalled();
-      fireEvent.click(screen.getByRole('button',{name:question === questions[questions.length - 1] ? 'Close' : 'Continue Lesson'}));
+      fireEvent.click(screen.getByRole('button',{name:question === questions[questions.length - 1] ? 'Complete course' : 'Next question'}));
     }
-    await waitFor(()=>expect(next).toHaveBeenCalledOnce());
+    await waitFor(()=>expect(document.querySelector('dialog[open]')).toBeNull());
     expect(complete).toHaveBeenCalledOnce();
     expect(confetti).toHaveBeenCalledOnce();
+    expect(next).not.toHaveBeenCalled();
+    expect(screen.getByRole('button',{name:'Course complete'})).toBeDisabled();
   });
 
   it('renders Japanese reading and knowledge check without falling back to English', () => {
@@ -191,6 +198,51 @@ describe('Foundations written completion and knowledge check', () => {
     expect(screen.queryByText(lesson.title.en)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button',{name:'理解度チェックを開始'}));
     expect(state.speak).toHaveBeenLastCalledWith([expect.stringContaining(foundationKnowledgeQuestions('ja', lesson.id)[0].prompt)],0);
+  });
+
+  it('shows Next lesson immediately for a lesson completed earlier', () => {
+    const next = vi.fn();
+    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F2.1')!} onComplete={vi.fn()} onNext={next} isLast={false} completed />);
+    expect(screen.queryByRole('button', { name: 'Start knowledge check' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Next lesson' }));
+    expect(next).toHaveBeenCalledOnce();
+    expect(document.querySelector('dialog[open]')).toBeNull();
+  });
+
+  it('uses Japanese completion labels and has no return button', async () => {
+    state.language = 'ja';
+    const lesson = resolveFoundationLesson('F1.1')!;
+    render(<FoundationReadingLesson lesson={lesson} onComplete={vi.fn().mockResolvedValue(undefined)} onNext={vi.fn()} isLast={false} />);
+    fireEvent.click(screen.getByRole('button', { name: '理解度チェックを開始' }));
+    expect(screen.queryByRole('button', { name: 'レッスンに戻る' })).not.toBeInTheDocument();
+    const correct = foundationKnowledgeQuestions('ja', lesson.id)[0].choices.find(c => c.isCorrect)!;
+    fireEvent.click(screen.getByLabelText(correct.label));
+    fireEvent.click(screen.getByRole('button', { name: '回答を確認' }));
+    fireEvent.click(screen.getByRole('button', { name: 'レッスンを完了' }));
+    expect(await screen.findByRole('button', { name: '次のレッスン' })).toBeInTheDocument();
+  });
+
+  it('disables completion while saving and clears a save error when the lesson changes', async () => {
+    let resolveSave!: () => void;
+    const complete = vi.fn().mockReturnValueOnce(new Promise<void>(resolve => { resolveSave = resolve; })).mockRejectedValueOnce(new Error('offline'));
+    const props = { onComplete: complete, onNext: vi.fn(), isLast: false };
+    const answer = (id: string) => {
+      fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
+      fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en', id)[0].choices.find(c => c.isCorrect)!.label));
+      fireEvent.click(screen.getByRole('button', { name: 'Check Answer' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Complete lesson' }));
+    };
+    const { rerender } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F1.1')!} {...props} />);
+    answer('F1.1');
+    expect(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled();
+    resolveSave();
+    await screen.findByRole('button', { name: 'Next lesson' });
+    rerender(<FoundationReadingLesson lesson={resolveFoundationLesson('F1.2')!} {...props} />);
+    answer('F1.2');
+    await screen.findByRole('alert');
+    rerender(<FoundationReadingLesson lesson={resolveFoundationLesson('F1.3')!} {...props} />);
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Start knowledge check' })).toBeInTheDocument();
   });
 });
 

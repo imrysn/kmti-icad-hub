@@ -300,7 +300,7 @@ export const DELETE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   objectiveLabel: '学習目標',
   objective: 'このレッスンを完了すると、iCAD SXで選択したオブジェクトを削除できるようになります。',
   quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>削除を選択</b> → <b>オブジェクトを選択</b> → <b>確定</b>',
+  quickReviewText: '<b>削除を選択</b> → <b>オブジェクトを左クリック</b> → <b>結果を確認</b>',
   completionText: 'お疲れ様でした！iCAD SXでのオブジェクト削除操作を習得しました。',
   inlineHeader: true,
   renderAsObjective: true,
@@ -316,13 +316,13 @@ export const DELETE_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     id: 'delete-step-2',
     title: 'オブジェクトの選択',
-    text: '削除したいオブジェクトを左クリックします。',
+    text: '削除したいオブジェクトを左クリックします。GO は不要で、すぐに削除されます。',
     preserveText: true,
   },
   {
     id: 'delete-step-3',
-    title: '確定',
-    text: '右クリックまたは<b>GO</b>を押して、選択したオブジェクトの削除を確定します。',
+    title: '結果の確認',
+    text: '残ったモデルを確認します。間違えて削除した場合は <b>Ctrl+Z</b> で元に戻します。',
     preserveText: true,
   },
   {

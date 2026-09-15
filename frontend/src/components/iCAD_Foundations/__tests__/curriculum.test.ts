@@ -40,13 +40,13 @@ describe('Excel Foundations curriculum', () => {
     expect(resolveFoundationLesson('F4.12')!.content.en.sections!.map(section => section.title))
       .toEqual(['Shading Modes','How to Change the Shading','When to Use Each Mode','Important Reminder']);
   });
-  it('defines exactly the ten ordered modules and all 37 uniquely numbered items', () => {
+  it('defines exactly the ten ordered modules and all 36 uniquely numbered items', () => {
     expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10']);
-    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,8,2]);
-    expect(FOUNDATION_LESSONS).toHaveLength(37);
-    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(37);
+    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,7,2]);
+    expect(FOUNDATION_LESSONS).toHaveLength(36);
+    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(36);
     for (const module of FOUNDATION_MODULES) module.lessons.forEach((lesson, index) => {
-      expect(lesson.id).toBe(module.id === 'F2' ? ['F2.1', 'F2.9'][index] : module.id === 'F3' ? ['F3.1','F3.5','F3.6'][index] : module.id === 'F4' ? ['F4.1','F4.6','F4.12'][index] : module.id === 'F5' ? ['F5.1','F5.4','F5.6'][index] : module.id === 'F6' ? ['F6.2','F6.4','F6.7'][index] : module.id === 'F7' ? ['F7.1','F7.3','F7.6','F7.8'][index] : module.id === 'F8' ? ['F8.1','F8.3','F8.5'][index] : module.id === 'F9' ? ['F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11','F9.13'][index] : module.id === 'F10' ? ['F10.1','F10.6'][index] : `${module.id}.${index + 1}`);
+      expect(lesson.id).toBe(module.id === 'F2' ? ['F2.1', 'F2.9'][index] : module.id === 'F3' ? ['F3.1','F3.5','F3.6'][index] : module.id === 'F4' ? ['F4.1','F4.6','F4.12'][index] : module.id === 'F5' ? ['F5.1','F5.4','F5.6'][index] : module.id === 'F6' ? ['F6.2','F6.4','F6.7'][index] : module.id === 'F7' ? ['F7.1','F7.3','F7.6','F7.8'][index] : module.id === 'F8' ? ['F8.1','F8.3','F8.5'][index] : module.id === 'F9' ? ['F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'][index] : module.id === 'F10' ? ['F10.1','F10.6'][index] : `${module.id}.${index + 1}`);
       expect(lesson.moduleId).toBe(module.id);
     });
     expect(ICAD_FOUNDATIONS_LESSONS).toEqual(createFoundationLessons());
@@ -70,8 +70,8 @@ describe('Excel Foundations curriculum', () => {
     for (const lesson of FOUNDATION_LESSONS) {
       expect(enTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.en);
       expect(jaTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.ja);
-      // F4, F8, and F9 intentionally include the user-supplied Japanese CAD UI command and dialog names.
-      if (!['F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      // F4, F8, and F9 (including the 移動コピー削除 Icon Menu section) intentionally include the user-supplied Japanese CAD UI command and dialog names.
+      if (!['F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
       for (const lang of ['en','ja'] as const) {
         const content = lesson.content[lang];
         expect(content.explanation.length).toBeGreaterThan(15);
@@ -101,7 +101,7 @@ describe('Excel Foundations curriculum', () => {
     const old = ['lesson-3-1','F3.3','lesson-4-2','lesson-13-1','lesson-6-3','origin-layout','bogus'];
     expect(migrateFoundationCompletion(old)).toEqual(['F4.6']);
     expect(old).toHaveLength(7);
-    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:37,percentage:1/37*100});
+    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:36,percentage:1/36*100});
     expect(foundationProgress(FOUNDATION_LESSON_IDS).percentage).toBe(100);
     expect(migrateFoundationCompletion(['lesson-1-1','lesson-10-1'])).toEqual(['F1.1','F8.3']);
     expect(migrateFoundationCompletion(['F3','module-1'])).toEqual([]);
@@ -142,7 +142,7 @@ describe('Excel Foundations curriculum', () => {
     for (const lang of ['en','ja'] as const) {
       const questions = foundationKnowledgeQuestions(lang);
       expect(questions).toHaveLength(12);
-      expect(questions.map(q => q.choices.findIndex(c => c.isCorrect))).toEqual([2,0,3,1,0,2,1,3,2,1,3,0]);
+      expect(questions.map(q => q.choices.findIndex(c => c.isCorrect))).toEqual([2,0,3,2,0,2,1,3,2,1,3,0]);
       questions.forEach(question => {
         expect(question.choices).toHaveLength(4);
         expect(question.choices.filter(choice => choice.isCorrect)).toHaveLength(1);

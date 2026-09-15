@@ -37,9 +37,11 @@ describe('Canonical Foundations lesson routing',()=>{
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.5')[0].choices.find(c=>c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
-    fireEvent.click(screen.getByRole('button',{name:'Next'}));
-    await waitFor(()=>expect(next).toHaveBeenCalledOnce());
-    expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.5',score:100}));
+    fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
+    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.5',score:100})));
+    expect(next).not.toHaveBeenCalled();
+    fireEvent.click(await screen.findByRole('button',{name:'Next lesson'}));
+    expect(next).toHaveBeenCalledOnce();
   });
   it('passes original Move data to the dynamic player but persists canonical progress',async()=>{
     viewer('F9.9');
@@ -48,7 +50,7 @@ describe('Canonical Foundations lesson routing',()=>{
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.9')[0].choices.find(c=>c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
-    fireEvent.click(screen.getByRole('button',{name:'Next'}));
+    fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
     await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.9'})));
   });
   it('does not route an old advanced shape bookmark through the generic prefix router',async()=>{

@@ -33,7 +33,7 @@
               "sections": [
                 {
                   "title": "Main Design Environments",
-                  "text": "iCAD SX supports two main types of work:\n- **3D Modeling** — Create individual mechanical parts and combine them into assemblies-groups of parts that fit together.\n- **2D Detailing** — Create engineering drawings that communicate a part’s shape, dimensions, and manufacturing information."
+                  "text": "iCAD SX supports two main types of work:\n- **3D Modeling** — Create individual mechanical parts and combine them into assemblies (Parts that fit together).\n- **2D Detailing** — Create engineering drawings that communicate a part’s shape, dimensions, and manufacturing information."
                 }
               ],
               "quickReview": "**iCAD SX** → Mechanical CAD Software\n**3D** → Models and Assemblies\n**2D** → Engineering Drawings"
@@ -74,7 +74,7 @@
               "sections": [
                 {
                   "title": "Common Uses of iCAD SX",
-                  "text": "iCAD SX can be used for:\n- **Creating 3D Parts** — Create individual mechanical components, such as brackets, plates, and shafts.\n- **Creating Assemblies** — Combine parts to show how they fit together in a machine or mechanism.\n- **Editing Designs** — Change a part’s shape or dimensions, or adjust its position within an assembly.\n- **Checking Models** — Inspect a model from different directions and measure its geometry.\n- **Creating 2D Drawings** — Produce engineering drawing views from a 3D model.\n- **Preparing Manufacturing Information** — Add dimensions, notes, and symbols to communicate manufacturing requirements."
+                  "text": "iCAD SX can be used for:\n- **Creating 3D Parts** — Create individual mechanical components, such as brackets, plates, and shafts.\n- **Creating Assemblies** — Combine parts to show how they fit together in a machine or mechanism.\n- **Editing Designs** — Change a part’s shape or dimensions, or adjust its position within an assembly.\n- **Checking Models** — Inspect a model from different directions.\n- **Creating 2D Drawings** — Produce engineering drawing views from a 3D model.\n- **Preparing Manufacturing Information** — Add dimensions, notes, and symbols to communicate manufacturing requirements."
                 },
                 {
                   "title": "Why It Is Useful",
@@ -90,7 +90,7 @@
               "sections": [
                 {
                   "title": "iCAD SX の主な用途",
-                  "text": "iCAD SX では、次の作業ができます。\n- **3D 部品の作成** — ブラケット、プレート、シャフトなど、個々の機械部品を作成します。\n- **アセンブリの作成** — 部品を組み合わせ、機械や機構の中でどのように組み合わさるかを示します。\n- **設計の編集** — 部品の形状や寸法を変更したり、アセンブリ内の位置を調整したりします。\n- **モデルの確認** — さまざまな方向からモデルを確認し、形状を測定します。\n- **2D 図面の作成** — 3D モデルから設計図面のビューを作成します。\n- **製造情報の準備** — 寸法、注記、記号を追加して製造要件を伝えます。"
+                  "text": "iCAD SX では、次の作業ができます。\n- **3D 部品の作成** — ブラケット、プレート、シャフトなど、個々の機械部品を作成します。\n- **アセンブリの作成** — 部品を組み合わせ、機械や機構の中でどのように組み合わさるかを示します。\n- **設計の編集** — 部品の形状や寸法を変更したり、アセンブリ内の位置を調整したりします。\n- **モデルの確認** — さまざまな方向からモデルを確認します。\n- **2D 図面の作成** — 3D モデルから設計図面のビューを作成します。\n- **製造情報の準備** — 寸法、注記、記号を追加して製造要件を伝えます。"
                 },
                 {
                   "title": "役立つ理由",
@@ -334,7 +334,7 @@
                 },
                 {
                   "title": "Open the Help System",
-                  "text": "Choose the available Help option to open the iCAD SX documentation."
+                  "text": "Select **操作ヘルプ(H)** (Operation Help) or **マニュアル(M)** (Manual)."
                 },
                 {
                   "title": "Find the Topic You Need",
@@ -363,7 +363,7 @@
                 },
                 {
                   "title": "ヘルプシステムを開く",
-                  "text": "利用できるヘルプ項目を選び、iCAD SX のドキュメントを開きます。"
+                  "text": "**操作ヘルプ(H)** または **マニュアル(M)** を選びます。"
                 },
                 {
                   "title": "必要なトピックを探す",
@@ -426,11 +426,11 @@
                 },
                 {
                   "title": "Command Menu",
-                  "text": "Contains sets of available commands associated with different functions. Preferably used in 2D."
+                  "text": "Contains sets of commands grouped by function. Mainly used for 2D drawing work."
                 },
                 {
                   "title": "Tree View",
-                  "text": "Displays the 3D parts and groups for the drawing currently being worked on."
+                  "text": "Displays the Parts in the current drawing as a tree, including the child parts of assemblies."
                 },
                 {
                   "title": "Workspace",
@@ -454,7 +454,7 @@
                 },
                 {
                   "title": "Message Pane",
-                  "text": "Displays operational messages, warnings, and error prompts from iCAD during command execution."
+                  "text": "Displays operational messages, warnings, and error prompts from iCAD during command execution. Messages shown in red are error messages."
                 },
                 {
                   "title": "Why the Screen Layout is Important",
@@ -482,7 +482,7 @@
                 },
                 {
                   "title": "ツリービュー",
-                  "text": "現在編集中の図面内の3D部品やグループの階層構造を表示します。"
+                  "text": "現在編集中の図面内の3D部品と、アセンブリの子部品を階層構造で表示します。"
                 },
                 {
                   "title": "作業領域",
@@ -506,7 +506,7 @@
                 },
                 {
                   "title": "メッセージ領域",
-                  "text": "コマンド実行中の操作ガイダンス、確認メッセージ、警告、エラープロンプトを表示します。"
+                  "text": "コマンド実行中の操作ガイダンス、確認メッセージ、警告、エラープロンプトを表示します。赤色のメッセージはエラーです。"
                 },
                 {
                   "title": "画面構成が重要な理由",
@@ -543,55 +543,55 @@
               "sections": [
                 {
                   "title": "File",
-                  "text": "Provides quick access to common file operations such as creating, opening, and saving drawings."
+                  "text": "Contains New, Open, Save, and Print for common file operations."
                 },
                 {
                   "title": "2D View",
-                  "text": "Contains tools used to control and work with 2D Detailing views."
+                  "text": "Moves between 2D Detailing views: Previous View, Switch Views, and Next View."
                 },
                 {
                   "title": "Switch Display",
-                  "text": "Used to change how objects or drawing information are displayed on the screen."
+                  "text": "Changes display settings such as the projection method and the display of dimensions."
                 },
                 {
                   "title": "Screen Operations",
-                  "text": "Contains tools for navigating the workspace, such as zooming, panning, and adjusting the displayed area."
+                  "text": "Controls the displayed area: zoom to a selected area, zoom in, zoom out, zoom to fit, redisplay, and return to the previous screen."
                 },
                 {
                   "title": "3D View",
-                  "text": "Used to change the viewing direction and orientation of a 3D model."
+                  "text": "Shows the model from a standard direction (Top, Front, Left, Right, Back, Bottom) or sets a view using 3 points."
                 },
                 {
                   "title": "User View",
-                  "text": "Provides preset angled views for inspecting the model. See the User Views lesson for the four views used in this course."
+                  "text": "Contains User Views 1–4, preset isometric views for inspecting the model. See the User Views lesson."
                 },
                 {
                   "title": "Edit",
-                  "text": "Provides common editing functions used while working with model or drawing data."
+                  "text": "Contains Undo (Ctrl+Z) and Redo (Ctrl+Y)."
                 },
                 {
                   "title": "Shading",
-                  "text": "Changes how the surfaces of a 3D model are visually displayed."
+                  "text": "Switches the model display: CG Display – Hidden Lines Removed, No Edges, With Edges, Transparent Display, and Wire Display."
                 },
                 {
                   "title": "Section Display",
-                  "text": "Allows you to view the inside of a model by displaying a sectional view."
+                  "text": "Opens a work plane and switches to section display so you can view the inside of a model."
                 },
                 {
                   "title": "2D Standard Screen",
-                  "text": "Provides standard screen and display controls for 2D Detailing work."
+                  "text": "Sets the standard screen range and display screen for 2D Detailing, and displays the standard screen."
                 },
                 {
                   "title": "System Information",
-                  "text": "Provides access to information related to the current iCAD SX system or working environment."
+                  "text": "Sets the attributes, such as line type, line color, and layer, for the entities you create."
                 },
                 {
                   "title": "Screen Memory",
-                  "text": "Allows specific screen or view conditions to be stored and recalled when needed."
+                  "text": "Stores the currently displayed screen so you can recall it later."
                 },
                 {
                   "title": "Entry Control",
-                  "text": "Controls input conditions and options used while performing commands."
+                  "text": "Sets the method for selecting entities and entering coordinates."
                 },
                 {
                   "title": "Important Reminder",
@@ -608,55 +608,55 @@
               "sections": [
                 {
                   "title": "File",
-                  "text": "図面の新規作成、読み込み、保存などの一般的なファイル操作にすばやくアクセスできます。"
+                  "text": "新規作成、開く、保存、印刷など、一般的なファイル操作があります。"
                 },
                 {
                   "title": "2D View",
-                  "text": "2D 図面ビューの操作や制御に使用するツールがあります。"
+                  "text": "2D 図面のビューを切り替えます（前のビュー、ビューの切り替え、次のビュー）。"
                 },
                 {
                   "title": "Switch Display",
-                  "text": "画面上の物体や図面情報の表示方法を変更します。"
+                  "text": "投影法の変更や寸法表示の切り替えなど、表示方法を変更します。"
                 },
                 {
                   "title": "Screen Operations",
-                  "text": "ズーム、パン、表示範囲の調整など、作業画面を操作するツールがあります。"
+                  "text": "表示範囲を操作します（範囲を指定して拡大、拡大、縮小、全体表示、再表示、前の画面に戻る）。"
                 },
                 {
                   "title": "3D View",
-                  "text": "3D モデルを見る方向や向きを変更します。"
+                  "text": "標準方向（上、正面、左、右、背面、下）からモデルを表示するほか、3 点を指定してビューを設定できます。"
                 },
                 {
                   "title": "User View",
-                  "text": "モデルを斜め方向から確認するためのプリセットビューです。このコースで使う四つのビューは、ユーザビューのレッスンで学びます。"
+                  "text": "ユーザビュー1～4（プリセットのアイソメトリックビュー）でモデルを確認できます。詳しくはユーザビューのレッスンで学びます。"
                 },
                 {
                   "title": "Edit",
-                  "text": "モデルや図面データを扱う際の一般的な編集機能を提供します。"
+                  "text": "元に戻す（Ctrl+Z）、やり直し（Ctrl+Y）があります。"
                 },
                 {
                   "title": "Shading",
-                  "text": "3D モデルの表面の表示方法を変更します。"
+                  "text": "モデルの表示方法を切り替えます（CG表示 隠線、縁なし、縁あり、透過表示、WIRE表示）。"
                 },
                 {
                   "title": "Section Display",
-                  "text": "断面表示によってモデルの内部を確認できます。"
+                  "text": "作業平面を開き、断面表示に切り替えてモデルの内部を確認します。"
                 },
                 {
                   "title": "2D Standard Screen",
-                  "text": "2D 図面作業用の標準的な画面・表示操作を提供します。"
+                  "text": "2D 図面の標準画面範囲と表示画面を設定し、標準画面を表示します。"
                 },
                 {
                   "title": "System Information",
-                  "text": "現在の iCAD SX システムや作業環境に関する情報にアクセスできます。"
+                  "text": "これから作成する要素の属性（線種、線色、レイヤなど）を設定します。"
                 },
                 {
                   "title": "Screen Memory",
-                  "text": "特定の画面や表示の状態を保存し、必要なときに呼び出せます。"
+                  "text": "現在表示している画面を記憶し、後で呼び出せます。"
                 },
                 {
                   "title": "Entry Control",
-                  "text": "コマンド実行中に使用する入力条件やオプションを制御します。"
+                  "text": "要素の選択方法や座標の入力方法を指定します。"
                 },
                 {
                   "title": "重要な注意点",
@@ -668,7 +668,8 @@
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
-          "recapMode": "embedded-or-reading-review"
+          "recapMode": "embedded-or-reading-review",
+          "displayId": "F2.2"
         }
       ]
     },
@@ -711,14 +712,14 @@
                 },
                 {
                   "title": "Right-Click",
-                  "text": "Used for command-related actions depending on the operation currently being performed."
+                  "text": "Right-click works as **GO**. It confirms or finishes the current step, such as ending an object selection. Its exact action depends on the active command."
                 },
                 {
                   "title": "Important Reminder",
                   "text": "The function of a mouse button may change depending on the active iCAD SX command.\n\nAlways check the instructions shown on the screen while performing an operation."
                 }
               ],
-              "quickReview": "**Move Pointer → Select Command or Object → Follow the Current Operation**"
+              "quickReview": "**Move Pointer → Left-Click to Select → Right-Click (GO) to Confirm**"
             },
             "ja": {
               "explanation": "マウスは iCAD SX の操作に使用する主な道具の一つです。",
@@ -739,14 +740,14 @@
                 },
                 {
                   "title": "右クリック",
-                  "text": "現在実行している操作に応じて、コマンドに関する動作を行います。"
+                  "text": "右クリックは **GO**（確定）として働きます。対象の選択を終了するなど、現在の手順を確定します。具体的な動作は実行中のコマンドによって異なります。"
                 },
                 {
                   "title": "重要な注意点",
                   "text": "マウスボタンの役割は、実行中の iCAD SX コマンドによって変わる場合があります。\n\n操作中は、画面に表示される指示を必ず確認してください。"
                 }
               ],
-              "quickReview": "**ポインターを移動 → コマンドや対象を選択 → 現在の操作に従う**"
+              "quickReview": "**ポインターを移動 → 左クリックで選択 → 右クリック（GO）で確定**"
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -825,7 +826,8 @@
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
-          "recapMode": "embedded-or-reading-review"
+          "recapMode": "embedded-or-reading-review",
+          "displayId": "F3.2"
         },
         {
           "id": "F3.6",
@@ -886,7 +888,8 @@
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
-          "recapMode": "embedded-or-reading-review"
+          "recapMode": "embedded-or-reading-review",
+          "displayId": "F3.3"
         }
       ]
     },
@@ -985,13 +988,13 @@
           ],
           "content": {
             "en": {
-              "explanation": "The **User View toolbar** in iCAD SX provides four preset 3D viewing directions.",
+              "explanation": "The **User View toolbar** in iCAD SX provides four preset isometric (angled 3D) views.",
               "description2": "These views let you quickly look at the model from different angled perspectives without manually rotating the screen.",
               "practice": "By the end of this lesson, you should be able to identify **User View 1 to User View 4** and use them to inspect a 3D model from different angles.",
               "sections": [
                 {
                   "title": "User View Commands",
-                  "text": "The toolbar contains four preset views:\n\n**User View 1 — ユーザビュー1**\nDisplays the model using the first preset viewing direction.\n\n**User View 2 — ユーザビュー2**\nChanges the model display to the second preset direction.\n\n**User View 3 — ユーザビュー3**\nShows the model from the third preset angle.\n\n**User View 4 — ユーザビュー4**\nShows the model from the fourth preset angle.\n\nEach view provides a different perspective, helping you see multiple sides and features of the model more clearly."
+                  "text": "The toolbar contains four preset **isometric views**. An isometric view is an angled 3D view that shows three faces of the model at once.\n\n**User View 1 — ユーザビュー1**\nShows the model from preset isometric angle 1.\n\n**User View 2 — ユーザビュー2**\nShows the model from preset isometric angle 2.\n\n**User View 3 — ユーザビュー3**\nShows the model from preset isometric angle 3.\n\n**User View 4 — ユーザビュー4**\nShows the model from preset isometric angle 4.\n\nEach view looks at the model from a different angle, helping you see multiple sides and features of the model more clearly."
                 },
                 {
                   "title": "How to Use User Views",
@@ -1003,7 +1006,7 @@
                 },
                 {
                   "title": "3D View vs. User View",
-                  "text": "**3D View**\nUses fixed directions such as Top, Front, Right, Left, Back, and Bottom.\n\n**User View**\nProvides four preset angled views for inspecting the model in 3D."
+                  "text": "**3D View**\nUses fixed directions such as Top, Front, Right, Left, Back, and Bottom.\n\n**User View**\nProvides four preset isometric views for inspecting the model in 3D."
                 },
                 {
                   "title": "Important Reminder",
@@ -1013,13 +1016,13 @@
               "quickReview": "**User View Toolbar → Select View 1, 2, 3, or 4 → Inspect the Model**"
             },
             "ja": {
-              "explanation": "iCAD SX の **User View ツールバー**には、四つのプリセット 3D 表示方向があります。",
+              "explanation": "iCAD SX の **User View ツールバー**には、四つのプリセットのアイソメトリック（斜め方向の立体）ビューがあります。",
               "description2": "画面を手動で回転させずに、モデルをさまざまな斜め方向からすばやく確認できます。",
               "practice": "このレッスンを終えると、**ユーザビュー1～ユーザビュー4**を識別し、モデルをさまざまな角度から確認できるようになります。",
               "sections": [
                 {
                   "title": "User View コマンド",
-                  "text": "ツールバーには四つのプリセットビューがあります。\n\n**User View 1 — ユーザビュー1**\n最初のプリセット表示方向でモデルを表示します。\n\n**User View 2 — ユーザビュー2**\nモデルの表示を二番目のプリセット方向に切り替えます。\n\n**User View 3 — ユーザビュー3**\n三番目のプリセット角度からモデルを表示します。\n\n**User View 4 — ユーザビュー4**\n四番目のプリセット角度からモデルを表示します。\n\nそれぞれ異なる方向から表示するため、モデルの複数の面や特徴を確認しやすくなります。"
+                  "text": "ツールバーには四つのプリセットの**アイソメトリックビュー**があります。アイソメトリックビューは、モデルの三つの面を同時に表示する斜め方向の立体ビューです。\n\n**User View 1 — ユーザビュー1**\nプリセットのアイソメトリック角度 1 からモデルを表示します。\n\n**User View 2 — ユーザビュー2**\nプリセットのアイソメトリック角度 2 からモデルを表示します。\n\n**User View 3 — ユーザビュー3**\nプリセットのアイソメトリック角度 3 からモデルを表示します。\n\n**User View 4 — ユーザビュー4**\nプリセットのアイソメトリック角度 4 からモデルを表示します。\n\nそれぞれ異なる角度から表示するため、モデルの複数の面や特徴を確認しやすくなります。"
                 },
                 {
                   "title": "User View の使い方",
@@ -1031,7 +1034,7 @@
                 },
                 {
                   "title": "3D View と User View の違い",
-                  "text": "**3D View**\n平面図、正面図、右側面図、左側面図、背面図、下面図などの固定方向を使います。\n\n**User View**\nモデルを立体的に確認するための四つのプリセット斜めビューを提供します。"
+                  "text": "**3D View**\n平面図、正面図、右側面図、左側面図、背面図、下面図などの固定方向を使います。\n\n**User View**\nモデルを立体的に確認するための四つのプリセットのアイソメトリックビューを提供します。"
                 },
                 {
                   "title": "重要な注意点",
@@ -1062,12 +1065,12 @@
           "content": {
             "en": {
               "explanation": "The **Shading toolbar** controls how a 3D model appears on the screen.",
-              "description2": "You can display the model with solid surfaces, visible edges, transparency, or wireframe lines depending on what you need to inspect.",
+              "description2": "You can display the model with hidden lines removed, as shaded surfaces with or without edges, as transparent surfaces, or as wireframe lines, depending on what you need to inspect.",
               "practice": "By the end of this lesson, you should be able to recognize the main Shading modes and select the appropriate display for viewing a 3D model.",
               "sections": [
                 {
                   "title": "Shading Modes",
-                  "text": "**CG View – Green Line — CG表示 線緑**\nDisplays the model using CG shading with green line display.\n\n**CG View – No Lines — CG表示 線なし**\nDisplays solid shaded surfaces without edge lines, giving the model a clean appearance.\n\n**CG View – With Lines — CG表示 線あり**\nDisplays shaded surfaces together with visible edge lines. This makes the shape and boundaries easier to recognize.\n\n**Transparent Display — 透過表示**\nMakes the model surfaces transparent so you can see geometry behind or inside the visible surfaces.\n\n**Wire Display — WIRE表示**\nDisplays the model mainly using edges and lines instead of solid shaded surfaces."
+                  "text": "**CG Display – Hidden Lines Removed — CG表示 隠線**\nDraws the model with lines, hiding the edges that are behind surfaces.\n\n**CG Display – No Edges — CG表示 縁なし**\nDisplays solid shaded surfaces without edge lines, giving the model a clean appearance.\n\n**CG Display – With Edges — CG表示 縁あり**\nDisplays shaded surfaces together with visible edge lines. This makes the shape and boundaries easier to recognize.\n\n**Transparent Display — 透過表示**\nMakes the model surfaces transparent so you can see geometry behind or inside the visible surfaces.\n\n**Wire Display — WIRE表示**\nDisplays all edges and lines, including those behind surfaces, without shaded surfaces."
                 },
                 {
                   "title": "How to Change the Shading",
@@ -1075,24 +1078,24 @@
                 },
                 {
                   "title": "When to Use Each Mode",
-                  "text": "- **CG View – No Lines** → Use for a clean solid view.\n- **CG View – With Lines** → Use when you need to see edges clearly.\n- **Transparent Display** → Use when inspecting geometry behind visible surfaces.\n- **Wire Display** → Use when you want to focus on the model's edges and structure."
+                  "text": "- **CG Display – Hidden Lines Removed** → Use for a clear line view showing only the edges you can see.\n- **CG Display – No Edges** → Use for a clean solid view.\n- **CG Display – With Edges** → Use when you need to see edges clearly.\n- **Transparent Display** → Use when inspecting geometry behind visible surfaces.\n- **Wire Display** → Use when you want to see every edge of the model's structure."
                 },
                 {
                   "title": "Important Reminder",
                   "text": "Shading only changes **how the model looks on the screen**. It does not change the actual shape or geometry of the model."
                 }
               ],
-              "quickReview": "**No Lines** → Solid surfaces\n**With Lines** → Surfaces and edges\n**Transparent** → See through surfaces\n**Wire** → Edges only",
+              "quickReview": "**Hidden Lines Removed** → Visible edges only\n**No Edges** → Solid surfaces\n**With Edges** → Surfaces and edges\n**Transparent** → See through surfaces\n**Wire** → All edges",
               "connection": "Changing the view or shading does not move the model. Next, F5 introduces coordinates, which describe positions in the model."
             },
             "ja": {
               "explanation": "**Shading ツールバー**は、画面上での 3D モデルの見え方を制御します。",
-              "description2": "確認したい内容に応じて、ソリッドの面、エッジ、透過表示、ワイヤー線でモデルを表示できます。",
+              "description2": "確認したい内容に応じて、隠線表示、縁なし・縁ありのシェーディング、透過表示、ワイヤー表示を切り替えられます。",
               "practice": "このレッスンを終えると、主なシェーディングモードを識別し、3D モデルの確認に適した表示を選べるようになります。",
               "sections": [
                 {
                   "title": "シェーディングモード",
-                  "text": "**CG View – Green Line — CG表示 線緑**\n緑色の線表示を伴う CG シェーディングでモデルを表示します。\n\n**CG View – No Lines — CG表示 線なし**\nエッジ線を表示せずにソリッドの面を表示し、すっきりした外観にします。\n\n**CG View – With Lines — CG表示 線あり**\nシェーディングされた面とエッジ線を一緒に表示し、形状や境界を確認しやすくします。\n\n**Transparent Display — 透過表示**\nモデルの面を透過させ、面の奥や内部にある形状を確認できるようにします。\n\n**Wire Display — WIRE表示**\nソリッドの面ではなく、主にエッジと線でモデルを表示します。"
+                  "text": "**CG Display – Hidden Lines Removed — CG表示 隠線**\n面の奥に隠れた線を表示せず、線でモデルを表示します。\n\n**CG Display – No Edges — CG表示 縁なし**\nエッジ線を表示せずにソリッドの面を表示し、すっきりした外観にします。\n\n**CG Display – With Edges — CG表示 縁あり**\nシェーディングされた面とエッジ線を一緒に表示し、形状や境界を確認しやすくします。\n\n**Transparent Display — 透過表示**\nモデルの面を透過させ、面の奥や内部にある形状を確認できるようにします。\n\n**Wire Display — WIRE表示**\n面を表示せず、面の奥にある線も含めてすべてのエッジと線を表示します。"
                 },
                 {
                   "title": "シェーディングの変更方法",
@@ -1100,14 +1103,14 @@
                 },
                 {
                   "title": "各モードを使う場面",
-                  "text": "- **CG表示 線なし** → すっきりしたソリッド表示に使います。\n- **CG表示 線あり** → エッジをはっきり確認したいときに使います。\n- **透過表示** → 見えている面の奥にある形状の確認に使います。\n- **WIRE表示** → モデルのエッジや構造に注目したいときに使います。"
+                  "text": "- **CG表示 隠線** → 見えている線だけの、分かりやすい線表示に使います。\n- **CG表示 縁なし** → すっきりしたソリッド表示に使います。\n- **CG表示 縁あり** → エッジをはっきり確認したいときに使います。\n- **透過表示** → 見えている面の奥にある形状の確認に使います。\n- **WIRE表示** → モデルの構造のすべてのエッジを確認したいときに使います。"
                 },
                 {
                   "title": "重要な注意点",
                   "text": "シェーディングで変わるのは**画面上でのモデルの見え方**だけです。実際の形状やジオメトリは変わりません。"
                 }
               ],
-              "quickReview": "**線なし** → 面を表示\n**線あり** → 面と稜線を表示\n**透過** → 面の奥を確認\n**WIRE** → 線だけを表示",
+              "quickReview": "**隠線** → 見えている線だけを表示\n**縁なし** → 面を表示\n**縁あり** → 面と稜線を表示\n**透過** → 面の奥を確認\n**WIRE** → すべての線を表示",
               "connection": "ビューやシェーディングを変えてもモデルの位置は変わりません。次の F5 ではモデル内の位置を表す座標を学びます。"
             }
           },
@@ -1158,7 +1161,7 @@
             "ja": {
               "explanation": "キーボードで数値を入力し、コマンドを操作します。",
               "description2": "",
-              "practice": "基本的なキーと Key Entry の用途を理解しましょう。",
+              "practice": "基本的なキーと キー入力の用途を理解しましょう。",
               "sections": [
                 {
                   "title": "基本キー",
@@ -1166,10 +1169,10 @@
                 },
                 {
                   "title": "値を入力する",
-                  "text": "コマンドの入力要求に従います。\n\n**入力欄を選択 → 値を入力 → Enter で確定**\n\n形状の配置点の座標は **Key Entry** に入力します。"
+                  "text": "コマンドの入力要求に従います。\n\n**入力欄を選択 → 値を入力 → Enter で確定**\n\n形状の配置点の座標は **キー入力** に入力します。"
                 }
               ],
-              "quickReview": "**Enter** → 入力を確定\n**Esc** → 操作をキャンセル\n**Key Entry** → 配置点の座標を入力"
+              "quickReview": "**Enter** → 入力を確定\n**Esc** → 操作をキャンセル\n**キー入力** → 配置点の座標を入力"
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1231,7 +1234,7 @@
                 },
                 {
                   "title": "原点と形状の配置",
-                  "text": "**マウスで配置：** この例では、**Key Entry に 0 0 0** を入力せずに形状を配置したため、原点から離れています。\n\n**0 0 0 を使って配置：** **Key Entry に 0 0 0** を入力して **Enter** を押すと、形状の角が原点に一致します。\n\nこの例では角が配置点です。他の形状では配置点が異なる場合があります。"
+                  "text": "**マウスで配置：** この例では、**キー入力に 0 0 0** を入力せずに形状を配置したため、原点から離れています。\n\n**0 0 0 を使って配置：** **キー入力に 0 0 0** を入力して **Enter** を押すと、形状の角が原点に一致します。\n\nこの例では角が配置点です。他の形状では配置点が異なる場合があります。"
                 }
               ],
               "quickReview": "**X → 赤**\n**Y → 青**\n**Z → 黄**\n**原点 → 0, 0, 0**"
@@ -1263,11 +1266,11 @@
               "sections": [
                 {
                   "title": "Place a Shape at the Origin",
-                  "text": "Enter the coordinates, then display the origin to check the placement.\n\n**Step 1 — Create the Shape**\nStart the shape-creation command.\n\n**Step 2 — Enter Coordinates**\nWhen asked for a placement point, type **0 0 0** in **Key Entry**.\n\n**Step 3 — Press Enter**\nPress **Enter** to place the shape. The object is displayed.\n\n**Step 4 — Select the Tool**\nClick **Change 3D Part Layout** in the **3D Parts** menu.\n\n**Step 5 — Show the Origin**\n**Right-click** to display the origin. Check that it is at the shape’s placement point."
+                  "text": "Enter the coordinates, then display the origin to check the placement.\n\n**Step 1 — Create the Shape**\nStart the shape-creation command.\n\n**Step 2 — Enter Coordinates**\nWhen asked for a placement point, type **0 0 0** in **Key Entry**.\n\n**Step 3 — Press Enter**\nPress **Enter** to place the shape. The object is displayed.\n\n**Step 4 — Select the Tool**\nIn the **Icon Menu**, open **Parts (パーツ)** and click **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 5 — Show the Origin**\n**Right-click** to display the origin. Check that it is at the shape’s placement point."
                 },
                 {
                   "title": "Optional: Change the Part Origin and Axes",
-                  "text": "Only continue below if you want to change the origin or axis directions. You can do this even after placing the shape at **0, 0, 0**.\n\n**Step 1 — Select the Tool**\nChoose **Change 3D Part Layout** in the **3D Parts** menu.\n\n**Step 2 — Show the Origin**\n**Right-click** to display the current origin.\n\n**Step 3 — Set the Origin**\nLeft-click **Point 1** for the new origin.\n\n**Step 4 — Set the X-Axis**\nLeft-click **Point 2** to set the X-axis direction.\n\n**Step 5 — Set the Y-Axis**\nLeft-click **Point 3** to set the Y-axis direction.\n\n**Step 6 — Check**\nCheck the origin location and axis directions."
+                  "text": "Only continue below if you want to change the origin or axis directions. You can do this even after placing the shape at **0, 0, 0**.\n\n**Step 1 — Select the Tool**\nIn the **Icon Menu**, open **Parts (パーツ)** and choose **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 2 — Show the Origin**\n**Right-click** to display the current origin.\n\n**Step 3 — Set the Origin**\nLeft-click **Point 1** for the new origin.\n\n**Step 4 — Set the X-Axis**\nLeft-click **Point 2** to set the X-axis direction.\n\n**Step 5 — Set the Y-Axis**\nLeft-click **Point 3** to set the Y-axis direction.\n\n**Step 6 — Check**\nCheck the origin location and axis directions."
                 },
                 {
                   "title": "Check the View Orientation",
@@ -1278,24 +1281,24 @@
               "connection": "You will use 0 0 0 again when placing the practice Box in F9.2. First, F6 explains how to choose the target of a command."
             },
             "ja": {
-              "explanation": "Key Entry で形状の配置位置を指定します。",
+              "explanation": "キー入力で形状の配置位置を指定します。",
               "description2": "",
               "practice": "原点への配置と、作成後の部品の原点の変更を学びましょう。",
               "sections": [
                 {
                   "title": "原点に配置する",
-                  "text": "座標を入力した後、原点を表示して配置を確認します。\n\n**ステップ 1 — 形状を作成**\n形状の作成コマンドを開始します。\n\n**ステップ 2 — 座標を入力**\n配置点を求められたら、**Key Entry** に **0 0 0** と入力します。\n\n**ステップ 3 — Enter を押す**\n**Enter** を押して形状を配置します。オブジェクトが表示されます。\n\n**ステップ 4 — ツールを選択**\n**3D Parts** メニューで **Change 3D Part Layout** をクリックします。\n\n**ステップ 5 — 原点を表示**\n**右クリック**して原点を表示します。形状の配置点と一致していることを確認します。"
+                  "text": "座標を入力した後、原点を表示して配置を確認します。\n\n**ステップ 1 — 形状を作成**\n形状の作成コマンドを開始します。\n\n**ステップ 2 — 座標を入力**\n配置点を求められたら、**キー入力**に **0 0 0** と入力します。\n\n**ステップ 3 — Enter を押す**\n**Enter** を押して形状を配置します。オブジェクトが表示されます。\n\n**ステップ 4 — ツールを選択**\n**アイコンメニュー**の**パーツ**から**パーツのレイアウトを変更する**をクリックします。\n\n**ステップ 5 — 原点を表示**\n**右クリック**して原点を表示します。形状の配置点と一致していることを確認します。"
                 },
                 {
                   "title": "任意の操作：部品の原点と軸を変更する",
-                  "text": "原点や軸の方向を変更したい場合だけ、次の手順に進んでください。最初に **0, 0, 0** に配置した場合でも変更できます。\n\n**ステップ 1 — ツールを選択**\n**3D Parts** メニューで **Change 3D Part Layout** を選択します。\n\n**ステップ 2 — 原点を表示**\n**右クリック**して現在の原点を表示します。\n\n**ステップ 3 — 原点を設定**\n新しい原点となる**点 1**を左クリックします。\n\n**ステップ 4 — X 軸を設定**\nX 軸の方向を指定する**点 2**を左クリックします。\n\n**ステップ 5 — Y 軸を設定**\nY 軸の方向を指定する**点 3**を左クリックします。\n\n**ステップ 6 — 確認**\n原点の位置と軸の方向を確認します。"
+                  "text": "原点や軸の方向を変更したい場合だけ、次の手順に進んでください。最初に **0, 0, 0** に配置した場合でも変更できます。\n\n**ステップ 1 — ツールを選択**\n**アイコンメニュー**の**パーツ**から**パーツのレイアウトを変更する**を選択します。\n\n**ステップ 2 — 原点を表示**\n**右クリック**して現在の原点を表示します。\n\n**ステップ 3 — 原点を設定**\n新しい原点となる**点 1**を左クリックします。\n\n**ステップ 4 — X 軸を設定**\nX 軸の方向を指定する**点 2**を左クリックします。\n\n**ステップ 5 — Y 軸を設定**\nY 軸の方向を指定する**点 3**を左クリックします。\n\n**ステップ 6 — 確認**\n原点の位置と軸の方向を確認します。"
                 },
                 {
                   "title": "ビューの向きを確認する",
                   "text": "軸の方向によって標準ビューの向きが決まります。変更後は、意図した向きになっているか確認します。"
                 }
               ],
-              "quickReview": "**Key Entry** → 配置座標\n**0, 0, 0** → 現在の原点に配置\n**Change 3D Part Layout** → 原点と軸を変更",
+              "quickReview": "**キー入力** → 配置座標\n**0, 0, 0** → 現在の原点に配置\n**パーツのレイアウトを変更する** → 原点と軸を変更",
               "connection": "F9.2 のボックス配置でも 0 0 0 を使います。その前に F6 でコマンドの対象を選ぶ方法を学びます。"
             }
           },
@@ -1336,7 +1339,7 @@
                 },
                 {
                   "title": "Select One Element",
-                  "text": "**Step 1 — Choose a Command**\nSelect the command for the operation you need, such as **Move** or **Delete**.\n\n**Step 2 — Select and Confirm**\n**Left-click** the object, check its highlight, then **right-click** to confirm the selection."
+                  "text": "**Step 1 — Choose a Command**\nSelect the command for the operation you need, such as **Move** or **Copy**.\n\n**Step 2 — Select and Confirm**\n**Left-click** the object, check its highlight, then **right-click** to confirm the selection."
                 },
                 {
                   "title": "Select Multiple Elements",
@@ -1344,7 +1347,7 @@
                 },
                 {
                   "title": "Check Before Confirming",
-                  "text": "If the wrong object is highlighted, do not confirm it. Removing an item from a selection and cancelling the command may be different actions."
+                  "text": "If the wrong object is highlighted, do not right-click (GO). Press **Esc** to cancel the command and select again.\n\nSome commands act as soon as you left-click. For example, **Delete** removes an object immediately; press **Ctrl+Z** to undo a mistake."
                 },
                 {
                   "title": "Important Reminder",
@@ -1364,7 +1367,7 @@
                 },
                 {
                   "title": "一つの要素を選択",
-                  "text": "**ステップ 1 — コマンドを選ぶ**\n必要な操作のコマンドを選びます。例：Move または Delete。\n\n**ステップ 2 — 対象を選び、確定する**\n対象を**左クリック**し、強調表示を確認して**右クリック**で選択を確定します。"
+                  "text": "**ステップ 1 — コマンドを選ぶ**\n必要な操作のコマンドを選びます。例：移動 または コピー。\n\n**ステップ 2 — 対象を選び、確定する**\n対象を**左クリック**し、強調表示を確認して**右クリック**で選択を確定します。"
                 },
                 {
                   "title": "複数の要素を選択",
@@ -1372,7 +1375,7 @@
                 },
                 {
                   "title": "確定前に確認する",
-                  "text": "意図しない対象が強調表示されている場合は、そのまま確定しないでください。選択解除とコマンドのキャンセルは異なる場合があります。"
+                  "text": "意図しない対象が強調表示されている場合は、右クリック（GO）しないでください。**Esc** でコマンドをキャンセルし、選択し直します。\n\n左クリックですぐに実行されるコマンドもあります。例えば**削除**は対象をすぐに削除します。間違えた場合は **Ctrl+Z** で元に戻します。"
                 },
                 {
                   "title": "重要な注意点",
@@ -1418,7 +1421,7 @@
                 },
                 {
                   "title": "Basic Selection",
-                  "text": "**Step 1 — Choose a Command**\nSelect the required operation, such as **Move** or **Delete**.\n\n**Step 2 — Select the Target**\n**Left-click** the required Part or Solid Component. Check the highlighted area.\n\n**Step 3 — Right-Click to Confirm**\n**Right-click** to confirm the target selection, then follow the command’s next prompt."
+                  "text": "**Step 1 — Choose a Command**\nSelect the required operation, such as **Move** or **Copy**.\n\n**Step 2 — Select the Target**\n**Left-click** the required Part or Solid Component. Check the highlighted area.\n\n**Step 3 — Right-Click to Confirm**\n**Right-click** to confirm the target selection, then follow the command’s next prompt."
                 },
                 {
                   "title": "Important Reminder",
@@ -1446,7 +1449,7 @@
                 },
                 {
                   "title": "基本的な選択",
-                  "text": "**ステップ 1 — コマンドを選ぶ**\n必要な操作のコマンドを選びます。例：Move または Delete。\n\n**ステップ 2 — 対象を選択**\n必要な部品または立体要素を**左クリック**します。強調表示の範囲を確認します。\n\n**ステップ 3 — 右クリックで確定**\n**右クリック**で対象の選択を確定し、コマンドの次の案内に従います。"
+                  "text": "**ステップ 1 — コマンドを選ぶ**\n必要な操作のコマンドを選びます。例：移動 または コピー。\n\n**ステップ 2 — 対象を選択**\n必要な部品または立体要素を**左クリック**します。強調表示の範囲を確認します。\n\n**ステップ 3 — 右クリックで確定**\n**右クリック**で対象の選択を確定し、コマンドの次の案内に従います。"
                 },
                 {
                   "title": "重要な注意点",
@@ -1572,7 +1575,7 @@
                 },
                 {
                   "title": "Parts",
-                  "text": "**Parts** organize the design into manageable components. You will learn more about them in the next lesson."
+                  "text": "**Parts** organize the design into manageable components. A Part can also contain other Parts (child parts). You will learn more in F7.2 and F7.3."
                 },
                 {
                   "title": "Model Shape (Geometry)",
@@ -1599,7 +1602,7 @@
                 },
                 {
                   "title": "部品",
-                  "text": "**部品**は設計を扱いやすい構成単位に整理します。次のレッスンで詳しく学びます。"
+                  "text": "**部品**は設計を扱いやすい構成単位に整理します。部品は別の部品（子部品）を含むこともできます。F7.2 と F7.3 で詳しく学びます。"
                 },
                 {
                   "title": "モデル形状（ジオメトリ）",
@@ -1677,8 +1680,8 @@
           "id": "F7.6",
           "moduleId": "F7",
           "title": {
-            "en": "Introduction to Groups",
-            "ja": "グループの紹介"
+            "en": "Introduction to Assemblies",
+            "ja": "アセンブリの紹介"
           },
           "type": "reading",
           "renderer": null,
@@ -1687,50 +1690,50 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Groups help organize related elements in an iCAD SX model.",
-              "practice": "By the end of this lesson, you should be able to explain what a Group is and understand when it is useful.",
+              "explanation": "An **assembly** combines several Parts into one design, such as a machine unit.",
+              "practice": "By the end of this lesson, you should be able to explain what an assembly is and recognize one in the Tree View.",
               "sections": [
                 {
-                  "title": "What is a Group?",
-                  "text": "A **Group** is a collection of related elements organized as one set."
+                  "title": "What is an Assembly?",
+                  "text": "An **assembly** is a design made of several Parts that fit together. A Part can contain other Parts, called **child parts**."
                 },
                 {
-                  "title": "Why Use Groups?",
-                  "text": "Use a Group when several elements belong to the same area or purpose and you want to keep track of them together."
+                  "title": "Why Use Assemblies?",
+                  "text": "Assemblies keep a complete design organized. Each component stays a separate Part, so you can find it, show it, or hide it when needed."
                 },
                 {
-                  "title": "Group vs. Part",
-                  "text": "**Part**\nOrganizes the shape of a model component.\n\n**Group**\nOrganizes related elements as a set."
+                  "title": "Part vs. Assembly",
+                  "text": "**Part**\nOrganizes the shape of one component.\n\n**Assembly**\nCombines Parts and their child parts into one design."
                 },
                 {
-                  "title": "Recognizing Related Elements",
-                  "text": "For example, several elements may belong to the same mounting area. This gives them a shared purpose for organization.\n\n**Think About It:** Which elements in a training model belong together, and why? This activity identifies a possible set; it does not require creating a Group."
+                  "title": "Real Example: An Assembly in the Tree View",
+                  "text": "In the Tree View, an assembly looks like this:\n- **Drawing file:** CR19061U01_RCGR4\n- **Top Part:** CR19061U01\n- **Child parts:** CR19299N01 (End plate), CR19403N01 (Liner), and standard parts such as bolts and washers\n\nA **+** beside a Part means it contains child parts. Click **+** to expand it, and point to a Part to see its name. Parts marked read-only cannot be edited in this drawing.\n\n**Try It:** Open a sample assembly drawing, expand one Part, and point to a child part to read its name."
                 }
               ],
-              "quickReview": "**Part** → Model component\n**Group** → Set of related elements"
+              "quickReview": "**Part** → One component\n**Assembly** → Parts combined into one design"
             },
             "ja": {
-              "explanation": "グループは、iCAD SX モデル内の関連する要素を整理するために使います。",
-              "practice": "このレッスンを終えると、グループとは何か、どのような場合に役立つかを説明できるようになります。",
+              "explanation": "**アセンブリ**は、複数の部品を組み合わせて、機械ユニットなどの一つの設計にしたものです。",
+              "practice": "このレッスンを終えると、アセンブリとは何かを説明し、ツリービューでアセンブリを見分けられるようになります。",
               "sections": [
                 {
-                  "title": "グループとは？",
-                  "text": "**グループ**は、関連する要素を一つのまとまりとして整理したものです。"
+                  "title": "アセンブリとは？",
+                  "text": "**アセンブリ**は、組み合わさる複数の部品でできた設計です。部品は、**子部品**と呼ばれる別の部品を含むことができます。"
                 },
                 {
-                  "title": "グループを使う理由",
-                  "text": "複数の要素が同じ領域や目的に関係し、まとめて把握したい場合に使います。"
+                  "title": "アセンブリを使う理由",
+                  "text": "アセンブリを使うと、設計全体を整理できます。各構成部品が別々の部品になっているため、必要な部品を見つけたり、表示・非表示を切り替えたりできます。"
                 },
                 {
-                  "title": "グループと部品",
-                  "text": "**部品**\nモデルの構成部品の形状を整理します。\n\n**グループ**\n関連する要素を一つのまとまりに整理します。"
+                  "title": "部品とアセンブリ",
+                  "text": "**部品**\n一つの構成部品の形状を整理します。\n\n**アセンブリ**\n部品とその子部品を組み合わせて一つの設計にします。"
                 },
                 {
-                  "title": "関連する要素を見つける",
-                  "text": "例えば、複数の要素が同じ取付領域に関係していれば、整理するための共通の目的があります。\n\n**考えてみましょう：** 練習用モデルで、どの要素が関連していますか。その理由も考えてください。この活動では候補を考えるだけで、グループの作成は必要ありません。"
+                  "title": "実例：ツリービューのアセンブリ",
+                  "text": "ツリービューでは、アセンブリは次のように表示されます。\n- **図面ファイル：** CR19061U01_RCGR4\n- **最上位の部品：** CR19061U01\n- **子部品：** CR19299N01（エンドプレート）、CR19403N01（ライナー）、ボルトやワッシャーなどの標準部品\n\n部品の横の **+** は、子部品を含むことを示します。**+** をクリックすると展開でき、部品にポインターを合わせると名前が表示されます。（読取専用）の部品は、この図面では編集できません。\n\n**やってみましょう：** サンプルのアセンブリ図面を開き、部品を一つ展開して、子部品にポインターを合わせて名前を確認します。"
                 }
               ],
-              "quickReview": "**部品** → モデルの構成部品\n**グループ** → 関連する要素のまとまり"
+              "quickReview": "**部品** → 一つの構成部品\n**アセンブリ** → 部品を組み合わせた一つの設計"
             }
           },
           "contentReview": "instructor-review-required",
@@ -1808,8 +1811,8 @@
           "id": "F8.1",
           "moduleId": "F8",
           "title": {
-            "en": "Creating Item",
-            "ja": "アイテムの作成"
+            "en": "Creating a New Item",
+            "ja": "新しいアイテムの作成"
           },
           "type": "reading",
           "renderer": null,
@@ -1947,7 +1950,7 @@
                 },
                 {
                   "title": "Practice: Close Your Training Drawing",
-                  "text": "Continue with the drawing you created in **F8.1 Creating Item** and saved in **F8.2 Saving Your Work**. Check the active drawing name: **Training_Box_01**, or **Training_Box_01_Copy** if you completed the Save As example. Close the drawing you just saved.\n\nCheck that its drawing window has closed and iCAD SX remains open."
+                  "text": "Continue with the drawing you created in **F8.1 Creating a New Item** and saved in **F8.2 Saving Your Work**. Check the active drawing name: **Training_Box_01**, or **Training_Box_01_Copy** if you completed the Save As example. Close the drawing you just saved.\n\nCheck that its drawing window has closed and iCAD SX remains open."
                 }
               ],
               "quickReview": "**Save Work → File → Close**",
@@ -1967,7 +1970,7 @@
                 },
                 {
                   "title": "実践：練習用図面を閉じる",
-                  "text": "**F8.1 アイテムの作成**で作成し、**F8.2 作業内容の保存**で保存した図面を使います。現在の図面名が **Training_Box_01**、または名前を付けて保存の例を実行した場合は **Training_Box_01_Copy** であることを確認します。保存した図面を閉じてください。\n\nその図面ウィンドウが閉じ、iCAD SX が開いたままであることを確認します。"
+                  "text": "**F8.1 新しいアイテムの作成**で作成し、**F8.2 作業内容の保存**で保存した図面を使います。現在の図面名が **Training_Box_01**、または名前を付けて保存の例を実行した場合は **Training_Box_01_Copy** であることを確認します。保存した図面を閉じてください。\n\nその図面ウィンドウが閉じ、iCAD SX が開いたままであることを確認します。"
                 }
               ],
               "quickReview": "**作業を保存 → ファイル → 閉じる**",
@@ -2018,7 +2021,7 @@
                 }
               ],
               "quickReview": "Icon Menu → Item Entry → Key Entry → Enter",
-              "connection": "Continue to F9.2 Creating a Box. Reopen Training_Box_01, saved in F8.2 Saving Your Work, from your training folder using File → Open. Use this drawing for the Box exercise and keep it for Move, Copy, Delete, and Measurement. Use separate drawings for Cylinder and Polygonal Prism."
+              "connection": "Continue to F9.2 Creating a Box. Reopen Training_Box_01, saved in F8.2 Saving Your Work, from your training folder using File → Open. Use this drawing for the Box exercise and keep it for Move, Copy, and Delete. Use separate drawings for Cylinder and Polygonal Prism."
             },
             "ja": {
               "explanation": "iCAD SX の基本 3D モデリングでは、立体形状を作成して作業領域に配置します。寸法は大きさを、位置の入力は配置場所を指定します。",
@@ -2038,7 +2041,7 @@
                 }
               ],
               "quickReview": "アイコンメニュー → 項目入力 → キー入力 → Enter",
-              "connection": "次は F9.2 直方体の作成に進みます。F8.2 作業内容の保存で保存した Training_Box_01 を、練習用フォルダーから「ファイル → 開く」で開き直します。この図面で直方体を作成し、移動、コピー、削除、測定の練習にも使います。円柱と多角柱には別の練習用図面を使います。"
+              "connection": "次は F9.2 直方体の作成に進みます。F8.2 作業内容の保存で保存した Training_Box_01 を、練習用フォルダーから「ファイル → 開く」で開き直します。この図面で直方体を作成し、移動、コピー、削除の練習にも使います。円柱と多角柱には別の練習用図面を使います。"
             }
           },
           "contentReview": "instructor-review-required",
@@ -2068,7 +2071,7 @@
               "sections": [
                 {
                   "title": "How to Create a Box",
-                  "text": "Before starting, open **Training_Box_01** saved in **F8.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Box**\nIn the **Icon Menu** on the right, open **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Box, the orientation buttons appear in the **Command Menu on the left**. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Depth (length): 20 mm**\n**Width: 30 mm**\n**Height: 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Box at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter** to create the Box. Check that one Box appears."
+                  "text": "Before starting, open **Training_Box_01** saved in **F8.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Box**\nIn the **Icon Menu** on the right, open **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Box, the orientation buttons appear in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Depth (length): 20 mm**\n**Width: 30 mm**\n**Height: 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Box at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter** to create the Box. Check that one Box appears."
                 },
                 {
                   "title": "Try It",
@@ -2080,7 +2083,7 @@
                 }
               ],
               "quickReview": "Front View → Box → Y → Size → Position → Enter",
-              "connection": "Use Save to update Training_Box_01 with your Box. Keep this file for F9.5–F9.8. Continue to F9.3 Creating a Cylinder and use a separate drawing for that exercise."
+              "connection": "Use Save to update Training_Box_01 with your Box. Keep this file for F9.5–F9.7. Continue to F9.3 Creating a Cylinder and use a separate drawing for that exercise."
             },
             "ja": {
               "explanation": "直方体は、ブロック、板、ベースなどに使う基本的な立体です。",
@@ -2088,7 +2091,7 @@
               "sections": [
                 {
                   "title": "直方体の作成手順",
-                  "text": "始める前に、**F8.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 直方体を選ぶ**\n画面右側の**アイコンメニュー**で**形状配置**から**直方体**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n直方体を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**奥行き：20 mm**\n**幅：30 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、直方体を現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押して直方体を作成します。直方体が一つ表示されることを確認します。"
+                  "text": "始める前に、**F8.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 直方体を選ぶ**\n画面右側の**アイコンメニュー**で**形状配置**から**直方体**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n直方体を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**奥行き：20 mm**\n**幅：30 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、直方体を現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押して直方体を作成します。直方体が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2100,7 +2103,7 @@
                 }
               ],
               "quickReview": "正面図 → 直方体 → Y → 寸法 → 位置 → Enter",
-              "connection": "上書き保存で Training_Box_01 に直方体を保存します。このファイルは F9.5〜F9.8 で使います。次は F9.3 円柱の作成に進み、その練習には別の図面を使います。"
+              "connection": "上書き保存で Training_Box_01 に直方体を保存します。このファイルは F9.5〜F9.7 で使います。次は F9.3 円柱の作成に進み、その練習には別の図面を使います。"
             }
           },
           "contentReview": "existing-tutorial-with-new-summary",
@@ -2130,7 +2133,7 @@
               "sections": [
                 {
                   "title": "How to Create a Cylinder",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Cylinder**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Cylinder**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Cylinder, find the orientation buttons in the **Command Menu on the left**. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Cylinder at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Cylinder appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Cylinder**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Cylinder**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Cylinder, find the orientation buttons in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Cylinder at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Cylinder appears."
                 },
                 {
                   "title": "Try It",
@@ -2150,7 +2153,7 @@
               "sections": [
                 {
                   "title": "円柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 円柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**円柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n円柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。円柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 円柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**円柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n円柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。円柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2192,7 +2195,7 @@
               "sections": [
                 {
                   "title": "How to Create a Polygonal Prism",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Polygonal Prism**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Polygonal Prism**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Polygonal Prism, find the orientation buttons in the **Command Menu on the left**. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Sides (頂点数): 6**\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Polygonal Prism at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Polygonal Prism appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Polygonal Prism**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Polygonal Prism**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Polygonal Prism, find the orientation buttons in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Sides (頂点数): 6**\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Polygonal Prism at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Polygonal Prism appears."
                 },
                 {
                   "title": "Try It",
@@ -2200,7 +2203,7 @@
                 },
                 {
                   "title": "Important Reminder",
-                  "text": "**Screenshot note:** The fullscreen reference shows Sides = 3 and Height = 100. For this exercise, change them to **6** and **10**; keep Diameter at **10**.\n\nThe Diameter field is a size input for this tool. Check its definition in the command guidance; do not assume it means the distance across the flat sides."
+                  "text": "**Diameter:** In the **Command Menu**, keep **直径指定** (size by diameter) selected. **面幅指定** sizes the prism by the width across its flat sides instead."
                 }
               ],
               "quickReview": "Front View → Polygonal Prism → Y → Size → Position → Enter",
@@ -2212,7 +2215,7 @@
               "sections": [
                 {
                   "title": "多角柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 多角柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**多角柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n多角柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**頂点数：6**\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。多角柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 多角柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**多角柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n多角柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**頂点数：6**\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。多角柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2220,7 +2223,7 @@
                 },
                 {
                   "title": "重要なポイント",
-                  "text": "**画面例について：** 全画面の参考画像では頂点数が 3、高さが 100 です。この練習では **6** と **10** に変更し、直径は **10** にします。\n\n直径は、このツールの大きさを指定する項目です。コマンドの案内で定義を確認し、平行な面の間の距離と同じだと思い込まないようにします。"
+                  "text": "**直径について：** **コマンドメニュー**では**直径指定**を選んだままにします。**面幅指定**を選ぶと、平行な面の間の幅で大きさを指定します。"
                 }
               ],
               "quickReview": "正面図 → 多角柱 → Y → 寸法 → 位置 → Enter",
@@ -2256,7 +2259,7 @@
               "sections": [
                 {
                   "title": "How to Move an Object",
-                  "text": "**Step 1 — Select Move**\nFrom the Icon Menu, choose the parallel move command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the object’s new position."
+                  "text": "**Step 1 — Select Move**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose the parallel move command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the object’s new position."
                 },
                 {
                   "title": "Try It",
@@ -2276,7 +2279,7 @@
               "sections": [
                 {
                   "title": "移動の手順",
-                  "text": "**ステップ 1 — 移動を選ぶ**\nアイコンメニューから平行移動のコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。移動後の位置を確認します。"
+                  "text": "**ステップ 1 — 移動を選ぶ**\nアイコンメニューの **移動コピー削除** から平行移動のコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。移動後の位置を確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2320,7 +2323,7 @@
               "sections": [
                 {
                   "title": "How to Copy an Object",
-                  "text": "**Step 1 — Select Copy**\nFrom the Icon Menu, choose the parallel copy command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances. Set the copy count for one duplicate.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the original and the new copy."
+                  "text": "**Step 1 — Select Copy**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose the parallel copy command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances. Set the copy count for one duplicate.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the original and the new copy."
                 },
                 {
                   "title": "Try It",
@@ -2332,7 +2335,7 @@
                 }
               ],
               "quickReview": "Select Copy → Select + GO → Set Distance → Enter",
-              "connection": "Keep both boxes for the next lesson. You will delete only the duplicate and keep the original for Measurement."
+              "connection": "Keep both boxes for the next lesson. You will delete only the duplicate and keep the original."
             },
             "ja": {
               "explanation": "コピーは元の対象を残して複製を作成します。このレッスンでは、移動量を指定する平行コピーを練習します。",
@@ -2340,7 +2343,7 @@
               "sections": [
                 {
                   "title": "コピーの手順",
-                  "text": "**ステップ 1 — コピーを選ぶ**\nアイコンメニューから平行コピーのコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。複製が一つできるように個数を設定します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。元の対象と複製を確認します。"
+                  "text": "**ステップ 1 — コピーを選ぶ**\nアイコンメニューの **移動コピー削除** から平行コピーのコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。複製が一つできるように個数を設定します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。元の対象と複製を確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2352,7 +2355,7 @@
                 }
               ],
               "quickReview": "コピー選択 → 対象選択・GO → 移動量入力 → Enter",
-              "connection": "次のレッスンまで両方のボックスを残します。複製だけを削除し、元のボックスは測定に使います。"
+              "connection": "次のレッスンまで両方のボックスを残します。複製だけを削除し、元のボックスは残します。"
             }
           },
           "contentReview": "existing-tutorial-with-new-summary",
@@ -2384,7 +2387,7 @@
               "sections": [
                 {
                   "title": "How to Delete an Object",
-                  "text": "**Step 1 — Select Delete**\nChoose Delete from the Icon Menu.\n\n**Step 2 — Select the Object**\nLeft-click the practice object you want to remove.\n\n**Step 3 — Check the Selection**\nCheck the highlighted object before executing the command.\n\n**Step 4 — Delete and Check**\nRight-click (GO) to complete the selection and delete the object. Check what remains."
+                  "text": "**Step 1 — Select Delete**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose **Delete Element (要素を削除する)**, the red ✕.\n\n**Step 2 — Left-Click the Object**\nLeft-click the practice object you want to remove. It is deleted immediately; no right-click (GO) is needed.\n\n**Step 3 — Check the Result**\nCheck what remains in the model.\n\n**Step 4 — Undo a Mistake**\nIf you deleted the wrong object, press **Ctrl+Z** to restore it."
                 },
                 {
                   "title": "Try It",
@@ -2392,11 +2395,11 @@
                 },
                 {
                   "title": "Important Reminder",
-                  "text": "If you remove the wrong object, use Undo immediately and check that it is restored before continuing."
+                  "text": "Delete acts as soon as you left-click, so point at the right object before clicking. If you remove the wrong object, press Ctrl+Z, or click Undo (the curved left arrow on the Edit toolbar), immediately and check that it is restored before continuing."
                 }
               ],
-              "quickReview": "Select Delete → Select Object → Check → GO",
-              "connection": "Use the remaining Box in Measurement to confirm that editing its location did not change its dimensions."
+              "quickReview": "Select Delete → Left-Click Object → Check Result → Ctrl+Z if Needed",
+              "connection": "The remaining Box is still 20 × 30 × 10 mm: Move, Copy, and Delete changed its position and the number of boxes, not its size. Next, F10 reviews the Foundations skills."
             },
             "ja": {
               "explanation": "削除は、選択した対象をモデルから取り除きます。不要な対象や、間違えて作成した対象に使います。",
@@ -2404,7 +2407,7 @@
               "sections": [
                 {
                   "title": "削除の手順",
-                  "text": "**ステップ 1 — 削除を選ぶ**\nアイコンメニューから削除を選びます。\n\n**ステップ 2 — 対象を選ぶ**\n削除する練習用の対象を左クリックします。\n\n**ステップ 3 — 選択を確認する**\n実行前に、強調表示された対象が正しいか確認します。\n\n**ステップ 4 — 削除して確認する**\n右クリック（GO）で選択を終了して削除します。残った対象を確認します。"
+                  "text": "**ステップ 1 — 削除を選ぶ**\nアイコンメニューの **移動コピー削除** から**要素を削除する**（赤い ✕）を選びます。\n\n**ステップ 2 — 対象を左クリックする**\n削除する練習用の対象を左クリックします。すぐに削除され、右クリック（GO）は不要です。\n\n**ステップ 3 — 結果を確認する**\nモデルに残った対象を確認します。\n\n**ステップ 4 — 間違いを元に戻す**\n間違った対象を削除した場合は **Ctrl+Z** を押して元に戻します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2412,82 +2415,16 @@
                 },
                 {
                   "title": "重要なポイント",
-                  "text": "間違った対象を削除した場合は、すぐに元に戻す操作を行い、復元されたことを確認してから続けます。"
+                  "text": "削除は左クリックした時点で実行されます。クリックする前に対象を確認してください。間違った対象を削除した場合は、すぐに編集ツールバーの「元に戻す」（左向きの曲がった矢印）をクリックするか、Ctrl+Z を押し、復元されたことを確認してから続けます。"
                 }
               ],
-              "quickReview": "削除選択 → 対象選択 → 確認 → GO",
-              "connection": "残したボックスを測定し、位置の編集で寸法が変わっていないことを確認します。"
+              "quickReview": "削除選択 → 対象を左クリック → 結果確認 → 必要なら Ctrl+Z",
+              "connection": "残ったボックスは 20 × 30 × 10 mm のままです。移動、コピー、削除で変わるのは位置や数で、大きさは変わりません。次の F10 で基礎コースのスキルを復習します。"
             }
           },
           "contentReview": "existing-tutorial-with-new-summary",
           "recapMode": "shared",
           "displayId": "F9.7"
-        },
-        {
-          "id": "F9.13",
-          "moduleId": "F9",
-          "title": {
-            "en": "Basic Measurement",
-            "ja": "基本的な測定"
-          },
-          "type": "reading",
-          "renderer": null,
-          "video": null,
-          "routeAliases": [],
-          "completionAliases": [],
-          "content": {
-            "en": {
-              "explanation": "Measurement reads sizes or distances from existing model geometry. It helps you compare the model with the required dimensions.",
-              "practice": "By the end of this lesson, you should be able to check a known distance on a practice model and compare the result with its intended size.",
-              "sections": [
-                {
-                  "title": "What Can Be Measured?",
-                  "text": "Different measurement commands check different values, such as distance, length, diameter, or angle. Choose a command that matches the value you need."
-                },
-                {
-                  "title": "How to Perform a Basic Measurement",
-                  "text": "**Step 1 — Choose Distance Measurement**\nUse a distance-between-two-points measurement command for this exercise. Read its selection guidance.\n\n**Step 2 — Select Two Endpoints**\nSelect the two endpoints of one straight Box edge. Confirm any selection as requested by the command.\n\n**Step 3 — Read and Compare**\nRead the reported distance and its unit in the command’s result display. Compare it with the known edge length."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Use the **20 × 30 × 10 mm** Box from F9.2. Measure between the endpoints of a single edge.\n\n**Check:** The result should be **20, 30, or 10 mm**, depending on which edge you selected. A different value may mean you selected a diagonal or the wrong points. Check the selected points and units before changing the model."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Measurement does not change the geometry. The command name and result display should be identified in your iCAD SX setup before doing this exercise."
-                }
-              ],
-              "quickReview": "Choose Measurement → Select Points → Read Result",
-              "connection": "You have connected placement, selection, editing, and checking in one practice example. F10 reviews these skills before the final knowledge check."
-            },
-            "ja": {
-              "explanation": "測定は、既存のモデル形状から大きさや距離を読み取ります。必要な寸法とモデルを比較するときに使います。",
-              "practice": "このレッスンの終了時には、練習用モデルの既知の距離を測定し、意図した寸法と比較できるようになります。",
-              "sections": [
-                {
-                  "title": "測定できる値",
-                  "text": "測定コマンドによって、距離、長さ、直径、角度などを確認できます。必要な値に合ったコマンドを選びます。"
-                },
-                {
-                  "title": "基本的な測定手順",
-                  "text": "**ステップ 1 — 距離測定を選ぶ**\nこの練習では二点間の距離を測るコマンドを使います。選択方法の案内を確認します。\n\n**ステップ 2 — 二つの端点を選ぶ**\n直方体の一つの直線の辺について、両端の点を選びます。コマンドに求められたときに選択を確定します。\n\n**ステップ 3 — 結果を比較する**\nコマンドの結果表示で距離と単位を読み取り、既知の辺の長さと比較します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "F9.2 の **20 × 30 × 10 mm** の直方体で、一つの辺の両端間を測ります。\n\n**確認：** 選んだ辺に応じて **20、30、10 mm** のいずれかになります。異なる場合は、対角線や違う点を選んでいないか確認します。モデルを変更する前に、選択点と単位を確認しましょう。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "測定で形状は変わりません。練習前に、使用している iCAD SX の測定コマンド名と結果の表示場所を確認します。"
-                }
-              ],
-              "quickReview": "測定選択 → 点を選択 → 結果確認",
-              "connection": "1つの練習例で配置、選択、編集、確認をつなげました。F10 では最後の理解度チェックの前にこれらの技能を復習します。"
-            }
-          },
-          "contentReview": "instructor-review-required",
-          "recapMode": "shared",
-          "displayId": "F9.8"
         }
       ]
     },
@@ -2517,7 +2454,7 @@
               "sections": [
                 {
                   "title": "1. Interface",
-                  "text": "Know the main areas of the iCAD SX screen:\n\n- Menu Bar\n- Toolbars\n- Working / Modeling Area\n- Input Area\n- Information / Message Area\n- Tree / Model Structure View"
+                  "text": "Know the main areas of the iCAD SX screen:\n\n- Title Bar\n- Menu Bar\n- Command Menu\n- Tree View\n- Workspace\n- Icon Menu\n- Item Entry\n- Key Entry\n- Tool Bar\n- Message Pane"
                 },
                 {
                   "title": "2. Mouse and Navigation",
@@ -2533,15 +2470,15 @@
                 },
                 {
                   "title": "5. Object Selection",
-                  "text": "Choose the command first. Left-click the target, check its highlight, then right-click (GO) to confirm the selection. Follow the command’s next prompt.\n\nThe **Search / Selection Type** controls what kind of object can be selected. Confirm the intended Part or Solid Component before applying the operation."
+                  "text": "Choose the command first. Left-click the target, check its highlight, then right-click (GO) to confirm the selection. Follow the command’s next prompt. Some commands, such as Delete, act as soon as you left-click.\n\nThe **Search / Selection Type** controls what kind of object can be selected. Confirm the intended Part or Solid Component before applying the operation."
                 },
                 {
                   "title": "6. Drawing Structure",
-                  "text": "A basic iCAD drawing can be understood as:\n\n**Drawing File → Parts → Model Geometry**\n\nGroups can also be used to organize related elements."
+                  "text": "A basic iCAD drawing can be understood as:\n\n**Drawing File → Parts → Model Geometry**\n\nA Part can contain child parts, and Parts combined into one design form an **assembly**."
                 },
                 {
                   "title": "7. File Operations",
-                  "text": "Remember the basic file workflow:\n\n**Create Item → Work → Save → Close**\n\nUse **Save As** when you need a separate copy or a different file name."
+                  "text": "Remember the basic file workflow:\n\n**Create New Item → Work → Save → Close**\n\nUse **Save As** when you need a separate copy or a different file name."
                 },
                 {
                   "title": "8. Basic 3D Modeling",
@@ -2549,14 +2486,14 @@
                 },
                 {
                   "title": "9. Basic Editing",
-                  "text": "**Move** → Changes an object's position\n**Copy** → Creates a duplicate\n**Delete** → Removes an object\n**Undo** → Returns to the previous state"
+                  "text": "**Move** → Changes an object's position\n**Copy** → Creates a duplicate\n**Delete** → Removes an object\n**Undo** → Returns to the previous state (Ctrl+Z)\n**Redo** → Reapplies an undone operation (Ctrl+Y)"
                 },
                 {
-                  "title": "10. Measurement",
-                  "text": "Measurement tools are used to check model information such as:\n\n- Distance\n- Length\n- Diameter\n- Angle\n\nMeasurement checks the geometry without changing it.\n\nIn the practice sequence, the remaining Box still has edges of 20, 30, and 10 mm after Move, Copy, and Delete. Use a single edge to check its size."
+                  "title": "10. Checking Your Model",
+                  "text": "After creating or editing a shape, check the result:\n\n- View the model from another direction with **3D View** or **User View**.\n- Confirm the values you entered in **Item Entry**.\n- Use **Undo (Ctrl+Z)** if something is wrong.\n\nIn the practice sequence, the remaining Box is still 20 × 30 × 10 mm after Move, Copy, and Delete. Adding dimensions to drawings is covered in a later 2D drawing course."
                 }
               ],
-              "quickReview": "- Interface\n- Navigation\n- 3D Views\n- Coordinates\n- Selection\n- Drawing Structure\n- File Operations\n- 3D Modeling\n- Editing\n- Measurement",
+              "quickReview": "- Interface\n- Navigation\n- 3D Views\n- Coordinates\n- Selection\n- Drawing Structure\n- File Operations\n- 3D Modeling\n- Editing\n- Checking Your Model",
               "connection": "Use the final knowledge check to review the concepts taught here. Practical tasks still require practice in iCAD SX; answering the questions alone does not demonstrate command proficiency."
             },
             "ja": {
@@ -2565,7 +2502,7 @@
               "sections": [
                 {
                   "title": "1. 画面構成",
-                  "text": "iCAD SX の主な画面領域を確認しましょう。\n\n- メニューバー\n- ツールバー\n- 作業／モデリング領域\n- 入力領域\n- 情報／メッセージ領域\n- ツリー／モデル構成ビュー"
+                  "text": "iCAD SX の主な画面領域を確認しましょう。\n\n- タイトルバー\n- メニューバー\n- コマンドメニュー\n- ツリービュー\n- 作業領域\n- アイコンメニュー\n- 項目入力\n- キー入力\n- ツールバー\n- メッセージ領域"
                 },
                 {
                   "title": "2. マウスと表示操作",
@@ -2581,11 +2518,11 @@
                 },
                 {
                   "title": "5. 対象の選択",
-                  "text": "最初にコマンドを選びます。対象を左クリックし、ハイライトを確認して右クリック（GO）で選択を確定します。その後はコマンドの案内に従います。\n\n**検索・選択タイプ**は選択できる対象の種類を制御します。操作を適用する前に、目的のパーツまたは構成要素であることを確認します。"
+                  "text": "最初にコマンドを選びます。対象を左クリックし、ハイライトを確認して右クリック（GO）で選択を確定します。その後はコマンドの案内に従います。削除のように、左クリックですぐに実行されるコマンドもあります。\n\n**検索・選択タイプ**は選択できる対象の種類を制御します。操作を適用する前に、目的のパーツまたは構成要素であることを確認します。"
                 },
                 {
                   "title": "6. 図面構成",
-                  "text": "基本的な iCAD 図面の構成は次のように理解できます。\n\n**図面ファイル → 部品 → モデル形状**\n\nグループを使って関連する要素を整理することもできます。"
+                  "text": "基本的な iCAD 図面の構成は次のように理解できます。\n\n**図面ファイル → 部品 → モデル形状**\n\n部品は子部品を含むことができ、複数の部品を組み合わせた設計が**アセンブリ**です。"
                 },
                 {
                   "title": "7. ファイル操作",
@@ -2597,14 +2534,14 @@
                 },
                 {
                   "title": "9. 基本編集",
-                  "text": "**移動** → 対象の位置を変える\n**コピー** → 複製を作成する\n**削除** → 対象を取り除く\n**元に戻す** → 前の状態に戻す"
+                  "text": "**移動** → 対象の位置を変える\n**コピー** → 複製を作成する\n**削除** → 対象を取り除く\n**元に戻す** → 前の状態に戻す（Ctrl+Z）\n**やり直し** → 取り消した操作をやり直す（Ctrl+Y）"
                 },
                 {
-                  "title": "10. 測定",
-                  "text": "測定ツールで次のようなモデル情報を確認します。\n\n- 距離\n- 長さ\n- 直径\n- 角度\n\n測定は形状を変更せずに確認します。\n\n練習で移動、コピー、削除を行った後も、残ったボックスの辺は 20、30、10 mm です。1本の辺を選んで寸法を確認します。"
+                  "title": "10. モデルの確認",
+                  "text": "形状を作成・編集した後は、結果を確認します。\n\n- **3D ビュー**や**ユーザビュー**で別の方向からモデルを見る。\n- **項目入力**で入力した値を確認する。\n- 間違えた場合は**元に戻す（Ctrl+Z）**を使う。\n\n練習で移動、コピー、削除を行った後も、残ったボックスは 20 × 30 × 10 mm のままです。図面への寸法の記入は、後の 2D 図面コースで学びます。"
                 }
               ],
-              "quickReview": "- 画面構成\n- 表示操作\n- 3D ビュー\n- 座標\n- 選択\n- 図面構成\n- ファイル操作\n- 3D モデリング\n- 編集\n- 測定",
+              "quickReview": "- 画面構成\n- 表示操作\n- 3D ビュー\n- 座標\n- 選択\n- 図面構成\n- ファイル操作\n- 3D モデリング\n- 編集\n- モデルの確認",
               "connection": "最後の理解度チェックで学んだ内容を確認します。実際の操作には iCAD SX での練習が必要であり、問題への回答だけで操作技能を確認できるわけではありません。"
             }
           },
@@ -2631,7 +2568,7 @@
               "sections": [
                 {
                   "title": "How to Complete the Check",
-                  "text": "Choose one answer, then select Check Answer. Read the feedback. Retry an incorrect answer or continue after a correct answer.\n\nUse Return to lesson if you want to review the instructions. Your current question is retained while you stay in this lesson."
+                  "text": "Choose one answer, then select Check Answer. Read the feedback. Retry an incorrect answer, or select Next question after a correct answer.\n\nThe check stays open until every question is answered correctly. After the last question, select Complete course."
                 }
               ],
               "quickReview": "Choose an Answer → Check Answer → Read Feedback → Continue"
@@ -2642,7 +2579,7 @@
               "sections": [
                 {
                   "title": "理解度チェックの進め方",
-                  "text": "答えを1つ選び、「回答を確認」を選択します。解説を読み、不正解の場合は再回答し、正解したら次の問題へ進みます。\n\n説明を確認したい場合は「レッスンに戻る」を選択します。同じレッスン内では現在の問題が保持されます。"
+                  "text": "答えを1つ選び、「回答を確認」を選択します。解説を読み、不正解の場合は再回答し、正解したら「次の問題」を選択します。\n\nすべての問題に正解するまで、チェックは閉じません。最後の問題の後は「コースを完了」を選択します。"
                 }
               ],
               "quickReview": "回答を選ぶ → 回答を確認 → 解説を読む → 次へ進む"

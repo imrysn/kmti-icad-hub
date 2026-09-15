@@ -472,33 +472,30 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     const renderer = canonical.renderer;
                     if (canonical.id === 'F4.1') {
                       const original = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === 'lesson-4-1')!;
-                      return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                      return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                         onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                         tutorial={<FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial"><DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...original, content: original.content || [] })} /></div></FoundationCompletionContext.Provider>} />;
                     }
-                    if (canonical.id === 'F3.6') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (canonical.id === 'F3.6') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<div className="foundations-zoom-tutorial"><RotateViewInteractiveLesson /></div>} />;
-                    if (canonical.id === 'F3.5') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (canonical.id === 'F3.5') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<div className="foundations-zoom-tutorial"><PanInteractiveLesson /></div>} />;
-                    if (canonical.id === 'F3.3') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
-                      onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
-                      tutorial={<div className="foundations-zoom-tutorial"><ZoomInOutInteractiveLesson /></div>} />;
-                    if (canonical.id === 'F2.9') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (canonical.id === 'F2.9') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<FoundationCompletionContext.Provider value={null}><ToolBarsLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
-                    if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (canonical.id === 'F2.1') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={false}
                       tutorial={<FoundationCompletionContext.Provider value={null}><IcadInterfaceLesson tutorialOnly /></FoundationCompletionContext.Provider>} />;
-                    if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson}
                       onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'} />;
                     const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === renderer);
                     const preservedTutorial = renderer.startsWith('basic-op-')
                       ? <BasicOperationLesson subLessonId={renderer} />
                       : source ? <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...source, content: source.content || [] })} /> : null;
-                    return <FoundationReadingLesson key={canonical.id + language} lesson={canonical}
+                    return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(canonical.id)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'}
                       tutorial={preservedTutorial && <FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial">{preservedTutorial}</div></FoundationCompletionContext.Provider>} />;
 

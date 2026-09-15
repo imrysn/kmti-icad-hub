@@ -17,18 +17,6 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       })),
     }];
   }
-  if (lessonId === 'F9.13') {
-    const ja = language === 'ja';
-    const labels = ja ? ['モデルの大きさを変更する', '寸法や距離を確認する', '新しい部品を作成する', '表示を変更する']
-      : ['To change the size of the model', 'To check dimensions or distances', 'To create a new part', 'To change the view'];
-    return [{
-      id: 'F9.13-knowledge-check', prompt: ja ? '測定ツールの主な目的は何ですか？' : 'What is the main purpose of the Measurement tool?',
-      choices: labels.map((label, index) => ({
-        id: `F9.13-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
-        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
-      })),
-    }];
-  }
   // Stable ID for the displayed F9.7 Basic Delete.
   if (lessonId === 'F9.11') {
     const ja = language === 'ja';
@@ -170,13 +158,13 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       })),
     }];
   }
-  // Stable ID for the displayed F7.3 Introduction to Groups.
+  // Stable ID for the displayed F7.3 Introduction to Assemblies.
   if (lessonId === 'F7.6') {
     const ja = language === 'ja';
-    const labels = ja ? ['表示方向を変更する', '関連する要素を一つのまとまりにする', '座標値を変更する', '図面を保存する']
-      : ['To change the view direction', 'To combine related elements into one organized set', 'To change coordinate values', 'To save the drawing'];
+    const labels = ja ? ['一つの表示方向', '複数の部品を組み合わせた一つの設計', '座標値', 'シェーディングモード']
+      : ['A single view direction', 'Several Parts combined into one design', 'A coordinate value', 'A shading mode'];
     return [{
-      id: 'F7.6-knowledge-check', prompt: ja ? 'iCAD SX のグループの目的は何ですか？' : 'What is the purpose of a Group in iCAD SX?',
+      id: 'F7.6-knowledge-check', prompt: ja ? 'iCAD SX のアセンブリとは何ですか？' : 'What is an assembly in iCAD SX?',
       choices: labels.map((label, index) => ({
         id: `F7.6-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
         feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
@@ -246,7 +234,7 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
   }
   if (lessonId === 'F5.6') {
     const ja = language === 'ja';
-    const labels = ja ? ["ズーム","Change 3D Part Layout","シェーディング","保存"] : ["Zoom","Change 3D Part Layout","Shading","Save"];
+    const labels = ja ? ["ズーム","パーツのレイアウトを変更する","シェーディング","保存"] : ["Zoom","Change 3D Part Layout","Shading","Save"];
     return [{
       id: 'F5.6-knowledge-check', prompt: ja ? "0, 0, 0 に配置した後で部品の原点を変更するには、何を使いますか？" : "You placed a shape at 0, 0, 0 and now want to change the part’s origin. What should you use?",
       choices: labels.map((label, index) => ({
@@ -279,8 +267,8 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
   }
   if (lessonId === 'F4.12') {
     const ja = language === 'ja';
-    const labels = ja ? ['CG表示 線なし', 'CG表示 線あり', '透過表示', 'WIRE表示']
-      : ['CG View – No Lines', 'CG View – With Lines', 'Transparent Display', 'Wire Display'];
+    const labels = ja ? ['CG表示 縁なし', 'CG表示 縁あり', '透過表示', 'CG表示 隠線']
+      : ['CG Display – No Edges', 'CG Display – With Edges', 'Transparent Display', 'CG Display – Hidden Lines Removed'];
     return [{
       id: 'F4.12-knowledge-check', prompt: ja ? 'モデルの面の奥にある形状を確認するには、どのシェーディングモードを使いますか？' : 'Which Shading mode should you use when you need to see geometry behind a model surface?',
       choices: labels.map((label, index) => ({
@@ -334,17 +322,6 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       }))
     }];
   }
-  if (lessonId === 'F3.3') {
-    const ja = language === 'ja';
-    const labels = ja ? ['モデルが実際に大きくなる', 'モデルをより近くで見ることができる', 'モデルが移動する', 'モデルが削除される'] : ['The model becomes physically larger', 'You see a closer view of the model', 'The model is moved', 'The model is deleted'];
-    return [{
-      id: 'F3.3-knowledge-check', prompt: ja ? 'ズームインすると、どうなりますか？' : 'What happens when you zoom in?',
-      choices: labels.map((label, index) => ({
-        id: `F3.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
-        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.'),
-      }))
-    }];
-  }
   if (lessonId === 'F3.1') {
     const ja = language === 'ja';
     const labels = ja ? ['マウスの左ボタン', 'マウスホイール', 'キーボードのキー', 'スクロールバー'] : ['Left mouse button', 'Mouse wheel', 'Keyboard key', 'Scroll bar'];
@@ -369,10 +346,10 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
   }
   if (lessonId === 'F2.1') {
     const ja = language === 'ja';
-    const labels = ja ? ['メニューバー', '作業／モデリング領域', '情報領域', 'ヘルプメニュー']
-      : ['Menu Bar', 'Working / Modeling Area', 'Information Area', 'Help Menu'];
+    const labels = ja ? ['メニューバー', '作業領域', 'メッセージ領域', 'ヘルプメニュー']
+      : ['Menu Bar', 'Workspace', 'Message Pane', 'Help Menu'];
     return [{
-      id: 'F2.1-knowledge-check', prompt: ja ? 'モデルや図面を表示し、操作する主な領域はどれですか？' : 'Which area is used to view and work with your 3D model or 2D Detailing?',
+      id: 'F2.1-knowledge-check', prompt: ja ? '3D モデリングやアセンブリの操作を行う領域はどれですか？' : 'Which area is used for 3D modeling and assembly operations?',
       choices: labels.map((label, index) => ({
         id: `F2.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
         feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? 'もう一度レッスンの内容を確認して、回答してください。' : 'Review the lesson and try again.'),

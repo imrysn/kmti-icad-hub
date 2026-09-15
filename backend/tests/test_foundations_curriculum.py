@@ -22,7 +22,7 @@ def foundations(db, trainee_user):
 
 def test_shared_registry_structure_and_conservative_aliases():
     assert [module["id"] for module in MODULES] == [f"F{i}" for i in range(1, 11)]
-    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 37
+    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 36
     assert completed_lesson_ids(["lesson-3-1", "F3.3", "lesson-4-2", "lesson-13-1"]) == {"F4.6"}
     assert resolve_lesson_id("lesson-3-1") is None
     assert resolve_lesson_id("basic-op-cone") is None
@@ -38,10 +38,10 @@ def test_progress_merges_course_references_without_destroying_records(db, traine
     ]:
         db.add(QuizScore(user_id=trainee_user.id, course_id=course_id, lesson_id=lesson_id, score=score))
     db.commit()
-    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 37 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 36 * 100, 1)
     update_user_course_progress(db, trainee_user.id, str(foundations.id))
     assert db.query(QuizScore).count() == 5
-    assert course_service.get_user_progress(db, foundations.course_type, str(trainee_user.id)).progress_percentage == round(1 / 37 * 100, 1)
+    assert course_service.get_user_progress(db, foundations.course_type, str(trainee_user.id)).progress_percentage == round(1 / 36 * 100, 1)
     assert len(course_service.get_course_lessons(db, str(foundations.id))) == 10
 
 
@@ -52,7 +52,7 @@ def test_completion_accepts_curriculum_ids_without_database_lesson_rows(client, 
     assert response.status_code == 200, response.text
     score = db.query(QuizScore).filter(QuizScore.user_id == trainee_user.id).one()
     assert score.lesson_id == canonical
-    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 37 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 36 * 100, 1)
 
 
 @pytest.mark.parametrize("lesson_id", ["F11.1", "F1.99", "lesson-13-1", "basic-op-cone", "mirror"])
@@ -79,5 +79,5 @@ def test_lesson_api_exposes_only_new_bilingual_tree(client, foundations, trainee
     assert response.status_code == 200
     tree = response.json()
     assert [item["id"] for item in tree] == [f"F{i}" for i in range(1, 11)]
-    assert sum(len(item["children"]) for item in tree) == 37
+    assert sum(len(item["children"]) for item in tree) == 36
     assert tree[0]["children"][0]["title"] == "F1.1 iCAD SX とは？"

@@ -23,13 +23,13 @@ const toolbarRegions: readonly Region[] = [
   [647, 42, 160, 30], // Screen Operations
   [814, 42, 199, 30], // 3D View
   [542, 42, 99, 30], // User View
-  [233, 73, 235, 29], // Edit
+  [476, 42, 60, 30], // Edit (Undo, Redo)
   [1021, 42, 132, 30], // Shading
-  [1159, 42, 172, 30], // Section Display
+  [404, 42, 64, 30], // Section Display
   [136, 73, 91, 29], // 2D Standard Screen
-  [404, 42, 64, 30], // System Information
-  [476, 42, 60, 30], // Screen Memory
-  [476, 73, 242, 29], // Entry Control
+  [136, 105, 748, 23], // System Information (line type, color, layer… bar)
+  [1159, 42, 172, 30], // Screen Memory
+  [233, 73, 485, 29], // Entry Control
 ];
 
 // Land on the visible controls at the top of panels, rather than their empty space.

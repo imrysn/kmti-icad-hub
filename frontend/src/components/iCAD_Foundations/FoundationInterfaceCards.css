@@ -19,6 +19,8 @@
 .foundations-consistent-lesson .foundation-interface-cards .foundation-native-interface-icon { display: block; width: 100%; max-width: 280px; height: var(--foundation-detail-icon-size); max-height: 100%; flex-shrink: 0; }
 .foundation-interface-cards--toolbar .foundations-uses__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .foundation-interface-cards--toolbar .foundations-use-card__icon-frame { container-type: inline-size; }
+/* Let the button shrink to its grid cell so wide toolbar strips (Entry Control) scale down instead of overflowing. */
+.foundation-interface-cards--toolbar .foundation-interface-icon-button { min-width: 0; max-width: 100%; }
 /* Use one shared height that also fits the longest 264 × 34 toolbar strip. */
 .foundations-consistent-lesson .foundation-interface-cards--toolbar .foundation-toolbar-group-icon {
   --toolbar-strip-height: min(48px, calc(100cqi * 34 / 264));
