@@ -17,13 +17,25 @@ export function resolveProfessionalLesson(id: string): ProfessionalLesson | unde
   return PROFESSIONAL_LESSONS.find(lesson => lesson.id === id);
 }
 
+const professionalRenderCache = new Map<string, FoundationLesson>();
+
 /** Professional content under its Foundations source id, so id-based layouts and questions match Foundations. Progress still uses the P id. */
 export function professionalRenderLesson(id: string): FoundationLesson | undefined {
+  if (professionalRenderCache.has(id)) {
+    return professionalRenderCache.get(id);
+  }
   const lesson = resolveProfessionalLesson(id);
   if (!lesson) return undefined;
-  if (!lesson.sourceLessonId) return lesson;
+  if (!lesson.sourceLessonId) {
+    professionalRenderCache.set(id, lesson);
+    return lesson;
+  }
   const source = resolveFoundationLesson(lesson.sourceLessonId);
-  return source ? { ...lesson, id: source.id, moduleId: source.moduleId } : undefined;
+  const rendered = source ? { ...lesson, id: source.id, moduleId: source.moduleId } : undefined;
+  if (rendered) {
+    professionalRenderCache.set(id, rendered);
+  }
+  return rendered;
 }
 
 export function createProfessionalLessons(language: FoundationLanguage = 'en'): Lesson[] {

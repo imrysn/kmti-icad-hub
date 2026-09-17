@@ -19,8 +19,9 @@ describe('iCAD Professional curriculum', () => {
       ['P5.1', 'F5.1'], ['P5.2', 'F5.4'], ['P5.3', 'F5.6'],
       ['P6.1', 'F8.1'], ['P6.2', 'F8.3'], ['P6.3', 'F8.5'],
       ['P7.1', 'F9.5'], ['P7.2', 'F9.6'], ['P7.3', 'F9.7'], ['P7.4', null], ['P7.5', null],
+      ['P8.1', 'F9.9'], ['P8.2', 'F9.10'], ['P8.3', null], ['P8.4', null], ['P8.5', null], ['P8.6', null], ['P8.7', 'F9.11'],
     ]);
-    for (const lesson of PROFESSIONAL_LESSONS.filter(item => item.sourceLessonId && item.moduleId !== 'P7')) {
+    for (const lesson of PROFESSIONAL_LESSONS.filter(item => item.sourceLessonId && !['P7', 'P8'].includes(item.moduleId))) {
       const source = resolveFoundationLesson(lesson.sourceLessonId!)!;
       expect(lesson.title).toEqual(source.title);
       expect(lesson.content).toEqual(source.content);
@@ -31,6 +32,16 @@ describe('iCAD Professional curriculum', () => {
     expect(createProfessionalLessons('en')[6]).toMatchObject({ title: 'P7 Creating Basic Shapes' });
     expect(createProfessionalLessons('en')[6].children!.map(child => child.title)).toEqual(['P7.1 Box', 'P7.2 Cylinder', 'P7.3 Polygon', 'P7.4 Cone', 'P7.5 Torus']);
     expect(createProfessionalLessons('ja')[6].children!.map(child => child.title)).toEqual(['P7.1 直方体', 'P7.2 円柱', 'P7.3 正多角柱', 'P7.4 円錐台', 'P7.5 トーラス']);
+  });
+
+  it('builds the P8 sidebar titles in both languages', () => {
+    expect(createProfessionalLessons('en')[7]).toMatchObject({ title: 'P8 Move, Copy, Delete' });
+    expect(createProfessionalLessons('en')[7].children!.map(child => child.title)).toEqual([
+      'P8.1 Move', 'P8.2 Copy', 'P8.3 Rotate', 'P8.4 Rotate Copy', 'P8.5 Mirror', 'P8.6 Mirror Copy', 'P8.7 Delete'
+    ]);
+    expect(createProfessionalLessons('ja')[7].children!.map(child => child.title)).toEqual([
+      'P8.1 移動', 'P8.2 複写', 'P8.3 回転', 'P8.4 回転複写', 'P8.5 ミラー', 'P8.6 ミラー複写', 'P8.7 削除'
+    ]);
   });
 
   it('renders copies under their Foundations source id and new shapes as themselves', () => {
@@ -62,5 +73,19 @@ describe('iCAD Professional curriculum', () => {
     expect(container.querySelectorAll('.foundations-use-card')).toHaveLength(6);
     const fields = container.querySelector('.foundation-modeling-size-fields')!;
     for (const label of labels) expect(fields.textContent).toContain(label);
+  });
+
+  it.each([
+    ['P8.1', 'move', 4],
+    ['P8.2', 'copy', 4],
+    ['P8.3', 'rotate', 4],
+    ['P8.4', 'rotateCopy', 4],
+    ['P8.5', 'mirror', 4],
+    ['P8.6', 'mirrorCopy', 4],
+    ['P8.7', 'deleting', 4]
+  ] as const)('renders consistent step cards for %s (%s)', (id, prop, count) => {
+    const lesson = resolveProfessionalLesson(id)!;
+    const { container } = render(<FoundationModelingProcess text={lesson.content.en.sections![0].text} {...{ [prop]: true }} />);
+    expect(container.querySelectorAll('.foundations-use-card')).toHaveLength(count);
   });
 });

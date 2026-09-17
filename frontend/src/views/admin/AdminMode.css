@@ -1886,7 +1886,7 @@
   align-items: center;
 }
 
-.section-header h2 {
+.files-list-container .section-header h2 {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-white);

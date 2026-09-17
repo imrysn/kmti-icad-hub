@@ -18,27 +18,31 @@ EXPECTED = [
     ("P5.1", "F5.1"), ("P5.2", "F5.4"), ("P5.3", "F5.6"),
     ("P6.1", "F8.1"), ("P6.2", "F8.3"), ("P6.3", "F8.5"),
     ("P7.1", "F9.5"), ("P7.2", "F9.6"), ("P7.3", "F9.7"), ("P7.4", None), ("P7.5", None),
+    ("P8.1", "F9.9"), ("P8.2", "F9.10"), ("P8.3", None), ("P8.4", None), ("P8.5", None), ("P8.6", None), ("P8.7", "F9.11"),
 ]
 
 
 def test_professional_registry_copies_the_foundations_lessons():
-    assert [module["id"] for module in MODULES] == ["P1", "P2", "P3", "P4", "P5", "P6", "P7"]
+    assert [module["id"] for module in MODULES] == ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"]
     assert [(lesson["id"], lesson.get("sourceLessonId")) for lesson in LESSONS] == EXPECTED
     for lesson in LESSONS:
         assert lesson["moduleId"] == lesson["id"].split(".")[0]
         for language in ("en", "ja"):
             assert lesson["content"][language]["sections"]
         source = FOUNDATION_LESSONS.get(lesson.get("sourceLessonId"))
-        if source and lesson["moduleId"] != "P7":
+        if source and lesson["moduleId"] not in ("P7", "P8"):
             assert lesson["title"] == source["title"]
             assert lesson["content"] == source["content"]
         elif source:
-            # P7 copies keep the layout but point their cross-references at Professional lessons.
+            # P7 & P8 copies keep the layout but point their cross-references at Professional lessons.
             assert [len(lesson["content"][lang]["sections"]) for lang in ("en", "ja")] == [len(source["content"][lang]["sections"]) for lang in ("en", "ja")]
             assert "F8." not in json.dumps(lesson["content"], ensure_ascii=False)
             assert "F9." not in json.dumps(lesson["content"], ensure_ascii=False)
     assert lesson_tree("en")[6]["children"][4]["title"] == "P7.5 Torus"
-    assert [lesson["renderer"] for lesson in LESSONS[-2:]] == ["basic-op-cone", "basic-op-torus"]
+    assert lesson_tree("en")[7]["children"][6]["title"] == "P8.7 Delete"
+    assert [lesson["renderer"] for lesson in LESSONS[-7:]] == [
+        "basic-op-move", "basic-op-copy", "basic-op-rotate", "basic-op-rotateCopy", "basic-op-mirror", "basic-op-mirrorCopy", "basic-op-delete"
+    ]
 
 
 def test_professional_course_is_created_once_and_lists_its_lessons(db):

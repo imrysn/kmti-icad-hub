@@ -496,9 +496,19 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     if (!renderer || canonical.id === 'F5.4') return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson}
                       onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'} />;
-                    const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === renderer);
-                    const preservedTutorial = renderer.startsWith('basic-op-')
-                      ? <BasicOperationLesson subLessonId={renderer} />
+                    const op2Map: Record<string, string> = {
+                      'basic-op-move': 'lesson-6-1',
+                      'basic-op-rotate': 'lesson-6-2',
+                      'basic-op-mirror': 'lesson-6-3',
+                      'basic-op-copy': 'lesson-6-4',
+                      'basic-op-rotateCopy': 'lesson-6-5',
+                      'basic-op-mirrorCopy': 'lesson-6-6',
+                      'basic-op-delete': 'lesson-6-7',
+                    };
+                    const effectiveRenderer = op2Map[renderer] || renderer;
+                    const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === effectiveRenderer);
+                    const preservedTutorial = effectiveRenderer.startsWith('basic-op-')
+                      ? <BasicOperationLesson subLessonId={effectiveRenderer} />
                       : source ? <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...source, content: source.content || [] })} /> : null;
                     return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'}

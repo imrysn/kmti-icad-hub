@@ -26,13 +26,18 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
     [registerTextRaw, translateSteps]
   );
 
+  const stopRef = useRef(stop);
+  stopRef.current = stop;
+  const registerTextRef = useRef(registerText);
+  registerTextRef.current = registerText;
+
   const defaultTextJSON = defaultText ? JSON.stringify(defaultText) : '';
 
   useEffect(() => {
     if (defaultTextJSON) {
-      registerText(JSON.parse(defaultTextJSON));
+      registerTextRef.current(JSON.parse(defaultTextJSON));
     }
-  }, [subLessonId, defaultTextJSON, registerText]);
+  }, [subLessonId, defaultTextJSON]);
 
   useEffect(() => {
     const lessonContainer = containerRef.current;
@@ -102,10 +107,10 @@ export const useLessonCore = (subLessonId: string, defaultText?: string[]) => {
     window.addEventListener('scroll', handleScroll, true);
     return () => {
         window.removeEventListener('scroll', handleScroll, true);
-        stop(); // Stop speaking when navigating away
-        registerText([]); // Clear global registered text
+        stopRef.current(); // Stop speaking when navigating away
+        registerTextRef.current([]); // Clear global registered text
     };
-  }, [subLessonId, stop, registerText]);
+  }, [subLessonId]);
 
   // Auto-scroll logic for TTS
   useEffect(() => {

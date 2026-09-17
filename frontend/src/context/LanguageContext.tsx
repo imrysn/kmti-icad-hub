@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { api } from '../services/api';
 import { dictionaries, enTranslations, jaTranslations } from '../config/translations';
@@ -72,14 +72,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return (saved === 'ja' || saved === 'en') ? saved : 'en';
   });
 
-  const setLanguage = (lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     setLangState(lang);
     localStorage.setItem('kmti_lang', lang);
     axios.defaults.headers.common['Accept-Language'] = lang;
     if (api && api.defaults && api.defaults.headers) {
       api.defaults.headers.common['Accept-Language'] = lang;
     }
-  };
+  }, []);
 
   useEffect(() => {
     axios.defaults.headers.common['Accept-Language'] = language;
@@ -91,11 +91,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, [language]);
 
-  const t = (key: string): string => {
+  const t = useCallback((key: string): string => {
     return dictionaries[language][key] || dictionaries['en'][key] || key;
-  };
+  }, [language]);
 
-  const translateContent = (content: string): string => {
+  const translateContent = useCallback((content: string): string => {
     const match = content.match(/^(\s*)([\s\S]*?)(\s*)$/);
     if (!match || !match[2]) return content;
 
@@ -119,10 +119,17 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return translatedValue
       ? `${leadingWhitespace}${translatedValue}${trailingWhitespace}`
       : content;
-  };
+  }, [language]);
+
+  const contextValue = useMemo(() => ({
+    language,
+    setLanguage,
+    t,
+    translateContent,
+  }), [language, setLanguage, t, translateContent]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, translateContent }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );

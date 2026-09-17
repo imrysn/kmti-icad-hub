@@ -1562,6 +1562,417 @@
           "recapMode": "embedded-or-reading-review"
         }
       ]
+    },
+    {
+      "id": "P8",
+      "title": {
+        "en": "Move, Copy, Delete",
+        "ja": "移動・複写・削除"
+      },
+      "lessons": [
+        {
+          "id": "P8.1",
+          "moduleId": "P8",
+          "title": {
+            "en": "Move",
+            "ja": "移動"
+          },
+          "type": "video",
+          "renderer": "basic-op-move",
+          "video": "basicMove",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Move command changes an object’s position without changing its size or shape. In iCAD SX, you can move an entity by entering displacement distances (X, Y, Z) in Item Entry or by selecting a reference point on the entity and clicking the desired destination location.",
+              "practice": "By the end of this lesson, you should be able to select an entity and move it using either displacement values in Item Entry or interactive point-to-point relocation.",
+              "sections": [
+                {
+                  "title": "How to Move an Object",
+                  "text": "**Step 1 — Select Move from the Icon Menu**\nIn the Icon Menu on the right, open **Move, Copy, Delete (移動コピー削除)** and select **Move (平行移動)**.\n\n**Step 2 — Left-Click on the Entity to Move**\nLeft-click on the entity you want to move to select it.\n\n**Step 3 — Specify Movement Distance in Item Entry**\nIn **Item Entry**, specify the movement distance on the **X, Y, and Z-axis** (e.g. **MOVELENGX: 10, MOVELENGY: 60, MOVELENGZ: 10** / Japanese: **移動量X: 10, 移動量Y: 60, 移動量Z: 10**), then press **Enter** to move the entity.\n\n**Step 4 — Point-to-Point Relocation (Alternative)**\nAlternatively, after selecting the entity in Step 2, select a reference point on the entity (e.g. a corner vertex), then left-click on the desired destination location."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Try both move methods on a practice Box in your drawing:\n\n**Method 1 (Item Entry Distance):**\n1. Select **Move** from the Icon Menu.\n2. Left-click the Box to select it.\n3. In Item Entry, enter **X: 10, Y: 60, Z: 10** and press **Enter**.\n\n**Method 2 (Point-to-Point):**\n1. Select **Move** and left-click the Box.\n2. Left-click a bottom corner vertex on the Box as your base point.\n3. Left-click the target point in your workspace to place it.\n\n**Check:** The entity shifts to the desired position while preserving its exact shape and dimensions."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "In Item Entry, fields are labeled **MOVELENGX, MOVELENGY, MOVELENGZ** (Japanese: **移動量X, 移動量Y, 移動量Z**). Movement values are relative distance offsets from the current position, not absolute world coordinates. If you ever make a mistake, press **Ctrl+Z** to undo."
+                }
+              ],
+              "quickReview": "Icon Menu (移動コピー削除) → Move → Left-Click Entity → Enter X, Y, Z Distance (or Pick Point & Destination) → Enter",
+              "connection": "Next, learn how to duplicate entities with P8.2 Copy."
+            },
+            "ja": {
+              "explanation": "移動（Move）コマンドは、形状や大きさを変えずに 3D オブジェクトの位置を変更します。iCAD SX では、項目入力欄で X、Y、Z の移動量を直接入力する方法と、対象上の基準点を選択して目的の位置をクリックする点指定移動の 2 通りの方法があります。",
+              "practice": "このレッスンの終了時には、項目入力欄への移動量数値入力、および基準点と目的位置のクリックによる点指定移動の両方を行えるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの移動手順",
+                  "text": "**ステップ 1 — アイコンメニューから移動を選択する**\n画面右側のアイコンメニューで **移動コピー削除** を開き、**移動（平行移動）** を選択します。\n\n**ステップ 2 — 移動する対象を左クリックする**\n移動したい対象（エンティティ）を左クリックして選択します。選択された対象が強調表示されます。\n\n**ステップ 3 — 項目入力で移動量を指定して Enter を押す**\n**項目入力**で X、Y、Z 軸の移動量（例：**移動量X: 10, 移動量Y: 60, 移動量Z: 10** / 英語: **MOVELENGX: 10, MOVELENGY: 60, MOVELENGZ: 10**）を指定し、**Enter** キーを押して移動を実行します。\n\n**ステップ 4 — 点指定による移動（代替手順）**\nまたは、ステップ 2 で対象を選択した後、対象上の基準点（角の頂点など）を左クリックし、続けて希望する移動先の位置を左クリックして配置します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "練習用図面の直方体で 2 通りの移動方法を試してみましょう。\n\n**方法 1（移動量数値入力）：**\n1. アイコンメニューから **移動** を選択します。\n2. 直方体を左クリックして選択します。\n3. 項目入力に **移動量X: 10, 移動量Y: 60, 移動量Z: 10** を入力し、**Enter** を押します。\n\n**方法 2（点指定移動）：**\n1. **移動** を選択し、直方体を左クリックします。\n2. 直方体の底面角の頂点を基準点として左クリックします。\n3. 作業領域内の目的の位置を左クリックして配置します。\n\n**確認：** 直方体の寸法や形状を維持したまま、指定した位置へ正確に移動することを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "項目入力欄のラベルは英語表記で **MOVELENGX, MOVELENGY, MOVELENGZ**、日本語表記で **移動量X, 移動量Y, 移動量Z** と表示されます。これらは現在位置からの相対的な移動距離であり、絶対座標ではありません。誤った場合は **Ctrl+Z** で直前に戻せます。"
+                }
+              ],
+              "quickReview": "アイコンメニュー（移動コピー削除） → 移動 → 対象を左クリック → 移動量入力（または基準点と目的位置をクリック） → Enter",
+              "connection": "次は P8.2 複写に進み、オブジェクトを複製する方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review",
+          "sourceLessonId": "F9.9"
+        },
+        {
+          "id": "P8.2",
+          "moduleId": "P8",
+          "title": {
+            "en": "Copy",
+            "ja": "複写"
+          },
+          "type": "video",
+          "renderer": "basic-op-copy",
+          "video": "basicCopy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Copy creates one or more duplicates while keeping the original object intact. This lesson uses a parallel copy with a specified distance.",
+              "practice": "By the end of this lesson, you should be able to copy a 3D object by a specified distance and set the copy count.",
+              "sections": [
+                {
+                  "title": "How to Copy an Object",
+                  "text": "**Step 1 — Select Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Copy (複写)**.\n\n**Step 2 — Select and Confirm**\nLeft-click the object you want to copy, then right-click (GO) to confirm the selection.\n\n**Step 3 — Enter Distance and Count**\nIn Item Entry, enter X, Y, and Z movement distances and specify the number of copies.\n\n**Step 4 — Apply and Check**\nPress Enter to complete the command. Check that both the original and the new copy appear."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your practice object and copy it with **X = 50, Y = 0, Z = 0** and count = 1.\n\n**Check:** There are now two identical objects: the original and one duplicate displaced 50 mm in the X direction."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Unlike Move, Copy preserves the original entity and creates new duplicates at the specified offset distance."
+                }
+              ],
+              "quickReview": "Icon Menu → Copy → Select Object (GO) → Enter Distance & Count → Enter",
+              "connection": "Next, explore turning objects with P8.3 Rotate."
+            },
+            "ja": {
+              "explanation": "複写（Copy）は、元のオブジェクトを残したまま一つまたは複数の複製を作成するコマンドです。このレッスンでは指定した距離で平行複写を行います。",
+              "practice": "このレッスンの終了時には、指定した距離と個数でオブジェクトを複写できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの複写手順",
+                  "text": "**ステップ 1 — 複写を選択する**\nアイコンメニューの**移動・複写・削除**から**複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複写したい対象を左クリックし、右クリック（GO）で選択を完了します。\n\n**ステップ 3 — 距離と個数を入力する**\n項目入力欄で X、Y、Z 軸の距離と必要な複写個数を指定します。\n\n**ステップ 4 — 適用して確認する**\nEnter キーを押して複写を実行します。元のオブジェクトと新しい複製が両方配置されていることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "練習用オブジェクトを選択し、**X = 50, Y = 0, Z = 0**、個数 **1** を指定して複写します。\n\n**確認：** 元のオブジェクトに加えて、X 方向に 50 mm 離れた位置にもう一つの同一オブジェクトが作成されることを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "移動とは異なり、複写では元のエンティティが保持され、指定された間隔で複製が追加されます。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → 複写 → 対象選択（GO） → 距離と個数入力 → Enter",
+              "connection": "次は P8.3 回転に進み、オブジェクトの向きを変える方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review",
+          "sourceLessonId": "F9.10"
+        },
+        {
+          "id": "P8.3",
+          "moduleId": "P8",
+          "title": {
+            "en": "Rotate",
+            "ja": "回転"
+          },
+          "type": "video",
+          "renderer": "basic-op-rotate",
+          "video": "basicRotate",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Rotate turns a 3D object around a specified axis to a desired angle without changing its size or shape.",
+              "practice": "By the end of this lesson, you should be able to define a rotation axis and rotate a 3D object to a specific angle.",
+              "sections": [
+                {
+                  "title": "How to Rotate an Object",
+                  "text": "**Step 1 — Select Rotate**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Rotate (回転)**.\n\n**Step 2 — Select the Object**\nLeft-click the object you want to rotate, then right-click (GO) to confirm.\n\n**Step 3 — Set the Axis of Rotation**\nSelect two points on the model or workspace to define the axis around which the object will turn.\n\n**Step 4 — Enter Angle and Apply**\nIn Item Entry, type the desired rotation angle (e.g. 90°) and press Enter to rotate."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select an object, define an axis along one of its edges, enter an angle of **90°**, and press Enter.\n\n**Check:** The object turns 90 degrees around the chosen axis without changing dimensions."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The direction of rotation follows the right-hand rule around the vector defined from your first selected point to the second."
+                }
+              ],
+              "quickReview": "Icon Menu → Rotate → Select Object (GO) → Set 2 Points (Axis) → Enter Angle → Enter",
+              "connection": "Next, learn how to create rotated duplicates with P8.4 Rotate Copy."
+            },
+            "ja": {
+              "explanation": "回転（Rotate）は、指定した回転軸を中心に 3D オブジェクトを希望の角度まで回転させるコマンドです。形状や寸法は変わりません。",
+              "practice": "このレッスンの終了時には、回転軸を定義してオブジェクトを指定の角度に回転できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの回転手順",
+                  "text": "**ステップ 1 — 回転を選択する**\nアイコンメニューの**移動・複写・削除**から**回転**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n回転したい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 回転軸を設定する**\nモデル上または作業平面上で 2 点を選択し、回転の中心となる軸を定義します。\n\n**ステップ 4 — 角度を入力して確定する**\n項目入力欄で希望の回転角度（例：90°）を入力し、Enter キーを押して回転を完了します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、エッジに沿って 2 点を指定して回転軸を設定し、**90°** を入力して Enter を押します。\n\n**確認：** オブジェクトの寸法を変えずに、指定した軸を中心に 90 度回転したことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "回転の向きは、1点目から2点目に向かうベクトルに対する右手の法則に従います。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → 回転 → 対象選択（GO） → 軸の2点指定 → 角度入力 → Enter",
+              "connection": "次は P8.4 回転複写に進み、回転させながら複製を作成する方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "P8.4",
+          "moduleId": "P8",
+          "title": {
+            "en": "Rotate Copy",
+            "ja": "回転複写"
+          },
+          "type": "video",
+          "renderer": "basic-op-rotateCopy",
+          "video": "basicRotateCopy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Rotate Copy turns a duplicate of a 3D object around a specified axis while keeping the original object in place.",
+              "practice": "By the end of this lesson, you should be able to create a rotated duplicate of an object around a specified axis.",
+              "sections": [
+                {
+                  "title": "How to Rotate Copy an Object",
+                  "text": "**Step 1 — Select Rotate Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Rotate Copy (回転複写)**.\n\n**Step 2 — Select the Object**\nLeft-click the object to duplicate and rotate, then right-click (GO) to confirm.\n\n**Step 3 — Set the Axis of Rotation**\nSelect two points defining the axis of rotation.\n\n**Step 4 — Enter Angle and Apply**\nIn Item Entry, type the rotation angle and press Enter. The original remains and a new rotated duplicate appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your object, define an axis, enter **90°**, and press Enter.\n\n**Check:** You should now see two objects: the original at 0° and a rotated copy at 90°."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Use Rotate Copy when creating circular patterns, radial arrangements, or angled symmetrical features."
+                }
+              ],
+              "quickReview": "Icon Menu → Rotate Copy → Select Object (GO) → Set Axis → Enter Angle → Enter",
+              "connection": "Next, learn how to reflect objects with P8.5 Mirror."
+            },
+            "ja": {
+              "explanation": "回転複写（Rotate Copy）は、元のオブジェクトを残したまま、指定した軸を中心に回転させた複製を作成するコマンドです。",
+              "practice": "このレッスンの終了時には、軸を指定してオブジェクトを回転させた複製を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの回転複手順",
+                  "text": "**ステップ 1 — 回転複写を選択する**\nアイコンメニューの**移動・複写・削除**から**回転複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複製して回転させたい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 回転軸を設定する**\n回転軸を定義するために 2 点を選択します。\n\n**ステップ 4 — 角度を入力して確定する**\n項目入力欄で回転角度を入力し、Enter キーを押します。元のオブジェクトはそのままで、回転した新しい複製が配置されます。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "対象を選択し、軸を設定して角度 **90°** を入力し、Enter を押します。\n\n**確認：** 0° の位置にある元のオブジェクトと、90° 回転した位置にある複製の合計 2 つが存在することを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "円周上に部品を配置する場合や、角度を持った対称配置を行う際に回転複写を活用します。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → 回転複写 → 対象選択（GO） → 軸設定 → 角度入力 → Enter",
+              "connection": "次は P8.5 反転に進み、面を基準に対称配置する方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "P8.5",
+          "moduleId": "P8",
+          "title": {
+            "en": "Mirror",
+            "ja": "ミラー"
+          },
+          "type": "video",
+          "renderer": "basic-op-mirror",
+          "video": "basicMirror",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Mirror reflects a 3D object across a specified symmetrical plane, repositioning it on the opposite side.",
+              "practice": "By the end of this lesson, you should be able to define a mirror plane and mirror an object across it.",
+              "sections": [
+                {
+                  "title": "How to Mirror an Object",
+                  "text": "**Step 1 — Select Mirror**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Mirror (ミラー)**.\n\n**Step 2 — Select the Object**\nLeft-click the object you want to mirror, then right-click (GO) to confirm.\n\n**Step 3 — Set the Mirror Plane**\nSelect three points to define a mirror plane, or left-click directly on an existing planar face.\n\n**Step 4 — Confirm the Result**\nConfirm the operation. The object repositions to the symmetrical location across the plane."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your object, click a side face to serve as the mirror plane, and confirm.\n\n**Check:** The object moves across to the opposite side of the mirror plane as a mirror image."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Mirror moves the object across the plane. To keep the original while mirroring, use Mirror Copy instead."
+                }
+              ],
+              "quickReview": "Icon Menu → Mirror → Select Object (GO) → Select Plane or 3 Points → Confirm",
+              "connection": "Next, learn how to create mirrored duplicates with P8.6 Mirror Copy."
+            },
+            "ja": {
+              "explanation": "ミラー（Mirror）は、指定した対称面を基準に 3D オブジェクトを反対側へ反転配置するコマンドです。",
+              "practice": "このレッスンの終了時には、対称面を定義してオブジェクトを反転配置できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトのミラー手順",
+                  "text": "**ステップ 1 — ミラーを選択する**\nアイコンメニューの**移動・複写・削除**から**ミラー**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n反転したい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 対称面を設定する**\n対称面を定義するために 3 点を指定するか、既存の平面を左クリックして対称面として選択します。\n\n**ステップ 4 — 確定して結果を確認する**\n確定すると、オブジェクトが対称面を挟んだ反対側の対称位置へ移動します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、側面を左クリックして対称面として指定し、確定します。\n\n**確認：** オブジェクトが対称面の反対側に対称な向きで配置されたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "ミラーコマンドはオブジェクト自体を移動させます。元のオブジェクトを残したい場合は「ミラー複写」を使用します。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → ミラー → 対象選択（GO） → 対称面（3点または面選択） → 確定",
+              "connection": "次は P8.6 ミラー複写に進み、元の形状を残して対称な複製を作成する方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "P8.6",
+          "moduleId": "P8",
+          "title": {
+            "en": "Mirror Copy",
+            "ja": "ミラー複写"
+          },
+          "type": "video",
+          "renderer": "basic-op-mirrorCopy",
+          "video": "basicMirrorCopy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Mirror Copy creates a symmetrical duplicate of a 3D object across a selected plane while keeping the original object.",
+              "practice": "By the end of this lesson, you should be able to create a mirrored duplicate of a 3D object.",
+              "sections": [
+                {
+                  "title": "How to Mirror Copy an Object",
+                  "text": "**Step 1 — Select Mirror Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Mirror Copy (ミラー複写)**.\n\n**Step 2 — Select the Object**\nLeft-click the object to duplicate, then right-click (GO) to confirm.\n\n**Step 3 — Set the Mirror Plane**\nSelect three points to define a plane, or click a planar face on an existing part.\n\n**Step 4 — Confirm and Check**\nConfirm the operation. The original object remains and a mirrored duplicate is created across the plane."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select an object, pick a plane, and confirm the mirror copy.\n\n**Check:** Two symmetrical parts now exist, facing each other across the mirror plane."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Mirror Copy is ideal for creating left/right paired components (e.g. symmetrical brackets, housings, or levers) quickly."
+                }
+              ],
+              "quickReview": "Icon Menu → Mirror Copy → Select Object (GO) → Select Mirror Plane → Confirm",
+              "connection": "Next, learn how to remove unwanted entities with P8.7 Delete."
+            },
+            "ja": {
+              "explanation": "ミラー複写（Mirror Copy）は、元のオブジェクトを保持したまま、指定した対称面を基準に対称な複製を作成するコマンドです。",
+              "practice": "このレッスンの終了時には、対称面を指定してオブジェクトの対称な複製を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトのミラー複手順",
+                  "text": "**ステップ 1 — ミラー複写を選択する**\nアイコンメニューの**移動・複写・削除**から**ミラー複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複製したい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 対称面を設定する**\n3 点を指定して平面を定義するか、既存の部品の平面を左クリックします。\n\n**ステップ 4 — 確定して確認する**\n確定すると、元のオブジェクトを残したまま、対称面の反対側に対称な複製が作成されます。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、対称面を指定してミラー複写を実行します。\n\n**確認：** 対称面を挟んで向かい合う 2 つの対称なオブジェクトが作成されたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "ミラー複写は、左右対称のブラケットやレバーなど、対になる部品を作成する際に非常に効率的です。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → ミラー複写 → 対象選択（GO） → 対称面選択 → 確定",
+              "connection": "次は P8.7 削除に進み、不要なオブジェクトを取り除く方法を学びます。"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review"
+        },
+        {
+          "id": "P8.7",
+          "moduleId": "P8",
+          "title": {
+            "en": "Delete",
+            "ja": "削除"
+          },
+          "type": "video",
+          "renderer": "basic-op-delete",
+          "video": "basicDelete",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Delete removes a selected object from the 3D model. Use it to eliminate unwanted entities or mistakes.",
+              "practice": "By the end of this lesson, you should be able to delete a selected object and undo if needed.",
+              "sections": [
+                {
+                  "title": "How to Delete an Object",
+                  "text": "**Step 1 — Select Delete**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Delete (削除)**, represented by the red ✕.\n\n**Step 2 — Left-Click the Object**\nLeft-click the object you wish to remove. It is deleted immediately.\n\n**Step 3 — Check What Remains**\nVerify that the intended entity has been removed from the workspace.\n\n**Step 4 — Undo a Mistake**\nIf you deleted the wrong object by accident, press **Ctrl+Z** to restore it immediately."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Click on one of the duplicates created in the previous lessons to delete it.\n\n**Check:** The clicked object is removed while the remaining objects stay intact."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Delete executes immediately on left-click without requiring a right-click (GO). Always check your cursor before clicking, and use Ctrl+Z if you need to undo."
+                }
+              ],
+              "quickReview": "Icon Menu → Delete → Left-Click Object → Check / Ctrl+Z if needed",
+              "connection": "You have completed Module P8 Move, Copy, Delete!"
+            },
+            "ja": {
+              "explanation": "削除（Delete）は、選択したオブジェクトを 3D モデルから取り除くコマンドです。不要になった形状や誤って作成した要素を消去します。",
+              "practice": "このレッスンの終了時には、目的のオブジェクトを削除し、必要に応じて元に戻せるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの削除手順",
+                  "text": "**ステップ 1 — 削除を選択する**\nアイコンメニューの**移動・複写・削除**から赤色の ✕ 印である**削除**を選択します。\n\n**ステップ 2 — 対象を左クリックする**\n削除したいオブジェクトを左クリックします。クリックすると即座に削除されます（GO の右クリックは不要です）。\n\n**ステップ 3 — 残りの要素を確認する**\n目的のオブジェクトのみが削除され、他の要素が正常に残っているか確認します。\n\n**ステップ 4 — 誤って削除した場合は元に戻す**\n間違えて別のオブジェクトを消してしまった場合は、すぐに **Ctrl+Z**（元に戻す）を押して復元します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "前のレッスンで作成した複製のいずれかを左クリックして削除します。\n\n**確認：** クリックしたオブジェクトのみが消去され、残りの形状はそのまま保持されていることを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "削除コマンドは左クリックした瞬間に実行されます。誤って削除した場合はすぐに Ctrl+Z で復元してください。"
+                }
+              ],
+              "quickReview": "アイコンメニュー → 削除 → 対象を左クリック → 確認（Ctrl+Z で元に戻す）",
+              "connection": "モジュール P8 移動・複写・削除の学習が完了しました！"
+            }
+          },
+          "contentReview": "new-professional-lesson",
+          "recapMode": "embedded-or-reading-review",
+          "sourceLessonId": "F9.11"
+        }
+      ]
     }
   ]
 }

@@ -55,6 +55,7 @@ const OperalViewLesson: React.FC<OperalViewLessonProps> = ({
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
     } else if (onNextLesson) {
+      
       onNextLesson();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });

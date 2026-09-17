@@ -1,4 +1,4 @@
-import React,{ createContext,useCallback,useContext,useState,useEffect } from 'react';
+import React,{ createContext,useCallback,useContext,useState,useEffect,useMemo,useRef } from 'react';
 import { useTTS } from '../hooks/useTTS';
 import { FOUNDATIONS_NARRATION_PROFILE } from '../config/foundationsNarration';
 
@@ -37,6 +37,8 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const tts = useTTS();
   const [currentText, setCurrentText] = useState<string[]>([]);
   const [currentStartIndex, setCurrentStartIndex] = useState<number>(0);
+  const currentTextRef = useRef<string[]>([]);
+  const currentStartIndexRef = useRef<number>(0);
 
   useEffect(() => {
     if (tts.selectedVoiceURI !== FOUNDATIONS_NARRATION_PROFILE.voiceURI) {
@@ -45,33 +47,62 @@ export const TTSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [tts.selectedVoiceURI, tts.setSelectedVoiceURI]);
 
   const registerText = useCallback((text: string[], startIndex: number = 0) => {
+    const prev = currentTextRef.current;
+    if (
+      prev.length === text.length &&
+      prev.every((item, idx) => item === text[idx]) &&
+      currentStartIndexRef.current === startIndex
+    ) {
+      return;
+    }
+    currentTextRef.current = text;
+    currentStartIndexRef.current = startIndex;
     setCurrentText(text);
     setCurrentStartIndex(startIndex);
   }, []);
 
+  const contextValue = useMemo(() => ({
+    isSpeaking: tts.isSpeaking,
+    currentIndex: tts.currentIndex,
+    setCurrentIndex: tts.setCurrentIndex,
+    currentCharIndex: tts.currentCharIndex,
+    currentSentenceIndex: tts.currentSentenceIndex,
+    activeParagraphText: tts.activeParagraphText,
+    currentText,
+    currentStartIndex,
+    registerText,
+    speak: tts.speak,
+    stop: tts.stop,
+    pause: tts.pause,
+    resume: tts.resume,
+    rate: tts.rate,
+    setRate: tts.setRate,
+    voices: tts.voices,
+    selectedVoiceURI: tts.selectedVoiceURI,
+    setSelectedVoiceURI: tts.setSelectedVoiceURI,
+  }), [
+    tts.isSpeaking,
+    tts.currentIndex,
+    tts.setCurrentIndex,
+    tts.currentCharIndex,
+    tts.currentSentenceIndex,
+    tts.activeParagraphText,
+    currentText,
+    currentStartIndex,
+    registerText,
+    tts.speak,
+    tts.stop,
+    tts.pause,
+    tts.resume,
+    tts.rate,
+    tts.setRate,
+    tts.voices,
+    tts.selectedVoiceURI,
+    tts.setSelectedVoiceURI,
+  ]);
+
   return (
-    <TTSContext.Provider
-      value={{
-        isSpeaking: tts.isSpeaking,
-        currentIndex: tts.currentIndex,
-        setCurrentIndex: tts.setCurrentIndex,
-        currentCharIndex: tts.currentCharIndex,
-        currentSentenceIndex: tts.currentSentenceIndex,
-        activeParagraphText: tts.activeParagraphText,
-        currentText,
-        currentStartIndex,
-        registerText,
-        speak: tts.speak,
-        stop: tts.stop,
-        pause: tts.pause,
-        resume: tts.resume,
-        rate: tts.rate,
-        setRate: tts.setRate,
-        voices: tts.voices,
-        selectedVoiceURI: tts.selectedVoiceURI,
-        setSelectedVoiceURI: tts.setSelectedVoiceURI,
-      }}
-    >
+    <TTSContext.Provider value={contextValue}>
       {children}
     </TTSContext.Provider>
   );

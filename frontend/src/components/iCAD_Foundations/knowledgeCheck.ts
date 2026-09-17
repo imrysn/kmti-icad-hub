@@ -21,6 +21,86 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       })),
     }];
   }
+  if (lessonId.startsWith('P8.')) {
+    const ja = language === 'ja';
+    if (lessonId === 'P8.1') {
+      const labels = ja ? ['対象の位置', '対象の大きさ', '対象の色', '対象のシェーディング']
+        : ["The object's position", "The object's size", "The object's color", "The object's shading"];
+      return [{
+        id: 'P8.1-knowledge-check', prompt: ja ? 'Move（移動）コマンドは何を変更しますか？' : 'What does the Move command change?',
+        choices: labels.map((label, index) => ({
+          id: `P8.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.2') {
+      const labels = ja ? ['元の対象を残したまま複製が作成される', '元の対象が削除される', '対象の大きさが2倍になる', '対象の表示方向が変わる']
+        : ['A duplicate is created while keeping the original object', 'The original object is deleted', 'The object doubles in size', 'The viewing direction changes'];
+      return [{
+        id: 'P8.2-knowledge-check', prompt: ja ? 'Copy（複写）コマンドを使うとどうなりますか？' : 'What happens when you use the Copy command?',
+        choices: labels.map((label, index) => ({
+          id: `P8.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.3') {
+      const labels = ja ? ['2点', '1点', '3点', '4点']
+        : ['2 points', '1 point', '3 points', '4 points'];
+      return [{
+        id: 'P8.3-knowledge-check', prompt: ja ? 'Rotate（回転）コマンドで回転軸を定義するには何点指定しますか？' : 'How many points are selected to define the axis of rotation in the Rotate command?',
+        choices: labels.map((label, index) => ({
+          id: `P8.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.4') {
+      const labels = ja ? ['元のオブジェクトを残したまま回転した複製を作成する', '回転角度を自由に変更できない', '回転軸を自動で決定する', '3D オブジェクトのサイズを拡大する']
+        : ['It creates a rotated copy while keeping the original object', 'The rotation angle cannot be adjusted', 'The rotation axis is chosen automatically', 'It scales up the 3D object'];
+      return [{
+        id: 'P8.4-knowledge-check', prompt: ja ? 'Rotate Copy（回転複写）コマンドと Rotate（回転）コマンドの主な違いは何ですか？' : 'What is the main difference between Rotate Copy and Rotate?',
+        choices: labels.map((label, index) => ({
+          id: `P8.4-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.5') {
+      const labels = ja ? ['3点を指定するか、面を左クリックする', '1点のみ指定する', 'Enter キーを押すだけ', 'X軸の値を入力する']
+        : ['Select 3 points or left-click a face', 'Select 1 point only', 'Only press Enter', 'Enter an X-axis coordinate'];
+      return [{
+        id: 'P8.5-knowledge-check', prompt: ja ? 'Mirror（ミラー）コマンドで対称面を定義するには何を行いますか？' : 'How do you define the mirror plane in the Mirror command?',
+        choices: labels.map((label, index) => ({
+          id: `P8.5-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.6') {
+      const labels = ja ? ['指定した対称面を基準に対称な複製を作成する', 'オブジェクトを完全に削除する', '2D 図面へ自動変換する', '原点の座標を反転する']
+        : ['Creates a symmetrical copy across a specified mirror plane', 'Completely deletes the object', 'Automatically converts to a 2D drawing', 'Inverts the origin coordinates'];
+      return [{
+        id: 'P8.6-knowledge-check', prompt: ja ? 'Mirror Copy（ミラー複写）コマンドは何をしますか？' : 'What does the Mirror Copy command do?',
+        choices: labels.map((label, index) => ({
+          id: `P8.6-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P8.7') {
+      const labels = ja ? ['選択したオブジェクトをモデルから削除する', 'オブジェクトを非表示にする', 'オブジェクトを別のレイヤーに移動する', 'オブジェクトの履歴を元戻す']
+        : ['Removes the selected object from the model', 'Hides the object from view', 'Moves the object to another layer', 'Undoes the object history'];
+      return [{
+        id: 'P8.7-knowledge-check', prompt: ja ? 'Delete（削除）コマンドは何をしますか？' : 'What does the Delete command do?',
+        choices: labels.map((label, index) => ({
+          id: `P8.7-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+  }
   if (lessonId === 'F10.1') {
     const ja = language === 'ja';
     const labels = ja ? ['ツール選択 → 寸法入力 → 位置指定 → 確定', '保存 → 削除 → 回転 → 閉じる', 'ビュー選択 → シェーディング → 印刷 → 終了', 'パン → コピー → 閉じる → 測定']
