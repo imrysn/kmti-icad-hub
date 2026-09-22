@@ -1,5 +1,6 @@
 .foundations-consistent-lesson .foundation-save-steps .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 960px; margin-inline: auto; }
 .foundations-consistent-lesson .foundation-save-steps .foundations-uses__grid[data-count='2'] { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 640px; }
 .foundation-save-steps__note { margin-top: 24px; }
+.foundations-consistent-lesson .foundation-close-steps .foundations-uses__grid { grid-template-columns: repeat(4,minmax(0,1fr)); max-width: 1280px; }
 @container (max-width: 600px) { .foundations-consistent-lesson .foundation-save-steps .foundations-uses__grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @container (max-width: 420px) { .foundations-consistent-lesson .foundation-save-steps .foundations-uses__grid, .foundations-consistent-lesson .foundation-save-steps .foundations-uses__grid[data-count='2'] { grid-template-columns: minmax(0,1fr); } }

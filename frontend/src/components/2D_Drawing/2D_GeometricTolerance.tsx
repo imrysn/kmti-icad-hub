@@ -50,7 +50,7 @@ const GeometricToleranceLesson: React.FC<GeometricToleranceLessonProps> = ({
     if (currentIndex < TABS.length - 1) {
       setActiveTab(TABS[currentIndex + 1].id);
 
-      
+
     } else if (onNextLesson) {
       onNextLesson();
     }

@@ -1,9 +1,9 @@
 import { useId } from 'react';
 
-function SelectionPointer({x,y}: {x:number; y:number}) {
-  return <g transform={`translate(${x + 10} ${y + 8})`}>
-    <path d="M0 0 17 49 26 33 44 31Z" fill="#fff" stroke="#24364b" strokeWidth="4" strokeLinejoin="round" />
-    <g transform="translate(45 25)">
+export function SelectionPointer({x,y,above=false}: {x:number; y:number; above?:boolean}) {
+  return <g transform={`translate(${x + 10} ${y + (above ? -8 : 8)})`}>
+    <path d={above ? 'M0 0 17 -49 26 -33 44 -31Z' : 'M0 0 17 49 26 33 44 31Z'} fill="#fff" stroke="#24364b" strokeWidth="4" strokeLinejoin="round" />
+    <g transform={`translate(45 ${above ? -77 : 25})`}>
       <rect width="35" height="52" rx="16" fill="#454b54" stroke="#fff" strokeWidth="2" />
       <path d="M17 1C5 1 1 8 1 20V24H17Z" fill="#ed1745" />
       <path d="M17 2V24M1 25H34" stroke="#fff" strokeWidth="2" />

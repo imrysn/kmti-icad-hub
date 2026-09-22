@@ -1,0 +1,15 @@
+.foundation-shape-steel .foundations-uses__grid { margin-inline: auto; }
+.foundation-shape-steel--profiles .foundations-uses__grid { grid-template-columns: repeat(7,minmax(0,1fr)); max-width: 1200px; }
+.foundation-shape-steel--steps .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 850px; }
+.foundation-shape-steel .foundations-use-card:nth-child(n) { grid-column: auto; }
+.foundations-consistent-lesson .foundation-shape-steel-profile { grid-row: span 3; grid-template-rows: subgrid; }
+.foundation-shape-steel-profile::before { display: none; }
+.foundations-consistent-lesson .foundation-shape-steel-profile .foundations-use-card__icon-frame > .steel-profile-artwork { width: 100%; height: 124px; max-width: 160px; }
+.foundation-shape-steel-profile .foundations-use-card__icon-frame { order: 1; }
+.foundation-shape-steel-profile .foundations-use-card__title { order: 2; }
+.foundation-shape-steel-profile .foundations-use-card__body { order: 3; }
+.foundation-shape-steel-menu { display: block; width: 180px; height: 80px; max-width: 100%; }
+.foundation-shape-steel-dialog-icon { display: block; width: 154px; height: 124px; max-width: 100%; }
+.foundation-shape-steel--steps .foundation-interface-icon-button { display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+@container (max-width: 850px) { .foundation-shape-steel--profiles .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 850px; } }
+@container (max-width: 550px) { .foundation-shape-steel--profiles .foundations-uses__grid { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 560px; } .foundation-shape-steel--steps .foundations-uses__grid { grid-template-columns: minmax(0,1fr); max-width: 300px; } }

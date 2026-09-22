@@ -508,7 +508,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                     const effectiveRenderer = op2Map[renderer] || renderer;
                     const source = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]).find(lesson => lesson.id === effectiveRenderer);
                     const preservedTutorial = effectiveRenderer.startsWith('basic-op-')
-                      ? <BasicOperationLesson subLessonId={effectiveRenderer} />
+                      ? <BasicOperationLesson subLessonId={effectiveRenderer} hideSketchIntro={canonical.id === 'P9.1'} />
                       : source ? <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps({ ...source, content: source.content || [] })} /> : null;
                     return <FoundationReadingLesson key={canonical.id + language} lesson={canonical} completed={completedLessons.includes(completionId)}
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F10.6'}

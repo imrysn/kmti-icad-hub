@@ -1,7 +1,7 @@
 import { useId, type CSSProperties } from 'react';
 
 /** Toolbar groups traced from toolbar.jpg. Artwork stays native SVG at every scale. */
-export default function ToolbarReferenceSvg({ index, title, overview = false, highlightFront = false }: { index: number; title: string; overview?: boolean; highlightFront?: boolean }) {
+export default function ToolbarReferenceSvg({ index, title, overview = false, highlightFront = false, highlightUndo = false }: { index: number; title: string; overview?: boolean; highlightFront?: boolean; highlightUndo?: boolean }) {
   const id = useId().replace(/:/g, '');
   const paint = (name: string) => `url(#${id}-${name})`;
   const widths = [108, 84, 56, 160, 210, 104, 60, 128, 60, 84, 264, 184, 520];
@@ -126,7 +126,7 @@ export default function ToolbarReferenceSvg({ index, title, overview = false, hi
       <path d="M17 23V14 M17 23 24 26 M17 23 12 26" stroke="#507cab" strokeWidth="1.5" />
       <g stroke="#bb9455" strokeWidth=".8"><path d="M40 11V23C40 29 54 29 54 23V11" fill="#e5c785" /><ellipse cx="47" cy="11" rx="7" ry="4" fill="#ffe7ad" /><ellipse cx="47" cy="23" rx="7" ry="4" fill="#f0be64" /><path d="M42 15H52" stroke="#f0edbd" /></g><path d="M42 7 45 4 49 4 52 7" stroke="#adcecf" fill="none" />
     </>}
-    {index === 6 && <>{undoArrow(10)}{undoArrow(34, true)}</>}
+    {index === 6 && <>{undoArrow(10)}{undoArrow(34, true)}{highlightUndo && <rect x="9" y="3" width="25" height="27" fill="none" stroke="#0087ef" strokeWidth="1.5"/>}</>}
     {index === 10 && <g fontSize="9" fontFamily="'MS UI Gothic', 'Yu Gothic', sans-serif" fill="#262626" className="notranslate">
       <text x="10" y="13.5">線種</text>{field(30, 4, 44)}<path d="M33 10H64" stroke="#333" strokeWidth="1.5" />
       <text x="80" y="13.5">線色</text><rect x="100" y="4" width="16" height="12" fill="#858583" /><rect x="104" y="7" width="8" height="6" fill="#fff" />

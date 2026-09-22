@@ -19,11 +19,15 @@ EXPECTED = [
     ("P6.1", "F8.1"), ("P6.2", "F8.3"), ("P6.3", "F8.5"),
     ("P7.1", "F9.5"), ("P7.2", "F9.6"), ("P7.3", "F9.7"), ("P7.4", None), ("P7.5", None),
     ("P8.1", "F9.9"), ("P8.2", "F9.10"), ("P8.3", None), ("P8.4", None), ("P8.5", None), ("P8.6", None), ("P8.7", "F9.11"),
+    ("P9.1", None),
+    ("P10.1", None), ("P10.2", None),
+    ("P11.1", None), ("P11.2", None), ("P11.3", None), ("P11.4", None),
+    ("P12.1", None), ("P12.2", None), ("P12.3", None),
 ]
 
 
 def test_professional_registry_copies_the_foundations_lessons():
-    assert [module["id"] for module in MODULES] == ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"]
+    assert [module["id"] for module in MODULES] == ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12"]
     assert [(lesson["id"], lesson.get("sourceLessonId")) for lesson in LESSONS] == EXPECTED
     for lesson in LESSONS:
         assert lesson["moduleId"] == lesson["id"].split(".")[0]
@@ -32,7 +36,10 @@ def test_professional_registry_copies_the_foundations_lessons():
         source = FOUNDATION_LESSONS.get(lesson.get("sourceLessonId"))
         if source and lesson["moduleId"] not in ("P7", "P8"):
             assert lesson["title"] == source["title"]
-            assert lesson["content"] == source["content"]
+            for language in ("en", "ja"):
+                # Shared layout, with course-specific cross-references.
+                assert lesson["content"][language]["explanation"] == source["content"][language]["explanation"]
+                assert [s["title"] for s in lesson["content"][language]["sections"]] == [s["title"] for s in source["content"][language]["sections"]]
         elif source:
             # P7 & P8 copies keep the layout but point their cross-references at Professional lessons.
             assert [len(lesson["content"][lang]["sections"]) for lang in ("en", "ja")] == [len(source["content"][lang]["sections"]) for lang in ("en", "ja")]
@@ -40,8 +47,13 @@ def test_professional_registry_copies_the_foundations_lessons():
             assert "F9." not in json.dumps(lesson["content"], ensure_ascii=False)
     assert lesson_tree("en")[6]["children"][4]["title"] == "P7.5 Torus"
     assert lesson_tree("en")[7]["children"][6]["title"] == "P8.7 Delete"
-    assert [lesson["renderer"] for lesson in LESSONS[-7:]] == [
-        "basic-op-move", "basic-op-copy", "basic-op-rotate", "basic-op-rotateCopy", "basic-op-mirror", "basic-op-mirrorCopy", "basic-op-delete"
+    assert lesson_tree("en")[8]["children"][0]["title"] == "P9.1 Sketch"
+    assert lesson_tree("en")[9]["children"][0]["title"] == "P10.1 Extrude"
+    assert lesson_tree("en")[9]["children"][1]["title"] == "P10.2 Revolve"
+    assert lesson_tree("en")[11]["children"][0]["title"] == "P12.1 Stretch"
+    assert [lesson["renderer"] for lesson in LESSONS[22:32]] == [
+        "basic-op-move", "basic-op-copy", "basic-op-rotate", "basic-op-rotateCopy", "basic-op-mirror", "basic-op-mirrorCopy", "basic-op-delete",
+        "basic-op-sketch", "basic-op-extrude", "basic-op-revolve"
     ]
 
 

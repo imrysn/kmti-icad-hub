@@ -374,6 +374,7 @@ const PremiumVideoPlayer: React.FC<PremiumVideoPlayerProps> = ({ src, style, cla
 /* ── Basic Operation (1): Creating Basic Shapes ── */
 
 interface SubLessonProps {
+  hideSketchIntro?: boolean;
   subLessonId: string;
   onNextLesson?: () => void;
   onPrevLesson?: () => void;
@@ -1118,7 +1119,7 @@ const BasicOperation2: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
   );
 };
 
-const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel, hideSketchIntro = false }) => {
   const activeTab = subLessonId ? subLessonId.replace('basic-op-', '') : '';
   const { t } = useTranslation();
   const { scrollProgress, containerRef, speak, isSpeaking, currentIndex, currentCharIndex, registerText } = useLessonCore(subLessonId);
@@ -1224,6 +1225,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       <section className="lesson-intro">
         {activeTab === 'sketch' ? (
           <>
+            {!hideSketchIntro && <>
             <h3 className={`section-title ${currentIndex === 0 ? "reading-active" : ""}`} data-reading-index="0">
               <KaraokeLessonText
                 as="span"
@@ -1240,6 +1242,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               isActive={isSpeaking && currentIndex === 1}
               currentCharIndex={currentCharIndex}
             />
+            </>}
             <img src={sketchIntroImg} alt={t('common.sketch_intro')} className="software-screenshot screenshot-small mt-8" style={{ width: '280px' }} />
           </>
         ) : (
@@ -1268,6 +1271,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
       <div className="lesson-grid single-card">
         {activeTab === 'sketch' && (
           <div className={`lesson-card tab-content fade-in ${isSpeaking ? 'reading-active' : ''}`}>
+            {!hideSketchIntro && <>
             <div className="card-header mt-12">
               <h4 className={`${currentIndex === 2 ? 'reading-active' : ''}`} data-reading-index="2">
                 <KaraokeLessonText
@@ -1287,6 +1291,7 @@ const BasicOperation3: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
               currentCharIndex={currentCharIndex}
             />
 
+            </>}
             <div className="step-description">
               <div className="flex-row-center--wrap" style={{ gap: '2rem' }}>
                 <img src={sketchIcon} alt={t('common.sketch_tool')} className="software-screenshot screenshot-small" style={{ width: '280px' }} />
@@ -2125,16 +2130,16 @@ const BasicOperation5: React.FC<SubLessonProps> = ({ subLessonId, onNextLesson, 
 };
 /* Main export  Erenders the correct sub-lesson based on subLessonId prop */
 
-interface BasicOperationLessonProps { subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
+interface BasicOperationLessonProps { hideSketchIntro?: boolean; subLessonId: string; onNextLesson?: () => void; onPrevLesson?: () => void; nextLabel?: string; }
 
-const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel }) => {
+const BasicOperationLesson: React.FC<BasicOperationLessonProps> = ({ subLessonId, onNextLesson, onPrevLesson, nextLabel, hideSketchIntro }) => {
   const op2 = ['basic-op-move', 'basic-op-rotate', 'basic-op-mirror', 'basic-op-copy', 'basic-op-rotateCopy', 'basic-op-mirrorCopy', 'basic-op-delete'];
   const op3 = ['basic-op-sketch', 'basic-op-extrude', 'basic-op-revolve'];
   const op4 = ['basic-op-showHide', 'basic-op-stretch', 'basic-op-resize'];
   const op5 = ['basic-op-shapeSteels'];
 
   if (op2.includes(subLessonId)) return <BasicOperation2 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
-  if (op3.includes(subLessonId)) return <BasicOperation3 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
+  if (op3.includes(subLessonId)) return <BasicOperation3 hideSketchIntro={hideSketchIntro} subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
   if (op4.includes(subLessonId)) return <BasicOperation4 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
   if (op5.includes(subLessonId)) return <BasicOperation5 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;
   return <BasicOperation1 subLessonId={subLessonId} onNextLesson={onNextLesson} onPrevLesson={onPrevLesson} nextLabel={nextLabel} />;

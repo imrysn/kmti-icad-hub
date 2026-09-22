@@ -1,0 +1,7 @@
+.foundation-drafting-table-wrap { width: 100%; overflow-x: auto; margin: 16px auto; }
+.foundation-drafting-table { width: 100%; max-width: 760px; margin-inline: auto; border-collapse: collapse; table-layout: fixed; border: 2px solid var(--use-outline,#58616f); color: var(--text-main,#233c51); }
+.foundation-drafting-table th, .foundation-drafting-table td { padding: 8px 10px; text-align: center; overflow-wrap: anywhere; border: 0; border-inline: 2px solid var(--use-outline,#58616f); }
+.foundation-drafting-table th { font-weight: 600; border-bottom: 2px solid var(--use-outline,#58616f); }
+
+[data-theme='dark'] .foundation-drafting-table { --use-outline: #a1afbf; }
+

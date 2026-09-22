@@ -5,6 +5,7 @@ import FoundationInterfaceContent from '../FoundationInterfaceContent';
 import { FOUNDATION_LESSON_IDS, resolveFoundationLesson } from '../curriculum';
 import { foundationKnowledgeQuestions } from '../knowledgeCheck';
 import confetti from 'canvas-confetti';
+import { professionalRenderLesson } from '../../iCAD_Professional/curriculum';
 
 const state = vi.hoisted(() => ({language:'en', speak:vi.fn(), stop:vi.fn(), register:vi.fn()}));
 vi.mock('../../../context/LanguageContext', () => ({useTranslation: () => ({language:state.language, t:(s:string)=>s, translateContent:(s:string)=>s})}));
@@ -20,6 +21,23 @@ describe('Foundations written completion and knowledge check', () => {
     HTMLDialogElement.prototype.close = vi.fn(function (this: HTMLDialogElement) { this.open = false; });
   });
   afterEach(cleanup);
+
+  it.each(['P8.1','P8.2','P8.3','P8.4','P8.5','P8.6','P8.7'])('renders the Professional operation palette through the real %s lesson mapping', id => {
+    const {container}=render(<FoundationReadingLesson lesson={professionalRenderLesson(id)!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false}/>);
+    expect(container.querySelector('.foundations-use-card__icon-frame .foundation-operation-menu')).not.toBeNull();
+    if(id!=='P8.1') {
+      const previews=container.querySelectorAll('.foundation-operation-preview button');
+      expect(previews).toHaveLength(id==='P8.7'?3:4);
+      fireEvent.click(previews[0]);
+      const topic=({'P8.2':'copy','P8.3':'rotate','P8.4':'rotateCopy','P8.5':'mirror','P8.6':'mirrorCopy','P8.7':'delete'} as Record<string,string>)[id];
+      expect(within(screen.getByRole('dialog')).getByRole('img',{name:'Full iCAD SX interface'})).toHaveAttribute('src',expect.stringContaining(`/professional/${topic}-2.png`));
+    }
+    if(id==='P8.1') {
+      expect(container.querySelectorAll('.foundation-move-preview button')).toHaveLength(4);
+      fireEvent.click(screen.getByRole('button',{name:'Enlarge: Select Move'}));
+      expect(within(screen.getByRole('dialog')).getByRole('img',{name:'Full iCAD SX interface'})).toHaveAttribute('src',expect.stringContaining('/professional/move.png'));
+    }
+  });
 
   it.each(['en', 'ja'] as const)('shows the F10 review as a ten-topic checklist in %s', language => {
     state.language = language;
@@ -53,7 +71,8 @@ describe('Foundations written completion and knowledge check', () => {
     expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(6);
     expect(screen.getByRole('heading', { name: 'Select Cylinder' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Enter the Size' })).toBeVisible();
-    expect(screen.getByText('Diameter (直径): 10 mm')).toBeVisible();
+    expect(container.querySelector('.foundation-modeling-size-fields')).toHaveTextContent('直径');
+    expect(container.querySelector('.foundation-modeling-size-fields')).toHaveTextContent('10');
     expect(screen.getByText('Preserved cylinder video')).toBeInTheDocument();
   });
 

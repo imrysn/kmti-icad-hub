@@ -26,7 +26,7 @@ const SHAPE_REGIONS: Record<Exclude<PlacementShape, 'cone' | 'torus'>, number[][
   polygon: [[1816,162,29,33],[137,1026,397,26],[1753,1028,161,26]],
 };
 
-export default function FoundationModelingInputIcon({index,japanese=false,box=false,cylinder=false,polygon=false,cone=false,torus=false,professional=false}:{index:number;japanese?:boolean;box?:boolean;cylinder?:boolean;polygon?:boolean;cone?:boolean;torus?:boolean;professional?:boolean}) {
+export default function FoundationModelingInputIcon({index,japanese=false,box=false,cylinder=false,polygon=false,cone=false,torus=false,professional=false,previewScreen}:{index:number;japanese?:boolean;box?:boolean;cylinder?:boolean;polygon?:boolean;cone?:boolean;torus?:boolean;professional?:boolean;previewScreen?:string}) {
   const shape: PlacementShape | null = box?'box':cylinder?'cylinder':polygon?'polygon':cone?'cone':torus?'torus':null;
   const pro=shape && (professional || cone || torus) ? PROFESSIONAL_SHAPE_SCREENS[shape] : null;
   const titles=japanese?['アイコンメニュー — 形状配置','項目入力','キー入力','キーボードの Enter']:['Icon Menu — Shape Placement','Item Entry','Key Entry','Enter on the keyboard'];
@@ -41,6 +41,6 @@ export default function FoundationModelingInputIcon({index,japanese=false,box=fa
     {fields.map(([label,value],n)=><g key={label} transform={`translate(0 ${n*26})`}><rect x="1" y="1" width="158" height="24" fill="#eee" stroke="#999"/><text x="5" y="18">{label}</text><rect x="65" y="3" width="91" height="20" fill="white" stroke="#999"/><text x="70" y="18">{value}</text><path d="M144 11l4 4 4-4" fill="none" stroke="#777"/></g>)}
   </svg> : shape && index===2 ? <svg viewBox="0 0 144 24" role="img" aria-label="Key Entry: 0 0 0"><rect x="1" y="1" width="142" height="22" fill="white" stroke="#999"/><text x="6" y="17" fontFamily="Arial, sans-serif" fontSize="13" fill="#111">0 0 0</text></svg> : index<3 ? <InterfaceSvgIcon index={index+5} toolbar={false} title={titles[index]}/> : <svg viewBox="0 0 865 350" role="img" aria-label={titles[index]}><rect x="1" y="1" width="863" height="348" rx="24" fill="#4b4b4b"/><path d="M26 27H839V323H26Z" fill="#252525"/><text x="84" y="239" fontFamily="Arial,sans-serif" fontSize="182" fill="white">Enter</text><path d="M762 153V192H619" fill="none" stroke="white" strokeWidth="14"/><path d="M584 192L632 165V219Z" fill="white"/></svg>;
   if(index===3) return <div className="foundation-modeling-input-static foundation-modeling-input-static--enter">{artwork}</div>;
-  const shapeScreen=pro?pro.src:polygon?polygonScreen:cylinder?cylinderScreen:box?boxScreen:screen;
+  const shapeScreen=previewScreen ?? (pro?pro.src:polygon?polygonScreen:cylinder?cylinderScreen:box?boxScreen:screen);
   return <div className="foundation-file-menu-icon foundation-modeling-input-icon"><InterfaceIconPreview index={index} toolbar={false} title={box && index===0 ? (japanese?'直方体':'Box — 直方体') : titles[index]} japanese={japanese} custom={{artwork,screen:index===3?keyboardScreen:shapeScreen,region:{bounds:region,landing:region},highlightColor:'#0087ef'}}/></div>;
 }

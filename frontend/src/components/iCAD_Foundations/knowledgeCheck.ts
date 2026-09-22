@@ -5,6 +5,75 @@ import { FOUNDATION_LESSONS, resolveFoundationLesson } from './curriculum';
 import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 
 export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F10.6'): InteractiveVideoQuestion[] {
+  if (lessonId === 'P12.3') {
+    const ja=language==='ja';
+    const labels=ja?['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー']:['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
+    return [{id:'P12.3-knowledge-check',prompt:ja?'形鋼の位置座標はどこに入力しますか？':'Where do you enter the coordinates for the Shape Steel position?',choices:labels.map((label,index)=>({id:`P12.3-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'位置座標はキー入力領域に入力します。':'Enter the position coordinates in the Key Entry Area.')}))}];
+  }
+  if (lessonId === 'P12.2') {
+    const ja = language === 'ja';
+    const labels = ja ? ['選択した面だけ', '選択した立体全体', 'ユーザービュー', '製図要素だけ'] : ['Only the selected face', 'The entire selected solid', 'The User View', 'Only drafting elements'];
+    return [{
+      id:'P12.2-knowledge-check',
+      prompt:ja ? '立体縮尺コマンドは何の大きさを変更しますか？' : 'What does the Resize command scale?',
+      choices:labels.map((label,index)=>({id:`P12.2-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体縮尺は、選択した立体全体を同じ比率で変更します。':'Resize scales the entire selected solid proportionally.')})),
+    }];
+  }
+  if (lessonId === 'P12.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['モデルのエッジ', '伸縮する面', '原点', 'ユーザービュー'] : ['A model edge', 'The face to be stretched', 'The origin', 'A User View'];
+    return [{
+      id: 'P12.1-knowledge-check',
+      prompt: ja ? '「面を指定して伸縮する」を使用するとき、最初に何を選択しますか？' : 'What should you select first when using Stretch by Specifying Face?',
+      choices: labels.map((label,index)=>({
+        id:`P12.1-${index}`,
+        label:`${'ABCD'[index]}. ${label}`,
+        isCorrect:index===1,
+        feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'伸縮する方向は、選択した面で決まります。':'The selected face determines the stretch direction.'),
+      })),
+    }];
+  }
+  if (lessonId === 'P11.3' || lessonId === 'P11.4') {
+    const ja = language === 'ja';
+    const drafting = lessonId === 'P11.3';
+    const labels = drafting
+      ? (ja ? ['指定要素を非表示にする', '製図要素を表示する', '指定要素以外を非表示にする', '削除'] : ['Hide Specified Elements', 'Show Drafting Elements', 'Hide Unselected Elements', 'Delete'])
+      : ja ? ['選択した要素が削除される', '選択した要素が非表示になる', '選択した要素は表示されたままで、他の要素が非表示になる', 'すべての要素が表示される']
+      : ['The selected elements are deleted', 'The selected elements are hidden', 'The selected elements remain visible and the others are hidden', 'All elements are shown'];
+    const correct = drafting ? 1 : 2;
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: drafting
+        ? (ja ? '非表示の寸法、注記、その他の製図情報を再表示するには、どのコマンドを使用しますか？' : 'Which command should you use to display hidden dimensions, notes, and other drafting information again?')
+        : (ja ? '指定要素以外を非表示にする を使用すると、どうなりますか？' : 'What happens when you use Hide Unselected Elements?'),
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correct,
+        feedback: index === correct ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`
+          : drafting ? (ja ? '製図要素を表示する は非表示の製図情報を再表示します。' : 'Show Drafting Elements displays hidden drafting information again.')
+          : (ja ? '選択した要素は表示されたままで、他の要素が非表示になります。要素は削除されません。' : 'The selected elements remain visible and the others are hidden. No elements are deleted.'),
+      })),
+    }];
+  }
+  if (lessonId === 'P11.1' || lessonId === 'P11.2') {
+    const ja = language === 'ja';
+    const specified = lessonId === 'P11.2';
+    const labels = specified
+      ? (ja ? ['指定要素を非表示にする', '指定要素を表示する', '削除', '指定要素以外を非表示にする'] : ['Hide Specified Elements', 'Show Specified Elements', 'Delete', 'Hide Unselected Elements'])
+      : (ja ? ['指定要素を表示する', '製図要素を非表示にする', '指定要素以外を非表示にする', '削除'] : ['Show Specified Elements', 'Hide Drafting Elements', 'Hide Unselected Elements', 'Delete']);
+    const correct = specified ? 1 : 2;
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: specified
+        ? (ja ? '非表示の要素を再表示するには、どのコマンドを使用しますか？' : 'Which command should you use to make a hidden element visible again?')
+        : (ja ? '選択した要素を表示したまま、他の要素を非表示にするには、どのコマンドを使用しますか？' : 'Which command should you use if you want to keep selected elements visible and hide the other elements?'),
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correct,
+        feedback: index === correct ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`
+          : specified ? (ja ? '指定要素を表示する は、選択した非表示要素を再表示します。' : 'Show Specified Elements displays selected hidden elements again.')
+          : (ja ? '指定要素以外を非表示にする は、選択した要素を表示し、他の要素を非表示にします。' : 'Hide Unselected Elements keeps selected elements visible and hides the other elements.'),
+      })),
+    }];
+  }
   // iCAD Professional P7.4 Cone and P7.5 Torus have no Foundations source lesson.
   if (lessonId === 'P7.5' || lessonId === 'P7.4') {
     const ja = language === 'ja';
@@ -24,13 +93,13 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
   if (lessonId.startsWith('P8.')) {
     const ja = language === 'ja';
     if (lessonId === 'P8.1') {
-      const labels = ja ? ['対象の位置', '対象の大きさ', '対象の色', '対象のシェーディング']
-        : ["The object's position", "The object's size", "The object's color", "The object's shading"];
+      const labels = ja ? ['点指定による移動', 'X, Y, Z 入力', 'シェーディング', 'ユーザービュー']
+        : ['Point-to-Point Move', 'X, Y, Z Input', 'Shading', 'User View'];
       return [{
-        id: 'P8.1-knowledge-check', prompt: ja ? 'Move（移動）コマンドは何を変更しますか？' : 'What does the Move command change?',
+        id: 'P8.1-knowledge-check', prompt: ja ? '正確な X、Y、Z の移動距離が指定されている場合、どの方法を使用すべきですか？' : 'Which method should you use when the exact X, Y, and Z movement distances are provided?',
         choices: labels.map((label, index) => ({
-          id: `P8.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
-          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+          id: `P8.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+          feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
         })),
       }];
     }
@@ -96,6 +165,43 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
         id: 'P8.7-knowledge-check', prompt: ja ? 'Delete（削除）コマンドは何をしますか？' : 'What does the Delete command do?',
         choices: labels.map((label, index) => ({
           id: `P8.7-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+  }
+  if (lessonId === 'P9.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['モデルの色を変更するため', 'モデリング用の直線、円、円弧などの2D幾何形状を作成するため', '図面を保存するため', '画面を回転するため']
+      : ['To change the model color', 'To create lines, circles, arcs, and other 2D geometry for modeling', 'To save the drawing', 'To rotate the screen'];
+    return [{
+      id: 'P9.1-knowledge-check', prompt: ja ? 'iCAD SX におけるスケッチの主な目的は何ですか？' : 'What is the main purpose of Sketch in iCAD SX?',
+      choices: labels.map((label, index) => ({
+        id: `P9.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId.startsWith('P10.')) {
+    const ja = language === 'ja';
+    if (lessonId === 'P10.1') {
+      const labels = ja ? ['閉じた2Dスケッチの外周を選択し、指定した高さで垂直にソリッドを作成する', 'スケッチを削除して別の図面へコピーする', '線分を延長して無限長にする', '2D図面の寸法線を自動配置する']
+        : ['Creates a 3D solid by projecting a closed 2D sketch profile vertically by a specified height', 'Deletes the sketch and copies it to another drawing', 'Extends lines into infinite construction lines', 'Automatically dimensions 2D drawings'];
+      return [{
+        id: 'P10.1-knowledge-check', prompt: ja ? '押し出し（Extrude）コマンドの機能として正しいものはどれですか？' : 'What is the function of the Extrude command?',
+        choices: labels.map((label, index) => ({
+          id: `P10.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+        })),
+      }];
+    }
+    if (lessonId === 'P10.2') {
+      const labels = ja ? ['閉じたスケッチ断面と回転軸', '3つの異なる視点とカメラ位置', '押し出し高さとドラフト角度', 'モデルの材質設定と質量']
+        : ['An enclosed sketch cross-section and an axis of rotation', 'Three different viewpoints and camera positions', 'Extrusion height and draft angle', 'Material properties and mass'];
+      return [{
+        id: 'P10.2-knowledge-check', prompt: ja ? '回転体（Revolve）でソリッドを作成するために必要な要素は何ですか？' : 'What is required to generate a 3D solid using the Revolve command?',
+        choices: labels.map((label, index) => ({
+          id: `P10.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
           feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
         })),
       }];

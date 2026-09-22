@@ -2,6 +2,7 @@
 .foundation-part-layout-steps--placement .foundations-uses__grid { grid-template-columns: repeat(5,minmax(0,1fr)); }
 .foundation-placement-step-image { width: 100%; max-height: var(--foundation-detail-icon-size,120px); object-fit: contain; }
 .foundation-placement-key-entry { padding: 10px 14px; border: 1px solid currentColor; font-size: 1.25rem; white-space: nowrap; }
+.foundations-consistent-lesson .foundation-part-layout-steps--placement .foundation-modeling-input-icon svg { width: 100%; max-width: 160px; height: 40px; max-height: 40px; object-fit: contain; }
 .foundation-part-layout-steps .foundations-use-card__body p { white-space: pre-line; }
 .foundation-part-layout-steps .foundation-current-origin-icon { display: block; width: var(--foundation-detail-icon-size,120px); max-width: 100%; height: auto; }
 .foundation-part-layout-menu-reference { display: block; width: auto; height: auto; max-width: 100%; max-height: var(--foundation-detail-icon-size,120px); object-fit: contain; }

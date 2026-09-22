@@ -1266,11 +1266,11 @@
               "sections": [
                 {
                   "title": "Place a Shape at the Origin",
-                  "text": "Enter the coordinates, then display the origin to check the placement.\n\n**Step 1 — Create the Shape**\nStart the shape-creation command.\n\n**Step 2 — Enter Coordinates**\nWhen asked for a placement point, type **0 0 0** in **Key Entry**.\n\n**Step 3 — Press Enter**\nPress **Enter** to place the shape. The object is displayed.\n\n**Step 4 — Select the Tool**\nIn the **Icon Menu**, open **Parts (パーツ)** and click **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 5 — Show the Origin**\n**Right-click** to display the origin. Check that it is at the shape’s placement point."
+                  "text": "Enter the coordinates, then display the origin to check the placement.\n\n**Step 1 — Create the Shape**\nStart the shape-creation command.\n\n**Step 2 — Enter Coordinates**\nWhen prompted for a placement point, type **0 0 0** in **Key Entry**, separated by spaces.\n\n**Step 3 — Press Enter**\nPress **Enter** to place the shape.\n\n**Step 4 — Select the Tool**\nOpen **Parts (パーツ)** and select **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 5 — Show the Origin**\n**Right-click** to display the origin. Check that it is at the shape’s placement point."
                 },
                 {
                   "title": "Optional: Change the Part Origin and Axes",
-                  "text": "Only continue below if you want to change the origin or axis directions. You can do this even after placing the shape at **0, 0, 0**.\n\n**Step 1 — Select the Tool**\nIn the **Icon Menu**, open **Parts (パーツ)** and choose **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 2 — Show the Origin**\n**Right-click** to display the current origin.\n\n**Step 3 — Set the Origin**\nLeft-click **Point 1** for the new origin.\n\n**Step 4 — Set the X-Axis**\nLeft-click **Point 2** to set the X-axis direction.\n\n**Step 5 — Set the Y-Axis**\nLeft-click **Point 3** to set the Y-axis direction.\n\n**Step 6 — Check**\nCheck the origin location and axis directions."
+                  "text": "Only continue below if you want to change the origin or axis directions. You can do this even after placing the shape at **0, 0, 0**.\n\n**Step 1 — Select the Tool**\nOpen **Parts (パーツ)** and select **Change 3D Part Layout (パーツのレイアウトを変更する)**.\n\n**Step 2 — Show the Origin**\n**Right-click** to display the current origin.\n\n**Step 3 — Set the Origin**\nLeft-click **Point 1** for the new origin.\n\n**Step 4 — Set the X-Axis**\nLeft-click **Point 2** to set the X-axis direction.\n\n**Step 5 — Set the Y-Axis**\nLeft-click **Point 3** to set the Y-axis direction.\n\n**Step 6 — Check**\nCheck the origin location and axis directions."
                 },
                 {
                   "title": "Check the View Orientation",
@@ -1826,7 +1826,7 @@
               "sections": [
                 {
                   "title": "How to Create a New Item",
-                  "text": "**Step 1 — Open the File Menu**\nClick **File (F)** at the top-left of the iCAD SX menu bar to open the File menu.\n\n**Step 2 — Select New**\nSelect **New (N)** from the open File menu to create a new drawing."
+                  "text": "**Step 1 — Open the File Menu**\nOpen **File (F)**.\n\n**Step 2 — Select New**\nSelect **New (N)** to create a drawing."
                 },
                 {
                   "title": "Practice: Start a Training Drawing",
@@ -1841,7 +1841,7 @@
               "sections": [
                 {
                   "title": "新しい図面の作成手順",
-                  "text": "**ステップ 1 — ファイルメニューを開く**\niCAD SX のメニューバー左上にある**ファイル(F)**をクリックして、ファイルメニューを開きます。\n\n**ステップ 2 — 新規作成を選ぶ**\n開いたファイルメニューから**新規作成(N)**を選択して、新しい図面を作成します。"
+                  "text": "**ステップ 1 — ファイルメニューを開く**\n**ファイル(F)**を開きます。\n\n**ステップ 2 — 新規作成を選ぶ**\n**新規作成(N)**を選んで図面を作成します。"
                 },
                 {
                   "title": "実践：練習用図面を作成する",
@@ -1878,11 +1878,11 @@
               "sections": [
                 {
                   "title": "Save",
-                  "text": "These steps show how to save a new drawing for the first time.\n\n**Step 1 — Open the File Menu and Select Save**\nClick **File (ファイル(F))** on the menu bar, then select **Save (上書き保存(S))**.\n\n**Step 2 — Set the Folder and Name, Then Save**\nIn the dialog, choose your training folder in **Save in (保存先)**. Enter **Training_Box_01** in **File name (ファイル名)**, then click **Save (保存(A))**.\n\n**Saving again:** Click **Save**. If an overwrite confirmation appears, check the file name, then click **OK** to save your latest changes to that file. Click **Cancel** to stop without saving."
+                  "text": "These steps show how to save a new drawing for the first time.\n\n**Step 1 — Open the File Menu and Select Save**\nSelect **File (ファイル(F)) → Save (上書き保存(S))**.\n\n**Step 2 — Set the Folder and Name, Then Save**\nChoose your training folder. Enter **Training_Box_01** in **File name (ファイル名)**, then click **Save (保存(A))**.\n\n**Saving again:** Click **Save**. If an overwrite confirmation appears, check the file name, then click **OK** to save your latest changes to that file. Click **Cancel** to stop without saving."
                 },
                 {
                   "title": "Save As",
-                  "text": "**Step 1 — Open the File Menu and Select Save As**\nClick **File (ファイル(F))** on the menu bar, then select **Save As (名前を付けて保存(A))**.\n\n**Step 2 — Set the Folder and Name, Then Save**\nIn the dialog, open your training folder using **Save in (保存先)**. Enter a different name, such as **Training_Box_01_Copy**, in **File name (ファイル名)**, then click **Save (保存(A))**.\n\n**Keep the original file:** Give the copy a new name, such as **Training_Box_01_Copy**. If that name is already used in the folder, choose another name."
+                  "text": "**Step 1 — Open the File Menu and Select Save As**\nSelect **File (ファイル(F)) → Save As (名前を付けて保存(A))**.\n\n**Step 2 — Set the Folder and Name, Then Save**\nChoose your training folder. Enter **Training_Box_01_Copy** in **File name (ファイル名)**, then click **Save (保存(A))**.\n\n**Keep the original file:** Give the copy a new name, such as **Training_Box_01_Copy**. If that name is already used in the folder, choose another name."
                 },
                 {
                   "title": "Save vs. Save As",
@@ -1901,11 +1901,11 @@
               "sections": [
                 {
                   "title": "保存",
-                  "text": "ここでは、新しい図面を初めて保存する手順を説明します。\n\n**ステップ 1 — ファイルメニューから保存を選ぶ**\nメニューバーの**ファイル(F)**をクリックし、**上書き保存(S)**を選択します。\n\n**ステップ 2 — 保存先と名前を指定して保存する**\nダイアログの**保存先**で練習用フォルダーを選びます。**ファイル名**に **Training_Box_01** を入力し、**保存(A)**をクリックします。\n\n**もう一度保存する場合：** **上書き保存**を選択します。上書きの確認が表示されたら、ファイル名を確認し、**OK** をクリックして最新の変更をそのファイルに保存します。保存せずに中止するには **Cancel** をクリックします。"
+                  "text": "ここでは、新しい図面を初めて保存する手順を説明します。\n\n**ステップ 1 — ファイルメニューから保存を選ぶ**\n**ファイル(F) → 上書き保存(S)**を選びます。\n\n**ステップ 2 — 保存先と名前を指定して保存する**\nダイアログの**保存先**で練習用フォルダーを選びます。**ファイル名**に **Training_Box_01** を入力し、**保存(A)**をクリックします。\n\n**もう一度保存する場合：** **上書き保存**を選択します。上書きの確認が表示されたら、ファイル名を確認し、**OK** をクリックして最新の変更をそのファイルに保存します。保存せずに中止するには **Cancel** をクリックします。"
                 },
                 {
                   "title": "名前を付けて保存",
-                  "text": "**ステップ 1 — ファイルメニューから名前を付けて保存を選ぶ**\nメニューバーの**ファイル(F)**をクリックし、**名前を付けて保存(A)**を選択します。\n\n**ステップ 2 — 保存先と名前を指定して保存する**\nダイアログの**保存先**から練習用フォルダーを開きます。**ファイル名**に **Training_Box_01_Copy**など別の名前を入力し、**保存(A)**をクリックします。\n\n**元のファイルを残すには：** コピーに **Training_Box_01_Copy** などの新しい名前を付けます。その名前がフォルダー内ですでに使われている場合は、別の名前を選びます。"
+                  "text": "**ステップ 1 — ファイルメニューから名前を付けて保存を選ぶ**\n**ファイル(F) → 名前を付けて保存(A)**を選びます。\n\n**ステップ 2 — 保存先と名前を指定して保存する**\nダイアログの**保存先**から練習用フォルダーを開きます。**ファイル名**に **Training_Box_01_Copy**など別の名前を入力し、**保存(A)**をクリックします。\n\n**元のファイルを残すには：** コピーに **Training_Box_01_Copy** などの新しい名前を付けます。その名前がフォルダー内ですでに使われている場合は、別の名前を選びます。"
                 },
                 {
                   "title": "保存と名前を付けて保存",
@@ -1942,7 +1942,7 @@
               "sections": [
                 {
                   "title": "How to Close a Drawing",
-                  "text": "**Step 1 — Save Your Work**\nCheck the active drawing name and save any changes you want to keep, using the steps in **F8.2 Saving Your Work**.\n\n**Step 2 — Open the File Menu**\nSelect **File** from the menu bar.\n\n**Step 3 — Select Close**\nSelect **Close (閉じる(C))** from the File menu. Alternatively, click the **×** at the top-right of the drawing window, inside iCAD SX. Use the drawing window’s button, not the application’s top-right **×**.\n\n**Step 4 — Read Any Save Message**\nIf a save message appears, read it and choose the option that saves the changes you want to keep. If you saved in F8.2 and made no further changes, a save message may not appear."
+                  "text": "**Step 1 — Save Your Work**\nCheck the active drawing name and save any changes you want to keep, using the steps in **F8.2 Saving Your Work**.\n\n**Step 2 — Open the File Menu**\nOpen **File**.\n\n**Step 3 — Select Close**\nSelect **Close (閉じる(C))**, or click the **drawing window’s ×**. Do not use the application’s ×.\n\n**Step 4 — Read Any Save Message**\nIf a save message appears, read it and choose the option that saves the changes you want to keep. If you saved in F8.2 and made no further changes, a save message may not appear."
                 },
                 {
                   "title": "Before Confirming",
@@ -1962,7 +1962,7 @@
               "sections": [
                 {
                   "title": "図面を閉じる手順",
-                  "text": "**ステップ 1 — 作業を保存する**\n現在の図面名を確認し、**F8.2 作業内容の保存**の手順で、残したい変更内容を保存します。\n\n**ステップ 2 — ファイルメニューを開く**\nメニューバーの**ファイル**を選択します。\n\n**ステップ 3 — 閉じるを選ぶ**\nファイルメニューの**閉じる(C)**を選択します。または、iCAD SX 内の図面ウィンドウ右上の **×** をクリックします。アプリケーション全体の右上にある **×** ではなく、図面ウィンドウのボタンを使います。\n\n**ステップ 4 — 保存メッセージを読む**\n保存メッセージが表示されたら内容を読み、残したい変更を保存する選択肢を選びます。F8.2 で保存した後に変更していなければ、保存メッセージが表示されない場合があります。"
+                  "text": "**ステップ 1 — 作業を保存する**\n現在の図面名を確認し、**F8.2 作業内容の保存**の手順で、残したい変更内容を保存します。\n\n**ステップ 2 — ファイルメニューを開く**\n**ファイル**を開きます。\n\n**ステップ 3 — 閉じるを選ぶ**\n**閉じる(C)**、または**図面ウィンドウの ×** を選びます。アプリケーション全体の × は使いません。\n\n**ステップ 4 — 保存メッセージを読む**\n保存メッセージが表示されたら内容を読み、残したい変更を保存する選択肢を選びます。F8.2 で保存した後に変更していなければ、保存メッセージが表示されない場合があります。"
                 },
                 {
                   "title": "確定する前に",
@@ -2009,7 +2009,7 @@
               "sections": [
                 {
                   "title": "Basic 3D Modeling Process",
-                  "text": "These steps introduce the coordinate-entry workflow used in the next lessons. Follow the prompts for the shape tool you choose.\n\n**Step 1 — Select the Shape Tool**\nIn the **Icon Menu** on the right, open **Shape Placement (形状配置)** and choose the shape you want to create.\n\n**Step 2 — Enter the Dimensions**\nEnter the required size in **Item Entry**, the long input area along the bottom of the screen. Check the field labels and drawing units.\n\n**Step 3 — Specify the Position**\nEnter the placement coordinates in **Key Entry**, the input box at the bottom-right of the screen.\n\n**Step 4 — Create and Check**\nWith **Key Entry** active, press **Enter** on the keyboard to place the shape. Check that the shape appears at the intended position."
+                  "text": "These steps introduce the coordinate-entry workflow used in the next lessons. Follow the prompts for the shape tool you choose.\n\n**Step 1 — Select the Shape Tool**\nOpen **Shape Placement (形状配置)** and select a shape.\n\n**Step 2 — Enter the Dimensions**\nEnter the dimensions in **Item Entry**. Check the field labels and units.\n\n**Step 3 — Specify the Position**\nEnter the placement coordinates in **Key Entry**.\n\n**Step 4 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check the shape’s position."
                 },
                 {
                   "title": "Try It",
@@ -2029,7 +2029,7 @@
               "sections": [
                 {
                   "title": "基本的な 3D モデリングの流れ",
-                  "text": "ここでは、次のレッスンで使う座標入力による作成手順を紹介します。選択した形状ツールの案内に従って操作してください。\n\n**ステップ 1 — 形状ツールを選ぶ**\n画面右側の**アイコンメニュー**で**形状配置**を開き、作成する形状を選びます。\n\n**ステップ 2 — 寸法を入力する**\n画面下部の横長の入力欄である**項目入力**に、必要な寸法を入力します。入力項目の名称と図面の単位を確認します。\n\n**ステップ 3 — 位置を指定する**\n画面右下の入力欄である**キー入力**に、配置位置の座標を入力します。\n\n**ステップ 4 — 作成して確認する**\n**キー入力**が有効な状態で、キーボードの **Enter** を押して形状を配置します。形状が指定した位置に配置されていることを確認します。"
+                  "text": "ここでは、次のレッスンで使う座標入力による作成手順を紹介します。選択した形状ツールの案内に従って操作してください。\n\n**ステップ 1 — 形状ツールを選ぶ**\n**形状配置**を開き、作成する形状を選びます。\n\n**ステップ 2 — 寸法を入力する**\n**項目入力**に寸法を入力します。項目名と単位を確認します。\n\n**ステップ 3 — 位置を指定する**\n**キー入力**に配置位置の座標を入力します。\n\n**ステップ 4 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押し、形状の配置位置を確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2071,7 +2071,7 @@
               "sections": [
                 {
                   "title": "How to Create a Box",
-                  "text": "Before starting, open **Training_Box_01** saved in **F8.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Box**\nIn the **Icon Menu** on the right, open **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Box, the orientation buttons appear in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Depth (length): 20 mm**\n**Width: 30 mm**\n**Height: 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Box at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter** to create the Box. Check that one Box appears."
+                  "text": "Before starting, open **Training_Box_01** saved in **F8.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Box**\nOpen **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Box**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Box appears."
                 },
                 {
                   "title": "Try It",
@@ -2091,7 +2091,7 @@
               "sections": [
                 {
                   "title": "直方体の作成手順",
-                  "text": "始める前に、**F8.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 直方体を選ぶ**\n画面右側の**アイコンメニュー**で**形状配置**から**直方体**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n直方体を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**奥行き：20 mm**\n**幅：30 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、直方体を現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押して直方体を作成します。直方体が一つ表示されることを確認します。"
+                  "text": "始める前に、**F8.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 直方体を選ぶ**\n**形状配置**を開き、**直方体**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**直方体を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。直方体が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2133,7 +2133,7 @@
               "sections": [
                 {
                   "title": "How to Create a Cylinder",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Cylinder**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Cylinder**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Cylinder, find the orientation buttons in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Cylinder at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Cylinder appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Cylinder**\nOpen **Shape Placement (形状配置)** and select **Cylinder (円柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cylinder**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Cylinder appears."
                 },
                 {
                   "title": "Try It",
@@ -2153,7 +2153,7 @@
               "sections": [
                 {
                   "title": "円柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 円柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**円柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n円柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。円柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 円柱を選ぶ**\n**形状配置**を開き、**円柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。円柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -2195,7 +2195,7 @@
               "sections": [
                 {
                   "title": "How to Create a Polygonal Prism",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons.\n\n**Step 1 — Select Front View**\nSelect **Front View** from the **3D View toolbar**.\n\n**Step 2 — Select Polygonal Prism**\nIn the **Icon Menu** on the right, open **Shape Placement** and select **Polygonal Prism**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting Polygonal Prism, find the orientation buttons in the **Command Menu on the left**. The **X**, **Y**, and **Z** buttons set which direction the shape's face points. Select **Y** before entering the size.\n\n**Step 4 — Enter the Size**\nIn **Item Entry**, enter:\n**Sides (頂点数): 6**\n**Diameter (直径): 10 mm**\n**Height (高さ): 10 mm**\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each value, to position the Polygonal Prism at the current origin.\n\n**Step 6 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check that one Polygonal Prism appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Polygonal Prism**\nOpen **Shape Placement (形状配置)** and select **Polygonal Prism (正多角柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Polygonal Prism**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Polygonal Prism appears."
                 },
                 {
                   "title": "Try It",
@@ -2215,7 +2215,7 @@
               "sections": [
                 {
                   "title": "多角柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。\n\n**ステップ 1 — 正面図を選ぶ**\n**3D ビューツールバー**から**正面図**を選択します。\n\n**ステップ 2 — 多角柱を選ぶ**\n画面右側の**アイコンメニュー**の**形状配置**から**多角柱**を選択します。\n\n**ステップ 3 — Y 方向を選ぶ**\n多角柱を選択すると、**画面左側のコマンドメニュー**に方向ボタンが表示されます。**X**、**Y**、**Z** ボタンで形状の面の向きを設定します。寸法を入力する前に **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に以下を入力します。\n**頂点数：6**\n**直径：10 mm**\n**高さ：10 mm**\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、各数値の間にスペースを入れて **0 0 0** と入力し、現在の原点に配置します。\n\n**ステップ 6 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押します。多角柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 正多角柱を選ぶ**\n**形状配置**を開き、**正多角柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**正多角柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。正多角柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",

@@ -21,9 +21,9 @@
 .foundation-interface-cards--toolbar .foundations-use-card__icon-frame { container-type: inline-size; }
 /* Let the button shrink to its grid cell so wide toolbar strips (Entry Control) scale down instead of overflowing. */
 .foundation-interface-cards--toolbar .foundation-interface-icon-button { min-width: 0; max-width: 100%; }
-/* Use one shared height that also fits the longest 264 × 34 toolbar strip. */
+/* Enlarged toolbar icon strip to improve legibility while remaining well-proportioned */
 .foundations-consistent-lesson .foundation-interface-cards--toolbar .foundation-toolbar-group-icon {
-  --toolbar-strip-height: min(48px, calc(100cqi * 34 / 264));
+  --toolbar-strip-height: 54px;
   height: var(--toolbar-strip-height);
   width: calc(var(--toolbar-strip-height) * var(--toolbar-aspect));
   max-width: 100%;
