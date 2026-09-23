@@ -6,7 +6,7 @@ import FoundationResizeSteps from '../../iCAD_Foundations/FoundationResizeSteps'
 import FoundationShapeSteelLesson from '../../iCAD_Foundations/FoundationShapeSteelLesson';
 import { PROFESSIONAL_SHAPE_SCREENS } from '../../iCAD_Foundations/professionalShapeScreens';
 import { resolveFoundationLesson } from '../../iCAD_Foundations/curriculum';
-import { foundationKnowledgeQuestions } from '../../iCAD_Foundations/knowledgeCheck';
+import { sourceKnowledgeQuestions as foundationKnowledgeQuestions } from '../../iCAD_Foundations/knowledgeCheck';
 import { createProfessionalLessons, PROFESSIONAL_COURSE_TYPE, PROFESSIONAL_LESSONS, professionalRenderLesson, resolveProfessionalLesson } from '../curriculum';
 
 vi.mock('../../../context/LanguageContext', () => ({ useTranslation: () => ({ language: 'en', t: (s: string) => s }) }));
@@ -37,11 +37,11 @@ describe('iCAD Professional curriculum', () => {
       ['P5.1', 'F5.1'], ['P5.2', 'F5.4'], ['P5.3', 'F5.6'],
       ['P6.1', 'F8.1'], ['P6.2', 'F8.3'], ['P6.3', 'F8.5'],
       ['P7.1', 'F9.5'], ['P7.2', 'F9.6'], ['P7.3', 'F9.7'], ['P7.4', null], ['P7.5', null],
-      ['P8.1', 'F9.9'], ['P8.2', 'F9.10'], ['P8.3', null], ['P8.4', null], ['P8.5', null], ['P8.6', null], ['P8.7', 'F9.11'],
+      ['P8.1', 'F9.9'], ['P8.2', 'F9.10'], ['P8.3', null], ['P8.4', null], ['P8.5', null], ['P8.6', null], ['P8.7', 'F9.11'], ['P8.8', null],
       ['P9.1', null],
       ['P10.1', null], ['P10.2', null],
       ['P11.1', null], ['P11.2', null], ['P11.3', null], ['P11.4', null],
-      ['P12.1', null], ['P12.2', null], ['P12.3', null],
+      ['P12.1', null], ['P13.1', null],
     ]);
     for (const lesson of PROFESSIONAL_LESSONS.filter(item => item.sourceLessonId && !['P7', 'P8', 'P9', 'P10'].includes(item.moduleId))) {
       const source = resolveFoundationLesson(lesson.sourceLessonId!)!;
@@ -65,10 +65,10 @@ describe('iCAD Professional curriculum', () => {
   it('builds the P8 sidebar titles in both languages', () => {
     expect(createProfessionalLessons('en')[7]).toMatchObject({ title: 'P8 Move, Copy, Delete' });
     expect(createProfessionalLessons('en')[7].children!.map(child => child.title)).toEqual([
-      'P8.1 Move', 'P8.2 Copy', 'P8.3 Rotate', 'P8.4 Rotate Copy', 'P8.5 Mirror', 'P8.6 Mirror Copy', 'P8.7 Delete'
+      'P8.1 Move', 'P8.2 Copy', 'P8.3 Rotate', 'P8.4 Rotate Copy', 'P8.5 Mirror', 'P8.6 Mirror Copy', 'P8.7 Delete', 'P8.8 Resize'
     ]);
     expect(createProfessionalLessons('ja')[7].children!.map(child => child.title)).toEqual([
-      'P8.1 移動', 'P8.2 複写', 'P8.3 回転', 'P8.4 回転複写', 'P8.5 ミラー', 'P8.6 ミラー複写', 'P8.7 削除'
+      'P8.1 移動', 'P8.2 複写', 'P8.3 回転', 'P8.4 回転複写', 'P8.5 ミラー', 'P8.6 ミラー複写', 'P8.7 削除', 'P8.8 立体縮尺'
     ]);
   });
 
@@ -86,8 +86,8 @@ describe('iCAD Professional curriculum', () => {
 
   it('builds the P12 sidebar titles in both languages', () => {
     expect(createProfessionalLessons('en')[11]).toMatchObject({ title: 'P12 Stretch / Shape / Cut' });
-    expect(createProfessionalLessons('en')[11].children!.map(child => child.title)).toEqual(['P12.1 Stretch', 'P12.2 Resize', 'P12.3 Creating Shape Steels']);
-    expect(createProfessionalLessons('ja')[11].children!.map(child => child.title)).toEqual(['P12.1 伸縮', 'P12.2 立体縮尺', 'P12.3 形鋼の作成']);
+    expect(createProfessionalLessons('en')[11].children!.map(child => child.title)).toEqual(['P12.1 Stretch']);
+    expect(createProfessionalLessons('ja')[11].children!.map(child => child.title)).toEqual(['P12.1 伸縮']);
   });
 
   it('renders copies under their Foundations source id and new shapes as themselves', () => {
@@ -119,34 +119,42 @@ describe('iCAD Professional curriculum', () => {
     }
   });
 
-  it('renders both P12.1 Stretch methods as three-card grids', () => {
+  it('renders the P12.1 Stretch methods with their expected step counts', () => {
     const lesson = resolveProfessionalLesson('P12.1')!;
     for (const [sectionIndex,method] of [[1,1],[2,2]] as const) {
       const { container,unmount } = render(<FoundationStretchSteps text={lesson.content.en.sections![sectionIndex].text} method={method} japanese={false}/>);
-      expect(container.querySelectorAll('.foundations-use-card')).toHaveLength(3);
+      expect(container.querySelectorAll('.foundations-use-card')).toHaveLength(4);
       unmount();
     }
     const [question] = foundationKnowledgeQuestions('en','P12.1');
     expect(question.choices.find(choice=>choice.isCorrect)!.label).toBe('B. The face to be stretched');
   });
 
-  it('renders P12.2 Resize as a connected three-step lesson', () => {
-    const lesson = resolveProfessionalLesson('P12.2')!;
+  it('renders P8.8 Resize as a connected three-step lesson', () => {
+    const lesson = resolveProfessionalLesson('P8.8')!;
+    expect(resolveProfessionalLesson('P12.2')).toBe(lesson);
+    expect(lesson.completionAliases).toContain('P12.2');
     const { container } = render(<FoundationResizeSteps text={lesson.content.en.sections![0].text} japanese={false}/>);
     expect(container.querySelectorAll('.foundations-use-card')).toHaveLength(3);
     expect(lesson.content.en.connection).toContain('P12.1 Stretch');
-    const [question] = foundationKnowledgeQuestions('en','P12.2');
+    const [question] = foundationKnowledgeQuestions('en','P8.8');
     expect(question.choices.find(choice=>choice.isCorrect)!.label).toBe('B. The entire selected solid');
   });
 
-  it('renders P12.3 shape profiles and placement workflow', () => {
-    const lesson=resolveProfessionalLesson('P12.3')!;
+  it('preserves the old Shape Steels link and creates P13', () => {
+    expect(resolveProfessionalLesson('P12.3')?.id).toBe('P13.1');
+    expect(createProfessionalLessons('en')[12].title).toBe('P13 Shape Steels');
+    expect(createProfessionalLessons('en')[12].children![0].title).toBe('P13.1 Creating Shape Steels');
+  });
+
+  it('renders P13.1 shape profiles and placement workflow', () => {
+    const lesson=resolveProfessionalLesson('P13.1')!;
     const profiles=render(<FoundationShapeSteelLesson text={lesson.content.en.sections![0].text} profiles/>);
     expect(profiles.container.querySelectorAll('.foundations-use-card')).toHaveLength(7);
     profiles.unmount();
     const workflow=render(<FoundationShapeSteelLesson text={lesson.content.en.sections![1].text}/>);
     expect(workflow.container.querySelectorAll('.foundations-use-card')).toHaveLength(3);
-    const [question]=foundationKnowledgeQuestions('en','P12.3');
+    const [question]=foundationKnowledgeQuestions('en','P13.1');
     expect(question.choices.find(choice=>choice.isCorrect)!.label).toBe('B. Key Entry Area');
   });
 

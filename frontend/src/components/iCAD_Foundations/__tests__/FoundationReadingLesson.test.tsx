@@ -39,9 +39,9 @@ describe('Foundations written completion and knowledge check', () => {
     }
   });
 
-  it.each(['en', 'ja'] as const)('shows the F10 review as a ten-topic checklist in %s', language => {
+  it.each(['en', 'ja'] as const)('shows the F16 review as a ten-topic checklist in %s', language => {
     state.language = language;
-    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F10.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
+    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F16.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
     const list = container.querySelector('.quick-review-checklist')!;
     expect(list.querySelectorAll('li')).toHaveLength(10);
     expect(list.textContent).not.toContain('→');
@@ -67,7 +67,7 @@ describe('Foundations written completion and knowledge check', () => {
   });
 
   it('renders six authored Cylinder cards while keeping the tutorial available', () => {
-    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F9.6')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Preserved cylinder video</div>} />);
+    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F9.2')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Preserved cylinder video</div>} />);
     expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(6);
     expect(screen.getByRole('heading', { name: 'Select Cylinder' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Enter the Size' })).toBeVisible();
@@ -78,12 +78,12 @@ describe('Foundations written completion and knowledge check', () => {
 
   it.each(['en', 'ja'] as const)('renders authored F9 procedures and practice in %s without legacy duplication', language => {
     state.language = language;
-    for (const id of ['F9.1', 'F9.5', 'F9.6', 'F9.7', 'F9.9', 'F9.10', 'F9.11']) {
+    for (const id of ['F9.1', 'F9.2', 'F9.3', 'F10.1', 'F10.2', 'F10.7']) {
       const lesson = resolveFoundationLesson(id)!;
       expect(lesson.content.ja.sections?.length).toBe(lesson.content.en.sections?.length);
       const { container, unmount } = render(<FoundationReadingLesson lesson={lesson} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} tutorial={<div>Existing tutorial</div>} />);
-      expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(['F9.5','F9.6','F9.7'].includes(id) ? 6 : 4);
-      expect(screen.getByRole('heading', { name: language === 'ja' ? 'やってみましょう' : 'Try It' })).toBeVisible();
+      expect(container.querySelectorAll('.foundation-modeling-process .foundations-use-card')).toHaveLength(['F9.1','F9.2','F9.3'].includes(id) ? 6 : 4);
+      if (id.startsWith('F9.')) expect(screen.getByRole('heading', { name: language === 'ja' ? 'やってみましょう' : 'Try It' })).toBeVisible();
       expect(screen.getByText('Existing tutorial')).toBeInTheDocument();
       expect(container.querySelectorAll('.foundation-modeling-process')).toHaveLength(1);
       unmount();
@@ -120,7 +120,7 @@ describe('Foundations written completion and knowledge check', () => {
     expect(document.body.style.overflow).not.toBe('hidden');
   });
 
-  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F10.6'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
+  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F16.2'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
     const complete = vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue(undefined);
     const next = vi.fn();
     render(<FoundationReadingLesson lesson={resolveFoundationLesson(id)!} onComplete={complete} onNext={next} isLast={false} />);
@@ -164,7 +164,7 @@ describe('Foundations written completion and knowledge check', () => {
 
   it('blocks continuation on wrong answers and narrates every question, feedback before saving', async () => {
     const complete=vi.fn().mockResolvedValue(undefined); const next=vi.fn();
-    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F10.6')!} onComplete={complete} onNext={next} isLast />);
+    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F16.2')!} onComplete={complete} onNext={next} isLast />);
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     const questions=foundationKnowledgeQuestions('en');
     expect(screen.getByText('Question 1 of 12')).toBeVisible();

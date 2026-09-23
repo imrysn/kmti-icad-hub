@@ -47,7 +47,9 @@ def progress_percentage(db, user_id, course):
         QuizScore.course_id.in_([str(course.id), course.course_type]),
         QuizScore.score >= 80.0,
     ).all()
-    completed = {score.lesson_id for score in scores} & LESSON_IDS
+    scored_ids = {score.lesson_id for score in scores}
+    completed = {lesson['id'] for lesson in LESSONS if lesson['id'] in scored_ids
+                 or scored_ids.intersection(lesson.get('completionAliases', []))}
     return round(len(completed) / len(LESSONS) * 100, 1)
 
 

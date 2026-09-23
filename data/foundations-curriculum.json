@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
   "modules": [
     {
@@ -1986,458 +1986,328 @@
     {
       "id": "F9",
       "title": {
-        "en": "Introduction to 3D Modeling",
-        "ja": "3D モデリング入門"
+        "en": "Creating Basic Shapes",
+        "ja": "基本形状の作成"
       },
       "lessons": [
         {
           "id": "F9.1",
           "moduleId": "F9",
-          "title": {
-            "en": "Introduction to Basic 3D Modeling",
-            "ja": "基本的な 3D モデリングの紹介"
-          },
-          "type": "reading",
-          "renderer": null,
-          "video": null,
-          "routeAliases": [],
-          "completionAliases": [],
-          "content": {
-            "en": {
-              "explanation": "Basic 3D modeling in iCAD SX lets you create solid shapes and place them in the modeling area. Dimensions set the size; position sets the location.",
-              "practice": "By the end of this lesson, you should be able to describe the basic steps used to create a simple 3D shape.",
-              "sections": [
-                {
-                  "title": "Basic 3D Modeling Process",
-                  "text": "These steps introduce the coordinate-entry workflow used in the next lessons. Follow the prompts for the shape tool you choose.\n\n**Step 1 — Select the Shape Tool**\nOpen **Shape Placement (形状配置)** and select a shape.\n\n**Step 2 — Enter the Dimensions**\nEnter the dimensions in **Item Entry**. Check the field labels and units.\n\n**Step 3 — Specify the Position**\nEnter the placement coordinates in **Key Entry**.\n\n**Step 4 — Create and Check**\nWith **Key Entry** active, press **Enter**. Check the shape’s position."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Before creating a Box, explain where you would enter its size and where you would enter its position.\n\n**Check:** Size belongs in Item Entry; coordinates belong in Key Entry. The next lessons demonstrate this method."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Size and position are different inputs. Read the active command guidance before entering values."
-                }
-              ],
-              "quickReview": "Icon Menu → Item Entry → Key Entry → Enter",
-              "connection": "Continue to F9.2 Creating a Box. Reopen Training_Box_01, saved in F8.2 Saving Your Work, from your training folder using File → Open. Use this drawing for the Box exercise and keep it for Move, Copy, and Delete. Use separate drawings for Cylinder and Polygonal Prism."
-            },
-            "ja": {
-              "explanation": "iCAD SX の基本 3D モデリングでは、立体形状を作成して作業領域に配置します。寸法は大きさを、位置の入力は配置場所を指定します。",
-              "practice": "このレッスンの終了時には、基本的な 3D 形状を作成する手順を説明できるようになります。",
-              "sections": [
-                {
-                  "title": "基本的な 3D モデリングの流れ",
-                  "text": "ここでは、次のレッスンで使う座標入力による作成手順を紹介します。選択した形状ツールの案内に従って操作してください。\n\n**ステップ 1 — 形状ツールを選ぶ**\n**形状配置**を開き、作成する形状を選びます。\n\n**ステップ 2 — 寸法を入力する**\n**項目入力**に寸法を入力します。項目名と単位を確認します。\n\n**ステップ 3 — 位置を指定する**\n**キー入力**に配置位置の座標を入力します。\n\n**ステップ 4 — 作成して確認する**\n**キー入力**が有効な状態で **Enter** を押し、形状の配置位置を確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "直方体を作成する前に、大きさと位置をそれぞれどこに入力するか説明しましょう。\n\n**確認：** 大きさは項目入力、座標はキー入力です。次のレッスンでこの方法を練習します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "大きさと位置は異なる入力です。値を入力する前に、現在のコマンドの案内を確認します。"
-                }
-              ],
-              "quickReview": "アイコンメニュー → 項目入力 → キー入力 → Enter",
-              "connection": "次は F9.2 直方体の作成に進みます。F8.2 作業内容の保存で保存した Training_Box_01 を、練習用フォルダーから「ファイル → 開く」で開き直します。この図面で直方体を作成し、移動、コピー、削除の練習にも使います。円柱と多角柱には別の練習用図面を使います。"
-            }
-          },
-          "contentReview": "instructor-review-required",
-          "recapMode": "shared",
-          "displayId": "F9.1"
+          "sourceProfessionalLessonId": "P7.1",
+          "completionId": "foundations-v3:F9.1",
+          "routeAliases": [
+            "P7.1",
+            "basic-op-box"
+          ],
+          "completionAliases": [
+            "F9.5",
+            "basic-op-box"
+          ]
+        },
+        {
+          "id": "F9.2",
+          "moduleId": "F9",
+          "sourceProfessionalLessonId": "P7.2",
+          "completionId": "foundations-v3:F9.2",
+          "routeAliases": [
+            "P7.2",
+            "basic-op-cylinder"
+          ],
+          "completionAliases": [
+            "F9.6",
+            "basic-op-cylinder"
+          ]
+        },
+        {
+          "id": "F9.3",
+          "moduleId": "F9",
+          "sourceProfessionalLessonId": "P7.3",
+          "completionId": "foundations-v3:F9.3",
+          "routeAliases": [
+            "P7.3",
+            "basic-op-polygon"
+          ],
+          "completionAliases": [
+            "F9.7",
+            "basic-op-polygon"
+          ]
+        },
+        {
+          "id": "F9.4",
+          "moduleId": "F9",
+          "sourceProfessionalLessonId": "P7.4",
+          "completionId": "foundations-v3:F9.4",
+          "routeAliases": [
+            "P7.4"
+          ],
+          "completionAliases": []
         },
         {
           "id": "F9.5",
           "moduleId": "F9",
-          "title": {
-            "en": "Creating a Box",
-            "ja": "直方体の作成"
-          },
-          "type": "video",
-          "renderer": "basic-op-box",
-          "video": "box",
+          "sourceProfessionalLessonId": "P7.5",
+          "completionId": "foundations-v3:F9.5",
           "routeAliases": [
-            "basic-op-box"
+            "P7.5"
           ],
-          "completionAliases": [
-            "basic-op-box"
-          ],
-          "content": {
-            "en": {
-              "explanation": "A Box is a rectangular solid used for blocks, plates, and bases.",
-              "practice": "By the end of this lesson, you should be able to create and check a basic Box.",
-              "sections": [
-                {
-                  "title": "How to Create a Box",
-                  "text": "Before starting, open **Training_Box_01** saved in **F8.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Box**\nOpen **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Box**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Box appears."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Follow the six steps above in **Training_Box_01**.\n\n**Check:** One Box should appear. Confirm the entered dimensions are **20 × 30 × 10 mm**, then view it from another direction to inspect its form."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the field labels, drawing units, and placement before pressing Enter."
-                }
-              ],
-              "quickReview": "Front View → Box → Y → Size → Position → Enter",
-              "connection": "Use Save to update Training_Box_01 with your Box. Keep this file for F9.5–F9.7. Continue to F9.3 Creating a Cylinder and use a separate drawing for that exercise."
-            },
-            "ja": {
-              "explanation": "直方体は、ブロック、板、ベースなどに使う基本的な立体です。",
-              "practice": "このレッスンの終了時には、基本的な直方体を作成し、結果を確認できるようになります。",
-              "sections": [
-                {
-                  "title": "直方体の作成手順",
-                  "text": "始める前に、**F8.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 直方体を選ぶ**\n**形状配置**を開き、**直方体**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**直方体を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。直方体が一つ表示されることを確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "**Training_Box_01** で上の六つの手順を実行します。\n\n**確認：** 直方体が一つ表示されることを確認します。入力した寸法が **20 × 30 × 10 mm** であることを確認し、別の方向からも形を確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "Enter を押す前に、入力項目、図面の単位、配置位置を確認します。"
-                }
-              ],
-              "quickReview": "正面図 → 直方体 → Y → 寸法 → 位置 → Enter",
-              "connection": "上書き保存で Training_Box_01 に直方体を保存します。このファイルは F9.5〜F9.7 で使います。次は F9.3 円柱の作成に進み、その練習には別の図面を使います。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "embedded-or-reading-review",
-          "displayId": "F9.2"
-        },
-        {
-          "id": "F9.6",
-          "moduleId": "F9",
-          "title": {
-            "en": "Creating a Cylinder",
-            "ja": "円柱の作成"
-          },
-          "type": "video",
-          "renderer": "basic-op-cylinder",
-          "video": "cylinder",
-          "routeAliases": [
-            "basic-op-cylinder"
-          ],
-          "completionAliases": [
-            "basic-op-cylinder"
-          ],
-          "content": {
-            "en": {
-              "explanation": "A Cylinder is a solid shape with circular ends, useful for shafts and pins.",
-              "practice": "By the end of this lesson, you should be able to create and check a basic Cylinder.",
-              "sections": [
-                {
-                  "title": "How to Create a Cylinder",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Cylinder**\nOpen **Shape Placement (形状配置)** and select **Cylinder (円柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cylinder**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Cylinder appears."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Follow the six steps above.\n\n**Check:** One cylinder should appear with Diameter = 10 mm and Height = 10 mm. View it from another direction to inspect its form."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the field labels, drawing units, and placement before pressing Enter."
-                }
-              ],
-              "quickReview": "Front View → Cylinder → Y → Size → Position → Enter",
-              "connection": "Save the Cylinder in its separate drawing. Continue to F9.4 Creating a Polygonal Prism and create a new, empty drawing for that exercise."
-            },
-            "ja": {
-              "explanation": "円柱は円形の端面を持つ立体で、軸やピンなどに使います。",
-              "practice": "このレッスンの終了時には、基本的な円柱を作成し、結果を確認できるようになります。",
-              "sections": [
-                {
-                  "title": "円柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 円柱を選ぶ**\n**形状配置**を開き、**円柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。円柱が一つ表示されることを確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "上の六つの手順を実行します。\n\n**確認：** 直径 10 mm、高さ 10 mm の円柱が一つ作成されることを確認します。別の方向からも形を確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "Enter を押す前に、入力項目、図面の単位、配置位置を確認します。"
-                }
-              ],
-              "quickReview": "正面図 → 円柱 → Y → 寸法 → 位置 → Enter",
-              "connection": "円柱を別の図面として保存します。次は F9.4 多角柱の作成に進み、その練習用に新しい空の図面を作成します。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "embedded-or-reading-review",
-          "displayId": "F9.3"
-        },
-        {
-          "id": "F9.7",
-          "moduleId": "F9",
-          "title": {
-            "en": "Creating a Polygonal Prism",
-            "ja": "多角柱の作成"
-          },
-          "type": "video",
-          "renderer": "basic-op-polygon",
-          "video": "polygon",
-          "routeAliases": [
-            "basic-op-polygon"
-          ],
-          "completionAliases": [
-            "basic-op-polygon"
-          ],
-          "content": {
-            "en": {
-              "explanation": "A polygon is a flat, closed shape with straight sides. This lesson uses the Polygonal Prism tool to create a 3D solid with a polygon-shaped end and a height.",
-              "practice": "By the end of this lesson, you should be able to create and check a basic Polygonal Prism.",
-              "sections": [
-                {
-                  "title": "How to Create a Polygonal Prism",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Keep **Training_Box_01** for the later editing lessons. Lengths are in millimetres; type numbers only.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Polygonal Prism**\nOpen **Shape Placement (形状配置)** and select **Polygonal Prism (正多角柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Polygonal Prism**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Polygonal Prism appears."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Follow the six steps above.\n\n**Check:** One prism should appear with a six-sided end, using Diameter = 10 mm and Height = 10 mm. View it from another direction to inspect its form."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "**Diameter:** In the **Command Menu**, keep **直径指定** (size by diameter) selected. **面幅指定** sizes the prism by the width across its flat sides instead."
-                }
-              ],
-              "quickReview": "Front View → Polygonal Prism → Y → Size → Position → Enter",
-              "connection": "Save the Polygonal Prism in its separate drawing. Continue to F9.5 Basic Move. Reopen Training_Box_01 and check that it contains the single Box from F9.2."
-            },
-            "ja": {
-              "explanation": "多角形は、直線の辺で囲まれた平面の形です。このレッスンでは多角柱ツールを使い、多角形の端面と高さを持つ立体を作成します。",
-              "practice": "このレッスンの終了時には、基本的な多角柱を作成し、結果を確認できるようになります。",
-              "sections": [
-                {
-                  "title": "多角柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。**Training_Box_01** は後の編集レッスン用に残します。 長さの単位は mm です。入力するのは数値だけです。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 正多角柱を選ぶ**\n**形状配置**を開き、**正多角柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**正多角柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。正多角柱が一つ表示されることを確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "上の六つの手順を実行します。\n\n**確認：** 頂点数 6、直径 10 mm、高さ 10 mm の六角柱が一つ作成されることを確認します。別の方向からも形を確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "**直径について：** **コマンドメニュー**では**直径指定**を選んだままにします。**面幅指定**を選ぶと、平行な面の間の幅で大きさを指定します。"
-                }
-              ],
-              "quickReview": "正面図 → 多角柱 → Y → 寸法 → 位置 → Enter",
-              "connection": "多角柱を別の図面として保存します。次は F9.5 基本的な移動に進みます。Training_Box_01 を開き直し、F9.2 の直方体が一つあることを確認します。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "embedded-or-reading-review",
-          "displayId": "F9.4"
-        },
-        {
-          "id": "F9.9",
-          "moduleId": "F9",
-          "title": {
-            "en": "Basic Move",
-            "ja": "基本的な移動"
-          },
-          "type": "video",
-          "renderer": "lesson-6-1",
-          "video": "basicMove",
-          "routeAliases": [
-            "lesson-6-1",
-            "move"
-          ],
-          "completionAliases": [
-            "lesson-6-1",
-            "move"
-          ],
-          "content": {
-            "en": {
-              "explanation": "Move changes an object’s position without changing its shape or size. This lesson uses a parallel move with a specified distance.",
-              "practice": "By the end of this lesson, you should be able to move a practice object by a specified distance and check the result.",
-              "sections": [
-                {
-                  "title": "How to Move an Object",
-                  "text": "**Step 1 — Select Move**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose the parallel move command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the object’s new position."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Use the practice Box from F9.2 in a millimetre drawing. Enter **X = 50, Y = 0, Z = 0**.\n\n**Check:** The same box should move 50 mm in the positive X direction. Its dimensions and the object count should stay the same.\n\nThe video demonstrates Move on a different part. For your exercise, use the single Box in Training_Box_01 and the distances above. Save after checking the result."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "These values are distances from the current position, not absolute destination coordinates. Move does not resize the object."
-                }
-              ],
-              "quickReview": "Select Move → Select + GO → Set Distance → Enter",
-              "connection": "Keep the moved Box for Copy. Its position changed, but its 20 × 30 × 10 mm dimensions did not."
-            },
-            "ja": {
-              "explanation": "移動は形や大きさを変えずに位置を変えます。このレッスンでは、移動量を指定する平行移動を練習します。",
-              "practice": "このレッスンの終了時には、練習用の対象を指定した距離だけ移動し、結果を確認できるようになります。",
-              "sections": [
-                {
-                  "title": "移動の手順",
-                  "text": "**ステップ 1 — 移動を選ぶ**\nアイコンメニューの **移動コピー削除** から平行移動のコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。移動後の位置を確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "ミリメートルの図面で、F9.2 の練習用直方体を使います。**X = 50、Y = 0、Z = 0** を入力します。\n\n**確認：** 同じ直方体が X の正方向に 50 mm 移動し、寸法と対象の数が変わっていないことを確認します。\n\n動画では別のパーツを移動します。練習では Training_Box_01 の1つのボックスに上記の移動量を使い、結果を確認して保存します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "入力する値は現在の位置からの移動量であり、移動先の絶対座標ではありません。移動で大きさは変わりません。"
-                }
-              ],
-              "quickReview": "移動選択 → 対象選択・GO → 移動量入力 → Enter",
-              "connection": "移動したボックスを次のコピー練習に使います。位置は変わりますが、20 × 30 × 10 mm の寸法は変わりません。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "shared",
-          "displayId": "F9.5"
-        },
-        {
-          "id": "F9.10",
-          "moduleId": "F9",
-          "title": {
-            "en": "Basic Copy",
-            "ja": "基本的なコピー"
-          },
-          "type": "video",
-          "renderer": "lesson-6-4",
-          "video": "basicCopy",
-          "routeAliases": [
-            "lesson-6-4",
-            "copy"
-          ],
-          "completionAliases": [
-            "lesson-6-4",
-            "copy"
-          ],
-          "content": {
-            "en": {
-              "explanation": "Copy creates a duplicate while keeping the original object. This lesson uses a parallel copy with a specified distance.",
-              "practice": "By the end of this lesson, you should be able to copy a practice object by a specified distance and check the result.",
-              "sections": [
-                {
-                  "title": "How to Copy an Object",
-                  "text": "**Step 1 — Select Copy**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose the parallel copy command.\n\n**Step 2 — Select and Confirm**\nLeft-click the required object. Check the highlight, then right-click (GO) to finish selecting.\n\n**Step 3 — Enter the Distance**\nIn Item Entry, enter X, Y, and Z movement distances. Set the copy count for one duplicate.\n\n**Step 4 — Apply and Check**\nPress Enter to apply the entered values. Check the original and the new copy."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Use the practice Box from F9.2 in a millimetre drawing. Enter **X = 50, Y = 0, Z = 0** and choose one duplicate.\n\n**Check:** There should be two identical boxes: the original and one copy displaced 50 mm in the positive X direction.\n\nThe video creates several duplicates of a plate. For this exercise, create only one duplicate of your moved Box, so the drawing contains two boxes. Save after checking the result."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "These values are distances from the current position, not absolute destination coordinates. The original stays in place."
-                }
-              ],
-              "quickReview": "Select Copy → Select + GO → Set Distance → Enter",
-              "connection": "Keep both boxes for the next lesson. You will delete only the duplicate and keep the original."
-            },
-            "ja": {
-              "explanation": "コピーは元の対象を残して複製を作成します。このレッスンでは、移動量を指定する平行コピーを練習します。",
-              "practice": "このレッスンの終了時には、練習用の対象を指定した距離だけコピーし、結果を確認できるようになります。",
-              "sections": [
-                {
-                  "title": "コピーの手順",
-                  "text": "**ステップ 1 — コピーを選ぶ**\nアイコンメニューの **移動コピー削除** から平行コピーのコマンドを選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を左クリックします。強調表示を確認し、右クリック（GO）で選択を終了します。\n\n**ステップ 3 — 移動量を入力する**\n項目入力で X、Y、Z の移動量を入力します。複製が一つできるように個数を設定します。\n\n**ステップ 4 — 実行して確認する**\nEnter を押して入力値を適用します。元の対象と複製を確認します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "ミリメートルの図面で、F9.2 の練習用直方体を使います。**X = 50、Y = 0、Z = 0** を入力します。複製は一つに設定します。\n\n**確認：** 元の直方体と、X の正方向に 50 mm 離れた同じ形の複製の、合計二つがあることを確認します。\n\n動画ではプレートを複数コピーします。この練習では移動済みのボックスを1つだけ複製し、合計2つにします。結果を確認して保存します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "入力する値は現在の位置からの移動量であり、移動先の絶対座標ではありません。元の対象はその場に残ります。"
-                }
-              ],
-              "quickReview": "コピー選択 → 対象選択・GO → 移動量入力 → Enter",
-              "connection": "次のレッスンまで両方のボックスを残します。複製だけを削除し、元のボックスは残します。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "shared",
-          "displayId": "F9.6"
-        },
-        {
-          "id": "F9.11",
-          "moduleId": "F9",
-          "title": {
-            "en": "Basic Delete",
-            "ja": "基本的な削除"
-          },
-          "type": "video",
-          "renderer": "lesson-6-7",
-          "video": "basicDelete",
-          "routeAliases": [
-            "lesson-6-7",
-            "delete"
-          ],
-          "completionAliases": [
-            "lesson-6-7",
-            "delete"
-          ],
-          "content": {
-            "en": {
-              "explanation": "Delete removes a selected object from the model. Use it for an unwanted object or one created by mistake.",
-              "practice": "By the end of this lesson, you should be able to delete a practice object and check that the intended object was removed.",
-              "sections": [
-                {
-                  "title": "How to Delete an Object",
-                  "text": "**Step 1 — Select Delete**\nIn the Icon Menu, open **移動コピー削除** (Move/Copy/Delete) and choose **Delete Element (要素を削除する)**, the red ✕.\n\n**Step 2 — Left-Click the Object**\nLeft-click the practice object you want to remove. It is deleted immediately; no right-click (GO) is needed.\n\n**Step 3 — Check the Result**\nCheck what remains in the model.\n\n**Step 4 — Undo a Mistake**\nIf you deleted the wrong object, press **Ctrl+Z** to restore it."
-                },
-                {
-                  "title": "Try It",
-                  "text": "Use the two practice boxes from F9.6. Delete only the copy.\n\n**Check:** The original box should remain and the copy should be gone.\n\nThe video removes members from a frame assembly. Your exercise removes only the duplicate Box; keep the original for the next lesson. Save after checking that one Box remains."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Delete acts as soon as you left-click, so point at the right object before clicking. If you remove the wrong object, press Ctrl+Z, or click Undo (the curved left arrow on the Edit toolbar), immediately and check that it is restored before continuing."
-                }
-              ],
-              "quickReview": "Select Delete → Left-Click Object → Check Result → Ctrl+Z if Needed",
-              "connection": "The remaining Box is still 20 × 30 × 10 mm: Move, Copy, and Delete changed its position and the number of boxes, not its size. Next, F10 reviews the Foundations skills."
-            },
-            "ja": {
-              "explanation": "削除は、選択した対象をモデルから取り除きます。不要な対象や、間違えて作成した対象に使います。",
-              "practice": "このレッスンの終了時には、練習用の対象を削除し、意図した対象が消えたことを確認できるようになります。",
-              "sections": [
-                {
-                  "title": "削除の手順",
-                  "text": "**ステップ 1 — 削除を選ぶ**\nアイコンメニューの **移動コピー削除** から**要素を削除する**（赤い ✕）を選びます。\n\n**ステップ 2 — 対象を左クリックする**\n削除する練習用の対象を左クリックします。すぐに削除され、右クリック（GO）は不要です。\n\n**ステップ 3 — 結果を確認する**\nモデルに残った対象を確認します。\n\n**ステップ 4 — 間違いを元に戻す**\n間違った対象を削除した場合は **Ctrl+Z** を押して元に戻します。"
-                },
-                {
-                  "title": "やってみましょう",
-                  "text": "F9.6 の二つの練習用直方体を使い、複製だけを削除します。\n\n**確認：** 元の直方体は残り、複製だけが消えていることを確認します。\n\n動画ではフレームの部材を削除します。この練習では複製したボックスだけを削除し、元のボックスを次のレッスンに残します。1つ残っていることを確認して保存します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "削除は左クリックした時点で実行されます。クリックする前に対象を確認してください。間違った対象を削除した場合は、すぐに編集ツールバーの「元に戻す」（左向きの曲がった矢印）をクリックするか、Ctrl+Z を押し、復元されたことを確認してから続けます。"
-                }
-              ],
-              "quickReview": "削除選択 → 対象を左クリック → 結果確認 → 必要なら Ctrl+Z",
-              "connection": "残ったボックスは 20 × 30 × 10 mm のままです。移動、コピー、削除で変わるのは位置や数で、大きさは変わりません。次の F10 で基礎コースのスキルを復習します。"
-            }
-          },
-          "contentReview": "existing-tutorial-with-new-summary",
-          "recapMode": "shared",
-          "displayId": "F9.7"
+          "completionAliases": []
         }
       ]
     },
     {
       "id": "F10",
       "title": {
-        "en": "Foundation Review",
-        "ja": "基礎の復習"
+        "en": "Move, Copy, Delete",
+        "ja": "移動・複写・削除"
       },
       "lessons": [
         {
           "id": "F10.1",
           "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.1",
+          "completionId": "foundations-v3:F10.1",
+          "routeAliases": [
+            "P8.1",
+            "lesson-6-1",
+            "move"
+          ],
+          "completionAliases": [
+            "F9.9",
+            "lesson-6-1",
+            "move"
+          ]
+        },
+        {
+          "id": "F10.2",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.2",
+          "completionId": "foundations-v3:F10.2",
+          "routeAliases": [
+            "P8.2",
+            "lesson-6-4",
+            "copy"
+          ],
+          "completionAliases": [
+            "F9.10",
+            "lesson-6-4",
+            "copy"
+          ]
+        },
+        {
+          "id": "F10.3",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.3",
+          "completionId": "foundations-v3:F10.3",
+          "routeAliases": [
+            "P8.3"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F10.4",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.4",
+          "completionId": "foundations-v3:F10.4",
+          "routeAliases": [
+            "P8.4"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F10.5",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.5",
+          "completionId": "foundations-v3:F10.5",
+          "routeAliases": [
+            "P8.5"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F10.6",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.6",
+          "completionId": "foundations-v3:F10.6",
+          "routeAliases": [
+            "P8.6"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F10.7",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.7",
+          "completionId": "foundations-v3:F10.7",
+          "routeAliases": [
+            "P8.7",
+            "lesson-6-7",
+            "delete"
+          ],
+          "completionAliases": [
+            "F9.11",
+            "lesson-6-7",
+            "delete"
+          ]
+        },
+        {
+          "id": "F10.8",
+          "moduleId": "F10",
+          "sourceProfessionalLessonId": "P8.8",
+          "completionId": "foundations-v3:F10.8",
+          "routeAliases": [
+            "P8.8",
+            "P12.2"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F11",
+      "title": {
+        "en": "Sketch",
+        "ja": "スケッチ"
+      },
+      "lessons": [
+        {
+          "id": "F11.1",
+          "moduleId": "F11",
+          "sourceProfessionalLessonId": "P9.1",
+          "completionId": "foundations-v3:F11.1",
+          "routeAliases": [
+            "P9.1"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F12",
+      "title": {
+        "en": "3D Creation from Sketch",
+        "ja": "スケッチからの3D作成"
+      },
+      "lessons": [
+        {
+          "id": "F12.1",
+          "moduleId": "F12",
+          "sourceProfessionalLessonId": "P10.1",
+          "completionId": "foundations-v3:F12.1",
+          "routeAliases": [
+            "P10.1"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F12.2",
+          "moduleId": "F12",
+          "sourceProfessionalLessonId": "P10.2",
+          "completionId": "foundations-v3:F12.2",
+          "routeAliases": [
+            "P10.2"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F13",
+      "title": {
+        "en": "Show/Hide",
+        "ja": "表示／非表示"
+      },
+      "lessons": [
+        {
+          "id": "F13.1",
+          "moduleId": "F13",
+          "sourceProfessionalLessonId": "P11.1",
+          "completionId": "foundations-v3:F13.1",
+          "routeAliases": [
+            "P11.1"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F13.2",
+          "moduleId": "F13",
+          "sourceProfessionalLessonId": "P11.2",
+          "completionId": "foundations-v3:F13.2",
+          "routeAliases": [
+            "P11.2"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F13.3",
+          "moduleId": "F13",
+          "sourceProfessionalLessonId": "P11.3",
+          "completionId": "foundations-v3:F13.3",
+          "routeAliases": [
+            "P11.3"
+          ],
+          "completionAliases": []
+        },
+        {
+          "id": "F13.4",
+          "moduleId": "F13",
+          "sourceProfessionalLessonId": "P11.4",
+          "completionId": "foundations-v3:F13.4",
+          "routeAliases": [
+            "P11.4"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F14",
+      "title": {
+        "en": "Stretch / Shape / Cut",
+        "ja": "伸縮・整形・切断"
+      },
+      "lessons": [
+        {
+          "id": "F14.1",
+          "moduleId": "F14",
+          "sourceProfessionalLessonId": "P12.1",
+          "completionId": "foundations-v3:F14.1",
+          "routeAliases": [
+            "P12.1"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F15",
+      "title": {
+        "en": "Shape Steels",
+        "ja": "形鋼"
+      },
+      "lessons": [
+        {
+          "id": "F15.1",
+          "moduleId": "F15",
+          "sourceProfessionalLessonId": "P13.1",
+          "completionId": "foundations-v3:F15.1",
+          "routeAliases": [
+            "P13.1",
+            "P12.3"
+          ],
+          "completionAliases": []
+        }
+      ]
+    },
+    {
+      "id": "F16",
+      "title": {
+        "en": "Foundation Review",
+        "ja": "基礎の復習"
+      },
+      "lessons": [
+        {
+          "id": "F16.1",
+          "moduleId": "F16",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -2446,7 +2316,9 @@
           "renderer": null,
           "video": null,
           "routeAliases": [],
-          "completionAliases": [],
+          "completionAliases": [
+            "F10.1"
+          ],
           "content": {
             "en": {
               "explanation": "This lesson reviews the most important skills covered in the iCAD Foundations course.\n\nIt is designed to help you recall the basic tools and concepts before taking the final knowledge check.",
@@ -2547,11 +2419,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F10.1"
+          "displayId": "F16.1"
         },
         {
-          "id": "F10.6",
-          "moduleId": "F10",
+          "id": "F16.2",
+          "moduleId": "F16",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -2560,7 +2432,9 @@
           "renderer": null,
           "video": null,
           "routeAliases": [],
-          "completionAliases": [],
+          "completionAliases": [
+            "F10.6"
+          ],
           "content": {
             "en": {
               "explanation": "This final knowledge check reviews the main topics covered in the **iCAD Foundations** course.\n\nComplete each question and choose the best answer.\n\nThere are 12 questions. Read the feedback and retry any incorrect answer before continuing. This is a learning check; no first-attempt score is shown.",
@@ -2587,7 +2461,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F10.2"
+          "displayId": "F16.2"
         }
       ]
     }

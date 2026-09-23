@@ -440,6 +440,9 @@ def get_course_progress(
         QuizScore.course_id.in_(course_references)
     ).all()
 
+    if course and course.course_type == "iCAD_Foundations":
+        from ..services.foundations_curriculum import foundation_scores
+        scores = foundation_scores(db, current_user.id, course)
     return [
         LessonProgress(
             lesson_id=score.lesson_id,
@@ -484,6 +487,9 @@ async def submit_quiz_score(
         )
         if exc.status_code != status.HTTP_404_NOT_FOUND or not (is_foundations_lesson or is_professional_course):
             raise
+    if course and course.course_type == "iCAD_Foundations":
+        from ..services.foundations_curriculum import completion_storage_id
+        submission.lesson_id = completion_storage_id(submission.lesson_id)
     # Check if a score already exists for this lesson
     existing_score = db.query(QuizScore).filter(
         QuizScore.user_id == current_user.id,

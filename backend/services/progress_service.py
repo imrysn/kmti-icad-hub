@@ -19,9 +19,11 @@ def calculate_all_trainee_progress(db: Session, trainer_id: int = None):
     all_progress = db.query(UserProgress).filter(UserProgress.user_id.in_(user_ids)).all()
     all_scores = db.query(QuizScore).filter(QuizScore.user_id.in_(user_ids)).all()
     from ..models import Course
-    from .foundations_curriculum import completed_lesson_ids, LESSONS
+    from .foundations_curriculum import completed_lesson_ids, inherited_professional_scores, LESSONS
     foundations = db.query(Course).filter(Course.course_type == "iCAD_Foundations").first()
     foundation_refs = {str(foundations.id), foundations.course_type} if foundations else set()
+    professional = db.query(Course).filter(Course.course_type == "iCAD_Professional").first()
+    professional_refs = {str(professional.id), professional.course_type} if professional else set()
 
     # Organize data by user_id
     progress_map = {}
@@ -40,8 +42,10 @@ def calculate_all_trainee_progress(db: Session, trainer_id: int = None):
     for user in users:
         user_progress = progress_map.get(user.id, [])
         user_scores = scores_map.get(user.id, [])
+        foundation_scores = [score for score in user_scores if score.course_id in foundation_refs]
+        foundation_scores += inherited_professional_scores(user_scores, professional_refs)
         foundation_percentage = round(len(completed_lesson_ids(
-            score.lesson_id for score in user_scores if score.course_id in foundation_refs and score.score >= 80
+            score.lesson_id for score in foundation_scores if score.score >= 80
         )) / len(LESSONS) * 100, 1)
 
         lessons = [

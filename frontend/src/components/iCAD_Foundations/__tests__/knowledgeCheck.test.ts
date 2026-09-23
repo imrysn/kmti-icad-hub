@@ -7,7 +7,7 @@ const cases = (['en', 'ja'] as const).flatMap(language => FOUNDATION_LESSON_IDS.
 describe('Foundations knowledge check data', () => {
   it.each(cases)('%s %s has one well-formed question set', (language, id) => {
     const questions = foundationKnowledgeQuestions(language, id);
-    expect(questions).toHaveLength(id === 'F10.6' ? 12 : 1);
+    expect(questions).toHaveLength(id === 'F16.2' ? 12 : 1);
     expect(new Set(questions.map(q => q.id)).size).toBe(questions.length);
     for (const question of questions) {
       expect(question.prompt.trim()).not.toBe('');
@@ -16,7 +16,7 @@ describe('Foundations knowledge check data', () => {
       expect(new Set(question.choices.map(c => c.label)).size).toBe(4);
       expect(question.choices.filter(c => c.isCorrect)).toHaveLength(1);
       question.choices.forEach(c => expect(c.feedback.trim()).not.toBe(''));
-      if (id !== 'F10.6') {
+      if (id !== 'F16.2') {
         const index = question.choices.findIndex(c => c.isCorrect);
         question.choices.forEach((c, i) => expect(c.label.startsWith(`${'ABCD'[i]}. `)).toBe(true));
         expect(question.choices[index].feedback).toContain(`${'ABCD'[index]}. `);

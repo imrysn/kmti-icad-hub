@@ -274,10 +274,10 @@ const questions: Record<FoundationLanguage, Array<[string, string[], number, str
 
 export function finalKnowledgeCheck(language: FoundationLanguage): InteractiveVideoQuestion[] {
   return questions[language].map(([prompt, labels, correctIndex, explanation], index) => ({
-    id: `F10.6-q${index + 1}`,
+    id: `F16.2-q${index + 1}`,
     prompt,
     choices: labels.map((label, choiceIndex) => ({
-      id: `F10.6-${index}-${choiceIndex}`,
+      id: `F16.2-${index}-${choiceIndex}`,
       label: `${'ABCD'[choiceIndex]}. ${label}`,
       isCorrect: choiceIndex === correctIndex,
       feedback: choiceIndex === correctIndex

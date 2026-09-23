@@ -5,7 +5,7 @@ import { foundationKnowledgeQuestions } from '../knowledgeCheck';
 
 describe('Course-wide content preservation', () => {
   it.each(['en', 'ja'] as const)('preserves the original instructions in %s', language => {
-    for (const id of ['F4.6','F5.4','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11']) {
+    for (const id of ['F4.6','F5.4','F9.1','F9.2','F9.3','F10.1','F10.2','F10.7']) {
       const content = standardLessonContent(resolveFoundationLesson(id)!, language);
       expect(content.sections.length, id).toBeGreaterThan(1);
       expect(content.sections.every(section => Boolean(section.title && section.text)), id).toBe(true);

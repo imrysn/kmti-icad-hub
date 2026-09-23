@@ -1,28 +1,25 @@
-import { Keyboard, MousePointer2, Ruler } from 'lucide-react';
-import stretchPalette from '../../assets/icad-foundations/stretch/stretch-palette.png';
+import StretchArtwork from './StretchArtwork';
+import scaleScreen from '../../assets/icad-foundations/stretch/stretch-scale-interface.png';
+import scaleResult from '../../assets/icad-foundations/stretch/stretch-scale-result.png';
 import stretchInterface from '../../assets/icad-foundations/stretch/stretch-interface.png';
+import entryScreen from '../../assets/icad-foundations/stretch/stretch-entry-interface.png';
+import resultScreen from '../../assets/icad-foundations/stretch/stretch-result-interface.png';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationStretchSteps.css';
 
-function StretchCommandPreview({japanese,title}: {japanese:boolean;title:string}) {
-  const artwork=<div className="foundation-stretch-palette" role="img" aria-label={japanese?'面を指定して伸縮する':'Stretch by Specifying Face'}><img src={stretchPalette} alt=""/><span aria-hidden="true"/></div>;
-  return <InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:stretchInterface,region:{bounds:[1753,369,25,27],landing:[1746,349,141,165]},highlightColor:'#0087ef'}}/>;
-}
-
 function StepIcon({method,index,japanese,title}: {method:1|2;index:number;japanese:boolean;title:string}) {
-  if(method===1 && index===0) return <StretchCommandPreview japanese={japanese} title={title}/>;
-  if(index===0) return <MousePointer2 aria-label={japanese?'面を左クリック':'Left-click the face'}/>;
-  if(method===2 && index===1) return <div className="foundation-stretch-key-click"><kbd>G</kbd><span>+</span><MousePointer2 aria-label={japanese?'G を押して左クリック':'Press G and left-click'}/></div>;
-  if(method===2) return <Ruler aria-label={japanese?'直線スケール':'Linear scale'}/>;
-  return <Keyboard aria-label={japanese?'アイテム入力':'Item Entry'}/>;
+  const linear=method===2;
+  const screen=index===0?stretchInterface:index===3?(linear?scaleResult:resultScreen):(linear?scaleScreen:entryScreen);
+  const bounds:[number,number,number,number]=index===0?[1753,369,25,27]:index===2?(linear?[970,639,76,23]:[136,1027,308,26]):index===3?[790,305,620,560]:linear?[378,180,1360,835]:[805,305,435,450];
+  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:<StretchArtwork step={index} linear={linear} title={title}/>,screen,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/>;
 }
 
 export default function FoundationStretchSteps({text,method,japanese}: {text:string;method:1|2;japanese:boolean}) {
   const start=text.search(/\*\*(?:Step|ステップ) 1/);
   const intro=start>0 ? text.slice(0,start).trim() : '';
   const steps=text.slice(Math.max(0,start)).split(/\n\n(?=\*\*(?:Step|ステップ) \d+)/);
-  return <div className="foundations-uses foundations-uses--aligned foundation-stretch-steps">
+  return <div className={`foundations-uses foundations-uses--aligned foundation-stretch-steps foundation-stretch-steps--${steps.length}`}>
     {intro && <p className="foundations-uses__intro">{renderFormattedText(intro)}</p>}
     <ul className="foundations-uses__grid">{steps.map((step,index)=>{
       const [heading,...body]=step.split('\n');

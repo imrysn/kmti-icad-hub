@@ -31,27 +31,27 @@ function viewer(id:string, next=vi.fn()) {
 describe('Canonical Foundations lesson routing',()=>{
   afterEach(()=>{cleanup();vi.clearAllMocks();});
   it('preserves Box and requires the shared knowledge check before saving',async()=>{
-    const next=vi.fn();viewer('F9.5',next);
+    const next=vi.fn();viewer('F9.1',next);
     fireEvent.click(await screen.findByRole('button',{name:'shape basic-op-box'}, {timeout:5000}));
     expect(state.post).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
-    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.5')[0].choices.find(c=>c.isCorrect)!.label));
+    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.1')[0].choices.find(c=>c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
     fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
-    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.5',score:100})));
+    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.1',score:100})));
     expect(next).not.toHaveBeenCalled();
     fireEvent.click(await screen.findByRole('button',{name:'Next lesson'}));
     expect(next).toHaveBeenCalledOnce();
   });
   it('passes original Move data to the dynamic player but persists canonical progress',async()=>{
-    viewer('F9.9');
+    viewer('F10.1');
     fireEvent.click(await screen.findByRole('button',{name:'lesson-6-1 basicMove'}));
     expect(state.post).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
-    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.9')[0].choices.find(c=>c.isCorrect)!.label));
+    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F10.1')[0].choices.find(c=>c.isCorrect)!.label));
     fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
     fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
-    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.9'})));
+    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F10.1'})));
   });
   it('does not route an old advanced shape bookmark through the generic prefix router',async()=>{
     viewer('basic-op-cone');

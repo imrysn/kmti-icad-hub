@@ -1993,6 +1993,67 @@
           "contentReview": "new-professional-lesson",
           "recapMode": "embedded-or-reading-review",
           "sourceLessonId": "F9.11"
+        },
+        {
+          "id": "P8.8",
+          "moduleId": "P8",
+          "title": {
+            "en": "Resize",
+            "ja": "立体縮尺"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "routeAliases": [
+            "P12.2"
+          ],
+          "completionAliases": [
+            "P12.2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "The **Resize** command scales an entire solid up or down while keeping its proportions.",
+              "practice": "By the end of this lesson, you should be able to select a solid and resize it using a scale value.",
+              "sections": [
+                {
+                  "title": "Resize a Solid",
+                  "text": "**Step 1 — Select Resize**\nFrom the **Basic** Icon Menu, open **Stretch / Shape / Cut** and select **Resize**.\n\n**Step 2 — Select the Solid**\n**Left-click** the solid you want to resize.\n\n**Step 3 — Enter the Scale**\nEnter the scale value in **Item Entry**, then **left-click** in the 3D workspace to apply it."
+                },
+                {
+                  "title": "Understanding the Scale Value",
+                  "text": "A value greater than **1.0** scales the solid up. A value between **0** and **1.0** scales it down. For example, **2.0** doubles the size while preserving the solid's proportions."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Resize changes the size of the **entire selected solid**. Use **Stretch** when you need to change the length by moving only a selected face."
+                }
+              ],
+              "quickReview": "**Select Resize → Select the Solid → Enter the Scale → Left-click in the 3D Workspace**",
+              "connection": "P12.1 Stretch changes a solid by moving one face. P8.8 Resize scales the whole solid proportionally."
+            },
+            "ja": {
+              "explanation": "**立体縮尺**コマンドは、立体の比率を保ったまま全体を拡大または縮小します。",
+              "practice": "このレッスンの終了時には、立体を選択し、縮尺値を使用して大きさを変更できるようになります。",
+              "sections": [
+                {
+                  "title": "立体の大きさを変更",
+                  "text": "**ステップ 1 — 立体縮尺を選択**\n**基本**アイコンメニューで**伸縮・整形・切断**を開き、**立体縮尺**を選択します。\n\n**ステップ 2 — 立体を選択**\n大きさを変更する立体を**左クリック**します。\n\n**ステップ 3 — 縮尺を入力**\n**アイテム入力**に縮尺値を入力し、3D 作業領域を**左クリック**して適用します。"
+                },
+                {
+                  "title": "縮尺値について",
+                  "text": "**1.0**より大きい値は立体を拡大し、**0**より大きく**1.0**より小さい値は縮小します。たとえば、**2.0**を入力すると、立体の比率を保ったまま大きさが2倍になります。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "立体縮尺は、**選択した立体全体**の大きさを変更します。選択した面だけを移動して長さを変更する場合は、**伸縮**を使用します。"
+                }
+              ],
+              "quickReview": "**立体縮尺を選択 → 立体を選択 → 縮尺を入力 → 3D 作業領域を左クリック**",
+              "connection": "P12.1 伸縮は1つの面を移動して立体を変更します。P8.8 立体縮尺は立体全体を同じ比率で拡大または縮小します。"
+            }
+          },
+          "contentReview": "authored",
+          "recapMode": "embedded-or-reading-review"
         }
       ]
     },
@@ -2484,18 +2545,18 @@
                 },
                 {
                   "title": "Method 1 — Specify the Length in Item Entry",
-                  "text": "Use this method when you know the required final length of the solid.\n\n**Step 1 — Select Stretch**\nSelect **Stretch by Specifying Face** from the Icon Menu.\n\n**Step 2 — Select the Face**\n**Left-click** the face you want to move.\n\n**Step 3 — Enter the Required Length**\nIn **Item Entry**, enter the desired final length of the solid, then press **Enter**.\n\nThis method can also be used on **circular surfaces**."
+                  "text": "Use this method when you know the required final length of the solid.\n\n**Step 1 — Select Stretch**\nIn the Icon Menu, open the **Basic (基本)** tab. Under **Stretch / Shape / Cut (伸縮・整形・切断)**, select the first icon, **Stretch by Specifying Face**.\n\n**Step 2 — Select the Face**\n**Left-click** the face you want to move.\n\n**Step 3 — Enter the Required Length**\nIn **Item Entry**, enter the desired final length of the solid, then press **Enter**.\n\nThis method can also be used on **circular surfaces**.\n\n**Step 4 — Check the Final Output**\nCheck that the selected face has moved and the solid has stretched as shown in the example."
                 },
                 {
                   "title": "Method 2 — Use the Linear Scale",
-                  "text": "Use this method when you want to control the stretch directly in the 3D workspace.\n\n**Step 1 — Select the Face**\n**Left-click** the face to be stretched.\n\n**Step 2 — Display the Linear Scale**\nPress **G**, then **left-click** in the 3D workspace. A **linear scale** appears.\n\n**Step 3 — Set the Stretch Amount**\nSpecify the additional length using the linear scale. Enter a value and press **Enter**, or left-click the required position on the scale."
+                  "text": "Use the linear scale to specify the additional length in the 3D workspace.\n\n**Step 1 — Select Stretch**\nIn the Icon Menu, open the **Basic (基本)** tab. Under **Stretch / Shape / Cut (伸縮・整形・切断)**, select the first icon, **Stretch by Specifying Face**.\n\n**Step 2 — Display the Linear Scale**\n**Left-click** the face you want to move, **right-click** to confirm the selection, then **left-click** in the 3D workspace to display the **linear scale**.\n\n**Step 3 — Set the Stretch Amount**\nEnter the additional length, such as **20**, in the linear scale input and press **Enter**, or left-click the required position on the scale.\n\n**Step 4 — Check the Final Output**\nCheck that the selected face has moved and the solid has stretched as shown in the example."
                 },
                 {
                   "title": "Important Reminder",
                   "text": "The stretch direction is based on the **face you select**. Select the correct face before entering the length."
                 }
               ],
-              "quickReview": "**Method 1:** Select Stretch → Select Face → Enter Final Length → Press Enter\n\n**Method 2:** Select Face → Press G → Click in 3D Workspace → Set Additional Length → Confirm",
+              "quickReview": "**Method 1:** Select Stretch → Left-click the Face → Enter Length in Item Entry → Enter → Check the Output\n\n**Method 2:** Select Stretch → Left-click the Face → Right-click → Left-click in the 3D Workspace → Set Additional Length → Confirm → Check the Output",
               "connection": ""
             },
             "ja": {
@@ -2508,84 +2569,36 @@
                 },
                 {
                   "title": "方法 1 — アイテム入力で長さを指定",
-                  "text": "立体の仕上がり長さが分かっている場合に使用します。\n\n**ステップ 1 — 伸縮を選択**\nアイコンメニューから**面を指定して伸縮する**を選択します。\n\n**ステップ 2 — 面を選択**\n移動する面を**左クリック**します。\n\n**ステップ 3 — 必要な長さを入力**\n**アイテム入力**に立体の仕上がり長さを入力し、**Enter**を押します。\n\nこの方法は**円形の面**にも使用できます。"
+                  "text": "立体の仕上がり長さが分かっている場合に使用します。\n\n**ステップ 1 — 伸縮を選択**\nアイコンメニューの**基本**タブを開き、**伸縮・整形・切断**の先頭のアイコン（**面を指定して伸縮する**）を選択します。\n\n**ステップ 2 — 面を選択**\n移動する面を**左クリック**します。\n\n**ステップ 3 — 必要な長さを入力**\n**アイテム入力**に立体の仕上がり長さを入力し、**Enter**を押します。\n\nこの方法は**円形の面**にも使用できます。\n\n**ステップ 4 — 完成形状を確認**\n選択した面が移動し、例のように立体が伸縮したことを確認します。"
                 },
                 {
                   "title": "方法 2 — 直線スケールを使用",
-                  "text": "3D 作業領域で伸縮量を直接指定する場合に使用します。\n\n**ステップ 1 — 面を選択**\n伸縮する面を**左クリック**します。\n\n**ステップ 2 — 直線スケールを表示**\n**G**を押し、3D 作業領域を**左クリック**します。**直線スケール**が表示されます。\n\n**ステップ 3 — 伸縮量を設定**\n直線スケールで追加する長さを指定します。値を入力して**Enter**を押すか、スケール上の位置を左クリックします。"
+                  "text": "直線スケールを使用して、3D 作業領域で追加する長さを指定します。\n\n**ステップ 1 — 伸縮を選択**\nアイコンメニューの**基本**タブを開き、**伸縮・整形・切断**の先頭のアイコン（**面を指定して伸縮する**）を選択します。\n\n**ステップ 2 — 直線スケールを表示**\n移動する面を**左クリック**し、**右クリック**で選択を確定します。次に 3D 作業領域を**左クリック**して**直線スケール**を表示します。\n\n**ステップ 3 — 伸縮量を設定**\n直線スケールの入力欄に追加する長さ（例：**20**）を入力して**Enter**を押すか、スケール上の必要な位置を左クリックします。\n\n**ステップ 4 — 完成形状を確認**\n選択した面が移動し、例のように立体が伸縮したことを確認します。"
                 },
                 {
                   "title": "重要なポイント",
                   "text": "伸縮する方向は**選択した面**で決まります。長さを入力する前に、正しい面を選択してください。"
                 }
               ],
-              "quickReview": "**方法 1：** 伸縮を選択 → 面を選択 → 仕上がり長さを入力 → Enter\n\n**方法 2：** 面を選択 → G を押す → 3D 作業領域をクリック → 追加する長さを設定 → 確定",
+              "quickReview": "**方法 1：** 伸縮を選択 → 面を左クリック → アイテム入力に長さを入力 → Enter → 完成形状を確認\n\n**方法 2：** 伸縮を選択 → 面を左クリック → 右クリック → 3D 作業領域を左クリック → 追加する長さを設定 → 確定 → 完成形状を確認",
               "connection": ""
             }
           },
           "contentReview": "authored",
           "recapMode": "embedded-or-reading-review"
-        },
+        }
+      ]
+    },
+    {
+      "id": "P13",
+      "title": {
+        "en": "Shape Steels",
+        "ja": "形鋼"
+      },
+      "lessons": [
         {
-          "id": "P12.2",
-          "moduleId": "P12",
-          "title": {
-            "en": "Resize",
-            "ja": "立体縮尺"
-          },
-          "type": "reading",
-          "renderer": null,
-          "video": null,
-          "routeAliases": [],
-          "completionAliases": [],
-          "content": {
-            "en": {
-              "explanation": "The **Resize** command scales an entire solid up or down while keeping its proportions.",
-              "practice": "By the end of this lesson, you should be able to select a solid and resize it using a scale value.",
-              "sections": [
-                {
-                  "title": "Resize a Solid",
-                  "text": "**Step 1 — Select Resize**\nFrom the **Basic** Icon Menu, open **Stretch / Shape / Cut** and select **Resize**.\n\n**Step 2 — Select the Solid**\n**Left-click** the solid you want to resize.\n\n**Step 3 — Enter the Scale**\nEnter the scale value in **Item Entry**, then **left-click** in the 3D workspace to apply it."
-                },
-                {
-                  "title": "Understanding the Scale Value",
-                  "text": "A value greater than **1.0** scales the solid up. A value between **0** and **1.0** scales it down. For example, **2.0** doubles the size while preserving the solid's proportions."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Resize changes the size of the **entire selected solid**. Use **Stretch** when you need to change the length by moving only a selected face."
-                }
-              ],
-              "quickReview": "**Select Resize → Select the Solid → Enter the Scale → Left-click in the 3D Workspace**",
-              "connection": "P12.1 Stretch changes a solid by moving one face. P12.2 Resize scales the whole solid proportionally."
-            },
-            "ja": {
-              "explanation": "**立体縮尺**コマンドは、立体の比率を保ったまま全体を拡大または縮小します。",
-              "practice": "このレッスンの終了時には、立体を選択し、縮尺値を使用して大きさを変更できるようになります。",
-              "sections": [
-                {
-                  "title": "立体の大きさを変更",
-                  "text": "**ステップ 1 — 立体縮尺を選択**\n**基本**アイコンメニューで**伸縮・整形・切断**を開き、**立体縮尺**を選択します。\n\n**ステップ 2 — 立体を選択**\n大きさを変更する立体を**左クリック**します。\n\n**ステップ 3 — 縮尺を入力**\n**アイテム入力**に縮尺値を入力し、3D 作業領域を**左クリック**して適用します。"
-                },
-                {
-                  "title": "縮尺値について",
-                  "text": "**1.0**より大きい値は立体を拡大し、**0**より大きく**1.0**より小さい値は縮小します。たとえば、**2.0**を入力すると、立体の比率を保ったまま大きさが2倍になります。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "立体縮尺は、**選択した立体全体**の大きさを変更します。選択した面だけを移動して長さを変更する場合は、**伸縮**を使用します。"
-                }
-              ],
-              "quickReview": "**立体縮尺を選択 → 立体を選択 → 縮尺を入力 → 3D 作業領域を左クリック**",
-              "connection": "P12.1 伸縮は1つの面を移動して立体を変更します。P12.2 立体縮尺は立体全体を同じ比率で拡大または縮小します。"
-            }
-          },
-          "contentReview": "authored",
-          "recapMode": "embedded-or-reading-review"
-        },
-        {
-          "id": "P12.3",
-          "moduleId": "P12",
+          "id": "P13.1",
+          "moduleId": "P13",
           "title": {
             "en": "Creating Shape Steels",
             "ja": "形鋼の作成"
@@ -2593,8 +2606,12 @@
           "type": "reading",
           "renderer": null,
           "video": null,
-          "routeAliases": [],
-          "completionAliases": [],
+          "routeAliases": [
+            "P12.3"
+          ],
+          "completionAliases": [
+            "P12.3"
+          ],
           "content": {
             "en": {
               "explanation": "The **Shape Steels** function in iCAD SX is used to place standard steel shapes in the 3D workspace.",

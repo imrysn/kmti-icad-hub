@@ -4,19 +4,25 @@ import { FOUNDATION_LESSONS, resolveFoundationLesson } from './curriculum';
 
 import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 
-export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F10.6'): InteractiveVideoQuestion[] {
-  if (lessonId === 'P12.3') {
+/** Resolve current Foundation numbers before using preserved source question keys. */
+export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F16.2'): InteractiveVideoQuestion[] {
+  const lesson = resolveFoundationLesson(lessonId);
+  return sourceKnowledgeQuestions(language, lesson?.presentationId || lessonId);
+}
+
+export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F16.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'P13.1') {
     const ja=language==='ja';
     const labels=ja?['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー']:['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
-    return [{id:'P12.3-knowledge-check',prompt:ja?'形鋼の位置座標はどこに入力しますか？':'Where do you enter the coordinates for the Shape Steel position?',choices:labels.map((label,index)=>({id:`P12.3-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'位置座標はキー入力領域に入力します。':'Enter the position coordinates in the Key Entry Area.')}))}];
+    return [{id:'P13.1-knowledge-check',prompt:ja?'形鋼の位置座標はどこに入力しますか？':'Where do you enter the coordinates for the Shape Steel position?',choices:labels.map((label,index)=>({id:`P13.1-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'位置座標はキー入力領域に入力します。':'Enter the position coordinates in the Key Entry Area.')}))}];
   }
-  if (lessonId === 'P12.2') {
+  if (lessonId === 'P8.8') {
     const ja = language === 'ja';
     const labels = ja ? ['選択した面だけ', '選択した立体全体', 'ユーザービュー', '製図要素だけ'] : ['Only the selected face', 'The entire selected solid', 'The User View', 'Only drafting elements'];
     return [{
-      id:'P12.2-knowledge-check',
+      id:'P8.8-knowledge-check',
       prompt:ja ? '立体縮尺コマンドは何の大きさを変更しますか？' : 'What does the Resize command scale?',
-      choices:labels.map((label,index)=>({id:`P12.2-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体縮尺は、選択した立体全体を同じ比率で変更します。':'Resize scales the entire selected solid proportionally.')})),
+      choices:labels.map((label,index)=>({id:`P8.8-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体縮尺は、選択した立体全体を同じ比率で変更します。':'Resize scales the entire selected solid proportionally.')})),
     }];
   }
   if (lessonId === 'P12.1') {
@@ -207,14 +213,14 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       }];
     }
   }
-  if (lessonId === 'F10.1') {
+  if (lessonId === 'F16.1') {
     const ja = language === 'ja';
     const labels = ja ? ['ツール選択 → 寸法入力 → 位置指定 → 確定', '保存 → 削除 → 回転 → 閉じる', 'ビュー選択 → シェーディング → 印刷 → 終了', 'パン → コピー → 閉じる → 測定']
       : ['Select Tool → Enter Size → Specify Position → Confirm', 'Save → Delete → Rotate → Close', 'Select View → Shade → Print → Exit', 'Pan → Copy → Close → Measure'];
     return [{
-      id: 'F10.1-knowledge-check', prompt: ja ? '基本的な 3D 形状を作成する手順として正しいものはどれですか？' : 'Which sequence best represents the basic process for creating a simple 3D shape?',
+      id: 'F16.1-knowledge-check', prompt: ja ? '基本的な 3D 形状を作成する手順として正しいものはどれですか？' : 'Which sequence best represents the basic process for creating a simple 3D shape?',
       choices: labels.map((label, index) => ({
-        id: `F10.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        id: `F16.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
         feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
       })),
     }];
@@ -626,7 +632,7 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
       }))
     }];
   }
-  if (lessonId !== 'F10.6') {
+  if (lessonId !== 'F16.2') {
     const lesson = resolveFoundationLesson(lessonId);
     if (!lesson) throw new Error(`Unknown Foundations lesson: ${lessonId}`);
     const clean = (text: string) => text.replace(/\*\*/g, '').trim();

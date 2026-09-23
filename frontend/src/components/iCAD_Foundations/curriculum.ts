@@ -1,4 +1,5 @@
 import registry from '../../../../data/foundations-curriculum.json';
+import professionalRegistry from '../../../../data/professional-curriculum.json';
 import type { Lesson } from '../../views/mentor/mentorConstants';
 
 export type FoundationLanguage = 'en' | 'ja';
@@ -12,6 +13,10 @@ export interface FoundationLessonContent {
 }
 export interface FoundationLesson {
   id: string;
+  sourceProfessionalLessonId?: string;
+  completionId?: string;
+  presentationId?: string;
+  presentationModuleId?: string;
   /** Sidebar numbering may change without reassigning historical completion records. */
   displayId?: string;
   moduleId: string;
@@ -30,19 +35,48 @@ export interface FoundationModule {
   title: Record<FoundationLanguage, string>;
   lessons: FoundationLesson[];
 }
-export const FOUNDATION_MODULES: FoundationModule[] = registry.modules;
+const professionalSources = (professionalRegistry.modules as Array<{ lessons: Array<FoundationLesson & { sourceLessonId?: string }> }>).flatMap(module => module.lessons);
+/** Renumber course cross-references without editing the authored source. */
+export function foundationReferenceText(text: string): string {
+  return text.replace(/\bP(\d+)(\.\d+)?\b/g, (reference, module, suffix = '') => {
+    if (reference === 'P6.2') return 'F8.2';
+    const number = Number(module);
+    // P1/P2/P3 are also geometric point labels; they must not be renumbered.
+    return number >= 7 && number <= 13 ? 'F' + (number + 2) + suffix : reference;
+  });
+}
+export const FOUNDATION_MODULES: FoundationModule[] = registry.modules.map(module => ({
+  ...module,
+  lessons: module.lessons.map(reference => {
+    if (!('sourceProfessionalLessonId' in reference)) return reference as FoundationLesson;
+    const source = professionalSources.find(lesson => lesson.id === reference.sourceProfessionalLessonId);
+    if (!source) throw new Error(`Missing Professional source: ${reference.sourceProfessionalLessonId}`);
+    const presentationId = 'sourceLessonId' in source && source.sourceLessonId || source.id;
+    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify(source.content))), presentationId,
+      presentationModuleId: presentationId.startsWith('F9.') ? 'F9' : source.moduleId } as FoundationLesson;
+  }),
+}));
 export const FOUNDATION_LESSONS = FOUNDATION_MODULES.flatMap(module => module.lessons);
 export const FOUNDATION_LESSON_IDS = FOUNDATION_LESSONS.map(lesson => lesson.id);
 export const FOUNDATION_TOTAL = FOUNDATION_LESSONS.length;
 
 export function resolveFoundationLesson(id: string): FoundationLesson | undefined {
-  return FOUNDATION_LESSONS.find(lesson => lesson.id === id || lesson.routeAliases.includes(id));
+  return FOUNDATION_LESSONS.find(lesson => lesson.id === id) || FOUNDATION_LESSONS.find(lesson => lesson.routeAliases.includes(id));
+}
+
+/** Version stored alongside the last-open lesson prevents ambiguous F9/F10 restores. */
+export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
+  if (version !== '3' && /^F(?:9|10)\./.test(id)) {
+    return FOUNDATION_LESSONS.find(lesson => lesson.completionAliases.includes(id))
+      || resolveFoundationLesson(id.startsWith('F10.') ? 'F16.1' : 'F9.1');
+  }
+  return resolveFoundationLesson(id);
 }
 
 /** Read-only projection: old records remain intact, and only audited equivalents earn credit. */
 export function migrateFoundationCompletion(ids: readonly string[]): string[] {
   const completed = new Set(ids);
-  return FOUNDATION_LESSONS.filter(lesson => completed.has(lesson.id) ||
+  return FOUNDATION_LESSONS.filter(lesson => completed.has(lesson.completionId || lesson.id) ||
     lesson.completionAliases.some(alias => completed.has(alias))).map(lesson => lesson.id);
 }
 

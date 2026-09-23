@@ -1,5 +1,5 @@
 import { useTranslation } from '../../context/LanguageContext';
-import { createFoundationLessons, resolveFoundationLesson, migrateFoundationCompletion } from '../../components/iCAD_Foundations/curriculum';
+import { createFoundationLessons, restoreFoundationLesson, migrateFoundationCompletion } from '../../components/iCAD_Foundations/curriculum';
 import { createProfessionalLessons, PROFESSIONAL_COURSE_TYPE } from '../../components/iCAD_Professional/curriculum';
 import { BookOpen, Lock } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
@@ -188,10 +188,10 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
                     setSelectedCourse(course);
                     if (savedLessonId) {
                         console.log('Restoring lesson:', savedLessonId);
-                        setActiveLessonId(course.course_type === 'iCAD_Foundations' ? (resolveFoundationLesson(savedLessonId)?.id || savedLessonId) : savedLessonId);
+                        setActiveLessonId(course.course_type === 'iCAD_Foundations' ? (restoreFoundationLesson(savedLessonId, localStorage.getItem(authService.getStorageKey('foundationsCurriculumVersion')))?.id || savedLessonId) : savedLessonId);
                     }
                     if (course.course_type === 'iCAD_Foundations') {
-                        setExpandedIds(new Set([resolveFoundationLesson(savedLessonId || '')?.moduleId || 'F1']));
+                        setExpandedIds(new Set([restoreFoundationLesson(savedLessonId || '', localStorage.getItem(authService.getStorageKey('foundationsCurriculumVersion')))?.moduleId || 'F1']));
                     } else if (savedExpanded) setExpandedIds(new Set(JSON.parse(savedExpanded)));
                 } else {
                     console.warn('Could not find course in list for ID:', savedCourseId);
@@ -311,6 +311,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             if (selectedCourse) {
                 localStorage.setItem(authService.getStorageKey('selectedCourseId'), selectedCourse.id);
                 localStorage.setItem(authService.getStorageKey('activeLessonId'), activeLessonId);
+                if (selectedCourse.course_type === 'iCAD_Foundations') localStorage.setItem(authService.getStorageKey('foundationsCurriculumVersion'), '3');
                 localStorage.setItem(authService.getStorageKey('expandedIds'), JSON.stringify(Array.from(expandedIds)));
             } else {
                 // Clear persistence if we manually return to course selector
@@ -359,12 +360,13 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             const ids = progress.filter((p: any) => p.is_completed).map((p: any) => p.lesson_id);
 
             // Re-merge the newCompletedId just in case the backend hasn't updated yet
-            if (newCompletedId && !ids.includes(newCompletedId)) {
+            if (selectedCourse.course_type !== 'iCAD_Foundations' && newCompletedId && !ids.includes(newCompletedId)) {
                 ids.push(newCompletedId);
             }
 
 
-            setCompletedLessons(selectedCourse.course_type === 'iCAD_Foundations' ? migrateFoundationCompletion(ids) : ids);
+            const projected = selectedCourse.course_type === 'iCAD_Foundations' ? migrateFoundationCompletion(ids) : ids;
+            setCompletedLessons(newCompletedId ? [...new Set([...projected, newCompletedId])] : projected);
 
             // If we are currently loading progress for Course '1', update isAnnotationCompleted as well
             if (selectedCourse.course_type === '3D_Modeling') {

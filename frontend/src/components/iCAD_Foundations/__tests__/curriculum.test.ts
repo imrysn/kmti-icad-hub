@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import { FOUNDATION_MODULES, FOUNDATION_LESSONS, FOUNDATION_LESSON_IDS, createFoundationLessons,
-  resolveFoundationLesson, migrateFoundationCompletion, foundationProgress, foundationNeighbors, foundationRecap } from '../curriculum';
+  resolveFoundationLesson, migrateFoundationCompletion, foundationProgress, foundationNeighbors, foundationRecap, foundationReferenceText, restoreFoundationLesson } from '../curriculum';
 import { enTranslations, jaTranslations } from '../../../config/translations';
-import { ICAD_FOUNDATIONS_LESSONS, PRESERVED_FOUNDATIONS_LESSONS } from '../../../views/mentor/mentorConstants';
-import { SELECTING_GEOMETRY_VIDEO_STEPS, COPY_VIDEO_STEPS, DELETE_VIDEO_STEPS } from '../VideoTutorial_EN/MoveCopyDeleteVideo';
-import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+import { ICAD_FOUNDATIONS_LESSONS } from '../../../views/mentor/mentorConstants';
+import { resolveProfessionalLesson, professionalRenderLesson } from '../../iCAD_Professional/curriculum';
+import { sourceKnowledgeQuestions, foundationKnowledgeQuestions } from '../knowledgeCheck';
 
 describe('Excel Foundations curriculum', () => {
-  it('shows two F10 lessons without awarding old navigation credit to the final quiz', () => {
-    expect(createFoundationLessons().find(module => module.id === 'F10')!.children!.map(lesson => lesson.title))
-      .toEqual(['F10.1 Foundation Review', 'F10.2 Foundation Knowledge Check']);
-    expect(foundationNeighbors('F10.1').next).toBe('F10.6');
-    expect(migrateFoundationCompletion(['F10.2', 'F10.3', 'F10.4', 'F10.5'])).toEqual([]);
-    expect(migrateFoundationCompletion(['F10.6'])).toEqual(['F10.6']);
-    expect(resolveFoundationLesson('F10.1')!.content.en.sections).toHaveLength(10);
+  it('moves Review to F16 without giving old review credit to Move', () => {
+    expect(createFoundationLessons().find(module => module.id === 'F16')!.children!.map(lesson => lesson.title))
+      .toEqual(['F16.1 Foundation Review', 'F16.2 Foundation Knowledge Check']);
+    expect(foundationNeighbors('F16.1').next).toBe('F16.2');
+    expect(migrateFoundationCompletion(['F10.1','F10.6'])).toEqual(['F16.1','F16.2']);
+    expect(migrateFoundationCompletion(['F10.2','F10.3','F10.4','F10.5'])).toEqual([]);
+    expect(resolveFoundationLesson('F16.1')!.content.en.sections).toHaveLength(10);
   });
   it('keeps only the three requested F6 topics with their existing stored IDs', () => {
     expect(createFoundationLessons().find(module => module.id === 'F6')!.children!.map(lesson => lesson.title))
@@ -40,30 +40,35 @@ describe('Excel Foundations curriculum', () => {
     expect(resolveFoundationLesson('F4.12')!.content.en.sections!.map(section => section.title))
       .toEqual(['Shading Modes','How to Change the Shading','When to Use Each Mode','Important Reminder']);
   });
-  it('defines exactly the ten ordered modules and all 36 uniquely numbered items', () => {
-    expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10']);
-    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,7,2]);
-    expect(FOUNDATION_LESSONS).toHaveLength(36);
-    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(36);
-    for (const module of FOUNDATION_MODULES) module.lessons.forEach((lesson, index) => {
-      expect(lesson.id).toBe(module.id === 'F2' ? ['F2.1', 'F2.9'][index] : module.id === 'F3' ? ['F3.1','F3.5','F3.6'][index] : module.id === 'F4' ? ['F4.1','F4.6','F4.12'][index] : module.id === 'F5' ? ['F5.1','F5.4','F5.6'][index] : module.id === 'F6' ? ['F6.2','F6.4','F6.7'][index] : module.id === 'F7' ? ['F7.1','F7.3','F7.6','F7.8'][index] : module.id === 'F8' ? ['F8.1','F8.3','F8.5'][index] : module.id === 'F9' ? ['F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'][index] : module.id === 'F10' ? ['F10.1','F10.6'][index] : `${module.id}.${index + 1}`);
-      expect(lesson.moduleId).toBe(module.id);
-    });
+  it('restores old saved lessons using the curriculum version', () => {
+    expect(foundationReferenceText('Click P1, P2, P3; see P9 Sketch and P6.2.')).toBe('Click P1, P2, P3; see F11 Sketch and F8.2.');
+    expect(restoreFoundationLesson('F10.1',null)?.id).toBe('F16.1');
+    expect(restoreFoundationLesson('F10.6',null)?.id).toBe('F16.2');
+    expect(restoreFoundationLesson('F9.5',null)?.id).toBe('F9.1');
+    expect(restoreFoundationLesson('F9.5','3')?.id).toBe('F9.5');
+    expect(restoreFoundationLesson('F10.1','3')?.id).toBe('F10.1');
+  });
+  it('defines sixteen ordered modules and 51 unique lessons', () => {
+    expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(Array.from({length:16},(_,i)=>'F'+(i+1)));
+    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,5,8,1,2,4,1,1,2]);
+    expect(FOUNDATION_LESSONS).toHaveLength(51);
+    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(51);
     expect(ICAD_FOUNDATIONS_LESSONS).toEqual(createFoundationLessons());
   });
-
-  it('includes only beginner shapes and transformations and preserves advanced sources outside navigation', () => {
-    expect(FOUNDATION_LESSONS.filter(lesson => lesson.renderer?.startsWith('basic-op')).map(lesson => lesson.title.en))
-      .toEqual(['Creating a Box', 'Creating a Cylinder', 'Creating a Polygonal Prism']);
-    expect(FOUNDATION_LESSONS.filter(lesson => lesson.renderer?.startsWith('lesson-6')).map(lesson => lesson.title.en))
-      .toEqual(['Basic Move', 'Basic Copy', 'Basic Delete']);
-    const active = JSON.stringify(createFoundationLessons());
-    expect(active).not.toMatch(/Cone|Torus|Mirror Copy|Rotate Copy|Practical Assessment|Guided Exercise|Basic 2D Geometry|Troubleshooting/);
-    const preserved = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]);
-    for (const id of ['basic-op-cone','basic-op-torus','lesson-6-2','lesson-6-3','lesson-6-5','lesson-6-6','lesson-7-1','lesson-12-1','lesson-13-1']) {
-      expect(preserved.find(lesson => lesson.id === id)).toBeDefined();
-      expect(resolveFoundationLesson(id)).toBeUndefined();
+  it('reuses all Professional data and assessments under Foundation numbering', () => {
+    for (const lesson of FOUNDATION_LESSONS.filter(l=>l.sourceProfessionalLessonId)) {
+      const source=resolveProfessionalLesson(lesson.sourceProfessionalLessonId!)!;
+      expect(lesson.content).toEqual(JSON.parse(foundationReferenceText(JSON.stringify(source.content))));
+      expect(lesson.renderer).toBe(source.renderer);
+      expect(lesson.video).toBe(source.video);
+      expect(lesson.title).toEqual(source.title);
+      const rendered=professionalRenderLesson(source.id)!;
+      for(const lang of ['en','ja'] as const) expect(foundationKnowledgeQuestions(lang,lesson.id)).toEqual(sourceKnowledgeQuestions(lang,rendered.id));
     }
+    expect(migrateFoundationCompletion(['F9.1'])).toEqual([]);
+    expect(migrateFoundationCompletion(['F9.5'])).toEqual(['F9.1']);
+    expect(migrateFoundationCompletion(['foundations-v3:F9.5'])).toEqual(['F9.5']);
+    expect(migrateFoundationCompletion(['foundations-v3:F10.1'])).toEqual(['F10.1']);
   });
 
   it('has complete bilingual titles, instructional text and recaps without translation keys', () => {
@@ -71,7 +76,7 @@ describe('Excel Foundations curriculum', () => {
       expect(enTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.en);
       expect(jaTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.ja);
       // F4, F8, and F9 (including the 移動コピー削除 Icon Menu section) intentionally include the user-supplied Japanese CAD UI command and dialog names.
-      if (!['F1.5','F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      if (!lesson.sourceProfessionalLessonId && !['F1.5','F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
       for (const lang of ['en','ja'] as const) {
         const content = lesson.content[lang];
         expect(content.explanation.length).toBeGreaterThan(15);
@@ -101,8 +106,8 @@ describe('Excel Foundations curriculum', () => {
     const old = ['lesson-3-1','F3.3','lesson-4-2','lesson-13-1','lesson-6-3','origin-layout','bogus'];
     expect(migrateFoundationCompletion(old)).toEqual(['F4.6']);
     expect(old).toHaveLength(7);
-    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:36,percentage:1/36*100});
-    expect(foundationProgress(FOUNDATION_LESSON_IDS).percentage).toBe(100);
+    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:51,percentage:1/51*100});
+    expect(foundationProgress(FOUNDATION_LESSONS.map(l=>l.completionId || l.id)).percentage).toBe(100);
     expect(migrateFoundationCompletion(['lesson-1-1','lesson-10-1'])).toEqual(['F1.1','F8.3']);
     expect(migrateFoundationCompletion(['F3','module-1'])).toEqual([]);
   });
@@ -111,33 +116,22 @@ describe('Excel Foundations curriculum', () => {
     const aliases = FOUNDATION_LESSONS.flatMap(lesson => lesson.routeAliases);
     expect(new Set(aliases).size).toBe(aliases.length);
     expect(resolveFoundationLesson('lesson-3-1')).toBeUndefined();
-    expect(resolveFoundationLesson('basic-op-box')?.id).toBe('F9.5');
-    expect(resolveFoundationLesson('move')?.id).toBe('F9.9');
+    expect(resolveFoundationLesson('basic-op-box')?.id).toBe('F9.1');
+    expect(resolveFoundationLesson('move')?.id).toBe('F10.1');
     expect(resolveFoundationLesson('lesson-5-1')?.id).toBe('F5.4');
   });
 
-  it('reuses verified video IDs and the original operation timing objects', () => {
-    const preserved = PRESERVED_FOUNDATIONS_LESSONS.flatMap(module => module.children || [module]);
-    for (const lesson of FOUNDATION_LESSONS.filter(item => item.renderer)) {
-      expect(preserved.find(item => item.id === lesson.renderer), lesson.id).toBeDefined();
+  it('preserves original video and interactive renderer identities', () => {
+    for(const lesson of FOUNDATION_LESSONS.filter(l=>l.sourceProfessionalLessonId)) {
+      const source=resolveProfessionalLesson(lesson.sourceProfessionalLessonId!)!;
+      expect(lesson.renderer).toBe(source.renderer);
+      expect(lesson.video).toBe(source.video);
     }
-    const expected = [['F9.9','basicMove',SELECTING_GEOMETRY_VIDEO_STEPS],['F9.10','basicCopy',COPY_VIDEO_STEPS],['F9.11','basicDelete',DELETE_VIDEO_STEPS]] as const;
-    for (const [id, videoId, steps] of expected) {
-      const lesson = resolveFoundationLesson(id)!;
-      const source = preserved.find(item => item.id === lesson.renderer)!;
-      expect(source.videoId).toBe(videoId);
-      expect(lesson.video).toBe(videoId);
-      expect(source.videoSteps).toBe(steps);
-    }
-    expect(FOUNDATION_LESSONS.filter(lesson => lesson.video).map(lesson => lesson.id))
-      .toEqual(['F3.5','F3.6','F4.1','F4.6','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11']);
     for (const id of ['F2.1','F2.9']) {
       expect(resolveFoundationLesson(id)?.type).toBe('interactive');
       expect(resolveFoundationLesson(id)?.video).toBeNull();
     }
-    for (const lesson of FOUNDATION_LESSONS.filter(item => !item.renderer)) expect(lesson.video).toBeNull();
   });
-
   it('provides a bilingual twelve-question knowledge check with one answer per question', () => {
     for (const lang of ['en','ja'] as const) {
       const questions = foundationKnowledgeQuestions(lang);

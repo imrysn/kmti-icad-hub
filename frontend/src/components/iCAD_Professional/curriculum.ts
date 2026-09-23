@@ -14,7 +14,7 @@ export const PROFESSIONAL_LESSONS = PROFESSIONAL_MODULES.flatMap(module => modul
 export const PROFESSIONAL_TOTAL = PROFESSIONAL_LESSONS.length;
 
 export function resolveProfessionalLesson(id: string): ProfessionalLesson | undefined {
-  return PROFESSIONAL_LESSONS.find(lesson => lesson.id === id);
+  return PROFESSIONAL_LESSONS.find(lesson => lesson.id === id || lesson.routeAliases.includes(id));
 }
 
 const professionalRenderCache = new Map<string, FoundationLesson>();
@@ -30,7 +30,10 @@ export function professionalRenderLesson(id: string): FoundationLesson | undefin
     professionalRenderCache.set(id, lesson);
     return lesson;
   }
-  const source = resolveFoundationLesson(lesson.sourceLessonId);
+  // The retired F9 IDs remain presentation keys, not current Foundation routes.
+  const source = lesson.sourceLessonId.startsWith('F9.')
+    ? { id: lesson.sourceLessonId, moduleId: 'F9' }
+    : resolveFoundationLesson(lesson.sourceLessonId);
   const rendered = source ? { ...lesson, id: source.id, moduleId: source.moduleId } : undefined;
   if (rendered) {
     professionalRenderCache.set(id, rendered);
