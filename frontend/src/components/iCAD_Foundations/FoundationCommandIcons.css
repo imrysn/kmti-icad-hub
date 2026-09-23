@@ -1,0 +1,9 @@
+.foundations-consistent-lesson .foundations-use-card__icon-frame svg.foundation-single-command {
+  display: block;
+  width: 76px;
+  height: 76px;
+  max-width: 76px;
+  max-height: 76px;
+  margin: auto;
+  object-fit: contain;
+}

@@ -58,7 +58,7 @@ describe('Excel Foundations curriculum', () => {
   it('reuses all Professional data and assessments under Foundation numbering', () => {
     for (const lesson of FOUNDATION_LESSONS.filter(l=>l.sourceProfessionalLessonId)) {
       const source=resolveProfessionalLesson(lesson.sourceProfessionalLessonId!)!;
-      expect(lesson.content).toEqual(JSON.parse(foundationReferenceText(JSON.stringify(source.content))));
+      expect(lesson.content).toEqual(JSON.parse(foundationReferenceText(JSON.stringify(source.content), lesson.textReplacements)));
       expect(lesson.renderer).toBe(source.renderer);
       expect(lesson.video).toBe(source.video);
       expect(lesson.title).toEqual(source.title);

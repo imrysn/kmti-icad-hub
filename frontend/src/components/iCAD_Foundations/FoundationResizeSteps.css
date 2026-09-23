@@ -1,5 +1,13 @@
 .foundation-resize-steps .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 850px; margin-inline: auto; }
 .foundation-resize-steps .foundations-use-card:nth-child(n) { grid-column: auto; }
-.foundation-resize-steps .foundation-resize-command { width: 104px; height: 112px; }
+.foundation-resize-steps .foundations-use-card__icon-frame svg.foundation-operation-command-icon {
+  display: block;
+  width: 76px;
+  max-width: 76px;
+  height: 76px;
+  max-height: 76px;
+  object-fit: contain;
+  margin-inline: auto;
+}
 .foundation-resize-steps .foundation-resize-scale { width: 168px; height: 94px; }
 @container (max-width: 550px) { .foundation-resize-steps .foundations-uses__grid { grid-template-columns: minmax(0,1fr); max-width: 300px; } }

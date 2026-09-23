@@ -14,6 +14,7 @@ export interface FoundationLessonContent {
 export interface FoundationLesson {
   id: string;
   sourceProfessionalLessonId?: string;
+  textReplacements?: Record<string, string>;
   completionId?: string;
   presentationId?: string;
   presentationModuleId?: string;
@@ -37,7 +38,8 @@ export interface FoundationModule {
 }
 const professionalSources = (professionalRegistry.modules as Array<{ lessons: Array<FoundationLesson & { sourceLessonId?: string }> }>).flatMap(module => module.lessons);
 /** Renumber course cross-references without editing the authored source. */
-export function foundationReferenceText(text: string): string {
+export function foundationReferenceText(text: string, replacements: Record<string, string> = {}): string {
+  for (const [original, replacement] of Object.entries(replacements)) text = text.split(original).join(replacement);
   return text.replace(/\bP(\d+)(\.\d+)?\b/g, (reference, module, suffix = '') => {
     if (reference === 'P6.2') return 'F8.2';
     const number = Number(module);
@@ -52,7 +54,7 @@ export const FOUNDATION_MODULES: FoundationModule[] = registry.modules.map(modul
     const source = professionalSources.find(lesson => lesson.id === reference.sourceProfessionalLessonId);
     if (!source) throw new Error(`Missing Professional source: ${reference.sourceProfessionalLessonId}`);
     const presentationId = 'sourceLessonId' in source && source.sourceLessonId || source.id;
-    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify(source.content))), presentationId,
+    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify(source.content), (reference as Partial<FoundationLesson>).textReplacements)), presentationId,
       presentationModuleId: presentationId.startsWith('F9.') ? 'F9' : source.moduleId } as FoundationLesson;
   }),
 }));

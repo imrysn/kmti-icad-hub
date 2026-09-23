@@ -11,7 +11,9 @@ PROFESSIONAL_REGISTRY = json.loads((Path(__file__).resolve().parents[2] / "data"
 PROFESSIONAL_SOURCES = {lesson["id"]: lesson for module in PROFESSIONAL_REGISTRY["modules"] for lesson in module["lessons"]}
 
 
-def foundation_reference_text(text):
+def foundation_reference_text(text, replacements=None):
+    for original, replacement in (replacements or {}).items():
+        text = text.replace(original, replacement)
     def replace(match):
         if match.group(0) == "P6.2":
             return "F8.2"
@@ -23,7 +25,7 @@ def foundation_reference_text(text):
 
 MODULES = [{**module, "lessons": [
     {**PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]], **lesson,
-     "content": json.loads(foundation_reference_text(json.dumps(PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]]["content"], ensure_ascii=False)))}
+     "content": json.loads(foundation_reference_text(json.dumps(PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]]["content"], ensure_ascii=False), lesson.get("textReplacements")))}
     if "sourceProfessionalLessonId" in lesson else lesson
     for lesson in module["lessons"]]} for module in REGISTRY["modules"]]
 LESSONS = [lesson for module in MODULES for lesson in module["lessons"]]

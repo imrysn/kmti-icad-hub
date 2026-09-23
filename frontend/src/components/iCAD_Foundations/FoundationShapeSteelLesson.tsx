@@ -1,3 +1,5 @@
+import { useFoundationVisuals } from './FoundationVisualContext';
+import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import { SteelProfileArtwork, MachinePartMenuArtwork, SteelDialogArtwork } from './ShapeSteelArtwork';
 import arrangePartScreen from '../../assets/icad-foundations/shape-steel/arrange-machine-part-interface.png';
 import shapeSteelDialogScreen from '../../assets/icad-foundations/shape-steel/shape-steel-dialog-interface.png';
@@ -8,8 +10,9 @@ import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationShapeSteelLesson.css';
 
 function ArrangePartIcon({title,japanese}: {title:string;japanese:boolean}) {
-  const artwork=<MachinePartMenuArtwork title={title}/>;
-  return <InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:arrangePartScreen,region:{bounds:[1751,314,30,31],landing:[1748,291,132,58]},highlightColor:'#0087ef'}}/>;
+  const singleCommand=useFoundationVisuals();
+  const artwork=singleCommand ? <FoundationCreationCommandIcon command="machinePart" title={title}/> : <MachinePartMenuArtwork title={title}/>;
+  return <InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:arrangePartScreen,region:{bounds:[1751,314,30,31],landing:singleCommand?[1751,314,30,31]:[1748,291,132,58]},highlightColor:'#0087ef'}}/>;
 }
 
 function ShapeSteelDialogIcon({title,japanese}: {title:string;japanese:boolean}) {

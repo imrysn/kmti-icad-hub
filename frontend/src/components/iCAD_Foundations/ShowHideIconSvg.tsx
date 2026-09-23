@@ -1,5 +1,5 @@
 /** Vector versions of the iCAD Show/Hide palette buttons. */
-export default function ShowHideIconSvg({index,title}: {index:number;title:string}) {
+export default function ShowHideIconSvg({index,title,className}: {index:number;title:string;className?:string}) {
   const show=index===1 || index===3;
   const drafting=index===2 || index===3;
   const cube=(x:number,y:number,blue=false)=><g transform={`translate(${x} ${y})`} stroke={blue?'#426abe':'#a7aab0'} strokeWidth=".8" strokeLinejoin="round">
@@ -7,7 +7,7 @@ export default function ShowHideIconSvg({index,title}: {index:number;title:strin
     <path d="M0 5 9 11V22L0 16Z" fill={blue?'#4d80ef':'#eceff1'}/>
     <path d="M9 11 18 5V16L9 22Z" fill={blue?'#6295ff':'#fff'}/>
   </g>;
-  return <svg viewBox="0 0 36 36" role="img" aria-label={title}>
+  return <svg className={className} preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36" role="img" aria-label={title}>
     {drafting ? <g fill={show?'#34383b':'#b5b7bb'} stroke={show?'#34383b':'#b5b7bb'} strokeWidth="1">
       <path d="M4 9V24M25 9V24M2 15H28M4 15l4-3m-4 3 4 3m17-3-4-3m4 3-4 3" fill="none"/>
       <text x="10" y="12" fontSize="10" fontFamily="Arial,sans-serif" stroke="none">10</text>

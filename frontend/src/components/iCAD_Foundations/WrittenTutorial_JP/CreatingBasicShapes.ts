@@ -19,7 +19,7 @@ export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "cyl-step-1",
     "title": "正面図を選ぶ",
-    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "text": "3Dモデルを作成するときは、必ず正面図から始めます。",
     "preserveText": true
   },
   {
@@ -73,7 +73,7 @@ export const BOX_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "box-step-1",
     "title": "正面図を選ぶ",
-    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "text": "3Dモデルを作成するときは、必ず正面図から始めます。",
     "preserveText": true
   },
   {
@@ -126,7 +126,7 @@ export const POLYGON_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "polygon-step-1",
     "title": "正面図を選ぶ",
-    "text": "<b>3D ビューツールバー</b>から<b>正面図</b>を選択します。",
+    "text": "3Dモデルを作成するときは、必ず正面図から始めます。",
     "preserveText": true
   },
   {

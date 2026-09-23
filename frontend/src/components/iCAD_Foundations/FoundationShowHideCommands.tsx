@@ -1,3 +1,4 @@
+import { useFoundationVisuals } from './FoundationVisualContext';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import ShowHideIconSvg from './ShowHideIconSvg';
 import screen from '../../assets/icad-foundations/show-hide/interface.png';
@@ -7,7 +8,8 @@ import './FoundationUsesCards.css';
 const regions: [number,number,number,number][] = [[1816,212,30,31],[1848,212,30,31],[1752,212,30,31],[1784,212,30,31],[1752,244,30,32]];
 
 export function ShowHideCommandPreview({index,title,japanese}: {index:number;title:string;japanese:boolean}) {
-  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:<ShowHideIconSvg index={index} title={title}/>,screen,region:{bounds:regions[index],landing:regions[index]}}}/>;
+  const singleCommand=useFoundationVisuals();
+  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:<ShowHideIconSvg index={index} title={title} className={singleCommand ? "foundation-single-command" : undefined}/>,screen,region:{bounds:regions[index],landing:regions[index]}}}/>;
 }
 
 export default function FoundationShowHideCommands({text,japanese=false}: {text: string;japanese?:boolean}) {

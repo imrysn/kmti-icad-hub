@@ -1,3 +1,5 @@
+import { useFoundationVisuals } from './FoundationVisualContext';
+import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import { useId } from 'react';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import screen from '../../assets/icad-foundations/modeling/professional/extrude.png';
@@ -12,6 +14,7 @@ import revolveScreen from '../../assets/icad-foundations/modeling/professional/r
 const regions: [number,number,number,number][] = [[1749,242,130,51],[917,630,279,189],[1100,540,118,92],[917,350,279,469]];
 export default function FoundationExtrudePreview({index:stepIndex,title,japanese,bothSides=false,revolve=false}: {index:number;title:string;japanese:boolean;bothSides?:boolean;revolve?:boolean}) {
   const id=useId();
+  const singleCommand=useFoundationVisuals();
   if (!revolve && stepIndex===1) {
     const bounds: [number,number,number,number]=[782,398,518,404];
     const marker=<g><circle cx="984" cy="475" r="4" fill="#e00000"/><text x="969" y="459" fontSize="24" fontWeight="700" fill="#b40000">P1</text></g>;
@@ -25,7 +28,7 @@ export default function FoundationExtrudePreview({index:stepIndex,title,japanese
   const index=!revolve && stepIndex>1 ? stepIndex-1 : stepIndex;
   const region: [number,number,number,number]=revolve ? index===0 ? [1815,263,30,29] : index===3 ? [875,324,408,506] : [858,448,436,298] : index===0 ? [bothSides ? 1783 : 1751,263,30,29] : index===1 ? [852,228,355,bothSides ? 720 : 481] : index===3 ? bothSides ? [858,295,355,551] : [910,399,290,425] : regions[index];
   const previewScreen=revolve ? index===3 ? revolveOutput : revolveScreen : index===0 ? sketchScreen : index===1 ? bothSides ? bothSidesSelection : oneSideSelection : index===3 ? bothSides ? bothSidesOutput : oneSideOutput : screen;
-  const artwork=<svg className="foundation-operation-thumbnail" viewBox="0 0 180 96" role="img" aria-label={title}>
+  const artwork=singleCommand && index===0 ? <FoundationCreationCommandIcon command={revolve ? "revolve" : bothSides ? "extrudeBoth" : "extrude"} title={title}/> : <svg className="foundation-operation-thumbnail" viewBox="0 0 180 96" role="img" aria-label={title}>
     <defs><linearGradient id={id} x2="0" y2="1"><stop stopColor="#dceafa"/><stop offset="1" stopColor="#9cbbda"/></linearGradient></defs>
     {index===0 ? <>
       <rect x="8" y="16" width="164" height="64" fill="#eee" stroke="#999"/>

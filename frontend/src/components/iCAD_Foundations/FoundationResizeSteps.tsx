@@ -1,19 +1,10 @@
 import { MousePointer2 } from 'lucide-react';
+import FoundationOperationCommandIcon from './FoundationOperationCommandIcon';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationResizeSteps.css';
 
 function ResizeIcon({title}: {title:string}) {
-  return <svg className="foundation-resize-command" viewBox="0 0 104 112" role="img" aria-label={title}>
-    <rect x="4" y="4" width="96" height="104" fill="#eef1f4" stroke="#8c98a4" strokeWidth="2"/>
-    <rect x="5" y="5" width="94" height="18" fill="#d7e8fa"/>
-    <text x="10" y="18" fontSize="9" fill="#172638">伸縮・整形・切断</text>
-    {[0,1,2].map(row=>[0,1,2,3].map(col=><g key={`${row}-${col}`} transform={`translate(${11+col*22} ${31+row*24})`} opacity={row===2&&col===0?1:.72}>
-      <path d="M1 8 9 3l9 5-9 5Z" fill="#f7f7f7" stroke="#607080"/>
-      <path d="M1 8v8l8 5v-8Z" fill="#bcc6cf" stroke="#607080"/>
-      <path d="m9 13 9-5v8l-9 5Z" fill="#16b85a" stroke="#39705a"/>
-    </g>))}
-    <rect x="7" y="76" width="24" height="27" fill="none" stroke="#e4002b" strokeWidth="3"/>
-  </svg>;
+  return <FoundationOperationCommandIcon command="resize" title={title} />;
 }
 
 function SolidSelection({title}: {title:string}) {

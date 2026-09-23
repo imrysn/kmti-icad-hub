@@ -794,7 +794,7 @@
             "en": {
               "explanation": "The **User View toolbar** in iCAD SX provides four preset isometric (angled 3D) views.",
               "description2": "These views let you quickly look at the model from different angled perspectives without manually rotating the screen.",
-              "practice": "By the end of this lesson, you should be able to identify **User View 1 to User View 4** and use them to inspect a 3D model from different angles.",
+              "practice": "By the end of this lesson, you should be able to identify User View 1 to User View 4 and use them to inspect a 3D model from different angles.",
               "sections": [
                 {
                   "title": "User View Commands",
@@ -1314,7 +1314,7 @@
               "sections": [
                 {
                   "title": "How to Create a Box",
-                  "text": "Before starting, open **Training_Box_01** saved in **P6.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Box**\nOpen **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Box**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Box appears."
+                  "text": "Before starting, open **Training_Box_01** saved in **P6.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nWhen creating a 3D model, always start with Front View.\n\n**Step 2 — Select Box**\nOpen **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Box**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Box appears."
                 },
                 {
                   "title": "Try It",
@@ -1334,7 +1334,7 @@
               "sections": [
                 {
                   "title": "直方体の作成手順",
-                  "text": "始める前に、**P6.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 直方体を選ぶ**\n**形状配置**を開き、**直方体**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**直方体を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。直方体が一つ表示されることを確認します。"
+                  "text": "始める前に、**P6.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n3Dモデルを作成するときは、必ず正面図から始めます。\n\n**ステップ 2 — 直方体を選ぶ**\n**形状配置**を開き、**直方体**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**直方体を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。直方体が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -1372,7 +1372,7 @@
               "sections": [
                 {
                   "title": "How to Create a Cylinder",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Cylinder**\nOpen **Shape Placement (形状配置)** and select **Cylinder (円柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cylinder**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Cylinder appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nWhen creating a 3D model, always start with Front View.\n\n**Step 2 — Select Cylinder**\nOpen **Shape Placement (形状配置)** and select **Cylinder (円柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cylinder**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Cylinder appears."
                 },
                 {
                   "title": "Try It",
@@ -1392,7 +1392,7 @@
               "sections": [
                 {
                   "title": "円柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 円柱を選ぶ**\n**形状配置**を開き、**円柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。円柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n3Dモデルを作成するときは、必ず正面図から始めます。\n\n**ステップ 2 — 円柱を選ぶ**\n**形状配置**を開き、**円柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。円柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -1430,7 +1430,7 @@
               "sections": [
                 {
                   "title": "How to Create a Polygonal Prism",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Polygonal Prism**\nOpen **Shape Placement (形状配置)** and select **Polygonal Prism (正多角柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Polygonal Prism**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Polygonal Prism appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nWhen creating a 3D model, always start with Front View.\n\n**Step 2 — Select Polygonal Prism**\nOpen **Shape Placement (形状配置)** and select **Polygonal Prism (正多角柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Polygonal Prism**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Polygonal Prism appears."
                 },
                 {
                   "title": "Try It",
@@ -1450,7 +1450,7 @@
               "sections": [
                 {
                   "title": "多角柱の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 正多角柱を選ぶ**\n**形状配置**を開き、**正多角柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**正多角柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。正多角柱が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n3Dモデルを作成するときは、必ず正面図から始めます。\n\n**ステップ 2 — 正多角柱を選ぶ**\n**形状配置**を開き、**正多角柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**正多角柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。正多角柱が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -1488,7 +1488,7 @@
               "sections": [
                 {
                   "title": "How to Create a Cone",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Cone**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Cone (円錐台)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cone**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one flat-topped cone appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nWhen creating a 3D model, always start with Front View.\n\n**Step 2 — Select Cone**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Cone (円錐台)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cone**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one flat-topped cone appears."
                 },
                 {
                   "title": "Try It",
@@ -1508,7 +1508,7 @@
               "sections": [
                 {
                   "title": "円錐台の作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — 円錐台を選ぶ**\n**形状配置**の **▼** で一覧を広げ、**円錐台**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円錐台を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。上面が平らな円錐台が一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm です。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n3Dモデルを作成するときは、必ず正面図から始めます。\n\n**ステップ 2 — 円錐台を選ぶ**\n**形状配置**の **▼** で一覧を広げ、**円錐台**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円錐台を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。上面が平らな円錐台が一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -1545,7 +1545,7 @@
               "sections": [
                 {
                   "title": "How to Create a Torus",
-                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres and the angle is in degrees. Type numbers only; do not type **mm** or **°**.\n\n**Step 1 — Select Front View**\nSelect **Front View**.\n\n**Step 2 — Select Torus**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Torus (トーラス)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Torus**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one half-ring appears."
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres and the angle is in degrees. Type numbers only; do not type **mm** or **°**.\n\n**Step 1 — Select Front View**\nWhen creating a 3D model, always start with Front View.\n\n**Step 2 — Select Torus**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Torus (トーラス)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Torus**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one half-ring appears."
                 },
                 {
                   "title": "Try It",
@@ -1565,7 +1565,7 @@
               "sections": [
                 {
                   "title": "トーラスの作成手順",
-                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm、角度の単位は度です。入力するのは数値だけで、**mm** や **°** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n**正面図**を選びます。\n\n**ステップ 2 — トーラスを選ぶ**\n**形状配置**の **▼** で一覧を広げ、**トーラス**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**トーラスを選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。半円状のリングが一つ表示されることを確認します。"
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm、角度の単位は度です。入力するのは数値だけで、**mm** や **°** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\n3Dモデルを作成するときは、必ず正面図から始めます。\n\n**ステップ 2 — トーラスを選ぶ**\n**形状配置**の **▼** で一覧を広げ、**トーラス**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**トーラスを選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。半円状のリングが一つ表示されることを確認します。"
                 },
                 {
                   "title": "やってみましょう",
@@ -1967,7 +1967,7 @@
                 }
               ],
               "quickReview": "Icon Menu → Delete → Left-Click Object → Check / Ctrl+Z if needed",
-              "connection": "You have completed Module P8 Move, Copy, Delete!"
+              "connection": "Next, learn how to change a solid's size with P8.8 Resize."
             },
             "ja": {
               "explanation": "削除（Delete）は、選択したオブジェクトを 3D モデルから取り除くコマンドです。不要になった形状や誤って作成した要素を消去します。",
@@ -1987,7 +1987,7 @@
                 }
               ],
               "quickReview": "アイコンメニュー → 削除 → 対象を左クリック → 確認（Ctrl+Z で元に戻す）",
-              "connection": "モジュール P8 移動・複写・削除の学習が完了しました！"
+              "connection": "次は P8.8 立体縮尺に進み、立体の大きさを変更する方法を学びます。"
             }
           },
           "contentReview": "new-professional-lesson",
@@ -2029,7 +2029,7 @@
                 }
               ],
               "quickReview": "**Select Resize → Select the Solid → Enter the Scale → Left-click in the 3D Workspace**",
-              "connection": "P12.1 Stretch changes a solid by moving one face. P8.8 Resize scales the whole solid proportionally."
+              "connection": "P12.1 Stretch changes a solid by moving one face. P8.8 Resize scales the whole solid proportionally. You have completed Module P8 Move, Copy, Delete! Next, continue to P9 Sketch."
             },
             "ja": {
               "explanation": "**立体縮尺**コマンドは、立体の比率を保ったまま全体を拡大または縮小します。",
@@ -2049,7 +2049,7 @@
                 }
               ],
               "quickReview": "**立体縮尺を選択 → 立体を選択 → 縮尺を入力 → 3D 作業領域を左クリック**",
-              "connection": "P12.1 伸縮は1つの面を移動して立体を変更します。P8.8 立体縮尺は立体全体を同じ比率で拡大または縮小します。"
+              "connection": "P12.1 伸縮は1つの面を移動して立体を変更します。P8.8 立体縮尺は立体全体を同じ比率で拡大または縮小します。モジュール P8 移動・複写・削除の学習が完了しました！次は P9 スケッチに進みます。"
             }
           },
           "contentReview": "authored",

@@ -1,3 +1,5 @@
+import { useFoundationVisuals } from './FoundationVisualContext';
+import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import { useId } from 'react';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import screen from '../../assets/icad-foundations/modeling/professional/sketch.png';
@@ -11,8 +13,9 @@ const regions: [number,number,number,number][] = [
 
 export default function FoundationSketchPreview({index,title,japanese}: {index:number;title:string;japanese:boolean}) {
   const clipId=useId();
-  const region=regions[index];
-  const artwork=index<2 ? <SketchMenuSvg title={title} lineOnly={index===1}/> : <svg className="foundation-operation-thumbnail" viewBox="0 0 518 404" role="img" aria-label={title}>
+  const singleCommand=useFoundationVisuals();
+  const region=singleCommand && index===0 ? regions[1] : regions[index];
+  const artwork=singleCommand && index===0 ? <FoundationCreationCommandIcon command="sketch" title={title}/> : index<2 ? <SketchMenuSvg title={title} lineOnly={index===1}/> : <svg className="foundation-operation-thumbnail" viewBox="0 0 518 404" role="img" aria-label={title}>
     <defs><linearGradient id={clipId} x2="0" y2="1"><stop stopColor="#ed7ecc"/><stop offset="1" stopColor="#c58aef"/></linearGradient></defs>
     <rect width="518" height="404" fill={`url(#${clipId})`}/>
     <path d="M16 137 388 16 502 338 341 388 278 204 62 272Z" fill="none" stroke="#373139" strokeWidth="1"/>

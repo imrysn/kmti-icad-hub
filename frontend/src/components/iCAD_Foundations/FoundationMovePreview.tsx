@@ -1,5 +1,5 @@
 import InterfaceIconPreview from './InterfaceIconPreview';
-import OperationMenuSvg from './OperationMenuSvg';
+import FoundationOperationCommandIcon from './FoundationOperationCommandIcon';
 import moveScreen from '../../assets/icad-foundations/modeling/professional/move.png';
 import pointsScreen from '../../assets/icad-foundations/modeling/professional/move-points.png';
 import './FoundationFileMenuIcon.css';
@@ -16,7 +16,7 @@ export default function FoundationMovePreview({index, japanese=false}: {index:nu
   const screen=index===3?pointsScreen:moveScreen;
   const title=(japanese?['平行移動','対象を選択','移動量 X・Y・Z','基準点で移動']:['Select Move','Select the entity','Movement X, Y, Z','Move using a reference point'])[index];
   const region=regions[index];
-  const artwork=index===0 ? <OperationMenuSvg topic="move"/> : index===2 ? <svg viewBox="0 0 180 78" role="img" aria-label={title}>
+  const artwork=index===0 ? <FoundationOperationCommandIcon command="move" title={title}/> : index===2 ? <svg viewBox="0 0 180 78" role="img" aria-label={title}>
     {['X','Y','Z'].map((axis,n)=><g key={axis} transform={`translate(0 ${n*26})`}>
       <rect x="1" y="1" width="178" height="24" fill="#eee" stroke="#999"/>
       <text x="5" y="18" fontFamily="Meiryo,sans-serif" fontSize="13" fill="#111">移動量{axis}</text>

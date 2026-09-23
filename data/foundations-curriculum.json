@@ -338,7 +338,7 @@
                 },
                 {
                   "title": "Find the Topic You Need",
-                  "text": "Use the **Contents (目次)** tab to browse topics, or the **Search (検索)** tab: enter a keyword, click **Start Search (検索開始)**, and select a page title."
+                  "text": "Use the **Contents** tab to browse topics, or the **Search** tab: enter a keyword, click **List Topics**, and select a topic to display."
                 },
                 {
                   "title": "Read the Instructions",
@@ -367,7 +367,7 @@
                 },
                 {
                   "title": "必要なトピックを探す",
-                  "text": "**目次**タブで項目を選ぶか、**検索**タブでキーワードを入力して**検索開始**をクリックし、表示されたページのタイトルを選びます。"
+                  "text": "**目次**タブでトピックを参照するか、**検索**タブを使用します。キーワードを入力し、**トピックの一覧表示**をクリックして、表示するトピックを選択します。"
                 },
                 {
                   "title": "説明を読む",
@@ -990,7 +990,7 @@
             "en": {
               "explanation": "The **User View toolbar** in iCAD SX provides four preset isometric (angled 3D) views.",
               "description2": "These views let you quickly look at the model from different angled perspectives without manually rotating the screen.",
-              "practice": "By the end of this lesson, you should be able to identify **User View 1 to User View 4** and use them to inspect a 3D model from different angles.",
+              "practice": "By the end of this lesson, you should be able to identify User View 1 to User View 4 and use them to inspect a 3D model from different angles.",
               "sections": [
                 {
                   "title": "User View Commands",
@@ -1278,7 +1278,7 @@
                 }
               ],
               "quickReview": "**Key Entry** → Placement coordinates\n**0, 0, 0** → Place at the current origin\n**Change 3D Part Layout** → Change the origin and axes",
-              "connection": "You will use 0 0 0 again when placing the practice Box in F9.2. First, F6 explains how to choose the target of a command."
+              "connection": "You will use 0 0 0 again when placing the practice Box in F9.1. First, F6 explains how to choose the target of a command."
             },
             "ja": {
               "explanation": "キー入力で形状の配置位置を指定します。",
@@ -1299,7 +1299,7 @@
                 }
               ],
               "quickReview": "**キー入力** → 配置座標\n**0, 0, 0** → 現在の原点に配置\n**パーツのレイアウトを変更する** → 原点と軸を変更",
-              "connection": "F9.2 のボックス配置でも 0 0 0 を使います。その前に F6 でコマンドの対象を選ぶ方法を学びます。"
+              "connection": "F9.1 のボックス配置でも 0 0 0 を使います。その前に F6 でコマンドの対象を選ぶ方法を学びます。"
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1830,7 +1830,7 @@
                 },
                 {
                   "title": "Practice: Start a Training Drawing",
-                  "text": "Create a new training drawing. Check its name in the drawing window or Tree View so you know which drawing is active.\n\nContinue to the **F8.2 Saving Your Work** lesson to save this drawing as **Training_Box_01** in your training folder.\n\nKeep the drawing empty for now. In the **F9.2 Creating a Box** lesson, you will use it to create a **20 × 30 × 10 mm Box**."
+                  "text": "Create a new training drawing. Check its name in the drawing window or Tree View so you know which drawing is active.\n\nContinue to the **F8.2 Saving Your Work** lesson to save this drawing as **Training_Box_01** in your training folder.\n\nKeep the drawing empty for now. In the **F9.1 Box** lesson, you will use it to create a **20 × 30 × 10 mm Box**."
                 }
               ],
               "quickReview": "**File → New**"
@@ -1845,7 +1845,7 @@
                 },
                 {
                   "title": "実践：練習用図面を作成する",
-                  "text": "練習用図面を新規作成します。図面ウィンドウまたはツリービューの名前で、作業中の図面を確認してください。\n\n次のレッスン **F8.2 作業内容の保存**に進み、この図面を練習用フォルダーに **Training_Box_01** として保存します。\n\n今は空の図面のままにします。**F9.2 ボックスの作成**のレッスンで、この図面に **20 × 30 × 10 mm のボックス**を作成します。"
+                  "text": "練習用図面を新規作成します。図面ウィンドウまたはツリービューの名前で、作業中の図面を確認してください。\n\n次のレッスン **F8.2 作業内容の保存**に進み、この図面を練習用フォルダーに **Training_Box_01** として保存します。\n\n今は空の図面のままにします。**F9.1 直方体**のレッスンで、この図面に **20 × 30 × 10 mm のボックス**を作成します。"
                 }
               ],
               "quickReview": "**ファイル → 新規作成**"
@@ -1954,7 +1954,7 @@
                 }
               ],
               "quickReview": "**Save Work → File → Close**",
-              "connection": "Continue to F9.1 Introduction to Basic 3D Modeling. When you reach F9.2 Creating a Box, reopen Training_Box_01 from your training folder using File → Open."
+              "connection": "Continue to Module F9 Creating Basic Shapes. In F9.1 Box, reopen Training_Box_01 from your training folder using File → Open."
             },
             "ja": {
               "explanation": "図面を閉じると、そのファイルでの作業を終えます。アプリケーションを閉じる iCAD SX の終了とは異なります。",
@@ -1974,7 +1974,7 @@
                 }
               ],
               "quickReview": "**作業を保存 → ファイル → 閉じる**",
-              "connection": "次は F9.1 基本的な 3D モデリングの紹介に進みます。F9.2 直方体の作成に進んだら、「ファイル → 開く」で練習用フォルダーの Training_Box_01 を開き直します。"
+              "connection": "次はモジュール F9 基本形状の作成に進みます。F9.1 直方体では、「ファイル → 開く」で練習用フォルダーの Training_Box_01 を開き直します。"
             }
           },
           "contentReview": "instructor-review-required",
@@ -2127,6 +2127,10 @@
           "id": "F10.6",
           "moduleId": "F10",
           "sourceProfessionalLessonId": "P8.6",
+          "textReplacements": {
+            "Left-click the object to duplicate, then right-click (GO) to confirm.": "Left-click the element you want to mirror copy, then right-click (GO) to confirm.",
+            "複製したい対象を左クリックし、右クリック（GO）で確定します。": "ミラー複写したい要素を左クリックし、右クリック（GO）で確定します。"
+          },
           "completionId": "foundations-v3:F10.6",
           "routeAliases": [
             "P8.6"

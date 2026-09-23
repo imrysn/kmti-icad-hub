@@ -1,3 +1,5 @@
+import { useFoundationVisuals } from './FoundationVisualContext';
+import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import StretchArtwork from './StretchArtwork';
 import scaleScreen from '../../assets/icad-foundations/stretch/stretch-scale-interface.png';
 import scaleResult from '../../assets/icad-foundations/stretch/stretch-scale-result.png';
@@ -9,10 +11,11 @@ import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationStretchSteps.css';
 
 function StepIcon({method,index,japanese,title}: {method:1|2;index:number;japanese:boolean;title:string}) {
+  const singleCommand=useFoundationVisuals();
   const linear=method===2;
   const screen=index===0?stretchInterface:index===3?(linear?scaleResult:resultScreen):(linear?scaleScreen:entryScreen);
   const bounds:[number,number,number,number]=index===0?[1753,369,25,27]:index===2?(linear?[970,639,76,23]:[136,1027,308,26]):index===3?[790,305,620,560]:linear?[378,180,1360,835]:[805,305,435,450];
-  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:<StretchArtwork step={index} linear={linear} title={title}/>,screen,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/>;
+  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:singleCommand && index===0 ? <FoundationCreationCommandIcon command="stretch" title={title}/> : <StretchArtwork step={index} linear={linear} title={title}/>,screen,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/>;
 }
 
 export default function FoundationStretchSteps({text,method,japanese}: {text:string;method:1|2;japanese:boolean}) {

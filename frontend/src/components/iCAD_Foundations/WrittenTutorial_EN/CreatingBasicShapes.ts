@@ -19,7 +19,7 @@ export const CYLINDER_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "cyl-step-1",
     "title": "Select Front View",
-    "text": "Select <b>Front View</b> from the <b>3D View toolbar</b>.",
+    "text": "When creating a 3D model, always start with Front View.",
     "preserveText": true
   },
   {
@@ -73,7 +73,7 @@ export const BOX_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "box-step-1",
     "title": "Select Front View",
-    "text": "Select <b>Front View</b> from the <b>3D View toolbar</b>.",
+    "text": "When creating a 3D model, always start with Front View.",
     "preserveText": true
   },
   {
@@ -126,7 +126,7 @@ export const POLYGON_WRITTEN_TUTORIAL_STEPS: WrittenTutorialStep[] = [
   {
     "id": "polygon-step-1",
     "title": "Select Front View",
-    "text": "Select <b>Front View</b> from the <b>3D View toolbar</b>.",
+    "text": "When creating a 3D model, always start with Front View.",
     "preserveText": true
   },
   {

@@ -1,3 +1,5 @@
+import { FoundationVisualContext } from './FoundationVisualContext';
+import './FoundationCommandIcons.css';
 import FoundationDraftingElementsTable from './FoundationDraftingElementsTable';
 import FoundationShowHideSteps from './FoundationShowHideSteps';
 import FoundationShowHideCommands from './FoundationShowHideCommands';
@@ -116,7 +118,7 @@ export default function FoundationReadingLesson({ lesson: canonicalLesson, onCom
     finally { setSaving(false); }
   };
 
-  return <div ref={containerRef} className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson${['F9', 'P7', 'P8', 'P9', 'P10'].includes(lesson.moduleId) ? ' foundations-modeling-lesson' : ''}`}>
+  return <FoundationVisualContext.Provider value={Boolean(canonicalLesson.sourceProfessionalLessonId)}><div ref={containerRef} className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson${['F9', 'P7', 'P8', 'P9', 'P10'].includes(lesson.moduleId) ? ' foundations-modeling-lesson' : ''}`}>
     <>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />
@@ -175,7 +177,7 @@ export default function FoundationReadingLesson({ lesson: canonicalLesson, onCom
         if (questionIndex === questions.length - 1) void finish();
         else { setQuestionIndex(questionIndex + 1); setChoice(''); setChecked(false); narrateQuestion(questionIndex + 1); }
       }} />{error && <div role="alert" className="foundations-knowledge-check__error">{error}</div>}</div></FoundationQuizModal>}
-  </div>;
+  </div></FoundationVisualContext.Provider>;
 }
 
 

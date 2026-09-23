@@ -50,6 +50,67 @@
 .foundation-modeling-process--box .foundation-interface-icon-button { height: 100%; padding: 0; display: flex; align-items: center; justify-content: center; }
 .foundations-consistent-lesson .foundation-modeling-process--box .foundations-use-card__icon-frame svg { display: block; width: 100%; max-width: 160px; height: 40px; max-height: 40px; object-fit: contain; }
 
+/* Step 1 Front View icon & Step 2 Shape icon enlarged sizing */
+.foundations-consistent-lesson .foundation-modeling-process--box .foundations-use-card__icon-frame svg.foundation-view-cube,
+.foundations-consistent-lesson .foundation-modeling-process--box .foundations-use-card__icon-frame svg.foundation-shape-icon,
+.foundations-consistent-lesson .foundations-use-card__icon-frame svg.foundation-operation-command-icon {
+  display: block;
+  width: 76px;
+  max-width: 76px;
+  height: 76px;
+  max-height: 76px;
+  object-fit: contain;
+}
+
+.foundation-move-preview--0 .foundation-interface-icon-button,
+.foundation-operation-preview--0 .foundation-interface-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.foundation-move-preview--0 .foundation-interface-icon-button:hover svg,
+.foundation-operation-preview--0 .foundation-interface-icon-button:hover svg {
+  transform: scale(1.08);
+}
+
+.foundation-move-preview--0 .foundation-interface-icon-button:focus-visible,
+.foundation-operation-preview--0 .foundation-interface-icon-button:focus-visible {
+  outline: 2px solid #147bd1;
+  outline-offset: 2px;
+}
+
+/* Step 1 Front View icon & Step 2 Shape icon in normal lesson view */
+.foundation-modeling-process--box .foundation-file-menu-icon--front-view .foundation-interface-icon-button,
+.foundation-modeling-process--box .foundation-modeling-input-icon--shape .foundation-interface-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.foundation-modeling-process--box .foundation-file-menu-icon--front-view .foundation-interface-icon-button:hover svg,
+.foundation-modeling-process--box .foundation-modeling-input-icon--shape .foundation-interface-icon-button:hover svg {
+  transform: scale(1.08);
+}
+
+.foundation-modeling-process--box .foundation-file-menu-icon--front-view .foundation-interface-icon-button:focus-visible,
+.foundation-modeling-process--box .foundation-modeling-input-icon--shape .foundation-interface-icon-button:focus-visible {
+  outline: 2px solid #147bd1;
+  outline-offset: 2px;
+}
+
 /* Wrap the sequence within the available lesson width while retaining one desktop row. */
 @container (max-width: 900px) { .foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @container (max-width: 600px) { .foundation-modeling-process--box .foundations-uses__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -64,7 +125,8 @@
 .foundation-modeling-process .foundation-operation-preview .foundation-interface-icon-button { height: 100%; padding: 0; }
 .foundation-modeling-process .foundation-operation-preview svg { display: block; flex-shrink: 0; }
 .foundations-consistent-lesson .foundation-modeling-process .foundation-operation-preview svg.foundation-operation-thumbnail { width: 180px; max-width: 100%; height: 96px; }
-.foundations-consistent-lesson .foundation-modeling-process .foundations-use-card__icon-frame svg.foundation-operation-menu { width: 87px; max-width: 100%; height: 120px; max-height: 120px; }
+.foundations-consistent-lesson .foundation-modeling-process .foundations-use-card__icon-frame svg.foundation-operation-menu:not(.foundation-operation-command-icon) { width: 87px; max-width: 100%; height: 120px; max-height: 120px; }
+.foundations-consistent-lesson .foundation-modeling-process .foundations-use-card__icon-frame svg.foundation-operation-command-icon { width: 76px; max-width: 76px; height: 76px; max-height: 76px; object-fit: contain; }
 .foundations-consistent-lesson .foundation-move-preview--2 svg { height: 78px; }
 .foundation-modeling-field-values { margin: 12px 0 0; text-align: left; }
 .foundation-modeling-field-values > div { display: grid; grid-template-columns: minmax(0,1fr) max-content; align-items: center; gap: 8px; padding-block: 6px; }
