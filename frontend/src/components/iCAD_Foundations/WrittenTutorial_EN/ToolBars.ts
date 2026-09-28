@@ -6,8 +6,6 @@ export const TOOLBARS_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   procedureTitle: 'ivl-objective',
   objective: 'By the end of this lesson, you will be able to identify the main iCAD SX tool bars and understand their basic functions.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Locate Toolbar</b> → <b>Hover for Tooltip</b> → <b>Click Command</b>',
   completionText: 'Great job! You have completed the iCAD SX Tool Bars lesson.',
   inlineHeader: true,
   renderAsObjective: true,

@@ -4,9 +4,6 @@ export const FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = 
   title: '画面操作、視図、要素選択、2D、3D、ファイル管理などの基礎スキルを総合的に適用します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>画面操作</b> → <b>標準視図</b> → <b>要素選択</b> → <b>2Dスケッチ＆3D押し出し</b> → <b>ファイル保存</b>',
   completionText: 'お疲れ様でした！「最終総合演習」を完了しました。',
 };
 

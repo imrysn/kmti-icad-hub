@@ -83,9 +83,9 @@ export default function FoundationModelingProcess({
     : extrude
     ? [Layers, MousePointer2, Ruler, CheckCircle]
     : revolve
-    ? [RotateCw, MousePointer2, MapPin, CheckCircle]
+    ? [RotateCw, MousePointer2, MapPin, Ruler, CheckCircle]
     : [polygon ? Hexagon : cylinder ? Cylinder : Box, Ruler, MapPin, CheckCircle];
-  return <div className={`foundations-uses foundation-modeling-process${sketch ? ' foundation-modeling-process--sketch' : ''}${extrude ? ' foundation-modeling-process--extrude' : ''}${shapeFlow ? ' foundation-modeling-process--box' : ''}`}>
+  return <div className={`foundations-uses foundation-modeling-process${sketch ? ' foundation-modeling-process--sketch' : ''}${extrude ? ' foundation-modeling-process--extrude' : ''}${revolve ? ' foundation-modeling-process--revolve' : ''}${shapeFlow ? ' foundation-modeling-process--box' : ''}`}>
     {intro && <p>{renderFormattedText(intro)}</p>}
     <ol className="foundations-uses__grid">
       {steps.map((step, index) => {

@@ -290,7 +290,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 1: From the Icon Menu, select Move.',
           'Step 2: Left-click the object you want to move.',
           'Step 3: In the Item Entry, enter the movement distance for X-axis, Y-axis, Z-axis, then press Enter to move the object.',
-          'Quick Review: Select Move → Select Object → Enter Movement Distance → Confirm'
         ]
       },
       {
@@ -309,7 +308,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 3: Select 2 points to define the axis where the object will rotate.',
           'Step 4: In the Item Entry, enter the desired rotation angle (Example: 90°) and press Enter to complete the rotation.',
           'When to Use Rotate: Change the orientation of a part, position a component correctly, or turn an object to a specific angle.',
-          'Quick Review: Select Rotate → Select Object → Set Axis → Enter Angle → Confirm'
         ]
       },
       {
@@ -328,7 +326,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 3: Select 3 points to define the plane where the object will be mirrored (or left-click a face to use that face as the mirror plane).',
           'Step 4: Confirm the selection to create the mirrored result.',
           'When to Use Mirror: Create symmetrical parts, repeat features on the opposite side, or save time instead of creating the same feature again.',
-          'Quick Review: Select Mirror → Select Object → Select Mirror Plane → Confirm'
         ]
       },
       {
@@ -346,7 +343,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 2: Left-click the object you want to copy.',
           'Step 3: In the Item Entry, enter the movement distance for X-axis, Y-axis, Z-axis, then enter the number of copies and press Enter to complete the command.',
           'When to Use Copy: Create repeated parts, duplicate the same object, or place several identical objects at a fixed distance.',
-          'Quick Review: Select Copy → Select Object → Enter X, Y, Z Distance → Enter Number of Copies → Confirm'
         ]
       },
       {
@@ -365,7 +361,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 3: Select 2 points to define the axis of rotation.',
           'Step 4: In the Item Entry, enter the desired angle (Example: 90°) and press Enter to create the rotated copy.',
           'When to Use Rotate Copy: Create repeated parts around an axis, make a duplicate at a different angle, or keep the original object while creating another rotated version.',
-          'Quick Review: Select Rotate Copy → Select Object → Set Axis → Enter Angle → Confirm'
         ]
       },
       {
@@ -384,7 +379,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 3: Select 3 points to define the mirror plane (or select a face to use as the mirror plane).',
           'Step 4: Confirm the selection to create the mirrored copy.',
           'When to Use Mirror Copy: Create symmetrical parts, duplicate a feature on the opposite side, or keep the original object while creating its mirrored version.',
-          'Quick Review: Select Mirror Copy → Select Object → Set Mirror Plane → Confirm'
         ]
       },
       {
@@ -402,7 +396,6 @@ export const PRESERVED_FOUNDATIONS_LESSONS: Lesson[] = [
           'Step 2: Left-click the object you want to remove.',
           'Step 3: The object is deleted immediately; check what remains and press Ctrl+Z to undo a mistake.',
           'When to Use Delete: Remove an incorrect object, remove an unwanted part or feature, or clean up the model.',
-          'Quick Review: Select Delete → Left-Click Object → Check Result'
         ]
       }
     ]

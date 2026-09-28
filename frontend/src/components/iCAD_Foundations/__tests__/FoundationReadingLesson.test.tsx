@@ -39,12 +39,12 @@ describe('Foundations written completion and knowledge check', () => {
     }
   });
 
-  it.each(['en', 'ja'] as const)('shows the F16 review as a ten-topic checklist in %s', language => {
+  it.each(['en', 'ja'] as const)('preserves the ten F17 review topics without a Quick Review section in %s', language => {
     state.language = language;
-    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F16.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
-    const list = container.querySelector('.quick-review-checklist')!;
-    expect(list.querySelectorAll('li')).toHaveLength(10);
-    expect(list.textContent).not.toContain('→');
+    const { container } = render(<FoundationReadingLesson lesson={resolveFoundationLesson('F17.1')!} onComplete={vi.fn()} onNext={vi.fn()} isLast={false} />);
+    expect(resolveFoundationLesson('F17.1')!.content[language].sections).toHaveLength(10);
+    expect(container.querySelector('.written-tutorial-panel__quick-review')).toBeNull();
+    expect(container.textContent).toContain(resolveFoundationLesson('F17.1')!.content[language].sections![0].title);
   });
 
   it('uses two SVG file controls and locates each on the new-menu screenshot', () => {
@@ -120,7 +120,7 @@ describe('Foundations written completion and knowledge check', () => {
     expect(document.body.style.overflow).not.toBe('hidden');
   });
 
-  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F16.2'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
+  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F17.2'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
     const complete = vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue(undefined);
     const next = vi.fn();
     render(<FoundationReadingLesson lesson={resolveFoundationLesson(id)!} onComplete={complete} onNext={next} isLast={false} />);
@@ -164,7 +164,7 @@ describe('Foundations written completion and knowledge check', () => {
 
   it('blocks continuation on wrong answers and narrates every question, feedback before saving', async () => {
     const complete=vi.fn().mockResolvedValue(undefined); const next=vi.fn();
-    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F16.2')!} onComplete={complete} onNext={next} isLast />);
+    render(<FoundationReadingLesson lesson={resolveFoundationLesson('F17.2')!} onComplete={complete} onNext={next} isLast />);
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
     const questions=foundationKnowledgeQuestions('en');
     expect(screen.getByText('Question 1 of 12')).toBeVisible();

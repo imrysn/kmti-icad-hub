@@ -35,8 +35,7 @@
                   "title": "Main Design Environments",
                   "text": "iCAD SX supports two main types of work:\n- **3D Modeling** — Create individual mechanical parts and combine them into assemblies (Parts that fit together).\n- **2D Detailing** — Create engineering drawings that communicate a part’s shape, dimensions, and manufacturing information."
                 }
-              ],
-              "quickReview": "**iCAD SX** → Mechanical CAD Software\n**3D** → Models and Assemblies\n**2D** → Engineering Drawings"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX は、**Fujitsu** ブランドで提供される、機械装置の設計に特化した日本の **CAD（コンピューター支援設計）ソフトウェア**です。",
@@ -47,8 +46,7 @@
                   "title": "主な設計環境",
                   "text": "iCAD SX は、主に次の二つの作業に対応しています。\n- **3D モデリング** — 個々の機械部品を作成し、組み合わせてアセンブリ（互いに組み合わさる部品の集まり）を作成します。\n- **2D 図面** — 部品の形状、寸法、製造情報を伝える設計図面を作成します。"
                 }
-              ],
-              "quickReview": "**iCAD SX** → 機械設計用 CAD ソフトウェア\n**3D** → モデルとアセンブリ\n**2D** → 設計図面"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -80,8 +78,7 @@
                   "title": "Why It Is Useful",
                   "text": "Using iCAD SX helps engineers organize design work in one system.\n\nA model can be created in 3D, checked, and then used to prepare the required 2D engineering drawing.\n\nThese are capabilities you can use as needed, rather than a fixed sequence of steps."
                 }
-              ],
-              "quickReview": "**Creating 3D Parts**\n**Creating Assemblies**\n**Editing Designs**\n**Checking Models**\n**Creating 2D Drawings**\n**Preparing Manufacturing Information**"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX は、機械設計の作成、編集、管理に使用されます。",
@@ -96,8 +93,7 @@
                   "title": "役立つ理由",
                   "text": "iCAD SX を使うと、一つのシステムで設計作業をまとめて管理できます。\n\n3D でモデルを作成・確認し、そのモデルを使って必要な 2D 設計図面を準備できます。\n\nこれらは決まった順序の手順ではなく、必要に応じて使う機能です。"
                 }
-              ],
-              "quickReview": "**3D 部品の作成**\n**アセンブリの作成**\n**設計の編集**\n**モデルの確認**\n**2D 図面の作成**\n**製造情報の準備**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -141,8 +137,7 @@
                   "title": "Review and Save",
                   "text": "Check the completed drawing and save the final file."
                 }
-              ],
-              "quickReview": "**3D Model → Check → Create 2D Drawing → Add Information → Review and Save**"
+              ]
             },
             "ja": {
               "explanation": "一般的な iCAD SX の作業は、**3D モデル**から始まり、**2D 設計図面**の作成へと進みます。",
@@ -169,8 +164,7 @@
                   "title": "確認して保存する",
                   "text": "完成した図面を確認し、最終ファイルを保存します。"
                 }
-              ],
-              "quickReview": "**3D モデル → 確認 → 2D 図面の作成 → 情報の追加 → 確認と保存**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -209,8 +203,7 @@
                   "title": "Confirm the Workspace",
                   "text": "Check that the iCAD SX main screen is displayed and ready for use."
                 }
-              ],
-              "quickReview": "**Locate iCAD SX → Open the Application → Wait for Loading → Confirm the Workspace**"
+              ]
             },
             "ja": {
               "explanation": "このレッスンでは、iCAD SX を起動して使用できる状態にする方法を説明します。",
@@ -232,8 +225,7 @@
                   "title": "作業画面を確認する",
                   "text": "iCAD SX のメイン画面が表示され、使用できる状態であることを確認します。"
                 }
-              ],
-              "quickReview": "**iCAD SX を探す → アプリケーションを開く → 読み込みを待つ → 作業画面を確認する**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -276,8 +268,7 @@
                   "title": "Important Reminder",
                   "text": "Always check for unsaved work before exiting the application."
                 }
-              ],
-              "quickReview": "**Check Work → Close iCAD SX → Save if Asked → Confirm It Closed**"
+              ]
             },
             "ja": {
               "explanation": "このレッスンでは、作業を終えた後に iCAD SX を安全に終了する方法を説明します。",
@@ -303,8 +294,7 @@
                   "title": "重要な注意点",
                   "text": "終了する前に、未保存の作業がないか必ず確認してください。"
                 }
-              ],
-              "quickReview": "**作業の確認 → iCAD SX を閉じる → 確認されたら保存 → 終了を確認**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -349,7 +339,6 @@
                   "text": "Use iCAD SX Help when you:\n- Forget how a command works.\n- Need information about a tool.\n- Want to check an operation procedure.\n- Need more details about an iCAD SX function.\n\n**Tip:** Press **F1** while a command is selected to open the help page for that command."
                 }
               ],
-              "quickReview": "**Open Help → Find a Topic → Read the Instructions → Continue Your Work**",
               "connection": "Next, F2 introduces the screen areas where you will find commands, enter values, and read guidance."
             },
             "ja": {
@@ -378,7 +367,6 @@
                   "text": "次のような場合に iCAD SX のヘルプを使います。\n- コマンドの使い方を忘れたとき。\n- ツールについての情報が必要なとき。\n- 操作手順を確認したいとき。\n- iCAD SX の機能について詳しく知りたいとき。\n\n**ヒント：** コマンドを選択中に **F1** キーを押すと、そのコマンドのヘルプページが表示されます。"
                 }
               ],
-              "quickReview": "**ヘルプを開く → トピックを探す → 説明を読む → 作業を続ける**",
               "connection": "次の F2 では、コマンド、数値入力、操作案内がある画面の領域を確認します。"
             }
           },
@@ -460,8 +448,7 @@
                   "title": "Why the Screen Layout is Important",
                   "text": "Knowing the location of each area helps you:\n- Find commands more easily.\n- Understand where to enter information.\n- Follow instructions shown by iCAD SX.\n- Navigate the workspace with more confidence."
                 }
-              ],
-              "quickReview": "- Title Bar\n- Menu Bar\n- Command Menu\n- Tree View\n- Workspace\n- Icon Menu\n- Item Entry\n- Key Entry\n- Tool Bar\n- Message Pane"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX の画面は、コマンドの選択、モデルの操作、値の入力、システム情報の確認に役立つ複数の領域に分かれています。",
@@ -512,8 +499,7 @@
                   "title": "画面構成が重要な理由",
                   "text": "各領域の位置を知ると、次のことに役立ちます。\n- コマンドを見つけやすくなります。\n- 情報の入力場所が分かります。\n- iCAD SX に表示される指示に従えます。\n- より自信を持って作業画面を操作できます。"
                 }
-              ],
-              "quickReview": "- タイトルバー\n- メニューバー\n- コマンドメニュー\n- ツリービュー\n- 作業領域\n- アイコンメニュー\n- 項目入力\n- キー入力\n- ツールバー\n- メッセージ領域"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -598,7 +584,6 @@
                   "text": "You do not need to memorize every toolbar icon yet.\n\nFor now, focus on recognizing **which toolbar contains the type of command you need**. Each important operation will be explained in later lessons."
                 }
               ],
-              "quickReview": "**Choose the toolbar for your task**\n**Select the required tool**\n**Check the result**",
               "connection": "Next, use the mouse controls in F3 to inspect the model in the workspace you have just identified."
             },
             "ja": {
@@ -663,7 +648,6 @@
                   "text": "今はすべてのツールバーアイコンを暗記する必要はありません。\n\nまずは、**必要な種類のコマンドがどのツールバーにあるか**を理解しましょう。重要な操作は、後のレッスンで説明します。"
                 }
               ],
-              "quickReview": "**作業に合ったツールバーを選ぶ**\n**必要なツールを選ぶ**\n**結果を確認**",
               "connection": "次の F3 では、今確認した作業領域でマウスを使ってモデルの表示を操作します。"
             }
           },
@@ -718,8 +702,7 @@
                   "title": "Important Reminder",
                   "text": "The function of a mouse button may change depending on the active iCAD SX command.\n\nAlways check the instructions shown on the screen while performing an operation."
                 }
-              ],
-              "quickReview": "**Move Pointer → Left-Click to Select → Right-Click (GO) to Confirm**"
+              ]
             },
             "ja": {
               "explanation": "マウスは iCAD SX の操作に使用する主な道具の一つです。",
@@ -746,8 +729,7 @@
                   "title": "重要な注意点",
                   "text": "マウスボタンの役割は、実行中の iCAD SX コマンドによって変わる場合があります。\n\n操作中は、画面に表示される指示を必ず確認してください。"
                 }
-              ],
-              "quickReview": "**ポインターを移動 → 左クリックで選択 → 右クリック（GO）で確定**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -794,8 +776,7 @@
                   "title": "Important Reminder",
                   "text": "Panning only changes what you see on the screen.\n\nIt does **not** move or modify the actual model."
                 }
-              ],
-              "quickReview": "**Hold Scroll Wheel → Move Mouse → Release**"
+              ]
             },
             "ja": {
               "explanation": "パンは、モデルの実際の位置やサイズを変えずに、画面の表示位置を移動する操作です。",
@@ -821,8 +802,7 @@
                   "title": "重要な注意点",
                   "text": "パンは画面上の見え方だけを変更します。\n\n実際のモデルを移動したり変更したりすることは**ありません**。"
                 }
-              ],
-              "quickReview": "**ホイールを押したままにする → マウスを動かす → 放す**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -863,7 +843,6 @@
                   "text": "Rotating the 3D view only changes your viewing direction.\n\nIt does **not** rotate or modify the actual model geometry."
                 }
               ],
-              "quickReview": "**Scroll Wheel + Right-Click → Move Mouse → Rotate View**\n\nor\n\n**Alt + Left-Click → Move Mouse → Rotate View**",
               "connection": "Mouse navigation lets you adjust the view freely. In F4, you will choose standard viewing directions to inspect the same model consistently."
             },
             "ja": {
@@ -883,7 +862,6 @@
                   "text": "3D ビューの回転は、見る方向だけを変えます。\n\n実際のモデル形状を回転したり変更したりすることは**ありません**。"
                 }
               ],
-              "quickReview": "**ホイール + 右クリック → マウスを動かす → ビューを回転**\n\nまたは\n\n**Alt + 左クリック → マウスを動かす → ビューを回転**",
               "connection": "マウス操作では表示を自由に調整できます。F4 では標準の表示方向を選び、同じモデルを決まった方向から確認します。"
             }
           },
@@ -938,8 +916,7 @@
                   "title": "Important Reminder",
                   "text": "3D View Tools only change **how the model is displayed**. They do not change the model's actual geometry or position."
                 }
-              ],
-              "quickReview": "- Top\n- Front\n- Right\n- Left\n- Back\n- Bottom"
+              ]
             },
             "ja": {
               "explanation": "**3D View ツールバー**を使うと、モデルをさまざまな方向から見ることができます。",
@@ -958,8 +935,7 @@
                   "title": "重要な注意点",
                   "text": "3D View コマンドで変わるのは**モデルの表示方法**だけです。モデルの実際の形状や位置は変わりません。"
                 }
-              ],
-              "quickReview": "- 上\n- 正面\n- 右\n- 左\n- 背面\n- 下"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1012,8 +988,7 @@
                   "title": "Important Reminder",
                   "text": "User Views only change **how the model is displayed**. They do not change the model's actual geometry or position."
                 }
-              ],
-              "quickReview": "**User View Toolbar → Select View 1, 2, 3, or 4 → Inspect the Model**"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX の **User View ツールバー**には、四つのプリセットのアイソメトリック（斜め方向の立体）ビューがあります。",
@@ -1040,8 +1015,7 @@
                   "title": "重要な注意点",
                   "text": "User View で変わるのは**モデルの表示方法**だけです。モデルの実際の形状や位置は変わりません。"
                 }
-              ],
-              "quickReview": "**User View ツールバー → ビュー1、2、3、4を選択 → モデルを確認**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1085,7 +1059,6 @@
                   "text": "Shading only changes **how the model looks on the screen**. It does not change the actual shape or geometry of the model."
                 }
               ],
-              "quickReview": "**Hidden Lines Removed** → Visible edges only\n**No Edges** → Solid surfaces\n**With Edges** → Surfaces and edges\n**Transparent** → See through surfaces\n**Wire** → All edges",
               "connection": "Changing the view or shading does not move the model. Next, F5 introduces coordinates, which describe positions in the model."
             },
             "ja": {
@@ -1110,7 +1083,6 @@
                   "text": "シェーディングで変わるのは**画面上でのモデルの見え方**だけです。実際の形状やジオメトリは変わりません。"
                 }
               ],
-              "quickReview": "**隠線** → 見えている線だけを表示\n**縁なし** → 面を表示\n**縁あり** → 面と稜線を表示\n**透過** → 面の奥を確認\n**WIRE** → すべての線を表示",
               "connection": "ビューやシェーディングを変えてもモデルの位置は変わりません。次の F5 ではモデル内の位置を表す座標を学びます。"
             }
           },
@@ -1155,8 +1127,7 @@
                   "title": "Entering a Value",
                   "text": "Follow the command’s input prompt.\n\n**Select the Input Field → Type the Value → Press Enter**\n\nUse **Key Entry** to type coordinates for a shape’s placement point."
                 }
-              ],
-              "quickReview": "**Enter** → Confirm an input\n**Esc** → Cancel an operation\n**Key Entry** → Enter placement coordinates"
+              ]
             },
             "ja": {
               "explanation": "キーボードで数値を入力し、コマンドを操作します。",
@@ -1171,8 +1142,7 @@
                   "title": "値を入力する",
                   "text": "コマンドの入力要求に従います。\n\n**入力欄を選択 → 値を入力 → Enter で確定**\n\n形状の配置点の座標は **キー入力** に入力します。"
                 }
-              ],
-              "quickReview": "**Enter** → 入力を確定\n**Esc** → 操作をキャンセル\n**キー入力** → 配置点の座標を入力"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1216,8 +1186,7 @@
                   "title": "The Origin and Shape Placement",
                   "text": "**Placed with the mouse:** In this example, the shape was placed without entering coordinates **(0 0 0) in Key Entry**, so it is away from the origin.\n\n**Placed using coordinates:** Entering coordinates **(0 0 0) in Key Entry** and pressing **Enter** places the shape’s corner at the origin.\n\nThe corner is the placement point in this example. Other shapes may use a different placement point."
                 }
-              ],
-              "quickReview": "**X → Red**\n**Y → Blue**\n**Z → Yellow**\n**Origin → 0, 0, 0**"
+              ]
             },
             "ja": {
               "explanation": "X、Y、Z 座標は 3D 空間の位置を表します。",
@@ -1236,8 +1205,7 @@
                   "title": "原点と形状の配置",
                   "text": "**マウスで配置：** この例では、**キー入力に 0 0 0** を入力せずに形状を配置したため、原点から離れています。\n\n**0 0 0 を使って配置：** **キー入力に 0 0 0** を入力して **Enter** を押すと、形状の角が原点に一致します。\n\nこの例では角が配置点です。他の形状では配置点が異なる場合があります。"
                 }
-              ],
-              "quickReview": "**X → 赤**\n**Y → 青**\n**Z → 黄**\n**原点 → 0, 0, 0**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1277,7 +1245,6 @@
                   "text": "The axis directions determine the standard view orientation. After changing them, check that the views face the intended directions."
                 }
               ],
-              "quickReview": "**Key Entry** → Placement coordinates\n**0, 0, 0** → Place at the current origin\n**Change 3D Part Layout** → Change the origin and axes",
               "connection": "You will use 0 0 0 again when placing the practice Box in F9.1. First, F6 explains how to choose the target of a command."
             },
             "ja": {
@@ -1298,7 +1265,6 @@
                   "text": "軸の方向によって標準ビューの向きが決まります。変更後は、意図した向きになっているか確認します。"
                 }
               ],
-              "quickReview": "**キー入力** → 配置座標\n**0, 0, 0** → 現在の原点に配置\n**パーツのレイアウトを変更する** → 原点と軸を変更",
               "connection": "F9.1 のボックス配置でも 0 0 0 を使います。その前に F6 でコマンドの対象を選ぶ方法を学びます。"
             }
           },
@@ -1353,8 +1319,7 @@
                   "title": "Important Reminder",
                   "text": "Always confirm that you selected the intended geometry before continuing with a command."
                 }
-              ],
-              "quickReview": "**Choose Command → Left-Click Target → Check Highlight → Right-Click to Confirm**"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX の**要素**とは、モデルや図面で選択できる項目です。",
@@ -1381,8 +1346,7 @@
                   "title": "重要な注意点",
                   "text": "コマンドを続行する前に、意図した形状を選択したことを必ず確認します。"
                 }
-              ],
-              "quickReview": "**コマンドを選ぶ → 左クリックで選択 → 強調表示を確認 → 右クリックで確定**"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1427,8 +1391,7 @@
                   "title": "Important Reminder",
                   "text": "Before confirming, check that the highlighted area matches what you intend to change."
                 }
-              ],
-              "quickReview": "**Part** → Select the whole model unit\n**Solid Component** → Select individual solid geometry"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX では、作業対象に応じて**部品**または**立体要素**を選択できます。",
@@ -1455,8 +1418,7 @@
                   "title": "重要な注意点",
                   "text": "確定前に、強調表示の範囲が意図した対象と一致していることを確認します。"
                 }
-              ],
-              "quickReview": "**部品** → モデルの単位全体を選択\n**立体要素** → 個々の立体形状を選択"
+              ]
             }
           },
           "contentReview": "user-supplied-english; japanese-instructor-review-required",
@@ -1502,7 +1464,6 @@
                   "text": "In a practice model, choose the selection type for one solid inside a Part. Select it and inspect the highlight. Then compare the highlighted area when selecting the Part."
                 }
               ],
-              "quickReview": "**Choose Selection Type → Select the Required Object**",
               "connection": "You can now distinguish selection targets. F7 explains how Parts and their geometry are organized within a drawing."
             },
             "ja": {
@@ -1531,7 +1492,6 @@
                   "text": "練習用モデルで、部品内の一つの立体を選ぶ設定にします。対象を選択し、強調表示の範囲を確認します。次に部品を選ぶ設定で比較します。"
                 }
               ],
-              "quickReview": "**選択の種類を選ぶ → 必要な対象を選択**",
               "connection": "選択対象の違いを確認しました。F7 ではパーツとその形状が図面内でどのように整理されるかを学びます。"
             }
           },
@@ -1585,8 +1545,7 @@
                   "title": "Real Example: A Single-Part Drawing",
                   "text": "This single-Part drawing shows all three levels:\n- **Drawing File:** Training_Plate_01\n- **Part:** plate\n- **Model Shape:** the plate visible in the working area\n\n**Try It:** Using the screenshot, find the drawing file and the Part in the Tree View, then locate the model shape in the working area."
                 }
-              ],
-              "quickReview": "**Drawing File → Parts → Model Geometry**"
+              ]
             },
             "ja": {
               "explanation": "iCAD SX の図面は階層で整理されています。\n\nこの構造を理解すると、モデル情報がどこに保存され、図面がどのように構成されているかが分かります。",
@@ -1612,8 +1571,7 @@
                   "title": "実例：一つの部品を含む図面",
                   "text": "この図面では、三つの階層を確認できます。\n- **図面ファイル：** Training_Plate_01\n- **部品：** plate\n- **モデル形状：** 作業領域に表示された板\n\n**確認してみましょう：** 画像のツリービューで図面ファイルと部品を探し、作業領域でモデル形状を確認してください。"
                 }
-              ],
-              "quickReview": "**図面ファイル → 部品 → モデル形状**"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -1649,8 +1607,7 @@
                   "title": "Real Example: The plate Part",
                   "text": "The Part named **plate** contains the plate shape shown in the working area.\n\n**Try It:** Find a face, an edge, and a hole on the plate. These are features of the shape belonging to the same Part."
                 }
-              ],
-              "quickReview": "**Part** → Organizes a component’s shape\n**Multiple Parts** → Keep different components organized"
+              ]
             },
             "ja": {
               "explanation": "部品は、iCAD SX 図面内のモデル形状を整理します。設計によって、一つの図面に一つまたは複数の部品が含まれます。",
@@ -1668,8 +1625,7 @@
                   "title": "実例：plate 部品",
                   "text": "**plate** という名前の部品には、作業領域に表示された板の形状が含まれます。\n\n**確認してみましょう：** 板の面、エッジ、穴を一つずつ探してください。これらは同じ部品に属する形状の特徴です。"
                 }
-              ],
-              "quickReview": "**部品** → 構成部品の形状を整理する\n**複数の部品** → 異なる構成部品を整理する"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -1709,8 +1665,7 @@
                   "title": "Real Example: An Assembly in the Tree View",
                   "text": "In the Tree View, an assembly looks like this:\n- **Drawing file:** CR19061U01_RCGR4\n- **Top Part:** CR19061U01\n- **Child parts:** CR19299N01 (End plate), CR19403N01 (Liner), and standard parts such as bolts and washers\n\nA **+** beside a Part means it contains child parts. Click **+** to expand it, and point to a Part to see its name. Parts marked read-only cannot be edited in this drawing.\n\n**Try It:** Open a sample assembly drawing, expand one Part, and point to a child part to read its name."
                 }
-              ],
-              "quickReview": "**Part** → One component\n**Assembly** → Parts combined into one design"
+              ]
             },
             "ja": {
               "explanation": "**アセンブリ**は、複数の部品を組み合わせて、機械ユニットなどの一つの設計にしたものです。",
@@ -1732,8 +1687,7 @@
                   "title": "実例：ツリービューのアセンブリ",
                   "text": "ツリービューでは、アセンブリは次のように表示されます。\n- **図面ファイル：** CR19061U01_RCGR4\n- **最上位の部品：** CR19061U01\n- **子部品：** CR19299N01（エンドプレート）、CR19403N01（ライナー）、ボルトやワッシャーなどの標準部品\n\n部品の横の **+** は、子部品を含むことを示します。**+** をクリックすると展開でき、部品にポインターを合わせると名前が表示されます。（読取専用）の部品は、この図面では編集できません。\n\n**やってみましょう：** サンプルのアセンブリ図面を開き、部品を一つ展開して、子部品にポインターを合わせて名前を確認します。"
                 }
-              ],
-              "quickReview": "**部品** → 一つの構成部品\n**アセンブリ** → 部品を組み合わせた一つの設計"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -1770,7 +1724,6 @@
                   "text": "**3D Model**\nHelps you understand the design’s shape and arrangement.\n\n**2D Drawing**\nCommunicates the design through drawing views and engineering details.\n\nA 3D model and its related 2D drawing describe the same design in different ways. This comparison highlights their common uses; a 3D model can also include engineering information.\n\n**Think About It:** A plate has a hole. The 3D model shows where the hole is; its 2D drawing can state the hole’s diameter and location."
                 }
               ],
-              "quickReview": "**3D** → Shape and form\n**2D** → Views and engineering information",
               "connection": "The drawing stores the model and its related information. In F8, create and save a training drawing before adding shapes in F9."
             },
             "ja": {
@@ -1790,7 +1743,6 @@
                   "text": "**3D モデル**\n設計の形状や配置を理解するのに役立ちます。\n\n**2D 図面**\n図面ビューと設計の詳細情報で設計を伝えます。\n\n3D モデルと関連する 2D 図面は、同じ設計を異なる方法で表します。これは主な用途の比較であり、3D モデルにも設計情報を含めることができます。\n\n**考えてみましょう：** 板に穴がある場合、3D モデルで穴の位置を確認し、2D 図面で穴の直径や位置の寸法を示すことができます。"
                 }
               ],
-              "quickReview": "**3D** → 形状と形態\n**2D** → 図面ビューと設計情報",
               "connection": "図面にはモデルと関連情報が保存されます。F8 で練習用図面を作成して保存し、F9 で形状を追加します。"
             }
           },
@@ -1832,8 +1784,7 @@
                   "title": "Practice: Start a Training Drawing",
                   "text": "Create a new training drawing. Check its name in the drawing window or Tree View so you know which drawing is active.\n\nContinue to the **F8.2 Saving Your Work** lesson to save this drawing as **Training_Box_01** in your training folder.\n\nKeep the drawing empty for now. In the **F9.1 Box** lesson, you will use it to create a **20 × 30 × 10 mm Box**."
                 }
-              ],
-              "quickReview": "**File → New**"
+              ]
             },
             "ja": {
               "explanation": "このレッスンでは、新しい**アイテム**を新しく作業する図面という意味で使います。新規作成すると、別の設計を始める作業領域が開きます。",
@@ -1847,8 +1798,7 @@
                   "title": "実践：練習用図面を作成する",
                   "text": "練習用図面を新規作成します。図面ウィンドウまたはツリービューの名前で、作業中の図面を確認してください。\n\n次のレッスン **F8.2 作業内容の保存**に進み、この図面を練習用フォルダーに **Training_Box_01** として保存します。\n\n今は空の図面のままにします。**F9.1 直方体**のレッスンで、この図面に **20 × 30 × 10 mm のボックス**を作成します。"
                 }
-              ],
-              "quickReview": "**ファイル → 新規作成**"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -1892,8 +1842,7 @@
                   "title": "Practice: Save Your Training Drawing",
                   "text": "Save the drawing you created in F8.1 as **Training_Box_01** in your assigned training folder. Keep the file format selected for your training.\n\nCheck the file name and folder. Use **Save As** with a different name if you need a separate practice copy.\n\nConfirm that the active drawing name matches the file you just saved. Then continue to the **F8.3 Closing a Drawing** lesson."
                 }
-              ],
-              "quickReview": "**Save** → Update current file\n**Save As** → Create a separate copy"
+              ]
             },
             "ja": {
               "explanation": "保存すると、変更内容が図面ファイルに記録されます。最新の保存状態から作業を続けられるよう、こまめに保存しましょう。",
@@ -1915,8 +1864,7 @@
                   "title": "実践：練習用図面を保存する",
                   "text": "F8.1 で作成した図面を、指定の練習用フォルダーに **Training_Box_01** という名前で保存します。研修で指定されたファイル形式を使います。\n\nファイル名とフォルダーを確認します。別の練習用コピーが必要なら、**名前を付けて保存**で別名にします。\n\n現在の図面名が、保存したファイル名と一致していることを確認します。その後、**F8.3 図面を閉じる**のレッスンに進んでください。"
                 }
-              ],
-              "quickReview": "**保存** → 現在のファイルを更新\n**名前を付けて保存** → 別のコピーを作成"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -1953,7 +1901,6 @@
                   "text": "Continue with the drawing you created in **F8.1 Creating a New Item** and saved in **F8.2 Saving Your Work**. Check the active drawing name: **Training_Box_01**, or **Training_Box_01_Copy** if you completed the Save As example. Close the drawing you just saved.\n\nCheck that its drawing window has closed and iCAD SX remains open."
                 }
               ],
-              "quickReview": "**Save Work → File → Close**",
               "connection": "Continue to Module F9 Creating Basic Shapes. In F9.1 Box, reopen Training_Box_01 from your training folder using File → Open."
             },
             "ja": {
@@ -1973,7 +1920,6 @@
                   "text": "**F8.1 新しいアイテムの作成**で作成し、**F8.2 作業内容の保存**で保存した図面を使います。現在の図面名が **Training_Box_01**、または名前を付けて保存の例を実行した場合は **Training_Box_01_Copy** であることを確認します。保存した図面を閉じてください。\n\nその図面ウィンドウが閉じ、iCAD SX が開いたままであることを確認します。"
                 }
               ],
-              "quickReview": "**作業を保存 → ファイル → 閉じる**",
               "connection": "次はモジュール F9 基本形状の作成に進みます。F9.1 直方体では、「ファイル → 開く」で練習用フォルダーの Training_Box_01 を開き直します。"
             }
           },
@@ -2169,8 +2115,8 @@
     {
       "id": "F11",
       "title": {
-        "en": "Sketch",
-        "ja": "スケッチ"
+        "en": "Sketching in 3D Space",
+        "ja": "3D空間でのスケッチ"
       },
       "lessons": [
         {
@@ -2266,8 +2212,8 @@
     {
       "id": "F14",
       "title": {
-        "en": "Stretch / Shape / Cut",
-        "ja": "伸縮・整形・切断"
+        "en": "Stretch",
+        "ja": "伸縮"
       },
       "lessons": [
         {
@@ -2305,13 +2251,654 @@
     {
       "id": "F16",
       "title": {
-        "en": "Foundation Review",
-        "ja": "基礎の復習"
+        "en": "2D to 3D Using a Work Plane",
+        "ja": "ワークプレーンを使用した2Dから3D作成"
       },
       "lessons": [
         {
           "id": "F16.1",
           "moduleId": "F16",
+          "title": {
+            "en": "Understanding the Work Plane",
+            "ja": "ワークプレーンの理解"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:F16.1",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A Work Plane is a flat surface in the 3D workspace where you create 2D sketches for 3D modeling.",
+              "practice": "Open, orient, and remove a Work Plane, and locate its sketching tools.",
+              "sections": [
+                {
+                  "title": "Work Plane Orientations",
+                  "text": "Choose the **X-Y, X-Z, or Y-Z** plane for your sketch."
+                },
+                {
+                  "title": "How to Open and Remove a Work Plane",
+                  "text": "- **Open** — Select **Open Work Plane「作業平面」**, then left-click in the 3D workspace.\n- **Right-click** — Right-click the plane’s edge to open its menu.\n- **Remove** — Choose **Delete「削除(E)」 → Delete Specified Work Plane「指定した組立平面削除(D)」**."
+                },
+                {
+                  "title": "How to Change the Work Plane Orientation",
+                  "text": "Hold **無変換 (Muhenkan)** and press **W** to switch between the **X-Y, X-Z, and Y-Z** orientations.\n\n**English/US keyboard:** Close iCAD SX. In Command Prompt, run:\n\n\"%ICADDIR%\\BIN\\nonconvset.exe\" -mCTRL\n\nReopen iCAD SX, then use **Ctrl + W** instead."
+                },
+                {
+                  "title": "Command Menu",
+                  "text": "Most tools for sketching on the Work Plane are found in the Command Menu.\n\n- Contains tools for drafting.\n- Contains tools for sketching.\n- Displays the available tools for drafting and sketching.\n- Displays the options for the selected tool."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "ワークプレーン（作業平面）は、3D作業空間内で3Dモデリング用の2Dスケッチを作成する平面です。",
+              "practice": "作業平面の表示・向きの変更・削除を行い、スケッチ用ツールの場所を確認します。",
+              "sections": [
+                {
+                  "title": "ワークプレーンの向き",
+                  "text": "スケッチに合わせて**X-Y、X-Z、Y-Z**を選びます。"
+                },
+                {
+                  "title": "作業平面を開く・削除する方法",
+                  "text": "- **開く** — **「作業平面」**を選び、3D作業空間を左クリックします。\n- **右クリック** — 平面の枠線を右クリックします。\n- **削除する** — **「削除(E)」→「指定した組立平面削除(D)」**を選びます。"
+                },
+                {
+                  "title": "ワークプレーンの向きの変更方法",
+                  "text": "**無変換**を押しながら**W**を押し、**X-Y、X-Z、Y-Z**の向きを切り替えます。\n\n**英語／USキーボード：** iCAD SXを終了し、コマンドプロンプトで次を実行します。\n\n\"%ICADDIR%\\BIN\\nonconvset.exe\" -mCTRL\n\niCAD SXを再起動すると、代わりに**Ctrl + W**を使用できます。"
+                },
+                {
+                  "title": "コマンドメニュー",
+                  "text": "作業平面でのスケッチに使う主なツールは、コマンドメニューにあります。\n\n- 製図ツールを含みます。\n- スケッチツールを含みます。\n- 製図・スケッチで使用できるコマンドが表示されます。\n- 選択したツールのオプションが表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared",
+          "displayId": "F16.1"
+        },
+        {
+          "id": "F16.2",
+          "moduleId": "F16",
+          "title": {
+            "en": "Sketching on a Work Plane",
+            "ja": "ワークプレーン上でのスケッチ"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:F16.2",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create a closed 2D profile on an active Work Plane. This profile can be used to create a 3D solid in the next lessons.",
+              "practice": "Draw and check a closed rectangular profile, then locate the 2D-to-3D tools.",
+              "sections": [
+                {
+                  "title": "Before You Begin",
+                  "text": "Use an active Work Plane in the required orientation (**F16.1**)."
+                },
+                {
+                  "title": "Create a Rectangular Profile",
+                  "text": "- **First Edge** — Select **Line「基本線」** and pick its start and end points.\n- **Next Two Edges** — Draw two connected edges using the existing endpoints.\n- **Close** — Join the fourth edge to the first endpoint, then finish the command."
+                },
+                {
+                  "title": "Check the Profile",
+                  "text": "Check that all four corners connect on the same Work Plane. Remove duplicate lines and repair gaps."
+                },
+                {
+                  "title": "From a 2D Sketch to a 3D Solid",
+                  "text": "Open **Basic「基本」 → 2D to 3D「2Dから立体化」**. The next lessons cover **Extrude**, **Revolve**, and **Spiral Form**."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "アクティブな作業平面上に閉じた2D輪郭を作成します。この輪郭は、次のレッスンで3D立体の作成に使用します。",
+              "practice": "閉じた長方形の輪郭を作成・確認し、2Dから立体化するツールの場所を確認します。",
+              "sections": [
+                {
+                  "title": "始める前に",
+                  "text": "必要な向きの作業平面をアクティブにします（**F16.1**）。"
+                },
+                {
+                  "title": "長方形の輪郭を作成する",
+                  "text": "- **最初の辺** — **「基本線」**を選び、始点と終点を指定します。\n- **次の2辺** — 既存の端点につなげて2本の辺を描きます。\n- **閉じる** — 4本目を最初の端点につなぎ、コマンドを終了します。"
+                },
+                {
+                  "title": "輪郭を確認する",
+                  "text": "同じ作業平面上で4つの角がつながっていることを確認し、重複線や隙間を修正します。"
+                },
+                {
+                  "title": "2Dスケッチから3D立体へ",
+                  "text": "**「基本」→「2Dから立体化」**を開きます。次のレッスンで**垂直投影・回転投影・スパイラル形状**を使用します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared",
+          "displayId": "F16.2"
+        },
+        {
+          "id": "F16.3",
+          "moduleId": "F16",
+          "title": {
+            "en": "Extrude from a Work Plane",
+            "ja": "ワークプレーンからの押し出し"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:F16.3",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Extrude creates a 3D solid by extending a closed 2D profile perpendicular to its Work Plane.",
+              "practice": "Select a closed profile, set its extrusion height, and choose whether to keep the Work Plane.",
+              "sections": [
+                {
+                  "title": "Before You Begin",
+                  "text": "Use a closed profile (**F16.2**). The sample uses an L-shape."
+                },
+                {
+                  "title": "How to Extrude from a Work Plane",
+                  "text": "- **Select Extrude** — Open **Basic「基本」 → 2D to 3D「2Dから立体化」 → Extrude「垂直投影」**.\n- **Pick the Profile** — Select an edge, check the hatch, then confirm with **GO** (right-click).\n- **Set Height** — Enter **Height「高さ」** in **Item Entry** and press **Enter**."
+                },
+                {
+                  "title": "Keep or Delete the Work Plane",
+                  "text": "At the Work Plane deletion prompt:\n\n- **OK:** Deletes the Work Plane and its 2D sketches. This deletion cannot be undone.\n- **Cancel:** Keeps the Work Plane and its sketches. The new solid remains."
+                },
+                {
+                  "title": "Check the Final Solid",
+                  "text": "Check the profile and height. The sample shows the solid with its Work Plane removed."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "押し出しは、閉じた2D輪郭を作業平面に対して垂直方向へ延ばし、3D立体を作成します。",
+              "practice": "閉じた輪郭を選び、押し出し高さを指定し、作業平面を残すか削除するかを選択します。",
+              "sections": [
+                {
+                  "title": "始める前に",
+                  "text": "閉じた輪郭を用意します（**F16.2**）。例はL字形です。"
+                },
+                {
+                  "title": "作業平面から押し出す手順",
+                  "text": "- **垂直投影** — **「基本」→「2Dから立体化」→「垂直投影」**を選びます。\n- **輪郭を選ぶ** — 辺を選び、ハッチを確認して**GO（右クリック）**で確定します。\n- **高さ** — **項目入力**で**「高さ」**を入力し、**Enter**を押します。"
+                },
+                {
+                  "title": "作業平面を残す・削除する",
+                  "text": "作業平面の削除確認で、次のいずれかを選びます。\n\n- **OK：** 作業平面と2Dスケッチを削除します。この削除は元に戻せません。\n- **キャンセル：** 作業平面とスケッチを残します。作成した立体も残ります。"
+                },
+                {
+                  "title": "完成した立体を確認する",
+                  "text": "輪郭と高さを確認します。例は作業平面を削除した立体です。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared",
+          "displayId": "F16.3"
+        },
+        {
+          "id": "F16.4",
+          "moduleId": "F16",
+          "title": {
+            "en": "Revolve from a Work Plane",
+            "ja": "ワークプレーンからの回転体"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:F16.4",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Revolve creates a 3D solid by rotating a closed profile on a Work Plane around a selected axis.",
+              "practice": "Select a closed profile and its rotation axis, then create and inspect a revolved solid.",
+              "sections": [
+                {
+                  "title": "Before You Begin",
+                  "text": "Prepare a closed profile and identify its rotation axis."
+                },
+                {
+                  "title": "How to Revolve from a Work Plane",
+                  "text": "- **Select Revolve** — Open **Basic「基本」 → 2D to 3D「2Dから立体化」 → Revolve「回転投影」**.\n- **Pick the Profile** — Select an edge, check the hatch, then confirm with **GO** (right-click).\n- **Pick the Axis** — Select the rotation axis and follow the prompt to finish."
+                },
+                {
+                  "title": "Keep or Delete the Work Plane",
+                  "text": "Choose **OK** to delete the plane and sketches, or **Cancel** to keep them. The solid remains. Deletion cannot be undone."
+                },
+                {
+                  "title": "Check the Finished Solid",
+                  "text": "Compare the diameters and tapered section with the sample."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "回転投影は、作業平面上の閉じた輪郭を選択した軸の周りに回転させて3D立体を作成します。",
+              "practice": "閉じた輪郭と回転軸を選択し、回転体を作成して形状を確認します。",
+              "sections": [
+                {
+                  "title": "始める前に",
+                  "text": "閉じた輪郭を用意し、回転軸を確認します。"
+                },
+                {
+                  "title": "作業平面から回転体を作成する手順",
+                  "text": "- **回転投影** — **「基本」→「2Dから立体化」→「回転投影」**を選びます。\n- **輪郭を選ぶ** — 辺を選び、ハッチを確認して**GO（右クリック）**で確定します。\n- **軸を選ぶ** — 回転軸を選び、案内に従って完了します。"
+                },
+                {
+                  "title": "作業平面を残す・削除する",
+                  "text": "平面とスケッチを削除する場合は**OK**、残す場合は**キャンセル**を選びます。立体は残ります。削除は元に戻せません。"
+                },
+                {
+                  "title": "完成した立体を確認する",
+                  "text": "直径とテーパー部分を完成例と比較します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared",
+          "displayId": "F16.4"
+        },
+        {
+          "id": "F16.5",
+          "moduleId": "F16",
+          "title": {
+            "en": "Spiral Form",
+            "ja": "スパイラル形状"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:F16.5",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Spiral Form creates a 3D spiral from a closed 2D cross-section by turning it around an axis while advancing along that axis.",
+              "practice": "Prepare a cross-section, set a pitch greater than its thickness, and specify the spiral length.",
+              "sections": [
+                {
+                  "title": "Prepare the Cross-section",
+                  "text": "Draw a closed rectangle offset from the axis. Its axial width is the **thickness**; its position sets the root and outer diameters."
+                },
+                {
+                  "title": "Select Spiral Form and the Profile",
+                  "text": "Select **Spiral Form** under **2D to 3D「2Dから立体化」**. Pick the cross-section, check the hatch, then confirm with **GO** (right-click)."
+                },
+                {
+                  "title": "Set the Pitch",
+                  "text": "In **Item Entry**, set **Pitch = 50** and both **Scales = 1.0000**. Press **Enter**, then **GO** as prompted.\n\nPitch is the axial distance between turns. **It must exceed the section’s axial thickness.**"
+                },
+                {
+                  "title": "Set the Spiral Length",
+                  "text": "Pick **P1**, then **P2** along the axis to set the length. Confirm with **GO**."
+                },
+                {
+                  "title": "Inspect the Finished Spiral",
+                  "text": "Check the axis, length, and spacing between turns."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "スパイラル形状は、閉じた2D断面を軸の周りに回転させながら軸方向に進め、3Dのらせんを作成します。",
+              "practice": "断面を準備し、厚さより大きいピッチとらせんの長さを指定します。",
+              "sections": [
+                {
+                  "title": "断面を準備する",
+                  "text": "軸から離れた位置に閉じた長方形を描きます。軸方向の幅が**厚さ**で、位置によって谷径と外径が決まります。"
+                },
+                {
+                  "title": "スパイラル形状と断面を選ぶ",
+                  "text": "**「2Dから立体化」**の**スパイラル形状**を選びます。断面とハッチを確認し、**GO（右クリック）**で確定します。"
+                },
+                {
+                  "title": "ピッチを指定する",
+                  "text": "**項目入力**で**ピッチ＝50**、両方の**スケール＝1.0000**にします。**Enter**を押し、案内に従って**GO**で確定します。\n\nピッチは巻きの軸方向の間隔です。**断面の軸方向の厚さより大きくしてください。**"
+                },
+                {
+                  "title": "らせんの長さを指定する",
+                  "text": "軸上の**P1**、**P2**を順に選んで長さを指定し、**GO**で確定します。"
+                },
+                {
+                  "title": "完成したらせんを確認する",
+                  "text": "軸、長さ、巻きの間隔を確認します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared",
+          "displayId": "F16.5"
+        }
+      ]
+    },
+    {
+      "id": "F17",
+      "title": {
+        "en": "Creating Hole Details on Parts",
+        "ja": "部品への穴の作成"
+      },
+      "lessons": [
+        {
+          "id": "foundation-hole-details",
+          "displayId": "F17.1",
+          "moduleId": "F17",
+          "title": {
+            "en": "Creating Hole Details on Parts",
+            "ja": "部品への穴の作成"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:hole-details",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Use standard hole tools to add drill holes, tapped holes, and other hole details to a solid.",
+              "practice": "Choose a hole tool, set its dimensions, and place it on a part.",
+              "sections": [
+                {
+                  "title": "Select Arrange Machine Part",
+                  "text": "In the Icon Menu, open **Part** and select **Arrange Machine Part**, as highlighted in the reference."
+                },
+                {
+                  "title": "Choose the Hole and Set Its Size",
+                  "text": "Choose a hole tool and the required standard. Enter its dimensions, such as length and depth, and check the preview. Click **OK**."
+                },
+                {
+                  "title": "Place the Hole",
+                  "text": "Click the hole location on the solid to create the cut. Use **Muhenkan + Q** to match the entity direction to a specified plane. On an English keyboard configured as in **F16.1**, use **Ctrl + Q**."
+                },
+                {
+                  "title": "Identify Tapped Holes",
+                  "text": "Color tapped holes **green**, as shown, to distinguish threaded holes from drill holes."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "標準の穴ツールを使用し、立体にドリル穴やタップ穴などを作成します。",
+              "practice": "穴ツールと寸法を指定し、部品上に配置します。",
+              "sections": [
+                {
+                  "title": "機械部品配置を選ぶ",
+                  "text": "アイコンメニューの**「パーツ」**から、図で強調された**機械部品配置**を選びます。"
+                },
+                {
+                  "title": "穴の種類と寸法を指定する",
+                  "text": "穴のツールと規格を選び、長さや深さなどの寸法を入力します。プレビューを確認して**OK**をクリックします。"
+                },
+                {
+                  "title": "穴を配置する",
+                  "text": "立体上の穴の位置をクリックして切り込みを作成します。**無変換＋Q**で要素の方向を指定した面に合わせます。**F16.1**で設定した英語キーボードでは**Ctrl＋Q**を使用します。"
+                },
+                {
+                  "title": "タップ穴を区別する",
+                  "text": "例のようにタップ穴を**緑色**にして、ドリル穴と区別します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F18",
+      "title": {
+        "en": "Boolean Operations",
+        "ja": "集合演算"
+      },
+      "lessons": [
+        {
+          "id": "foundation-boolean-union",
+          "displayId": "F18.1",
+          "moduleId": "F18",
+          "title": {
+            "en": "Union",
+            "ja": "和"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:boolean-union",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Union command is used to join multiple 3D entities together and create one solid entity. Use Union when separate solids need to become a single object.",
+              "practice": "By the end of this lesson, you should be able to combine two or more 3D entities into one solid using the Union command.",
+              "sections": [
+                {
+                  "title": "What Is Union?",
+                  "text": "Union is a Boolean operation that combines selected 3D entities.\n\nBefore\nSeparate 3D Entities\n\nAfter\nOne Combined Solid\n\nThe entities must be positioned so they can be joined as one solid."
+                },
+                {
+                  "title": "How to Use Union",
+                  "text": "- **Select Union** — Select **Union「くっつける」** from the Icon Menu.\n- **Select the 3D Entities** — Select all the 3D entities you want to join.\n- **Confirm the Operation** — Confirm with **GO** (right-click) to join the selected entities into one solid."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check that you selected all the required solids before confirming the operation. After Union, the selected solids are treated as one combined entity."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「くっつける」は、複数の3D要素を結合して1つの立体を作成するコマンドです。別々の立体を1つのオブジェクトにするときに使用します。",
+              "practice": "このレッスンでは、「くっつける」を使用して2つ以上の3D要素を1つの立体に結合できるようになります。",
+              "sections": [
+                {
+                  "title": "和とは？",
+                  "text": "和は、選択した3D要素を結合する集合演算です。\n\n操作前\n別々の3D要素\n\n操作後\n1つに結合された立体\n\n要素は、1つの立体として結合できる位置に配置してください。"
+                },
+                {
+                  "title": "和の使い方",
+                  "text": "- **くっつけるを選ぶ** — アイコンメニューから**「くっつける」**を選びます。\n- **3D要素を選ぶ** — 結合する3D要素をすべて選択します。\n- **操作を確定する** — **GO（右クリック）**で確定し、選択した要素を1つの立体に結合します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "確定する前に、必要な立体がすべて選択されていることを確認してください。和の演算後、選択した立体は1つの結合された要素として扱われます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-boolean-subtract",
+          "displayId": "F18.2",
+          "moduleId": "F18",
+          "title": {
+            "en": "Subtract",
+            "ja": "差"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:boolean-subtract",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Subtract command is used to create a cutout in a 3D entity. One entity is selected as the Target, while another entity or group of entities is used as the Tool to remove material from the Target.",
+              "practice": "By the end of this lesson, you should be able to use the Subtract command by correctly selecting the Target Entity and Tool Entity.",
+              "sections": [
+                {
+                  "title": "Target and Tool Entities",
+                  "text": "Select the Target first, then the Tool.\n\nTarget Entity\nThe main 3D entity where the cutout will be created.\n\nTool Entity\nThe entity used to remove material from the Target Entity."
+                },
+                {
+                  "title": "How to Use Subtract",
+                  "text": "- **Select Subtract** — Select **Subtract「削る」** from the Icon Menu.\n- **Select the Target Entity** — First, select the **Target Entity**: the main part to be cut.\n- **Select the Tool Entities** — Select the entities to subtract from the Target, then confirm with **GO** (right-click).\n- **Check the Final Result** — The cutout is created. The Tool Entities disappear and become components of the subtraction result."
+                },
+                {
+                  "title": "Subtract While Retaining Tool Entities",
+                  "text": "- **Select the Retain-Tools Option** — Select **Subtract — Retain Tools「削る(削った要素を残す)」**.\n- **Check the Result** — The cutout is created, and the Tool Entities remain available in the model."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Always select **1. Target Entity** (the entity to be cut), then **2. Tool Entity** (the entity used to create the cutout). Make sure the Tool Entity overlaps the Target Entity where the cutout is required."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「削る」は3D要素に切り欠きを作成するコマンドです。1つの要素をターゲットに選び、別の要素または複数の要素をツールとして使用し、ターゲットから材料を取り除きます。",
+              "practice": "このレッスンでは、ターゲット要素とツール要素を正しい順序で選び、「削る」を使用できるようになります。",
+              "sections": [
+                {
+                  "title": "ターゲット要素とツール要素",
+                  "text": "ターゲット、ツールの順に選択します。\n\nターゲット要素\n切り欠きを作成する本体の3D要素です。\n\nツール要素\nターゲット要素から材料を取り除くための要素です。"
+                },
+                {
+                  "title": "差の使い方",
+                  "text": "- **削るを選ぶ** — アイコンメニューから**「削る」**を選びます。\n- **ターゲット要素を選ぶ** — 最初に、切り取る本体の**ターゲット要素**を選択します。\n- **ツール要素を選ぶ** — ターゲットから差し引く要素を選び、**GO（右クリック）**で確定します。\n- **結果を確認する** — 切り欠きが作成されます。ツール要素は表示されなくなり、差の演算結果の構成要素になります。"
+                },
+                {
+                  "title": "ツール要素を残して差を実行する",
+                  "text": "- **ツールを残すオプション** — **「削る(削った要素を残す)」**を選びます。\n- **結果を確認する** — 切り欠きが作成され、ツール要素はモデル内に残ります。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "必ず**1. ターゲット要素**（切り取る要素）、**2. ツール要素**（切り欠きを作る要素）の順に選択します。必要な切り取り位置で、ツールとターゲットが重なっていることを確認してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-boolean-intersect",
+          "displayId": "F18.3",
+          "moduleId": "F18",
+          "title": {
+            "en": "Intersect",
+            "ja": "積"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:boolean-intersect",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Intersect command creates a new 3D entity from the overlapping area of two intersecting entities. The original intersecting entities remain after the operation.",
+              "practice": "By the end of this lesson, you should be able to use the Intersect command to create a new entity from the common area of two 3D entities.",
+              "sections": [
+                {
+                  "title": "What Is Intersect?",
+                  "text": "When two 3D entities overlap, Intersect uses only the area that both entities share. The overlapping portion becomes the new result.\n\nIntersecting Entities\nTwo 3D entities overlap each other.\n\nIntersection Result\nOnly their common overlapping area is used to create the new entity."
+                },
+                {
+                  "title": "How to Use Intersect",
+                  "text": "- **Select Intersect** — Select **Intersect「重なり部分を残す」** from the Icon Menu.\n- **Select the Intersecting Entities** — Select the overlapping entities, then confirm with **GO** (right-click).\n- **Check the Final Result** — A new entity is created from the shared portion. **The original entities remain.**"
+                },
+                {
+                  "title": "Result",
+                  "text": "- A new entity is created from the intersecting portion.\n- **The original intersecting entities do NOT disappear.**"
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The selected entities must overlap for Intersect to create a result. Only the common area shared by the selected entities becomes the new entity."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「重なり部分を残す」は、交差する2つの3D要素の重なった部分から新しい3D要素を作成します。元の要素は演算後も残ります。",
+              "practice": "このレッスンでは、「重なり部分を残す」を使用して2つの3D要素の共通部分から新しい要素を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "重なり部分を残すとは？",
+                  "text": "2つの3D要素が重なっている場合、両方に共通する部分だけを使用します。この部分が新しい結果になります。\n\n交差する要素\n2つの3D要素が互いに重なっています。\n\n共通部分の結果\n重なった共通部分だけから新しい要素を作成します。"
+                },
+                {
+                  "title": "重なり部分を残すの使い方",
+                  "text": "- **コマンドを選ぶ** — アイコンメニューから**「重なり部分を残す」**を選びます。\n- **交差する要素を選ぶ** — 重なっている要素を選び、**GO（右クリック）**で確定します。\n- **結果を確認する** — 共通部分から新しい要素が作成されます。**元の要素は残ります。**"
+                },
+                {
+                  "title": "結果",
+                  "text": "- 交差する共通部分から新しい要素が作成されます。\n- **元の交差する要素は消えません。**"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "結果を作成するには、選択した要素が重なっている必要があります。要素に共通する部分だけが新しい要素になります。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-boolean-separate",
+          "displayId": "F18.4",
+          "moduleId": "F18",
+          "title": {
+            "en": "Separate Entity",
+            "ja": "要素の分離"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:boolean-separate",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Separate Entity extracts components created by Boolean operations as CSG solids. Components include joined shapes and cutout or hole features.",
+              "practice": "Use Separate Entity and compare the result with the reference.",
+              "sections": [
+                {
+                  "title": "Separate Selected Components",
+                  "text": "- **Select the Tool** — Select **Separate Entity「指定要素を切り離す」** as highlighted.\n- **Pick Components** — Select the components to separate, then confirm with **GO**.\n- **Confirm** — Click **OK** to separate them as CSG solids."
+                },
+                {
+                  "title": "Separate All Components",
+                  "text": "- **Select the Tool** — Select **Separate All Components「バラバラにする」** as highlighted.\n- **Pick the Solid** — Select the solid and confirm with **GO**.\n- **Confirm** — Click **OK** to separate all components as CSG solids."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "要素の分離は、集合演算で作成した構成要素をCSG立体として分離します。構成要素には結合形状、切り取り、穴などがあります。",
+              "practice": "要素の分離を使用し、結果を参考例と比較します。",
+              "sections": [
+                {
+                  "title": "選択した構成要素を分離する",
+                  "text": "- **ツールを選ぶ** — 図の**「指定要素を切り離す」**を選びます。\n- **構成要素を選ぶ** — 分離する構成要素を選び、**GO**で確定します。\n- **確定する** — **OK**をクリックし、CSG立体として分離します。"
+                },
+                {
+                  "title": "すべての構成要素を分離する",
+                  "text": "- **ツールを選ぶ** — 図の**「バラバラにする」**を選びます。\n- **立体を選ぶ** — 立体を選び、**GO**で確定します。\n- **確定する** — **OK**をクリックし、全構成要素をCSG立体として分離します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F19",
+      "title": {
+        "en": "Foundation Review",
+        "ja": "基礎の復習"
+      },
+      "lessons": [
+        {
+          "id": "F17.1",
+          "moduleId": "F19",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -2319,9 +2906,14 @@
           "type": "reading",
           "renderer": null,
           "video": null,
-          "routeAliases": [],
+          "routeAliases": [
+            "F16.1",
+            "F18.1",
+            "F19.1"
+          ],
           "completionAliases": [
-            "F10.1"
+            "F10.1",
+            "F16.1"
           ],
           "content": {
             "en": {
@@ -2369,7 +2961,6 @@
                   "text": "After creating or editing a shape, check the result:\n\n- View the model from another direction with **3D View** or **User View**.\n- Confirm the values you entered in **Item Entry**.\n- Use **Undo (Ctrl+Z)** if something is wrong.\n\nIn the practice sequence, the remaining Box is still 20 × 30 × 10 mm after Move, Copy, and Delete. Adding dimensions to drawings is covered in a later 2D drawing course."
                 }
               ],
-              "quickReview": "- Interface\n- Navigation\n- 3D Views\n- Coordinates\n- Selection\n- Drawing Structure\n- File Operations\n- 3D Modeling\n- Editing\n- Checking Your Model",
               "connection": "Use the final knowledge check to review the concepts taught here. Practical tasks still require practice in iCAD SX; answering the questions alone does not demonstrate command proficiency."
             },
             "ja": {
@@ -2417,17 +3008,16 @@
                   "text": "形状を作成・編集した後は、結果を確認します。\n\n- **3D ビュー**や**ユーザビュー**で別の方向からモデルを見る。\n- **項目入力**で入力した値を確認する。\n- 間違えた場合は**元に戻す（Ctrl+Z）**を使う。\n\n練習で移動、コピー、削除を行った後も、残ったボックスは 20 × 30 × 10 mm のままです。図面への寸法の記入は、後の 2D 図面コースで学びます。"
                 }
               ],
-              "quickReview": "- 画面構成\n- 表示操作\n- 3D ビュー\n- 座標\n- 選択\n- 図面構成\n- ファイル操作\n- 3D モデリング\n- 編集\n- モデルの確認",
               "connection": "最後の理解度チェックで学んだ内容を確認します。実際の操作には iCAD SX での練習が必要であり、問題への回答だけで操作技能を確認できるわけではありません。"
             }
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F16.1"
+          "displayId": "F19.1"
         },
         {
-          "id": "F16.2",
-          "moduleId": "F16",
+          "id": "F17.2",
+          "moduleId": "F19",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -2435,9 +3025,14 @@
           "type": "quiz",
           "renderer": null,
           "video": null,
-          "routeAliases": [],
+          "routeAliases": [
+            "F16.2",
+            "F18.2",
+            "F19.2"
+          ],
           "completionAliases": [
-            "F10.6"
+            "F10.6",
+            "F16.2"
           ],
           "content": {
             "en": {
@@ -2448,8 +3043,7 @@
                   "title": "How to Complete the Check",
                   "text": "Choose one answer, then select Check Answer. Read the feedback. Retry an incorrect answer, or select Next question after a correct answer.\n\nThe check stays open until every question is answered correctly. After the last question, select Complete course."
                 }
-              ],
-              "quickReview": "Choose an Answer → Check Answer → Read Feedback → Continue"
+              ]
             },
             "ja": {
               "explanation": "この最後の理解度チェックでは、**iCAD 基礎**コースで学んだ主な内容を確認します。\n\n各問題で最も適切な答えを選んでください。\n\n全12問です。不正解の場合は解説を読み、もう一度回答してから進みます。学習内容の確認であり、初回回答の点数は表示しません。",
@@ -2459,13 +3053,12 @@
                   "title": "理解度チェックの進め方",
                   "text": "答えを1つ選び、「回答を確認」を選択します。解説を読み、不正解の場合は再回答し、正解したら「次の問題」を選択します。\n\nすべての問題に正解するまで、チェックは閉じません。最後の問題の後は「コースを完了」を選択します。"
                 }
-              ],
-              "quickReview": "回答を選ぶ → 回答を確認 → 解説を読む → 次へ進む"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F16.2"
+          "displayId": "F19.2"
         }
       ]
     }

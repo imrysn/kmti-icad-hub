@@ -1,0 +1,11 @@
+.work-plane-revolve-steps,
+.work-plane-revolve-detail { width: 100%; min-width: 0; }
+.work-plane-revolve-steps { --foundation-icon-frame-height: 248px; }
+.work-plane-revolve-steps .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.work-plane-revolve-steps img,
+.work-plane-revolve-steps svg { display: block; width: 100%; height: 220px; object-fit: contain; border: 0; background: none; }
+.work-plane-revolve-steps .work-plane-revolve-command { width: 76px; margin: auto; }
+.work-plane-revolve-detail img { display: block; width: auto; max-width: 100%; height: 336px; object-fit: contain; margin: 24px auto; border: 0; }
+@media (max-width: 600px) {
+  .work-plane-revolve-steps .foundations-uses__grid { grid-template-columns: 1fr; }
+}

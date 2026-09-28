@@ -1,0 +1,59 @@
+.work-plane-command-guide { width:100%; }
+.work-plane-command-guide__layout { display:grid; grid-template-columns:202.5px minmax(0,1fr); gap:48px; max-width:820px; margin:24px auto; align-items:start; }
+.work-plane-command-capture { position:relative; width:202.5px; max-width:100%; }
+.work-plane-command-capture > img { display:block; width:100%; height:auto; }
+.work-plane-command-translation { position:absolute; inset:0; font:16px Arial,sans-serif; color:#111; }
+.work-plane-command-translation > span { position:absolute; box-sizing:border-box; display:flex; align-items:center; white-space:nowrap; overflow:hidden; padding-left:2px; }
+.command-english-heading { left:4.44%; top:34.32%; width:88.15%; height:2.17%; background:linear-gradient(#738cde,#5876d1); color:white; }
+.command-english-label { width:42.22%; height:2.56%; background:linear-gradient(#f8f8f8,#dedede); font-size:14px; }
+.command-english-label.selected,.command-english-option.selected { background:linear-gradient(#d8efff,#a2d0f4); }
+.command-english-label.edit-command { color:#1839e0; }
+.command-english-active { left:6.67%; top:85.4%; width:83.7%; height:2.36%; background:linear-gradient(#f1b1b1,#e58f91); font-size:14px; }
+.command-english-option { left:6.67%; top:90.73%; width:38.52%; height:2.17%; background:linear-gradient(#fafafa,#ddd); font-size:14px; }
+.command-english-option.unlimited { left:50.37%; width:40%; }
+.command-english-return { left:6.67%; top:95.66%; width:83.7%; height:2.17%; background:linear-gradient(#f9f9f9,#d9d9d9); font-size:14px; }
+.work-plane-command-marker { display:inline-grid; place-items:center; width:25px; height:25px; flex-shrink:0; border-radius:50%; background:#187bce; border:2px solid white; color:white; font:700 14px Arial,sans-serif; box-sizing:border-box; }
+.capture-marker { position:absolute; transform:translate(-50%,-80%); }
+.work-plane-command-guide__notes { list-style:none; padding:0; margin:0; display:grid; gap:24px; }
+.work-plane-command-guide__notes li { display:flex; gap:12px; align-items:center; }
+.work-plane-command-guide__notes li p { margin:0; padding:0; }
+@media(max-width:600px) { .work-plane-command-guide__layout { grid-template-columns:minmax(0,1fr); gap:24px; } .work-plane-command-capture { justify-self:center; } }
+
+/* Cover the complete original button, including its Japanese glyphs. */
+.work-plane-command-translation .command-english-label {
+  width:44.45%; height:3.36%; padding:0 3px;
+  border:1px solid #aaa; border-radius:4px;
+  background:linear-gradient(#fff,#dedede);
+}
+.work-plane-command-translation .command-english-label.selected {
+  border-color:#168aff; background:linear-gradient(#d8efff,#a2d0f4);
+}
+.work-plane-command-translation .command-english-heading {
+  left:3.7%; top:33.93%; width:89.63%; height:2.96%;
+  border:1px solid #536bbe; border-radius:3px;
+}
+.work-plane-command-translation .command-english-active {
+  left:5.19%; top:85.01%; width:86.67%; height:2.96%;
+  border:1px solid #b58d8d; border-radius:3px;
+}
+.work-plane-command-translation .command-english-option {
+  left:5.19%; top:90.34%; width:42.22%; height:2.96%;
+  border:1px solid #168aff; border-radius:3px;
+}
+.work-plane-command-translation .command-english-option.unlimited {
+  left:49.63%; width:42.22%; border-color:#aaa;
+}
+.work-plane-command-translation .command-english-return {
+  left:5.19%; top:95.27%; width:86.67%; height:3.16%;
+  border:1px solid #aaa; border-radius:3px;
+}
+
+.work-plane-command-translation::before {
+  content:''; position:absolute; left:3%; top:37.28%; width:91%; height:39.25%; background:#eee;
+}
+
+/* Trim the captured outer window border without shifting labels or callouts. */
+.work-plane-command-capture > img,
+.work-plane-command-capture > .work-plane-command-translation {
+  clip-path: inset(0.4% 5.18% 1% 1.48%);
+}

@@ -11,9 +11,6 @@ export const ORIGIN_AXES_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'ivl-objective',
   objective:
     'By the end of this lesson, you will understand the concept of Origin, identify the X, Y, and Z coordinate axes, and know how to anchor the first 3D object at the origin using the Key Entry Area (0, 0, 0).',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Locate Origin (0, 0, 0)</b> → <b>Identify X, Y, Z Axes</b> → <b>Key Entry Area: 0, 0, 0</b> → <b>Anchor First Object</b>',
   completionText: 'Great job! You have completed the Origin lesson.',
   inlineHeader: true,
   renderAsObjective: true,
@@ -56,9 +53,6 @@ export const ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
   objective: 'By the end of this lesson, you will be able to relocate the origin and define the orientation of the X and Y axes using the Change 3D Part Layout tool.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Change 3D Part Layout</b> → <b>Right-click: Current Origin</b> → <b>Point 1: New Origin</b> → <b>Point 2: X-Axis</b> → <b>Point 3: Y-Axis (Front View)</b>',
   completionText: 'Great job! You have completed the Change 3D Part Layout lesson.',
   inlineHeader: true,
 };

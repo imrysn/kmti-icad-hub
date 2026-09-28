@@ -9,8 +9,6 @@ export const GETTING_STARTED_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
     'Thanks to the digitization of design information, we can now easily verify safety, examine the assembly of entire components, confirm user operation of the machine, and estimate the cost and machining method of a component using iCAD SX, before the machine is actually manufactured. iCAD SX integrates mechanical, electrical, and control design into a single software. This creates a unified design environment, centralizes design information, links data, allows simultaneous review and use of the latest information from each other, and improves design performance and efficiency.',
   procedureTitle: 'Engineering Workflow',
   objective: 'Understand what iCAD is and how it is used in machine and equipment engineering design.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Machine & Equipment Focus</b> → <b>1M Parts in 0.2s (200x Faster)</b> → <b>Digital Pre-Verification</b> → <b>Unified Mech / Elec / Control</b>',
   completionText: 'Great job! You have completed the Getting Started with iCAD lesson.',
 };
 

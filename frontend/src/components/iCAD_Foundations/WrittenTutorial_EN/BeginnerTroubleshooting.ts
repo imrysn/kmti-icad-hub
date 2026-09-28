@@ -4,9 +4,6 @@ export const TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Recognize and quickly resolve common beginner issues in navigation, selection, and commands.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Troubleshooting Guide',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Lost Model</b> (Fit to Screen) → <b>Stuck View</b> (Check Viewport) → <b>Wrong Entity</b> (Esc / Undo) → <b>Awaiting Input</b> (Check Message Pane)',
   completionText: 'Great job! You have completed the Beginner Troubleshooting lesson.',
 };
 

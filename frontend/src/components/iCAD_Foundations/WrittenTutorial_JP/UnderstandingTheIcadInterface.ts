@@ -6,8 +6,6 @@ export const INTERFACE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   procedureTitle: 'ivl-objective',
   objective: 'このレッスンの終了時までに、iCAD インターフェースの主要な構成要素を識別し、それぞれの基本機能を理解できるようになります。',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>メニュー・ツールバー</b> → <b>コマンド選択</b> → <b>項目・キー入力</b> → <b>作業領域での実行</b>',
   completionText: 'お疲れ様でした！「iCAD SX インターフェース」レッスンを完了しました。',
   hideStepNumbers: false,
   inlineHeader: true,

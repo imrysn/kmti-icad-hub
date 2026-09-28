@@ -4,9 +4,6 @@ export const PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Demonstrate independent mastery of the iCAD environment, tools, and modeling workflows.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Assessment Checklist',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Interface Identification</b> → <b>View Navigation</b> → <b>2D & 3D Modeling</b> → <b>Inspection & Standard Save</b>',
   completionText: 'Congratulations! You have completed the iCAD Foundations Practical Assessment.',
 };
 

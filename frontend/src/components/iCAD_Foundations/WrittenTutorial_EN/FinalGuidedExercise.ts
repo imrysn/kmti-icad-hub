@@ -4,9 +4,6 @@ export const FINAL_GUIDED_EXERCISE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = 
   title: 'Apply foundational navigation, view, selection, 2D, 3D, and file management skills.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Navigate Viewport</b> → <b>Standard Views</b> → <b>Select Geometry</b> → <b>2D Sketch & 3D Extrusion</b> → <b>Save File</b>',
   completionText: 'Great job! You have completed the Final Guided Exercise.',
 };
 

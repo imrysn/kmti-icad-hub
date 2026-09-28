@@ -22,8 +22,6 @@ export interface WrittenTutorialCopy {
   renderAsObjective?: boolean;
   objective?: string;
   objectiveLabel?: string;
-  quickReviewTitle?: string;
-  quickReviewText?: string;
 }
 
 export interface WrittenTutorialModule {

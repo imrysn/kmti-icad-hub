@@ -4,9 +4,6 @@ export const SAVING_WORK_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Save training work following proper file naming conventions and folder structures.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>File Menu</b> → <b>Save As</b> → <b>Enter File Name</b> → <b>Confirm & Verify Title Bar</b>',
   completionText: 'Great job! You have completed the Saving Your Work lesson.',
 };
 

@@ -6,8 +6,6 @@ export const CREATE_LINE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Create your first simple 2D line geometry in the iCAD workspace.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Line Tool</b> → <b>Start Point</b> → <b>End Point</b> → <b>Confirm</b>',
   completionText: 'Great job! You have completed the Create a Line lesson.',
 };
 
@@ -44,8 +42,6 @@ export const CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Create basic circle and rectangular profile geometry using standard iCAD commands.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Circle: Center + Radius</b> │ <b>Rectangle: Corner 1 + Corner 2 (Width × Height)</b>',
   completionText: 'Great job! You have completed the Circle & Rectangle lesson.',
 };
 

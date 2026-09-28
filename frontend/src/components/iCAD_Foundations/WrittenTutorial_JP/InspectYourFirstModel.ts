@@ -4,9 +4,6 @@ export const INSPECT_MODEL_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: '画面操作、標準視図、図形選択スキルを組み合わせて、作成した3Dモデルを総合的に検査します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>ズーム＆回転</b> → <b>標準視図の巡回</b> → <b>ユーザ視図へ復帰</b> → <b>面とエッジの選択</b>',
   completionText: 'お疲れ様でした！「モデルの検査実践」レッスンを完了しました。',
 };
 

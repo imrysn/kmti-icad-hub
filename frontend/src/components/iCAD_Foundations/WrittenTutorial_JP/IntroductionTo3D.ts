@@ -4,9 +4,6 @@ export const INTRO_TO_3D_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: '2Dプロファイルから最初の3D直方体ソリッドモデル (100 × 60 × 20 mm) を作成します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>2Dプロファイル作成</b> → <b>輪郭選択</b> → <b>3D / 押し出しコマンド</b> → <b>高さ入力</b> → <b>3Dソリッド確定</b>',
   completionText: 'お疲れ様でした！「初めての3Dモデル作成」レッスンを完了しました。',
 };
 

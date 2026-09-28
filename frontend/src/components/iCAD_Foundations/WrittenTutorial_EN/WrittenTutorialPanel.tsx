@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from '../../../context/LanguageContext';
 import LessonObjective from '../../LessonObjective';
-import QuickReviewFlow from '../QuickReviewFlow';
 import '../../../styles/iCAD_Foundations/WrittenTutorial/WrittenTutorialPanel.css';
 import { WrittenTutorialCopy, WrittenTutorialStep } from './types';
 
@@ -239,16 +238,6 @@ export const WrittenTutorialPanel: React.FC<WrittenTutorialPanelProps> = ({
             );
           })}
         </ol>}
-        {(panelCopy.quickReviewText || panelCopy.quickReviewTitle) && (
-          <div className="written-tutorial-panel__quick-review">
-            <h4 className="section-title written-tutorial-panel__section-title">
-              {panelCopy.quickReviewTitle || 'Quick Review'}
-            </h4>
-            {panelCopy.quickReviewText && (
-              <QuickReviewFlow text={panelCopy.quickReviewText} />
-            )}
-          </div>
-        )}
       </div>
     </aside>
   );

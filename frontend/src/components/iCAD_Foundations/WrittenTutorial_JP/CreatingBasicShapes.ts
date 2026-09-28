@@ -9,8 +9,6 @@ export const CYLINDER_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'このレッスンの終了時までに、iCAD SX で円柱を作成し、意図した座標へ配置できるようになります。',
   procedureTitle: '円柱の作成手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: "正面図 → 円柱 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！iCAD SX での基本円柱の作成と配置ができるようになりました。',
   inlineHeader: true,
 };
@@ -63,8 +61,6 @@ export const BOX_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'このレッスンの終了時までに、iCAD SX で直方体を作成し、配置できるようになります。',
   procedureTitle: '直方体の作成手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: "正面図 → 直方体 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！「直方体」レッスンを完了しました。',
   inlineHeader: true,
 };
@@ -116,8 +112,6 @@ export const POLYGON_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'このレッスンの終了時までに、iCAD SX で正多角形柱を作成し、配置できるようになります。',
   procedureTitle: '正多角形柱の作成手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: "正面図 → 多角柱 → Y → 寸法 → 位置 → Enter",
   completionText: 'お疲れ様でした！「正多角形柱」レッスンを完了しました。',
   inlineHeader: true,
 };
@@ -169,8 +163,6 @@ export const CONE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'このレッスンの終了時までに、iCAD SX で円錐を作成し、配置できるようになります。',
   procedureTitle: '円錐の作成手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>円錐の選択</b> → <b>寸法入力</b> → <b>配置位置の指定</b> → <b>作成確定</b>',
   completionText: 'お疲れ様でした！「円錐」レッスンを完了しました。',
   inlineHeader: true,
 };
@@ -216,8 +208,6 @@ export const TORUS_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'このレッスンの終了時までに、iCAD SX でトーラスを作成し、配置できるようになります。',
   procedureTitle: 'トーラスの作成手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>トーラスの選択</b> → <b>寸法入力</b> → <b>配置位置の指定</b> → <b>作成確定</b>',
   completionText: 'お疲れ様でした！「トーラス」レッスンを完了しました。',
   inlineHeader: true,
 };

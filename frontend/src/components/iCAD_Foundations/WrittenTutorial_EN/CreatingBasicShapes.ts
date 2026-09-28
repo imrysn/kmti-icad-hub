@@ -9,8 +9,6 @@ export const CYLINDER_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'By the end of this lesson, you will be able to create and position a cylinder in iCAD SX.',
   procedureTitle: 'How to Create a Cylinder',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: "Front View → Cylinder → Y → Size → Position → Enter",
   completionText: 'Great job! You can now create and position a basic cylinder in iCAD SX.',
   inlineHeader: true,
 };
@@ -63,8 +61,6 @@ export const BOX_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'By the end of this lesson, you will be able to create and position a box in iCAD SX.',
   procedureTitle: 'How to Create a Box',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: "Front View → Box → Y → Size → Position → Enter",
   completionText: 'Great job! You have completed the Box lesson.',
   inlineHeader: true,
 };
@@ -116,8 +112,6 @@ export const POLYGON_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'By the end of this lesson, you will be able to create and position a polygonal prism in iCAD SX.',
   procedureTitle: 'How to Create a Polygonal Prism',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: "Front View → Polygonal Prism → Y → Size → Position → Enter",
   completionText: 'Great job! You have completed the Polygonal Prism lesson.',
   inlineHeader: true,
 };
@@ -169,8 +163,6 @@ export const CONE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'By the end of this lesson, you will be able to create and position a cone in iCAD SX.',
   procedureTitle: 'How to Create a Cone',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Cone</b> → <b>Enter Size</b> → <b>Enter Position</b> → <b>Create</b>',
   completionText: 'Great job! You have completed the Cone lesson.',
   inlineHeader: true,
 };
@@ -216,8 +208,6 @@ export const TORUS_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   objective: 'By the end of this lesson, you will be able to create and position a torus in iCAD SX.',
   procedureTitle: 'How to Create a Torus',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Torus</b> → <b>Enter Size</b> → <b>Enter Position</b> → <b>Create</b>',
   completionText: 'Great job! You have completed the Torus lesson.',
   inlineHeader: true,
 };

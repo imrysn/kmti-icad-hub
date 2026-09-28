@@ -6,8 +6,6 @@ export const CREATE_LINE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'iCAD の作業画面で最初の基本2D直線図形を作図します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>直線ツール</b> → <b>始点指定</b> → <b>終点指定</b> → <b>確定</b>',
   completionText: 'お疲れ様でした！「直線の作図」レッスンを完了しました。',
 };
 
@@ -44,8 +42,6 @@ export const CREATE_CIRCLE_RECT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: '標準の iCAD コマンドを使用して、円および長方形の基本2Dプロファイルを作図します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>円：中心点 ＋ 半径指定</b> │ <b>長方形：対角点指定（幅 × 高さ）</b>',
   completionText: 'お疲れ様でした！「円と長方形」レッスンを完了しました。',
 };
 

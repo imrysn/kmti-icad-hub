@@ -10,6 +10,8 @@ export interface CustomIconPreview {
   artwork: ReactNode;
   screenOverlay?: ReactNode;
   screen: string;
+  /** Keep cropped captures at their native size and aspect ratio. */
+  screenSize?: [number, number];
   region: ReturnType<typeof interfaceIconRegion>;
   highlightColor?: string;
 }
@@ -111,7 +113,10 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
     return ()=>{node.close();document.body.style.overflow=overflow;};
   },[]);
   return createPortal(<dialog ref={dialog} className="foundation-interface-icon-dialog" data-phase={phase} aria-label={title} onCancel={event=>{event.preventDefault();onClose();}} onClick={atLocation?onClose:undefined} tabIndex={-1}>
-    <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase}>
+    <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase} style={custom?.screenSize ? {
+      width:`min(${custom.screenSize[0]}px, calc(100vw - 32px), calc((100dvh - 32px) * ${custom.screenSize[0]} / ${custom.screenSize[1]}))`,
+      height:'auto', aspectRatio:`${custom.screenSize[0]} / ${custom.screenSize[1]}`,
+    } : undefined}>
       <img className="foundation-interface-icon-dialog__screen" src={custom?.screen ?? interfaceImage} alt={japanese?'iCAD SX の画面全体':'Full iCAD SX interface'} onLoad={()=>setImageReady(true)} onError={()=>setImageFailed(true)}/>
       {phase==='located' && custom?.screenOverlay && <svg viewBox="0 0 1920 1080" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}} aria-hidden="true">{custom.screenOverlay}</svg>}
       <div ref={movingIcon} className="foundation-interface-icon-dialog__moving-icon" style={regionStyle(region.landing)} aria-hidden="true">

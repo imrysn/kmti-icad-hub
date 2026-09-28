@@ -11,9 +11,6 @@ export const SELECTING_GEOMETRY_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'Procedure',
   objective:
     'By the end of this lesson, you will be able to select 3D geometry, confirm your selection with GO, and move components using the Move tool in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Select Move</b> → <b>Select Object</b> → <b>Enter Movement Distance</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered moving components in iCAD SX.',
   inlineHeader: true,
 };
@@ -60,8 +57,6 @@ export const ROTATE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Rotate an Object',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to rotate a 3D object to the desired angle in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Rotate</b> → <b>Select Object</b> → <b>Set Axis</b> → <b>Enter Angle</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered rotating 3D objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -110,8 +105,6 @@ export const MIRROR_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Mirror an Object',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to mirror a 3D object to the opposite side in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Mirror</b> → <b>Select Object</b> → <b>Set Mirror Plane</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered mirroring 3D objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -160,8 +153,6 @@ export const COPY_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Use Copy',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to copy a 3D object and place the copies at a specified distance.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Copy</b> → <b>Select Object</b> → <b>Enter X, Y, Z Distance</b> → <b>Enter Number of Copies</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered copying 3D objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -204,8 +195,6 @@ export const ROTATE_COPY_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Use Rotate Copy',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to create a rotated copy of a 3D object in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Rotate Copy</b> → <b>Select Object</b> → <b>Set Axis</b> → <b>Enter Angle</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered creating rotated copies of 3D objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -254,8 +243,6 @@ export const MIRROR_COPY_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Use Mirror Copy',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to create a mirrored copy of a 3D object in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Mirror Copy</b> → <b>Select Object</b> → <b>Set Mirror Plane</b> → <b>Confirm</b>',
   completionText: 'Great job! You have mastered creating mirrored copies of 3D objects in iCAD SX.',
   inlineHeader: true,
 };
@@ -304,8 +291,6 @@ export const DELETE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'How to Use Delete',
   objectiveLabel: 'Learning Goal',
   objective: 'By the end of this lesson, you will be able to delete a selected object in iCAD SX.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Select Delete</b> → <b>Left-Click Object</b> → <b>Check Result</b>',
   completionText: 'Great job! You have mastered deleting objects in iCAD SX.',
   inlineHeader: true,
 };

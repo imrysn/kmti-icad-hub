@@ -4,9 +4,6 @@ export const SAVING_WORK_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: '適切なファイル命名規則とフォルダ階層に従って、演習データを確実に保存します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>ファイルメニュー</b> → <b>名前を付けて保存</b> → <b>ファイル名入力</b> → <b>確定＆タイトルバー確認</b>',
   completionText: 'お疲れ様でした！「作業データの保存」レッスンを完了しました。',
 };
 

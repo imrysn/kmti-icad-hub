@@ -8,7 +8,6 @@ export interface FoundationLessonContent {
   practice: string;
   description2?: string;
   sections?: Array<{ title: string; text: string }>;
-  quickReview?: string;
   connection?: string;
 }
 export interface FoundationLesson {
@@ -70,7 +69,7 @@ export function resolveFoundationLesson(id: string): FoundationLesson | undefine
 export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
   if (version !== '3' && /^F(?:9|10)\./.test(id)) {
     return FOUNDATION_LESSONS.find(lesson => lesson.completionAliases.includes(id))
-      || resolveFoundationLesson(id.startsWith('F10.') ? 'F16.1' : 'F9.1');
+      || resolveFoundationLesson(id.startsWith('F10.') ? 'F17.1' : 'F9.1');
   }
   return resolveFoundationLesson(id);
 }
@@ -101,7 +100,7 @@ export function createFoundationLessons(language: FoundationLanguage = 'en'): Le
 
 export function foundationReadingText(content: FoundationLessonContent): string[] {
   return [content.explanation, content.description2, content.practice,
-    ...(content.sections || []).flatMap(section => [section.title, section.text]), content.quickReview, content.connection]
+    ...(content.sections || []).flatMap(section => [section.title, section.text]), content.connection]
     .filter((text): text is string => Boolean(text)).map(text => text.replace(/\*\*/g, ''));
 }
 
@@ -115,7 +114,7 @@ export function foundationRecap(id: string, language: FoundationLanguage = 'en')
   if (!lesson) return undefined;
   const content = lesson.content[language];
   const explanation = [content.explanation, content.description2].filter(Boolean).join(' ').replace(/\*\*/g, '');
-  const review = (content.quickReview || content.practice).replace(/\*\*/g, '');
+  const review = content.practice.replace(/\*\*/g, '');
   return {
     narration: `${language === 'ja' ? '学習内容を振り返りましょう。' : 'Great work. Remember: '}${explanation} ${review}`,
     items: [{ action: language === 'ja' ? '理解' : 'Understand', result: explanation },

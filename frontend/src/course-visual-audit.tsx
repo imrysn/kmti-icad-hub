@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')!).render(
         lesson={lesson}
         onComplete={async()=>{}}
         onNext={()=>{}}
-        isLast={lesson.id==='F16.2'}
+        isLast={lesson.id==='F17.2'}
         tutorial={tutorialComponent && <div className="foundations-zoom-tutorial">{tutorialComponent}</div>}
       />
     </TTSProvider>

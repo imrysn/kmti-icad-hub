@@ -309,15 +309,15 @@
   padding-left: 0.25rem;
 }
 
-.written-tutorial-panel__quick-review {
+.written-tutorial-panel__supplement {
   margin-top: 2.25rem;
 }
 
-.written-tutorial-panel__quick-review .written-tutorial-panel__section-title {
+.written-tutorial-panel__supplement .written-tutorial-panel__section-title {
   margin: 0 0 0.85rem 0;
 }
 
-.written-tutorial-panel__quick-review-text {
+.written-tutorial-panel__supplement-text {
   margin: 0;
   padding-left: calc(5px + 0.75rem);
   color: var(--text-dim);
@@ -326,14 +326,14 @@
   white-space: pre-line;
 }
 
-.written-tutorial-panel__quick-review-text strong,
-.written-tutorial-panel__quick-review-text b {
+.written-tutorial-panel__supplement-text strong,
+.written-tutorial-panel__supplement-text b {
   font-weight: 700;
   color: var(--text-main, #0f172a);
 }
 
-[data-theme='dark'] .written-tutorial-panel__quick-review-text strong,
-[data-theme='dark'] .written-tutorial-panel__quick-review-text b {
+[data-theme='dark'] .written-tutorial-panel__supplement-text strong,
+[data-theme='dark'] .written-tutorial-panel__supplement-text b {
   color: var(--text-white, #f8fafc);
 }
 
@@ -378,7 +378,7 @@
 }
 
 .foundations-authored-reading .step-text-left > p,
-.foundations-authored-reading .written-tutorial-panel__quick-review p {
+.foundations-authored-reading .written-tutorial-panel__supplement p {
   white-space: pre-line;
 }
 

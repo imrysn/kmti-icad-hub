@@ -6,8 +6,6 @@ export const TOOLBARS_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   procedureTitle: 'ivl-objective',
   objective: 'このレッスンの終了時までに、iCAD SX の主要なツールバーを識別し、それぞれの基本機能を理解できるようになります。',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText: '<b>ツールバーを探す</b> → <b>マウスホバーでヒント確認</b> → <b>コマンドをクリック</b>',
   completionText: 'お疲れ様でした！「iCAD SX ツールバー」レッスンを完了しました。',
   inlineHeader: true,
   renderAsObjective: true,

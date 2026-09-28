@@ -4,9 +4,6 @@ export const INSPECT_MODEL_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Apply navigation, standard-view, and entity-selection skills to inspect a 3D model.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>Zoom & Orbit</b> → <b>Cycle Standard Views</b> → <b>Return to User View</b> → <b>Select Faces & Edges</b>',
   completionText: 'Great job! You have completed the Inspection Practice lesson.',
 };
 

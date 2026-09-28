@@ -1,0 +1,10 @@
+.work-plane-spiral { width: 100%; min-width: 0; }
+.work-plane-spiral-sample { display: block; width: 100%; height: auto; max-width: 725px; margin: 24px auto; border: 0; background: none; }
+.work-plane-spiral--1 > svg { max-width: 224px; }
+.work-plane-spiral--3 > svg { max-width: 404px; }
+.work-plane-spiral-pitch { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
+.work-plane-spiral-pitch > svg:first-child { max-width: 433px; }
+.work-plane-spiral-pitch > svg:last-child { max-width: 218px; }
+.work-plane-spiral-result { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 640px; margin: auto; }
+.work-plane-spiral-result > svg { height: 301px; }
+@media(max-width: 500px) { .work-plane-spiral-result { grid-template-columns: 1fr; } }

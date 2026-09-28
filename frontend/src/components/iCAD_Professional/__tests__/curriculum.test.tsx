@@ -103,13 +103,13 @@ describe('iCAD Professional curriculum', () => {
     expect(p81.choices.find(choice => choice.isCorrect)!.label).toBe('B. X, Y, Z Input');
 
     const [p91] = foundationKnowledgeQuestions('en', 'P9.1');
-    expect(p91.choices.find(choice => choice.isCorrect)!.label).toContain('create lines, circles, arcs');
+    expect(p91.choices.find(choice => choice.isCorrect)!.label).toContain('create an enclosed section for 3D modeling');
 
     const [p101] = foundationKnowledgeQuestions('en', 'P10.1');
-    expect(p101.choices.find(choice => choice.isCorrect)!.label).toContain('Creates a 3D solid by projecting');
+    expect(p101.choices.find(choice => choice.isCorrect)!.label).toContain('recognizes the selected area as a closed section');
 
     const [p102] = foundationKnowledgeQuestions('en', 'P10.2');
-    expect(p102.choices.find(choice => choice.isCorrect)!.label).toContain('An enclosed sketch cross-section and an axis of rotation');
+    expect(p102.choices.find(choice => choice.isCorrect)!.label).toBe('B. Axis of Rotation');
   });
 
   it('asks shape-specific knowledge-check questions for Cone and Torus', () => {
@@ -185,9 +185,9 @@ describe('iCAD Professional curriculum', () => {
     ['P8.6', 'mirrorCopy', 0, 4],
     ['P8.7', 'deleting', 0, 4],
     ['P9.1', 'sketch', 2, 3],
-    ['P10.1', 'extrude', 0, 5],
     ['P10.1', 'extrude', 1, 5],
-    ['P10.2', 'revolve', 0, 4]
+    ['P10.1', 'extrude', 2, 5],
+    ['P10.2', 'revolve', 1, 5]
   ] as const)('renders consistent step cards for %s (%s)', (id, prop, sectionIndex, count) => {
     const lesson = resolveProfessionalLesson(id)!;
     const { container } = render(<FoundationModelingProcess text={lesson.content.en.sections![sectionIndex].text} {...{ [prop]: true }} />);

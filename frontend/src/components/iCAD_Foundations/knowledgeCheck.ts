@@ -5,12 +5,12 @@ import { FOUNDATION_LESSONS, resolveFoundationLesson } from './curriculum';
 import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 
 /** Resolve current Foundation numbers before using preserved source question keys. */
-export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F16.2'): InteractiveVideoQuestion[] {
+export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
   const lesson = resolveFoundationLesson(lessonId);
   return sourceKnowledgeQuestions(language, lesson?.presentationId || lessonId);
 }
 
-export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F16.2'): InteractiveVideoQuestion[] {
+export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
   if (lessonId === 'P13.1') {
     const ja=language==='ja';
     const labels=ja?['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー']:['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
@@ -178,10 +178,10 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   }
   if (lessonId === 'P9.1') {
     const ja = language === 'ja';
-    const labels = ja ? ['モデルの色を変更するため', 'モデリング用の直線、円、円弧などの2D幾何形状を作成するため', '図面を保存するため', '画面を回転するため']
-      : ['To change the model color', 'To create lines, circles, arcs, and other 2D geometry for modeling', 'To save the drawing', 'To rotate the screen'];
+    const labels = ja ? ['スケッチの色を変更するため', '3Dモデリング用の閉じた断面を作成するため', '画面を回転するため', '図面を保存するため']
+      : ['To change the sketch color', 'To create an enclosed section for 3D modeling', 'To rotate the screen', 'To save the drawing'];
     return [{
-      id: 'P9.1-knowledge-check', prompt: ja ? 'iCAD SX におけるスケッチの主な目的は何ですか？' : 'What is the main purpose of Sketch in iCAD SX?',
+      id: 'P9.1-knowledge-check', prompt: ja ? '押し出しや回転体を使用する前に、なぜスケッチの輪郭を閉じる必要がありますか？' : 'Why should the sketch outline be closed before using Extrude or Revolve?',
       choices: labels.map((label, index) => ({
         id: `P9.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
         feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
@@ -191,36 +191,94 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   if (lessonId.startsWith('P10.')) {
     const ja = language === 'ja';
     if (lessonId === 'P10.1') {
-      const labels = ja ? ['閉じた2Dスケッチの外周を選択し、指定した高さで垂直にソリッドを作成する', 'スケッチを削除して別の図面へコピーする', '線分を延長して無限長にする', '2D図面の寸法線を自動配置する']
-        : ['Creates a 3D solid by projecting a closed 2D sketch profile vertically by a specified height', 'Deletes the sketch and copies it to another drawing', 'Extends lines into infinite construction lines', 'Automatically dimensions 2D drawings'];
+      const labels = ja ? [
+        'スケッチが削除されたこと',
+        'iCAD SX が選択された領域を閉じた断面として認識したこと',
+        'モデルが保存されたこと',
+        '押し出しが完了したこと'
+      ] : [
+        'The sketch has been deleted',
+        'iCAD SX recognizes the selected area as a closed section',
+        'The model has been saved',
+        'The extrusion is complete'
+      ];
       return [{
-        id: 'P10.1-knowledge-check', prompt: ja ? '押し出し（Extrude）コマンドの機能として正しいものはどれですか？' : 'What is the function of the Extrude command?',
+        id: 'P10.1-knowledge-check', prompt: ja ? 'スケッチを選択した後に表示されるハッチングは何を示していますか？' : 'What does the hatch indicate after selecting a sketch?',
         choices: labels.map((label, index) => ({
-          id: `P10.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
-          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+          id: `P10.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+          feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
         })),
       }];
     }
     if (lessonId === 'P10.2') {
-      const labels = ja ? ['閉じたスケッチ断面と回転軸', '3つの異なる視点とカメラ位置', '押し出し高さとドラフト角度', 'モデルの材質設定と質量']
-        : ['An enclosed sketch cross-section and an axis of rotation', 'Three different viewpoints and camera positions', 'Extrusion height and draft angle', 'Material properties and mass'];
+      const labels = ja ? ['押し出し高さ', '回転軸', 'シェーディングモード', 'ユーザー視点']
+        : ['Extrusion Height', 'Axis of Rotation', 'Shading Mode', 'User View'];
       return [{
-        id: 'P10.2-knowledge-check', prompt: ja ? '回転体（Revolve）でソリッドを作成するために必要な要素は何ですか？' : 'What is required to generate a 3D solid using the Revolve command?',
+        id: 'P10.2-knowledge-check', prompt: ja ? 'スケッチが回転する中心を定義するものは何ですか？' : 'What defines the center around which the sketch rotates?',
         choices: labels.map((label, index) => ({
-          id: `P10.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
-          feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+          id: `P10.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1,
+          feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
         })),
       }];
     }
   }
+  if (lessonId.startsWith('foundation-boolean-')) {
+    const ja = language === 'ja';
+    const checks:Record<string,[string,string,string[],string[]]> = {
+      union:['What does the Union command do?','和コマンドは何を行いますか？',['Separates one solid into several entities','Joins multiple 3D entities into one solid','Hides selected entities','Changes the model view'],['1つの立体を複数の要素に分離する','複数の3D要素を1つの立体に結合する','選択した要素を非表示にする','モデルの表示方向を変更する']],
+      subtract:['Which entity should be selected first when using Subtract?','差を使用するとき、最初に選択する要素はどれですか？',['Tool Entity','Target Entity','Work Plane','User View'],['ツール要素','ターゲット要素','作業平面','ユーザビュー']],
+      intersect:['What does the Intersect command create?','重なり部分を残すコマンドは何を作成しますか？',['A copy of both entities','A new entity from their overlapping area','A cutout in the first entity','One combined solid from both entities'],['両方の要素のコピー','重なった部分から作成した新しい要素','最初の要素の切り欠き','両方の要素を結合した1つの立体']],
+      separate:['What does Separate All Components act on?','全構成要素の分離は何を対象にしますか？',['All components of the selected solid','Only one chosen hole','Only the Work Plane','Only the background'],['選択した立体の全構成要素','選んだ穴1つだけ','作業平面だけ','背景だけ']]
+    };
+    const key=lessonId.replace('foundation-boolean-','');
+    const entry=checks[key];
+    if(entry) { const correct=(key==='union'||key==='subtract'||key==='intersect')?1:0; const labels=ja?entry[3]:entry[2]; return [{id:`${lessonId}-check`,prompt:ja?entry[1]:entry[0],choices:labels.map((label,index)=>({id:`${key}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===correct,feedback:index===correct?`${ja?'正解：':'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`:(ja?'操作手順を確認してください。':'Review the operation steps.')}))}]; }
+  }
+  if (lessonId === 'foundation-hole-details') {
+    const ja = language === 'ja';
+    const labels = ja ? ['緑色', '赤色', '青色', '黄色'] : ['Green', 'Red', 'Blue', 'Yellow'];
+    return [{id:'hole-details-color',prompt:ja?'資料では、タップ穴を何色で示しますか？':'In this lesson, which color identifies tapped holes?',choices:labels.map((label,index)=>({id:`hole-color-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'完成例のタップ穴を確認してください。':'Check the tapped-hole examples.')}))}];
+  }
+  if (lessonId === 'F16.5') {
+    const ja = language === 'ja';
+    const labels = ja ? ['断面の軸方向の厚さより大きくする', '断面の厚さより小さくする', '常に0にする', '外径と同じ値にする'] : ['Greater than the section thickness along the axis', 'Less than the section thickness', 'Always zero', 'Equal to the outer diameter'];
+    return [{ id: 'F16.5-pitch-check', prompt: ja ? '巻きの間に隙間を設けるには、ピッチをどう設定しますか？' : 'How should pitch relate to the section thickness to leave space between turns?', choices: labels.map((label, index) => ({ id: `F16.5-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? 'ピッチと軸方向の厚さを比較してください。' : 'Compare the pitch with the section thickness along the axis.') })) }];
+  }
+  if (lessonId === 'F16.4') {
+    const ja = language === 'ja';
+    const labels = ja ? ['回転の中心となる線', '画面の背景', '保存先フォルダー', '押し出し高さ'] : ['The line the profile rotates around', 'The screen background', 'The save folder', 'The extrusion height'];
+    return [{ id: 'F16.4-axis-check', prompt: ja ? '回転投影で回転軸は何を指定しますか？' : 'What does the rotation axis define in Revolve?', choices: labels.map((label, index) => ({ id: `F16.4-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '輪郭がどの線の周りを回転するか確認しましょう。' : 'Think about the line around which the profile turns.') })) }];
+  }
+  if (lessonId === 'F16.3') {
+    const ja=language==='ja';
+    const labels=ja?['OK','キャンセル','高さを0にする','輪郭を削除する']:['OK','Cancel','Set the height to zero','Delete the profile'];
+    return [{id:'F16.3-plane-check',prompt:ja?'押し出し後の削除確認で、作業平面とスケッチを残すには何を選びますか？':'Which option keeps the Work Plane and its sketches at the deletion prompt after extrusion?',choices:labels.map((label,index)=>({id:`F16.3-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'削除確認ダイアログの選択肢を確認してください。':'Check the options in the Work Plane deletion dialog.')}))}];
+  }
+  if (lessonId === 'F16.2') {
+    const ja=language==='ja';
+    const labels=ja ? ['すべての端点が接続し、隙間や重複線がないこと','背景色が変更されていること','作業平面が削除されていること','輪郭が複数の平面に分かれていること'] : ['All endpoints connect, with no gaps or duplicate lines','The background color has changed','The Work Plane has been deleted','The outline is spread across several planes'];
+    return [{id:'F16.2-profile-check',prompt:ja?'長方形の輪郭を立体化する前に何を確認しますか？':'What should you check before using the rectangular profile to create a solid?',choices:labels.map((label,index)=>({id:`F16.2-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'端点の接続と余分な線を確認しましょう。':'Check endpoint connections and unwanted lines.')}))}];
+  }
   if (lessonId === 'F16.1') {
+    const ja = language === 'ja';
+    const labels = ja ? ['Alt + W', 'Ctrl + W', '無変換 (Muhenkan) + W', 'Shift + W']
+      : ['Alt + W', 'Ctrl + W', '無変換 (Muhenkan) + W', 'Shift + W'];
+    return [{
+      id: 'F16.1-knowledge-check', prompt: ja ? 'ワークプレーンを X-Y、X-Z、Y-Z の間で切り替えるショートカットはどれですか？' : 'Which shortcut is used to change the Work Plane between X-Y, X-Z, and Y-Z orientations?',
+      choices: labels.map((label, index) => ({
+        id: `F16.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2,
+        feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
+      })),
+    }];
+  }
+  if (lessonId === 'F17.1') {
     const ja = language === 'ja';
     const labels = ja ? ['ツール選択 → 寸法入力 → 位置指定 → 確定', '保存 → 削除 → 回転 → 閉じる', 'ビュー選択 → シェーディング → 印刷 → 終了', 'パン → コピー → 閉じる → 測定']
       : ['Select Tool → Enter Size → Specify Position → Confirm', 'Save → Delete → Rotate → Close', 'Select View → Shade → Print → Exit', 'Pan → Copy → Close → Measure'];
     return [{
-      id: 'F16.1-knowledge-check', prompt: ja ? '基本的な 3D 形状を作成する手順として正しいものはどれですか？' : 'Which sequence best represents the basic process for creating a simple 3D shape?',
+      id: 'F17.1-knowledge-check', prompt: ja ? '基本的な 3D 形状を作成する手順として正しいものはどれですか？' : 'Which sequence best represents the basic process for creating a simple 3D shape?',
       choices: labels.map((label, index) => ({
-        id: `F16.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
+        id: `F17.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0,
         feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : ja ? 'レッスンを確認して、もう一度回答してください。' : 'Review the lesson and try again.',
       })),
     }];
@@ -632,7 +690,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
       }))
     }];
   }
-  if (lessonId !== 'F16.2') {
+  if (lessonId !== 'F17.2') {
     const lesson = resolveFoundationLesson(lessonId);
     if (!lesson) throw new Error(`Unknown Foundations lesson: ${lessonId}`);
     const clean = (text: string) => text.replace(/\*\*/g, '').trim();

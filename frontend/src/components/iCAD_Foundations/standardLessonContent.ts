@@ -24,6 +24,5 @@ export function standardLessonContent(lesson: FoundationLesson, language: Founda
     sections: preserved ? [...preserved.map(step => ({ ...step, preserveText: true })), ...(content.sections || [])] : content.sections || [
       { title: language === 'ja' ? '実践' : 'Practice', text: content.practice },
     ],
-    quickReview: content.quickReview || copy?.quickReviewText || content.explanation,
   };
 }

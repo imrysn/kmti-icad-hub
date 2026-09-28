@@ -11,9 +11,6 @@ export const ORIGIN_AXES_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   procedureTitle: 'ivl-objective',
   objective:
     'このレッスンの終了時までに、原点の概念を理解し、X, Y, Z 座標軸を把握して、キー入力領域（0, 0, 0）を用いて最初のオブジェクトを原点に配置できるようになります。',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>原点の確認 (0, 0, 0)</b> → <b>X, Y, Z 軸の識別</b> → <b>キー入力領域: 0, 0, 0</b> → <b>基準形状の配置</b>',
   completionText: 'お疲れ様でした！「原点」レッスンを完了しました。',
   inlineHeader: true,
   renderAsObjective: true,
@@ -56,9 +53,6 @@ export const ORIGIN_LAYOUT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: 'レッスンについて',
   procedureTitle: '操作手順',
   objective: 'このレッスンを完了すると、「3Dパーツ配置変更」ツールを使用して原点を再配置し、X軸およびY軸の向きを定義できるようになります。',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>3Dパーツ配置変更</b> → <b>右クリック：現在の原点確認</b> → <b>点1：新原点</b> → <b>点2：X軸設定</b> → <b>点3：Y軸設定（正面図確定）</b>',
   completionText: 'お疲れ様でした！「3Dパーツ配置変更」レッスンを完了しました。',
   inlineHeader: true,
 };

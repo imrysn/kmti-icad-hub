@@ -4,9 +4,6 @@ export const PRACTICAL_ASSESSMENT_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'iCAD の操作環境、ツール群、モデリングワークフローに対する総合的な自立習熟度を実技評価します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: '評価チェックリスト',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>画面要素の識別</b> → <b>視図・画面操作</b> → <b>2D/3Dモデリング</b> → <b>モデル検査＆規定保存</b>',
   completionText: '合格おめでとうございます！「iCAD 基礎 実技評価」を完了しました。',
 };
 

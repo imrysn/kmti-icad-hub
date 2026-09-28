@@ -4,9 +4,6 @@ export const INTRO_TO_3D_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: 'Create your first 3D rectangular solid model (100 × 60 × 20 mm) from a 2D profile.',
   moduleLabel: 'About the Lesson',
   procedureTitle: 'Procedure',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText:
-    '<b>2D Profile</b> → <b>Select Profile</b> → <b>3D / Extrude Command</b> → <b>Enter Height</b> → <b>Confirm 3D Solid</b>',
   completionText: 'Great job! You have completed the Your First 3D Model lesson.',
 };
 

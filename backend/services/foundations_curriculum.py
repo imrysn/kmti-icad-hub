@@ -94,4 +94,4 @@ def lesson_tree(language="en"):
 def reading_text(content):
     sections = [text for section in content.get("sections", []) for text in (section["title"], section["text"])]
     return [text.replace("**", "") for text in [content["explanation"], content.get("description2"), content["practice"],
-                                               *sections, content.get("quickReview")] if text]
+                                               *sections] if text]

@@ -6,8 +6,6 @@ export const INTERFACE_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   moduleLabel: '',
   procedureTitle: 'ivl-objective',
   objective: 'By the end of this lesson, you will be able to identify the main parts of the iCAD interface and understand their basic functions.',
-  quickReviewTitle: 'Quick Review',
-  quickReviewText: '<b>Menu / Toolbars</b> → <b>Command Selection</b> → <b>Item / Key Entry</b> → <b>Workspace Execution</b>',
   completionText: 'Great job! You have completed the iCAD Interface lesson.',
   hideStepNumbers: false,
   inlineHeader: true,

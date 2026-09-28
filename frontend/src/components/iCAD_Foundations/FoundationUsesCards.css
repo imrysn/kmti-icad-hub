@@ -29,3 +29,10 @@
 @container (min-width: 850px) { .foundations-uses__grid { grid-template-columns: repeat(6,minmax(0,1fr)); } }
 @container (max-width: 550px) { .foundations-uses__grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @container (max-width: 320px) { .foundations-uses__grid { grid-template-columns: minmax(0,1fr); } }
+
+/* The combined work-plane procedure has exactly three cards. */
+.foundation-work-plane-steps { width: 100%; min-width: 0; max-width: 960px; margin-inline: auto; }
+.foundation-work-plane-steps .foundations-uses__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 600px) {
+  .foundation-work-plane-steps .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); }
+}

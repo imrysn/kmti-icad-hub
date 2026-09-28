@@ -4,9 +4,6 @@ export const TROUBLESHOOTING_WRITTEN_TUTORIAL_COPY: WrittenTutorialCopy = {
   title: '画面操作、図形選択、コマンド実行時によくある初心者のトラブルを認識し、迅速に解決します。',
   moduleLabel: 'レッスンについて',
   procedureTitle: 'トラブルシューティングガイド',
-  quickReviewTitle: 'クイックレビュー',
-  quickReviewText:
-    '<b>モデル見失い</b>（全体表示） → <b>視点固定</b>（作業画面確認） → <b>誤選択</b>（Esc / Undo） → <b>入力待ち</b>（メッセージ確認）',
   completionText: 'お疲れ様でした！「初心者向けトラブルシューティング」レッスンを完了しました。',
 };
 

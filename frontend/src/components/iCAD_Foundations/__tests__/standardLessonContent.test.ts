@@ -9,7 +9,7 @@ describe('Course-wide content preservation', () => {
       const content = standardLessonContent(resolveFoundationLesson(id)!, language);
       expect(content.sections.length, id).toBeGreaterThan(1);
       expect(content.sections.every(section => Boolean(section.title && section.text)), id).toBe(true);
-      expect(content.quickReview, id).toBeTruthy();
+      expect(content, id).not.toHaveProperty('quickReview');
     }
   });
   it.each(['en', 'ja'] as const)('gives every lesson a valid localized question in %s', language => {
