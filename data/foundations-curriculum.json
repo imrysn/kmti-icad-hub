@@ -2278,16 +2278,12 @@
                   "text": "Choose the **X-Y, X-Z, or Y-Z** plane for your sketch."
                 },
                 {
-                  "title": "How to Open and Remove a Work Plane",
-                  "text": "- **Open** — Select **Open Work Plane「作業平面」**, then left-click in the 3D workspace.\n- **Right-click** — Right-click the plane’s edge to open its menu.\n- **Remove** — Choose **Delete「削除(E)」 → Delete Specified Work Plane「指定した組立平面削除(D)」**."
-                },
-                {
                   "title": "How to Change the Work Plane Orientation",
                   "text": "Hold **無変換 (Muhenkan)** and press **W** to switch between the **X-Y, X-Z, and Y-Z** orientations.\n\n**English/US keyboard:** Close iCAD SX. In Command Prompt, run:\n\n\"%ICADDIR%\\BIN\\nonconvset.exe\" -mCTRL\n\nReopen iCAD SX, then use **Ctrl + W** instead."
                 },
                 {
-                  "title": "Command Menu",
-                  "text": "Most tools for sketching on the Work Plane are found in the Command Menu.\n\n- Contains tools for drafting.\n- Contains tools for sketching.\n- Displays the available tools for drafting and sketching.\n- Displays the options for the selected tool."
+                  "title": "How to Open and Remove a Work Plane",
+                  "text": "- **Open** — In the Command Menu, select **Open Work Plane「組立平面開設」**, then left-click in the 3D workspace.\n- **Right-click** — Right-click the plane’s edge to open its menu.\n- **Remove** — Choose **Delete「削除(E)」 → Delete Specified Work Plane「指定した組立平面削除(D)」** (or **Delete All 3D Work Planes「３Ｄ化済の全組立平面削除(A)」** to delete all)."
                 }
               ]
             },
@@ -2300,16 +2296,12 @@
                   "text": "スケッチに合わせて**X-Y、X-Z、Y-Z**を選びます。"
                 },
                 {
-                  "title": "作業平面を開く・削除する方法",
-                  "text": "- **開く** — **「作業平面」**を選び、3D作業空間を左クリックします。\n- **右クリック** — 平面の枠線を右クリックします。\n- **削除する** — **「削除(E)」→「指定した組立平面削除(D)」**を選びます。"
-                },
-                {
                   "title": "ワークプレーンの向きの変更方法",
                   "text": "**無変換**を押しながら**W**を押し、**X-Y、X-Z、Y-Z**の向きを切り替えます。\n\n**英語／USキーボード：** iCAD SXを終了し、コマンドプロンプトで次を実行します。\n\n\"%ICADDIR%\\BIN\\nonconvset.exe\" -mCTRL\n\niCAD SXを再起動すると、代わりに**Ctrl + W**を使用できます。"
                 },
                 {
-                  "title": "コマンドメニュー",
-                  "text": "作業平面でのスケッチに使う主なツールは、コマンドメニューにあります。\n\n- 製図ツールを含みます。\n- スケッチツールを含みます。\n- 製図・スケッチで使用できるコマンドが表示されます。\n- 選択したツールのオプションが表示されます。"
+                  "title": "作業平面を開く・削除する方法",
+                  "text": "- **開く** — コマンドメニューで**「組立平面開設」**を選び、3D作業空間を左クリックします。\n- **右クリック** — 平面の枠線を右クリックします。\n- **削除する** — **「削除(E)」→「指定した組立平面削除(D)」**（またはすべて削除する場合は**「３Ｄ化済の全組立平面削除(A)」**）を選びます。"
                 }
               ]
             }
@@ -2337,8 +2329,8 @@
               "practice": "Draw and check a closed rectangular profile, then locate the 2D-to-3D tools.",
               "sections": [
                 {
-                  "title": "Before You Begin",
-                  "text": "Use an active Work Plane in the required orientation (**F16.1**)."
+                  "title": "Command Menu",
+                  "text": "Most tools for sketching on the Work Plane are found in the Command Menu.\n\n- Contains tools for drafting.\n- Contains tools for sketching.\n- Displays the available tools for drafting and sketching.\n- Displays the options for the selected tool."
                 },
                 {
                   "title": "Create a Rectangular Profile",
@@ -2359,8 +2351,8 @@
               "practice": "閉じた長方形の輪郭を作成・確認し、2Dから立体化するツールの場所を確認します。",
               "sections": [
                 {
-                  "title": "始める前に",
-                  "text": "必要な向きの作業平面をアクティブにします（**F16.1**）。"
+                  "title": "コマンドメニュー",
+                  "text": "作業平面でのスケッチに使う主なツールは、コマンドメニューにあります。\n\n- 製図ツールを含みます。\n- スケッチツールを含みます。\n- 製図・スケッチで使用できるコマンドが表示されます。\n- 選択したツールのオプションが表示されます。"
                 },
                 {
                   "title": "長方形の輪郭を作成する",
@@ -2385,8 +2377,8 @@
           "id": "F16.3",
           "moduleId": "F16",
           "title": {
-            "en": "Extrude from a Work Plane",
-            "ja": "ワークプレーンからの押し出し"
+            "en": "Extrude",
+            "ja": "押し出し"
           },
           "type": "reading",
           "renderer": null,
@@ -2396,46 +2388,38 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Extrude creates a 3D solid by extending a closed 2D profile perpendicular to its Work Plane.",
-              "practice": "Select a closed profile, set its extrusion height, and choose whether to keep the Work Plane.",
+              "explanation": "Extrude a section on a Work Plane or 2D drawing to create a solid.",
+              "practice": "Select a closed profile, set its height, and choose whether to keep the Work Plane.",
               "sections": [
                 {
-                  "title": "Before You Begin",
-                  "text": "Use a closed profile (**F16.2**). The sample uses an L-shape."
-                },
-                {
-                  "title": "How to Extrude from a Work Plane",
-                  "text": "- **Select Extrude** — Open **Basic「基本」 → 2D to 3D「2Dから立体化」 → Extrude「垂直投影」**.\n- **Pick the Profile** — Select an edge, check the hatch, then confirm with **GO** (right-click).\n- **Set Height** — Enter **Height「高さ」** in **Item Entry** and press **Enter**."
+                  "title": "How to Extrude",
+                  "text": "- **Select Extrude** — Under Basic「基本」→ 2D to 3D「2Dから立体化」, select Extrude.\n- **Pick cross-section** — Select the closed profile, check the hatch, then select GO.\n- **Set Height** — In Item Entry, enter Height「高さ」, then press Enter."
                 },
                 {
                   "title": "Keep or Delete the Work Plane",
-                  "text": "At the Work Plane deletion prompt:\n\n- **OK:** Deletes the Work Plane and its 2D sketches. This deletion cannot be undone.\n- **Cancel:** Keeps the Work Plane and its sketches. The new solid remains."
+                  "text": "Choose OK to delete the Work Plane and its sketches, or Cancel to keep them. The new solid remains. Deleting the Work Plane cannot be undone."
                 },
                 {
                   "title": "Check the Final Solid",
-                  "text": "Check the profile and height. The sample shows the solid with its Work Plane removed."
+                  "text": "Check the profile and extrusion height."
                 }
               ]
             },
             "ja": {
-              "explanation": "押し出しは、閉じた2D輪郭を作業平面に対して垂直方向へ延ばし、3D立体を作成します。",
-              "practice": "閉じた輪郭を選び、押し出し高さを指定し、作業平面を残すか削除するかを選択します。",
+              "explanation": "作業平面または2D図面上の断面を押し出し、立体を作成します。",
+              "practice": "閉じた輪郭と高さを指定し、作業平面を残すか削除するかを選びます。",
               "sections": [
                 {
-                  "title": "始める前に",
-                  "text": "閉じた輪郭を用意します（**F16.2**）。例はL字形です。"
-                },
-                {
-                  "title": "作業平面から押し出す手順",
-                  "text": "- **垂直投影** — **「基本」→「2Dから立体化」→「垂直投影」**を選びます。\n- **輪郭を選ぶ** — 辺を選び、ハッチを確認して**GO（右クリック）**で確定します。\n- **高さ** — **項目入力**で**「高さ」**を入力し、**Enter**を押します。"
+                  "title": "押し出しの手順",
+                  "text": "- **垂直投影** — 「基本」→「2Dから立体化」からExtrudeを選びます。\n- **断面を選ぶ** — 閉じた輪郭を選び、ハッチを確認してGOで確定します。\n- **高さ** — 項目入力で「高さ」を入力し、Enterを押します。"
                 },
                 {
                   "title": "作業平面を残す・削除する",
-                  "text": "作業平面の削除確認で、次のいずれかを選びます。\n\n- **OK：** 作業平面と2Dスケッチを削除します。この削除は元に戻せません。\n- **キャンセル：** 作業平面とスケッチを残します。作成した立体も残ります。"
+                  "text": "OKで作業平面とスケッチを削除し、キャンセルで残します。作成した立体は残ります。作業平面の削除は元に戻せません。"
                 },
                 {
                   "title": "完成した立体を確認する",
-                  "text": "輪郭と高さを確認します。例は作業平面を削除した立体です。"
+                  "text": "輪郭と押し出し高さを確認します。"
                 }
               ]
             }
@@ -2448,8 +2432,8 @@
           "id": "F16.4",
           "moduleId": "F16",
           "title": {
-            "en": "Revolve from a Work Plane",
-            "ja": "ワークプレーンからの回転体"
+            "en": "Revolve",
+            "ja": "回転体"
           },
           "type": "reading",
           "renderer": null,
@@ -2459,46 +2443,38 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Revolve creates a 3D solid by rotating a closed profile on a Work Plane around a selected axis.",
-              "practice": "Select a closed profile and its rotation axis, then create and inspect a revolved solid.",
+              "explanation": "Revolve a section on a Work Plane or 2D drawing around an axis to create a solid.",
+              "practice": "Select a closed profile and axis to create a revolved solid.",
               "sections": [
                 {
-                  "title": "Before You Begin",
-                  "text": "Prepare a closed profile and identify its rotation axis."
-                },
-                {
-                  "title": "How to Revolve from a Work Plane",
-                  "text": "- **Select Revolve** — Open **Basic「基本」 → 2D to 3D「2Dから立体化」 → Revolve「回転投影」**.\n- **Pick the Profile** — Select an edge, check the hatch, then confirm with **GO** (right-click).\n- **Pick the Axis** — Select the rotation axis and follow the prompt to finish."
+                  "title": "How to Revolve",
+                  "text": "- **Select Revolve** — Under Basic「基本」→ 2D to 3D「2Dから立体化」, select Revolve.\n- **Pick an Edge** — Select an edge of the closed profile, check the hatch, then select GO.\n- **Pick the Axis** — Select the rotation axis, then select GO."
                 },
                 {
                   "title": "Keep or Delete the Work Plane",
-                  "text": "Choose **OK** to delete the plane and sketches, or **Cancel** to keep them. The solid remains. Deletion cannot be undone."
+                  "text": "Choose OK to delete the Work Plane and its sketches, or Cancel to keep them. The new solid remains. Deleting the Work Plane cannot be undone."
                 },
                 {
                   "title": "Check the Finished Solid",
-                  "text": "Compare the diameters and tapered section with the sample."
+                  "text": "Check the diameters and tapered section against the reference."
                 }
               ]
             },
             "ja": {
-              "explanation": "回転投影は、作業平面上の閉じた輪郭を選択した軸の周りに回転させて3D立体を作成します。",
-              "practice": "閉じた輪郭と回転軸を選択し、回転体を作成して形状を確認します。",
+              "explanation": "作業平面または2D図面上の断面を軸の周りに回転させ、立体を作成します。",
+              "practice": "閉じた輪郭と回転軸を選び、回転体を作成します。",
               "sections": [
                 {
-                  "title": "始める前に",
-                  "text": "閉じた輪郭を用意し、回転軸を確認します。"
-                },
-                {
-                  "title": "作業平面から回転体を作成する手順",
-                  "text": "- **回転投影** — **「基本」→「2Dから立体化」→「回転投影」**を選びます。\n- **輪郭を選ぶ** — 辺を選び、ハッチを確認して**GO（右クリック）**で確定します。\n- **軸を選ぶ** — 回転軸を選び、案内に従って完了します。"
+                  "title": "回転体を作成する手順",
+                  "text": "- **回転投影** — 「基本」→「2Dから立体化」からRevolveを選びます。\n- **辺を選ぶ** — 閉じた輪郭の辺を選び、ハッチを確認してGOで確定します。\n- **軸を選ぶ** — 回転軸を選び、GOで確定します。"
                 },
                 {
                   "title": "作業平面を残す・削除する",
-                  "text": "平面とスケッチを削除する場合は**OK**、残す場合は**キャンセル**を選びます。立体は残ります。削除は元に戻せません。"
+                  "text": "OKで作業平面とスケッチを削除し、キャンセルで残します。作成した立体は残ります。作業平面の削除は元に戻せません。"
                 },
                 {
                   "title": "完成した立体を確認する",
-                  "text": "直径とテーパー部分を完成例と比較します。"
+                  "text": "直径とテーパー部分を参考例と比較します。"
                 }
               ]
             }
@@ -2522,24 +2498,12 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Spiral Form creates a 3D spiral from a closed 2D cross-section by turning it around an axis while advancing along that axis.",
-              "practice": "Prepare a cross-section, set a pitch greater than its thickness, and specify the spiral length.",
+              "explanation": "Create a 3D spiral from a closed 2D cross-section.",
+              "practice": "Prepare the section, set the pitch, and define the spiral length.",
               "sections": [
                 {
-                  "title": "Prepare the Cross-section",
-                  "text": "Draw a closed rectangle offset from the axis. Its axial width is the **thickness**; its position sets the root and outer diameters."
-                },
-                {
-                  "title": "Select Spiral Form and the Profile",
-                  "text": "Select **Spiral Form** under **2D to 3D「2Dから立体化」**. Pick the cross-section, check the hatch, then confirm with **GO** (right-click)."
-                },
-                {
-                  "title": "Set the Pitch",
-                  "text": "In **Item Entry**, set **Pitch = 50** and both **Scales = 1.0000**. Press **Enter**, then **GO** as prompted.\n\nPitch is the axial distance between turns. **It must exceed the section’s axial thickness.**"
-                },
-                {
-                  "title": "Set the Spiral Length",
-                  "text": "Pick **P1**, then **P2** along the axis to set the length. Confirm with **GO**."
+                  "title": "How to Use Spiral Form",
+                  "text": "- **Prepare the Cross-section** — Draw a closed rectangle offset from the axis. Its axial width defines thickness; its position defines the root and outer diameters.\n- **Select Spiral Form and the Profile** — Under 2D to 3D「2Dから立体化」, select Spiral Form. Select the section, check the hatch, then select GO.\n- **Set the Pitch** — For this example, enter Pitch = 50 and Scale 1 = Scale 2 = 1.0000. Press Enter, then select GO as prompted. Pitch is the axial spacing between turns and must exceed the section’s axial thickness.\n- **Set the Spiral Length** — Select P1 and P2 along the axis to set the length, then select GO."
                 },
                 {
                   "title": "Inspect the Finished Spiral",
@@ -2548,24 +2512,12 @@
               ]
             },
             "ja": {
-              "explanation": "スパイラル形状は、閉じた2D断面を軸の周りに回転させながら軸方向に進め、3Dのらせんを作成します。",
-              "practice": "断面を準備し、厚さより大きいピッチとらせんの長さを指定します。",
+              "explanation": "閉じた2D断面から、3Dのらせん形状を作成します。",
+              "practice": "断面を準備し、ピッチとらせんの長さを指定します。",
               "sections": [
                 {
-                  "title": "断面を準備する",
-                  "text": "軸から離れた位置に閉じた長方形を描きます。軸方向の幅が**厚さ**で、位置によって谷径と外径が決まります。"
-                },
-                {
-                  "title": "スパイラル形状と断面を選ぶ",
-                  "text": "**「2Dから立体化」**の**スパイラル形状**を選びます。断面とハッチを確認し、**GO（右クリック）**で確定します。"
-                },
-                {
-                  "title": "ピッチを指定する",
-                  "text": "**項目入力**で**ピッチ＝50**、両方の**スケール＝1.0000**にします。**Enter**を押し、案内に従って**GO**で確定します。\n\nピッチは巻きの軸方向の間隔です。**断面の軸方向の厚さより大きくしてください。**"
-                },
-                {
-                  "title": "らせんの長さを指定する",
-                  "text": "軸上の**P1**、**P2**を順に選んで長さを指定し、**GO**で確定します。"
+                  "title": "スパイラル形状の作成手順",
+                  "text": "- **断面を準備する** — 軸から離れた位置に閉じた長方形を描きます。軸方向の幅が厚さとなり、位置によって谷径と外径が決まります。\n- **スパイラル形状と断面を選ぶ** — 「2Dから立体化」からSpiral Formを選びます。断面とハッチを確認し、GOで確定します。\n- **ピッチを指定する** — この例では、ピッチ＝50、スケール1＝スケール2＝1.0000を入力します。Enterを押し、案内に従ってGOで確定します。ピッチは巻きの軸方向の間隔で、断面の軸方向の厚さより大きくします。\n- **らせんの長さを指定する** — 軸上のP1とP2を選んで長さを指定し、GOで確定します。"
                 },
                 {
                   "title": "完成したらせんを確認する",
@@ -2603,46 +2555,38 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Use standard hole tools to add drill holes, tapped holes, and other hole details to a solid.",
-              "practice": "Choose a hole tool, set its dimensions, and place it on a part.",
+              "explanation": "Add drill holes, tapped holes, and other hole details using standard hole tools.",
+              "practice": "Select a hole tool, set its dimensions, and place it on a part.",
               "sections": [
                 {
-                  "title": "Select Arrange Machine Part",
-                  "text": "In the Icon Menu, open **Part** and select **Arrange Machine Part**, as highlighted in the reference."
+                  "title": "How to Create Hole Details",
+                  "text": "- **Select Arrange Machine Part** — In the Icon Menu, open Part and select Arrange Machine Part.\n- **Set the Tool Specifications** — Choose the tool and specification. Set the required dimensions and check the preview.\n- **Confirm the Specifications** — Click OK.\n- **Place the Hole** — Click the hole location on the solid."
                 },
                 {
-                  "title": "Choose the Hole and Set Its Size",
-                  "text": "Choose a hole tool and the required standard. Enter its dimensions, such as length and depth, and check the preview. Click **OK**."
-                },
-                {
-                  "title": "Place the Hole",
-                  "text": "Click the hole location on the solid to create the cut. Use **Muhenkan + Q** to match the entity direction to a specified plane. On an English keyboard configured as in **F16.1**, use **Ctrl + Q**."
+                  "title": "Match the Direction",
+                  "text": "Use Muhenkan + Q to align the entity with a specified plane."
                 },
                 {
                   "title": "Identify Tapped Holes",
-                  "text": "Color tapped holes **green**, as shown, to distinguish threaded holes from drill holes."
+                  "text": "In this lesson, green identifies tapped holes."
                 }
               ]
             },
             "ja": {
-              "explanation": "標準の穴ツールを使用し、立体にドリル穴やタップ穴などを作成します。",
+              "explanation": "標準の穴ツールを使い、ドリル穴やタップ穴などを作成します。",
               "practice": "穴ツールと寸法を指定し、部品上に配置します。",
               "sections": [
                 {
-                  "title": "機械部品配置を選ぶ",
-                  "text": "アイコンメニューの**「パーツ」**から、図で強調された**機械部品配置**を選びます。"
+                  "title": "部品に穴を作成する手順",
+                  "text": "- **Arrange Machine Partを選ぶ** — アイコンメニューの「パーツ」からArrange Machine Partを選びます。\n- **ツールの仕様を設定する** — ツールと仕様を選び、必要な寸法を設定してプレビューを確認します。\n- **仕様を確定する** — OKをクリックします。\n- **穴を配置する** — 立体上の穴を作成する位置をクリックします。"
                 },
                 {
-                  "title": "穴の種類と寸法を指定する",
-                  "text": "穴のツールと規格を選び、長さや深さなどの寸法を入力します。プレビューを確認して**OK**をクリックします。"
-                },
-                {
-                  "title": "穴を配置する",
-                  "text": "立体上の穴の位置をクリックして切り込みを作成します。**無変換＋Q**で要素の方向を指定した面に合わせます。**F16.1**で設定した英語キーボードでは**Ctrl＋Q**を使用します。"
+                  "title": "方向を合わせる",
+                  "text": "無変換＋Qで、要素の方向を指定した面に合わせます。"
                 },
                 {
                   "title": "タップ穴を区別する",
-                  "text": "例のようにタップ穴を**緑色**にして、ドリル穴と区別します。"
+                  "text": "このレッスンでは、タップ穴を緑色で示します。"
                 }
               ]
             }
@@ -2793,46 +2737,30 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The Intersect command creates a new 3D entity from the overlapping area of two intersecting entities. The original intersecting entities remain after the operation.",
-              "practice": "By the end of this lesson, you should be able to use the Intersect command to create a new entity from the common area of two 3D entities.",
+              "explanation": "Create a new entity from the common volume of two overlapping 3D entities.",
+              "practice": "Select overlapping entities and create their intersection.",
               "sections": [
                 {
-                  "title": "What Is Intersect?",
-                  "text": "When two 3D entities overlap, Intersect uses only the area that both entities share. The overlapping portion becomes the new result.\n\nIntersecting Entities\nTwo 3D entities overlap each other.\n\nIntersection Result\nOnly their common overlapping area is used to create the new entity."
-                },
-                {
                   "title": "How to Use Intersect",
-                  "text": "- **Select Intersect** — Select **Intersect「重なり部分を残す」** from the Icon Menu.\n- **Select the Intersecting Entities** — Select the overlapping entities, then confirm with **GO** (right-click).\n- **Check the Final Result** — A new entity is created from the shared portion. **The original entities remain.**"
-                },
-                {
-                  "title": "Result",
-                  "text": "- A new entity is created from the intersecting portion.\n- **The original intersecting entities do NOT disappear.**"
+                  "text": "- **Select Intersect** — Select Intersect from the Icon Menu.\n- **Select the Intersecting Entities** — Select the overlapping entities, then select GO.\n- **Check the Final Result** — Check the new entity in the overlapping region. The original entities remain."
                 },
                 {
                   "title": "Important Reminder",
-                  "text": "The selected entities must overlap for Intersect to create a result. Only the common area shared by the selected entities becomes the new entity."
+                  "text": "The selected entities must overlap."
                 }
               ]
             },
             "ja": {
-              "explanation": "「重なり部分を残す」は、交差する2つの3D要素の重なった部分から新しい3D要素を作成します。元の要素は演算後も残ります。",
-              "practice": "このレッスンでは、「重なり部分を残す」を使用して2つの3D要素の共通部分から新しい要素を作成できるようになります。",
+              "explanation": "重なった2つの3D要素の共通部分から、新しい要素を作成します。",
+              "practice": "重なった要素を選択し、共通部分を作成します。",
               "sections": [
                 {
-                  "title": "重なり部分を残すとは？",
-                  "text": "2つの3D要素が重なっている場合、両方に共通する部分だけを使用します。この部分が新しい結果になります。\n\n交差する要素\n2つの3D要素が互いに重なっています。\n\n共通部分の結果\n重なった共通部分だけから新しい要素を作成します。"
-                },
-                {
-                  "title": "重なり部分を残すの使い方",
-                  "text": "- **コマンドを選ぶ** — アイコンメニューから**「重なり部分を残す」**を選びます。\n- **交差する要素を選ぶ** — 重なっている要素を選び、**GO（右クリック）**で確定します。\n- **結果を確認する** — 共通部分から新しい要素が作成されます。**元の要素は残ります。**"
-                },
-                {
-                  "title": "結果",
-                  "text": "- 交差する共通部分から新しい要素が作成されます。\n- **元の交差する要素は消えません。**"
+                  "title": "Intersectの使い方",
+                  "text": "- **コマンドを選ぶ** — アイコンメニューからIntersectを選びます。\n- **交差する要素を選ぶ** — 重なった要素を選び、GOで確定します。\n- **結果を確認する** — 共通部分に新しい要素が作成されたことを確認します。元の要素は残ります。"
                 },
                 {
                   "title": "重要な注意点",
-                  "text": "結果を作成するには、選択した要素が重なっている必要があります。要素に共通する部分だけが新しい要素になります。"
+                  "text": "選択する要素は重なっている必要があります。"
                 }
               ]
             }
@@ -2856,30 +2784,30 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "Separate Entity extracts components created by Boolean operations as CSG solids. Components include joined shapes and cutout or hole features.",
-              "practice": "Use Separate Entity and compare the result with the reference.",
+              "explanation": "Separate Boolean components, including joined shapes, cutouts, and holes, into CSG solids.",
+              "practice": "Separate selected components or all components of a solid.",
               "sections": [
                 {
                   "title": "Separate Selected Components",
-                  "text": "- **Select the Tool** — Select **Separate Entity「指定要素を切り離す」** as highlighted.\n- **Pick Components** — Select the components to separate, then confirm with **GO**.\n- **Confirm** — Click **OK** to separate them as CSG solids."
+                  "text": "- **Select the Tool** — Select Separate Entity.\n- **Pick Components** — Select the components, then select GO.\n- **Confirm** — Click OK to separate them as CSG solids."
                 },
                 {
                   "title": "Separate All Components",
-                  "text": "- **Select the Tool** — Select **Separate All Components「バラバラにする」** as highlighted.\n- **Pick the Solid** — Select the solid and confirm with **GO**.\n- **Confirm** — Click **OK** to separate all components as CSG solids."
+                  "text": "- **Select the Tool** — Select Separate All Components.\n- **Pick the Solid** — Select the solid, then select GO.\n- **Confirm** — Click OK to separate all its components as CSG solids."
                 }
               ]
             },
             "ja": {
-              "explanation": "要素の分離は、集合演算で作成した構成要素をCSG立体として分離します。構成要素には結合形状、切り取り、穴などがあります。",
-              "practice": "要素の分離を使用し、結果を参考例と比較します。",
+              "explanation": "結合形状、切り欠き、穴などの集合演算による構成要素を、CSG立体として分離します。",
+              "practice": "選択した構成要素、または立体の全構成要素を分離します。",
               "sections": [
                 {
                   "title": "選択した構成要素を分離する",
-                  "text": "- **ツールを選ぶ** — 図の**「指定要素を切り離す」**を選びます。\n- **構成要素を選ぶ** — 分離する構成要素を選び、**GO**で確定します。\n- **確定する** — **OK**をクリックし、CSG立体として分離します。"
+                  "text": "- **ツールを選ぶ** — Separate Entityを選びます。\n- **構成要素を選ぶ** — 構成要素を選び、GOで確定します。\n- **確定する** — OKをクリックし、CSG立体として分離します。"
                 },
                 {
                   "title": "すべての構成要素を分離する",
-                  "text": "- **ツールを選ぶ** — 図の**「バラバラにする」**を選びます。\n- **立体を選ぶ** — 立体を選び、**GO**で確定します。\n- **確定する** — **OK**をクリックし、全構成要素をCSG立体として分離します。"
+                  "text": "- **ツールを選ぶ** — Separate All Componentsを選びます。\n- **立体を選ぶ** — 立体を選び、GOで確定します。\n- **確定する** — OKをクリックし、全構成要素をCSG立体として分離します。"
                 }
               ]
             }
@@ -2892,13 +2820,422 @@
     {
       "id": "F19",
       "title": {
+        "en": "Move / Copy / Delete Components",
+        "ja": "構成要素の移動・コピー・削除"
+      },
+      "lessons": [
+        {
+          "id": "foundation-component-move",
+          "displayId": "F19.1",
+          "moduleId": "F19",
+          "title": {
+            "en": "Move Component",
+            "ja": "構成要素の移動"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-move",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Move a component, such as a hole or cutout, within a 3D entity.",
+              "practice": "Move a selected component by entering X, Y, and Z distances.",
+              "sections": [
+                {
+                  "title": "How to Move a Component",
+                  "text": "- **Select Move Component** — In the Icon Menu, select Move Component「一部の形状を移動する」.\n- **Select the Component** — Select the component, then select GO.\n- **Specify the Movement Distance** — In Item Entry「項目入力」, enter the X, Y, and Z distances「移動量X・Y・Z」, then press Enter.\n- **Check the Final Result** — Check the component’s new position."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the selected component before choosing GO."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "穴や切り欠きなどの構成要素を、3D形状内で移動します。",
+              "practice": "X・Y・Zの移動量を入力して、選択した構成要素を移動します。",
+              "sections": [
+                {
+                  "title": "構成要素を移動する手順",
+                  "text": "- **一部の形状を移動する** — アイコンメニューから「一部の形状を移動する」を選びます。\n- **構成要素を選ぶ** — 構成要素を選び、GOで確定します。\n- **移動量を指定する** — 項目入力で「移動量X・Y・Z」を入力し、Enterを押します。\n- **結果を確認する** — 移動後の位置を確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "GOを選ぶ前に、選択した構成要素を確認してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-copy",
+          "displayId": "F19.2",
+          "moduleId": "F19",
+          "title": {
+            "en": "Copy Component",
+            "ja": "構成要素のコピー"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-copy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Copy a component to a position defined by X, Y, and Z distances.",
+              "practice": "Set the copy distances and number of copies.",
+              "sections": [
+                {
+                  "title": "How to Copy a Component",
+                  "text": "- **Select Copy Component** — In the Icon Menu, select Copy Component「一部の形状をコピーする」.\n- **Select the Component** — Select the component, then select GO.\n- **Specify the Copy Distance and Number** — In Item Entry「項目入力」, enter the X, Y, and Z distances「移動量X・Y・Z」 and number of copies「個数」, then press Enter.\n- **Check the Final Result** — Check the copy positions and count. The original remains in place."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the distances and copy count before pressing Enter."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "X・Y・Zの移動量で指定した位置に、構成要素をコピーします。",
+              "practice": "コピーの移動量と個数を指定します。",
+              "sections": [
+                {
+                  "title": "構成要素をコピーする手順",
+                  "text": "- **一部の形状をコピーする** — アイコンメニューから「一部の形状をコピーする」を選びます。\n- **構成要素を選ぶ** — 構成要素を選び、GOで確定します。\n- **コピーの移動量と個数を指定する** — 項目入力で「移動量X・Y・Z」と「個数」を入力し、Enterを押します。\n- **結果を確認する** — コピーの位置と個数を確認します。元の構成要素は元の位置に残ります。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "Enterを押す前に、移動量とコピーの個数を確認してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-mirror",
+          "displayId": "F19.3",
+          "moduleId": "F19",
+          "title": {
+            "en": "Mirror Component",
+            "ja": "構成要素の反転"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-mirror",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Move a component to its mirrored position across a specified plane.",
+              "practice": "Define a mirror plane and mirror the selected component.",
+              "sections": [
+                {
+                  "title": "How to Mirror a Component",
+                  "text": "- **Select Mirror Component** — In the Icon Menu, select Mirror Component「一部の形状をミラーする」.\n- **Select the Component** — Select one or more components, then select GO.\n- **Specify the Mirror Plane** — Define the mirror plane「ミラー平面」: Method 1: select three points. Method 2: left-click a face.\n- **Check the Final Result** — Check that the component moved to the mirrored position."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Mirror moves the original. Use Mirror Copy to keep it and create a duplicate."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "指定した平面を基準に、構成要素をミラー位置へ移動します。",
+              "practice": "ミラー平面を定義し、選択した構成要素をミラー移動します。",
+              "sections": [
+                {
+                  "title": "構成要素をミラー移動する手順",
+                  "text": "- **一部の形状をミラーする** — アイコンメニューから「一部の形状をミラーする」を選びます。\n- **構成要素を選ぶ** — 構成要素を1つ以上選び、GOで確定します。\n- **ミラー平面を指定する** — ミラー平面を指定します。方法1：3点を選びます。方法2：面を左クリックします。\n- **結果を確認する** — 構成要素がミラー位置へ移動したことを確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "ミラー移動は元の構成要素を移動します。元を残して複製する場合は、ミラーコピーを使用してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-rotate",
+          "displayId": "F19.4",
+          "moduleId": "F19",
+          "title": {
+            "en": "Rotate Component",
+            "ja": "構成要素の回転"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-rotate",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Rotate a component around a specified axis.",
+              "practice": "Define an axis and enter a rotation angle.",
+              "sections": [
+                {
+                  "title": "How to Rotate a Component",
+                  "text": "**Step 1 — Select Rotate Component**\nIn the Icon Menu, select Rotate Component「一部の形状を回転する」.\n\n**Step 2 — Select the Component**\nSelect one or more components, then select GO.\n\n**Step 3 — Set the Axis of Rotation**\nSelect P1 and P2 to define the rotation axis「回転軸」.\n\n**Step 4 — Specify the Rotation Angle**\nIn Item Entry「項目入力」, enter the rotation angle「回転角度」, then press Enter.\n\n**Step 5 — Check the Final Result**\nCheck the component’s rotated position. **Image reference: Rotate Copy retains the original and shows a duplicate. Rotate Component moves the original.**"
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Rotate moves the original. Use Rotate Copy to keep it and create a duplicate."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "指定した軸の周りで構成要素を回転します。",
+              "practice": "回転軸を定義し、回転角度を入力します。",
+              "sections": [
+                {
+                  "title": "構成要素を回転する手順",
+                  "text": "**ステップ 1 — 一部の形状を回転する**\nアイコンメニューから「一部の形状を回転する」を選びます。\n\n**ステップ 2 — 構成要素を選ぶ**\n構成要素を1つ以上選び、GOで確定します。\n\n**ステップ 3 — 回転軸を設定する**\nP1とP2を選び、回転軸を定義します。\n\n**ステップ 4 — 回転角度を指定する**\n項目入力で「回転角度」を入力し、Enterを押します。\n\n**ステップ 5 — 結果を確認する**\n回転後の位置を確認します。**参考画像は回転コピーの結果で、元の構成要素と複製が表示されています。構成要素の回転では元の構成要素を移動します。**"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "回転は元の構成要素を移動します。元を残して複製する場合は、回転コピーを使用してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-repeat-copy",
+          "displayId": "F19.5",
+          "moduleId": "F19",
+          "title": {
+            "en": "Repeat Copy Component",
+            "ja": "構成要素の繰り返しコピー"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-repeat-copy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create repeated copies of a selected component.",
+              "practice": "Set the spacing and number of repeated copies.",
+              "sections": [
+                {
+                  "title": "How to Use Repeat Copy Component",
+                  "text": "**Step 1 — Select Repeat Copy Component**\nIn the Icon Menu, select Repeat Copy Component「一部の形状を連続コピーする」.\n\n**Step 2 — Select the Component**\nSelect the component, then select GO.\n\n**Step 3 — Specify the Copy Settings**\nIn Item Entry「項目入力」, enter the X, Y, and Z distances「移動量X・Y・Z」 and number of copies「個数」, then press Enter.\n\n**Step 4 — Check the Final Result**\nCheck the spacing and copy count. The original remains in place."
+                },
+                {
+                  "title": "Copy Component vs. Repeat Copy Component",
+                  "text": "Both commands use the same basic procedure.\n\n**Copy Component「一部の形状をコピーする」**\nCreates copies using the specified settings.\n\n**Repeat Copy Component「一部の形状を連続コピーする」**\nUses the same basic procedure for continuous duplication."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the distances and copy count before confirming."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "選択した構成要素のコピーを繰り返し作成します。",
+              "practice": "コピーの間隔と個数を指定します。",
+              "sections": [
+                {
+                  "title": "構成要素を連続コピーする手順",
+                  "text": "**ステップ 1 — 一部の形状を連続コピーする**\nアイコンメニューから「一部の形状を連続コピーする」を選びます。\n\n**ステップ 2 — 構成要素を選ぶ**\n構成要素を選び、GOで確定します。\n\n**ステップ 3 — コピーの設定を指定する**\n項目入力で「移動量X・Y・Z」と「個数」を入力し、Enterを押します。\n\n**ステップ 4 — 結果を確認する**\nコピーの間隔と個数を確認します。元の構成要素は元の位置に残ります。"
+                },
+                {
+                  "title": "構成要素のコピーと連続コピーの比較",
+                  "text": "どちらの操作も同じ基本手順で行います。\n\n**一部の形状をコピーする**\n指定した設定でコピーを作成します。\n\n**一部の形状を連続コピーする**\n同じ基本手順で、構成要素を連続して複製します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "確定する前に、移動量とコピーの個数を確認してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-rotate-copy",
+          "displayId": "F19.6",
+          "moduleId": "F19",
+          "title": {
+            "en": "Rotate Copy Component",
+            "ja": "構成要素の回転コピー"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-rotate-copy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create a rotated copy of a component while keeping the original.",
+              "practice": "Define an axis and angle to create a rotated copy.",
+              "sections": [
+                {
+                  "title": "How to Use Rotate Copy Component",
+                  "text": "**Step 1 — Select Rotate Copy Component**\nIn the Icon Menu, select Rotate Copy Component「一部の形状を回転コピーする」.\n\n**Step 2 — Select the Component**\nSelect the component, then select GO.\n\n**Step 3 — Set the Axis of Rotation**\nSelect P1 and P2 to define the rotation axis「回転軸」.\n\n**Step 4 — Specify the Rotation Angle**\nIn Item Entry「項目入力」, enter the rotation angle「回転角度」, then press Enter.\n\n**Step 5 — Check the Final Result**\nCheck the copy’s rotated position. The original remains in place."
+                },
+                {
+                  "title": "Rotate Component vs. Rotate Copy Component",
+                  "text": "Compare what happens to the original component.\n\n**Rotate Component「一部の形状を回転する」**\nMoves the original to the rotated position; no copy is created.\n\n**Rotate Copy Component「一部の形状を回転コピーする」**\nCreates a rotated duplicate and keeps the original."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Use Rotate Copy when the original must remain."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "元の構成要素を残し、回転したコピーを作成します。",
+              "practice": "回転軸と角度を指定して、回転コピーを作成します。",
+              "sections": [
+                {
+                  "title": "構成要素を回転コピーする手順",
+                  "text": "**ステップ 1 — 一部の形状を回転コピーする**\nアイコンメニューから「一部の形状を回転コピーする」を選びます。\n\n**ステップ 2 — 構成要素を選ぶ**\n構成要素を選び、GOで確定します。\n\n**ステップ 3 — 回転軸を設定する**\nP1とP2を選び、回転軸を定義します。\n\n**ステップ 4 — 回転角度を指定する**\n項目入力で「回転角度」を入力し、Enterを押します。\n\n**ステップ 5 — 結果を確認する**\nコピーの回転位置を確認します。元の構成要素は元の位置に残ります。"
+                },
+                {
+                  "title": "構成要素の回転と回転コピーの比較",
+                  "text": "元の構成要素がどうなるかを比較します。\n\n**一部の形状を回転する**\n元の構成要素を回転位置へ移動します。コピーは作成しません。\n\n**一部の形状を回転コピーする**\n元の構成要素を残し、回転した複製を作成します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "元の構成要素を残す場合は、回転コピーを使用してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-mirror-copy",
+          "displayId": "F19.7",
+          "moduleId": "F19",
+          "title": {
+            "en": "Mirror Copy Component",
+            "ja": "構成要素の反転コピー"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-mirror-copy",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create a mirrored copy of a component while keeping the original.",
+              "practice": "Define a mirror plane and create a mirrored copy.",
+              "sections": [
+                {
+                  "title": "How to Use Mirror Copy Component",
+                  "text": "**Step 1 — Select Mirror Copy Component**\nIn the Icon Menu, select Mirror Copy Component「一部の形状をミラーコピーする」.\n\n**Step 2 — Select the Component**\nSelect one or more components, then select GO.\n\n**Step 3 — Specify the Mirror Plane**\nDefine the mirror plane「ミラー平面」: Method 1: select three points. Method 2: left-click a face.\n\n**Step 4 — Check the Final Result**\nCheck the copy across the mirror plane. The original remains in place."
+                },
+                {
+                  "title": "Mirror Component vs. Mirror Copy Component",
+                  "text": "Compare what happens to the original component.\n\n**Mirror Component「一部の形状をミラーする」**\nMoves the original to the mirrored position; no copy is created.\n\n**Mirror Copy Component「一部の形状をミラーコピーする」**\nCreates a mirrored duplicate and keeps the original."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Use Mirror Copy when the original must remain."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "元の構成要素を残し、ミラーコピーを作成します。",
+              "practice": "ミラー平面を定義して、ミラーコピーを作成します。",
+              "sections": [
+                {
+                  "title": "構成要素をミラーコピーする手順",
+                  "text": "**ステップ 1 — 一部の形状をミラーコピーする**\nアイコンメニューから「一部の形状をミラーコピーする」を選びます。\n\n**ステップ 2 — 構成要素を選ぶ**\n構成要素を1つ以上選び、GOで確定します。\n\n**ステップ 3 — ミラー平面を指定する**\nミラー平面を指定します。方法1：3点を選びます。方法2：面を左クリックします。\n\n**ステップ 4 — 結果を確認する**\nミラー平面の反対側にコピーがあることを確認します。元の構成要素は元の位置に残ります。"
+                },
+                {
+                  "title": "構成要素のミラー移動とミラーコピーの比較",
+                  "text": "元の構成要素がどうなるかを比較します。\n\n**一部の形状をミラーする**\n元の構成要素をミラー位置へ移動します。コピーは作成しません。\n\n**一部の形状をミラーコピーする**\n元の構成要素を残し、ミラー複製を作成します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "元の構成要素を残す場合は、ミラーコピーを使用してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-component-delete",
+          "displayId": "F19.8",
+          "moduleId": "F19",
+          "title": {
+            "en": "Delete Component",
+            "ja": "構成要素の削除"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:foundation-component-delete",
+          "routeAliases": [],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Remove unwanted holes, cutouts, or other Boolean components from a solid entity.",
+              "practice": "Delete selected components from a solid entity.",
+              "sections": [
+                {
+                  "title": "How to Use Delete Component",
+                  "text": "**Step 1 — Select Delete Component**\nIn the Icon Menu, select Delete Component「一部の形状を削除する」.\n\n**Step 2 — Select the Components to be Deleted**\nSelect one or more components to remove.\n\n**Step 3 — Check the Final Result**\n**Before:** The selected component is part of the solid. **After:** It is removed; the unselected components remain."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Select only the components you want to remove."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "不要な穴、切り欠き、その他の集合演算による構成要素を立体要素から削除します。",
+              "practice": "選択した構成要素を立体要素から削除します。",
+              "sections": [
+                {
+                  "title": "構成要素を削除する手順",
+                  "text": "**ステップ 1 — 一部の形状を削除する**\nアイコンメニューから「一部の形状を削除する」を選びます。\n\n**ステップ 2 — 削除する構成要素を選ぶ**\n削除する構成要素を1つ以上選びます。\n\n**ステップ 3 — 結果を確認する**\n**削除前：**選択した構成要素が立体の一部として存在します。**削除後：**その構成要素が削除され、選択していない構成要素は残ります。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "削除したい構成要素だけを選んでください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F20",
+      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F19",
+          "moduleId": "F20",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -2909,7 +3246,8 @@
           "routeAliases": [
             "F16.1",
             "F18.1",
-            "F19.1"
+            "F19.1",
+            "F20.1"
           ],
           "completionAliases": [
             "F10.1",
@@ -3013,11 +3351,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F19.1"
+          "displayId": "F20.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F19",
+          "moduleId": "F20",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -3028,7 +3366,8 @@
           "routeAliases": [
             "F16.2",
             "F18.2",
-            "F19.2"
+            "F19.2",
+            "F20.2"
           ],
           "completionAliases": [
             "F10.6",
@@ -3058,7 +3397,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F19.2"
+          "displayId": "F20.2"
         }
       ]
     }

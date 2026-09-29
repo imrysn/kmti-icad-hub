@@ -6,7 +6,7 @@ import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationWorkPlaneOrientation.css';
 
 export default function FoundationWorkPlaneOrientation({text,shortcut=false}: {text:string;shortcut?:boolean}) {
-  if(!shortcut) return <div className="work-plane-orientations"><p>{text}</p><div className="work-plane-orientations__images">
+  if(!shortcut) return <div className="work-plane-orientations"><p>{renderFormattedText(text)}</p><div className="work-plane-orientations__images">
     {[xy,xz,yz].map((src,n)=><img key={src} src={src} alt={`${['X-Y','X-Z','Y-Z'][n]} Work Plane`}/>)}
   </div></div>;
   const paragraphs=text.trim().split('\n\n');

@@ -1,0 +1,9 @@
+.foundation-hole-steps, .foundation-hole-detail { width: 100%; min-width: 0; }
+.foundation-hole-image { width: 100%; height: 120px; }
+.foundation-hole-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; width: 100%; height: 120px; }
+.foundation-hole-confirm { display: grid; place-items: center; width: 90px; height: 38px; border: 1px solid #1976d2; border-radius: 4px; background: #f3f6f9; color: #233c51; font-weight: 600; }
+.foundation-hole-examples { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 640px; margin: 24px auto; }
+.foundation-hole-examples .foundation-interface-icon-button { width: 100%; height: 240px; border: 0; background: none; padding: 0; cursor: zoom-in; }
+@media(max-width:500px) { .foundation-hole-examples { grid-template-columns: 1fr; } }
+
+.foundation-hole-image--command svg { max-width: 76px; max-height: 76px; }

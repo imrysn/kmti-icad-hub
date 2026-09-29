@@ -7,18 +7,29 @@ import { resolveProfessionalLesson, professionalRenderLesson } from '../../iCAD_
 import { sourceKnowledgeQuestions, foundationKnowledgeQuestions } from '../knowledgeCheck';
 
 describe('Excel Foundations curriculum', () => {
-  it('moves Review to F19 without giving old review credit to Move', () => {
-    expect(createFoundationLessons().find(module => module.id === 'F19')!.children!.map(lesson => lesson.title))
-      .toEqual(['F19.1 Foundation Review', 'F19.2 Foundation Knowledge Check']);
+  it('moves Review to F20 without giving old review credit to Move', () => {
+    expect(createFoundationLessons().find(module => module.id === 'F20')!.children!.map(lesson => lesson.title))
+      .toEqual(['F20.1 Foundation Review', 'F20.2 Foundation Knowledge Check']);
     expect(foundationNeighbors('F17.1').next).toBe('F17.2');
     expect(migrateFoundationCompletion(['F10.1','F10.6'])).toEqual(['F17.1','F17.2']);
     expect(migrateFoundationCompletion(['F16.1','F16.2'])).toEqual(['F17.1','F17.2']);
     expect(migrateFoundationCompletion(['F10.2','F10.3','F10.4','F10.5'])).toEqual([]);
     expect(resolveFoundationLesson('F17.1')!.content.en.sections).toHaveLength(10);
   });
+  it('keeps eight component lessons before the review without inheriting review progress', () => {
+    const module = FOUNDATION_MODULES.find(module => module.id === 'F19')!;
+    expect(module.lessons.map(lesson => lesson.title.en)).toEqual(['Move Component','Copy Component','Mirror Component','Rotate Component','Repeat Copy Component','Rotate Copy Component','Mirror Copy Component','Delete Component']);
+    expect(module.lessons.map(lesson => lesson.displayId)).toEqual(Array.from({length:8},(_,i)=>`F19.${i+1}`));
+    expect(createFoundationLessons().find(module => module.id === 'F19')!.children!.every(lesson => (lesson.content?.length ?? 0) > 0)).toBe(true);
+    expect(foundationNeighbors('foundation-boolean-separate').next).toBe(module.lessons[0].id);
+    expect(foundationNeighbors(module.lessons[7].id).next).toBe('F17.1');
+    expect(resolveFoundationLesson('F19.1')?.id).toBe('F17.1');
+    expect(resolveFoundationLesson('F20.1')?.id).toBe('F17.1');
+    expect(migrateFoundationCompletion(['F17.1','F17.2'])).toEqual(['F17.1','F17.2']);
+  });
   it('inserts hole details without assigning historical review credit to it', () => {
     expect(resolveFoundationLesson('F18.1')?.id).toBe('F17.1');
-    expect(resolveFoundationLesson('F17.1')?.displayId).toBe('F19.1');
+    expect(resolveFoundationLesson('F17.1')?.displayId).toBe('F20.1');
     expect(foundationNeighbors('F16.5').next).toBe('foundation-hole-details');
     expect(foundationNeighbors('foundation-hole-details').next).toBe('foundation-boolean-union');
     expect(migrateFoundationCompletion(['F17.1'])).not.toContain('foundation-hole-details');
@@ -57,11 +68,11 @@ describe('Excel Foundations curriculum', () => {
     expect(restoreFoundationLesson('F9.5','3')?.id).toBe('F9.5');
     expect(restoreFoundationLesson('F10.1','3')?.id).toBe('F10.1');
   });
-  it('defines nineteen ordered modules and 61 unique lessons', () => {
-    expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(Array.from({length:19},(_,i)=>'F'+(i+1)));
-    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,5,8,1,2,4,1,1,5,1,4,2]);
-    expect(FOUNDATION_LESSONS).toHaveLength(61);
-    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(61);
+  it('defines twenty ordered modules and 69 unique lessons', () => {
+    expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(Array.from({length:20},(_,i)=>'F'+(i+1)));
+    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6,2,3,3,3,3,4,3,5,8,1,2,4,1,1,5,1,4,8,2]);
+    expect(FOUNDATION_LESSONS).toHaveLength(69);
+    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(69);
     expect(ICAD_FOUNDATIONS_LESSONS).toEqual(createFoundationLessons());
   });
   it('reuses all Professional data and assessments under Foundation numbering', () => {
@@ -84,8 +95,13 @@ describe('Excel Foundations curriculum', () => {
     for (const lesson of FOUNDATION_LESSONS) {
       expect(enTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.en);
       expect(jaTranslations[`lesson.title.${lesson.id}`]).toContain(lesson.title.ja);
+      if (lesson.contentReview === 'not-authored') {
+        expect(lesson.content).toEqual({en:{explanation:'',practice:'',sections:[]},ja:{explanation:'',practice:'',sections:[]}});
+        expect(lesson.moduleId).toBe('F19');
+        continue;
+      }
       // F4, F8, F9, and F16.1 intentionally include the user-supplied Japanese CAD UI command and dialog names or shortcut keys (e.g. 無変換).
-      if (!lesson.sourceProfessionalLessonId && !['foundation-boolean-intersect','foundation-boolean-separate','foundation-boolean-subtract','foundation-boolean-union','foundation-hole-details','F16.5','F16.4','F16.3','F16.2','F1.5','F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11','F16.1'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
+      if (!lesson.sourceProfessionalLessonId && !['foundation-component-delete','foundation-component-mirror-copy','foundation-component-rotate-copy','foundation-component-repeat-copy','foundation-component-rotate','foundation-component-mirror','foundation-component-copy','foundation-component-move','foundation-boolean-intersect','foundation-boolean-separate','foundation-boolean-subtract','foundation-boolean-union','foundation-hole-details','F16.5','F16.4','F16.3','F16.2','F1.5','F1.6','F5.6','F4.1','F4.6','F4.12','F8.3','F8.5','F9.1','F9.5','F9.6','F9.7','F9.9','F9.10','F9.11','F16.1'].includes(lesson.id)) expect(JSON.stringify(lesson.content.en)).not.toMatch(/[\u3040-\u30ff\u3400-\u9fff]/);
       for (const lang of ['en','ja'] as const) {
         const content = lesson.content[lang];
         expect(content.explanation.length).toBeGreaterThan(15);
@@ -115,7 +131,7 @@ describe('Excel Foundations curriculum', () => {
     const old = ['lesson-3-1','F3.3','lesson-4-2','lesson-13-1','lesson-6-3','origin-layout','bogus'];
     expect(migrateFoundationCompletion(old)).toEqual(['F4.6']);
     expect(old).toHaveLength(7);
-    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:61,percentage:1/61*100});
+    expect(foundationProgress(old)).toEqual({completed:['F4.6'],total:69,percentage:1/69*100});
     expect(foundationProgress(FOUNDATION_LESSONS.map(l=>l.completionId || l.id)).percentage).toBe(100);
     expect(migrateFoundationCompletion(['lesson-1-1','lesson-10-1'])).toEqual(['F1.1','F8.3']);
     expect(migrateFoundationCompletion(['F3','module-1'])).toEqual([]);

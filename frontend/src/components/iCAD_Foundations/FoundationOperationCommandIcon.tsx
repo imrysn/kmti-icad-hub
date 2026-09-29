@@ -1,3 +1,4 @@
+import commandPaths from './foundationCommandPaths.json';
 import { useFoundationVisuals } from './FoundationVisualContext';
 import { useId } from 'react';
 
@@ -9,7 +10,18 @@ export type OperationCommand =
   | 'mirror'
   | 'mirrorCopy'
   | 'delete'
-  | 'resize';
+  | 'resize'
+  | 'component-move'
+  | 'component-copy'
+  | 'component-mirror'
+  | 'component-rotate'
+  | 'component-repeat-copy'
+  | 'component-rotate-copy'
+  | 'component-mirror-copy'
+  | 'component-delete'
+  | 'intersect'
+  | 'separateSelected'
+  | 'separateAll';
 
 export default function FoundationOperationCommandIcon({
   command,
@@ -22,6 +34,12 @@ export default function FoundationOperationCommandIcon({
 }) {
   const id = useId().replace(/:/g, '');
   const foundation = useFoundationVisuals();
+  if (command in commandPaths) {
+    const reference = commandPaths[command as keyof typeof commandPaths];
+    return <svg className="foundation-single-command" width="76" height="76" viewBox={reference.viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={title || command} data-command-reference={command} shapeRendering="geometricPrecision">
+      {reference.paths.map(([fill,d,stroke,strokeWidth],i)=><path key={i} fill={fill} d={d} stroke={stroke || undefined} strokeWidth={strokeWidth} strokeLinejoin="round" strokeLinecap="round"/>)}
+    </svg>;
+  }
   if (foundation && (command === 'mirror' || command === 'mirrorCopy')) return (
     <svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid meet" role="img" aria-label={title || command}
       className={`foundation-operation-command-icon foundation-operation-menu ${className}`.trim()}>

@@ -1,4 +1,4 @@
-import intersectCommandOriginal from '../../assets/icad-foundations/modeling/intersect-command-original.png';
+import FoundationOperationCommandIcon from './FoundationOperationCommandIcon';
 import intersectSelected from '../../assets/icad-foundations/modeling/intersect-selected.png';
 import intersectResult from '../../assets/icad-foundations/modeling/intersect-result.png';
 import subtractBefore from '../../assets/icad-foundations/modeling/subtract-before.png';
@@ -79,9 +79,7 @@ function subtractArtwork(mode:string,title:string) {
  </g></svg>;
 }
 function intersectArtwork(mode:string,title:string) {
- if(mode==='command') return <div style={{display:'grid',placeItems:'center',width:'100%',height:'100%'}}>
-  <img src={intersectCommandOriginal} alt={title} style={{display:'block',width:76,height:'auto',maxWidth:'100%',objectFit:'contain'}}/>
- </div>;
+ if(mode==='command') return <FoundationOperationCommandIcon command="intersect" title={title}/>;
  const result=mode==='result';
  return <svg viewBox="730 355 650 400" role="img" aria-label={title} style={{width:'100%',height:'100%'}}>
  <g stroke="#eea432" strokeWidth="1" strokeLinejoin="round">
@@ -96,9 +94,8 @@ function intersectArtwork(mode:string,title:string) {
 }
 export default function FoundationBooleanLesson({text,index,kind,japanese=false}:{text:string;index:number;kind:string;japanese?:boolean}) {
  if(kind==='intersect') {
-  const titles=japanese?['重なり部分を残す','交差する要素を選ぶ','結果を確認する']:['Select Intersect','Select the Intersecting Entities','Check the Final Result'];
+  const titles=japanese?['Intersect','交差する要素を選ぶ','結果を確認する']:['Select Intersect','Select the Intersecting Entities','Check the Final Result'];
   const preview=(step:number)=>{const bounds:[number,number,number,number]=step===0?[1849,314,27,30]:[730,355,650,400];return <InterfaceIconPreview key={step} index={step} toolbar={false} title={titles[step]} japanese={japanese} custom={{artwork:intersectArtwork(['command','selected','result'][step],titles[step]),screen:step===2?intersectResult:intersectSelected,region:{bounds,landing:bounds}}}/>;};
-  if(index===0) return <div className="foundation-union-comparison"><FoundationViewComparison text={text} customIcons={[intersectArtwork('selected',japanese?'交差する要素':'Intersecting entities'),intersectArtwork('result',japanese?'共通部分の結果':'Intersection result')]}/></div>;
   return <div className="foundation-stretch-steps foundation-union-steps"><FoundationUsesCards text={text} customIcons={[0,1,2].map(preview)}/></div>;
  }
  if(kind==='subtract') {
@@ -124,6 +121,6 @@ export default function FoundationBooleanLesson({text,index,kind,japanese=false}
  }
  const selected=samples[kind]?.[index] || [];
  return <div className="foundation-boolean-steps" style={{'--boolean-columns':selected.length} as React.CSSProperties}>
-   <FoundationUsesCards text={text} customIcons={selected.map((n,i)=><img key={n} src={images[n]} alt={japanese?`操作例 ${i+1}`:`${kind}: ${commands.has(n)?'highlighted command':n===11||n===14?'CSG confirmation dialog':'reference example'} ${i+1}`} />)}/>
+   <FoundationUsesCards text={text} customIcons={selected.map((n,i)=>n===9||n===12?<InterfaceIconPreview key={n} index={i} toolbar={false} title={n===9?'Separate Entity':'Separate All Components'} japanese={japanese} custom={{artwork:<FoundationOperationCommandIcon command={n===9?'separateSelected':'separateAll'} title={n===9?'Separate Entity':'Separate All Components'}/>,screen:images[n],screenSize:n===9?[475,229]:[602,323],region:{bounds:[0,0,1920,1080],landing:[0,0,1920,1080]}}}/>:<img key={n} src={images[n]} alt={japanese?`操作例 ${i+1}`:`${kind}: ${commands.has(n)?'highlighted command':n===11||n===14?'CSG confirmation dialog':'reference example'} ${i+1}`} />)}/>
  </div>;
 }

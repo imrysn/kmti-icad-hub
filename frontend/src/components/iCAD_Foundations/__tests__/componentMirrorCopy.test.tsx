@@ -1,0 +1,24 @@
+import { cleanup, render, screen } from '@testing-library/react';
+import { afterEach, expect, it } from 'vitest';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import FoundationViewComparison from '../FoundationViewComparison';
+import ComponentMirrorCopyArtwork, { componentMirrorComparisonIcons } from '../ComponentMirrorCopyArtwork';
+import { resolveFoundationLesson } from '../curriculum';
+import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+afterEach(cleanup);
+it.each(['en','ja'] as const)('renders Mirror Copy methods, points, comparison, and assessment in %s', language => {
+ const lesson=resolveFoundationLesson('foundation-component-mirror-copy')!;
+ const sections=lesson.content[language].sections!;
+ const {container}=render(<><FoundationStretchSteps text={sections[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2,3].map(step=><ComponentMirrorCopyArtwork key={step} step={step} japanese={language==='ja'}/>)}/><FoundationViewComparison text={sections[1].text} customIcons={componentMirrorComparisonIcons()}/></>);
+ const cards=screen.getAllByRole('listitem');
+ expect(cards).toHaveLength(4);
+ expect(screen.getAllByRole('button')).toHaveLength(4);
+ for(const label of ['P1','P2','P3']) expect(cards[2]).toHaveTextContent(label);
+ expect(cards[2]).toHaveTextContent(language==='ja'?'方法1':'Method 1');
+ expect(cards[2]).toHaveTextContent(language==='ja'?'方法2':'Method 2');
+ expect(cards[3]).toHaveTextContent(language==='ja'?'元の構成要素は元の位置に残ります。':'The original remains in place.');
+ expect(container.querySelectorAll('.foundation-view-comparison__card')).toHaveLength(2);
+ const question=foundationKnowledgeQuestions(language,lesson.id)[0];
+ expect(question.id).toBe('foundation-component-mirror-copy-knowledge-check');
+ expect(question.choices.filter(choice=>choice.isCorrect).map(choice=>choice.label)).toEqual([language==='ja'?'C. 元の位置に残り、ミラーコピーが作成される':'C. It remains while a mirrored copy is created']);
+});

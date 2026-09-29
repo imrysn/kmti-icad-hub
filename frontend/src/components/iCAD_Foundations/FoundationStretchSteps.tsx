@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useFoundationVisuals } from './FoundationVisualContext';
 import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import StretchArtwork from './StretchArtwork';
@@ -18,7 +19,7 @@ function StepIcon({method,index,japanese,title}: {method:1|2;index:number;japane
   return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork:singleCommand && index===0 ? <FoundationCreationCommandIcon command="stretch" title={title}/> : <StretchArtwork step={index} linear={linear} title={title}/>,screen,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/>;
 }
 
-export default function FoundationStretchSteps({text,method,japanese}: {text:string;method:1|2;japanese:boolean}) {
+export default function FoundationStretchSteps({text,method,japanese,customIcons}: {text:string;method:1|2;japanese:boolean;customIcons?:ReactNode[]}) {
   const start=text.search(/\*\*(?:Step|ステップ) 1/);
   const intro=start>0 ? text.slice(0,start).trim() : '';
   const steps=text.slice(Math.max(0,start)).split(/\n\n(?=\*\*(?:Step|ステップ) \d+)/);
@@ -27,7 +28,7 @@ export default function FoundationStretchSteps({text,method,japanese}: {text:str
     <ul className="foundations-uses__grid">{steps.map((step,index)=>{
       const [heading,...body]=step.split('\n');
       const title=heading.replaceAll('**','').replace(/^(?:Step|ステップ) \d+\s*—\s*/, '');
-      return <li className="foundations-use-card" key={index}><span className="foundations-use-card__number" aria-hidden="true">{index+1}</span><h5 className="foundations-use-card__title">{title}</h5><div className="foundations-use-card__icon-frame"><StepIcon method={method} index={index} japanese={japanese} title={title}/></div><div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div></li>;
+      return <li className="foundations-use-card" key={index}><span className="foundations-use-card__number" aria-hidden="true">{index+1}</span><h5 className="foundations-use-card__title">{title}</h5><div className="foundations-use-card__icon-frame">{customIcons?.[index] ?? <StepIcon method={method} index={index} japanese={japanese} title={title}/>}</div><div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div></li>;
     })}</ul>
   </div>;
 }

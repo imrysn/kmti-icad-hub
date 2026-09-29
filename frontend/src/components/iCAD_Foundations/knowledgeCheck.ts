@@ -234,6 +234,46 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     const entry=checks[key];
     if(entry) { const correct=(key==='union'||key==='subtract'||key==='intersect')?1:0; const labels=ja?entry[3]:entry[2]; return [{id:`${lessonId}-check`,prompt:ja?entry[1]:entry[0],choices:labels.map((label,index)=>({id:`${key}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===correct,feedback:index===correct?`${ja?'正解：':'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`:(ja?'操作手順を確認してください。':'Review the operation steps.')}))}]; }
   }
+  if (lessonId === 'foundation-component-delete') {
+    const ja=language==='ja';
+    const labels=ja?['構成要素をコピーする','構成要素を移動する','選択した構成要素を削除する','構成要素を回転する']:['Copies a component','Moves a component','Removes selected components','Rotates a component'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の削除コマンドは何を行いますか？':'What does the Delete Component command do?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'選択した構成要素を立体要素から削除します。':'Delete Component removes selected components from a solid entity.')}))}];
+  }
+  if (lessonId === 'foundation-component-mirror-copy') {
+    const ja=language==='ja';
+    const labels=ja?['削除される','ミラー位置へ移動する','元の位置に残り、ミラーコピーが作成される','複数の構成要素に分離される']:['It is deleted','It is moved to the mirrored position','It remains while a mirrored copy is created','It is separated into multiple components'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素のミラーコピーでは、元の構成要素はどうなりますか？':'What happens to the original component when using Mirror Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'元の構成要素を残して、ミラー複製を作成します。':'The original remains while a mirrored duplicate is created.')}))}];
+  }
+  if (lessonId === 'foundation-component-rotate-copy') {
+    const ja=language==='ja';
+    const labels=ja?['回転コピーは元の構成要素を削除する','回転コピーは回転した複製を作成する','回転コピーでは軸を使用しない','回転コピーは部品全体にしか使用できない']:['Rotate Copy Component deletes the original','Rotate Copy Component creates a rotated duplicate','Rotate Copy Component does not use an axis','Rotate Copy Component only works on whole parts'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の回転と回転コピーの主な違いは何ですか？':'What is the main difference between Rotate Component and Rotate Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'回転コピーは元の構成要素を残して、回転した複製を作成します。':'Rotate Copy Component keeps the original and creates a rotated duplicate.')}))}];
+  }
+  if (lessonId === 'foundation-component-repeat-copy') {
+    const ja=language==='ja';
+    const labels=ja?['構成要素を削除する','構成要素を連続して複製する','構成要素を回転する','構成要素を分離する']:['Deleting a component','Continuously duplicating a component','Rotating a component','Separating a component'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の連続コピーは主に何に使用しますか？':'What is Repeat Copy Component mainly used for?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'構成要素を連続して複製するために使用します。':'Repeat Copy Component is intended for continuous duplication of a component.')}))}];
+  }
+  if (lessonId === 'foundation-component-rotate') {
+    const ja=language==='ja';
+    const labels=ja?['1点','2点','3つの面','1つの座標のみ']:['One point','Two points','Three faces','One coordinate only'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'回転軸を定義するために必要なものは何ですか？':'What is required to define the axis of rotation?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'2点を選択して回転軸を定義します。':'Select two points to define the axis of rotation.')}))}];
+  }
+  if (lessonId === 'foundation-component-mirror') {
+    const ja=language==='ja';
+    const labels=ja?['3点または面を選択する','X軸方向の距離だけを入力する','シェーディングモードを変更する','ユーザービューを選択する']:['By selecting three points or a face','By entering only an X-axis distance','By changing the shading mode','By selecting a User View'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素をミラー移動するとき、ミラー平面をどのように定義できますか？':'How can you define the mirror plane when using Mirror Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'3点を選ぶか、面を左クリックして平面を定義します。':'Define the plane by selecting three points or left-clicking a face.')}))}];
+  }
+  if (lessonId === 'foundation-component-copy') {
+    const ja=language==='ja';
+    const labels=ja?['X・Y・Zの移動量とコピーの個数','回転角度のみ','モデルの色とシェーディング','作業平面の向き']:['X, Y, and Z distance and the number of copies','Rotation angle only','Model color and shading','Work Plane orientation'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素をコピーするとき、何を指定する必要がありますか？':'What information must be specified when using Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'項目入力でX・Y・Zの移動量と個数を指定します。':'Specify X, Y, and Z distance and the number of copies in Item Entry.')}))}];
+  }
+  if (lessonId === 'foundation-component-move') {
+    const ja=language==='ja';
+    const labels=ja?['ユーザービュー','項目入力','シェーディングツールバー','作業平面']:['User View','Item Entry','Shading toolbar','Work Plane'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素を移動するとき、移動量はどこで指定しますか？':'Where do you specify the movement distance when using Move Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'項目入力でX・Y・Zの移動量を指定します。':'Specify the X, Y, and Z movement distances in Item Entry.')}))}];
+  }
   if (lessonId === 'foundation-hole-details') {
     const ja = language === 'ja';
     const labels = ja ? ['緑色', '赤色', '青色', '黄色'] : ['Green', 'Red', 'Blue', 'Yellow'];

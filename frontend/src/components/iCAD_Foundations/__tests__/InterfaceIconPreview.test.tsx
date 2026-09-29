@@ -55,6 +55,19 @@ describe('Interface icon location preview', () => {
     document.body.style.overflow = '';
   });
 
+  it('keeps standalone artwork open without exposing the source screenshot', () => {
+    render(<InterfaceIconPreview index={0} toolbar={false} title="Section" japanese={false} custom={{artwork:<svg role="img" aria-label="Section diagram" />, artworkOnly:true, screen:'source.png', region:{bounds:[0,0,100,100],landing:[0,0,100,100]}}} />);
+    fireEvent.click(screen.getByRole('button', {name:'Enlarge: Section'}));
+    const dialog = screen.getByRole('dialog', {name:'Section'});
+    advance(10000);
+    expect(within(dialog).getByRole('img', {name:'Section diagram'})).toBeInTheDocument();
+    expect(dialog.querySelector('img')).toBeNull();
+    expect(within(dialog).queryByRole('button', {name:'Show location'})).not.toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole('button', {name:'Close enlarged icon'}));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(document.body.style.overflow).toBe('auto');
+  });
+
   it.each([false, true])('waits for the actual interface image before locating a toolbar=%s icon', (toolbar) => {
     const { dialog, image, stage } = openPreview(toolbar);
     expect(within(dialog).getByRole('button', { name: 'Show location' })).toBeDisabled();

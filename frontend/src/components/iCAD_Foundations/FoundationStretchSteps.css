@@ -6,6 +6,7 @@
 .foundation-stretch-steps .foundations-use-card__icon-frame { display: grid; place-items: center; }
 .foundation-stretch-steps .stretch-vector { margin: auto; }
 .foundation-stretch-steps--4 .foundations-uses__grid { grid-template-columns: repeat(4,minmax(0,1fr)); max-width: 1100px; }
+.foundation-stretch-steps--5 .foundations-uses__grid { grid-template-columns: repeat(5,minmax(0,1fr)); max-width: 1100px; }
 .foundation-stretch-reference { display: block; width: auto; max-width: 100%; height: auto; max-height: 120px; object-fit: contain; }
 .foundation-stretch-result { display: block; width: 150px; height: 120px; max-width: 100%; }
 .foundation-interface-preview-artwork .foundation-stretch-reference { max-height: 65vh; width: 100%; object-fit: contain; }

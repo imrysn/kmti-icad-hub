@@ -47,7 +47,7 @@ function WorkPlaneMenuSvg({remove, title}: {remove:boolean; title:string}) {
 export default function FoundationWorkPlaneStepIcon({ step, japanese = false }: Props) {
   const open=step==='open';
   const remove=step==='removeStep2';
-  const title=open ? (japanese?'作業平面':'Open Work Plane (作業平面)') : remove ? (japanese?'削除(E) → 指定した組立平面削除(D)':'Delete → Delete Specified Work Plane') : (japanese?'作業平面のコンテキストメニュー':'Work Plane Context Menu');
+  const title=open ? (japanese?'組立平面開設':'Open Work Plane (組立平面開設)') : remove ? (japanese?'削除(E) → 指定した組立平面削除(D)':'Delete → Delete Specified Work Plane') : (japanese?'作業平面のコンテキストメニュー':'Work Plane Context Menu');
   // All three supplied captures use the 1920 × 1080 reference space.
   const region: [number,number,number,number]=open ? [413,43,25,29] : remove ? [1231,605,472,27] : [1314,365,220,400];
   return <div className={`foundation-file-menu-icon foundation-work-plane-icon foundation-work-plane-icon--${step}`}>

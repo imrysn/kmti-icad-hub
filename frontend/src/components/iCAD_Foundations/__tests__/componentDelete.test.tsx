@@ -1,0 +1,23 @@
+import { cleanup, render, screen } from '@testing-library/react';
+import { afterEach, expect, it } from 'vitest';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import ComponentDeleteArtwork from '../ComponentDeleteArtwork';
+import { resolveFoundationLesson } from '../curriculum';
+import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+afterEach(cleanup);
+it.each(['en','ja'] as const)('renders Delete selection and result without extra confirmation instructions in %s', language => {
+ const lesson=resolveFoundationLesson('foundation-component-delete')!;
+ const sections=lesson.content[language].sections!;
+ const {container}=render(<FoundationStretchSteps text={sections[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2].map(step=><ComponentDeleteArtwork key={step} step={step} japanese={language==='ja'}/>)}/>);
+ const cards=screen.getAllByRole('listitem');
+ expect(cards).toHaveLength(3);
+ expect(screen.getAllByRole('button')).toHaveLength(3);
+ expect(cards[1]).toHaveTextContent(language==='ja'?'1つ以上':'one or more components');
+ expect(cards[2]).toHaveTextContent(language==='ja'?'削除前':'Before');
+ expect(cards[2]).toHaveTextContent(language==='ja'?'削除後':'After');
+ expect(sections[0].text).not.toMatch(/\bGO\b|Enter/);
+ expect(container.querySelectorAll('.foundation-view-comparison__card')).toHaveLength(0);
+ const question=foundationKnowledgeQuestions(language,lesson.id)[0];
+ expect(question.id).toBe('foundation-component-delete-knowledge-check');
+ expect(question.choices.filter(choice=>choice.isCorrect).map(choice=>choice.label)).toEqual([language==='ja'?'C. 選択した構成要素を削除する':'C. Removes selected components']);
+});

@@ -8,3 +8,11 @@
 .work-plane-spiral-result { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 640px; margin: auto; }
 .work-plane-spiral-result > svg { height: 301px; }
 @media(max-width: 500px) { .work-plane-spiral-result { grid-template-columns: 1fr; } }
+
+.work-plane-spiral .foundations-use-card__icon-frame .work-plane-spiral-sample { width: 100%; height: 120px; margin: 0; }
+.work-plane-spiral .foundations-use-card__icon-frame .work-plane-spiral-pitch { display: grid; grid-template-rows: 24px 90px; gap: 6px; width: 100%; }
+.work-plane-spiral .foundations-use-card__icon-frame .work-plane-spiral-pitch > svg { height: 100%; max-width: 100%; }
+
+.work-plane-spiral-preview { width: 100%; height: 120px; }
+.work-plane-spiral .work-plane-spiral-preview--command .work-plane-spiral-sample { width: 76px; height: 76px; }
+.work-plane-spiral .foundations-use-card__icon-frame .work-plane-spiral-pitch .work-plane-spiral-sample { height: 100%; margin: 0; }

@@ -1,10 +1,17 @@
+import commandPaths from './foundationCommandPaths.json';
 import { useId } from 'react';
 
-type Command = 'sketch' | 'extrude' | 'extrudeBoth' | 'revolve' | 'stretch' | 'machinePart';
+type Command = 'sketch' | 'extrude' | 'extrudeBoth' | 'revolve' | 'stretch' | 'machinePart' | 'sectionExtrude' | 'sectionRevolve' | 'spiral' | 'referenceMachinePart';
 
 /** Individual command artwork from the existing iCAD menu references, without menu chrome. */
 export default function FoundationCreationCommandIcon({command,title}: {command:Command;title:string}) {
   const id=useId();
+  if (command in commandPaths) {
+    const reference = commandPaths[command as keyof typeof commandPaths];
+    return <svg className="foundation-single-command" width="76" height="76" viewBox={reference.viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={title || command} data-command-reference={command} shapeRendering="geometricPrecision">
+      {reference.paths.map(([fill,d,stroke,strokeWidth],i)=><path key={i} fill={fill} d={d} stroke={stroke || undefined} strokeWidth={strokeWidth} strokeLinejoin="round" strokeLinecap="round"/>)}
+    </svg>;
+  }
   const gear=(cx:number,cy:number,r:number)=>Array.from({length:48},(_,i)=>{
     const angle=i*Math.PI/24, radius=i%4<2?r:r*.82;
     return `${cx+Math.cos(angle)*radius},${cy+Math.sin(angle)*radius}`;

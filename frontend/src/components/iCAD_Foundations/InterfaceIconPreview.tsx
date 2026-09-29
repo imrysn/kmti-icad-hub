@@ -8,6 +8,9 @@ import '../LessonModalTheme.css';
 
 export interface CustomIconPreview {
   artwork: ReactNode;
+  /** Present lesson artwork without revealing its source capture. */
+  artworkOnly?: boolean;
+  autoLocate?: boolean;
   screenOverlay?: ReactNode;
   screen: string;
   /** Keep cropped captures at their native size and aspect ratio. */
@@ -98,13 +101,13 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
     return ()=>animation?.cancel();
   },[phase]);
   useEffect(()=>{
-    if(!imageReady || phase==='located') return;
+    if(custom?.artworkOnly || (custom?.autoLocate === false && phase === 'enlarged') || !imageReady || phase==='located') return;
     const timer=window.setTimeout(()=>{
       if(phase==='enlarged') beginLocation();
       else setPhase('located');
     },1000);
     return ()=>window.clearTimeout(timer);
-  },[phase,imageReady]);
+  },[phase,imageReady,custom?.artworkOnly,custom?.autoLocate]);
   useEffect(()=>{
     const node=dialog.current!;
     const overflow=document.body.style.overflow;
@@ -113,7 +116,7 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
     return ()=>{node.close();document.body.style.overflow=overflow;};
   },[]);
   return createPortal(<dialog ref={dialog} className="foundation-interface-icon-dialog" data-phase={phase} aria-label={title} onCancel={event=>{event.preventDefault();onClose();}} onClick={atLocation?onClose:undefined} tabIndex={-1}>
-    <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase} style={custom?.screenSize ? {
+    {!custom?.artworkOnly && <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase} style={custom?.screenSize ? {
       width:`min(${custom.screenSize[0]}px, calc(100vw - 32px), calc((100dvh - 32px) * ${custom.screenSize[0]} / ${custom.screenSize[1]}))`,
       height:'auto', aspectRatio:`${custom.screenSize[0]} / ${custom.screenSize[1]}`,
     } : undefined}>
@@ -123,15 +126,15 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
         {custom?.artwork ?? <InterfaceSvgIcon index={index} toolbar={toolbar} title={title} expanded/>}
       </div>
       <div className="foundation-interface-icon-dialog__location" style={{...regionStyle(region.bounds), ...(custom?.highlightColor ? {borderColor:custom.highlightColor} : {})}} aria-hidden="true"/>
-    </div>
-    {atLocation ? <p className="foundation-interface-fullscreen-hint">{japanese?'画面をクリックするか Esc キーを押すと閉じます。':'Click anywhere or press Esc to close.'}</p> : <div className="foundation-interface-preview-panel lesson-modal-surface">
+    </div>}
+    {atLocation ? <p className="foundation-interface-fullscreen-hint">{japanese?'画面をクリックするか Esc キーを押すと閉じます。':'Click anywhere or press Esc to close.'}</p> : <div className={`foundation-interface-preview-panel lesson-modal-surface${custom?.artworkOnly ? ' foundation-interface-preview-panel--artwork' : ''}`}>
     <header>
-      <p className="foundation-interface-preview-eyebrow">{japanese?'アイコンの確認':'Icon preview'}</p>
+      <p className="foundation-interface-preview-eyebrow">{custom?.artworkOnly ? (japanese?'拡大表示':'Image preview') : (japanese?'アイコンの確認':'Icon preview')}</p>
       <h3>{title}</h3>
       <button type="button" onClick={onClose} aria-label={japanese?'閉じる':'Close enlarged icon'}><X size={24}/></button>
     </header>
     <div ref={enlargedIcon} className="foundation-interface-preview-artwork">{custom?.artwork ?? <InterfaceSvgIcon index={index} toolbar={toolbar} title={title} expanded/>}</div>
-    <footer>
+    {!custom?.artworkOnly && <footer>
       <p className={`foundation-interface-preview-status${imageFailed?' is-error':''}`} role="status">{imageFailed
         ? (japanese?'画面画像を読み込めませんでした。拡大アイコンをご確認ください。':'The interface image could not load. You can still view the enlarged icon.')
           : (japanese?'拡大アイコンを確認すると、画面上の位置が表示されます。':'Take a closer look, then watch where it belongs.')}</p>
@@ -139,7 +142,7 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
         <LocateFixed size={17}/>
         {japanese?'画面上の位置を表示':'Show location'}
       </button>
-    </footer>
+    </footer>}
     </div>}
   </dialog>,document.body);
 }
