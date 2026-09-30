@@ -1,0 +1,38 @@
+import { cleanup, render, screen, fireEvent } from '@testing-library/react';
+import { afterEach, expect, it, vi } from 'vitest';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import PartRenameArtwork from '../PartRenameArtwork';
+import { resolveFoundationLesson, foundationNeighbors } from '../curriculum';
+import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+afterEach(()=>{cleanup();vi.restoreAllMocks();});
+it.each(['en','ja'] as const)('renders the complete four-step rename procedure in %s',language=>{
+ const lesson=resolveFoundationLesson('F21.3')!;
+ const sections=lesson.content[language].sections!;
+ expect(lesson.completionId).toBe('foundations-v3:part-change-name');
+ expect(sections).toHaveLength(3);
+ render(<FoundationStretchSteps text={sections[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2,3].map(step=><PartRenameArtwork key={step} step={step} japanese={language==='ja'}/>)}/>);
+ const cards=screen.getAllByRole('listitem');expect(cards).toHaveLength(4);
+ expect(cards[1]).toHaveTextContent(language==='ja'?'要素を選択するか、3D空間で右クリックします。':'Select an entity, or right-click on the 3D Space.');
+ expect(cards[1].textContent).not.toMatch(/GO|Enter/);
+ expect(cards[2]).toHaveTextContent('OK');
+ expect(cards[2]).toHaveTextContent(language==='ja'?'チェックボックス':'Check the option');
+ expect(cards[3].querySelectorAll('image')).toHaveLength(2);
+ expect(cards[3]).toHaveTextContent('70×10×50');
+ expect(cards[3]).toHaveTextContent('70×10×80');
+ expect(cards[2].querySelector('image')?.getAttribute('href')).toContain('part-rename-information.png');
+ expect(cards[3].textContent).not.toContain('Yes');
+ expect(sections[2].text).toContain('≠');
+ expect(sections[1].text).toContain(language==='ja'?'ツリービュー':'Tree View');
+ const question=foundationKnowledgeQuestions(language,lesson.id)[0];
+ expect(question.id).toBe('foundation-part-change-name-knowledge-check');
+ expect(question.choices.map(c=>c.isCorrect)).toEqual([false,true,false,false]);
+ expect(foundationNeighbors('foundation-part-material').next).toBe(lesson.id);
+ expect(foundationNeighbors(lesson.id).next).toBe(resolveFoundationLesson('F22.1')!.id);
+});
+it.each([1,2])('opens the actual supplied screenshot for visual %s',step=>{
+ Object.defineProperty(HTMLDialogElement.prototype,'showModal',{configurable:true,value:vi.fn()});
+ Object.defineProperty(HTMLDialogElement.prototype,'close',{configurable:true,value:vi.fn()});
+ render(<PartRenameArtwork step={step} japanese={false}/>);
+ fireEvent.click(screen.getByRole('button'));
+ expect(document.querySelector('dialog img')?.getAttribute('src')).toContain(`part-rename-${step===1?'selected':step===2?'information':'workflow-reference'}.png`);
+});

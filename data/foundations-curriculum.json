@@ -3229,13 +3229,450 @@
     {
       "id": "F20",
       "title": {
+        "en": "Fairing",
+        "ja": "フェアリング（面取り・フィレット・シェル）"
+      },
+      "lessons": [
+        {
+          "id": "foundation-fairing-chamfer",
+          "displayId": "F20.1",
+          "moduleId": "F20",
+          "title": {
+            "en": "Chamfer",
+            "ja": "面取り"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:fairing-chamfer",
+          "routeAliases": [
+            "F20.1"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Chamfer command is used to create chamfer dimensions on selected edges of a 3D entity.\n\nIt removes the sharp corner of an edge and creates a chamfer based on the specified chamfer length.",
+              "practice": "By the end of this lesson, you should be able to create a chamfer by specifying the chamfer length and selecting the required edge of a 3D entity.",
+              "sections": [
+                {
+                  "title": "How to Create a Chamfer",
+                  "text": "**Step 1 — Select Chamfer Edge**\nSelect **Chamfer Edge「面取りを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Chamfer Length**\nIn the Item Entry, specify the required **Chamfer Length「面取り長」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be chamfered, then select **GO (right-click)**.\nSeveral edges can be selected and chamfered at the same time.\n\n**Step 4 — Check the Final Result**\nSelected sharp edge(s) → Chamfered edge(s).\nConfirm that the selected edge or edges have been chamfered using the specified chamfer length."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the chamfer length before applying the operation.\n\nMultiple edges can be selected when the same chamfer is required."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "面取りコマンドは、3D要素の選択したエッジに面取り寸法を指定して面取りを作成するために使用します。\n\nエッジの鋭い角を取り除き、指定した面取り長に基づいて面取りを作成します。",
+              "practice": "このレッスンの終了時には、面取り長を指定し、3D要素の必要なエッジを選択して面取りを作成できるようになります。",
+              "sections": [
+                {
+                  "title": "面取りの手順",
+                  "text": "**ステップ 1 — 面取りを作成する**\nアイコンメニューから**「面取りを作成する」**を選択します。\n\n**ステップ 2 — 面取り長を指定**\n項目入力で必要な**「面取り長」**を指定します。\n\n**ステップ 3 — エッジを選択**\n面取りするエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを選択し、同時に面取りできます。\n\n**ステップ 4 — 結果を確認**\n選択した鋭いエッジ → 面取りされたエッジ。\n選択したエッジが、指定した面取り長で面取りされたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "操作を適用する前に面取り長を確認してください。\n\n同じ面取りが必要な場合は、複数のエッジを選択できます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-fairing-fillet",
+          "displayId": "F20.2",
+          "moduleId": "F20",
+          "title": {
+            "en": "Fillet",
+            "ja": "フィレット"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:fairing-fillet",
+          "routeAliases": [
+            "F20.2"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Fillet command is used for rounding specified corners or edges of a 3D entity.\n\nThe round shape is created based on the specified fillet radius.",
+              "practice": "By the end of this lesson, you should be able to create a fillet by entering the required radius and selecting the edge or edges to be rounded.",
+              "sections": [
+                {
+                  "title": "How to Create a Fillet",
+                  "text": "**Step 1 — Select Fillet Edge**\nSelect **Fillet Edge「均等の丸みを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Fillet Radius**\nIn the Item Entry, specify the required **Fillet Radius「半径」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be filleted, then select **GO (right-click)**.\nSeveral edges can be filleted at the same time.\n\n**Step 4 — Check the Final Result**\n**Before:** Sharp edge(s) → **After:** Rounded edge(s).\nConfirm that the selected edge or edges have been rounded using the specified fillet radius."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the fillet radius before applying the operation.\n\nMultiple edges can be selected when the same fillet is required."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "フィレットコマンドは、3D要素の指定した角やエッジを丸めるために使用します。\n\n指定した半径に基づいて丸みを作成します。",
+              "practice": "このレッスンの終了時には、必要な半径を入力し、丸めるエッジを選択してフィレットを作成できるようになります。",
+              "sections": [
+                {
+                  "title": "フィレットの手順",
+                  "text": "**ステップ 1 — 均等の丸みを作成する**\nアイコンメニューから**「均等の丸みを作成する」**を選択します。\n\n**ステップ 2 — 半径を指定**\n項目入力で必要な**「半径」**を指定します。\n\n**ステップ 3 — エッジを選択**\n丸めるエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを同時に丸めることができます。\n\n**ステップ 4 — 結果を確認**\n**操作前：**鋭いエッジ → **操作後：**丸められたエッジ。\n選択したエッジが、指定した半径で丸められたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "操作を適用する前に半径を確認してください。\n\n同じ丸みが必要な場合は、複数のエッジを選択できます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-fairing-shell",
+          "displayId": "F20.3",
+          "moduleId": "F20",
+          "title": {
+            "en": "Shell",
+            "ja": "シェル"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:fairing-shell",
+          "routeAliases": [
+            "F20.3"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Shell command is used for hollowing solid entities using a specified wall thickness.",
+              "practice": "By the end of this lesson, you should be able to create a hollow solid by selecting the required end faces and specifying the desired wall thickness.",
+              "sections": [
+                {
+                  "title": "How to Create a Shell",
+                  "text": "**Step 1 — Select Shell**\nSelect **Shell「シェルする」** from the Icon Menu.\n\n**Step 2 — Select the End Faces**\nSelect the **two end faces** of the solid entity.\nSelect **GO (right-click)** to continue.\n\n**Step 3 — Specify the Wall Thickness**\nIn the **Item Entry**, specify the desired **Wall Thickness「共通の厚さ」** of the solid entity after shell.\nSelect **GO twice (right-click twice)** to complete the operation.\n\n**Step 4 — Check the Final Result**\n**Before:** Solid entity → **After:** Hollow solid with the specified wall thickness.\nConfirm that the solid entity has been hollowed and that the specified wall thickness has been applied."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Select the required two end faces before selecting GO (right-click).\n\nEnter the desired thickness in the Item Entry, then use double GO (right-click twice) to complete the Shell operation."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "シェルコマンドは、指定した肉厚で立体を中空にするために使用します。",
+              "practice": "このレッスンの終了時には、必要な端面を選択し、希望する肉厚を指定して中空の立体を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "シェルの手順",
+                  "text": "**ステップ 1 — シェルするを選択**\nアイコンメニューから**「シェルする」**を選択します。\n\n**ステップ 2 — 端面を選択**\n立体の**2つの端面**を選択します。\n**GO（右クリック）**を選択して次に進みます。\n\n**ステップ 3 — 肉厚を指定**\n**項目入力**の**「共通の厚さ」**で、シェル後の立体の希望する肉厚を指定します。\n**GO（右クリック）を2回**選択して操作を完了します。\n\n**ステップ 4 — 結果を確認**\n**操作前：**立体 → **操作後：**指定した肉厚の中空の立体。\n立体が中空になり、指定した肉厚が適用されたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "GO（右クリック）を選択する前に、必要な2つの端面を選択してください。\n\n項目入力で希望する肉厚を入力し、GO（右クリック）を2回選択してシェル操作を完了してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F21",
+      "title": {
+        "en": "3D Part Management",
+        "ja": "3Dパーツ管理"
+      },
+      "lessons": [
+        {
+          "id": "foundation-part-create",
+          "displayId": "F21.1",
+          "moduleId": "F21",
+          "title": {
+            "en": "Create 3D Part",
+            "ja": "3Dパーツの作成"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:part-create",
+          "routeAliases": [
+            "F21.1"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Create 3D Part assigns a name and information to a selected entity.",
+              "practice": "By the end of this lesson, you should be able to create a named 3D Part and find it in the Tree View.",
+              "sections": [
+                {
+                  "title": "How to Create a 3D Part",
+                  "text": "**Step 1 — Select Create 3D Part**\nSelect **Create 3D Part「パーツを作成する」** from the Icon Menu.\n\n**Step 2 — Select a Single Entity**\nSelect a **single entity** to make into a 3D Part.\n\n**Step 3 — Enter Part Information**\n**Part list「パーツ一覧」** — Existing parts.\n**Part name「パーツ名」** — Enter a name.\n**Comment「コメント」** — Enter a comment if needed.\n**Layer「作成レイヤ / レイヤ引継」** — Set a new layer or inherit the original.\nPress **Enter** to create the part.\n\n**Step 4 — Check the Tree View**\nFind the new part name in the **Tree View「ツリービュー」**."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "A **3D Part Name is required** when creating a part."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「パーツを作成する」は、選択した要素にパーツ名と情報を設定するコマンドです。",
+              "practice": "このレッスンの終了時には、名前を付けた3Dパーツを作成し、ツリービューで確認できるようになります。",
+              "sections": [
+                {
+                  "title": "3Dパーツ作成の手順",
+                  "text": "**ステップ 1 — 「パーツを作成する」を選択**\nアイコンメニューから**「パーツを作成する」**を選択します。\n\n**ステップ 2 — 単一の要素を選択**\n3Dパーツにする**単一の要素**を選びます。\n\n**ステップ 3 — パーツ情報を入力**\n**パーツ一覧** — ファイル内のパーツ。\n**パーツ名** — 名前を入力。\n**コメント** — 必要に応じて入力。\n**作成レイヤ／レイヤ引継** — 新規レイヤを設定、または元のレイヤを継承。\n**Enter**でパーツを作成します。\n\n**ステップ 4 — ツリービューで確認**\n新しいパーツ名が**ツリービュー**に表示されたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "パーツの作成には**3Dパーツ名が必要**です。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-part-material",
+          "displayId": "F21.2",
+          "moduleId": "F21",
+          "title": {
+            "en": "Material Description",
+            "ja": "材料説明"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:part-material",
+          "routeAliases": [
+            "F21.2"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A material description records the material name, shape, and dimensions using the reference formats below.",
+              "practice": "By the end of this lesson, you should be able to write a material description using the reference symbols and formats.",
+              "sections": [
+                {
+                  "title": "Material Description",
+                  "text": "**×** — Separates material dimensions.\n**φ (FAI)** — Indicates the diameter of round-shaped material.\n\n---\n\nMaterial Name | Material Dimensions\nS45C | φ40×150\nSS400 | 19×100×380\n\n---\n\nMaterial | Description Example\nC-Channel | 100×50×5-1000\nH-Beam | 100×100×5-1000\nI-Beam | 150×100×8-1000\nAngle Bar | 50×50×6-1000\nRound Pipe | φ34×3.2-1000\nSquare Pipe | 40×40×2.3-1000\nRectangular Pipe | 75×45×3.2-1000\nSquare Bar | □25×500\nRound Bar | φ30×500\nFlat Bar | 6×50×100\nPlate | 9×55×320\n\n---\n\n**Thickness × Size: 2×φ17**\n**2** = Thickness\n**φ17** = Size\n\n---\n\n2.3 mm | 12 mm | 28 mm | 45 mm\n3.2 mm | 16 mm | 32 mm | 50 mm\n4.5 mm | 19 mm | 36 mm | 63 mm\n6 mm | 22 mm | 38 mm | \n9 mm | 25 mm | 40 mm | "
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Keep the symbols and dimension order shown in each example. **□** identifies square material where shown."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "材料説明では、以下の表記例に従って材料名、形状、寸法を記載します。",
+              "practice": "このレッスンの終了時には、参考資料の記号と形式を使って材料説明を記載できるようになります。",
+              "sections": [
+                {
+                  "title": "材料説明",
+                  "text": "**×** — 寸法を区切ります。\n**φ（FAI）** — 丸形状の材料の直径を示します。\n\n---\n\n材料名 | 材料寸法\nS45C | φ40×150\nSS400 | 19×100×380\n\n---\n\n材料 | 表記例\n溝形鋼（C-Channel） | 100×50×5-1000\nH形鋼（H-Beam） | 100×100×5-1000\nI形鋼（I-Beam） | 150×100×8-1000\n山形鋼（Angle Bar） | 50×50×6-1000\nRound Pipe | φ34×3.2-1000\nSquare Pipe | 40×40×2.3-1000\nRectangular Pipe | 75×45×3.2-1000\nSquare Bar | □25×500\nRound Bar | φ30×500\nFlat Bar | 6×50×100\nPlate | 9×55×320\n\n---\n\n**厚さ × サイズ：2×φ17**\n**2** = 厚さ\n**φ17** = サイズ\n\n---\n\n2.3 mm | 12 mm | 28 mm | 45 mm\n3.2 mm | 16 mm | 32 mm | 50 mm\n4.5 mm | 19 mm | 36 mm | 63 mm\n6 mm | 22 mm | 38 mm | \n9 mm | 25 mm | 40 mm | "
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "各例の記号と寸法の順序を守ってください。例中の**□**は角形状の材料を示します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-part-change-name",
+          "displayId": "F21.3",
+          "moduleId": "F21",
+          "title": {
+            "en": "Change 3D Part Name",
+            "ja": "3Dパーツ名の変更"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:part-change-name",
+          "routeAliases": [
+            "F21.3"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Change 3D Part Name updates part names, drawing names for external 3D parts, and comments.",
+              "practice": "By the end of this lesson, you should be able to change a 3D Part name and update its related information correctly.",
+              "sections": [
+                {
+                  "title": "How to Change a 3D Part Name",
+                  "text": "**Step 1 — Select Change 3D Part Name**\nSelect **Change 3D Part Name「パーツ名を変更する」** from the Icon Menu.\n\n**Step 2 — Select the Entity**\nSelect an entity, or right-click on the 3D Space.\n\n**Step 3 — Enter the New Information**\n**New 3D Part Name** — New name.\n**New Drawing Name** — For external parts.\n**New Comment** — Updated comment.\nCheck the option to also update the linked 2D Part Name.\nSelect **OK**.\n\n**Step 4 — Check the Tree View**\nCheck the renamed part in the Tree View.\n**Before:** 70×10×50 → **After:** 70×10×80"
+                },
+                {
+                  "title": "Final Result",
+                  "text": "The Tree View shows the updated name; the corresponding 2D Part Name is updated to match."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**3D Part Name = 2D Part Name → Link maintained**\n**3D Part Name ≠ 2D Part Name → Link cut**\n\n2D Part Names are generated when orthographic projections are created in 2D and appear in the Tree View."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「パーツ名を変更する」は、パーツ名、外部3Dパーツの図面名、コメントを更新するコマンドです。",
+              "practice": "このレッスンの終了時には、3Dパーツ名を変更し、関連する情報を正しく更新できるようになります。",
+              "sections": [
+                {
+                  "title": "3Dパーツ名を変更する手順",
+                  "text": "**ステップ 1 — 「パーツ名を変更する」を選択**\nアイコンメニューから**「パーツ名を変更する」**を選択します。\n\n**ステップ 2 — 要素を選択**\n要素を選択するか、3D空間で右クリックします。\n\n**ステップ 3 — 新しい情報を入力**\n「名称変更」で以下を入力します。\n**新パーツ名** — 新しい名前。\n**新図面名** — 外部パーツ用。\n**新パーツコメント** — 更新するコメント。\n対応する2Dパーツ名も更新するチェックボックスをオンにします。\n**OK**を選択します。\n\n**ステップ 4 — ツリービューで確認**\nツリービューで変更前と変更後の3Dパーツ名を比較します。\n**変更前：**70×10×50 → **変更後：**70×10×80"
+                },
+                {
+                  "title": "最終結果",
+                  "text": "ツリービューに更新後の名前が表示され、対応する2Dパーツ名も一致するように更新されます。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**3Dパーツ名 = 2Dパーツ名 → リンクを維持**\n**3Dパーツ名 ≠ 2Dパーツ名 → リンクが切断**\n\n2Dで正投影図を作成すると2Dパーツ名が生成され、ツリービューに表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F22",
+      "title": {
+        "en": "Material Setting",
+        "ja": "Material Setting"
+      },
+      "lessons": [
+        {
+          "id": "foundation-material-set",
+          "displayId": "F22.1",
+          "moduleId": "F22",
+          "title": {
+            "en": "Set Material",
+            "ja": "材質設定"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:material-set",
+          "routeAliases": [
+            "F22.1",
+            "F22.2",
+            "foundation-material-change"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Material settings provide the specific gravity used to calculate part weight, along with layer and color information.",
+              "practice": "Assign a material, follow its color code, and choose whether to change an existing material.",
+              "sections": [
+                {
+                  "title": "How to Set Material",
+                  "text": "**Step 1 — Select Set Material**\nSelect **Set Material（一覧から選んで材質設定する）** from the Icon Menu.\n\n**Step 2 — Select the Entity**\nSelect one or more entities, then **GO (right-click)**.\n\n**Step 3 — Select the Material**\nChoose the material in **Material Setting「材質設定」**, then select **OK**.\nList fields: **Material「材質名」**, **Notation「材料記号」**, **Specific Gravity「比重」**, and **Color「材質色」**.\nFollow the material’s color code; use **WHITE** if none is specified.\n\n**Step 4 — Confirm the Setting**\nSelect **OK** to dismiss the information dialog.\nTo show material colors in shaded views, turn material display on."
+                },
+                {
+                  "title": "Changing an Existing Material",
+                  "text": "Repeat Steps 1–2 for a part with material already assigned. When asked whether to continue, choose:\n\n**OK**\nSelect the new material and confirm with **OK**.\n\n**Cancel**\nLeave the existing material unchanged."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "材質設定は、パーツの重量計算に使う比重と、レイヤ・色情報を設定します。",
+              "practice": "材質を設定して色コードに従い、設定済みの材質を変更するかどうかを選択します。",
+              "sections": [
+                {
+                  "title": "材質設定の手順",
+                  "text": "**ステップ 1 — Set Materialを選択**\nアイコンメニューから**Set Material（一覧から選んで材質設定する）**を選択します。\n\n**ステップ 2 — 要素を選択**\n1つまたは複数の要素を選択し、**GO（右クリック）**で確定します。\n\n**ステップ 3 — 材質を選択**\n**「材質設定」**で材質を選び、**OK**を選択します。\n一覧の項目：**材質名**、**材料記号**、**比重**、**材質色**。\n材質の色コードに従い、指定がない場合は**WHITE（白）**を使用します。\n\n**ステップ 4 — 設定を確認**\n**OK**で案内ダイアログを閉じます。\nシェーディングで材質色を表示するには、材質表示をONにします。"
+                },
+                {
+                  "title": "設定済みの材質を変更する場合",
+                  "text": "材質が設定済みのパーツに対してステップ1〜2を行います。処理を続けるか尋ねられたら、次のいずれかを選択します。\n\n**OK**\n新しい材質を選び、**OK**で確定します。\n\n**Cancel**\n既存の材質を変更せずに維持します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-material-unlisted",
+          "displayId": "F22.3",
+          "moduleId": "F22",
+          "title": {
+            "en": "Materials Not Included in the iCAD Material List",
+            "ja": "iCADの材質リストに含まれない材料"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations-v3:material-unlisted",
+          "routeAliases": [
+            "F22.3"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "This example shows how to handle S35C, which is absent from the iCAD material list.",
+              "practice": "Distinguish the BOM material from the 3D assignment and use the reference table below.",
+              "sections": [
+                {
+                  "title": "2D Drawing",
+                  "text": "Specify **S35C** on the bill of materials (BOM), not the 3D substitute."
+                },
+                {
+                  "title": "3D Weight Calculation",
+                  "text": "Use **S45C** (specific gravity **7.8400**) for weight calculation. Keep the assignment because its specific gravity is almost the same as S35C’s."
+                },
+                {
+                  "title": "Material Equivalents in the iCAD List",
+                  "text": "Material | Equivalent Material on iCAD Material List\nS35C | S45C\nC1220 | C1100\nCuP | C1100\nC1020 | C1100\nBSP | C2680\nPVC | VP (塩化ビニール管)"
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "iCADの材質リストにないS35Cの扱い方を示します。",
+              "practice": "BOMの材料指定と3Dの材質設定を区別し、下の対応表を参照します。",
+              "sections": [
+                {
+                  "title": "2D図面",
+                  "text": "部品表（BOM）には、3Dの代替材質ではなく**S35C**を記載します。"
+                },
+                {
+                  "title": "3Dの重量計算",
+                  "text": "重量計算には**S45C（比重7.8400）**を使用します。S35Cと比重がほぼ同じなので、設定を維持します。"
+                },
+                {
+                  "title": "iCAD材質リストの対応表",
+                  "text": "材料 | iCADの材質リスト上の代替材料\nS35C | S45C\nC1220 | C1100\nCuP | C1100\nC1020 | C1100\nBSP | C2680\nPVC | VP (塩化ビニール管)"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F23",
+      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F20",
+          "moduleId": "F23",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -3247,7 +3684,7 @@
             "F16.1",
             "F18.1",
             "F19.1",
-            "F20.1"
+            "F23.1"
           ],
           "completionAliases": [
             "F10.1",
@@ -3351,11 +3788,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F20.1"
+          "displayId": "F23.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F20",
+          "moduleId": "F23",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -3367,7 +3804,7 @@
             "F16.2",
             "F18.2",
             "F19.2",
-            "F20.2"
+            "F23.2"
           ],
           "completionAliases": [
             "F10.6",
@@ -3397,7 +3834,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F20.2"
+          "displayId": "F23.2"
         }
       ]
     }

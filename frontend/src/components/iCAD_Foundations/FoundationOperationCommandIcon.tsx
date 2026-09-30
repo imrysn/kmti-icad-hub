@@ -3,6 +3,12 @@ import { useFoundationVisuals } from './FoundationVisualContext';
 import { useId } from 'react';
 
 export type OperationCommand =
+  | 'material-set'
+  | 'part-rename'
+  | 'part-create'
+  | 'shell'
+  | 'fillet'
+  | 'chamfer'
   | 'move'
   | 'copy'
   | 'rotate'
@@ -34,6 +40,20 @@ export default function FoundationOperationCommandIcon({
 }) {
   const id = useId().replace(/:/g, '');
   const foundation = useFoundationVisuals();
+  if (command === 'material-set') return <svg className="foundation-single-command" width="76" height="76" viewBox="0 0 32 36" role="img" aria-label={title || command} data-command-reference={command}>
+    <path d="M8 20H24L27 30H5Z" fill="#ddbd52" stroke="#776d4d"/>
+    <path d="M6 27H26V32H6Z" fill="#f4d66d" stroke="#95834b"/>
+    <path d="M11 19V24Q16 28 21 24V19" fill="#c5ad5d" stroke="#81764b"/>
+    <path d="M7 4H25V19H7Z" fill="#eeeae4" stroke="#514c47" strokeWidth="1.5"/>
+    <path d="M11 5V18M8 8H24M8 12H24M8 16H24" fill="none" stroke="#514c47" strokeWidth="1.2"/>
+    <path d="M14 17H20V21H23L17 25 11 21H14Z" fill="#b2a98c" stroke="#615b50"/>
+  </svg>;
+  if (command === 'part-rename') return <svg className="foundation-single-command" width="76" height="76" viewBox="0 0 32 32" role="img" aria-label={title || command} data-command-reference={command}>
+    <rect x="5" y="2" width="22" height="13" rx="2" fill="#f4f4ed" stroke="#777"/>
+    <text x="16" y="12" textAnchor="middle" fontFamily="Arial,sans-serif" fontSize="12" fontWeight="bold" fill="#333">abc</text>
+    <path d="M13 21C11 15 4 17 4 23C4 29 11 31 14 25H25V22H21V20H14Z" fill="#dadd85" stroke="#777" strokeWidth="1.3" strokeLinejoin="round"/>
+    <circle cx="8" cy="23" r="1.8" fill="#f6f6ee" stroke="#777"/>
+  </svg>;
   if (command in commandPaths) {
     const reference = commandPaths[command as keyof typeof commandPaths];
     return <svg className="foundation-single-command" width="76" height="76" viewBox={reference.viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={title || command} data-command-reference={command} shapeRendering="geometricPrecision">

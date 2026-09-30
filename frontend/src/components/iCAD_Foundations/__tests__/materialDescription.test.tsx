@@ -1,0 +1,33 @@
+import { cleanup, render, screen, within } from '@testing-library/react';
+import { afterEach, expect, it } from 'vitest';
+import MaterialDescriptionTable from '../MaterialDescriptionTable';
+import { resolveFoundationLesson, foundationNeighbors } from '../curriculum';
+import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+
+afterEach(cleanup);
+it.each(['en','ja'] as const)('preserves exact material examples, thicknesses and symbols in %s',language=>{
+ const lesson=resolveFoundationLesson('F21.2')!;
+ const sections=lesson.content[language].sections!;
+ expect(sections).toHaveLength(2);
+ const blocks=sections[0].text.split('\n\n---\n\n');
+ const examples=['100×50×5-1000','100×100×5-1000','150×100×8-1000','50×50×6-1000','φ34×3.2-1000','40×40×2.3-1000','75×45×3.2-1000','□25×500','φ30×500','6×50×100','9×55×320'];
+ expect(blocks[2].split('\n').slice(1).map(row=>row.split('|')[1].trim())).toEqual(examples);
+ expect(blocks[1]).toContain('S45C | φ40×150');
+ expect(blocks[1]).toContain('SS400 | 19×100×380');
+ expect(blocks[3]).toContain('2×φ17');
+ expect(blocks[3]).toContain(language==='ja'?'**2** = 厚さ':'**2** = Thickness');
+ expect(blocks[3]).toContain(language==='ja'?'**φ17** = サイズ':'**φ17** = Size');
+ const {container}=render(<MaterialDescriptionTable text={sections[0].text} title={sections[0].title} japanese={language==='ja'}/>);
+ const tables=screen.getAllByRole('table');
+ expect(tables).toHaveLength(3);
+ expect(within(tables[1]).getAllByRole('row')).toHaveLength(11);
+ expect(within(tables[2]).getAllByRole('cell').map(cell=>cell.textContent)).toEqual(['2.3mm','12mm','28mm','45mm','3.2mm','16mm','32mm','50mm','4.5mm','19mm','36mm','63mm','6mm','22mm','38mm','','9mm','25mm','40mm','']);
+ expect(container.querySelector('.foundations-uses__grid')).toBeNull();
+ expect(JSON.stringify(lesson.content[language])).not.toMatch(/Step 1|ステップ 1|7 mm|BOM/);
+ const question=foundationKnowledgeQuestions(language,lesson.id)[0];
+ expect(question.id).toBe('foundation-part-material-knowledge-check');
+ expect(question.choices.map(c=>c.label)).toEqual(['A. □','B. ×','C. φ','D. -']);
+ expect(question.choices.filter(c=>c.isCorrect).map(c=>c.label)).toEqual(['C. φ']);
+ expect(foundationNeighbors('foundation-part-create').next).toBe(lesson.id);
+ expect(foundationNeighbors(lesson.id).next).toBe('foundation-part-change-name');
+});

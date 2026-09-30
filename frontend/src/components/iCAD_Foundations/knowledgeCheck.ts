@@ -7,10 +7,20 @@ import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 /** Resolve current Foundation numbers before using preserved source question keys. */
 export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
   const lesson = resolveFoundationLesson(lessonId);
+  if (lesson?.contentReview === 'not-authored') return [];
   return sourceKnowledgeQuestions(language, lesson?.presentationId || lessonId);
 }
 
 export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'foundation-material-unlisted') {
+    const ja=language==='ja';
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'この例で、2DのBOMに記載する材料はどれですか？':'In this example, which material should appear on the 2D BOM?',choices:['S35C','S45C','C1100','C2680'].map((label,index)=>({id:`${lessonId}-${index}`,label,isCorrect:index===0,feedback:ja?'2DのBOMにはS35Cを記載し、3DパーツにはS45Cを使用します。':'Specify S35C on the 2D BOM and use S45C on the 3D part.'}))}];
+  }
+  if (lessonId === 'foundation-material-set') {
+    const ja=language==='ja';
+    const labels=ja?['3Dビューを変更するため','材質の比重を使ってパーツの重量を計算するため','3Dパーツ名を変更するため','ワークプレーンを作成するため']:['To change the 3D view',"To calculate the weight of the part using the material's specific gravity",'To rename the 3D Part','To create a Work Plane'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'iCAD SXで材質設定が重要なのはなぜですか？':'Why is setting the material important in iCAD SX?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'材質の比重はパーツの重量計算に使用されます。':'Material specific gravity is used to calculate part weight.')}))}];
+  }
   if (lessonId === 'P13.1') {
     const ja=language==='ja';
     const labels=ja?['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー']:['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
@@ -233,6 +243,36 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     const key=lessonId.replace('foundation-boolean-','');
     const entry=checks[key];
     if(entry) { const correct=(key==='union'||key==='subtract'||key==='intersect')?1:0; const labels=ja?entry[3]:entry[2]; return [{id:`${lessonId}-check`,prompt:ja?entry[1]:entry[0],choices:labels.map((label,index)=>({id:`${key}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===correct,feedback:index===correct?`${ja?'正解：':'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`:(ja?'操作手順を確認してください。':'Review the operation steps.')}))}]; }
+  }
+  if (lessonId === 'foundation-fairing-shell') {
+    const ja = language === 'ja';
+    const labels = ja ? ['フィレットの半径', '面取り長', '肉厚', '回転角度'] : ['Fillet radius', 'Chamfer length', 'Wall thickness', 'Rotation angle'];
+    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? 'シェルコマンドを使用するとき、どの値を指定する必要がありますか？' : 'What value must be specified when using the Shell command?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2 ? `${ja?'正解：':'Correct Answer: '}C. ${labels[2]}` : (ja?'項目入力の「共通の厚さ」で肉厚を指定します。':'Specify the wall thickness in the Item Entry.')}))}];
+  }
+  if (lessonId === 'foundation-fairing-fillet') {
+    const ja = language === 'ja';
+    const labels = ja ? ['肉厚', 'フィレットの半径', '面取り長', '回転角度'] : ['Wall thickness', 'Fillet radius', 'Chamfer length', 'Rotation angle'];
+    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? 'フィレットを作成するとき、どの値を指定する必要がありますか？' : 'What value must be specified when creating a fillet?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'項目入力でフィレットの半径を指定します。':'Specify the fillet radius in the Item Entry.')}))}];
+  }
+  if (lessonId === 'foundation-fairing-chamfer') {
+    const ja = language === 'ja';
+    const labels = ja ? ['丸みの半径', '面取り長', '肉厚', '回転角度'] : ['Fillet radius', 'Chamfer length', 'Wall thickness', 'Rotation angle'];
+    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '面取りするエッジを選択する前に、何を指定する必要がありますか？' : 'What must you specify before selecting the edge to be chamfered?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'エッジを選択する前に、項目入力で面取り長を指定します。':'Specify the chamfer length in the Item Entry before selecting the edge.')}))}];
+  }
+  if (lessonId === 'foundation-part-create') {
+    const ja = language === 'ja';
+    const labels = ja ? ['項目入力', 'ツリービュー', 'シェーディングツールバー', '作業平面'] : ['Item Entry', 'Tree View', 'Shading Toolbar', 'Work Plane'];
+    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '操作完了後、新しく作成した3Dパーツはどこで確認できますか？' : 'Where can you check the newly created 3D Part after completing the operation?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'新しいパーツ名はツリービューに表示されます。':'The new 3D Part Name appears in the Tree View.')}))}];
+  }
+  if (lessonId === 'foundation-part-material') {
+    const ja = language === 'ja';
+    const labels = ['□', '×', 'φ', '-'];
+    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '丸形状の材料の直径には、どの記号を使用しますか？' : 'Which symbol should be used for the diameter of a round-shaped material?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2 ? `${ja?'正解：':'Correct Answer: '}C. φ` : (ja?'φは丸形状の材料の直径を示します。':'φ indicates the diameter of round-shaped material.')}))}];
+  }
+  if (lessonId === 'foundation-part-change-name') {
+    const ja=language==='ja';
+    const labels=ja?['シェーディングを変更するため','3Dパーツと2Dパーツのリンクを維持するため','材料を変更するため','ワークプレーンを作成するため']:['To change the shading','To maintain the link between the 3D and 2D Parts','To change the material','To create a Work Plane'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'3Dパーツ名と2Dパーツ名を一致させる理由は何ですか？':'Why should the 3D Part Name and 2D Part Name match?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'名前を一致させることで3Dパーツと2Dパーツのリンクを維持します。':'Matching names maintains the link between the 3D and 2D Parts.')}))}];
   }
   if (lessonId === 'foundation-component-delete') {
     const ja=language==='ja';

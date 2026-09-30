@@ -1,0 +1,18 @@
+.material-reference-scroll { max-width:100%; overflow-x:auto; }
+.material-reference-sheet { min-width:850px; max-width:860px; margin:auto; padding:16px 12px; color:var(--text-main,#17212b); font-size:17px; line-height:1.3; }
+.material-reference-sheet table { border-collapse:collapse; font:inherit; }
+.material-reference-sheet th { font-weight:400; text-align:left; }
+.material-reference-sheet td, .material-reference-sheet th { padding:1px 4px; white-space:nowrap; }
+.material-reference-rules > strong { display:block; }
+.material-reference-rules span { color:#ef3030; }
+.material-reference-basic { display:flex; gap:8px; margin:22px 0 24px 46px; }
+.material-reference-basic th { min-width:64px; }
+.material-reference-columns { display:grid; grid-template-columns:480px 280px; column-gap:18px; margin-left:46px; align-items:start; }
+.material-reference-shapes { margin-left:22px; }
+.material-reference-shapes th { min-width:134px; }
+.material-reference-shapes td:nth-child(2) { min-width:136px; }
+.material-reference-plate { margin-top:23px; width:280px; border:2px solid currentColor; }
+.material-reference-plate thead th { text-align:center; font-weight:700; padding:5px 4px; border-bottom:3px double currentColor; }
+.material-reference-plate td { border-left:1px solid currentColor; padding:1px 2px; }
+.material-reference-rubber { display:grid; grid-template-columns:298px 1fr; margin:24px 0 0 46px; }
+.material-reference-formula { margin-left:12px; }

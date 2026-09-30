@@ -1,0 +1,20 @@
+import {cleanup,render,screen} from '@testing-library/react';
+import {afterEach,it,expect} from 'vitest';
+import {resolveFoundationLesson,foundationNeighbors} from '../curriculum';
+import {foundationKnowledgeQuestions} from '../knowledgeCheck';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import FoundationViewComparison from '../FoundationViewComparison';
+import MaterialChangeArtwork from '../MaterialChangeArtwork';
+afterEach(cleanup);
+it.each(['en','ja'] as const)('renders existing-material decisions in %s',language=>{
+ const l=resolveFoundationLesson('F22.2')!;const s=l.content[language].sections!;
+ const {container}=render(<><FoundationStretchSteps text={s[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2,3].map(step=><MaterialChangeArtwork key={step} step={step} japanese={language==='ja'}/>)}/><FoundationViewComparison text={s[1].text} customIcons={[<span key="a">OK</span>,<span key="b">Cancel</span>]}/></>);
+ const cards=screen.getAllByRole('listitem');expect(cards).toHaveLength(4);
+ expect(cards[2]).toHaveTextContent('OK');expect(s[1].text).toContain('Cancel');
+ expect(resolveFoundationLesson('F22.1')).toBe(l);
+ expect(container.querySelectorAll('.foundation-view-comparison__card')).toHaveLength(2);
+ expect(container.querySelector('[data-command-reference="material-set"]')).not.toBeNull();
+ expect(foundationKnowledgeQuestions(language,l.id)[0].choices.map(c=>c.isCorrect)).toEqual([false,true,false,false]);
+ expect(l.completionId).toBe('foundations-v3:material-set');
+ expect(foundationNeighbors(l.id)).toEqual({previous:'foundation-part-change-name',next:'foundation-material-unlisted'});
+});

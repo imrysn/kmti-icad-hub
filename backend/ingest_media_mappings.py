@@ -11,8 +11,14 @@ Usage:
 import sys
 import csv
 from pathlib import Path
-from services.ingestion_service import ingestion_service
-from database import Base, engine
+
+# Add project root to sys.path so 'backend.*' imports resolve consistently
+repo_root = Path(__file__).resolve().parent.parent
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
+
+from backend.services.ingestion_service import ingestion_service
+from backend.database import Base, engine
 
 def ingest_from_csv(csv_path: str):
     """Read CSV and bulk ingest media mappings"""

@@ -111,7 +111,7 @@ export function foundationTranslations(language: FoundationLanguage): Record<str
 
 export function foundationRecap(id: string, language: FoundationLanguage = 'en') {
   const lesson = resolveFoundationLesson(id);
-  if (!lesson) return undefined;
+  if (!lesson || lesson.contentReview === 'not-authored') return undefined;
   const content = lesson.content[language];
   const explanation = [content.explanation, content.description2].filter(Boolean).join(' ').replace(/\*\*/g, '');
   const review = content.practice.replace(/\*\*/g, '');

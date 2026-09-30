@@ -1,0 +1,30 @@
+import { cleanup, render, screen } from '@testing-library/react';
+import { afterEach, expect, it } from 'vitest';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import FilletArtwork from '../FilletArtwork';
+import { resolveFoundationLesson } from '../curriculum';
+import { foundationKnowledgeQuestions } from '../knowledgeCheck';
+
+afterEach(cleanup);
+it.each(['en','ja'] as const)('renders the four Fillet steps and correct question in %s', language => {
+  const lesson=resolveFoundationLesson('F20.2')!;
+  expect(lesson.id).toBe('foundation-fairing-fillet');
+  const sections=lesson.content[language].sections!;
+  const {container}=render(<FoundationStretchSteps text={sections[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2,3].map(step=><FilletArtwork key={step} step={step} japanese={language==='ja'}/>)}/>);
+  const cards=screen.getAllByRole('listitem');
+  expect(cards).toHaveLength(4);
+  expect(cards[1].querySelector('svg')).toHaveTextContent('2.0000');
+  expect(screen.getAllByRole('button')).toHaveLength(4);
+  expect(cards[1]).toHaveTextContent('半径');
+  expect(cards[2]).toHaveTextContent('GO');
+  expect(cards[2]).toHaveTextContent(language==='ja'?'複数のエッジ':'Several edges');
+  expect(cards[3]).toHaveTextContent('→');
+  expect(sections).toHaveLength(2);
+ expect(sections[0].text).toContain(language==='ja'?'右クリック':'right-click');
+  expect(JSON.stringify(sections)).not.toMatch(/45|2\.0000/);
+  expect(container.querySelector('[data-command-reference="fillet"]')).not.toBeNull();
+  expect(container.querySelectorAll('.foundation-view-comparison__card')).toHaveLength(0);
+  const question=foundationKnowledgeQuestions(language,lesson.id)[0];
+  expect(question.id).toBe('foundation-fairing-fillet-knowledge-check');
+  expect(question.choices.filter(c=>c.isCorrect).map(c=>c.label)).toEqual([language==='ja'?'B. フィレットの半径':'B. Fillet radius']);
+});
