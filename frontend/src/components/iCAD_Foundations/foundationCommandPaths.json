@@ -1158,5 +1158,175 @@
         "1"
       ]
     ]
+  },
+  "information-coordinates": {
+    "viewBox": "0 0 30 32",
+    "source": "icad-foundations/information/coordinates-tooltip.png",
+    "crop": [
+      0,
+      0,
+      30,
+      32
+    ],
+    "paths": [
+      [
+        "none",
+        "M5 16A3 3 0 1 0 11 16A3 3 0 1 0 5 16",
+        "#52647a",
+        "1.5"
+      ],
+      [
+        "#357cc4",
+        "M5 3Q1 3 1 6Q1 9 5 9H7L6 11 10 8Q12 3 5 3Z",
+        "#31558b",
+        "0.6"
+      ],
+      [
+        "#ffffff",
+        "M6 4H7V5H6ZM5.5 6H7V8H5.5Z"
+      ]
+    ]
+  },
+  "information-length": {
+    "viewBox": "0 0 30 32",
+    "source": "icad-foundations/information/length-tooltip.png",
+    "crop": [
+      0,
+      0,
+      30,
+      32
+    ],
+    "paths": [
+      [
+        "none",
+        "M2 24 24 10",
+        "#535c68",
+        "3"
+      ],
+      [
+        "#357cc4",
+        "M5 3Q1 3 1 6Q1 9 5 9H7L6 11 10 8Q12 3 5 3Z",
+        "#31558b",
+        "0.6"
+      ],
+      [
+        "#ffffff",
+        "M6 4H7V5H6ZM5.5 6H7V8H5.5Z"
+      ]
+    ]
+  },
+  "information-distance": {
+    "viewBox": "0 0 30 32",
+    "source": "icad-foundations/information/distance-tooltip.png",
+    "crop": [
+      0,
+      0,
+      30,
+      32
+    ],
+    "paths": [
+      [
+        "none",
+        "M6 23 7 22M8 21 9 20M15 17 16 16M17 15 18 14M19 13 20 12",
+        "#535c68",
+        "1"
+      ],
+      [
+        "#ffffff",
+        "M2 24H5V27H2ZM11 18H14V21H11ZM22 10H25V13H22Z",
+        "#535c68",
+        "1"
+      ],
+      [
+        "#357cc4",
+        "M5 3Q1 3 1 6Q1 9 5 9H7L6 11 10 8Q12 3 5 3Z",
+        "#31558b",
+        "0.6"
+      ],
+      [
+        "#ffffff",
+        "M6 4H7V5H6ZM5.5 6H7V8H5.5Z"
+      ]
+    ]
+  },
+  "information-angle": {
+    "viewBox": "0 0 30 32",
+    "source": "icad-foundations/information/angle-tooltip.png",
+    "crop": [
+      0,
+      0,
+      30,
+      32
+    ],
+    "paths": [
+      [
+        "none",
+        "M3 26H27M3 26 21 9",
+        "#535c68",
+        "2"
+      ],
+      [
+        "none",
+        "M12 26Q12 20 8 20",
+        "#535c68",
+        "1"
+      ],
+      [
+        "none",
+        "M17 18 15 22H19M18 18V24M24 18H21V21H23Q25 21 24 24H21",
+        "#535c68",
+        "0.8"
+      ],
+      [
+        "#357cc4",
+        "M5 3Q1 3 1 6Q1 9 5 9H7L6 11 10 8Q12 3 5 3Z",
+        "#31558b",
+        "0.6"
+      ],
+      [
+        "#ffffff",
+        "M6 4H7V5H6ZM5.5 6H7V8H5.5Z"
+      ]
+    ]
+  },
+  "information-entity": {
+    "viewBox": "0 0 30 32",
+    "source": "icad-foundations/information/entity-tooltip.png",
+    "crop": [
+      0,
+      0,
+      30,
+      32
+    ],
+    "paths": [
+      [
+        "#3d9bea",
+        "M3 15 11 11 21 16 21 24 12 29 3 24Z",
+        "#245e9c",
+        "1"
+      ],
+      [
+        "#86c5f2",
+        "M3 15 12 19 21 16 11 11Z",
+        "#245e9c",
+        "1"
+      ],
+      [
+        "none",
+        "M12 19V29",
+        "#245e9c",
+        "1"
+      ],
+      [
+        "#357cc4",
+        "M5 3Q1 3 1 6Q1 9 5 9H7L6 11 10 8Q12 3 5 3Z",
+        "#31558b",
+        "0.6"
+      ],
+      [
+        "#ffffff",
+        "M6 4H7V5H6ZM5.5 6H7V8H5.5Z"
+      ]
+    ]
   }
 }

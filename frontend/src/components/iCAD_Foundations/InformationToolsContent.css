@@ -1,0 +1,4 @@
+.information-tools .foundation-view-comparison__cards { max-width: 1000px; }
+.information-tools__visuals { display: grid; grid-template-columns: 76px; justify-content: center; height: 80px; margin-bottom: 10px; }
+.information-tools__visuals .foundation-interface-icon-button { display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; }
+.information-tools__visuals .change-color-preview-artwork { display: block; width: 100%; height: 130px; overflow: hidden; }

@@ -69,10 +69,11 @@ export function resolveFoundationLesson(id: string): FoundationLesson | undefine
 
 /** Version stored alongside the last-open lesson prevents ambiguous F9/F10 restores. */
 export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
-  if (version !== FOUNDATION_CURRICULUM_VERSION && /^F23\.[12]$/.test(id)) {
+  if (version !== FOUNDATION_CURRICULUM_VERSION && /^F24\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F24.1' ? 'F17.1' : 'F17.2');
+  if (version !== '4' && version !== FOUNDATION_CURRICULUM_VERSION && /^F23\.[12]$/.test(id)) {
     return resolveFoundationLesson(id === 'F23.1' ? 'F17.1' : 'F17.2');
   }
-  if (version !== '3' && version !== FOUNDATION_CURRICULUM_VERSION && /^F(?:9|10)\./.test(id)) {
+  if (version !== '3' && version !== '4' && version !== FOUNDATION_CURRICULUM_VERSION && /^F(?:9|10)\./.test(id)) {
     return FOUNDATION_LESSONS.find(lesson => lesson.completionAliases.includes(id))
       || resolveFoundationLesson(id.startsWith('F10.') ? 'F17.1' : 'F9.1');
   }

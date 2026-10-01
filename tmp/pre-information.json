@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 4,
   "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
   "modules": [
     {
@@ -4532,87 +4532,13 @@
     {
       "id": "F24",
       "title": {
-        "en": "Information",
-        "ja": "情報"
-      },
-      "lessons": [
-        {
-          "id": "foundation-information-tools",
-          "displayId": "F24.1",
-          "moduleId": "F24",
-          "title": {
-            "en": "Information Tools",
-            "ja": "情報ツール"
-          },
-          "type": "reading",
-          "renderer": null,
-          "video": null,
-          "completionId": "foundations:information:tools",
-          "routeAliases": [
-            "F24.1"
-          ],
-          "completionAliases": [],
-          "content": {
-            "en": {
-              "explanation": "Information tools display coordinates, length, distance, angle, and entity information for selected elements.",
-              "practice": "Check coordinates, measure lengths, distances and angles, and display solid-entity information.",
-              "sections": [
-                {
-                  "title": "Information Tools",
-                  "text": "Display Point Coordinates — 座標を表示する\nDisplays the coordinates of a selected point.\n1. Select **Point Coordinates「座標を表示する」**.\n2. Pick **1 point**.\nThe coordinates appear in the Information window.\n\nMeasure Edge Length — 長さを測る\nMeasures the length of an edge.\n1. Select **Edge Length「長さを測る」**.\n2. Pick **1 edge**.\nThe measured edge length appears in the Information window.\n\nMeasure Distance — 距離を測る\nMeasures the distance between two points or edges.\n1. Select **Distance「距離を測る」**.\n2. Pick the **first point/edge**.\n3. Pick the **second point/edge**.\nThe distance appears in the Information window.\n\nMeasure Angle — 角度を測る\nMeasures the angle between **2 edges OR 3 points**.\nSelect **Angle「角度を測る」**, then use either method below.\nThe measured angle appears in the Information window.\n\nDisplay Entity Information — 要素情報を表示する\nDisplays information about the selected entity.\n1. Select **Entity Information「要素情報を表示する」**.\n2. Pick **1 solid entity**.\nIts information appears in the Information window."
-                },
-                {
-                  "title": "Angle Selection Methods",
-                  "text": "Select **Angle「角度を測る」**, then choose one method.\n\n**Two Edges**\nPick **2 edges**.\n\n**Three Points**\nPick **3 points**."
-                },
-                {
-                  "title": "Quick Selection Reference",
-                  "text": "Information Tool|Required Selection\nPoint Coordinates|1 point\nEdge Length|1 edge\nDistance|First point/edge + second point/edge\nAngle|2 edges OR 3 points\nEntity Information|1 solid entity"
-                },
-                {
-                  "title": "Remember",
-                  "text": "Select the correct type of element required by each Information tool. Use the selection reference above."
-                }
-              ]
-            },
-            "ja": {
-              "explanation": "情報ツールは、選択した要素の座標、長さ、距離、角度、要素情報を表示します。",
-              "practice": "座標の確認、長さ・距離・角度の測定、立体要素の情報表示を行います。",
-              "sections": [
-                {
-                  "title": "情報ツール",
-                  "text": "座標を表示する\n選択した点の座標を表示します。\n1. **「座標を表示する」**を選択します。\n2. **1点**を指定します。\nインフォメーションウィンドウに座標が表示されます。\n\n長さを測る\nエッジの長さを測定します。\n1. **「長さを測る」**を選択します。\n2. **1本のエッジ**を指定します。\nインフォメーションウィンドウにエッジの長さが表示されます。\n\n距離を測る\n2点間、またはエッジ間の距離を測定します。\n1. **「距離を測る」**を選択します。\n2. **1つ目の点またはエッジ**を指定します。\n3. **2つ目の点またはエッジ**を指定します。\nインフォメーションウィンドウに距離が表示されます。\n\n角度を測る\n**2本のエッジ、または3点**で角度を測定します。\n**「角度を測る」**を選択し、下記のいずれかの方法で指定します。\nインフォメーションウィンドウに角度が表示されます。\n\n要素情報を表示する\n選択した要素の情報を表示します。\n1. **「要素情報を表示する」**を選択します。\n2. **1つの立体要素**を指定します。\nインフォメーションウィンドウに要素の情報が表示されます。"
-                },
-                {
-                  "title": "角度の指定方法",
-                  "text": "**「角度を測る」**を選択し、いずれかの方法を使用します。\n\n**2本のエッジ**\n**2本のエッジ**を指定します。\n\n**3点**\n**3点**を指定します。"
-                },
-                {
-                  "title": "選択対象の早見表",
-                  "text": "情報ツール|選択対象\n座標を表示する|1点\n長さを測る|1本のエッジ\n距離を測る|1つ目の点またはエッジ → 2つ目の点またはエッジ\n角度を測る|2本のエッジ、または3点\n要素情報を表示する|1つの立体要素"
-                },
-                {
-                  "title": "覚えておきましょう",
-                  "text": "各情報ツールに必要な種類の要素を選択します。上の早見表で選択対象を確認してください。"
-                }
-              ]
-            }
-          },
-          "contentReview": "draft",
-          "recapMode": "shared"
-        }
-      ]
-    },
-    {
-      "id": "F25",
-      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F25",
+          "moduleId": "F24",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -4624,7 +4550,7 @@
             "F16.1",
             "F18.1",
             "F19.1",
-            "F25.1"
+            "F24.1"
           ],
           "completionAliases": [
             "F10.1",
@@ -4728,11 +4654,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F25.1"
+          "displayId": "F24.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F25",
+          "moduleId": "F24",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -4744,7 +4670,7 @@
             "F16.2",
             "F18.2",
             "F19.2",
-            "F25.2"
+            "F24.2"
           ],
           "completionAliases": [
             "F10.6",
@@ -4774,7 +4700,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F25.2"
+          "displayId": "F24.2"
         }
       ]
     }

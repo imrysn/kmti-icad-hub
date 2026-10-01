@@ -12,6 +12,11 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
 }
 
 export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'foundation-information-tools') {
+    const ja=language==='ja';
+    const labels=ja?['1本のエッジのみ','2本のエッジ、または3点','2つの立体要素','1つの面のみ']:['One edge only','Two edges or three points','Two solid entities','One face only'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'角度を測定するとき、どの選択方法を使用できますか？':'Which selections can be used when measuring an angle?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:ja?'2本のエッジ、または3点を指定します。':'Pick two edges or three points.'}))}];
+  }
   if (lessonId === 'foundation-properties-part-layer-designation') {
     const ja=language==='ja';
     const labels=ja?['白（No. 1）','青（No. 5）','黄色（No. 4）','グレー（No. 8）']:['White (No. 1)','Blue (No. 5)','Yellow (No. 4)','Gray (No. 8)'];

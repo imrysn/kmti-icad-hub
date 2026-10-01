@@ -3,6 +3,7 @@ import { useFoundationVisuals } from './FoundationVisualContext';
 import { useId } from 'react';
 
 export type OperationCommand =
+  | 'information-coordinates' | 'information-length' | 'information-distance' | 'information-angle' | 'information-entity'
   | 'change-layer'
   | 'change-color'
   | 'material-set'

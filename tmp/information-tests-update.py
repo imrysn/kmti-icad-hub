@@ -1,0 +1,5 @@
+from pathlib import Path
+r=Path('frontend/src/components/iCAD_Foundations/__tests__')
+p=r/'curriculum.test.ts';s=p.read_text(encoding='utf-8').replace('F24','F25').replace('length:24','length:25').replace('twenty-four','twenty-five').replace('80 unique','81 unique').replace('toHaveLength(80)','toHaveLength(81)').replace('toBe(80)','toBe(81)').replace('total:80','total:81').replace('1/80','1/81');s=s.replace("!['foundation-properties-change-layer'","!['foundation-information-tools','foundation-properties-change-layer'");s=s.replace("'foundation-properties-part-layer-designation','F17.1'","'foundation-properties-part-layer-designation','foundation-information-tools','F17.1'");p.write_text(s,encoding='utf-8')
+p=r/'layerDesignation.test.tsx';s=p.read_text(encoding='utf-8').replace("next:'F17.1'","next:'foundation-information-tools'").replace("resolveFoundationLesson('F24.1')","resolveFoundationLesson('F25.1')");p.write_text(s,encoding='utf-8')
+p=Path('backend/tests/test_foundations_curriculum.py');s=p.read_text(encoding='utf-8').replace('F24.','F25.').replace('== 80','== 81').replace('/ 80','/ 81').replace('== 24','== 25');p.write_text(s,encoding='utf-8')

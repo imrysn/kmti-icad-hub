@@ -25,6 +25,6 @@ it.each(['en','ja'] as const)('renders five categories and exact reference table
  const q=foundationKnowledgeQuestions(lang,lesson.id)[0];
  expect(q.id).toBe('foundation-properties-part-layer-designation-knowledge-check');
  expect(q.choices.map(c=>c.isCorrect)).toEqual([false,false,true,false]);
- expect(foundationNeighbors(lesson.id)).toEqual({previous:'foundation-properties-change-layer',next:'F17.1'});
- expect(resolveFoundationLesson('F24.1')?.title.en).toBe('Foundation Review');
+ expect(foundationNeighbors(lesson.id)).toEqual({previous:'foundation-properties-change-layer',next:'foundation-information-tools'});
+ expect(resolveFoundationLesson('F25.1')?.title.en).toBe('Foundation Review');
 });

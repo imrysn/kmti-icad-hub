@@ -1,24 +1,9 @@
 .layer-designation .foundation-view-comparison__cards { max-width: 1000px; }
-.layer-designation__image { height: 160px; margin: 0 0 18px; }
+.layer-designation__image { height: 110px; margin: 0 0 10px; }
 .layer-designation__image .foundation-interface-icon-button { width: 100%; height: 100%; }
-.layer-designation__image img { display: block; width: 100%; height: 100%; max-height: 160px; object-fit: contain; }
+.layer-designation__image img { display: block; width: 100%; height: 100%; max-height: 110px; object-fit: contain; }
 .layer-designation__table { min-width: 0; }
 .layer-designation__table table { overflow-wrap: anywhere; }
-
-.layer-designation .layer-designation__card--layer3 {
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: 100%;
-  max-width: calc(50% - 12px);
-}
-.layer-designation .layer-designation__card--layer3 .foundation-view-comparison__front p {
-  text-align: center;
-}
-@container (max-width: 420px) {
-  .layer-designation .layer-designation__card--layer3 {
-    max-width: 100%;
-  }
-}
 
 .layer-designation__table--quick-reference table {
   max-width: 860px !important;

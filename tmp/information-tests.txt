@@ -1,0 +1,43 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 I:/MG_DATA/@Recycle/App Development/browser-kmti-icad-hub/frontend
+
+ ❯ src/components/iCAD_Foundations/__tests__/curriculum.test.ts (17 tests | 1 failed) 103ms
+     × defines twenty-five ordered modules and 81 unique lessons 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/iCAD_Foundations/__tests__/curriculum.test.ts > Excel Foundations curriculum > defines twenty-five ordered modules and 81 unique lessons
+AssertionError: expected [ 6, 2, 3, 3, 3, 3, 4, 3, 5, 8, …(15) ] to deeply equal [ 6, 2, 3, 3, 3, 3, 4, 3, 5, 8, …(14) ]
+
+- Expected
++ Received
+
+@@ -20,7 +20,8 @@
+    8,
+    3,
+    3,
+    2,
+    3,
++   1,
+    2,
+  ]
+
+ ❯ src/components/iCAD_Foundations/__tests__/curriculum.test.ts:85:69
+     83|   it('defines twenty-five ordered modules and 81 unique lessons', () =…
+     84|     expect(FOUNDATION_MODULES.map(module => module.id)).toEqual(Array.…
+     85|     expect(FOUNDATION_MODULES.map(module => module.lessons.length)).to…
+       |                                                                     ^
+     86|     expect(FOUNDATION_LESSONS).toHaveLength(81);
+     87|     expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(81);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 284 passed (285)
+   Start at  15:31:56
+   Duration  36.36s (transform 5.77s, setup 5.13s, import 22.07s, tests 22.87s, environment 11.46s)
+

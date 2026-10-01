@@ -11,7 +11,7 @@ import './FoundationViewComparison.css';
 import './LayerDesignationContent.css';
 
 export default function LayerDesignationContent({text,title,index,japanese=false}:{text:string;title:string;index:number;japanese?:boolean}) {
-  if(index===0) return <div className="foundation-view-comparison layer-designation"><div className="foundation-view-comparison__cards">
+  if(index===0) return <div className="foundation-view-comparison layer-designation foundation-view-comparison--five"><div className="foundation-view-comparison__cards">
     {text.split('\n\n').map((block,i)=>{const [heading,...lines]=block.split('\n');const image=[common,painted,unpainted,treated,purchased][i];return <section className={`foundation-view-comparison__card${i===4?' layer-designation__card--layer3':''}`} key={heading}><div className="foundation-view-comparison__front">
       <h5>{heading}</h5>
       <div className="layer-designation__image"><InterfaceIconPreview index={i} toolbar={false} title={heading} japanese={japanese} custom={{artworkOnly:true,artwork:<img className="layer-designation-artwork" src={image} alt={heading}/>,screen:image,region:{bounds:[0,0,1920,1080],landing:[0,0,1920,1080]}}}/></div>
