@@ -6,6 +6,19 @@ import face from '../../assets/icad-foundations/properties/change-color-face.png
 import {useId} from 'react';
 import './ChangeColorArtwork.css';
 
+/** Reference order: four columns for 1–16, then five columns for 17–31. */
+export function ChangeColorNumbers() {
+  return <g className="change-color-numbers" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="17" textAnchor="middle" dominantBaseline="central" fill="white" stroke="#202937" strokeWidth="2.5" paintOrder="stroke" strokeLinejoin="round">
+    {Array.from({length:31},(_,i)=>{
+      const upper=i<16;
+      const offset=upper?i:i-16;
+      const x=upper?600+(offset%4)*47:594+(offset%5)*38.25;
+      const y=upper?298+Math.floor(offset/4)*35:446+Math.floor(offset/5)*38.5;
+      return <text key={i} x={x} y={y}>{i+1}</text>;
+    })}
+  </g>;
+}
+
 /** Cropped views of the supplied captures; no recreated palette or model controls. */
 export function ChangeColorPreview({faceOnly=false,palette=false,japanese=false}: {faceOnly?:boolean;palette?:boolean;japanese?:boolean}) {
   const clipId=useId();
@@ -15,8 +28,9 @@ export function ChangeColorPreview({faceOnly=false,palette=false,japanese=false}
   const artwork=<svg className="stretch-vector change-color-preview-artwork" viewBox={bounds.join(' ')} role="img" aria-label={title}>
     <defs><clipPath id={clipId}>{palette?<rect x="568" y="242" width="205" height="378"/>:<path d="M982 362 1026 336 1152 409 1161 420 1161 825 1115 850 982 774Z"/>}</clipPath></defs>
     <image href={screen} width="1920" height="1080" clipPath={`url(#${clipId})`}/>
+    {palette&&<ChangeColorNumbers/>}
   </svg>;
-  return <div className="foundation-stretch-steps" style={{height:120,width:'100%',minWidth:0}}><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/></div>;
+  return <div className="foundation-stretch-steps" style={{height:120,width:'100%',minWidth:0}}><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen,screenOverlay:palette?<ChangeColorNumbers/>:undefined,region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/></div>;
 }
 
 export default function ChangeColorArtwork({step,japanese}: {step:number;japanese:boolean}) {

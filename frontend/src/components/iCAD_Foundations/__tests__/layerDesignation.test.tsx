@@ -9,9 +9,11 @@ it.each(['en','ja'] as const)('renders five categories and exact reference table
  const sections=lesson.content[lang].sections!;
  const {container}=render(<>{sections.map((s,index)=><LayerDesignationContent key={index} {...s} index={index} japanese={lang==='ja'}/>)}</>);
  expect(container.querySelectorAll('.foundation-view-comparison__card')).toHaveLength(5);
+ expect(container.querySelector('.layer-designation__card--layer3')).toBeTruthy();
  const headings=screen.getAllByRole('heading').map(h=>h.textContent);
  [1,1,2,2,3].forEach((layer,i)=>expect(headings[i]).toContain(`${lang==='ja'?'レイヤ':'Layer'} ${layer}`));
  expect(screen.getAllByRole('table')).toHaveLength(4);
+ expect(container.querySelector('.layer-designation__table--quick-reference')).toBeTruthy();
  expect(container.querySelector('.foundations-uses__grid')).toBeNull();
  expect(screen.getByRole('row',{name:'Urethane No. 18'})).toBeTruthy();
  const heat=screen.getAllByRole('table')[2];
