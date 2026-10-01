@@ -12,9 +12,24 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
 }
 
 export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'foundation-properties-part-layer-designation') {
+    const ja=language==='ja';
+    const labels=ja?['白（No. 1）','青（No. 5）','黄色（No. 4）','グレー（No. 8）']:['White (No. 1)','Blue (No. 5)','Yellow (No. 4)','Gray (No. 8)'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'安全カバーには、どの色を使用しますか？':'What color should be used for a Safety Cover?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'安全カバーの指定色は黄色（No. 4）です。':'Safety covers use Yellow (No. 4).')}))}];
+  }
+  if (lessonId === 'foundation-properties-change-layer') {
+    const ja=language==='ja';
+    const labels=ja?['ツリービュー','項目入力','材質設定','ユーザービュー']:['Tree View','Item Entry','Material Setting','User View'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'「レイヤを変更する」で、レイヤはどこで指定しますか？':'Where do you specify the layer when using Change Layer?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体要素を選択する前に、項目入力でレイヤを指定します。':'Specify the layer in Item Entry before selecting the solid entity.')}))}];
+  }
+  if (lessonId === 'foundation-properties-change-color') {
+    const ja=language==='ja';
+    const labels=ja?['要素','面','レイヤ','材質']:['Entity','Face','Layer','Material'];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'立体要素の一つの面だけの色を変更するには、どの項目を選びますか？':'Which option should you use if you only want to change the color of one surface of a solid entity?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'「面」は、選択した面だけの色を変更します。':'Face changes only the selected surface.')}))}];
+  }
   if (lessonId === 'foundation-material-unlisted') {
     const ja=language==='ja';
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'この例で、2DのBOMに記載する材料はどれですか？':'In this example, which material should appear on the 2D BOM?',choices:['S35C','S45C','C1100','C2680'].map((label,index)=>({id:`${lessonId}-${index}`,label,isCorrect:index===0,feedback:ja?'2DのBOMにはS35Cを記載し、3DパーツにはS45Cを使用します。':'Specify S35C on the 2D BOM and use S45C on the 3D part.'}))}];
+    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'この例で、2DのBOMに記載する材料はどれですか？':'In this example, which material should appear on the 2D BOM?',choices:['S35C','S45C','C1100','C2680'].map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. S35C`:ja?'2DのBOMにはS35Cを記載し、3DパーツにはS45Cを使用します。':'Specify S35C on the 2D BOM and use S45C on the 3D part.'}))}];
   }
   if (lessonId === 'foundation-material-set') {
     const ja=language==='ja';

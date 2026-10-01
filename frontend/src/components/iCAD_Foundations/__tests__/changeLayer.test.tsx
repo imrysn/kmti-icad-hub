@@ -1,0 +1,23 @@
+import {cleanup,render,screen} from '@testing-library/react';
+import {afterEach,expect,it} from 'vitest';
+import FoundationStretchSteps from '../FoundationStretchSteps';
+import ChangeLayerArtwork from '../ChangeLayerArtwork';
+import {resolveFoundationLesson,foundationNeighbors} from '../curriculum';
+import {foundationKnowledgeQuestions} from '../knowledgeCheck';
+afterEach(cleanup);
+it.each(['en','ja'] as const)('renders the four ordered layer steps in %s',lang=>{
+ const lesson=resolveFoundationLesson('F23.2')!;
+ const sections=lesson.content[lang].sections!;
+ const {container}=render(<FoundationStretchSteps text={sections[0].text} method={1} japanese={lang==='ja'} customIcons={[0,1,2,3].map(step=><ChangeLayerArtwork key={step} step={step} japanese={lang==='ja'}/>)}/>);
+ expect(screen.getAllByRole('listitem')).toHaveLength(4);
+ expect(container.querySelector('.foundations-uses__grid')).toBeTruthy();
+ expect(container.querySelector('.foundation-view-comparison__card')).toBeNull();
+ expect(container.querySelector('[data-command-reference="change-layer"]')).toBeTruthy();
+ expect(sections[0].text).not.toMatch(/GO|Enter|OK|right-click/);
+ expect(screen.getAllByRole('listitem')[1].textContent).toContain(lang==='ja'?'項目入力':'Item Entry');
+ expect(sections[1].text).toContain('F23.3');
+ const quiz=foundationKnowledgeQuestions(lang,lesson.id)[0];
+ expect(quiz.id).toBe('foundation-properties-change-layer-knowledge-check');
+ expect(quiz.choices.map(c=>c.isCorrect)).toEqual([false,true,false,false]);
+ expect(foundationNeighbors(lesson.id)).toEqual({previous:'foundation-properties-change-color',next:'foundation-properties-part-layer-designation'});
+});

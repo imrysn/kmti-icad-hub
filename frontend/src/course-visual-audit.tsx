@@ -13,7 +13,7 @@ import * as ja from './components/iCAD_Foundations/VideoTutorial_JP';
 import './index.css';
 
 const q=new URLSearchParams(location.search);localStorage.setItem('kmti_lang',q.get('lang')||'en');
-const lesson=professionalRenderLesson(q.get('id')||'')||FOUNDATION_LESSONS.find(l=>l.id===q.get('id'))||FOUNDATION_LESSONS[0];
+const lesson=FOUNDATION_LESSONS.find(l=>l.id===q.get('id'))||professionalRenderLesson(q.get('id')||'')||FOUNDATION_LESSONS[0];
 Object.assign(window,{auditLessons:FOUNDATION_LESSONS,auditVideos:{en,ja}});
 
 const op2Map: Record<string, string> = {

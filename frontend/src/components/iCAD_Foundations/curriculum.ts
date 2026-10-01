@@ -53,13 +53,15 @@ export const FOUNDATION_MODULES: FoundationModule[] = registry.modules.map(modul
     const source = professionalSources.find(lesson => lesson.id === reference.sourceProfessionalLessonId);
     if (!source) throw new Error(`Missing Professional source: ${reference.sourceProfessionalLessonId}`);
     const presentationId = 'sourceLessonId' in source && source.sourceLessonId || source.id;
-    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify(source.content), (reference as Partial<FoundationLesson>).textReplacements)), presentationId,
+    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify((reference as Partial<FoundationLesson>).content ?? source.content), (reference as Partial<FoundationLesson>).textReplacements)), presentationId,
       presentationModuleId: presentationId.startsWith('F9.') ? 'F9' : source.moduleId } as FoundationLesson;
   }),
 }));
 export const FOUNDATION_LESSONS = FOUNDATION_MODULES.flatMap(module => module.lessons);
 export const FOUNDATION_LESSON_IDS = FOUNDATION_LESSONS.map(lesson => lesson.id);
 export const FOUNDATION_TOTAL = FOUNDATION_LESSONS.length;
+export const FOUNDATION_CURRICULUM_VERSION = String(registry.version);
+export const FOUNDATION_COMPLETABLE_LESSONS = FOUNDATION_LESSONS.filter(lesson => lesson.contentReview !== 'not-authored');
 
 export function resolveFoundationLesson(id: string): FoundationLesson | undefined {
   return FOUNDATION_LESSONS.find(lesson => lesson.id === id) || FOUNDATION_LESSONS.find(lesson => lesson.routeAliases.includes(id));
@@ -67,7 +69,10 @@ export function resolveFoundationLesson(id: string): FoundationLesson | undefine
 
 /** Version stored alongside the last-open lesson prevents ambiguous F9/F10 restores. */
 export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
-  if (version !== '3' && /^F(?:9|10)\./.test(id)) {
+  if (version !== FOUNDATION_CURRICULUM_VERSION && /^F23\.[12]$/.test(id)) {
+    return resolveFoundationLesson(id === 'F23.1' ? 'F17.1' : 'F17.2');
+  }
+  if (version !== '3' && version !== FOUNDATION_CURRICULUM_VERSION && /^F(?:9|10)\./.test(id)) {
     return FOUNDATION_LESSONS.find(lesson => lesson.completionAliases.includes(id))
       || resolveFoundationLesson(id.startsWith('F10.') ? 'F17.1' : 'F9.1');
   }
@@ -77,13 +82,14 @@ export function restoreFoundationLesson(id: string, version: string | null): Fou
 /** Read-only projection: old records remain intact, and only audited equivalents earn credit. */
 export function migrateFoundationCompletion(ids: readonly string[]): string[] {
   const completed = new Set(ids);
-  return FOUNDATION_LESSONS.filter(lesson => completed.has(lesson.completionId || lesson.id) ||
+  return FOUNDATION_COMPLETABLE_LESSONS.filter(lesson => completed.has(lesson.completionId || lesson.id) ||
     lesson.completionAliases.some(alias => completed.has(alias))).map(lesson => lesson.id);
 }
 
 export function foundationProgress(ids: readonly string[]) {
   const completed = migrateFoundationCompletion(ids);
-  return { completed, total: FOUNDATION_TOTAL, percentage: completed.length / FOUNDATION_TOTAL * 100 };
+  const total = FOUNDATION_COMPLETABLE_LESSONS.length;
+  return { completed, total, percentage: total ? completed.length / total * 100 : 0 };
 }
 
 export function foundationNeighbors(id: string) {

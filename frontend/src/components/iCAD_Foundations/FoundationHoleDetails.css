@@ -7,3 +7,9 @@
 @media(max-width:500px) { .foundation-hole-examples { grid-template-columns: 1fr; } }
 
 .foundation-hole-image--command svg { max-width: 76px; max-height: 76px; }
+.foundations-consistent-lesson .foundation-hole-image .foundation-interface-icon-button > img,
+.foundations-consistent-lesson .foundation-hole-pair .foundation-interface-icon-button > img {
+  min-height: 0;
+  max-height: 120px;
+  object-fit: contain;
+}

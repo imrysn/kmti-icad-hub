@@ -252,6 +252,22 @@
 
 .foundations-lesson-connection { margin: 24px 0 0; color: var(--text-main); font: 400 1rem/1.6 var(--font-main); }
 
+/* Preview controls must occupy the artwork row, not the global button height. */
+.foundations-consistent-lesson .foundations-use-card__icon-frame .foundation-interface-icon-button,
+.foundations-consistent-lesson .foundation-file-menu-icon .foundation-interface-icon-button {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 0;
+  max-width: 100%;
+  padding: 0;
+}
+/* Keep instructional paragraphs easy to scan while headings and artwork stay centered. */
+.foundations-consistent-lesson .foundations-use-card__body p {
+  text-align: start;
+  text-align-last: auto;
+}
+
 /* Embedded tutorials (F3.2, F3.3, F4.1, F4.2, F9.2-F9.7) show only their intro/player,
    placed and sized like the F2.1 tutorial. Loaded for every Foundations lesson. */
 .foundations-preserved-tutorial .foundations-zoom-tutorial .written-tutorial-panel,

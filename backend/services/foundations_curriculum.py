@@ -25,10 +25,11 @@ def foundation_reference_text(text, replacements=None):
 
 MODULES = [{**module, "lessons": [
     {**PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]], **lesson,
-     "content": json.loads(foundation_reference_text(json.dumps(PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]]["content"], ensure_ascii=False), lesson.get("textReplacements")))}
+     "content": json.loads(foundation_reference_text(json.dumps(lesson.get("content", PROFESSIONAL_SOURCES[lesson["sourceProfessionalLessonId"]]["content"]), ensure_ascii=False), lesson.get("textReplacements")))}
     if "sourceProfessionalLessonId" in lesson else lesson
     for lesson in module["lessons"]]} for module in REGISTRY["modules"]]
 LESSONS = [lesson for module in MODULES for lesson in module["lessons"]]
+COMPLETABLE_LESSONS = [lesson for lesson in LESSONS if lesson.get("contentReview") != "not-authored"]
 LESSON_IDS = {lesson["id"] for lesson in LESSONS}
 ROUTE_ALIASES = {alias: lesson["id"] for lesson in LESSONS for alias in lesson["routeAliases"]}
 
@@ -39,7 +40,7 @@ def resolve_lesson_id(lesson_id):
 
 def completed_lesson_ids(ids):
     completed = set(ids)
-    return {lesson["id"] for lesson in LESSONS if lesson.get("completionId", lesson["id"]) in completed
+    return {lesson["id"] for lesson in COMPLETABLE_LESSONS if lesson.get("completionId", lesson["id"]) in completed
             or completed.intersection(lesson["completionAliases"])}
 
 
@@ -79,7 +80,7 @@ def foundation_scores(db, user_id, course):
 
 def progress_percentage(db, user_id, course):
     scores = foundation_scores(db, user_id, course)
-    return round(len(completed_lesson_ids(score.lesson_id for score in scores if score.score >= 80)) / len(LESSONS) * 100, 1)
+    return round(len(completed_lesson_ids(score.lesson_id for score in scores if score.score >= 80)) / len(COMPLETABLE_LESSONS) * 100, 1)
 
 
 def lesson_tree(language="en"):

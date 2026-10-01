@@ -120,7 +120,7 @@ describe('Foundations written completion and knowledge check', () => {
     expect(document.body.style.overflow).not.toBe('hidden');
   });
 
-  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F17.2'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
+  it.each(FOUNDATION_LESSON_IDS.filter(id => id !== 'F17.2' && resolveFoundationLesson(id)?.contentReview !== 'not-authored'))('replaces %s recap with its question and saves only after a correct answer', async (id) => {
     const complete = vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue(undefined);
     const next = vi.fn();
     render(<FoundationReadingLesson lesson={resolveFoundationLesson(id)!} onComplete={complete} onNext={next} isLast={false} />);
@@ -245,6 +245,8 @@ describe('Foundations written completion and knowledge check', () => {
     expect(screen.getByRole('button', { name: 'Start knowledge check' })).toBeInTheDocument();
   });
 });
+
+
 
 
 

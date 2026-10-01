@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FOUNDATION_LESSON_IDS } from '../curriculum';
+import { FOUNDATION_LESSON_IDS, resolveFoundationLesson } from '../curriculum';
 import { foundationKnowledgeQuestions } from '../knowledgeCheck';
 
 const cases = (['en', 'ja'] as const).flatMap(language => FOUNDATION_LESSON_IDS.map(id => [language, id] as const));
@@ -7,7 +7,7 @@ const cases = (['en', 'ja'] as const).flatMap(language => FOUNDATION_LESSON_IDS.
 describe('Foundations knowledge check data', () => {
   it.each(cases)('%s %s has one well-formed question set', (language, id) => {
     const questions = foundationKnowledgeQuestions(language, id);
-    expect(questions).toHaveLength(id === 'F17.2' ? 12 : 1);
+    expect(questions).toHaveLength(resolveFoundationLesson(id)?.contentReview === 'not-authored' ? 0 : id === 'F17.2' ? 12 : 1);
     expect(new Set(questions.map(q => q.id)).size).toBe(questions.length);
     for (const question of questions) {
       expect(question.prompt.trim()).not.toBe('');

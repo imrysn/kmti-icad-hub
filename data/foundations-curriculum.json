@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
   "modules": [
     {
@@ -27,9 +27,9 @@
           ],
           "content": {
             "en": {
-              "explanation": "iCAD SX is **Computer-Aided Design (CAD) software** from Japan, offered under the **Fujitsu** brand and specialized for mechanical machinery design.",
+              "explanation": "iCAD SX is **computer-aided design (CAD) software** for mechanical machinery design.",
               "description2": "It allows engineers to create, view, and manage both **3D models** and **2D engineering drawings**.",
-              "practice": "By the end of this lesson, you should be able to explain what iCAD SX is and identify its two main design environments.",
+              "practice": "Explain what iCAD SX is and identify its two main design environments.",
               "sections": [
                 {
                   "title": "Main Design Environments",
@@ -38,9 +38,9 @@
               ]
             },
             "ja": {
-              "explanation": "iCAD SX は、**Fujitsu** ブランドで提供される、機械装置の設計に特化した日本の **CAD（コンピューター支援設計）ソフトウェア**です。",
+              "explanation": "iCAD SXは、機械装置の設計に使う**CAD（コンピューター支援設計）ソフトウェア**です。",
               "description2": "**3D モデル**と **2D の設計図面**の作成、表示、管理ができます。",
-              "practice": "このレッスンを終えると、iCAD SX がどのようなソフトウェアかを説明し、二つの主な設計環境を挙げられるようになります。",
+              "practice": "iCAD SX がどのようなソフトウェアかを説明し、二つの主な設計環境を挙げられるようになります。",
               "sections": [
                 {
                   "title": "主な設計環境",
@@ -67,31 +67,21 @@
           "content": {
             "en": {
               "explanation": "iCAD SX is used by engineers to create, edit, and manage mechanical designs.",
-              "description2": "It supports both **3D modeling** and **2D detailing**, making it useful throughout the design process.",
-              "practice": "By the end of this lesson, you should be able to identify the main engineering tasks that can be performed using iCAD SX.",
+              "practice": "Identify the main engineering tasks that can be performed using iCAD SX.",
               "sections": [
                 {
                   "title": "Common Uses of iCAD SX",
                   "text": "iCAD SX can be used for:\n- **Creating 3D Parts** — Create individual mechanical components, such as brackets, plates, and shafts.\n- **Creating Assemblies** — Combine parts to show how they fit together in a machine or mechanism.\n- **Editing Designs** — Change a part’s shape or dimensions, or adjust its position within an assembly.\n- **Checking Models** — Inspect a model from different directions.\n- **Creating 2D Drawings** — Produce engineering drawing views from a 3D model.\n- **Preparing Manufacturing Information** — Add dimensions, notes, and symbols to communicate manufacturing requirements."
-                },
-                {
-                  "title": "Why It Is Useful",
-                  "text": "Using iCAD SX helps engineers organize design work in one system.\n\nA model can be created in 3D, checked, and then used to prepare the required 2D engineering drawing.\n\nThese are capabilities you can use as needed, rather than a fixed sequence of steps."
                 }
               ]
             },
             "ja": {
               "explanation": "iCAD SX は、機械設計の作成、編集、管理に使用されます。",
-              "description2": "**3D モデリング**と **2D 図面作成**の両方に対応しており、設計のさまざまな工程で役立ちます。",
-              "practice": "このレッスンを終えると、iCAD SX で行える主な設計作業を挙げられるようになります。",
+              "practice": "iCAD SX で行える主な設計作業を挙げられるようになります。",
               "sections": [
                 {
                   "title": "iCAD SX の主な用途",
                   "text": "iCAD SX では、次の作業ができます。\n- **3D 部品の作成** — ブラケット、プレート、シャフトなど、個々の機械部品を作成します。\n- **アセンブリの作成** — 部品を組み合わせ、機械や機構の中でどのように組み合わさるかを示します。\n- **設計の編集** — 部品の形状や寸法を変更したり、アセンブリ内の位置を調整したりします。\n- **モデルの確認** — さまざまな方向からモデルを確認します。\n- **2D 図面の作成** — 3D モデルから設計図面のビューを作成します。\n- **製造情報の準備** — 寸法、注記、記号を追加して製造要件を伝えます。"
-                },
-                {
-                  "title": "役立つ理由",
-                  "text": "iCAD SX を使うと、一つのシステムで設計作業をまとめて管理できます。\n\n3D でモデルを作成・確認し、そのモデルを使って必要な 2D 設計図面を準備できます。\n\nこれらは決まった順序の手順ではなく、必要に応じて使う機能です。"
                 }
               ]
             }
@@ -115,7 +105,7 @@
             "en": {
               "explanation": "A common iCAD SX workflow starts with a **3D model** and continues to a **2D engineering drawing**.",
               "description2": "The 3D model shows the shape of the design, while the 2D drawing communicates the information needed for production and documentation.",
-              "practice": "By the end of this lesson, you should be able to describe the basic flow from a 3D model to a 2D engineering drawing.",
+              "practice": "Describe the basic flow from a 3D model to a 2D engineering drawing.",
               "sections": [
                 {
                   "title": "Create or Open the 3D Model",
@@ -142,7 +132,7 @@
             "ja": {
               "explanation": "一般的な iCAD SX の作業は、**3D モデル**から始まり、**2D 設計図面**の作成へと進みます。",
               "description2": "3D モデルは設計の形状を表し、2D 図面は製造と記録に必要な情報を伝えます。",
-              "practice": "このレッスンの終了時には、3D モデルから 2D 図面を作成する基本的な流れを説明できるようになります。",
+              "practice": "3D モデルから 2D 図面を作成する基本的な流れを説明できるようになります。",
               "sections": [
                 {
                   "title": "3D モデルを作成または開く",
@@ -184,8 +174,8 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "This lesson explains how to open iCAD SX and prepare the application for use.",
-              "practice": "By the end of this lesson, you should be able to start iCAD SX and confirm that the main workspace has opened correctly.",
+              "explanation": "Open iCAD SX and check that its workspace is ready.",
+              "practice": "Start iCAD SX and confirm that the main workspace has opened correctly.",
               "sections": [
                 {
                   "title": "Locate iCAD SX",
@@ -206,8 +196,8 @@
               ]
             },
             "ja": {
-              "explanation": "このレッスンでは、iCAD SX を起動して使用できる状態にする方法を説明します。",
-              "practice": "このレッスンを終えると、iCAD SX を起動し、メインの作業画面が正しく開いたことを確認できるようになります。",
+              "explanation": "iCAD SXを起動し、作業画面が使用できる状態か確認します。",
+              "practice": "iCAD SX を起動し、メインの作業画面が正しく開いたことを確認できるようになります。",
               "sections": [
                 {
                   "title": "iCAD SX を探す",
@@ -245,8 +235,8 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "This lesson explains how to close iCAD SX safely after finishing your work.",
-              "practice": "By the end of this lesson, you should be able to exit iCAD SX without losing unsaved changes.",
+              "explanation": "Save your changes before exiting iCAD SX.",
+              "practice": "Exit iCAD SX without losing unsaved changes.",
               "sections": [
                 {
                   "title": "Check Your Work",
@@ -263,16 +253,12 @@
                 {
                   "title": "Confirm the Application is Closed",
                   "text": "Wait until the iCAD SX window completely disappears."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Always check for unsaved work before exiting the application."
                 }
               ]
             },
             "ja": {
-              "explanation": "このレッスンでは、作業を終えた後に iCAD SX を安全に終了する方法を説明します。",
-              "practice": "このレッスンを終えると、未保存の変更を失わずに iCAD SX を終了できるようになります。",
+              "explanation": "iCAD SXを終了する前に変更内容を保存します。",
+              "practice": "未保存の変更を失わずに iCAD SX を終了できるようになります。",
               "sections": [
                 {
                   "title": "作業内容を確認する",
@@ -289,10 +275,6 @@
                 {
                   "title": "終了したことを確認する",
                   "text": "iCAD SX のウィンドウが完全に消えるまで待ちます。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "終了する前に、未保存の作業がないか必ず確認してください。"
                 }
               ]
             }
@@ -315,8 +297,7 @@
           "content": {
             "en": {
               "explanation": "iCAD SX includes a built-in Help system that provides information about commands, tools, and operations.",
-              "description2": "It can be used when you need guidance while working in the application.",
-              "practice": "By the end of this lesson, you should be able to open iCAD SX Help and understand how it can support your work.",
+              "practice": "Open iCAD SX Help and understand how it can support your work.",
               "sections": [
                 {
                   "title": "Open the Help Menu",
@@ -336,15 +317,14 @@
                 },
                 {
                   "title": "When to Use Help",
-                  "text": "Use iCAD SX Help when you:\n- Forget how a command works.\n- Need information about a tool.\n- Want to check an operation procedure.\n- Need more details about an iCAD SX function.\n\n**Tip:** Press **F1** while a command is selected to open the help page for that command."
+                  "text": "**Tip:** Press **F1** while a command is selected to open its help page."
                 }
               ],
               "connection": "Next, F2 introduces the screen areas where you will find commands, enter values, and read guidance."
             },
             "ja": {
               "explanation": "iCAD SX には、コマンド、ツール、操作に関する情報を提供するヘルプシステムが組み込まれています。",
-              "description2": "アプリケーションで作業中に、操作の案内が必要なときに利用できます。",
-              "practice": "このレッスンを終えると、iCAD SX のヘルプを開き、作業にどのように役立つかを理解できるようになります。",
+              "practice": "iCAD SX のヘルプを開き、作業にどのように役立つかを理解できるようになります。",
               "sections": [
                 {
                   "title": "ヘルプメニューを開く",
@@ -364,7 +344,7 @@
                 },
                 {
                   "title": "ヘルプを使う場面",
-                  "text": "次のような場合に iCAD SX のヘルプを使います。\n- コマンドの使い方を忘れたとき。\n- ツールについての情報が必要なとき。\n- 操作手順を確認したいとき。\n- iCAD SX の機能について詳しく知りたいとき。\n\n**ヒント：** コマンドを選択中に **F1** キーを押すと、そのコマンドのヘルプページが表示されます。"
+                  "text": "**ヒント：** コマンドを選択中に**F1**を押すと、そのコマンドのヘルプページが開きます。"
                 }
               ],
               "connection": "次の F2 では、コマンド、数値入力、操作案内がある画面の領域を確認します。"
@@ -400,9 +380,8 @@
           ],
           "content": {
             "en": {
-              "explanation": "The iCAD SX screen is divided into different areas that help you access commands, work with models, enter values, and view system information.",
-              "description2": "Understanding the screen layout makes it easier to know where to look while using iCAD SX.",
-              "practice": "By the end of this lesson, you should be able to identify the main areas of the iCAD SX screen and understand their basic purpose.",
+              "explanation": "Use these screen areas to find commands, enter values, and read operation messages.",
+              "practice": "Identify the main areas of the iCAD SX screen and understand their basic purpose.",
               "sections": [
                 {
                   "title": "Title Bar",
@@ -443,17 +422,12 @@
                 {
                   "title": "Message Pane",
                   "text": "Displays operational messages, warnings, and error prompts from iCAD during command execution. Messages shown in red are error messages."
-                },
-                {
-                  "title": "Why the Screen Layout is Important",
-                  "text": "Knowing the location of each area helps you:\n- Find commands more easily.\n- Understand where to enter information.\n- Follow instructions shown by iCAD SX.\n- Navigate the workspace with more confidence."
                 }
               ]
             },
             "ja": {
-              "explanation": "iCAD SX の画面は、コマンドの選択、モデルの操作、値の入力、システム情報の確認に役立つ複数の領域に分かれています。",
-              "description2": "画面構成を理解すると、iCAD SX の使用中にどこを確認すればよいか分かりやすくなります。",
-              "practice": "このレッスンを終えると、iCAD SX の画面の主な領域を識別し、それぞれの基本的な役割を理解できるようになります。",
+              "explanation": "画面の各領域でコマンドの選択、数値入力、操作メッセージの確認を行います。",
+              "practice": "iCAD SX の画面の主な領域を識別し、それぞれの基本的な役割を理解できるようになります。",
               "sections": [
                 {
                   "title": "タイトルバー",
@@ -494,10 +468,6 @@
                 {
                   "title": "メッセージ領域",
                   "text": "コマンド実行中の操作ガイダンス、確認メッセージ、警告、エラープロンプトを表示します。赤色のメッセージはエラーです。"
-                },
-                {
-                  "title": "画面構成が重要な理由",
-                  "text": "各領域の位置を知ると、次のことに役立ちます。\n- コマンドを見つけやすくなります。\n- 情報の入力場所が分かります。\n- iCAD SX に表示される指示に従えます。\n- より自信を持って作業画面を操作できます。"
                 }
               ]
             }
@@ -524,8 +494,7 @@
           "content": {
             "en": {
               "explanation": "The **Toolbar** provides quick access to frequently used iCAD SX commands.",
-              "description2": "Each toolbar groups related tools together, making it easier to find the command you need while working.",
-              "practice": "By the end of this lesson, you should be able to recognize the main iCAD SX toolbars and understand their basic purpose.",
+              "practice": "Recognize the main iCAD SX toolbars and understand their basic purpose.",
               "sections": [
                 {
                   "title": "File",
@@ -578,18 +547,13 @@
                 {
                   "title": "Entry Control",
                   "text": "Sets the method for selecting entities and entering coordinates."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "You do not need to memorize every toolbar icon yet.\n\nFor now, focus on recognizing **which toolbar contains the type of command you need**. Each important operation will be explained in later lessons."
                 }
               ],
               "connection": "Next, use the mouse controls in F3 to inspect the model in the workspace you have just identified."
             },
             "ja": {
               "explanation": "**ツールバー**から、よく使う iCAD SX のコマンドにすばやくアクセスできます。",
-              "description2": "関連するツールがまとめられているため、作業中に必要なコマンドを見つけやすくなります。",
-              "practice": "このレッスンを終えると、iCAD SX の主なツールバーを識別し、それぞれの基本的な役割を理解できるようになります。",
+              "practice": "iCAD SX の主なツールバーを識別し、それぞれの基本的な役割を理解できるようになります。",
               "sections": [
                 {
                   "title": "File",
@@ -642,10 +606,6 @@
                 {
                   "title": "Entry Control",
                   "text": "要素の選択方法や座標の入力方法を指定します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "今はすべてのツールバーアイコンを暗記する必要はありません。\n\nまずは、**必要な種類のコマンドがどのツールバーにあるか**を理解しましょう。重要な操作は、後のレッスンで説明します。"
                 }
               ],
               "connection": "次の F3 では、今確認した作業領域でマウスを使ってモデルの表示を操作します。"
@@ -678,9 +638,8 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The mouse is one of the main tools used to interact with iCAD SX.",
-              "description2": "You use it to point to objects, select items, choose commands, and work inside the drawing or modeling area.",
-              "practice": "By the end of this lesson, you should be able to use the basic mouse controls when working in iCAD SX.",
+              "explanation": "Use the mouse to select commands and geometry, confirm operations, and navigate the view.",
+              "practice": "Use the basic mouse controls when working in iCAD SX.",
               "sections": [
                 {
                   "title": "Move the Mouse",
@@ -705,9 +664,8 @@
               ]
             },
             "ja": {
-              "explanation": "マウスは iCAD SX の操作に使用する主な道具の一つです。",
-              "description2": "対象を指し示す、項目を選択する、コマンドを選ぶ、図面やモデリング領域で作業するために使います。",
-              "practice": "このレッスンを終えると、iCAD SX で基本的なマウス操作ができるようになります。",
+              "explanation": "マウスでコマンドや形状を選択し、操作の確定や表示の移動を行います。",
+              "practice": "iCAD SX で基本的なマウス操作ができるようになります。",
               "sections": [
                 {
                   "title": "マウスを動かす",
@@ -754,7 +712,7 @@
           "content": {
             "en": {
               "explanation": "Pan allows you to move the screen view without changing the actual position or size of the model.",
-              "practice": "By the end of this lesson, you should be able to use the mouse to pan around the iCAD SX workspace.",
+              "practice": "Use the mouse to pan around the iCAD SX workspace.",
               "sections": [
                 {
                   "title": "Place the Pointer",
@@ -771,16 +729,12 @@
                 {
                   "title": "Release the Scroll Wheel",
                   "text": "Release the scroll wheel when the model is positioned where you want it on the screen."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Panning only changes what you see on the screen.\n\nIt does **not** move or modify the actual model."
                 }
               ]
             },
             "ja": {
               "explanation": "パンは、モデルの実際の位置やサイズを変えずに、画面の表示位置を移動する操作です。",
-              "practice": "このレッスンを終えると、マウスを使って iCAD SX の作業画面をパンできるようになります。",
+              "practice": "マウスを使って iCAD SX の作業画面をパンできるようになります。",
               "sections": [
                 {
                   "title": "ポインターを置く",
@@ -797,10 +751,6 @@
                 {
                   "title": "ホイールを放す",
                   "text": "モデルが画面上の目的の位置に表示されたら、ホイールを放します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "パンは画面上の見え方だけを変更します。\n\n実際のモデルを移動したり変更したりすることは**ありません**。"
                 }
               ]
             }
@@ -828,7 +778,7 @@
           "content": {
             "en": {
               "explanation": "Rotate the 3D View allows you to look at a model from different angles without changing the model itself.",
-              "practice": "By the end of this lesson, you should be able to rotate the 3D view using either mouse control method available in iCAD SX.",
+              "practice": "Rotate the 3D view using either mouse control method available in iCAD SX.",
               "sections": [
                 {
                   "title": "How to Rotate the 3D View",
@@ -847,7 +797,7 @@
             },
             "ja": {
               "explanation": "3D ビューの回転は、モデル自体を変えずに、さまざまな角度からモデルを見るための操作です。",
-              "practice": "このレッスンを終えると、iCAD SX で利用できる二つのマウス操作方法のどちらでも 3D ビューを回転できるようになります。",
+              "practice": "iCAD SX で利用できる二つのマウス操作方法のどちらでも 3D ビューを回転できるようになります。",
               "sections": [
                 {
                   "title": "3D ビューを回転する方法",
@@ -902,7 +852,7 @@
             "en": {
               "explanation": "The **3D View Toolbar** lets you look at a model from different directions.",
               "description2": "Choose one of the six standard views to inspect the model.",
-              "practice": "By the end of this lesson, you should be able to identify the available 3D View Tools and choose the correct view when inspecting a model.",
+              "practice": "Identify the available 3D View Tools and choose the correct view when inspecting a model.",
               "sections": [
                 {
                   "title": "3D View Tools",
@@ -921,7 +871,7 @@
             "ja": {
               "explanation": "**3D View ツールバー**を使うと、モデルをさまざまな方向から見ることができます。",
               "description2": "六つの標準ビューから選び、モデルを確認します。",
-              "practice": "このレッスンを終えると、利用できる 3D View コマンドを識別し、モデルを確認するときに適切なビューを選べるようになります。",
+              "practice": "利用できる 3D View コマンドを識別し、モデルを確認するときに適切なビューを選べるようになります。",
               "sections": [
                 {
                   "title": "3D View コマンド",
@@ -966,7 +916,7 @@
             "en": {
               "explanation": "The **User View toolbar** in iCAD SX provides four preset isometric (angled 3D) views.",
               "description2": "These views let you quickly look at the model from different angled perspectives without manually rotating the screen.",
-              "practice": "By the end of this lesson, you should be able to identify User View 1 to User View 4 and use them to inspect a 3D model from different angles.",
+              "practice": "Identify User View 1 to User View 4 and use them to inspect a 3D model from different angles.",
               "sections": [
                 {
                   "title": "User View Commands",
@@ -993,7 +943,7 @@
             "ja": {
               "explanation": "iCAD SX の **User View ツールバー**には、四つのプリセットのアイソメトリック（斜め方向の立体）ビューがあります。",
               "description2": "画面を手動で回転させずに、モデルをさまざまな斜め方向からすばやく確認できます。",
-              "practice": "このレッスンを終えると、**ユーザビュー1～ユーザビュー4**を識別し、モデルをさまざまな角度から確認できるようになります。",
+              "practice": "**ユーザビュー1～ユーザビュー4**を識別し、モデルをさまざまな角度から確認できるようになります。",
               "sections": [
                 {
                   "title": "User View コマンド",
@@ -1040,7 +990,7 @@
             "en": {
               "explanation": "The **Shading toolbar** controls how a 3D model appears on the screen.",
               "description2": "You can display the model with hidden lines removed, as shaded surfaces with or without edges, as transparent surfaces, or as wireframe lines, depending on what you need to inspect.",
-              "practice": "By the end of this lesson, you should be able to recognize the main Shading modes and select the appropriate display for viewing a 3D model.",
+              "practice": "Recognize the main Shading modes and select the appropriate display for viewing a 3D model.",
               "sections": [
                 {
                   "title": "Shading Modes",
@@ -1064,7 +1014,7 @@
             "ja": {
               "explanation": "**Shading ツールバー**は、画面上での 3D モデルの見え方を制御します。",
               "description2": "確認したい内容に応じて、隠線表示、縁なし・縁ありのシェーディング、透過表示、ワイヤー表示を切り替えられます。",
-              "practice": "このレッスンを終えると、主なシェーディングモードを識別し、3D モデルの確認に適した表示を選べるようになります。",
+              "practice": "主なシェーディングモードを識別し、3D モデルの確認に適した表示を選べるようになります。",
               "sections": [
                 {
                   "title": "シェーディングモード",
@@ -1314,10 +1264,6 @@
                 {
                   "title": "Check Before Confirming",
                   "text": "If the wrong object is highlighted, do not right-click (GO). Press **Esc** to cancel the command and select again.\n\nSome commands act as soon as you left-click. For example, **Delete** removes an object immediately; press **Ctrl+Z** to undo a mistake."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Always confirm that you selected the intended geometry before continuing with a command."
                 }
               ]
             },
@@ -1341,10 +1287,6 @@
                 {
                   "title": "確定前に確認する",
                   "text": "意図しない対象が強調表示されている場合は、右クリック（GO）しないでください。**Esc** でコマンドをキャンセルし、選択し直します。\n\n左クリックですぐに実行されるコマンドもあります。例えば**削除**は対象をすぐに削除します。間違えた場合は **Ctrl+Z** で元に戻します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "コマンドを続行する前に、意図した形状を選択したことを必ず確認します。"
                 }
               ]
             }
@@ -1368,8 +1310,8 @@
           "content": {
             "en": {
               "explanation": "In iCAD SX, you can select either a **Part** or a **Solid Component** depending on what you want to work with.",
-              "description2": "Understanding the difference helps you avoid changing the wrong part of the model.\n\nA Part organizes a component’s geometry; a Solid Component is one solid within it. F7 explains this drawing structure in more detail.",
-              "practice": "By the end of this lesson, you should be able to recognize the difference between a Part and a Solid Component and choose the correct one for an operation.",
+              "description2": "A Part can contain several solids. Choose the target according to how much of the model the command should affect.",
+              "practice": "Recognize the difference between a Part and a Solid Component and choose the correct one for an operation.",
               "sections": [
                 {
                   "title": "What is a Part?",
@@ -1386,16 +1328,12 @@
                 {
                   "title": "Basic Selection",
                   "text": "**Step 1 — Choose a Command**\nSelect the required operation, such as **Move** or **Copy**.\n\n**Step 2 — Select the Target**\n**Left-click** the required Part or Solid Component. Check the highlighted area.\n\n**Step 3 — Right-Click to Confirm**\n**Right-click** to confirm the target selection, then follow the command’s next prompt."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Before confirming, check that the highlighted area matches what you intend to change."
                 }
               ]
             },
             "ja": {
               "explanation": "iCAD SX では、作業対象に応じて**部品**または**立体要素**を選択できます。",
-              "description2": "違いを理解すると、モデルの意図しない箇所を変更することを防げます。\n\nパーツは部品の形状を整理する単位で、構成要素はその中の1つの立体です。図面の構造は F7 で詳しく学びます。",
+              "description2": "パーツには複数の立体を含められます。操作する範囲に応じて対象を選びます。",
               "practice": "部品と立体要素の違いを理解し、操作に適した対象を選べるようになります。",
               "sections": [
                 {
@@ -1413,10 +1351,6 @@
                 {
                   "title": "基本的な選択",
                   "text": "**ステップ 1 — コマンドを選ぶ**\n必要な操作のコマンドを選びます。例：移動 または コピー。\n\n**ステップ 2 — 対象を選択**\n必要な部品または立体要素を**左クリック**します。強調表示の範囲を確認します。\n\n**ステップ 3 — 右クリックで確定**\n**右クリック**で対象の選択を確定し、コマンドの次の案内に従います。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "確定前に、強調表示の範囲が意図した対象と一致していることを確認します。"
                 }
               ]
             }
@@ -1441,7 +1375,7 @@
             "en": {
               "explanation": "The **Search / Selection Type** helps control what kind of object iCAD SX will allow you to select.",
               "description2": "",
-              "practice": "By the end of this lesson, you should be able to choose the correct selection type before selecting an object.",
+              "practice": "Choose the correct selection type before selecting an object.",
               "sections": [
                 {
                   "title": "What is Search / Selection Type?",
@@ -1454,10 +1388,6 @@
                 {
                   "title": "When to Use It",
                   "text": "Use Search / Selection Type when:\n\n- the wrong object is selected\n- the object is difficult to select\n- several objects overlap or are close together"
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "If you cannot select the object you need, check the current **Search / Selection Type** first."
                 },
                 {
                   "title": "Try It",
@@ -1482,10 +1412,6 @@
                 {
                   "title": "使用する場面",
                   "text": "次の場合に検索・選択の種類を使います。\n\n- 意図しない対象が選択される\n- 対象を選択しにくい\n- 複数の対象が重なっている、または近接している"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "必要な対象を選択できない場合は、まず現在の**検索・選択の種類**を確認します。"
                 },
                 {
                   "title": "確認練習",
@@ -1523,7 +1449,7 @@
           "content": {
             "en": {
               "explanation": "An iCAD SX drawing is organized in levels.\n\nUnderstanding this structure helps you know where model information is stored and how the drawing is arranged.",
-              "practice": "By the end of this lesson, you should be able to recognize the basic structure of an iCAD SX drawing.",
+              "practice": "Recognize the basic structure of an iCAD SX drawing.",
               "sections": [
                 {
                   "title": "Basic Drawing Structure",
@@ -1549,7 +1475,7 @@
             },
             "ja": {
               "explanation": "iCAD SX の図面は階層で整理されています。\n\nこの構造を理解すると、モデル情報がどこに保存され、図面がどのように構成されているかが分かります。",
-              "practice": "このレッスンを終えると、iCAD SX 図面の基本構造を確認できるようになります。",
+              "practice": "iCAD SX 図面の基本構造を確認できるようになります。",
               "sections": [
                 {
                   "title": "図面の基本構造",
@@ -1593,7 +1519,7 @@
           "content": {
             "en": {
               "explanation": "Parts organize the model shapes within an iCAD SX drawing. A drawing may contain one Part or several Parts, depending on the design.",
-              "practice": "By the end of this lesson, you should be able to explain what a Part is and why Parts help organize a model.",
+              "practice": "Explain what a Part is and why Parts help organize a model.",
               "sections": [
                 {
                   "title": "What is a Part?",
@@ -1611,7 +1537,7 @@
             },
             "ja": {
               "explanation": "部品は、iCAD SX 図面内のモデル形状を整理します。設計によって、一つの図面に一つまたは複数の部品が含まれます。",
-              "practice": "このレッスンを終えると、部品とは何か、モデルの整理に役立つ理由を説明できるようになります。",
+              "practice": "部品とは何か、モデルの整理に役立つ理由を説明できるようになります。",
               "sections": [
                 {
                   "title": "部品とは？",
@@ -1647,7 +1573,7 @@
           "content": {
             "en": {
               "explanation": "An **assembly** combines several Parts into one design, such as a machine unit.",
-              "practice": "By the end of this lesson, you should be able to explain what an assembly is and recognize one in the Tree View.",
+              "practice": "Explain what an assembly is and recognize one in the Tree View.",
               "sections": [
                 {
                   "title": "What is an Assembly?",
@@ -1669,7 +1595,7 @@
             },
             "ja": {
               "explanation": "**アセンブリ**は、複数の部品を組み合わせて、機械ユニットなどの一つの設計にしたものです。",
-              "practice": "このレッスンを終えると、アセンブリとは何かを説明し、ツリービューでアセンブリを見分けられるようになります。",
+              "practice": "アセンブリとは何かを説明し、ツリービューでアセンブリを見分けられるようになります。",
               "sections": [
                 {
                   "title": "アセンブリとは？",
@@ -1709,7 +1635,7 @@
           "content": {
             "en": {
               "explanation": "iCAD SX allows engineers to work with both **3D models** and **2D drawings**.\n\nEach one has a different purpose in the design process.",
-              "practice": "By the end of this lesson, you should be able to explain the basic difference between a 3D model and a 2D drawing.",
+              "practice": "Explain the basic difference between a 3D model and a 2D drawing.",
               "sections": [
                 {
                   "title": "3D Model",
@@ -1728,7 +1654,7 @@
             },
             "ja": {
               "explanation": "iCAD SX では、**3D モデル**と**2D 図面**の両方を扱えます。\n\n設計の過程で、それぞれ異なる役割があります。",
-              "practice": "このレッスンを終えると、3D モデルと 2D 図面の基本的な違いを説明できるようになります。",
+              "practice": "3D モデルと 2D 図面の基本的な違いを説明できるようになります。",
               "sections": [
                 {
                   "title": "3D モデル",
@@ -1774,7 +1700,7 @@
           "content": {
             "en": {
               "explanation": "In these lessons, a new **item** means a new drawing to work on. Creating one gives you a workspace for a separate design.",
-              "practice": "By the end of this lesson, you should be able to create a new item and confirm that it is ready for use.",
+              "practice": "Create a new item and confirm that it is ready for use.",
               "sections": [
                 {
                   "title": "How to Create a New Item",
@@ -1824,7 +1750,7 @@
           "content": {
             "en": {
               "explanation": "Saving records changes to your drawing file. Save regularly so you can continue from your latest saved work.",
-              "practice": "By the end of this lesson, you should be able to save your current work and understand when to use **Save** and **Save As**.",
+              "practice": "Save your current work and understand when to use **Save** and **Save As**.",
               "sections": [
                 {
                   "title": "Save",
@@ -1840,7 +1766,7 @@
                 },
                 {
                   "title": "Practice: Save Your Training Drawing",
-                  "text": "Save the drawing you created in F8.1 as **Training_Box_01** in your assigned training folder. Keep the file format selected for your training.\n\nCheck the file name and folder. Use **Save As** with a different name if you need a separate practice copy.\n\nConfirm that the active drawing name matches the file you just saved. Then continue to the **F8.3 Closing a Drawing** lesson."
+                  "text": "After saving, check that the active drawing is **Training_Box_01** in your training folder. Keep the training file format. Use **Training_Box_01_Copy** only for a separate copy."
                 }
               ]
             },
@@ -1862,7 +1788,7 @@
                 },
                 {
                   "title": "実践：練習用図面を保存する",
-                  "text": "F8.1 で作成した図面を、指定の練習用フォルダーに **Training_Box_01** という名前で保存します。研修で指定されたファイル形式を使います。\n\nファイル名とフォルダーを確認します。別の練習用コピーが必要なら、**名前を付けて保存**で別名にします。\n\n現在の図面名が、保存したファイル名と一致していることを確認します。その後、**F8.3 図面を閉じる**のレッスンに進んでください。"
+                  "text": "保存後、指定の練習用フォルダーにある**Training_Box_01**が現在の図面か確認します。研修指定のファイル形式を使い、別のコピーには**Training_Box_01_Copy**を使用します。"
                 }
               ]
             }
@@ -1886,7 +1812,7 @@
           "content": {
             "en": {
               "explanation": "Closing a drawing ends work on that file. It is different from exiting iCAD SX, which closes the application.",
-              "practice": "By the end of this lesson, you should be able to close a drawing safely without losing your latest work.",
+              "practice": "Close a drawing safely without losing your latest work.",
               "sections": [
                 {
                   "title": "How to Close a Drawing",
@@ -1948,7 +1874,47 @@
           "completionAliases": [
             "F9.5",
             "basic-op-box"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "A Box is a rectangular solid used for blocks, plates, and bases.",
+              "practice": "Create and check a basic Box.",
+              "sections": [
+                {
+                  "title": "How to Create a Box",
+                  "text": "Before starting, open **Training_Box_01** saved in **P6.2 Saving Your Work**. Check that this drawing is active and empty, and that its units are millimetres. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nUse **Front View** for this exercise.\n\n**Step 2 — Select Box**\nOpen **Shape Placement (形状配置)** and select **Box (直方体)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Box**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Box appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "**Check:** One Box should appear. Confirm the entered dimensions are **20 × 30 × 10 mm**, then view it from another direction to inspect its form."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check the field labels, drawing units, and placement before pressing Enter."
+                }
+              ],
+              "connection": "Use Save to update Training_Box_01 with your Box. Continue to P7.2 Cylinder and use a separate drawing for that exercise."
+            },
+            "ja": {
+              "explanation": "直方体は、ブロック、板、ベースなどに使う基本的な立体です。",
+              "practice": "基本的な直方体を作成し、結果を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "直方体の作成手順",
+                  "text": "始める前に、**P6.2 作業内容の保存**で保存した **Training_Box_01** を開きます。この図面がアクティブで空であり、単位がミリメートルであることを確認します。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\nこの練習では正面図を使います。\n\n**ステップ 2 — 直方体を選ぶ**\n**形状配置**を開き、**直方体**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**直方体を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。直方体が一つ表示されることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "**確認：** 直方体が一つ表示されることを確認します。入力した寸法が **20 × 30 × 10 mm** であることを確認し、別の方向からも形を確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "Enter を押す前に、入力項目、図面の単位、配置位置を確認します。"
+                }
+              ],
+              "connection": "上書き保存で Training_Box_01 に直方体を保存します。次は P7.2 円柱に進み、その練習には別の図面を使います。"
+            }
+          }
         },
         {
           "id": "F9.2",
@@ -1962,7 +1928,47 @@
           "completionAliases": [
             "F9.6",
             "basic-op-cylinder"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "A Cylinder is a solid shape with circular ends, useful for shafts and pins.",
+              "practice": "Create and check a basic Cylinder.",
+              "sections": [
+                {
+                  "title": "How to Create a Cylinder",
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nUse **Front View** for this exercise.\n\n**Step 2 — Select Cylinder**\nOpen **Shape Placement (形状配置)** and select **Cylinder (円柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cylinder**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Cylinder appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "**Check:** One cylinder should appear with Diameter = 10 mm and Height = 10 mm. View it from another direction to inspect its form."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**Diameter mode:** Use **直径指定**, not **半径指定** (radius mode), for the values in this exercise."
+                }
+              ],
+              "connection": "Save the Cylinder in its separate drawing. Continue to P7.3 Polygon and create a new, empty drawing for that exercise."
+            },
+            "ja": {
+              "explanation": "円柱は円形の端面を持つ立体で、軸やピンなどに使います。",
+              "practice": "基本的な円柱を作成し、結果を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "円柱の作成手順",
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\nこの練習では正面図を使います。\n\n**ステップ 2 — 円柱を選ぶ**\n**形状配置**を開き、**円柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。円柱が一つ表示されることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "**確認：** 直径 10 mm、高さ 10 mm の円柱が一つ作成されることを確認します。別の方向からも形を確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**直径指定：** この練習の数値は直径です。**半径指定**ではなく**直径指定**を使います。"
+                }
+              ],
+              "connection": "円柱を別の図面として保存します。次は P7.3 正多角柱に進み、その練習用に新しい空の図面を作成します。"
+            }
+          }
         },
         {
           "id": "F9.3",
@@ -1976,7 +1982,47 @@
           "completionAliases": [
             "F9.7",
             "basic-op-polygon"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "A polygon is a flat, closed shape with straight sides. This lesson uses the Polygonal Prism tool to create a 3D solid with a polygon-shaped end and a height.",
+              "practice": "Create and check a basic Polygonal Prism.",
+              "sections": [
+                {
+                  "title": "How to Create a Polygonal Prism",
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nUse **Front View** for this exercise.\n\n**Step 2 — Select Polygonal Prism**\nOpen **Shape Placement (形状配置)** and select **Polygonal Prism (正多角柱)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Polygonal Prism**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nSelect **直径指定** (diameter mode). Enter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one Polygonal Prism appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "**Check:** One prism should appear with a six-sided end, using Diameter = 10 mm and Height = 10 mm. View it from another direction to inspect its form."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**Diameter:** In the **Command Menu**, keep **直径指定** (size by diameter) selected. **面幅指定** sizes the prism by the width across its flat sides instead."
+                }
+              ],
+              "connection": "Save the Polygonal Prism in its separate drawing. Continue to P7.4 Cone and create a new, empty drawing for that exercise."
+            },
+            "ja": {
+              "explanation": "多角形は、直線の辺で囲まれた平面の形です。このレッスンでは多角柱ツールを使い、多角形の端面と高さを持つ立体を作成します。",
+              "practice": "基本的な多角柱を作成し、結果を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "多角柱の作成手順",
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\nこの練習では正面図を使います。\n\n**ステップ 2 — 正多角柱を選ぶ**\n**形状配置**を開き、**正多角柱**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**正多角柱を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**直径指定**を選び、**項目入力**に上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。正多角柱が一つ表示されることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "**確認：** 頂点数 6、直径 10 mm、高さ 10 mm の六角柱が一つ作成されることを確認します。別の方向からも形を確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**直径について：** **コマンドメニュー**では**直径指定**を選んだままにします。**面幅指定**を選ぶと、平行な面の間の幅で大きさを指定します。"
+                }
+              ],
+              "connection": "多角柱を別の図面として保存します。次は P7.4 円錐台に進み、その練習用に新しい空の図面を作成します。"
+            }
+          }
         },
         {
           "id": "F9.4",
@@ -1986,7 +2032,47 @@
           "routeAliases": [
             "P7.4"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A Cone (円錐台) is a solid with a circular base that narrows toward a smaller circular top. It is useful for tapered parts, nozzles, and funnels.",
+              "practice": "Create and check a basic Cone.",
+              "sections": [
+                {
+                  "title": "How to Create a Cone",
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Type numbers only; do not type **mm**.\n\n**Step 1 — Select Front View**\nUse **Front View** for this exercise.\n\n**Step 2 — Select Cone**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Cone (円錐台)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Cone**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one flat-topped cone appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "**Check:** One cone should appear with a Base Diameter of 20 mm, a Top Diameter of 10 mm, and a Height of 20 mm. View it from another direction to inspect its form."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**Base and top:** **Base Diameter** sets the size of the bottom face and **Top Diameter** sets the size of the top face. Check both values before pressing Enter."
+                }
+              ],
+              "connection": "Save the Cone in its separate drawing. Continue to P7.5 Torus and create a new, empty drawing for that exercise."
+            },
+            "ja": {
+              "explanation": "円錐台は、円形の底面から上面に向かって細くなる立体です。テーパ部品、ノズル、漏斗などに使います。",
+              "practice": "基本的な円錐台を作成し、結果を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "円錐台の作成手順",
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。入力するのは数値だけで、**mm** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\nこの練習では正面図を使います。\n\n**ステップ 2 — 円錐台を選ぶ**\n**形状配置**の **▼** で一覧を広げ、**円錐台**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**円錐台を選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。上面が平らな円錐台が一つ表示されることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "**確認：** 底面直径 20 mm、上面直径 10 mm、高さ 20 mm の円錐台が一つ作成されることを確認します。別の方向からも形を確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**底面と上面について：** **底面直径**は下の面の大きさ、**上面直径**は上の面の大きさを設定します。Enter を押す前に両方の値を確認します。"
+                }
+              ],
+              "connection": "円錐台を別の図面として保存します。次は P7.5 トーラスに進み、その練習用に新しい空の図面を作成します。"
+            }
+          }
         },
         {
           "id": "F9.5",
@@ -1996,7 +2082,47 @@
           "routeAliases": [
             "P7.5"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "A Torus (トーラス) is a ring-shaped solid. It is useful for O-rings, seals, and curved tube-shaped parts.",
+              "practice": "Create and check a basic Torus.",
+              "sections": [
+                {
+                  "title": "How to Create a Torus",
+                  "text": "Before starting, create a separate, empty practice drawing with millimetres as its units. Lengths are in millimetres and the angle is in degrees. Type numbers only; do not type **mm** or **°**.\n\n**Step 1 — Select Front View**\nUse **Front View** for this exercise.\n\n**Step 2 — Select Torus**\nExpand **Shape Placement (形状配置)** using **▼**, then select **Torus (トーラス)**.\n\n**Step 3 — Select Y Orientation**\nAfter selecting **Torus**, select **Y** in the **Command Menu**.\n\n**Step 4 — Enter the Size**\nEnter the values shown above in **Item Entry**.\n\n**Step 5 — Enter the Position**\nIn **Key Entry**, type **0 0 0**, with a space between each number.\n\n**Step 6 — Create and Check**\nPress **Enter** to create the shape. Check that one half-ring appears."
+                },
+                {
+                  "title": "Try It",
+                  "text": "**Check:** One half ring should appear with a Section Diameter of 10 mm, a Path Radius of 50 mm, and a Turn Angle of 180°. View it from another direction to inspect its form."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**Turn Angle:** sets how much of the ring is created. 180° creates half a ring; 360° creates a full ring."
+                }
+              ],
+              "connection": "Save the Torus in its separate drawing."
+            },
+            "ja": {
+              "explanation": "トーラスはリング状の立体です。O リング、シール、曲がったパイプ形状の部品などに使います。",
+              "practice": "基本的なトーラスを作成し、結果を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "トーラスの作成手順",
+                  "text": "始める前に、単位がミリメートルの空の練習用図面を別に作成します。 長さの単位は mm、角度の単位は度です。入力するのは数値だけで、**mm** や **°** は入力しません。\n\n**ステップ 1 — 正面図を選ぶ**\nこの練習では正面図を使います。\n\n**ステップ 2 — トーラスを選ぶ**\n**形状配置**の **▼** で一覧を広げ、**トーラス**を選びます。\n\n**ステップ 3 — Y 方向を選ぶ**\n**トーラスを選んだ後**、**コマンドメニュー**で **Y** を選びます。\n\n**ステップ 4 — 大きさを入力する**\n**項目入力**に、上の画像の数値を入力します。\n\n**ステップ 5 — 位置を入力する**\n**キー入力**に、数値の間にスペースを入れて **0 0 0** と入力します。\n\n**ステップ 6 — 作成して確認する**\n**Enter** を押して作成します。半円状のリングが一つ表示されることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "**確認：** 断面直径 10 mm、経路半径 50 mm、回転角 180° の半円状のトーラスが一つ作成されることを確認します。別の方向からも形を確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**回転角について：** リングをどこまで作成するかを設定します。180° で半分のリング、360° で一周のリングになります。"
+                }
+              ],
+              "connection": "トーラスを別の図面として保存します。"
+            }
+          }
         }
       ]
     },
@@ -2021,7 +2147,39 @@
             "F9.9",
             "lesson-6-1",
             "move"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "The Move command is used to change the position of an entity without changing its shape or size.\n\nIn iCAD SX, you can move an entity by entering exact X, Y, and Z movement values or by selecting a point and placing it at a new location.",
+              "practice": "Move an entity using either exact movement values or point-to-point placement.",
+              "sections": [
+                {
+                  "title": "How to Move an Entity",
+                  "text": "**Step 1 — Select Move**\nSelect **Move** from the **Icon Menu**.\n\n**Step 2 — Select the Entity**\n**Left-click** the entity you want to move.\n\n**Method 1 — Enter the Distance**\nIn **Item Entry**, enter the **X, Y, and Z** movement distances, then press **Enter**.\n\n**Method 2 — Move Using Points**\nInstead of Method 1, after Step 2, select a point on the entity, then **left-click** the destination."
+                },
+                {
+                  "title": "Choosing a Method",
+                  "text": "**X, Y, Z Input** → Use when an exact movement distance is required.\n\n**Point-to-Point** → Use when you want to place the entity using a visible reference location."
+                }
+              ],
+              "connection": "Next, learn how to duplicate entities with P8.2 Copy."
+            },
+            "ja": {
+              "explanation": "移動（Move）コマンドは、形状や大きさを変えずにエンティティの位置を変更するために使用します。\n\niCAD SX では、正確な X、Y、Z の移動数値を入力するか、点を指定して新しい位置に配置することでエンティティを移動できます。",
+              "practice": "正確な移動数値の入力または点指定による配置のいずれかを使用してエンティティを移動できるようになります。",
+              "sections": [
+                {
+                  "title": "エンティティの移動手順",
+                  "text": "**ステップ 1 — 移動を選ぶ**\n**アイコンメニュー**から**移動**を選びます。\n\n**ステップ 2 — 要素を選ぶ**\n移動する要素を**左クリック**します。\n\n**方法 1 — 移動量を入力する**\n**項目入力**に **X・Y・Z** の移動量を入力し、**Enter** を押します。\n\n**方法 2 — 点を指定して移動する**\n方法 1 の代わりに、ステップ 2 の後で要素上の基準点を選び、移動先を**左クリック**します。"
+                },
+                {
+                  "title": "方法の選択",
+                  "text": "**X, Y, Z 入力** → 正確な移動距離が必要な場合に使用します。\n\n**点指定移動** → 視覚的な基準位置を使用してエンティティを配置したい場合に使用します。"
+                }
+              ],
+              "connection": "次は P8.2 複写に進み、エンティティを複製する方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.2",
@@ -2037,7 +2195,39 @@
             "F9.10",
             "lesson-6-4",
             "copy"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "Copy creates one or more duplicates while keeping the original object intact. This lesson uses a parallel copy with a specified distance.",
+              "practice": "Copy a 3D object by a specified distance and set the copy count.",
+              "sections": [
+                {
+                  "title": "How to Copy an Object",
+                  "text": "**Step 1 — Select Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Copy (複写)**.\n\n**Step 2 — Select and Confirm**\nLeft-click the object you want to copy, then right-click (GO) to confirm the selection.\n\n**Step 3 — Enter Distance and Count**\nIn Item Entry, enter X, Y, and Z movement distances and specify the number of copies.\n\n**Step 4 — Apply and Check**\nPress Enter to complete the command. Check that both the original and the new copy appear."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your practice object and copy it with **X = 50, Y = 0, Z = 0** and count = 1.\n\n**Check:** There are now two identical objects: the original and one duplicate displaced 50 mm in the X direction."
+                }
+              ],
+              "connection": "Next, explore turning objects with P8.3 Rotate."
+            },
+            "ja": {
+              "explanation": "複写（Copy）は、元のオブジェクトを残したまま一つまたは複数の複製を作成するコマンドです。このレッスンでは指定した距離で平行複写を行います。",
+              "practice": "指定した距離と個数でオブジェクトを複写できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの複写手順",
+                  "text": "**ステップ 1 — 複写を選択する**\nアイコンメニューの**移動・複写・削除**から**複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複写したい対象を左クリックし、右クリック（GO）で選択を完了します。\n\n**ステップ 3 — 距離と個数を入力する**\n項目入力欄で X、Y、Z 軸の距離と必要な複写個数を指定します。\n\n**ステップ 4 — 適用して確認する**\nEnter キーを押して複写を実行します。元のオブジェクトと新しい複製が両方配置されていることを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "練習用オブジェクトを選択し、**X = 50, Y = 0, Z = 0**、個数 **1** を指定して複写します。\n\n**確認：** 元のオブジェクトに加えて、X 方向に 50 mm 離れた位置にもう一つの同一オブジェクトが作成されることを確認します。"
+                }
+              ],
+              "connection": "次は P8.3 回転に進み、オブジェクトの向きを変える方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.3",
@@ -2047,7 +2237,47 @@
           "routeAliases": [
             "P8.3"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Rotate turns a 3D object around a specified axis to a desired angle without changing its size or shape.",
+              "practice": "Define a rotation axis and rotate a 3D object to a specific angle.",
+              "sections": [
+                {
+                  "title": "How to Rotate an Object",
+                  "text": "**Step 1 — Select Rotate**\nSelect **Rotate** from the **Icon Menu**.\n\n**Step 2 — Select and Confirm**\n**Left-click** the object, then **right-click (GO)** to confirm.\n\n**Step 3 — Set the Axis of Rotation**\nClick the **two marked points**, one after the other, to define the rotation axis.\n\n**Step 4 — Enter the Angle and Rotate**\nIn **Item Entry**, enter **90** for **Rotation Angle (回転角度)**, then press **Enter**. Check that the object rotates as shown."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select an object, define an axis along one of its edges, enter an angle of **90°**, and press Enter.\n\n**Check:** The object turns 90 degrees around the chosen axis without changing dimensions."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The direction of rotation follows the right-hand rule around the vector defined from your first selected point to the second."
+                }
+              ],
+              "connection": "Next, learn how to create rotated duplicates with P8.4 Rotate Copy."
+            },
+            "ja": {
+              "explanation": "回転（Rotate）は、指定した回転軸を中心に 3D オブジェクトを希望の角度まで回転させるコマンドです。形状や寸法は変わりません。",
+              "practice": "回転軸を定義してオブジェクトを指定の角度に回転できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの回転手順",
+                  "text": "**ステップ 1 — 回転を選ぶ**\n**アイコンメニュー**から**回転**を選びます。\n\n**ステップ 2 — 対象を選んで確定する**\n対象を**左クリック**し、**右クリック（GO）**で確定します。\n\n**ステップ 3 — 回転軸を指定する**\n図で示した**二つの点**を順にクリックして、回転軸を指定します。\n\n**ステップ 4 — 角度を入力して回転する**\n**項目入力**の**回転角度**に **90** を入力し、**Enter** を押します。図のように回転したことを確認します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、エッジに沿って 2 点を指定して回転軸を設定し、**90°** を入力して Enter を押します。\n\n**確認：** オブジェクトの寸法を変えずに、指定した軸を中心に 90 度回転したことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "回転の向きは、1点目から2点目に向かうベクトルに対する右手の法則に従います。"
+                }
+              ],
+              "connection": "次は P8.4 回転複写に進み、回転させながら複製を作成する方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.4",
@@ -2057,7 +2287,39 @@
           "routeAliases": [
             "P8.4"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Rotate Copy turns a duplicate of a 3D object around a specified axis while keeping the original object in place.",
+              "practice": "Create a rotated duplicate of an object around a specified axis.",
+              "sections": [
+                {
+                  "title": "How to Rotate Copy an Object",
+                  "text": "**Step 1 — Select Rotate Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Rotate Copy (回転複写)**.\n\n**Step 2 — Select the Object**\nLeft-click the object to duplicate and rotate, then right-click (GO) to confirm.\n\n**Step 3 — Set the Axis of Rotation**\nSelect two points defining the axis of rotation.\n\n**Step 4 — Enter Angle and Count**\nIn Item Entry, enter **90** for the rotation angle and **3** for the number of copies, then press **Enter**. The original remains and three rotated copies appear."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your object, define the axis using the two marked points, enter **90°** and **3 copies**, then press **Enter**.\n\n**Check:** The original and three copies form the four positions shown, spaced 90° apart."
+                }
+              ],
+              "connection": "Next, learn how to reflect objects with P8.5 Mirror."
+            },
+            "ja": {
+              "explanation": "回転複写（Rotate Copy）は、元のオブジェクトを残したまま、指定した軸を中心に回転させた複製を作成するコマンドです。",
+              "practice": "軸を指定してオブジェクトを回転させた複製を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの回転複写手順",
+                  "text": "**ステップ 1 — 回転複写を選択する**\nアイコンメニューの**移動・複写・削除**から**回転複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複製して回転させたい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 回転軸を設定する**\n回転軸を定義するために 2 点を選択します。\n\n**ステップ 4 — 角度と個数を入力する**\n項目入力欄で回転角度に **90**、複写個数に **3** を入力し、**Enter** キーを押します。元のオブジェクトを残して、回転した3つの複製が配置されます。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "対象を選択し、図の2点で回転軸を指定します。回転角度 **90°**、複写個数 **3** を入力して **Enter** を押します。\n\n**確認：** 元のオブジェクトと3つの複製が、図のように90°間隔の4か所に配置されます。"
+                }
+              ],
+              "connection": "次は P8.5 反転に進み、面を基準に対称配置する方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.5",
@@ -2067,7 +2329,47 @@
           "routeAliases": [
             "P8.5"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Mirror reflects a 3D object across a specified symmetrical plane, repositioning it on the opposite side.",
+              "practice": "Define a mirror plane and mirror an object across it.",
+              "sections": [
+                {
+                  "title": "How to Mirror an Object",
+                  "text": "**Step 1 — Select Mirror**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Mirror (ミラー)**.\n\n**Step 2 — Select the Object**\nLeft-click the object you want to mirror, then right-click (GO) to confirm.\n\n**Step 3 — Set the Mirror Plane**\nFor the example shown, click **P1**, **P2**, and **P3** to define the mirror plane. You can also select an existing planar face.\n\n**Step 4 — Confirm the Result**\nConfirm the operation. The object repositions to the symmetrical location across the plane."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select your object, click the marked **P1**, **P2**, and **P3** to define the mirror plane, and confirm.\n\n**Check:** The object moves across to the opposite side of the mirror plane as a mirror image."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Mirror moves the object across the plane. To keep the original while mirroring, use Mirror Copy instead."
+                }
+              ],
+              "connection": "Next, learn how to create mirrored duplicates with P8.6 Mirror Copy."
+            },
+            "ja": {
+              "explanation": "ミラー（Mirror）は、指定した対称面を基準に 3D オブジェクトを反対側へ反転配置するコマンドです。",
+              "practice": "対称面を定義してオブジェクトを反転配置できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトのミラー手順",
+                  "text": "**ステップ 1 — ミラーを選択する**\nアイコンメニューの**移動・複写・削除**から**ミラー**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n反転したい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 対称面を設定する**\n図の例では **P1**、**P2**、**P3** の順にクリックして対称面を指定します。既存の平面を選択する方法もあります。\n\n**ステップ 4 — 確定して結果を確認する**\n確定すると、オブジェクトが対称面を挟んだ反対側の対称位置へ移動します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、図の **P1**、**P2**、**P3** で対称面を指定し、確定します。\n\n**確認：** オブジェクトが対称面の反対側に対称な向きで配置されたことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "ミラーコマンドはオブジェクト自体を移動させます。元のオブジェクトを残したい場合は「ミラー複写」を使用します。"
+                }
+              ],
+              "connection": "次は P8.6 ミラー複写に進み、元の形状を残して対称な複製を作成する方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.6",
@@ -2081,7 +2383,39 @@
           "routeAliases": [
             "P8.6"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Mirror Copy creates a symmetrical duplicate of a 3D object across a selected plane while keeping the original object.",
+              "practice": "Create a mirrored duplicate of a 3D object.",
+              "sections": [
+                {
+                  "title": "How to Mirror Copy an Object",
+                  "text": "**Step 1 — Select Mirror Copy**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Mirror Copy (ミラー複写)**.\n\n**Step 2 — Select the Object**\nLeft-click the object to duplicate, then right-click (GO) to confirm.\n\n**Step 3 — Set the Mirror Plane**\nFor the example shown, click **P1**, **P2**, and **P3** to define the mirror plane. You can also select an existing planar face.\n\n**Step 4 — Confirm and Check**\nConfirm the operation. The original object remains and a mirrored duplicate is created across the plane."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Select an object, click the marked **P1**, **P2**, and **P3** to define the plane, and confirm the mirror copy.\n\n**Check:** Two symmetrical parts now exist, facing each other across the mirror plane."
+                }
+              ],
+              "connection": "Next, learn how to remove unwanted entities with P8.7 Delete."
+            },
+            "ja": {
+              "explanation": "ミラー複写（Mirror Copy）は、元のオブジェクトを保持したまま、指定した対称面を基準に対称な複製を作成するコマンドです。",
+              "practice": "対称面を指定してオブジェクトの対称な複製を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトのミラー複写手順",
+                  "text": "**ステップ 1 — ミラー複写を選択する**\nアイコンメニューの**移動・複写・削除**から**ミラー複写**を選択します。\n\n**ステップ 2 — 対象を選択して確定する**\n複製したい対象を左クリックし、右クリック（GO）で確定します。\n\n**ステップ 3 — 対称面を設定する**\n図の例では **P1**、**P2**、**P3** の順にクリックして対称面を指定します。既存の平面を選択する方法もあります。\n\n**ステップ 4 — 確定して確認する**\n確定すると、元のオブジェクトを残したまま、対称面の反対側に対称な複製が作成されます。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "オブジェクトを選択し、図の **P1**、**P2**、**P3** で対称面を指定してミラー複写を実行します。\n\n**確認：** 対称面を挟んで向かい合う 2 つの対称なオブジェクトが作成されたことを確認します。"
+                }
+              ],
+              "connection": "次は P8.7 削除に進み、不要なオブジェクトを取り除く方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.7",
@@ -2097,7 +2431,39 @@
             "F9.11",
             "lesson-6-7",
             "delete"
-          ]
+          ],
+          "content": {
+            "en": {
+              "explanation": "Delete removes a selected object from the 3D model. Use it to eliminate unwanted entities or mistakes.",
+              "practice": "Delete a selected object and undo if needed.",
+              "sections": [
+                {
+                  "title": "How to Delete an Object",
+                  "text": "**Step 1 — Select Delete**\nIn the Icon Menu, open **Move, Copy, Delete (移動・複写・削除)** and select **Delete (削除)**, represented by the red ✕.\n\n**Step 2 — Left-Click the Object**\nLeft-click the object you wish to remove. It is deleted immediately; **GO is not required**.\n\n**Step 3 — Check What Remains**\nVerify that the intended entity has been removed from the workspace.\n\n**Step 4 — Undo a Mistake**\nIf you deleted the wrong object, press **Ctrl+Z** to restore it."
+                },
+                {
+                  "title": "Try It",
+                  "text": "Click on one of the duplicates created in the previous lessons to delete it.\n\n**Check:** The clicked object is removed while the remaining objects stay intact."
+                }
+              ],
+              "connection": "Next, learn how to change a solid's size with P8.8 Resize."
+            },
+            "ja": {
+              "explanation": "削除（Delete）は、選択したオブジェクトを 3D モデルから取り除くコマンドです。不要になった形状や誤って作成した要素を消去します。",
+              "practice": "目的のオブジェクトを削除し、必要に応じて元に戻せるようになります。",
+              "sections": [
+                {
+                  "title": "オブジェクトの削除手順",
+                  "text": "**ステップ 1 — 削除を選択する**\nアイコンメニューの**移動・複写・削除**から赤色の ✕ 印である**削除**を選択します。\n\n**ステップ 2 — 対象を左クリックする**\n削除したいオブジェクトを左クリックします。クリックすると即座に削除されます（GO の右クリックは不要です）。\n\n**ステップ 3 — 残りの要素を確認する**\n目的のオブジェクトのみが削除され、他の要素が正常に残っているか確認します。\n\n**ステップ 4 — 誤って削除した場合は元に戻す**\n間違えて別のオブジェクトを消してしまった場合は、すぐに **Ctrl+Z**（元に戻す）を押して復元します。"
+                },
+                {
+                  "title": "やってみましょう",
+                  "text": "前のレッスンで作成した複製のいずれかを左クリックして削除します。\n\n**確認：** クリックしたオブジェクトのみが消去され、残りの形状はそのまま保持されていることを確認します。"
+                }
+              ],
+              "connection": "次は P8.8 立体縮尺に進み、立体の大きさを変更する方法を学びます。"
+            }
+          }
         },
         {
           "id": "F10.8",
@@ -2108,7 +2474,47 @@
             "P8.8",
             "P12.2"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Resize** command scales an entire solid up or down while keeping its proportions.",
+              "practice": "Select a solid and resize it using a scale value.",
+              "sections": [
+                {
+                  "title": "Resize a Solid",
+                  "text": "**Step 1 — Select Resize**\nFrom the **Basic** Icon Menu, open **Stretch / Shape / Cut** and select **Resize**.\n\n**Step 2 — Select the Solid**\n**Left-click** the solid you want to resize.\n\n**Step 3 — Enter the Scale**\nEnter the scale value in **Item Entry**, then **left-click** in the 3D workspace to apply it."
+                },
+                {
+                  "title": "Understanding the Scale Value",
+                  "text": "A value greater than **1.0** scales the solid up. A value between **0** and **1.0** scales it down. For example, **2.0** doubles the size while preserving the solid's proportions."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Resize changes the size of the **entire selected solid**. Use **Stretch** when you need to change the length by moving only a selected face."
+                }
+              ],
+              "connection": "P12.1 Stretch changes a solid by moving one face. P8.8 Resize scales the whole solid proportionally. You have completed Module P8 Move, Copy, Delete! Next, continue to P9 Sketch."
+            },
+            "ja": {
+              "explanation": "**立体縮尺**コマンドは、立体の比率を保ったまま全体を拡大または縮小します。",
+              "practice": "立体を選択し、縮尺値を使用して大きさを変更できるようになります。",
+              "sections": [
+                {
+                  "title": "立体の大きさを変更",
+                  "text": "**ステップ 1 — 立体縮尺を選択**\n**基本**アイコンメニューで**伸縮・整形・切断**を開き、**立体縮尺**を選択します。\n\n**ステップ 2 — 立体を選択**\n大きさを変更する立体を**左クリック**します。\n\n**ステップ 3 — 縮尺を入力**\n**アイテム入力**に縮尺値を入力し、3D 作業領域を**左クリック**して適用します。"
+                },
+                {
+                  "title": "縮尺値について",
+                  "text": "**1.0**より大きい値は立体を拡大し、**0**より大きく**1.0**より小さい値は縮小します。たとえば、**2.0**を入力すると、立体の比率を保ったまま大きさが2倍になります。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "立体縮尺は、**選択した立体全体**の大きさを変更します。選択した面だけを移動して長さを変更する場合は、**伸縮**を使用します。"
+                }
+              ],
+              "connection": "P12.1 伸縮は1つの面を移動して立体を変更します。P8.8 立体縮尺は立体全体を同じ比率で拡大または縮小します。モジュール P8 移動・複写・削除の学習が完了しました！次は P9 スケッチに進みます。"
+            }
+          }
         }
       ]
     },
@@ -2127,7 +2533,63 @@
           "routeAliases": [
             "P9.1"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Sketch tools create lines, circles, and arcs directly in the 3D workspace for later solid modeling.",
+              "practice": "Open the Sketch tools and create a closed sketch outline in the 3D workspace.",
+              "sections": [
+                {
+                  "title": "What is Sketch?",
+                  "text": "A Sketch is 2D geometry created directly in the 3D space.\n\nSketch geometry can be used to define the shape or cross-section of a future 3D solid."
+                },
+                {
+                  "title": "Basic Sketch Tools",
+                  "text": "The Sketch menu includes tools such as:\n- **Line**\n- **Circle**\n- **Arc**\n\nFor this lesson, you will practice creating a closed outline using Draw Lines."
+                },
+                {
+                  "title": "How to Create a Sketch",
+                  "text": "**Step 1 — Open Sketch**\nFrom the **Application (応用)** tab, select **Sketch (スケッチ)**.\n\n**Step 2 — Select Draw Lines**\nFrom the Sketch tools, select **線を描く (Draw Lines)**.\n\n**Step 3 — Draw the Outline**\nUsing the provided reference sketch:\n- Left-click the starting point.\n- Left-click each corner to create the connected lines.\n- Continue until the required shape is complete.\n- Select the starting point again to close the outline."
+                },
+                {
+                  "title": "Closed Sketch",
+                  "text": "A sketch that will be used for Extrude or Revolve must form a closed outline.\n\nThere should be no gap between the first and last points.\n\nWhen the closed section is selected during the next modeling operation, iCAD SX can recognize the enclosed area."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Keep an unchanged copy of the completed sketch for the next lessons:\n- **P10.1 — Extrude**\n- **P10.2 — Revolve**\n\nThis allows both exercises to begin from the same original sketch."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "スケッチツールは3D作業領域に線・円・円弧を作成し、後の立体作成に使用します。",
+              "practice": "スケッチツールを開き、3D作業領域内に閉じたスケッチの輪郭を作成できるようになります。",
+              "sections": [
+                {
+                  "title": "スケッチとは",
+                  "text": "スケッチとは、3D空間内に直接作成される 2D の幾何形状です。\n\nスケッチの幾何形状は、将来の 3D ソリッドの形状や断面を定義するために使用できます。"
+                },
+                {
+                  "title": "基本的なスケッチツール",
+                  "text": "スケッチメニューには次のようなツールが含まれています：\n- **直線（Line）**\n- **円（Circle）**\n- **円弧（Arc）**\n\nこのレッスンでは、「線を描く」を使って閉じた輪郭を作成する練習を行います。"
+                },
+                {
+                  "title": "スケッチの作成方法",
+                  "text": "**ステップ 1 — スケッチを開く**\n**応用**タブから**スケッチ**を選択します。\n\n**ステップ 2 — 線を描くを選択する**\nスケッチツールから **線を描く** を選択します。\n\n**ステップ 3 — 輪郭を描く**\n提供された参照スケッチを使用して：\n- 始点を左クリックします。\n- 各角を左クリックして直線をつなぎます。\n- 必要な形状が完成するまで続けます。\n- 再度始点を選択して輪郭を閉じます。"
+                },
+                {
+                  "title": "閉じたスケッチ",
+                  "text": "押し出しや回転体に使用するスケッチは、閉じた輪郭を形成する必要があります。\n\n最初と最後の点の間に隙間があってはなりません。\n\n次のモデリング操作で閉じた断面を選択すると、iCAD SX は囲まれた領域を認識できます。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "完成したスケッチの未変更のコピーを次のレッスンのために保持してください：\n- **P10.1 — 押し出し**\n- **P10.2 — 回転体**\n\nこれにより、両方の演習を同じ元のスケッチから開始できます。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         }
       ]
     },
@@ -2146,7 +2608,55 @@
           "routeAliases": [
             "P10.1"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Extrude command creates a 3D solid from a closed sketch by extending the sketch in a straight direction.\n\niCAD SX provides two basic extrusion methods:\n- Extrude — One Side\n- Extrude — Both Sides",
+              "practice": "Create a 3D solid from the closed sketch created in P9.1 Sketch using either One Side or Both Sides extrusion.",
+              "sections": [
+                {
+                  "title": "Before You Start",
+                  "text": "Use an unchanged copy of the closed sketch created in P9.1.\n\nThe sketch must form a complete closed outline so iCAD SX can recognize the area to be extruded."
+                },
+                {
+                  "title": "Method 1 — Extrude One Side",
+                  "text": "Use Extrude (One Side) when you want the solid to extend from the sketch in one direction.\n\n**Step 1 — Select Extrude (One Side)**\nFrom the Icon Menu, select Extrude (One Side).\n\n**Step 2 — Select the Sketch Perimeter**\nLeft-click the sketch perimeter at P1 to select the section to be extruded.\n\n**Step 3 — Display the Extrusion Preview**\nMove the mouse in the extrusion direction. A hatch will appear when iCAD SX recognizes the closed area.\n\n**Step 4 — Set the Extrusion Height**\nSpecify the required height using the mouse. You can also enter the exact height in the Item Entry.\n\n**Step 5 — Confirm**\nPress Enter to create the solid.\nResult: The sketch is extended on one side to form a 3D solid."
+                },
+                {
+                  "title": "Method 2 — Extrude Both Sides",
+                  "text": "Use Extrude (Both Sides) when you want the sketch to extend in both directions.\n\n**Step 1 — Select Extrude (Both Sides)**\nChoose Extrude (Both Sides) from the Icon Menu.\n\n**Step 2 — Select the Closed Sketch**\nSelect the required sketch section at P1.\n\n**Step 3 — Display the Extrusion Preview**\nMove the mouse to check that the hatch appears when iCAD SX recognizes the closed section.\n\n**Step 4 — Set the Height**\nSpecify the extrusion height using the mouse or Item Entry.\n\n**Step 5 — Confirm**\nPress Enter to create the solid.\nResult: The solid extends on both sides of the original sketch."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "If the hatch does not appear, check that the sketch forms a fully closed outline.\n\nFor practice, use a separate unchanged copy of the P9.1 sketch for each extrusion method."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "押し出しコマンドは、閉じたスケッチを直線方向に伸ばすことで 3D ソリッドを作成します。\n\niCAD SX では、基本的な押し出し方法として次の2種類が用意されています：\n- 押し出し — 片側\n- 押し出し — 両側",
+              "practice": "P9.1 スケッチで作成した閉じたスケッチから、片側または両側の押し出しを使用して 3D ソリッドを作成できるようになります。",
+              "sections": [
+                {
+                  "title": "開始する前に",
+                  "text": "P9.1 で作成した閉じたスケッチの未変更コピーを使用してください。\n\niCAD SX が押し出す領域を認識できるように、スケッチは完全に閉じた輪郭を形成している必要があります。"
+                },
+                {
+                  "title": "方法 1 — 押し出し（片側）",
+                  "text": "スケッチからソリッドを一方向に伸ばしたい場合は「押し出し（片側）」を使用します。\n\n**ステップ 1 — 押し出し（片側）を選択する**\nアイコンメニューから「押し出し（片側）」を選択します。\n\n**ステップ 2 — スケッチ外周を選択する**\n押し出す断面を選択するために、スケッチ外周の P1 を左クリックします。\n\n**ステップ 3 — 押し出しのプレビューを表示する**\nマウスを押し出し方向に動かします。iCAD SX が閉じた領域を認識するとハッチングが表示されます。\n\n**ステップ 4 — 押し出し高さを設定する**\nマウスで必要な高さを指定します。項目入力に正確な高さを入力することもできます。\n\n**ステップ 5 — 確定する**\nEnter を押してソリッドを作成します。\n結果：スケッチが片側に伸ばされ、3D ソリッドが作成されます。"
+                },
+                {
+                  "title": "方法 2 — 押し出し（両側）",
+                  "text": "スケッチを両方向に伸ばしたい場合は「押し出し（両側）」を使用します。\n\n**ステップ 1 — 押し出し（両側）を選択する**\nアイコンメニューから「押し出し（両側）」を選択します。\n\n**ステップ 2 — 閉じたスケッチを選択する**\n必要なスケッチ断面（P1）を選択します。\n\n**ステップ 3 — 押し出しのプレビューを表示する**\nマウスを動かし、iCAD SX が閉じた断面を認識してハッチングが表示されることを確認します。\n\n**ステップ 4 — 高さを設定する**\nマウスまたは項目入力を使用して押し出し高さを指定します。\n\n**ステップ 5 — 確定する**\nEnter を押してソリッドを作成します。\n結果：元のスケッチの両側にソリッドが伸びて作成されます。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "ハッチングが表示されない場合は、スケッチが完全に閉じた輪郭になっているか確認してください。\n\n練習の際は、押し出し方法ごとに P9.1 スケッチの個別の未変更コピーを使用してください。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         },
         {
           "id": "F12.2",
@@ -2156,7 +2666,47 @@
           "routeAliases": [
             "P10.2"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Revolve command creates a 3D solid by rotating a closed sketch around a selected axis.\n\nUse this command when the shape needs to form around a center line or rotation axis.",
+              "practice": "Select a closed sketch, define its axis of rotation, and create a revolved 3D solid.",
+              "sections": [
+                {
+                  "title": "Before You Start",
+                  "text": "Use an unchanged copy of the closed sketch created in P9.1 Sketch.\n\nThe sketch must form a closed outline before it can be revolved."
+                },
+                {
+                  "title": "How to Create a Revolved Solid",
+                  "text": "Use Revolve when you want to form a 3D solid around a rotation axis.\n\n**Step 1 — Select Revolve**\nFrom the Icon Menu, select Revolve.\n\n**Step 2 — Select the Sketch Perimeter**\nLeft-click the closed sketch to select the area to be revolved.\nA hatch will appear when iCAD SX recognizes the selected area as a closed section.\n\n**Step 3 — Set the Axis of Rotation**\nSelect the axis that the sketch will rotate around.\nYou can define the axis by:\n- selecting two points, or\n- selecting an edge\n\n**Step 4 — Enter the Rotation Angle**\nIn the Item Entry, enter the required rotation angle.\nFor a complete revolution, enter: 360°\n\n**Step 5 — Create the Solid**\nPress Enter or right-click to complete the operation.\nResult: The sketch will rotate around the selected axis and create the 3D solid."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Check these before confirming:\n- The correct closed sketch is selected.\n- The hatch appears.\n- The correct rotation axis is defined.\n- The required rotation angle is entered."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "回転体コマンドは、閉じたスケッチを選択した軸の周りに回転させることで 3D ソリッドを作成します。\n\n中心線や回転軸の周りに形状を作成する必要がある場合に使用します。",
+              "practice": "閉じたスケッチを選択し、回転軸を定義して、回転体の 3D ソリッドを作成できるようになります。",
+              "sections": [
+                {
+                  "title": "開始する前に",
+                  "text": "P9.1 スケッチで作成した閉じたスケッチの未変更コピーを使用してください。\n\n回転体を作成するには、スケッチがあらかじめ閉じた輪郭を形成している必要があります。"
+                },
+                {
+                  "title": "回転体の作成手順",
+                  "text": "回転軸の周りに 3D ソリッドを作成する場合は「回転体」を使用します。\n\n**ステップ 1 — 回転体を選択する**\nアイコンメニューから「回転体」を選択します。\n\n**ステップ 2 — スケッチ外周を選択する**\n閉じたスケッチを左クリックして、回転させる領域を選択します。\niCAD SX が選択された領域を閉じた断面として認識するとハッチングが表示されます。\n\n**ステップ 3 — 回転軸を設定する**\nスケッチが回転する軸を選択します。\n軸は次のいずれかで定義できます：\n- 2つの点を選択する\n- エッジを選択する\n\n**ステップ 4 — 回転角度を入力する**\n項目入力で、必要な回転角度を入力します。\n一回転させる場合は次のように入力します：360°\n\n**ステップ 5 — ソリッドを作成する**\nEnter を押すか右クリックして操作を完了します。\n結果：スケッチが選択した軸の周りを回転し、3D ソリッドが作成されます。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "text": "確定前の確認事項：\n- 正しい閉じたスケッチが選択されていること。\n- ハッチングが表示されていること。\n- 正しい回転軸が定義されていること。\n- 必要な回転角度が入力されていること。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         }
       ]
     },
@@ -2175,7 +2725,47 @@
           "routeAliases": [
             "P11.1"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Show/Hide** tools in iCAD SX control which elements are visible in the workspace without deleting them.\n\n**Location:** In the Icon Menu on the right, open **Tools (ツール)**, then **Show/Hide (表示・非表示)**.",
+              "practice": "Identify the main Show/Hide commands and understand what each one is used for.",
+              "sections": [
+                {
+                  "title": "Show/Hide Commands",
+                  "text": "**Hide Specified Elements**\nHides the elements you select.\n\n**Show Specified Elements**\nDisplays selected elements that are currently hidden.\n\n**Hide Drafting Elements**\nHides drafting-related information from the screen.\n\n**Show Drafting Elements**\nDisplays drafting-related information that was hidden.\n\n**Hide Unselected Elements**\nKeeps the selected elements visible and hides the other elements."
+                },
+                {
+                  "title": "Drafting Elements",
+                  "text": "Dimensions: Linear/Circular/Angular; Chamfer/Fillet.\n\nNotes: Text; Part Notes; Welding; Balloon.\n\nSymbols: Arrow/Arrow View; Cutting Lines; Machining/Finishing; Hatch."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "**Hidden does not mean deleted.**\n\nA hidden element still exists in the model. You can display it again using the appropriate Show command."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "iCAD SX の**表示・非表示**ツールは、要素を削除せずに作業領域の表示状態を制御します。\n\n**場所：** 画面右側のアイコンメニューで**ツール**タブを開き、**表示・非表示**からコマンドを選択します。",
+              "practice": "主な 表示・非表示 コマンドを識別し、それぞれの用途を理解できるようになります。",
+              "sections": [
+                {
+                  "title": "表示・非表示 コマンド",
+                  "text": "**指定要素を非表示にする**\n選択した要素を非表示にします。\n\n**指定要素を表示する**\n現在非表示になっている要素を選択して表示します。\n\n**製図要素を非表示にする**\n製図関連の情報を画面から非表示にします。\n\n**製図要素を表示する**\n非表示になっている製図関連の情報を表示します。\n\n**指定要素以外を非表示にする**\n選択した要素を表示したまま、他の要素を非表示にします。"
+                },
+                {
+                  "title": "製図要素",
+                  "text": "寸法：長さ／円／角度、面取り／フィレット。\n\n注記：文字、部品注記、溶接、バルーン。\n\n記号：矢印／矢視図、切断線、加工／仕上げ、ハッチング。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "**非表示は削除ではありません。**\n\n非表示の要素もモデル内に存在します。適切な 表示コマンドで再表示できます。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         },
         {
           "id": "F13.2",
@@ -2185,7 +2775,47 @@
           "routeAliases": [
             "P11.2"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Use **Hide Specified Elements** to hide selected elements and **Show Specified Elements** to display hidden elements again.",
+              "practice": "Hide selected elements and display them again when needed.",
+              "sections": [
+                {
+                  "title": "Hide Specified Elements",
+                  "text": "**Step 1 — Select Hide Specified Elements**\nOpen **Tools (ツール)** → **Show/Hide (表示・非表示)** → **Hide Specified Elements**.\n\n**Step 2 — Hide the Elements**\n**Left-click** each element to hide it immediately."
+                },
+                {
+                  "title": "Show Specified Elements",
+                  "text": "**Step 1 — Select Show Specified Elements**\nOpen **Tools (ツール)** → **Show/Hide (表示・非表示)** → **Show Specified Elements**. Hidden elements appear for selection; if none are hidden, none appear.\n\n**Step 2 — Select the Elements**\n**Left-click** the elements to show.\n\n**Step 3 — Show the Selection**\n**Right-click** to show the selected elements."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "Hiding an element does **not** delete it.\n\nThe element remains part of the model and can be displayed again using **Show Specified Elements**."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "**指定要素を非表示にする**で選択した要素を非表示にし、**指定要素を表示する**で非表示の要素を再表示します。",
+              "practice": "選択した要素を非表示にし、必要に応じて再表示できるようになります。",
+              "sections": [
+                {
+                  "title": "指定要素を非表示にする",
+                  "text": "**ステップ 1 — コマンドを選択**\n**ツール** → **表示・非表示** → **指定要素を非表示にする**を選択します。\n\n**ステップ 2 — 要素を非表示**\n要素を**左クリック**すると、すぐに非表示になります。"
+                },
+                {
+                  "title": "指定要素を表示する",
+                  "text": "**ステップ 1 — コマンドを選択**\n**ツール** → **表示・非表示** → **指定要素を表示する**を選択します。非表示の要素が選択用に表示されます。非表示の要素がなければ、何も表示されません。\n\n**ステップ 2 — 要素を選択**\n表示する要素を**左クリック**します。\n\n**ステップ 3 — 選択要素を表示**\n**右クリック**で選択した要素を表示します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "要素を非表示にしても、削除は**されません**。\n\n要素はモデル内に残り、**指定要素を表示する** で再表示できます。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         },
         {
           "id": "F13.3",
@@ -2195,7 +2825,47 @@
           "routeAliases": [
             "P11.3"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Hide Drafting Elements** and **Show Drafting Elements** commands control the visibility of drafting information without affecting model geometry.",
+              "practice": "Hide and show drafting elements in the current drawing.",
+              "sections": [
+                {
+                  "title": "Drafting Elements",
+                  "text": "Dimensions: Linear/Circular/Angular; Chamfer/Fillet.\n\nNotes: Text; Part Notes; Welding; Balloon.\n\nSymbols: Arrow/Arrow View; Cutting Lines; Machining/Finishing; Hatch."
+                },
+                {
+                  "title": "Hide Drafting Elements",
+                  "text": "**Step 1 — Select Hide Drafting Elements**\nOpen **Tools (ツール)** → **Show/Hide (表示・非表示)** → **Hide Drafting Elements**.\n\n**Step 2 — Apply**\n**Right-click** to hide drafting elements."
+                },
+                {
+                  "title": "Show Drafting Elements",
+                  "text": "**Step 1 — Select Show Drafting Elements**\nOpen **Tools (ツール)** → **Show/Hide (表示・非表示)** → **Show Drafting Elements**.\n\n**Step 2 — Apply**\n**Right-click** to show drafting elements."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "**製図要素を非表示にする**と**製図要素を表示する**は、モデル形状に影響を与えずに製図情報の表示状態を制御します。",
+              "practice": "現在の図面の製図要素を非表示および表示できるようになります。",
+              "sections": [
+                {
+                  "title": "製図要素",
+                  "text": "寸法：長さ／円／角度、面取り／フィレット。\n\n注記：文字、部品注記、溶接、バルーン。\n\n記号：矢印／矢視図、切断線、加工／仕上げ、ハッチング。"
+                },
+                {
+                  "title": "製図要素を非表示にする",
+                  "text": "**ステップ 1 — コマンドを選択**\n**ツール** → **表示・非表示** → **製図要素を非表示にする**を選択します。\n\n**ステップ 2 — 実行**\n**右クリック**で製図要素を非表示にします。"
+                },
+                {
+                  "title": "製図要素を表示する",
+                  "text": "**ステップ 1 — コマンドを選択**\n**ツール** → **表示・非表示** → **製図要素を表示する**を選択します。\n\n**ステップ 2 — 実行**\n**右クリック**で製図要素を表示します。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         },
         {
           "id": "F13.4",
@@ -2205,7 +2875,31 @@
           "routeAliases": [
             "P11.4"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "**Hide Unselected Elements** keeps selected elements visible and hides the others so you can inspect a specific part of the model.",
+              "practice": "Isolate selected elements using **Hide Unselected Elements**.",
+              "sections": [
+                {
+                  "title": "How to Use Hide Unselected Elements",
+                  "text": "**Step 1 — Select Hide Unselected Elements**\nOpen **Tools (ツール)** → **Show/Hide (表示・非表示)** → **Hide Unselected Elements**.\n\n**Step 2 — Select the Elements to Keep**\n**Left-click** the elements to keep visible.\n\n**Step 3 — Hide the Rest**\n**Right-click** to hide all unselected elements."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "**指定要素以外を非表示にする**は、選択した要素を表示したまま他の要素を非表示にし、モデルの特定の部分を確認しやすくします。",
+              "practice": "**指定要素以外を非表示にする** を使用して、選択した要素だけを表示できるようになります。",
+              "sections": [
+                {
+                  "title": "「指定要素以外を非表示にする」の使用方法",
+                  "text": "**ステップ 1 — コマンドを選択**\n**ツール** → **表示・非表示** → **指定要素以外を非表示にする**を選択します。\n\n**ステップ 2 — 残す要素を選択**\n表示したままにする要素を**左クリック**します。\n\n**ステップ 3 — 他の要素を非表示**\n**右クリック**で選択していない要素を非表示にします。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         }
       ]
     },
@@ -2224,7 +2918,55 @@
           "routeAliases": [
             "P12.1"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Stretch** command changes the length of a solid by moving a selected face. You can control the stretch using an exact value in **Item Entry** or the **linear scale** in the 3D workspace.",
+              "practice": "Select a face and stretch the solid to the required length.",
+              "sections": [
+                {
+                  "title": "Where to Find Stretch",
+                  "text": "From the **Basic** Icon Menu, select **Stretch / Shape / Cut** → **Stretch by Specifying Face**.\n\n`伸縮・整形・切断 → 面を指定して伸縮する`"
+                },
+                {
+                  "title": "Method 1 — Specify the Length in Item Entry",
+                  "text": "Use this method when you know the required final length of the solid.\n\n**Step 1 — Select Stretch**\nIn the Icon Menu, open the **Basic (基本)** tab. Under **Stretch / Shape / Cut (伸縮・整形・切断)**, select the first icon, **Stretch by Specifying Face**.\n\n**Step 2 — Select the Face**\n**Left-click** the face you want to move.\n\n**Step 3 — Enter the Required Length**\nIn **Item Entry**, enter the desired final length of the solid, then press **Enter**.\n\nThis method can also be used on **circular surfaces**.\n\n**Step 4 — Check the Final Output**\nCheck that the selected face has moved and the solid has stretched as shown in the example."
+                },
+                {
+                  "title": "Method 2 — Use the Linear Scale",
+                  "text": "Use the linear scale to specify the additional length in the 3D workspace.\n\n**Step 1 — Select Stretch**\nIn the Icon Menu, open the **Basic (基本)** tab. Under **Stretch / Shape / Cut (伸縮・整形・切断)**, select the first icon, **Stretch by Specifying Face**.\n\n**Step 2 — Display the Linear Scale**\n**Left-click** the face you want to move, **right-click** to confirm the selection, then **left-click** in the 3D workspace to display the **linear scale**.\n\n**Step 3 — Set the Stretch Amount**\nEnter the additional length, such as **20**, in the linear scale input and press **Enter**, or left-click the required position on the scale.\n\n**Step 4 — Check the Final Output**\nCheck that the selected face has moved and the solid has stretched as shown in the example."
+                },
+                {
+                  "title": "Important Reminder",
+                  "text": "The stretch direction is based on the **face you select**. Select the correct face before entering the length."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "**伸縮**コマンドは、選択した面を移動して立体の長さを変更します。**アイテム入力**に正確な値を入力する方法と、3D 作業領域の**直線スケール**を使用する方法があります。",
+              "practice": "面を選択し、立体を必要な長さまで伸縮できるようになります。",
+              "sections": [
+                {
+                  "title": "伸縮コマンドの場所",
+                  "text": "**基本**アイコンメニューから、**伸縮・整形・切断** → **面を指定して伸縮する**を選択します。"
+                },
+                {
+                  "title": "方法 1 — アイテム入力で長さを指定",
+                  "text": "立体の仕上がり長さが分かっている場合に使用します。\n\n**ステップ 1 — 伸縮を選択**\nアイコンメニューの**基本**タブを開き、**伸縮・整形・切断**の先頭のアイコン（**面を指定して伸縮する**）を選択します。\n\n**ステップ 2 — 面を選択**\n移動する面を**左クリック**します。\n\n**ステップ 3 — 必要な長さを入力**\n**アイテム入力**に立体の仕上がり長さを入力し、**Enter**を押します。\n\nこの方法は**円形の面**にも使用できます。\n\n**ステップ 4 — 完成形状を確認**\n選択した面が移動し、例のように立体が伸縮したことを確認します。"
+                },
+                {
+                  "title": "方法 2 — 直線スケールを使用",
+                  "text": "直線スケールを使用して、3D 作業領域で追加する長さを指定します。\n\n**ステップ 1 — 伸縮を選択**\nアイコンメニューの**基本**タブを開き、**伸縮・整形・切断**の先頭のアイコン（**面を指定して伸縮する**）を選択します。\n\n**ステップ 2 — 直線スケールを表示**\n移動する面を**左クリック**し、**右クリック**で選択を確定します。次に 3D 作業領域を**左クリック**して**直線スケール**を表示します。\n\n**ステップ 3 — 伸縮量を設定**\n直線スケールの入力欄に追加する長さ（例：**20**）を入力して**Enter**を押すか、スケール上の必要な位置を左クリックします。\n\n**ステップ 4 — 完成形状を確認**\n選択した面が移動し、例のように立体が伸縮したことを確認します。"
+                },
+                {
+                  "title": "重要なポイント",
+                  "text": "伸縮する方向は**選択した面**で決まります。長さを入力する前に、正しい面を選択してください。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         }
       ]
     },
@@ -2244,7 +2986,39 @@
             "P13.1",
             "P12.3"
           ],
-          "completionAliases": []
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The **Shape Steels** function in iCAD SX is used to place standard steel shapes in the 3D workspace.",
+              "practice": "Select a Shape Steel, set its specifications, and place it at the required position.",
+              "sections": [
+                {
+                  "title": "Available Shape Steels",
+                  "text": "**C-Channel**\nStandard C-channel profile.\n\n**H-Beam**\nStandard H-beam profile.\n\n**I-Beam**\nStandard I-beam profile.\n\n**Equal Angle Bar**\nAngle bar with equal sides.\n\n**Unequal Angle Bar**\nAngle bar with unequal sides.\n\n**Unequal-Sided Angle Bar**\nUnequal-sided angle profile.\n\n**Square Pipe**\nHollow steel profile with a square cross-section."
+                },
+                {
+                  "title": "How to Create a Shape Steel",
+                  "text": "**Step 1 — Select Arrange Machine Part**\nFrom the **Icon Menu**, select **Arrange Machine Part**.\n\n**Step 2 — Set the Shape Steel**\nThe **Arrange Machine Part** window appears. Select the required **Shape Steel**, choose an available specification, enter the required **length**, check the preview, and select **OK** when the settings are correct. Available sizes and specifications depend on the selected Shape Steel.\n\n**Step 3 — Specify the Position**\nIn the **Key Entry Area**, enter the coordinates for the **origin point**, such as **0 0 0**. Confirm the coordinate input to place the Shape Steel in the 3D workspace."
+                }
+              ],
+              "connection": ""
+            },
+            "ja": {
+              "explanation": "iCAD SX の**形鋼**機能は、標準形鋼を 3D 作業領域に配置するために使用します。",
+              "practice": "形鋼を選択し、仕様を設定して、必要な位置に配置できるようになります。",
+              "sections": [
+                {
+                  "title": "使用できる形鋼",
+                  "text": "**C形鋼**\nチャンネル形状の断面です。\n\n**H形鋼**\n幅広フランジの H 形断面です。\n\n**I形鋼**\nI 形の梁断面です。\n\n**等辺山形鋼**\n両方の辺の長さが等しい L 形断面です。\n\n**不等辺山形鋼**\n両方の辺の長さが異なる L 形断面です。\n\n**不等辺不等厚山形鋼**\n辺の長さと厚さが異なる非対称の山形鋼です。\n\n**角パイプ**\n正方形断面の中空鋼材です。"
+                },
+                {
+                  "title": "形鋼の作成方法",
+                  "text": "**ステップ 1 — 機械部品配置を選択**\n**アイコンメニュー**から**機械部品配置**を選択します。\n\n**ステップ 2 — 形鋼を設定**\n**機械部品配置**ウィンドウで必要な**形鋼**を選択し、使用できる仕様を選び、必要な**長さ**を入力します。プレビューを確認し、設定が正しければ**OK**を選択します。使用できるサイズと仕様は、選択した形鋼によって異なります。\n\n**ステップ 3 — 位置を指定**\n**キー入力領域**に**原点**の座標（例：**0 0 0**）を入力します。座標入力を確定して、形鋼を 3D 作業領域に配置します。"
+                }
+              ],
+              "connection": ""
+            }
+          }
         }
       ]
     },
@@ -2330,7 +3104,7 @@
               "sections": [
                 {
                   "title": "Command Menu",
-                  "text": "Most tools for sketching on the Work Plane are found in the Command Menu.\n\n- Contains tools for drafting.\n- Contains tools for sketching.\n- Displays the available tools for drafting and sketching.\n- Displays the options for the selected tool."
+                  "text": "The Command Menu provides drafting and sketching tools and options for the active command."
                 },
                 {
                   "title": "Create a Rectangular Profile",
@@ -2352,7 +3126,7 @@
               "sections": [
                 {
                   "title": "コマンドメニュー",
-                  "text": "作業平面でのスケッチに使う主なツールは、コマンドメニューにあります。\n\n- 製図ツールを含みます。\n- スケッチツールを含みます。\n- 製図・スケッチで使用できるコマンドが表示されます。\n- 選択したツールのオプションが表示されます。"
+                  "text": "コマンドメニューには製図・スケッチ用ツールと、選択中のコマンドのオプションがあります。"
                 },
                 {
                   "title": "長方形の輪郭を作成する",
@@ -2619,8 +3393,8 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The Union command is used to join multiple 3D entities together and create one solid entity. Use Union when separate solids need to become a single object.",
-              "practice": "By the end of this lesson, you should be able to combine two or more 3D entities into one solid using the Union command.",
+              "explanation": "Union joins selected 3D entities into one solid.",
+              "practice": "Combine two or more 3D entities into one solid using the Union command.",
               "sections": [
                 {
                   "title": "What Is Union?",
@@ -2629,16 +3403,12 @@
                 {
                   "title": "How to Use Union",
                   "text": "- **Select Union** — Select **Union「くっつける」** from the Icon Menu.\n- **Select the 3D Entities** — Select all the 3D entities you want to join.\n- **Confirm the Operation** — Confirm with **GO** (right-click) to join the selected entities into one solid."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check that you selected all the required solids before confirming the operation. After Union, the selected solids are treated as one combined entity."
                 }
               ]
             },
             "ja": {
-              "explanation": "「くっつける」は、複数の3D要素を結合して1つの立体を作成するコマンドです。別々の立体を1つのオブジェクトにするときに使用します。",
-              "practice": "このレッスンでは、「くっつける」を使用して2つ以上の3D要素を1つの立体に結合できるようになります。",
+              "explanation": "「くっつける」は、選択した3D要素を1つの立体に結合します。",
+              "practice": "「くっつける」を使用して2つ以上の3D要素を1つの立体に結合できるようになります。",
               "sections": [
                 {
                   "title": "和とは？",
@@ -2647,10 +3417,6 @@
                 {
                   "title": "和の使い方",
                   "text": "- **くっつけるを選ぶ** — アイコンメニューから**「くっつける」**を選びます。\n- **3D要素を選ぶ** — 結合する3D要素をすべて選択します。\n- **操作を確定する** — **GO（右クリック）**で確定し、選択した要素を1つの立体に結合します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "確定する前に、必要な立体がすべて選択されていることを確認してください。和の演算後、選択した立体は1つの結合された要素として扱われます。"
                 }
               ]
             }
@@ -2674,8 +3440,8 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The Subtract command is used to create a cutout in a 3D entity. One entity is selected as the Target, while another entity or group of entities is used as the Tool to remove material from the Target.",
-              "practice": "By the end of this lesson, you should be able to use the Subtract command by correctly selecting the Target Entity and Tool Entity.",
+              "explanation": "Subtract removes the Tool volume from the Target to create a cutout.",
+              "practice": "Use the Subtract command by correctly selecting the Target Entity and Tool Entity.",
               "sections": [
                 {
                   "title": "Target and Tool Entities",
@@ -2691,13 +3457,13 @@
                 },
                 {
                   "title": "Important Reminder",
-                  "text": "Always select **1. Target Entity** (the entity to be cut), then **2. Tool Entity** (the entity used to create the cutout). Make sure the Tool Entity overlaps the Target Entity where the cutout is required."
+                  "text": "The Tool must overlap the Target where material should be removed."
                 }
               ]
             },
             "ja": {
-              "explanation": "「削る」は3D要素に切り欠きを作成するコマンドです。1つの要素をターゲットに選び、別の要素または複数の要素をツールとして使用し、ターゲットから材料を取り除きます。",
-              "practice": "このレッスンでは、ターゲット要素とツール要素を正しい順序で選び、「削る」を使用できるようになります。",
+              "explanation": "「削る」はターゲットからツールの体積を除き、切り欠きを作成します。",
+              "practice": "ターゲット要素とツール要素を正しい順序で選び、「削る」を使用できるようになります。",
               "sections": [
                 {
                   "title": "ターゲット要素とツール要素",
@@ -2713,7 +3479,7 @@
                 },
                 {
                   "title": "重要な注意点",
-                  "text": "必ず**1. ターゲット要素**（切り取る要素）、**2. ツール要素**（切り欠きを作る要素）の順に選択します。必要な切り取り位置で、ツールとターゲットが重なっていることを確認してください。"
+                  "text": "材料を除く位置で、ツールとターゲットが重なっている必要があります。"
                 }
               ]
             }
@@ -2743,10 +3509,6 @@
                 {
                   "title": "How to Use Intersect",
                   "text": "- **Select Intersect** — Select Intersect from the Icon Menu.\n- **Select the Intersecting Entities** — Select the overlapping entities, then select GO.\n- **Check the Final Result** — Check the new entity in the overlapping region. The original entities remain."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "The selected entities must overlap."
                 }
               ]
             },
@@ -2757,10 +3519,6 @@
                 {
                   "title": "Intersectの使い方",
                   "text": "- **コマンドを選ぶ** — アイコンメニューからIntersectを選びます。\n- **交差する要素を選ぶ** — 重なった要素を選び、GOで確定します。\n- **結果を確認する** — 共通部分に新しい要素が作成されたことを確認します。元の要素は残ります。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "選択する要素は重なっている必要があります。"
                 }
               ]
             }
@@ -2846,10 +3604,6 @@
                 {
                   "title": "How to Move a Component",
                   "text": "- **Select Move Component** — In the Icon Menu, select Move Component「一部の形状を移動する」.\n- **Select the Component** — Select the component, then select GO.\n- **Specify the Movement Distance** — In Item Entry「項目入力」, enter the X, Y, and Z distances「移動量X・Y・Z」, then press Enter.\n- **Check the Final Result** — Check the component’s new position."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the selected component before choosing GO."
                 }
               ]
             },
@@ -2860,10 +3614,6 @@
                 {
                   "title": "構成要素を移動する手順",
                   "text": "- **一部の形状を移動する** — アイコンメニューから「一部の形状を移動する」を選びます。\n- **構成要素を選ぶ** — 構成要素を選び、GOで確定します。\n- **移動量を指定する** — 項目入力で「移動量X・Y・Z」を入力し、Enterを押します。\n- **結果を確認する** — 移動後の位置を確認します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "GOを選ぶ前に、選択した構成要素を確認してください。"
                 }
               ]
             }
@@ -2893,10 +3643,6 @@
                 {
                   "title": "How to Copy a Component",
                   "text": "- **Select Copy Component** — In the Icon Menu, select Copy Component「一部の形状をコピーする」.\n- **Select the Component** — Select the component, then select GO.\n- **Specify the Copy Distance and Number** — In Item Entry「項目入力」, enter the X, Y, and Z distances「移動量X・Y・Z」 and number of copies「個数」, then press Enter.\n- **Check the Final Result** — Check the copy positions and count. The original remains in place."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the distances and copy count before pressing Enter."
                 }
               ]
             },
@@ -2907,10 +3653,6 @@
                 {
                   "title": "構成要素をコピーする手順",
                   "text": "- **一部の形状をコピーする** — アイコンメニューから「一部の形状をコピーする」を選びます。\n- **構成要素を選ぶ** — 構成要素を選び、GOで確定します。\n- **コピーの移動量と個数を指定する** — 項目入力で「移動量X・Y・Z」と「個数」を入力し、Enterを押します。\n- **結果を確認する** — コピーの位置と個数を確認します。元の構成要素は元の位置に残ります。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "Enterを押す前に、移動量とコピーの個数を確認してください。"
                 }
               ]
             }
@@ -3038,10 +3780,6 @@
                 {
                   "title": "Copy Component vs. Repeat Copy Component",
                   "text": "Both commands use the same basic procedure.\n\n**Copy Component「一部の形状をコピーする」**\nCreates copies using the specified settings.\n\n**Repeat Copy Component「一部の形状を連続コピーする」**\nUses the same basic procedure for continuous duplication."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the distances and copy count before confirming."
                 }
               ]
             },
@@ -3056,10 +3794,6 @@
                 {
                   "title": "構成要素のコピーと連続コピーの比較",
                   "text": "どちらの操作も同じ基本手順で行います。\n\n**一部の形状をコピーする**\n指定した設定でコピーを作成します。\n\n**一部の形状を連続コピーする**\n同じ基本手順で、構成要素を連続して複製します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "確定する前に、移動量とコピーの個数を確認してください。"
                 }
               ]
             }
@@ -3093,10 +3827,6 @@
                 {
                   "title": "Rotate Component vs. Rotate Copy Component",
                   "text": "Compare what happens to the original component.\n\n**Rotate Component「一部の形状を回転する」**\nMoves the original to the rotated position; no copy is created.\n\n**Rotate Copy Component「一部の形状を回転コピーする」**\nCreates a rotated duplicate and keeps the original."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Use Rotate Copy when the original must remain."
                 }
               ]
             },
@@ -3111,10 +3841,6 @@
                 {
                   "title": "構成要素の回転と回転コピーの比較",
                   "text": "元の構成要素がどうなるかを比較します。\n\n**一部の形状を回転する**\n元の構成要素を回転位置へ移動します。コピーは作成しません。\n\n**一部の形状を回転コピーする**\n元の構成要素を残し、回転した複製を作成します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "元の構成要素を残す場合は、回転コピーを使用してください。"
                 }
               ]
             }
@@ -3148,10 +3874,6 @@
                 {
                   "title": "Mirror Component vs. Mirror Copy Component",
                   "text": "Compare what happens to the original component.\n\n**Mirror Component「一部の形状をミラーする」**\nMoves the original to the mirrored position; no copy is created.\n\n**Mirror Copy Component「一部の形状をミラーコピーする」**\nCreates a mirrored duplicate and keeps the original."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Use Mirror Copy when the original must remain."
                 }
               ]
             },
@@ -3166,10 +3888,6 @@
                 {
                   "title": "構成要素のミラー移動とミラーコピーの比較",
                   "text": "元の構成要素がどうなるかを比較します。\n\n**一部の形状をミラーする**\n元の構成要素をミラー位置へ移動します。コピーは作成しません。\n\n**一部の形状をミラーコピーする**\n元の構成要素を残し、ミラー複製を作成します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "元の構成要素を残す場合は、ミラーコピーを使用してください。"
                 }
               ]
             }
@@ -3199,10 +3917,6 @@
                 {
                   "title": "How to Use Delete Component",
                   "text": "**Step 1 — Select Delete Component**\nIn the Icon Menu, select Delete Component「一部の形状を削除する」.\n\n**Step 2 — Select the Components to be Deleted**\nSelect one or more components to remove.\n\n**Step 3 — Check the Final Result**\n**Before:** The selected component is part of the solid. **After:** It is removed; the unselected components remain."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Select only the components you want to remove."
                 }
               ]
             },
@@ -3213,10 +3927,6 @@
                 {
                   "title": "構成要素を削除する手順",
                   "text": "**ステップ 1 — 一部の形状を削除する**\nアイコンメニューから「一部の形状を削除する」を選びます。\n\n**ステップ 2 — 削除する構成要素を選ぶ**\n削除する構成要素を1つ以上選びます。\n\n**ステップ 3 — 結果を確認する**\n**削除前：**選択した構成要素が立体の一部として存在します。**削除後：**その構成要素が削除され、選択していない構成要素は残ります。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "text": "削除したい構成要素だけを選んでください。"
                 }
               ]
             }
@@ -3251,30 +3961,22 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The Chamfer command is used to create chamfer dimensions on selected edges of a 3D entity.\n\nIt removes the sharp corner of an edge and creates a chamfer based on the specified chamfer length.",
-              "practice": "By the end of this lesson, you should be able to create a chamfer by specifying the chamfer length and selecting the required edge of a 3D entity.",
+              "explanation": "Chamfer replaces a sharp edge with a bevel of the specified length.",
+              "practice": "Create a chamfer by specifying the chamfer length and selecting the required edge of a 3D entity.",
               "sections": [
                 {
                   "title": "How to Create a Chamfer",
-                  "text": "**Step 1 — Select Chamfer Edge**\nSelect **Chamfer Edge「面取りを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Chamfer Length**\nIn the Item Entry, specify the required **Chamfer Length「面取り長」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be chamfered, then select **GO (right-click)**.\nSeveral edges can be selected and chamfered at the same time.\n\n**Step 4 — Check the Final Result**\nSelected sharp edge(s) → Chamfered edge(s).\nConfirm that the selected edge or edges have been chamfered using the specified chamfer length."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the chamfer length before applying the operation.\n\nMultiple edges can be selected when the same chamfer is required."
+                  "text": "**Step 1 — Select Chamfer Edge**\nSelect **Chamfer Edge「面取りを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Chamfer Length**\nIn the Item Entry, specify the required **Chamfer Length「面取り長」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be chamfered, then select **GO (right-click)**.\nSeveral edges can be selected and chamfered at the same time.\n\n**Step 4 — Check the Final Result**\nConfirm that the selected edge or edges have been chamfered using the specified chamfer length."
                 }
               ]
             },
             "ja": {
-              "explanation": "面取りコマンドは、3D要素の選択したエッジに面取り寸法を指定して面取りを作成するために使用します。\n\nエッジの鋭い角を取り除き、指定した面取り長に基づいて面取りを作成します。",
-              "practice": "このレッスンの終了時には、面取り長を指定し、3D要素の必要なエッジを選択して面取りを作成できるようになります。",
+              "explanation": "面取りは、指定した面取り長で鋭いエッジを斜面にします。",
+              "practice": "面取り長を指定し、3D要素の必要なエッジを選択して面取りを作成できるようになります。",
               "sections": [
                 {
                   "title": "面取りの手順",
-                  "text": "**ステップ 1 — 面取りを作成する**\nアイコンメニューから**「面取りを作成する」**を選択します。\n\n**ステップ 2 — 面取り長を指定**\n項目入力で必要な**「面取り長」**を指定します。\n\n**ステップ 3 — エッジを選択**\n面取りするエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを選択し、同時に面取りできます。\n\n**ステップ 4 — 結果を確認**\n選択した鋭いエッジ → 面取りされたエッジ。\n選択したエッジが、指定した面取り長で面取りされたことを確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "操作を適用する前に面取り長を確認してください。\n\n同じ面取りが必要な場合は、複数のエッジを選択できます。"
+                  "text": "**ステップ 1 — 面取りを作成する**\nアイコンメニューから**「面取りを作成する」**を選択します。\n\n**ステップ 2 — 面取り長を指定**\n項目入力で必要な**「面取り長」**を指定します。\n\n**ステップ 3 — エッジを選択**\n面取りするエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを選択し、同時に面取りできます。\n\n**ステップ 4 — 結果を確認**\n選択したエッジが、指定した面取り長で面取りされたことを確認します。"
                 }
               ]
             }
@@ -3300,30 +4002,22 @@
           "completionAliases": [],
           "content": {
             "en": {
-              "explanation": "The Fillet command is used for rounding specified corners or edges of a 3D entity.\n\nThe round shape is created based on the specified fillet radius.",
-              "practice": "By the end of this lesson, you should be able to create a fillet by entering the required radius and selecting the edge or edges to be rounded.",
+              "explanation": "Fillet rounds selected edges using the specified radius.",
+              "practice": "Create a fillet by entering the required radius and selecting the edge or edges to be rounded.",
               "sections": [
                 {
                   "title": "How to Create a Fillet",
-                  "text": "**Step 1 — Select Fillet Edge**\nSelect **Fillet Edge「均等の丸みを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Fillet Radius**\nIn the Item Entry, specify the required **Fillet Radius「半径」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be filleted, then select **GO (right-click)**.\nSeveral edges can be filleted at the same time.\n\n**Step 4 — Check the Final Result**\n**Before:** Sharp edge(s) → **After:** Rounded edge(s).\nConfirm that the selected edge or edges have been rounded using the specified fillet radius."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Check the fillet radius before applying the operation.\n\nMultiple edges can be selected when the same fillet is required."
+                  "text": "**Step 1 — Select Fillet Edge**\nSelect **Fillet Edge「均等の丸みを作成する」** from the Icon Menu.\n\n**Step 2 — Specify the Fillet Radius**\nIn the Item Entry, specify the required **Fillet Radius「半径」**.\n\n**Step 3 — Select the Edge**\nSelect the edge to be filleted, then select **GO (right-click)**.\nSeveral edges can be filleted at the same time.\n\n**Step 4 — Check the Final Result**\nConfirm that the selected edge or edges have been rounded using the specified fillet radius."
                 }
               ]
             },
             "ja": {
-              "explanation": "フィレットコマンドは、3D要素の指定した角やエッジを丸めるために使用します。\n\n指定した半径に基づいて丸みを作成します。",
-              "practice": "このレッスンの終了時には、必要な半径を入力し、丸めるエッジを選択してフィレットを作成できるようになります。",
+              "explanation": "フィレットは、指定した半径で選択したエッジを丸めます。",
+              "practice": "必要な半径を入力し、丸めるエッジを選択してフィレットを作成できるようになります。",
               "sections": [
                 {
                   "title": "フィレットの手順",
-                  "text": "**ステップ 1 — 均等の丸みを作成する**\nアイコンメニューから**「均等の丸みを作成する」**を選択します。\n\n**ステップ 2 — 半径を指定**\n項目入力で必要な**「半径」**を指定します。\n\n**ステップ 3 — エッジを選択**\n丸めるエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを同時に丸めることができます。\n\n**ステップ 4 — 結果を確認**\n**操作前：**鋭いエッジ → **操作後：**丸められたエッジ。\n選択したエッジが、指定した半径で丸められたことを確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "操作を適用する前に半径を確認してください。\n\n同じ丸みが必要な場合は、複数のエッジを選択できます。"
+                  "text": "**ステップ 1 — 均等の丸みを作成する**\nアイコンメニューから**「均等の丸みを作成する」**を選択します。\n\n**ステップ 2 — 半径を指定**\n項目入力で必要な**「半径」**を指定します。\n\n**ステップ 3 — エッジを選択**\n丸めるエッジを選択し、**GO（右クリック）**を選択します。\n複数のエッジを同時に丸めることができます。\n\n**ステップ 4 — 結果を確認**\n選択したエッジが、指定した半径で丸められたことを確認します。"
                 }
               ]
             }
@@ -3350,29 +4044,21 @@
           "content": {
             "en": {
               "explanation": "The Shell command is used for hollowing solid entities using a specified wall thickness.",
-              "practice": "By the end of this lesson, you should be able to create a hollow solid by selecting the required end faces and specifying the desired wall thickness.",
+              "practice": "Create a hollow solid by selecting the required end faces and specifying the desired wall thickness.",
               "sections": [
                 {
                   "title": "How to Create a Shell",
-                  "text": "**Step 1 — Select Shell**\nSelect **Shell「シェルする」** from the Icon Menu.\n\n**Step 2 — Select the End Faces**\nSelect the **two end faces** of the solid entity.\nSelect **GO (right-click)** to continue.\n\n**Step 3 — Specify the Wall Thickness**\nIn the **Item Entry**, specify the desired **Wall Thickness「共通の厚さ」** of the solid entity after shell.\nSelect **GO twice (right-click twice)** to complete the operation.\n\n**Step 4 — Check the Final Result**\n**Before:** Solid entity → **After:** Hollow solid with the specified wall thickness.\nConfirm that the solid entity has been hollowed and that the specified wall thickness has been applied."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "Select the required two end faces before selecting GO (right-click).\n\nEnter the desired thickness in the Item Entry, then use double GO (right-click twice) to complete the Shell operation."
+                  "text": "**Step 1 — Select Shell**\nSelect **Shell「シェルする」** from the Icon Menu.\n\n**Step 2 — Select the End Faces**\nSelect the **two end faces** of the solid entity.\nSelect **GO (right-click)** to continue.\n\n**Step 3 — Specify the Wall Thickness**\nIn the **Item Entry**, specify the desired **Wall Thickness「共通の厚さ」** of the solid entity after shell.\nSelect **GO twice (right-click twice)** to complete the operation.\n\n**Step 4 — Check the Final Result**\nConfirm that the solid entity has been hollowed and that the specified wall thickness has been applied."
                 }
               ]
             },
             "ja": {
               "explanation": "シェルコマンドは、指定した肉厚で立体を中空にするために使用します。",
-              "practice": "このレッスンの終了時には、必要な端面を選択し、希望する肉厚を指定して中空の立体を作成できるようになります。",
+              "practice": "必要な端面を選択し、希望する肉厚を指定して中空の立体を作成できるようになります。",
               "sections": [
                 {
                   "title": "シェルの手順",
-                  "text": "**ステップ 1 — シェルするを選択**\nアイコンメニューから**「シェルする」**を選択します。\n\n**ステップ 2 — 端面を選択**\n立体の**2つの端面**を選択します。\n**GO（右クリック）**を選択して次に進みます。\n\n**ステップ 3 — 肉厚を指定**\n**項目入力**の**「共通の厚さ」**で、シェル後の立体の希望する肉厚を指定します。\n**GO（右クリック）を2回**選択して操作を完了します。\n\n**ステップ 4 — 結果を確認**\n**操作前：**立体 → **操作後：**指定した肉厚の中空の立体。\n立体が中空になり、指定した肉厚が適用されたことを確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "GO（右クリック）を選択する前に、必要な2つの端面を選択してください。\n\n項目入力で希望する肉厚を入力し、GO（右クリック）を2回選択してシェル操作を完了してください。"
+                  "text": "**ステップ 1 — シェルするを選択**\nアイコンメニューから**「シェルする」**を選択します。\n\n**ステップ 2 — 端面を選択**\n立体の**2つの端面**を選択します。\n**GO（右クリック）**を選択して次に進みます。\n\n**ステップ 3 — 肉厚を指定**\n**項目入力**の**「共通の厚さ」**で、シェル後の立体の希望する肉厚を指定します。\n**GO（右クリック）を2回**選択して操作を完了します。\n\n**ステップ 4 — 結果を確認**\n立体が中空になり、指定した肉厚が適用されたことを確認します。"
                 }
               ]
             }
@@ -3408,29 +4094,21 @@
           "content": {
             "en": {
               "explanation": "Create 3D Part assigns a name and information to a selected entity.",
-              "practice": "By the end of this lesson, you should be able to create a named 3D Part and find it in the Tree View.",
+              "practice": "Create a named 3D Part and find it in the Tree View.",
               "sections": [
                 {
                   "title": "How to Create a 3D Part",
-                  "text": "**Step 1 — Select Create 3D Part**\nSelect **Create 3D Part「パーツを作成する」** from the Icon Menu.\n\n**Step 2 — Select a Single Entity**\nSelect a **single entity** to make into a 3D Part.\n\n**Step 3 — Enter Part Information**\n**Part list「パーツ一覧」** — Existing parts.\n**Part name「パーツ名」** — Enter a name.\n**Comment「コメント」** — Enter a comment if needed.\n**Layer「作成レイヤ / レイヤ引継」** — Set a new layer or inherit the original.\nPress **Enter** to create the part.\n\n**Step 4 — Check the Tree View**\nFind the new part name in the **Tree View「ツリービュー」**."
-                },
-                {
-                  "title": "Important Reminder",
-                  "text": "A **3D Part Name is required** when creating a part."
+                  "text": "**Step 1 — Select Create 3D Part**\nSelect **Create 3D Part「パーツを作成する」** from the Icon Menu.\n\n**Step 2 — Select a Single Entity**\nSelect a **single entity** to make into a 3D Part.\n\n**Step 3 — Enter Part Information**\n**Part list「パーツ一覧」** — Existing parts.\n**Part name「パーツ名」** — Enter a required part name.\n**Comment「コメント」** — Enter a comment if needed.\n**Layer「作成レイヤ / レイヤ引継」** — Set a new layer or inherit the original.\nPress **Enter** to create the part.\n\n**Step 4 — Check the Tree View**\nFind the new part name in the **Tree View「ツリービュー」**."
                 }
               ]
             },
             "ja": {
               "explanation": "「パーツを作成する」は、選択した要素にパーツ名と情報を設定するコマンドです。",
-              "practice": "このレッスンの終了時には、名前を付けた3Dパーツを作成し、ツリービューで確認できるようになります。",
+              "practice": "名前を付けた3Dパーツを作成し、ツリービューで確認できるようになります。",
               "sections": [
                 {
                   "title": "3Dパーツ作成の手順",
-                  "text": "**ステップ 1 — 「パーツを作成する」を選択**\nアイコンメニューから**「パーツを作成する」**を選択します。\n\n**ステップ 2 — 単一の要素を選択**\n3Dパーツにする**単一の要素**を選びます。\n\n**ステップ 3 — パーツ情報を入力**\n**パーツ一覧** — ファイル内のパーツ。\n**パーツ名** — 名前を入力。\n**コメント** — 必要に応じて入力。\n**作成レイヤ／レイヤ引継** — 新規レイヤを設定、または元のレイヤを継承。\n**Enter**でパーツを作成します。\n\n**ステップ 4 — ツリービューで確認**\n新しいパーツ名が**ツリービュー**に表示されたことを確認します。"
-                },
-                {
-                  "title": "重要なポイント",
-                  "text": "パーツの作成には**3Dパーツ名が必要**です。"
+                  "text": "**ステップ 1 — 「パーツを作成する」を選択**\nアイコンメニューから**「パーツを作成する」**を選択します。\n\n**ステップ 2 — 単一の要素を選択**\n3Dパーツにする**単一の要素**を選びます。\n\n**ステップ 3 — パーツ情報を入力**\n**パーツ一覧** — ファイル内のパーツ。\n**パーツ名** — 必須項目です。名前を入力します。\n**コメント** — 必要に応じて入力。\n**作成レイヤ／レイヤ引継** — 新規レイヤを設定、または元のレイヤを継承。\n**Enter**でパーツを作成します。\n\n**ステップ 4 — ツリービューで確認**\n新しいパーツ名が**ツリービュー**に表示されたことを確認します。"
                 }
               ]
             }
@@ -3457,7 +4135,7 @@
           "content": {
             "en": {
               "explanation": "A material description records the material name, shape, and dimensions using the reference formats below.",
-              "practice": "By the end of this lesson, you should be able to write a material description using the reference symbols and formats.",
+              "practice": "Write a material description using the reference symbols and formats.",
               "sections": [
                 {
                   "title": "Material Description",
@@ -3471,7 +4149,7 @@
             },
             "ja": {
               "explanation": "材料説明では、以下の表記例に従って材料名、形状、寸法を記載します。",
-              "practice": "このレッスンの終了時には、参考資料の記号と形式を使って材料説明を記載できるようになります。",
+              "practice": "参考資料の記号と形式を使って材料説明を記載できるようになります。",
               "sections": [
                 {
                   "title": "材料説明",
@@ -3506,15 +4184,11 @@
           "content": {
             "en": {
               "explanation": "Change 3D Part Name updates part names, drawing names for external 3D parts, and comments.",
-              "practice": "By the end of this lesson, you should be able to change a 3D Part name and update its related information correctly.",
+              "practice": "Change a 3D Part name and update its related information correctly.",
               "sections": [
                 {
                   "title": "How to Change a 3D Part Name",
                   "text": "**Step 1 — Select Change 3D Part Name**\nSelect **Change 3D Part Name「パーツ名を変更する」** from the Icon Menu.\n\n**Step 2 — Select the Entity**\nSelect an entity, or right-click on the 3D Space.\n\n**Step 3 — Enter the New Information**\n**New 3D Part Name** — New name.\n**New Drawing Name** — For external parts.\n**New Comment** — Updated comment.\nCheck the option to also update the linked 2D Part Name.\nSelect **OK**.\n\n**Step 4 — Check the Tree View**\nCheck the renamed part in the Tree View.\n**Before:** 70×10×50 → **After:** 70×10×80"
-                },
-                {
-                  "title": "Final Result",
-                  "text": "The Tree View shows the updated name; the corresponding 2D Part Name is updated to match."
                 },
                 {
                   "title": "Important Reminder",
@@ -3524,15 +4198,11 @@
             },
             "ja": {
               "explanation": "「パーツ名を変更する」は、パーツ名、外部3Dパーツの図面名、コメントを更新するコマンドです。",
-              "practice": "このレッスンの終了時には、3Dパーツ名を変更し、関連する情報を正しく更新できるようになります。",
+              "practice": "3Dパーツ名を変更し、関連する情報を正しく更新できるようになります。",
               "sections": [
                 {
                   "title": "3Dパーツ名を変更する手順",
                   "text": "**ステップ 1 — 「パーツ名を変更する」を選択**\nアイコンメニューから**「パーツ名を変更する」**を選択します。\n\n**ステップ 2 — 要素を選択**\n要素を選択するか、3D空間で右クリックします。\n\n**ステップ 3 — 新しい情報を入力**\n「名称変更」で以下を入力します。\n**新パーツ名** — 新しい名前。\n**新図面名** — 外部パーツ用。\n**新パーツコメント** — 更新するコメント。\n対応する2Dパーツ名も更新するチェックボックスをオンにします。\n**OK**を選択します。\n\n**ステップ 4 — ツリービューで確認**\nツリービューで変更前と変更後の3Dパーツ名を比較します。\n**変更前：**70×10×50 → **変更後：**70×10×80"
-                },
-                {
-                  "title": "最終結果",
-                  "text": "ツリービューに更新後の名前が表示され、対応する2Dパーツ名も一致するように更新されます。"
                 },
                 {
                   "title": "重要なポイント",
@@ -3666,13 +4336,209 @@
     {
       "id": "F23",
       "title": {
+        "en": "Properties",
+        "ja": "Properties"
+      },
+      "lessons": [
+        {
+          "id": "foundation-properties-change-color",
+          "displayId": "F23.1",
+          "moduleId": "F23",
+          "title": {
+            "en": "Change Color",
+            "ja": "要素色を変更する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:properties:change-color",
+          "routeAliases": [
+            "F23.1"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Change Color changes the color of an entire solid entity or selected faces.",
+              "practice": "Choose Entity or Face and apply a color to the intended area.",
+              "sections": [
+                {
+                  "title": "How to Change Color",
+                  "text": "**Step 1 — Select Change Color**\nSelect **Change Color「要素色を変更する」** from the Icon Menu.\n\n**Step 2 — Select Entity or Face**\n**Entity「要素」**\n1. Select Entity.\n2. Pick the desired color.\n3. Select the solid entity.\n\n**Face「面」**\n1. Select Face.\n2. Pick the desired color.\n3. Select the surface to be changed.\n4. Select **GO (right-click)**.\n\n**Step 3 — Check the Final Result**\n**Entity:** The entire solid changes color.\n**Face:** Only the selected face or surface changes color."
+                },
+                {
+                  "title": "Entity or Face?",
+                  "text": "Choose the target that matches the area you want to recolor.\n\n**Entity「要素」**\nFor the whole solid; the color applies to the entire entity.\n\n**Face「面」**\nFor a specific surface; the color applies only to the selected face."
+                },
+                {
+                  "title": "Remember",
+                  "text": "Choose the target first, then the color."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「要素色を変更する」は、立体要素全体、または選択した面の色を変更するコマンドです。",
+              "practice": "「要素」と「面」を使い分け、目的の範囲の色を変更します。",
+              "sections": [
+                {
+                  "title": "要素色の変更手順",
+                  "text": "**ステップ 1 — 「要素色を変更する」を選択**\nアイコンメニューから**「要素色を変更する」**を選択します。\n\n**ステップ 2 — 要素または面を選択**\n**要素**\n1. 「要素」を選択します。\n2. 変更する色を選びます。\n3. 立体要素を選択します。\n\n**面**\n1. 「面」を選択します。\n2. 変更する色を選びます。\n3. 変更する面を選択します。\n4. **GO（右クリック）**を選択します。\n\n**ステップ 3 — 結果を確認**\n**要素：**立体要素全体の色が変わります。\n**面：**選択した面だけの色が変わります。"
+                },
+                {
+                  "title": "要素と面の使い分け",
+                  "text": "色を変更したい範囲に合わせて、変更対象を選びます。\n\n**要素**\n立体全体を変更するときに使います。要素全体に色が適用されます。\n\n**面**\n特定の面を変更するときに使います。選択した面だけに色が適用されます。"
+                },
+                {
+                  "title": "覚えておきましょう",
+                  "text": "変更対象を選んでから、色を選びます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-properties-change-layer",
+          "displayId": "F23.2",
+          "moduleId": "F23",
+          "title": {
+            "en": "Change Layer",
+            "ja": "レイヤを変更する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:properties:change-layer",
+          "routeAliases": [
+            "F23.2"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Change Layer assigns a solid entity to a specified layer.",
+              "practice": "Use Change Layer to assign the required layer to a solid entity.",
+              "sections": [
+                {
+                  "title": "How to Change Layer",
+                  "text": "**Step 1 — Select Change Layer**\nSelect **Change Layer「レイヤを変更する」** from the Icon Menu.\n\n**Step 2 — Specify the Layer**\nIn **Item Entry**, specify the required layer in **変更後レイヤ**.\n\n**Step 3 — Select the Solid Entity**\nClick the solid entity to assign it to the specified layer.\n\n**Step 4 — Check the Final Result**\nConfirm that the selected solid entity is assigned to the specified layer."
+                },
+                {
+                  "title": "Remember",
+                  "text": "Specify the correct layer in **Item Entry** before selecting the solid entity.\n\nLayer designation for different 3D parts is covered in **F23.3**."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "「レイヤを変更する」は、立体要素を指定したレイヤに割り当てるコマンドです。",
+              "practice": "「レイヤを変更する」を使い、立体要素を目的のレイヤに割り当てます。",
+              "sections": [
+                {
+                  "title": "レイヤの変更手順",
+                  "text": "**ステップ 1 — 「レイヤを変更する」を選択**\nアイコンメニューから**「レイヤを変更する」**を選択します。\n\n**ステップ 2 — レイヤを指定**\n**項目入力**の**「変更後レイヤ」**で、割り当てるレイヤを指定します。\n\n**ステップ 3 — 立体要素を選択**\n指定したレイヤに割り当てる立体要素をクリックします。\n\n**ステップ 4 — 結果を確認**\n選択した立体要素が、指定したレイヤに割り当てられたことを確認します。"
+                },
+                {
+                  "title": "覚えておきましょう",
+                  "text": "立体要素を選択する前に、**項目入力**で正しいレイヤを指定します。\n\n3Dパーツごとのレイヤ指定は、**F23.3**で学習します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-properties-part-layer-designation",
+          "displayId": "F23.3",
+          "moduleId": "F23",
+          "title": {
+            "en": "Layer Designation of 3D Parts",
+            "ja": "3Dパーツのレイヤ指定"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:properties:part-layer-designation",
+          "routeAliases": [
+            "F23.3"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "Layer designation defines how 3D parts are assigned and colored according to their condition, material, processing, or purpose.",
+              "practice": "Identify the layer and color designation rules for different types of 3D parts.",
+              "sections": [
+                {
+                  "title": "Part Categories",
+                  "text": "Layer 1 — Common Fabricated or Machined Parts\n**All parts must be WHITE.**\nAll common parts that need to be fabricated or machined.\nParts that undergo Annealing, Shot Blasting, or Annealing and Shot Blasting.\nCovers for purchase parts with no mechanism.\n\nLayer 1 — Fabricated or Machined Parts with Color/Paint\nFollow the required paint. **Safety Cover: YELLOW (No. 4)** for chain, belt, and gear drive power transmission guarding.\n\nLayer 2 — Parts That Do Not Need to Be Painted\n**SUS and Acrylic: White (No. 1).** For a pointer, apply **red paint only to the pointer area**, not the complete part.\n\nLayer 2 — Fabricated or Machined Parts with Heat Treatment\nFollow the designated treatment color in the table below.\n\nLayer 3 — Purchase Parts\n**MANUFACTURER STANDARD COLOR** applies to purchase parts, including stud bolts and purchase parts with additional processing. Examples: motors, encoders, and chains with sprockets."
+                },
+                {
+                  "title": "Layer 2 — Parts That Do Not Need to Be Painted",
+                  "text": "Part / Material|Color Designation\nAll Stainless Steel (SUS)|White (No. 1)\nAcrylic|White (No. 1)"
+                },
+                {
+                  "title": "Layer 2 — Materials with Color Codes",
+                  "text": "Material|Color Designation\nMC Nylon|Blue (No. 5)\nUrethane|No. 18\nRubber|Black (No. 16)\nNew Light|White (No. 1)"
+                },
+                {
+                  "title": "Layer 2 — Heat Treatment Designations",
+                  "text": "Treatment|Color Designation\nPreheat / heated surface coating part|White (No. 1)\nIsonite, Ionite, Parsonite|Gray (No. 8)\nParkerizing, Manganese Phosphate|Black (No. 16)"
+                },
+                {
+                  "title": "Remember",
+                  "text": "The layer and color of a 3D part should be based on its part type, material, treatment, or purpose."
+                },
+                {
+                  "title": "Quick Reference",
+                  "text": "Part Category / Layer|Color Rule\nLayer 1 — Common fabricated/machined parts|White\nLayer 1 — Fabricated/machined parts with color/paint|Required paint; safety covers: Yellow (No. 4)\nLayer 2 — Stainless Steel and Acrylic|White (No. 1)\nLayer 2 — Pointer|Red paint only on the pointer area\nLayer 2 — Materials with assigned color codes|MC Nylon: Blue (No. 5); Urethane: No. 18; Rubber: Black (No. 16); New Light: White (No. 1)\nLayer 2 — Heat-treated parts|Preheat / heated surface coating part: White (No. 1); Isonite, Ionite, Parsonite: Gray (No. 8); Parkerizing, Manganese Phosphate: Black (No. 16)\nLayer 3 — Purchase parts, including stud bolts and additional processing|Manufacturer standard color"
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "3Dパーツのレイヤ指定は、状態、材料、加工、用途に応じたパーツの分類と色の指定を定めます。",
+              "practice": "3Dパーツの種類に応じたレイヤと色の指定ルールを理解します。",
+              "sections": [
+                {
+                  "title": "パーツの分類",
+                  "text": "レイヤ 1 — 一般的な製作・機械加工パーツ\n**すべてのパーツを白にします。**\n一般的な製作・機械加工が必要なパーツ。\n焼なまし（Annealing）、ショットブラスト、または焼なましとショットブラストの両方を行うパーツ。\n機構のない購入品カバー。\n\nレイヤ 1 — 塗装が必要な製作・機械加工パーツ\n指定された塗装色に従います。チェーン、ベルト、歯車駆動の動力伝達系を保護する**安全カバーは黄色（No. 4）**です。\n\nレイヤ 2 — 塗装が不要なパーツ\n**SUS・アクリル：白（No. 1）**。指針は、パーツ全体ではなく**指針部分だけを赤く塗装**します。\n\nレイヤ 2 — 熱処理を行う製作・機械加工パーツ\n下表の処理別指定色に従います。\n\nレイヤ 3 — 購入品\nスタッドボルトや追加加工を行う購入品を含め、**メーカー標準色**を使用します。例：モーター、エンコーダー、チェーンとスプロケット。"
+                },
+                {
+                  "title": "レイヤ 2 — 塗装が不要なパーツ",
+                  "text": "パーツ・材料|指定色\nすべてのステンレス鋼（SUS）|白（No. 1）\nアクリル|白（No. 1）"
+                },
+                {
+                  "title": "レイヤ 2 — 色番号が指定された材料",
+                  "text": "材料|指定色\nMC Nylon|青（No. 5）\nUrethane|No. 18\nRubber|黒（No. 16）\nNew Light|白（No. 1）"
+                },
+                {
+                  "title": "レイヤ 2 — 熱処理別の指定色",
+                  "text": "処理|指定色\nPreheat / heated surface coating part|白（No. 1）\nIsonite, Ionite, Parsonite|グレー（No. 8）\nParkerizing, Manganese Phosphate|黒（No. 16）"
+                },
+                {
+                  "title": "覚えておきましょう",
+                  "text": "3Dパーツのレイヤと色は、パーツの種類、材料、処理、用途に基づいて指定します。"
+                },
+                {
+                  "title": "早見表",
+                  "text": "パーツの分類・レイヤ|色のルール\nレイヤ 1 — 一般的な製作・機械加工パーツ|白\nレイヤ 1 — 塗装が必要な製作・機械加工パーツ|指定の塗装色。安全カバー：黄色（No. 4）\nレイヤ 2 — ステンレス鋼・アクリル|白（No. 1）\nレイヤ 2 — 指針|指針部分だけ赤く塗装\nレイヤ 2 — 色番号が指定された材料|MC Nylon：青（No. 5）、Urethane：No. 18、Rubber：黒（No. 16）、New Light：白（No. 1）\nレイヤ 2 — 熱処理を行うパーツ|Preheat / heated surface coating part：白（No. 1）、Isonite, Ionite, Parsonite：グレー（No. 8）、Parkerizing, Manganese Phosphate：黒（No. 16）\nレイヤ 3 — スタッドボルト・追加加工品を含む購入品|メーカー標準色"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F24",
+      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F23",
+          "moduleId": "F24",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -3684,7 +4550,7 @@
             "F16.1",
             "F18.1",
             "F19.1",
-            "F23.1"
+            "F24.1"
           ],
           "completionAliases": [
             "F10.1",
@@ -3693,7 +4559,7 @@
           "content": {
             "en": {
               "explanation": "This lesson reviews the most important skills covered in the iCAD Foundations course.\n\nIt is designed to help you recall the basic tools and concepts before taking the final knowledge check.",
-              "practice": "By the end of this lesson, you should be able to identify and explain the core iCAD SX skills learned throughout the Foundations course.",
+              "practice": "Identify and explain the core iCAD SX skills learned throughout the Foundations course.",
               "sections": [
                 {
                   "title": "1. Interface",
@@ -3740,7 +4606,7 @@
             },
             "ja": {
               "explanation": "このレッスンでは、iCAD 基礎コースで学んだ重要なスキルを復習します。\n\n最後の理解度チェックの前に、基本的なツールと考え方を思い出しましょう。",
-              "practice": "このレッスンの終了時には、基礎コースで学んだ iCAD SX の主なスキルを挙げ、その役割を説明できるようになります。",
+              "practice": "基礎コースで学んだ iCAD SX の主なスキルを挙げ、その役割を説明できるようになります。",
               "sections": [
                 {
                   "title": "1. 画面構成",
@@ -3788,11 +4654,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F23.1"
+          "displayId": "F24.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F23",
+          "moduleId": "F24",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -3804,7 +4670,7 @@
             "F16.2",
             "F18.2",
             "F19.2",
-            "F23.2"
+            "F24.2"
           ],
           "completionAliases": [
             "F10.6",
@@ -3812,8 +4678,8 @@
           ],
           "content": {
             "en": {
-              "explanation": "This final knowledge check reviews the main topics covered in the **iCAD Foundations** course.\n\nComplete each question and choose the best answer.\n\nThere are 12 questions. Read the feedback and retry any incorrect answer before continuing. This is a learning check; no first-attempt score is shown.",
-              "practice": "By the end of this lesson, you should be able to confirm your understanding of the basic iCAD SX concepts and operations covered in Foundations.",
+              "explanation": "Answer 12 questions covering core Foundations concepts. Read the feedback and retry incorrect answers; no first-attempt score is shown.",
+              "practice": "Confirm your understanding of the basic iCAD SX concepts and operations covered in Foundations.",
               "sections": [
                 {
                   "title": "How to Complete the Check",
@@ -3822,8 +4688,8 @@
               ]
             },
             "ja": {
-              "explanation": "この最後の理解度チェックでは、**iCAD 基礎**コースで学んだ主な内容を確認します。\n\n各問題で最も適切な答えを選んでください。\n\n全12問です。不正解の場合は解説を読み、もう一度回答してから進みます。学習内容の確認であり、初回回答の点数は表示しません。",
-              "practice": "このレッスンの終了時には、基礎コースで学んだ iCAD SX の基本的な考え方と操作について、理解を確認できるようになります。",
+              "explanation": "基礎コースの主な内容を12問で確認します。解説を読み、誤答は再挑戦します。初回の点数は表示されません。",
+              "practice": "基礎コースで学んだ iCAD SX の基本的な考え方と操作について、理解を確認できるようになります。",
               "sections": [
                 {
                   "title": "理解度チェックの進め方",
@@ -3834,7 +4700,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F23.2"
+          "displayId": "F24.2"
         }
       ]
     }

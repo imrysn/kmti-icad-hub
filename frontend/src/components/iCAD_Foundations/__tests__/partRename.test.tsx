@@ -9,7 +9,7 @@ it.each(['en','ja'] as const)('renders the complete four-step rename procedure i
  const lesson=resolveFoundationLesson('F21.3')!;
  const sections=lesson.content[language].sections!;
  expect(lesson.completionId).toBe('foundations-v3:part-change-name');
- expect(sections).toHaveLength(3);
+ expect(sections).toHaveLength(2);
  render(<FoundationStretchSteps text={sections[0].text} method={1} japanese={language==='ja'} customIcons={[0,1,2,3].map(step=><PartRenameArtwork key={step} step={step} japanese={language==='ja'}/>)}/>);
  const cards=screen.getAllByRole('listitem');expect(cards).toHaveLength(4);
  expect(cards[1]).toHaveTextContent(language==='ja'?'要素を選択するか、3D空間で右クリックします。':'Select an entity, or right-click on the 3D Space.');
@@ -21,8 +21,7 @@ it.each(['en','ja'] as const)('renders the complete four-step rename procedure i
  expect(cards[3]).toHaveTextContent('70×10×80');
  expect(cards[2].querySelector('image')?.getAttribute('href')).toContain('part-rename-information.png');
  expect(cards[3].textContent).not.toContain('Yes');
- expect(sections[2].text).toContain('≠');
- expect(sections[1].text).toContain(language==='ja'?'ツリービュー':'Tree View');
+ expect(sections[1].text).toContain('≠');
  const question=foundationKnowledgeQuestions(language,lesson.id)[0];
  expect(question.id).toBe('foundation-part-change-name-knowledge-check');
  expect(question.choices.map(c=>c.isCorrect)).toEqual([false,true,false,false]);

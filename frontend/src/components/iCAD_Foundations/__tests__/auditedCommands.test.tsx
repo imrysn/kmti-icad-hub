@@ -21,7 +21,7 @@ it.each(['sectionExtrude','sectionRevolve','spiral','referenceMachinePart'] as c
 });
 it.each(['en','ja'] as const)('keeps Intersect procedure as section zero after removing duplicate sections in %s',lang=>{
  const sections=resolveFoundationLesson('foundation-boolean-intersect')!.content[lang].sections!;
- expect(sections).toHaveLength(2);
+ expect(sections).toHaveLength(1);
  render(<FoundationBooleanLesson kind="intersect" index={0} text={sections[0].text} japanese={lang==='ja'}/>);
  expect(screen.getAllByRole('listitem')).toHaveLength(3);
  expect(screen.getAllByRole('button')).toHaveLength(3);

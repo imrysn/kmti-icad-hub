@@ -3,6 +3,8 @@ import { useFoundationVisuals } from './FoundationVisualContext';
 import { useId } from 'react';
 
 export type OperationCommand =
+  | 'change-layer'
+  | 'change-color'
   | 'material-set'
   | 'part-rename'
   | 'part-create'

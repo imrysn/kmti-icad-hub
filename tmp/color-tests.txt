@@ -1,0 +1,16 @@
+
+> kmti-icad-hub@1.0.1 test:run
+> vitest run src/components/iCAD_Foundations/__tests__/changeColor.test.tsx src/components/iCAD_Foundations/__tests__/curriculum.test.ts src/components/iCAD_Foundations/__tests__/knowledgeCheck.test.ts src/components/iCAD_Foundations/__tests__/FoundationReadingLesson.test.tsx --maxWorkers=2 --testTimeout=60000
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 I:/MG_DATA/@Recycle/App Development/browser-kmti-icad-hub/frontend
+
+
+ Test Files  4 passed (4)
+      Tests  280 passed (280)
+   Start at  08:30:56
+   Duration  33.83s (transform 5.81s, setup 3.47s, import 14.49s, tests 21.19s, environment 8.72s)
+

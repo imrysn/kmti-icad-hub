@@ -1,0 +1,38 @@
+
+> kmti-icad-hub@1.0.1 test:run
+> vitest run src/components/iCAD_Foundations/__tests__/curriculum.test.ts src/components/iCAD_Foundations/__tests__/knowledgeCheck.test.ts src/components/iCAD_Foundations/__tests__/FoundationReadingLesson.test.tsx --maxWorkers=2 --testTimeout=60000
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 I:/MG_DATA/@Recycle/App Development/browser-kmti-icad-hub/frontend
+
+ ❯ src/components/iCAD_Foundations/__tests__/curriculum.test.ts (17 tests | 1 failed) 83ms
+   × authors Material Setting lessons and preserves review identities 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/iCAD_Foundations/__tests__/curriculum.test.ts > authors Material Setting lessons and preserves review identities
+AssertionError: expected 'foundation-properties-change-color' to be 'F17.1' // Object.is equality
+
+Expected: "F17.1"
+Received: "foundation-properties-change-color"
+
+ ❯ src/components/iCAD_Foundations/__tests__/curriculum.test.ts:194:40
+    192|  const sequence=['foundation-part-change-name',...ids,'F17.1','F17.2'];
+    193|  sequence.slice(0,-1).forEach((id,i)=>{
+    194|   expect(foundationNeighbors(id).next).toBe(sequence[i+1]);
+       |                                        ^
+    195|   expect(foundationNeighbors(sequence[i+1]).previous).toBe(id);
+    196|  });
+ ❯ src/components/iCAD_Foundations/__tests__/curriculum.test.ts:193:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 276 passed (277)
+   Start at  07:56:13
+   Duration  25.52s (transform 3.19s, setup 2.27s, import 5.16s, tests 18.82s, environment 4.75s)
+

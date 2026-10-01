@@ -18,8 +18,8 @@ it.each(['en','ja'] as const)('renders the four Fillet steps and correct questio
   expect(cards[1]).toHaveTextContent('半径');
   expect(cards[2]).toHaveTextContent('GO');
   expect(cards[2]).toHaveTextContent(language==='ja'?'複数のエッジ':'Several edges');
-  expect(cards[3]).toHaveTextContent('→');
-  expect(sections).toHaveLength(2);
+  expect(cards[3].querySelector('svg')).not.toBeNull();
+  expect(sections).toHaveLength(1);
  expect(sections[0].text).toContain(language==='ja'?'右クリック':'right-click');
   expect(JSON.stringify(sections)).not.toMatch(/45|2\.0000/);
   expect(container.querySelector('[data-command-reference="fillet"]')).not.toBeNull();

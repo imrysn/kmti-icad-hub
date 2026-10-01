@@ -18,11 +18,11 @@ it.each(['en','ja'] as const)('preserves Shell selection, confirmation sequence,
  expect(cards[1]).toHaveTextContent('GO');
  expect(cards[2]).toHaveTextContent(language==='ja'?'GO（右クリック）を2回':'GO twice');
  expect(cards[2]).toHaveTextContent('共通の厚さ');
- expect(cards[3]).toHaveTextContent('→');
+ expect(cards[3].querySelector('svg')).not.toBeNull();
  expect(cards[1].querySelector('image')).toBeNull();
  expect(cards[3].querySelector('image')).toBeNull();
  expect(cards[2].querySelector('svg')).toHaveTextContent('4.5');
- expect(sections).toHaveLength(2);
+ expect(sections).toHaveLength(1);
  expect(sections[0].text).toContain(language==='ja'?'右クリック':'right-click');
  expect(JSON.stringify(lesson.content[language])).not.toMatch(/press(?:ing)? Enter|Enterキー|COMMNTHICK|4\.5/i);
  const question=foundationKnowledgeQuestions(language,lesson.id)[0];

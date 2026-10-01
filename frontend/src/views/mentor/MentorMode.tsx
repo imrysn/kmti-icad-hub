@@ -1,5 +1,5 @@
 import { useTranslation } from '../../context/LanguageContext';
-import { createFoundationLessons, restoreFoundationLesson, migrateFoundationCompletion } from '../../components/iCAD_Foundations/curriculum';
+import { createFoundationLessons, restoreFoundationLesson, migrateFoundationCompletion, FOUNDATION_CURRICULUM_VERSION } from '../../components/iCAD_Foundations/curriculum';
 import { createProfessionalLessons, PROFESSIONAL_COURSE_TYPE } from '../../components/iCAD_Professional/curriculum';
 import { BookOpen, Lock } from 'lucide-react';
 import React,{ useCallback,useEffect,useMemo,useRef,useState } from 'react';
@@ -311,7 +311,7 @@ const MentorMode: React.FC<MentorModeProps> = ({ isEmployeeSide = false }) => {
             if (selectedCourse) {
                 localStorage.setItem(authService.getStorageKey('selectedCourseId'), selectedCourse.id);
                 localStorage.setItem(authService.getStorageKey('activeLessonId'), activeLessonId);
-                if (selectedCourse.course_type === 'iCAD_Foundations') localStorage.setItem(authService.getStorageKey('foundationsCurriculumVersion'), '3');
+                if (selectedCourse.course_type === 'iCAD_Foundations') localStorage.setItem(authService.getStorageKey('foundationsCurriculumVersion'), FOUNDATION_CURRICULUM_VERSION);
                 localStorage.setItem(authService.getStorageKey('expandedIds'), JSON.stringify(Array.from(expandedIds)));
             } else {
                 // Clear persistence if we manually return to course selector

@@ -1,0 +1,22 @@
+.layer-designation .foundation-view-comparison__cards { max-width: 1000px; }
+.layer-designation__image { height: 160px; margin: 0 0 18px; }
+.layer-designation__image .foundation-interface-icon-button { width: 100%; height: 100%; }
+.layer-designation__image img { display: block; width: 100%; height: 100%; max-height: 160px; object-fit: contain; }
+.layer-designation__table { min-width: 0; }
+.layer-designation__table table { overflow-wrap: anywhere; }
+
+.foundation-interface-preview-artwork > .layer-designation-artwork { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.layer-designation__material-image { width: 100%; max-width: 620px; margin: 24px auto; aspect-ratio: 732 / 419; }
+.layer-designation__material-image .foundation-interface-icon-button { width: 100%; height: 100%; }
+.layer-designation__material-image img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* Keep inline artwork borderless; fullscreen uses the shared preview surface. */
+.layer-designation__image .foundation-interface-icon-button,
+.layer-designation__material-image .foundation-interface-icon-button {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}

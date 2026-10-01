@@ -1,0 +1,4 @@
+
+> kmti-icad-hub@1.0.1 typecheck
+> tsc --noEmit --incremental false
+

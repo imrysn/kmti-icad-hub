@@ -1,0 +1,103 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub
+configfile: pytest.ini
+plugins: anyio-4.12.1, langsmith-0.8.18, asyncio-1.4.0, cov-7.1.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 15 items
+
+backend\tests\test_foundations_curriculum.py ...............             [100%]
+
+============================== warnings summary ===============================
+backend\venv\Lib\site-packages\fastapi\testclient.py:1
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+backend\schemas.py:33
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:33: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CourseResponse(BaseModel):
+
+backend\schemas.py:151
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:151: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UserResponse(BaseModel):
+
+backend\schemas.py:413
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:413: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class QuestionResponse(QuestionBase):
+
+backend\schemas.py:435
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:435: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class QuizResponse(QuizBase):
+
+backend\schemas.py:467
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:467: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CohortResponse(CohortCreate):
+
+backend\schemas.py:510
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:510: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class LessonResponse(LessonBase):
+
+backend\schemas.py:525
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:525: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class LessonContentResponse(LessonContentBase):
+
+backend\schemas.py:532
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:532: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class QuestionAttemptResponse(BaseModel):
+
+backend\schemas.py:561
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:561: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class AssessmentTaskResponse(AssessmentTaskBase):
+
+backend\schemas.py:578
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:578: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class AssessmentFeedbackResponse(AssessmentFeedbackBase):
+
+backend\schemas.py:596
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:596: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class AssessmentSubmissionResponse(AssessmentSubmissionBase):
+
+backend\schemas.py:617
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:617: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class TrainerTraineeMappingResponse(TrainerTraineeMappingBase):
+
+backend\schemas.py:632
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:632: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class TraineeSetMappingResponse(TraineeSetMappingBase):
+
+backend\schemas.py:639
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:639: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NotificationResponse(BaseModel):
+
+backend\schemas.py:679
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:679: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class PlanEntitlementResponse(PlanEntitlementInput):
+
+backend\schemas.py:709
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:709: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class AccessPlanResponse(AccessPlanCreate):
+
+backend\schemas.py:770
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\schemas.py:770: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class EntitlementOverrideResponse(BaseModel):
+
+backend\main.py:151
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\main.py:151: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+backend\venv\Lib\site-packages\fastapi\applications.py:4675
+  I:\MG_DATA\@Recycle\App Development\browser-kmti-icad-hub\backend\venv\Lib\site-packages\fastapi\applications.py:4675: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)  # ty: ignore[deprecated]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 15 passed, 20 warnings in 4.31s =======================

@@ -1,0 +1,17 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 I:/MG_DATA/@Recycle/App Development/browser-kmti-icad-hub/frontend
+
+
+ Test Files  4 passed (4)
+      Tests  279 passed (279)
+   Start at  09:41:07
+   Duration  148.12s (transform 16.96s, setup 59.80s, import 120.07s, tests 34.67s, environment 93.86s)
+
+npm notice
+npm notice New major version of npm available! 11.16.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

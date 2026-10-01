@@ -32,6 +32,7 @@ describe('Canonical Foundations lesson routing',()=>{
   afterEach(()=>{cleanup();vi.clearAllMocks();});
   it('preserves Box and requires the shared knowledge check before saving',async()=>{
     const next=vi.fn();viewer('F9.1',next);
+    await vi.dynamicImportSettled();
     fireEvent.click(await screen.findByRole('button',{name:'shape basic-op-box'}, {timeout:10000}));
     expect(state.post).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
@@ -45,6 +46,7 @@ describe('Canonical Foundations lesson routing',()=>{
   });
   it('passes original Move data to the dynamic player but persists canonical progress',async()=>{
     viewer('F10.1');
+    await vi.dynamicImportSettled();
     fireEvent.click(await screen.findByRole('button',{name:'lesson-6-1 basicMove'}, {timeout:10000}));
     expect(state.post).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
@@ -63,6 +65,7 @@ describe('Canonical Foundations lesson routing',()=>{
 
 it('renders the unlisted material reference and enables its knowledge check',async()=>{
  const next=vi.fn();viewer('foundation-material-unlisted',next);
+ await vi.dynamicImportSettled();
  expect(await screen.findByRole('heading',{name:'Materials Not Included in the iCAD Material List'})).toBeInTheDocument();
  expect(screen.getByRole('button',{name:'Start knowledge check'})).toBeEnabled();
  expect(screen.getByRole('table')).toBeInTheDocument();

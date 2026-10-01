@@ -4,7 +4,7 @@ import './FoundationWorkPlaneCommandMenu.css';
 const englishCommands=['Line','Parallel','Horizontal','Vertical','Angled','Spline','Circle','3PointCircle','Text','Offset','Trim/Join','SmartDraw','Fillet','Chamfer','SmartTrim','Stretch','SmartEdit','Parametric','Move','Copy','Properties','Delete'];
 
 export default function FoundationWorkPlaneCommandMenu({japanese=false}: {japanese?:boolean}) {
-  const notes=japanese ? ['製図ツールを含みます。','スケッチツールを含みます。','製図・スケッチで使用できるコマンドが表示されます。','選択したツールのオプションが表示されます。'] : ['Contains tools for drafting.','Contains tools for sketching.','Displays the available tools for drafting and sketching.','Displays the options for the selected tool.'];
+  const notes=japanese ? ['製図ツールを含みます。','スケッチツールを含みます。','製図・スケッチで使用できるコマンドが表示されます。','選択したツールのオプションが表示されます。'] : ['Drafting tools.','Sketch tools.','Available commands.','Options for the active command.'];
   return <div className="work-plane-command-guide">
     <p>{japanese?'作業平面でのスケッチに使う主なツールは、コマンドメニューにあります。':'Most tools for sketching on the Work Plane are found in the Command Menu.'}</p>
     <div className="work-plane-command-guide__layout">

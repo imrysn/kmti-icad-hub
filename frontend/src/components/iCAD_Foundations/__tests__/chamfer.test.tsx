@@ -18,8 +18,8 @@ it.each(['en','ja'] as const)('renders the four Chamfer steps and correct questi
   expect(cards[1]).toHaveTextContent('面取り長');
   expect(cards[2]).toHaveTextContent('GO');
   expect(cards[2]).toHaveTextContent(language==='ja'?'複数のエッジ':'Several edges');
-  expect(cards[3]).toHaveTextContent('→');
-  expect(sections).toHaveLength(2);
+  expect(cards[3].querySelector('svg')).not.toBeNull();
+  expect(sections).toHaveLength(1);
  expect(sections[0].text).toContain(language==='ja'?'右クリック':'right-click');
   expect(JSON.stringify(sections)).not.toMatch(/45|2\.0000/);
   expect(container.querySelector('[data-command-reference="chamfer"]')).not.toBeNull();
