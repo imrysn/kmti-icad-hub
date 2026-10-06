@@ -1,0 +1,174 @@
+{
+  "angular-dimension-command-interface.png": [
+    1024,
+    576
+  ],
+  "angular-dimension-icon-ref.png": [
+    34,
+    31
+  ],
+  "angular-dimension-position.png": [
+    1024,
+    576
+  ],
+  "angular-dimension-result.png": [
+    1920,
+    1080
+  ],
+  "angular-dimension-selected.png": [
+    1919,
+    1080
+  ],
+  "annotation-command-interface.png": [
+    1920,
+    1080
+  ],
+  "change-attributes-command-interface.png": [
+    1024,
+    572
+  ],
+  "change-attributes-icon-ref.png": [
+    36,
+    34
+  ],
+  "change-attributes-properties-window.png": [
+    1920,
+    1080
+  ],
+  "change-attributes-result.png": [
+    1920,
+    1080
+  ],
+  "change-attributes-selected-go.png": [
+    1920,
+    1080
+  ],
+  "change-position-command-interface.png": [
+    1024,
+    574
+  ],
+  "change-position-drag.png": [
+    1024,
+    576
+  ],
+  "change-position-icon-ref.png": [
+    31,
+    36
+  ],
+  "change-position-result.png": [
+    1920,
+    1080
+  ],
+  "change-position-selected.png": [
+    1024,
+    582
+  ],
+  "character-strings-command-interface.png": [
+    1024,
+    561
+  ],
+  "character-strings-enter-text.png": [
+    1920,
+    1080
+  ],
+  "character-strings-entry-window.png": [
+    1920,
+    1080
+  ],
+  "character-strings-icon-ref.png": [
+    30,
+    35
+  ],
+  "character-strings-placed-result.png": [
+    1920,
+    1076
+  ],
+  "character-strings-selection-reference.png": [
+    1920,
+    1080
+  ],
+  "diameter-dimension-command-interface.png": [
+    1024,
+    573
+  ],
+  "diameter-dimension-icon-ref.png": [
+    36,
+    38
+  ],
+  "diameter-dimension-position.png": [
+    1024,
+    576
+  ],
+  "diameter-dimension-result.png": [
+    1920,
+    1078
+  ],
+  "diameter-dimension-selected.png": [
+    1920,
+    1080
+  ],
+  "edit-characters-command-interface.png": [
+    1024,
+    574
+  ],
+  "edit-characters-edit-window.png": [
+    1920,
+    1080
+  ],
+  "edit-characters-icon-ref.png": [
+    30,
+    40
+  ],
+  "edit-characters-result.png": [
+    1920,
+    1080
+  ],
+  "edit-characters-selected-go.png": [
+    1920,
+    1079
+  ],
+  "linear-dimension-command-interface.png": [
+    1024,
+    576
+  ],
+  "linear-dimension-icon-ref.png": [
+    28,
+    34
+  ],
+  "linear-dimension-position.png": [
+    1024,
+    576
+  ],
+  "linear-dimension-result.png": [
+    1920,
+    1080
+  ],
+  "linear-dimension-selected.png": [
+    1920,
+    1080
+  ],
+  "notes-leader-lines-command-interface.png": [
+    1024,
+    577
+  ],
+  "notes-leader-lines-entry-window.png": [
+    1920,
+    1080
+  ],
+  "notes-leader-lines-entry.png": [
+    1920,
+    1080
+  ],
+  "notes-leader-lines-icon-ref.png": [
+    35,
+    32
+  ],
+  "notes-leader-lines-position.png": [
+    1920,
+    1080
+  ],
+  "notes-leader-lines-selected.png": [
+    1920,
+    1080
+  ]
+}

@@ -69,11 +69,16 @@ export function resolveFoundationLesson(id: string): FoundationLesson | undefine
 
 /** Version stored alongside the last-open lesson prevents ambiguous F9/F10 restores. */
 export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
-  if (version !== FOUNDATION_CURRICULUM_VERSION && /^F24\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F24.1' ? 'F17.1' : 'F17.2');
-  if (version !== '4' && version !== FOUNDATION_CURRICULUM_VERSION && /^F23\.[12]$/.test(id)) {
+  const v = version ? Number(version) : null;
+  if (v === 7 && /^F27\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F27.1' ? 'foundation-interference-check' : 'foundation-interference-display-list');
+  if (v === 6 && /^F27\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F27.1' ? 'F17.1' : 'F17.2');
+  if (v !== null && v <= 5 && /^F26\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F26.1' ? 'F17.1' : 'F17.2');
+  if (v !== null && v <= 5 && /^F25\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F25.1' ? 'F17.1' : 'F17.2');
+  if (v !== null && v <= 4 && /^F24\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F24.1' ? 'F17.1' : 'F17.2');
+  if ((v === null || v <= 3) && /^F23\.[12]$/.test(id)) {
     return resolveFoundationLesson(id === 'F23.1' ? 'F17.1' : 'F17.2');
   }
-  if (version !== '3' && version !== '4' && version !== FOUNDATION_CURRICULUM_VERSION && /^F(?:9|10)\./.test(id)) {
+  if ((v === null || v < 3) && /^F(?:9|10)\./.test(id)) {
     return FOUNDATION_LESSONS.find(lesson => lesson.completionAliases.includes(id))
       || resolveFoundationLesson(id.startsWith('F10.') ? 'F17.1' : 'F9.1');
   }

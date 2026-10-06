@@ -8,10 +8,34 @@ import { finalKnowledgeCheck } from './finalKnowledgeCheck';
 export function foundationKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
   const lesson = resolveFoundationLesson(lessonId);
   if (lesson?.contentReview === 'not-authored') return [];
-  return sourceKnowledgeQuestions(language, lesson?.presentationId || lessonId);
+  return sourceKnowledgeQuestions(language, lesson?.presentationId || lesson?.id || lessonId);
 }
 
 export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'foundation-interference-check') {
+    const ja = language === 'ja';
+    const labels = ja ? ['選択する', '選択を解除する', 'ダブルクリックする', '色を変更する']
+      : ['Select it', 'Unselect it', 'Double-click it', 'Change its color'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? 'すべての干渉を精密にチェックするには、高速検出をどうしますか？'
+        : 'What should you do with High-Speed Detection when you want to precisely check all interferences?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : ja ? '精密に干渉チェックするには、高速検出の選択を解除します。' : 'Unselect High-Speed Detection for a precise interference check.' }))
+    }];
+  }
+  if (lessonId === 'foundation-interference-display-list') {
+    const ja = language === 'ja';
+    const labels = ja ? ['部品が削除される', '材質が変更される', '対応する干渉箇所が自動的に表示される', '部品がコピーされる']
+      : ['The part is deleted', 'The material is changed', 'The corresponding interference area automatically appears', 'The part is copied'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? '一覧表示ウィンドウで3Dパーツ名を選択すると、どうなりますか？'
+        : 'What happens when you select a 3D Part Name in the List Display window?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
+          : ja ? '3Dパーツ名を選択すると、対応する干渉箇所が自動的に表示されます。' : 'Selecting a 3D Part Name automatically displays the corresponding interference area.' }))
+    }];
+  }
   if (lessonId === 'foundation-information-tools') {
     const ja=language==='ja';
     const labels=ja?['1本のエッジのみ','2本のエッジ、または3点','2つの立体要素','1つの面のみ']:['One edge only','Two edges or three points','Two solid entities','One face only'];
@@ -21,6 +45,182 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     const ja=language==='ja';
     const labels=ja?['白（No. 1）','青（No. 5）','黄色（No. 4）','グレー（No. 8）']:['White (No. 1)','Blue (No. 5)','Yellow (No. 4)','Gray (No. 8)'];
     return [{id:`${lessonId}-knowledge-check`,prompt:ja?'安全カバーには、どの色を使用しますか？':'What color should be used for a Safety Cover?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'安全カバーの指定色は黄色（No. 4）です。':'Safety covers use Yellow (No. 4).')}))}];
+  }
+  if (lessonId === 'foundation-annotation-diameter-dimension') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['直線エッジ', '円のエッジ', '立体要素', '3点']
+      : ['A straight edge', 'The edge of the circle', 'A solid entity', 'Three points'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '直径寸法を作成するとき、何を選択しますか？'
+        : 'What should you select when creating a Diameter Dimension?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1,
+        feedback: index === 1
+          ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : (ja
+              ? '直径寸法を作成するときは、測定する円のエッジを選択します。'
+              : 'When creating a Diameter Dimension, select the edge of the circle to be measured.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-notes-leader-lines') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['エンティティの任意のエッジ', 'マテリアル', '3点', 'レイヤー']
+      : ['Any edge of the entity', 'A material', 'Three points', 'A layer'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '引出線付き注記を作成するとき、最初に何を選択しますか？'
+        : 'What should you select first when creating a note with a leader line?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 0,
+        feedback: index === 0
+          ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}`
+          : (ja
+              ? '引出線付き注記を作成するときは、まずエンティティのエッジを選択します。'
+              : 'When creating a note with a leader line, first select any edge of the entity.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-change-position') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['寸法文字を編集するため', '製図要素の属性を変更するため', '製図要素の位置を変更するため', '新しい寸法を作成するため']
+      : ['To edit dimension characters', 'To change drafting entity properties', 'To change the position of drafting entities', 'To create a new dimension'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '製図要素位置変更ツールの目的は何ですか？'
+        : 'What is the purpose of the Change Drafting Entity Position tool?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 2,
+        feedback: index === 2
+          ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
+          : (ja
+              ? '製図要素位置変更ツールは、製図要素の位置を変更するために使用します。'
+              : 'The Change Drafting Entity Position tool is used to change the position of drafting entities.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-change-attributes') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['文字列入力ウィンドウ', 'マテリアル設定ウィンドウ', '属性変更ウィンドウ', '寸法文字編集ウィンドウ']
+      : ['Text Entry', 'Material Setting', 'Change Properties', 'Edit Dimension Characters'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '製図要素の属性を変更する際、どのウィンドウが表示されますか？'
+        : 'Which window appears when changing the attributes of a drafting entity?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 2,
+        feedback: index === 2
+          ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
+          : (ja
+              ? '製図要素の属性を変更する際、「属性変更」ウィンドウが表示されます。'
+              : 'When changing the attributes of a drafting entity, the Change Properties window will appear.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-edit-characters') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['マテリアル設定ウィンドウ', '寸法文字編集ウィンドウ', 'レイヤー変更ウィンドウ', '文字列入力ウィンドウ']
+      : ['Material Setting', 'Edit Dimension Characters', 'Change Layer', 'Text Entry'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '製図要素を選択して「GO」を選択した後、どのウィンドウが表示されますか？'
+        : 'Which window appears after selecting the drafting entity and choosing GO?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1,
+        feedback: index === 1
+          ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : (ja
+              ? '製図要素を選択して「GO」を選択すると、「寸法文字編集ウィンドウ」が表示されます。'
+              : 'After selecting the drafting entity and choosing GO, the Edit Dimension Characters window will appear.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-character-strings') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['マテリアル設定ウィンドウ', '文字列入力ウィンドウ', '属性変更ウィンドウ', 'ツリー表示']
+      : ['Material Setting window', 'Text Entry window', 'Change Properties window', 'Tree View'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '文字列ツールを使用し、3D空間を左クリックした後に何が表示されますか？'
+        : 'What appears after you left-click on the 3D Space when using Character Strings?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1,
+        feedback: index === 1
+          ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : (ja
+              ? '文字列ツールで3D空間を左クリックすると、文字列入力ウィンドウが表示されます。'
+              : 'When using Character Strings, left-clicking on the 3D Space opens the Text Entry window.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-angular-dimension') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['測定するエッジ', 'マテリアル', 'レイヤー', 'ソリッドエンティティのみ']
+      : ['The edges to be measured', 'A material', 'A layer', 'A solid entity only'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '角度寸法を配置する前に、何を選択する必要がありますか？'
+        : 'What should you select before positioning an Angular Dimension?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 0,
+        feedback: index === 0
+          ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}`
+          : (ja
+              ? '角度寸法を配置する前に、測定するエッジを選択します。'
+              : 'Before positioning an Angular Dimension, select the edges to be measured.')
+      }))
+    }];
+  }
+  if (lessonId === 'foundation-annotation-linear-dimension') {
+    const ja = language === 'ja';
+    const labels = ja
+      ? ['レイヤを変更する', '3D空間を左クリックして寸法を配置する', '材質を選択する', '要素を削除する']
+      : ['Change the layer', 'Left-click on the 3D Space to position the dimension', 'Select a material', 'Delete the entity'];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja
+        ? '測定するエッジを選択した後、何をしますか？'
+        : 'What should you do after selecting the edges to be measured?',
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1,
+        feedback: index === 1
+          ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : (ja
+              ? '測定するエッジを選択したら、3D空間を左クリックして寸法を配置します。'
+              : 'After selecting the edges to be measured, left-click on the 3D Space to position the dimension.')
+      }))
+    }];
   }
   if (lessonId === 'foundation-properties-change-layer') {
     const ja=language==='ja';

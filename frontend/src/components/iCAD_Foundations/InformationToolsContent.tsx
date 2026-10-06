@@ -3,7 +3,6 @@ import {useId} from 'react';
 import {renderFormattedText} from './WrittenTutorial_EN/WrittenTutorialPanel';
 import FoundationViewComparison from './FoundationViewComparison';
 import MaterialUnlistedContent from './MaterialUnlistedContent';
-import FoundationOperationCommandIcon, {type OperationCommand} from './FoundationOperationCommandIcon';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import coordinates from '../../assets/icad-foundations/information/coordinates.png';
 import length from '../../assets/icad-foundations/information/length.png';
@@ -14,11 +13,10 @@ import './FoundationViewComparison.css';
 import './ChangeColorArtwork.css';
 import './InformationToolsContent.css';
 const captures=[coordinates,length,distance,angle,entity];
-const commands:OperationCommand[]=['information-coordinates','information-length','information-distance','information-angle','information-entity'];
 function ToolVisual({index,title,japanese,result=false}:{index:number;title:string;japanese:boolean;result?:boolean}) {
  const id=useId();
  const bounds:[number,number,number,number]=result?(index===0?[555,327,390,163]:index===4?[555,308,390,410]:[587,359,390,166]):[1751+(index===4?0:index*32),index===4?297:264,30,30];
- const artwork=result?<svg className="change-color-preview-artwork" viewBox={bounds.join(' ')} role="img" aria-label={title}><defs><clipPath id={id}><rect x={bounds[0]} y={bounds[1]} width={bounds[2]} height={bounds[3]}/></clipPath></defs><image href={captures[index]} width="1920" height="1080" clipPath={`url(#${id})`}/></svg>:index<4?<InformationReferenceIcon index={index} title={title}/>:<FoundationOperationCommandIcon command={commands[index]} title={title}/>;
+ const artwork=result?<svg className="change-color-preview-artwork" viewBox={bounds.join(' ')} role="img" aria-label={title}><defs><clipPath id={id}><rect x={bounds[0]} y={bounds[1]} width={bounds[2]} height={bounds[3]}/></clipPath></defs><image href={captures[index]} width="1920" height="1080" clipPath={`url(#${id})`}/></svg>:<InformationReferenceIcon index={index} title={title}/>;
  return <InterfaceIconPreview index={index} toolbar={false} title={title} japanese={japanese} custom={{artwork,screen:captures[index],region:{bounds,landing:bounds},highlightColor:'#0087ef'}}/>;
 }
 export default function InformationToolsContent({text,title,index,japanese=false}:{text:string;title:string;index:number;japanese?:boolean}) {

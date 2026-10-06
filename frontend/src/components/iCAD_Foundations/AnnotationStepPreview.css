@@ -1,0 +1,35 @@
+.annotation-step-preview { display: grid; place-items: center; width: 100%; }
+.annotation-command-icon { display: grid; place-items: center; width: 100%; height: 120px; background: transparent; }
+.annotation-command-icon .foundation-single-command { display: block; width: 76px; height: 76px; margin: auto; }
+.foundation-interface-preview-artwork > .annotation-command-icon,
+.foundation-interface-icon-dialog__moving-icon > .annotation-command-icon {
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  width: 100%; height: 100%; min-width: 0; min-height: 0; margin: 0;
+}
+.foundation-interface-preview-artwork .annotation-command-icon .foundation-single-command,
+.foundation-interface-icon-dialog__moving-icon .annotation-command-icon .foundation-single-command {
+  width: 100%; height: 100%; max-width: 100%; max-height: 100%; margin: 0;
+}
+.foundation-stretch-steps:has(.annotation-step-preview) .foundations-use-card__body p { line-height: 1.45; }
+.foundation-stretch-steps--1:has(.annotation-step-preview) .foundations-uses__grid { grid-template-columns: minmax(0, 320px); justify-content: center; }
+.foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-uses__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-use-card:nth-child(n) { grid-column: span 2; }
+.foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-use-card:nth-child(-n+2) { grid-column: span 3; }
+@container (min-width: 551px) and (max-width: 850px) {
+  .foundation-stretch-steps:has(.annotation-step-preview) .foundations-uses__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-use-card:nth-child(n) { grid-column: auto; }
+}
+@container (max-width: 550px) {
+  .foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-uses__grid { grid-template-columns: minmax(0, 1fr); }
+  .foundation-stretch-steps--5:has(.annotation-step-preview) .foundations-use-card:nth-child(n) { grid-column: auto; }
+}
+
+/* Inline artwork sits directly on the lesson surface in both themes. */
+.annotation-step-preview .foundation-interface-icon-button,
+.annotation-step-preview .annotation-model-preview,
+.annotation-step-preview .annotation-command-icon {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.annotation-model-preview { color: var(--text-main, #34363c); }

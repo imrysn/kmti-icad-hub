@@ -27,6 +27,18 @@ interface TTSVoice {
   default: boolean;
 }
 
+let pendingPremiumVoices: Promise<TTSVoice[]> | undefined;
+function loadPremiumVoices(): Promise<TTSVoice[]> {
+  if (!pendingPremiumVoices) {
+    pendingPremiumVoices = api.get('/tts/voices').then(response =>
+      Array.isArray(response.data) ? response.data.map((v: any) => ({
+        voiceURI:v.id, name:v.name, lang:v.lang, localService:false, default:false,
+      })) : [],
+    ).finally(() => { pendingPremiumVoices = undefined; });
+  }
+  return pendingPremiumVoices;
+}
+
 export const useTTS = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(-1); // Paragraph index
@@ -51,8 +63,8 @@ export const useTTS = () => {
 
   useEffect(() => {
     let active = true;
-
-    const loadVoices = async () => {
+    let premiumVoices: TTSVoice[] = [];
+    const updateVoices = () => {
       let browserVoices: TTSVoice[] = [];
       if (typeof window !== 'undefined' && window.speechSynthesis) {
         browserVoices = window.speechSynthesis.getVoices().map(v => ({
@@ -64,35 +76,26 @@ export const useTTS = () => {
         }));
       }
 
-      let premiumVoices: TTSVoice[] = [];
-      try {
-      const response = await api.get('/tts/voices');
-        if (response.data && Array.isArray(response.data)) {
-          premiumVoices = response.data.map((v: any) => ({
-            voiceURI: v.id,
-            name: v.name,
-            lang: v.lang,
-            localService: false,
-            default: false
-          }));
-        }
-      } catch (err) {
-        console.warn('Failed to load premium Kokoro voices:', err);
-      }
-
       if (active) {
         const mergedVoices = [...premiumVoices, ...browserVoices];
-        console.log("useTTS: Loaded voices:", mergedVoices.map(v => v.voiceURI));
         setVoices(mergedVoices);
       }
     };
 
-    loadVoices();
+    // Browser voice discovery must not wait for an optional server request.
+    updateVoices();
+    void loadPremiumVoices().then(loaded => {
+      premiumVoices = loaded;
+      updateVoices();
+    }).catch(err => {
+      if (active) console.warn('Premium voices are unavailable; browser voices remain available:', err);
+    });
     if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      window.speechSynthesis.addEventListener('voiceschanged', updateVoices);
     }
     return () => {
       active = false;
+      window.speechSynthesis?.removeEventListener('voiceschanged', updateVoices);
     };
   }, []);
 

@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 8,
   "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
   "modules": [
     {
@@ -4606,13 +4606,461 @@
     {
       "id": "F25",
       "title": {
+        "en": "Annotation",
+        "ja": "注記・寸法"
+      },
+      "lessons": [
+        {
+          "id": "foundation-annotation-linear-dimension",
+          "displayId": "F25.1",
+          "moduleId": "F25",
+          "title": {
+            "en": "Linear Dimension",
+            "ja": "長さ寸法を作成する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:linear-dimension",
+          "routeAliases": [
+            "F25.1"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Linear Dimension tool is used to create a linear dimension for selected edges in the 3D Space.",
+              "practice": "By the end of this lesson, you should be able to select the Linear Dimension tool, choose the edges to be measured, and position the dimension in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Create a Linear Dimension",
+                  "text": "**Step 1 — Select the Linear Dimension Icon**\nSelect **長さ寸法を作成する** from **寸法**.\n\n**Step 2 — Select the Edges to be Measured**\nSelect the edges that you want to measure.\n\n**Step 3 — Position the Dimension**\nLeft-click on the 3D Space to position the dimension.\nThe linear dimension will appear at the selected position."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "長さ寸法ツールは、3D空間で選択したエッジの長さ寸法を作成するために使用します。",
+              "practice": "長さ寸法ツールを選択し、測定するエッジを指定して、3D空間に寸法を配置できるようになります。",
+              "sections": [
+                {
+                  "title": "長さ寸法の作成手順",
+                  "text": "**ステップ 1 — 長さ寸法アイコンを選択**\n「寸法」から「長さ寸法を作成する」を選択します。\n\n**ステップ 2 — 測定するエッジを選択**\n測定したいエッジを選択します。\n\n**ステップ 3 — 寸法の位置を指定**\n3D空間を左クリックして寸法を配置します。\n選択した位置に長さ寸法が表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-diameter-dimension",
+          "displayId": "F25.2",
+          "moduleId": "F25",
+          "title": {
+            "en": "Diameter Dimension",
+            "ja": "径寸法を作成する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:diameter-dimension",
+          "routeAliases": [
+            "F25.2"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Diameter Dimension tool is used to create a diameter dimension for a circular edge in the 3D Space.",
+              "practice": "By the end of this lesson, you should be able to select the Diameter Dimension tool, choose the circular edge to be measured, and position the diameter dimension in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Create a Diameter Dimension",
+                  "text": "**Step 1 — Select the Diameter Dimension Icon**\nSelect **径寸法を作成する** from **寸法**.\n\n**Step 2 — Select the Edge of the Circle**\nSelect the edge of the circle to be measured.\n\n**Step 3 — Position the Circular Dimension**\nLeft-click on the 3D Space to position the circular dimension.\nThe diameter dimension will appear at the selected position."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "直径寸法ツールは、3D空間で円のエッジに対して直径寸法を作成するために使用します。",
+              "practice": "直径寸法ツールを選択し、測定する円のエッジを指定して、3D空間に直径寸法を配置できるようになります。",
+              "sections": [
+                {
+                  "title": "直径寸法の作成手順",
+                  "text": "**ステップ 1 — 直径寸法アイコンを選択**\n「寸法」から「径寸法を作成する」を選択します。\n\n**ステップ 2 — 円のエッジを選択**\n測定する円のエッジを選択します。\n\n**ステップ 3 — 円寸法の位置を指定**\n3D空間を左クリックして円寸法を配置します。\n選択した位置に直径寸法が表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-angular-dimension",
+          "displayId": "F25.3",
+          "moduleId": "F25",
+          "title": {
+            "en": "Angular Dimension",
+            "ja": "角度寸法作成"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:angular-dimension",
+          "routeAliases": [
+            "F25.3"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Angular Dimension tool is used to create an angular dimension between selected edges in the 3D Space.",
+              "practice": "By the end of this lesson, you should be able to select the Angular Dimension tool, choose the edges to be measured, and position the angular dimension in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Create an Angular Dimension",
+                  "text": "**Step 1 — Select the Angular Dimension Icon**\nSelect **角度寸法** from **寸法**.\n\n**Step 2 — Select the Edges to be Measured**\nSelect the edges that you want to measure.\n\n**Step 3 — Position the Angular Dimension**\nLeft-click on the 3D Space to position the angular dimension.\nThe angular dimension will appear at the selected position."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "角度寸法ツールは、3D空間で選択したエッジ間の角度寸法を作成するために使用します。",
+              "practice": "角度寸法ツールを選択し、測定するエッジを指定して、3D空間に角度寸法を配置できるようになります。",
+              "sections": [
+                {
+                  "title": "角度寸法の作成手順",
+                  "text": "**ステップ 1 — 角度寸法アイコンを選択**\n「寸法」から「角度寸法」を選択します。\n\n**ステップ 2 — 測定するエッジを選択**\n測定したいエッジを選択します。\n\n**ステップ 3 — 角度寸法の位置を指定**\n3D空間を左クリックして角度寸法を配置します。\n選択した位置に角度寸法が表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-notes-leader-lines",
+          "displayId": "F25.4",
+          "moduleId": "F25",
+          "title": {
+            "en": "Notes with Leader Lines",
+            "ja": "注記を作成する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:notes-leader-lines",
+          "routeAliases": [
+            "F25.4"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Notes with Leader Lines tool is used to create a note connected to an entity with a leader line in the 3D Space.",
+              "practice": "By the end of this lesson, you should be able to select an entity edge, enter a note, and place the note with a leader line in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Create Notes with Leader Lines",
+                  "text": "**Step 1 — Select the Notes with Leader Lines Icon**\nSelect **注記を作成する** from **製図文字**.\n\n**Step 2 — Select an Edge of the Entity**\nPick any edge of the entity.\n\nSelect GO to continue.\n\n**Step 3 — Open the Note String Entry Window**\nLeft-click to display the Note String Entry window.\n\n**Step 4 — Enter the Note**\nEnter the required note in the Note String Entry window.\n\nSelect OK.\n\n**Step 5 — Place the Note**\nLeft-click on the 3D Space to place the note.\n\nThe note will be displayed with a leader line connected to the selected entity."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "引出線ツールは、3D空間でエンティティに引出線で接続された注記を作成するために使用します。",
+              "practice": "エンティティのエッジを選択し、注記を入力して、3D空間に引出線付きの注記を配置できるようになります。",
+              "sections": [
+                {
+                  "title": "引出線付き注記の作成手順",
+                  "text": "**ステップ 1 — 引出線付き注記アイコンを選択**\n「製図文字」から「注記を作成する」を選択します。\n\n**ステップ 2 — エンティティのエッジを選択**\nエンティティの任意のエッジを選択します。\n\n「GO」を選択して続行します。\n\n**ステップ 3 — 注記文字列入力ウィンドウを表示**\n左クリックして注記文字列入力ウィンドウを表示します。\n\n**ステップ 4 — 注記を入力**\n注記文字列入力ウィンドウに必要な注記を入力します。\n\n「OK」を選択します。\n\n**ステップ 5 — 注記を配置**\n3D空間を左クリックして注記を配置します。\n\n選択したエンティティに接続された引出線付きの注記が表示されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-character-strings",
+          "displayId": "F25.5",
+          "moduleId": "F25",
+          "title": {
+            "en": "Character Strings",
+            "ja": "文字を作成する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:character-strings",
+          "routeAliases": [
+            "F25.5"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Character Strings tool is used to create and place text in the 3D Space.",
+              "practice": "By the end of this lesson, you should be able to open the Text Entry window, enter the required text, and place it in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Create Character Strings",
+                  "text": "**Step 1 — Select the Character Strings Icon**\nSelect **文字を作成する** from **製図文字**.\n\n**Step 2 — Open the Text Entry Window**\nLeft-click on the 3D Space.\nThe Text Entry window will appear.\n\n**Step 3 — Enter the Text**\nEnter the required note or character string in the Text Entry window.\nSelect OK.\n\n**Step 4 — Place the Text**\nLeft-click on the 3D Space to place the text."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "文字列ツールは、3D空間でテキストを作成して配置するために使用します。",
+              "practice": "文字列入力ウィンドウを開き、必要なテキストを入力して、3D空間に配置できるようになります。",
+              "sections": [
+                {
+                  "title": "文字列の作成手順",
+                  "text": "**ステップ 1 — 文字列アイコンを選択**\n「製図文字」から「文字を作成する」を選択します。\n\n**ステップ 2 — 文字列入力ウィンドウを表示**\n3D空間を左クリックします。\n文字列入力ウィンドウが表示されます。\n\n**ステップ 3 — 文字列を入力**\n文字列入力ウィンドウに必要な注記または文字列を入力します。\n「OK」を選択します。\n\n**ステップ 4 — 文字列を配置**\n3D空間を左クリックして文字列を配置します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-edit-characters",
+          "displayId": "F25.6",
+          "moduleId": "F25",
+          "title": {
+            "en": "Edit Drafting Entity Characters",
+            "ja": "製図文字を編集する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:edit-characters",
+          "routeAliases": [
+            "F25.6"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Edit Drafting Entity Characters tool is used to edit the characters of an existing drafting entity.",
+              "practice": "By the end of this lesson, you should be able to select a drafting entity and edit its dimension characters using the Edit Dimension Characters window.",
+              "sections": [
+                {
+                  "title": "How to Edit Drafting Entity Characters",
+                  "text": "**Step 1 — Select the Edit Drafting Entity Characters Icon**\nSelect **製図文字を編集する** from **製図要素編集**.\n\n**Step 2 — Select the Drafting Entity**\nSelect the drafting entity that you want to edit.\nSelect GO to continue.\n\n**Step 3 — Edit the Dimension Characters**\nThe Edit Dimension Characters window will appear.\nEdit the required dimension characters.\n\n**Step 4 — Confirm the Changes**\nAfter editing the dimension characters, select OK."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "製図要素文字編集ツールは、既存の製図要素の文字を編集するために使用します。",
+              "practice": "製図要素を選択し、「寸法文字編集ウィンドウ」を使用して寸法文字を編集できるようになります。",
+              "sections": [
+                {
+                  "title": "製図要素文字の編集手順",
+                  "text": "**ステップ 1 — 製図要素文字編集アイコンを選択**\n「製図要素編集」から「製図文字を編集する」を選択します。\n\n**ステップ 2 — 製図要素を選択**\n編集する製図要素を選択します。\n「GO」を選択して続行します。\n\n**ステップ 3 — 寸法文字を編集**\n「寸法文字編集ウィンドウ」が表示されます。\n必要な寸法文字を編集します。\n\n**ステップ 4 — 変更を確定**\n寸法文字の編集後、「OK」を選択します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-change-attributes",
+          "displayId": "F25.7",
+          "moduleId": "F25",
+          "title": {
+            "en": "Change Drafting Entity Attributes",
+            "ja": "製図属性を編集する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:change-attributes",
+          "routeAliases": [
+            "F25.7"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Change Drafting Entity Attributes tool is used to change the properties of an existing drafting entity.",
+              "practice": "By the end of this lesson, you should be able to select a drafting entity and modify its properties using the Change Properties window.",
+              "sections": [
+                {
+                  "title": "How to Change Drafting Entity Attributes",
+                  "text": "**Step 1 — Select the Change Drafting Entity Attributes Icon**\nSelect **製図属性を編集する** from **製図要素編集**.\n\n**Step 2 — Select the Drafting Entity**\nSelect the drafting entity whose properties you want to change.\nSelect GO to continue.\n\n**Step 3 — Change the Properties**\nThe Change Properties window will appear.\nChange the required properties of the drafting entity.\n\n**Step 4 — Confirm the Changes**\nAfter changing the required properties, select OK."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "製図要素属性変更ツールは、既存の製図要素の属性を変更するために使用します。",
+              "practice": "製図要素を選択し、「属性変更」ウィンドウを使用してその属性を変更できるようになります。",
+              "sections": [
+                {
+                  "title": "製図要素属性の変更手順",
+                  "text": "**ステップ 1 — 製図要素属性変更アイコンを選択**\n「製図要素編集」から「製図属性を編集する」を選択します。\n\n**ステップ 2 — 製図要素を選択**\n属性を変更する製図要素を選択します。\n「GO」を選択して続行します。\n\n**ステップ 3 — 属性を変更**\n「属性変更」ウィンドウが表示されます。\n製図要素の必要な属性を変更します。\n\n**ステップ 4 — 変更を確定**\n必要な属性を変更した後、「OK」を選択します。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-annotation-change-position",
+          "displayId": "F25.8",
+          "moduleId": "F25",
+          "title": {
+            "en": "Change Drafting Entity Position",
+            "ja": "製図位置を編集する"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:annotation:change-position",
+          "routeAliases": [
+            "F25.8"
+          ],
+          "completionAliases": [],
+          "content": {
+            "en": {
+              "explanation": "The Change Drafting Entity Position tool is used to change the position of drafting entities.",
+              "practice": "Identify the command used to reposition drafting entities.",
+              "sections": [
+                {
+                  "title": "How to Change a Drafting Entity Position",
+                  "text": "**Step 1 — Select the Change Drafting Entity Position Icon**\nSelect **製図位置を編集する** from **製図要素編集**."
+                },
+                {
+                  "title": "Repositioned Dimension Text Example",
+                  "text": "The example shows the dimension text 60 positioned below the dimension line. The part geometry and dimension value remain unchanged."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "製図要素位置変更ツールは、製図要素の位置を変更するために使用します。",
+              "practice": "製図要素の位置を変更するコマンドを確認します。",
+              "sections": [
+                {
+                  "title": "製図要素位置の変更手順",
+                  "text": "**ステップ 1 — 製図要素位置変更アイコンを選択**\n「製図要素編集」から「製図位置を編集する」を選択します。"
+                },
+                {
+                  "title": "寸法文字の位置変更例",
+                  "text": "この例では、寸法文字「60」が寸法線の下に配置されています。部品形状と寸法値は変わりません。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F26",
+      "title": {
+        "en": "Interference Check",
+        "ja": "干渉チェック"
+      },
+      "lessons": [
+        {
+          "id": "foundation-interference-check",
+          "displayId": "F26.1",
+          "moduleId": "F26",
+          "title": {
+            "en": "Check for Interferences",
+            "ja": "干渉チェック"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:interference:check",
+          "routeAliases": [
+            "F26.1"
+          ],
+          "completionAliases": [
+            "F26.1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Interference Check detects overlapping areas between 3D entities. Identify and correct these interferences during 3D modeling.",
+              "practice": "Use Interference Check to detect and review overlaps between selected 3D entities or throughout the drawing.",
+              "sections": [
+                {
+                  "title": "How to Check for Interferences",
+                  "text": "**Step 1 — Select Interference Check**\nFrom the **Icon Menu**, select **Interference Check** (**指定要素で干渉チェックする**).\n\n**Step 2 — Unselect High-Speed Detection**\nOn the **Command Menu**, unselect **High-Speed Detection** (**高速検出**) to check all interferences precisely.\n\n**Step 3 — Select the Entities to Check**\nSelect the 3D entities, then select **GO**. A dialog reports the number of detected interferences.\n\nInterference areas appear as **red CGS solids**. Affected parts switch to **Wireframe** so the overlaps are visible.\n\n**Step 4 — Analyze the Interference**\nReview the overlaps and determine how to resolve them. Use **Undo** or **Ctrl + Z** to remove the displayed red CGS solids."
+                },
+                {
+                  "title": "Check the Entire Drawing",
+                  "text": "Instead of selecting specific entities, **right-click in the 3D Space** to check the entire drawing."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "干渉チェックは、3D要素間の重なりを検出します。3Dモデリング中に干渉を確認し、修正してください。",
+              "practice": "選択した3D要素間、または図面全体の干渉を検出し、確認できるようになります。",
+              "sections": [
+                {
+                  "title": "干渉チェックの手順",
+                  "text": "**ステップ 1 — 干渉チェックを選択**\n**アイコンメニュー**から**指定要素で干渉チェックする**を選択します。\n\n**ステップ 2 — 高速検出の選択を解除**\nすべての干渉を精密にチェックするため、**コマンドメニュー**で**高速検出**の選択を解除します。\n\n**ステップ 3 — チェックする要素を選択**\n3D要素を選択し、**GO**を選択します。ダイアログに検出された干渉の数が表示されます。\n\n干渉箇所は**赤いCGSソリッド**で表示されます。干渉のある部品は、重なりを確認できるように**ワイヤーフレーム**表示に切り替わります。\n\n**ステップ 4 — 干渉を分析**\n干渉箇所を確認し、解消するための対策を検討します。表示された赤いCGSソリッドを消すには、**元に戻す**または**Ctrl + Z**を使用します。"
+                },
+                {
+                  "title": "図面全体をチェック",
+                  "text": "特定の要素を選択する代わりに、**3D空間で右クリック**すると図面全体をチェックできます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-interference-display-list",
+          "displayId": "F26.2",
+          "moduleId": "F26",
+          "title": {
+            "en": "Display Detected Interferences",
+            "ja": "検出された干渉のリスト表示"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:interference:display-list",
+          "routeAliases": [
+            "F26.2"
+          ],
+          "completionAliases": [
+            "F26.2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Interference List displays the names of 3D parts that interfere with each other.",
+              "practice": "Display detected interference pairs and locate their corresponding interference areas in the 3D Space.",
+              "sections": [
+                {
+                  "title": "How to Display Detected Interferences",
+                  "text": "**Step 1 — Select the Interference List Tool**\nFrom the **Icon Menu**, select **Interference List** (**干渉一覧を表示する**), then select **GO**.\n\n**Step 2 — Check the List Display Window**\nThe **List Display** window shows the **3D Part Names** that interfere with each other.\n\n**Step 3 — Select a 3D Part Name**\nSelect a **3D Part Name** in the list. Its corresponding **interference area appears automatically** in the 3D Space."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "干渉一覧には、互いに干渉している3Dパーツ名が表示されます。",
+              "practice": "検出された干渉部品の組み合わせを一覧表示し、対応する干渉箇所を3D空間で確認できるようになります。",
+              "sections": [
+                {
+                  "title": "検出された干渉の表示手順",
+                  "text": "**ステップ 1 — 干渉一覧ツールを選択**\n**アイコンメニュー**から**干渉一覧を表示する**を選択し、**GO**を選択します。\n\n**ステップ 2 — 一覧表示ウィンドウを確認**\n**一覧表示**ウィンドウに、互いに干渉している**3Dパーツ名**が表示されます。\n\n**ステップ 3 — 3Dパーツ名を選択**\n一覧の**3Dパーツ名**を選択すると、対応する**干渉箇所が3D空間に自動的に表示**されます。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F27",
+      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F25",
+          "moduleId": "F27",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -4624,7 +5072,8 @@
             "F16.1",
             "F18.1",
             "F19.1",
-            "F25.1"
+            "F28.1",
+            "F27.1"
           ],
           "completionAliases": [
             "F10.1",
@@ -4728,11 +5177,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F25.1"
+          "displayId": "F27.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F25",
+          "moduleId": "F27",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -4744,7 +5193,8 @@
             "F16.2",
             "F18.2",
             "F19.2",
-            "F25.2"
+            "F28.2",
+            "F27.2"
           ],
           "completionAliases": [
             "F10.6",
@@ -4774,7 +5224,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F25.2"
+          "displayId": "F27.2"
         }
       ]
     }

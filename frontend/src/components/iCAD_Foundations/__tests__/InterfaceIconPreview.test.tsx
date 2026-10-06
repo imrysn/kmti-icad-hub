@@ -68,6 +68,41 @@ describe('Interface icon location preview', () => {
     expect(document.body.style.overflow).toBe('auto');
   });
 
+  it('shows screenshot previews immediately after loading without the icon-placement delay', () => {
+    render(<InterfaceIconPreview index={0} toolbar={false} title="Result" japanese={false} custom={{artwork:<svg />,screen:'instant-result.png',screenFit:'comfortable',region:{bounds:[0,0,1920,1080],landing:[0,0,1920,1080]}}} />);
+    fireEvent.click(screen.getByRole('button', {name:'Enlarge: Result'}));
+    const dialog=screen.getByRole('dialog');
+    expect(within(dialog).getByRole('status')).toHaveTextContent('Loading image');
+    expect(dialog).toHaveAttribute('data-phase','enlarged');
+    fireEvent.load(within(dialog).getByRole('img',{name:'Full iCAD SX interface'}));
+    expect(dialog).toHaveAttribute('data-phase','located');
+  });
+
+  it('preloads a shared screenshot when a card approaches the viewport, before opening', () => {
+    let notify!: IntersectionObserverCallback;
+    const disconnect=vi.fn();
+    const observe=vi.fn();
+    vi.stubGlobal('IntersectionObserver',class {
+      constructor(callback:IntersectionObserverCallback){notify=callback;}
+      observe=observe;
+      disconnect=disconnect;
+    });
+    const images: {src:string;decoding:string}[]=[];
+    vi.stubGlobal('Image',class {
+      src='';decoding='';
+      constructor(){images.push(this);}
+    });
+    render(<InterfaceIconPreview index={0} toolbar={false} title="Preload" japanese={false} custom={{artwork:<svg />,screen:'unique-preload.png',region:{bounds:[0,0,10,10],landing:[0,0,10,10]}}} />);
+    expect(images).toHaveLength(0);
+    act(()=>notify([{isIntersecting:true} as IntersectionObserverEntry],{} as IntersectionObserver));
+    expect(images).toHaveLength(1);
+    expect(images[0].src).toBe('unique-preload.png');
+    expect(disconnect).toHaveBeenCalled();
+    fireEvent.focus(screen.getByRole('button',{name:'Enlarge: Preload'}));
+    expect(images).toHaveLength(1);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it.each([false, true])('waits for the actual interface image before locating a toolbar=%s icon', (toolbar) => {
     const { dialog, image, stage } = openPreview(toolbar);
     expect(within(dialog).getByRole('button', { name: 'Show location' })).toBeDisabled();
@@ -153,6 +188,16 @@ describe('Interface icon location preview', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Enlarge: Custom' }));
     const stage = screen.getByRole('dialog', { name: 'Custom' }).querySelector('.foundation-interface-icon-dialog__stage')!;
     expect(stage.getAttribute('style')).toBeNull();
+  });
+
+  it('fits full interface captures to the viewport without a native-resolution cap', () => {
+    render(<InterfaceIconPreview index={0} toolbar={false} title="Viewport" japanese={false} custom={{ artwork: <svg />, screen: 'screen.png', screenSize: [1024, 574], screenFit: 'viewport', region: { bounds: [0, 0, 10, 10], landing: [0, 0, 10, 10] } }} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Enlarge: Viewport' }));
+    const stage = screen.getByRole('dialog').querySelector('.foundation-interface-icon-dialog__stage') as HTMLElement;
+    expect(stage.style.width).toBe('100vw');
+    expect(stage.style.maxWidth).toBe(`${100 * 1024 / 574}dvh`);
+    expect(stage.style.aspectRatio).toBe('1024 / 574');
+    expect(stage.style.height).toBe('auto');
   });
 
   it('keeps the enlarged vector available when the interface image cannot load', () => {

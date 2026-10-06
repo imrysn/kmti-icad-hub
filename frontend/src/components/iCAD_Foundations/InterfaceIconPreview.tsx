@@ -6,6 +6,17 @@ import interfaceImage from '../../assets/icad-foundations/interface/icad-interfa
 import { interfaceIconRegion, regionStyle } from './interfaceIconLocations';
 import '../LessonModalTheme.css';
 
+// Share requests across cards that point at the same interface capture.
+const previewImages = new Map<string, HTMLImageElement>();
+function preloadPreview(src: string) {
+  if (previewImages.has(src)) return;
+  const image = new Image();
+  image.decoding = 'async';
+  previewImages.set(src, image);
+  image.onerror = () => previewImages.delete(src);
+  image.src = src;
+}
+
 export interface CustomIconPreview {
   artwork: ReactNode;
   /** Present lesson artwork without revealing its source capture. */
@@ -15,11 +26,28 @@ export interface CustomIconPreview {
   screen: string;
   /** Keep cropped captures at their native size and aspect ratio. */
   screenSize?: [number, number];
+  /** Fit full interface captures to the viewport rather than capping their native size. */
+  screenFit?: 'viewport' | 'comfortable';
   region: ReturnType<typeof interfaceIconRegion>;
   highlightColor?: string;
 }
 export default function InterfaceIconPreview({index,toolbar,title,japanese,custom}: {index:number;toolbar:boolean;title:string;japanese:boolean;custom?:CustomIconPreview}) {
   const [open,setOpen]=useState(false);
+  const trigger=useRef<HTMLButtonElement>(null);
+  const screen=custom?.screen ?? interfaceImage;
+  const warmPreview=()=>{if(!custom?.artworkOnly) preloadPreview(screen);};
+  useEffect(()=>{
+    if(custom?.artworkOnly || !trigger.current) return;
+    if(!window.IntersectionObserver) {preloadPreview(screen);return;}
+    const observer=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting)) {
+        preloadPreview(screen);
+        observer.disconnect();
+      }
+    },{rootMargin:'200px'});
+    observer.observe(trigger.current);
+    return ()=>observer.disconnect();
+  },[screen,custom?.artworkOnly]);
   const modal=useRef<HTMLDialogElement>(null);
   const active=useRef(false);
   const ownsFullscreen=useRef(false);
@@ -34,6 +62,7 @@ export default function InterfaceIconPreview({index,toolbar,title,japanese,custo
     leaveFullscreen();
   };
   const openPreview=()=>{
+    warmPreview();
     active.current=true;
     setOpen(true);
     // Request from the click itself: browsers require a user gesture for real fullscreen.
@@ -65,7 +94,7 @@ export default function InterfaceIconPreview({index,toolbar,title,japanese,custo
     };
   },[]);
   return <>
-    <button type="button" className="foundation-interface-icon-button" onClick={openPreview} title={japanese?'クリックして拡大表示':'Click to enlarge'} aria-label={`${japanese?'拡大表示':'Enlarge'}: ${title}`}>
+    <button ref={trigger} type="button" className="foundation-interface-icon-button" onPointerEnter={warmPreview} onFocus={warmPreview} onClick={openPreview} title={japanese?'クリックして拡大表示':'Click to enlarge'} aria-label={`${japanese?'拡大表示':'Enlarge'}: ${title}`}>
       {custom?.artwork ?? <InterfaceSvgIcon index={index} toolbar={toolbar} title={title}/>}
     </button>
     {open && <ExpandedIcon dialog={modal} index={index} toolbar={toolbar} title={title} japanese={japanese} onClose={closePreview} custom={custom}/>}
@@ -80,6 +109,11 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
   const [phase,setPhase]=useState<'enlarged'|'moving'|'located'>('enlarged');
   const [imageReady,setImageReady]=useState(false);
   const [imageFailed,setImageFailed]=useState(false);
+  const screenImage=useRef<HTMLImageElement>(null);
+  useLayoutEffect(()=>{
+    // Cached images can finish before React attaches its load handler.
+    if(screenImage.current?.complete && screenImage.current.naturalWidth>0) setImageReady(true);
+  },[]);
   const region=custom?.region ?? interfaceIconRegion(index,toolbar);
   const atLocation=phase!=='enlarged';
   useEffect(()=>{
@@ -102,12 +136,16 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
   },[phase]);
   useEffect(()=>{
     if(custom?.artworkOnly || (custom?.autoLocate === false && phase === 'enlarged') || !imageReady || phase==='located') return;
+    if(custom?.screenFit==='comfortable' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setPhase('located');
+      return;
+    }
     const timer=window.setTimeout(()=>{
       if(phase==='enlarged') beginLocation();
       else setPhase('located');
     },1000);
     return ()=>window.clearTimeout(timer);
-  },[phase,imageReady,custom?.artworkOnly,custom?.autoLocate]);
+  },[phase,imageReady,custom?.artworkOnly,custom?.autoLocate,custom?.screenFit]);
   useEffect(()=>{
     const node=dialog.current!;
     const overflow=document.body.style.overflow;
@@ -117,11 +155,15 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
   },[]);
   return createPortal(<dialog ref={dialog} className="foundation-interface-icon-dialog" data-phase={phase} aria-label={title} onCancel={event=>{event.preventDefault();onClose();}} onClick={atLocation?onClose:undefined} tabIndex={-1}>
     {!custom?.artworkOnly && <div ref={stage} className="foundation-interface-icon-dialog__stage" data-phase={phase} style={custom?.screenSize ? {
-      width:`min(${custom.screenSize[0]}px, calc(100vw - 32px), calc((100dvh - 32px) * ${custom.screenSize[0]} / ${custom.screenSize[1]}))`,
+      width:custom.screenFit === 'viewport'
+        ? '100vw'
+        : custom.screenFit === 'comfortable' ? `min(760px, 82vw, calc(60dvh * ${custom.screenSize[0]} / ${custom.screenSize[1]}))`
+        : `min(${custom.screenSize[0]}px, calc(100vw - 32px), calc((100dvh - 32px) * ${custom.screenSize[0]} / ${custom.screenSize[1]}))`,
+      maxWidth:custom.screenFit === 'viewport' ? `${100 * custom.screenSize[0] / custom.screenSize[1]}dvh` : undefined,
       height:'auto', aspectRatio:`${custom.screenSize[0]} / ${custom.screenSize[1]}`,
     } : undefined}>
-      <img className="foundation-interface-icon-dialog__screen" src={custom?.screen ?? interfaceImage} alt={japanese?'iCAD SX の画面全体':'Full iCAD SX interface'} onLoad={()=>setImageReady(true)} onError={()=>setImageFailed(true)}/>
-      {phase==='located' && custom?.screenOverlay && <svg viewBox="0 0 1920 1080" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}} aria-hidden="true">{custom.screenOverlay}</svg>}
+      <img ref={screenImage} className="foundation-interface-icon-dialog__screen" decoding="async" loading="eager" src={custom?.screen ?? interfaceImage} alt={japanese?'iCAD SX の画面全体':'Full iCAD SX interface'} onLoad={()=>setImageReady(true)} onError={()=>setImageFailed(true)}/>
+      {phase==='located' && custom?.screenOverlay && <svg viewBox="0 0 1920 1080" preserveAspectRatio="none" style={{overflow:'visible',position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}} role="img" aria-label={japanese ? '操作上の注記' : 'Instructional notes'}>{custom.screenOverlay}</svg>}
       <div ref={movingIcon} className="foundation-interface-icon-dialog__moving-icon" style={regionStyle(region.landing)} aria-hidden="true">
         {custom?.artwork ?? <InterfaceSvgIcon index={index} toolbar={toolbar} title={title} expanded/>}
       </div>
@@ -137,6 +179,7 @@ function ExpandedIcon({dialog,index,toolbar,title,japanese,onClose,custom}: {cus
     {!custom?.artworkOnly && <footer>
       <p className={`foundation-interface-preview-status${imageFailed?' is-error':''}`} role="status">{imageFailed
         ? (japanese?'画面画像を読み込めませんでした。拡大アイコンをご確認ください。':'The interface image could not load. You can still view the enlarged icon.')
+          : !imageReady ? (japanese?'画像を読み込み中…':'Loading image…')
           : (japanese?'拡大アイコンを確認すると、画面上の位置が表示されます。':'Take a closer look, then watch where it belongs.')}</p>
       <button className="lesson-modal-primary-button" type="button" disabled={!imageReady} onClick={beginLocation}>
         <LocateFixed size={17}/>
