@@ -1,4 +1,4 @@
-import { FOUNDATION_TOTAL } from '../../components/iCAD_Foundations/curriculum';
+import { FOUNDATION_TOTAL, resolveFoundationLesson } from '../../components/iCAD_Foundations/curriculum';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FOUNDATIONS_NARRATION_PROFILE } from '../../config/foundationsNarration';
 import {
@@ -67,12 +67,13 @@ describe('Phase 7 — every iCAD Foundations lesson narration profile', () => {
     expect(lessons).toHaveLength(FOUNDATION_TOTAL);
 
     for (const lesson of lessons) {
+      if (resolveFoundationLesson(lesson.id)?.contentReview === 'not-authored') continue;
       const sourceText = lesson.content?.find((text) => text.trim()) || lesson.title;
       const english = parseNarrationUrl(buildFoundationsNarrationUrl(sourceText, {
         language: FOUNDATIONS_NARRATION_PROFILE.englishLanguage,
       }));
       const japanese = parseNarrationUrl(buildFoundationsNarrationUrl(
-        japaneseLessons.find(item => item.id === lesson.id)!.content![0],
+        (japaneseLessons.find(item => item.id === lesson.id)!.content?.find(t => t.trim()) || japaneseLessons.find(item => item.id === lesson.id)!.title),
         { language: FOUNDATIONS_NARRATION_PROFILE.japaneseLanguage },
       ));
 

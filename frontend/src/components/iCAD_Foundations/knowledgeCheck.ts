@@ -12,39 +12,118 @@ export function foundationKnowledgeQuestions(language: FoundationLanguage, lesso
 }
 
 export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId = 'F17.2'): InteractiveVideoQuestion[] {
+  if (lessonId === 'foundation-mirrored-parts-normal-and-mirror') {
+    const ja = language === 'ja';
+    const choicesData = ja ? [
+      { text: '元の部品である。', isCorrect: false, feedback: 'ミラー部品 A が元の部品です。' },
+      { text: '図面番号にNが付く通常部品である。', isCorrect: false, feedback: '通常部品にはNが付きますが、ミラー部品 B にはBが付きます。' },
+      { text: 'ミラー部品 A のミラーコピーである。', isCorrect: true, feedback: '正解：C. ミラー部品 A のミラーコピーである。' },
+      { text: 'ミラー部品 A が存在しなくても単独で存在できる。', isCorrect: false, feedback: 'ミラー部品 B はミラー部品 A なしでは存在できません。' },
+    ] : [
+      { text: 'It is the original part.', isCorrect: false, feedback: 'Mirror Part A is the original part, not Part B.' },
+      { text: 'It is a Normal Part with an N drawing number.', isCorrect: false, feedback: 'Normal Parts use N, whereas Mirror Part B uses B.' },
+      { text: 'It is the mirror copy of Mirror Part A.', isCorrect: true, feedback: 'Correct Answer: C. It is the mirror copy of Mirror Part A.' },
+      { text: 'It can exist without Mirror Part A.', isCorrect: false, feedback: 'Mirror Part B cannot exist without Mirror Part A.' },
+    ];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja ? 'ミラー部品 B について正しく説明しているものはどれですか？'
+        : 'Which statement correctly describes Mirror Part B?',
+      choices: choicesData.map((item, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${item.text}`,
+        isCorrect: item.isCorrect,
+        feedback: item.feedback,
+      })),
+    }];
+  }
+  if (lessonId === 'foundation-parasolid-set-purchase-part-info') {
+    const ja = language === 'ja';
+    const labels = ja ? ['材質', 'レイヤ', '備考欄', 'ファイル名']
+      : ['Material', 'Layer', 'Remark', 'File Name'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? '購入部品のメーカーはどこに入力すべきですか？'
+        : 'Where should the maker of the purchase part be entered?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
+          : ja ? '購入部品のメーカーは備考欄（REMARK）に入力します。' : 'The maker of the purchase part should be entered in the Remark.' }))
+    }];
+  }
+  if (lessonId === 'foundation-parasolid-save-purchase-part') {
+    const ja = language === 'ja';
+    const labels = ja ? ['材料名', '購入部品コード', '3Dパーツ色', 'レイヤ番号']
+      : ['Material name', 'Purchase part code', '3D Part color', 'Layer number'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? '購入部品を保存する際、ファイル名として何を使用すべきですか？'
+        : 'What should be used as the file name when saving the purchase part?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : ja ? '購入部品を保存する際は、必ずファイル名として購入部品コードを使用します。' : 'Always use the purchase part code as the file name when saving the purchase part.' }))
+    }];
+  }
+  if (lessonId === 'foundation-parasolid-lighten-brep') {
+    const ja = language === 'ja';
+    const labels = ja ? ['形状変更', '形状変更なし', 'キャンセル', '形状削除']
+      : ['Change form', 'No form changes', 'Cancel', 'Delete form'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? 'B-Repソリッドの軽量化を使用するとき、ダイアログボックスでどのオプションを選択しますか？'
+        : 'Which option should you select in the dialog box when using Lighten B-Rep Solid?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
+          : ja ? 'ダイアログボックスでは、形状変更なしを選択します。' : 'In the dialog box, select No form changes.' }))
+    }];
+  }
+  if (lessonId === 'foundation-parasolid-import') {
+    const ja = language === 'ja';
+    const labels = ja ? ['OK', '適用', 'キャンセル', '削除']
+      : ['OK', 'Apply', 'Cancel', 'Delete'];
+    return [{ id: `${lessonId}-knowledge-check`,
+      prompt: ja ? 'パラソリッドファイルをインポートした後、名前変更ダイアログボックスが表示されたら何を選択しますか？'
+        : 'What should you select when the Name Change dialog box appears after importing the Parasolid file?',
+      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
+          : ja ? '名前変更ダイアログボックスが表示されたら、キャンセルを選択します。' : 'When the Name Change dialog box appears, select Cancel.' }))
+    }];
+  }
   if (lessonId === 'foundation-interference-check') {
     const ja = language === 'ja';
     const labels = ja ? ['選択する', '選択を解除する', 'ダブルクリックする', '色を変更する']
       : ['Select it', 'Unselect it', 'Double-click it', 'Change its color'];
-    return [{ id: `${lessonId}-knowledge-check`,
+    return [{
+      id: `${lessonId}-knowledge-check`,
       prompt: ja ? 'すべての干渉を精密にチェックするには、高速検出をどうしますか？'
         : 'What should you do with High-Speed Detection when you want to precisely check all interferences?',
-      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
         isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
-          : ja ? '精密に干渉チェックするには、高速検出の選択を解除します。' : 'Unselect High-Speed Detection for a precise interference check.' }))
+          : ja ? '精密に干渉チェックするには、高速検出の選択を解除します。' : 'Unselect High-Speed Detection for a precise interference check.'
+      }))
     }];
   }
   if (lessonId === 'foundation-interference-display-list') {
     const ja = language === 'ja';
     const labels = ja ? ['部品が削除される', '材質が変更される', '対応する干渉箇所が自動的に表示される', '部品がコピーされる']
       : ['The part is deleted', 'The material is changed', 'The corresponding interference area automatically appears', 'The part is copied'];
-    return [{ id: `${lessonId}-knowledge-check`,
+    return [{
+      id: `${lessonId}-knowledge-check`,
       prompt: ja ? '一覧表示ウィンドウで3Dパーツ名を選択すると、どうなりますか？'
         : 'What happens when you select a 3D Part Name in the List Display window?',
-      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
+      choices: labels.map((label, index) => ({
+        id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
         isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
-          : ja ? '3Dパーツ名を選択すると、対応する干渉箇所が自動的に表示されます。' : 'Selecting a 3D Part Name automatically displays the corresponding interference area.' }))
+          : ja ? '3Dパーツ名を選択すると、対応する干渉箇所が自動的に表示されます。' : 'Selecting a 3D Part Name automatically displays the corresponding interference area.'
+      }))
     }];
   }
   if (lessonId === 'foundation-information-tools') {
-    const ja=language==='ja';
-    const labels=ja?['1本のエッジのみ','2本のエッジ、または3点','2つの立体要素','1つの面のみ']:['One edge only','Two edges or three points','Two solid entities','One face only'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'角度を測定するとき、どの選択方法を使用できますか？':'Which selections can be used when measuring an angle?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:ja?'2本のエッジ、または3点を指定します。':'Pick two edges or three points.'}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['1本のエッジのみ', '2本のエッジ、または3点', '2つの立体要素', '1つの面のみ'] : ['One edge only', 'Two edges or three points', 'Two solid entities', 'One face only'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '角度を測定するとき、どの選択方法を使用できますか？' : 'Which selections can be used when measuring an angle?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : ja ? '2本のエッジ、または3点を指定します。' : 'Pick two edges or three points.' })) }];
   }
   if (lessonId === 'foundation-properties-part-layer-designation') {
-    const ja=language==='ja';
-    const labels=ja?['白（No. 1）','青（No. 5）','黄色（No. 4）','グレー（No. 8）']:['White (No. 1)','Blue (No. 5)','Yellow (No. 4)','Gray (No. 8)'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'安全カバーには、どの色を使用しますか？':'What color should be used for a Safety Cover?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'安全カバーの指定色は黄色（No. 4）です。':'Safety covers use Yellow (No. 4).')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['白（No. 1）', '青（No. 5）', '黄色（No. 4）', 'グレー（No. 8）'] : ['White (No. 1)', 'Blue (No. 5)', 'Yellow (No. 4)', 'Gray (No. 8)'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '安全カバーには、どの色を使用しますか？' : 'What color should be used for a Safety Cover?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : (ja ? '安全カバーの指定色は黄色（No. 4）です。' : 'Safety covers use Yellow (No. 4).') })) }];
   }
   if (lessonId === 'foundation-annotation-diameter-dimension') {
     const ja = language === 'ja';
@@ -63,8 +142,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 1
           ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
           : (ja
-              ? '直径寸法を作成するときは、測定する円のエッジを選択します。'
-              : 'When creating a Diameter Dimension, select the edge of the circle to be measured.')
+            ? '直径寸法を作成するときは、測定する円のエッジを選択します。'
+            : 'When creating a Diameter Dimension, select the edge of the circle to be measured.')
       }))
     }];
   }
@@ -85,8 +164,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 0
           ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}`
           : (ja
-              ? '引出線付き注記を作成するときは、まずエンティティのエッジを選択します。'
-              : 'When creating a note with a leader line, first select any edge of the entity.')
+            ? '引出線付き注記を作成するときは、まずエンティティのエッジを選択します。'
+            : 'When creating a note with a leader line, first select any edge of the entity.')
       }))
     }];
   }
@@ -107,8 +186,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 2
           ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
           : (ja
-              ? '製図要素位置変更ツールは、製図要素の位置を変更するために使用します。'
-              : 'The Change Drafting Entity Position tool is used to change the position of drafting entities.')
+            ? '製図要素位置変更ツールは、製図要素の位置を変更するために使用します。'
+            : 'The Change Drafting Entity Position tool is used to change the position of drafting entities.')
       }))
     }];
   }
@@ -129,8 +208,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 2
           ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
           : (ja
-              ? '製図要素の属性を変更する際、「属性変更」ウィンドウが表示されます。'
-              : 'When changing the attributes of a drafting entity, the Change Properties window will appear.')
+            ? '製図要素の属性を変更する際、「属性変更」ウィンドウが表示されます。'
+            : 'When changing the attributes of a drafting entity, the Change Properties window will appear.')
       }))
     }];
   }
@@ -151,8 +230,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 1
           ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
           : (ja
-              ? '製図要素を選択して「GO」を選択すると、「寸法文字編集ウィンドウ」が表示されます。'
-              : 'After selecting the drafting entity and choosing GO, the Edit Dimension Characters window will appear.')
+            ? '製図要素を選択して「GO」を選択すると、「寸法文字編集ウィンドウ」が表示されます。'
+            : 'After selecting the drafting entity and choosing GO, the Edit Dimension Characters window will appear.')
       }))
     }];
   }
@@ -173,8 +252,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 1
           ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
           : (ja
-              ? '文字列ツールで3D空間を左クリックすると、文字列入力ウィンドウが表示されます。'
-              : 'When using Character Strings, left-clicking on the 3D Space opens the Text Entry window.')
+            ? '文字列ツールで3D空間を左クリックすると、文字列入力ウィンドウが表示されます。'
+            : 'When using Character Strings, left-clicking on the 3D Space opens the Text Entry window.')
       }))
     }];
   }
@@ -195,8 +274,8 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 0
           ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}`
           : (ja
-              ? '角度寸法を配置する前に、測定するエッジを選択します。'
-              : 'Before positioning an Angular Dimension, select the edges to be measured.')
+            ? '角度寸法を配置する前に、測定するエッジを選択します。'
+            : 'Before positioning an Angular Dimension, select the edges to be measured.')
       }))
     }];
   }
@@ -217,42 +296,42 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         feedback: index === 1
           ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}`
           : (ja
-              ? '測定するエッジを選択したら、3D空間を左クリックして寸法を配置します。'
-              : 'After selecting the edges to be measured, left-click on the 3D Space to position the dimension.')
+            ? '測定するエッジを選択したら、3D空間を左クリックして寸法を配置します。'
+            : 'After selecting the edges to be measured, left-click on the 3D Space to position the dimension.')
       }))
     }];
   }
   if (lessonId === 'foundation-properties-change-layer') {
-    const ja=language==='ja';
-    const labels=ja?['ツリービュー','項目入力','材質設定','ユーザービュー']:['Tree View','Item Entry','Material Setting','User View'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'「レイヤを変更する」で、レイヤはどこで指定しますか？':'Where do you specify the layer when using Change Layer?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体要素を選択する前に、項目入力でレイヤを指定します。':'Specify the layer in Item Entry before selecting the solid entity.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['ツリービュー', '項目入力', '材質設定', 'ユーザービュー'] : ['Tree View', 'Item Entry', 'Material Setting', 'User View'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '「レイヤを変更する」で、レイヤはどこで指定しますか？' : 'Where do you specify the layer when using Change Layer?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '立体要素を選択する前に、項目入力でレイヤを指定します。' : 'Specify the layer in Item Entry before selecting the solid entity.') })) }];
   }
   if (lessonId === 'foundation-properties-change-color') {
-    const ja=language==='ja';
-    const labels=ja?['要素','面','レイヤ','材質']:['Entity','Face','Layer','Material'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'立体要素の一つの面だけの色を変更するには、どの項目を選びますか？':'Which option should you use if you only want to change the color of one surface of a solid entity?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'「面」は、選択した面だけの色を変更します。':'Face changes only the selected surface.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['要素', '面', 'レイヤ', '材質'] : ['Entity', 'Face', 'Layer', 'Material'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '立体要素の一つの面だけの色を変更するには、どの項目を選びますか？' : 'Which option should you use if you only want to change the color of one surface of a solid entity?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '「面」は、選択した面だけの色を変更します。' : 'Face changes only the selected surface.') })) }];
   }
   if (lessonId === 'foundation-material-unlisted') {
-    const ja=language==='ja';
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'この例で、2DのBOMに記載する材料はどれですか？':'In this example, which material should appear on the 2D BOM?',choices:['S35C','S45C','C1100','C2680'].map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. S35C`:ja?'2DのBOMにはS35Cを記載し、3DパーツにはS45Cを使用します。':'Specify S35C on the 2D BOM and use S45C on the 3D part.'}))}];
+    const ja = language === 'ja';
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? 'この例で、2DのBOMに記載する材料はどれですか？' : 'In this example, which material should appear on the 2D BOM?', choices: ['S35C', 'S45C', 'C1100', 'C2680'].map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. S35C` : ja ? '2DのBOMにはS35Cを記載し、3DパーツにはS45Cを使用します。' : 'Specify S35C on the 2D BOM and use S45C on the 3D part.' })) }];
   }
   if (lessonId === 'foundation-material-set') {
-    const ja=language==='ja';
-    const labels=ja?['3Dビューを変更するため','材質の比重を使ってパーツの重量を計算するため','3Dパーツ名を変更するため','ワークプレーンを作成するため']:['To change the 3D view',"To calculate the weight of the part using the material's specific gravity",'To rename the 3D Part','To create a Work Plane'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'iCAD SXで材質設定が重要なのはなぜですか？':'Why is setting the material important in iCAD SX?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'材質の比重はパーツの重量計算に使用されます。':'Material specific gravity is used to calculate part weight.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['3Dビューを変更するため', '材質の比重を使ってパーツの重量を計算するため', '3Dパーツ名を変更するため', 'ワークプレーンを作成するため'] : ['To change the 3D view', "To calculate the weight of the part using the material's specific gravity", 'To rename the 3D Part', 'To create a Work Plane'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? 'iCAD SXで材質設定が重要なのはなぜですか？' : 'Why is setting the material important in iCAD SX?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '材質の比重はパーツの重量計算に使用されます。' : 'Material specific gravity is used to calculate part weight.') })) }];
   }
   if (lessonId === 'P13.1') {
-    const ja=language==='ja';
-    const labels=ja?['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー']:['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
-    return [{id:'P13.1-knowledge-check',prompt:ja?'形鋼の位置座標はどこに入力しますか？':'Where do you enter the coordinates for the Shape Steel position?',choices:labels.map((label,index)=>({id:`P13.1-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'位置座標はキー入力領域に入力します。':'Enter the position coordinates in the Key Entry Area.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['形状プレビュー', 'キー入力領域', 'シェーディングツールバー', 'ユーザービュー'] : ['Shape preview', 'Key Entry Area', 'Shading toolbar', 'User View'];
+    return [{ id: 'P13.1-knowledge-check', prompt: ja ? '形鋼の位置座標はどこに入力しますか？' : 'Where do you enter the coordinates for the Shape Steel position?', choices: labels.map((label, index) => ({ id: `P13.1-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '位置座標はキー入力領域に入力します。' : 'Enter the position coordinates in the Key Entry Area.') })) }];
   }
   if (lessonId === 'P8.8') {
     const ja = language === 'ja';
     const labels = ja ? ['選択した面だけ', '選択した立体全体', 'ユーザービュー', '製図要素だけ'] : ['Only the selected face', 'The entire selected solid', 'The User View', 'Only drafting elements'];
     return [{
-      id:'P8.8-knowledge-check',
-      prompt:ja ? '立体縮尺コマンドは何の大きさを変更しますか？' : 'What does the Resize command scale?',
-      choices:labels.map((label,index)=>({id:`P8.8-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'立体縮尺は、選択した立体全体を同じ比率で変更します。':'Resize scales the entire selected solid proportionally.')})),
+      id: 'P8.8-knowledge-check',
+      prompt: ja ? '立体縮尺コマンドは何の大きさを変更しますか？' : 'What does the Resize command scale?',
+      choices: labels.map((label, index) => ({ id: `P8.8-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '立体縮尺は、選択した立体全体を同じ比率で変更します。' : 'Resize scales the entire selected solid proportionally.') })),
     }];
   }
   if (lessonId === 'P12.1') {
@@ -261,11 +340,11 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     return [{
       id: 'P12.1-knowledge-check',
       prompt: ja ? '「面を指定して伸縮する」を使用するとき、最初に何を選択しますか？' : 'What should you select first when using Stretch by Specifying Face?',
-      choices: labels.map((label,index)=>({
-        id:`P12.1-${index}`,
-        label:`${'ABCD'[index]}. ${label}`,
-        isCorrect:index===1,
-        feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'伸縮する方向は、選択した面で決まります。':'The selected face determines the stretch direction.'),
+      choices: labels.map((label, index) => ({
+        id: `P12.1-${index}`,
+        label: `${'ABCD'[index]}. ${label}`,
+        isCorrect: index === 1,
+        feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '伸縮する方向は、選択した面で決まります。' : 'The selected face determines the stretch direction.'),
       })),
     }];
   }
@@ -275,7 +354,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     const labels = drafting
       ? (ja ? ['指定要素を非表示にする', '製図要素を表示する', '指定要素以外を非表示にする', '削除'] : ['Hide Specified Elements', 'Show Drafting Elements', 'Hide Unselected Elements', 'Delete'])
       : ja ? ['選択した要素が削除される', '選択した要素が非表示になる', '選択した要素は表示されたままで、他の要素が非表示になる', 'すべての要素が表示される']
-      : ['The selected elements are deleted', 'The selected elements are hidden', 'The selected elements remain visible and the others are hidden', 'All elements are shown'];
+        : ['The selected elements are deleted', 'The selected elements are hidden', 'The selected elements remain visible and the others are hidden', 'All elements are shown'];
     const correct = drafting ? 1 : 2;
     return [{
       id: `${lessonId}-knowledge-check`,
@@ -286,7 +365,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correct,
         feedback: index === correct ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`
           : drafting ? (ja ? '製図要素を表示する は非表示の製図情報を再表示します。' : 'Show Drafting Elements displays hidden drafting information again.')
-          : (ja ? '選択した要素は表示されたままで、他の要素が非表示になります。要素は削除されません。' : 'The selected elements remain visible and the others are hidden. No elements are deleted.'),
+            : (ja ? '選択した要素は表示されたままで、他の要素が非表示になります。要素は削除されません。' : 'The selected elements remain visible and the others are hidden. No elements are deleted.'),
       })),
     }];
   }
@@ -306,7 +385,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
         id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correct,
         feedback: index === correct ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`
           : specified ? (ja ? '指定要素を表示する は、選択した非表示要素を再表示します。' : 'Show Specified Elements displays selected hidden elements again.')
-          : (ja ? '指定要素以外を非表示にする は、選択した要素を表示し、他の要素を非表示にします。' : 'Hide Unselected Elements keeps selected elements visible and hides the other elements.'),
+            : (ja ? '指定要素以外を非表示にする は、選択した要素を表示し、他の要素を非表示にします。' : 'Hide Unselected Elements keeps selected elements visible and hides the other elements.'),
       })),
     }];
   }
@@ -454,90 +533,90 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   }
   if (lessonId.startsWith('foundation-boolean-')) {
     const ja = language === 'ja';
-    const checks:Record<string,[string,string,string[],string[]]> = {
-      union:['What does the Union command do?','和コマンドは何を行いますか？',['Separates one solid into several entities','Joins multiple 3D entities into one solid','Hides selected entities','Changes the model view'],['1つの立体を複数の要素に分離する','複数の3D要素を1つの立体に結合する','選択した要素を非表示にする','モデルの表示方向を変更する']],
-      subtract:['Which entity should be selected first when using Subtract?','差を使用するとき、最初に選択する要素はどれですか？',['Tool Entity','Target Entity','Work Plane','User View'],['ツール要素','ターゲット要素','作業平面','ユーザビュー']],
-      intersect:['What does the Intersect command create?','重なり部分を残すコマンドは何を作成しますか？',['A copy of both entities','A new entity from their overlapping area','A cutout in the first entity','One combined solid from both entities'],['両方の要素のコピー','重なった部分から作成した新しい要素','最初の要素の切り欠き','両方の要素を結合した1つの立体']],
-      separate:['What does Separate All Components act on?','全構成要素の分離は何を対象にしますか？',['All components of the selected solid','Only one chosen hole','Only the Work Plane','Only the background'],['選択した立体の全構成要素','選んだ穴1つだけ','作業平面だけ','背景だけ']]
+    const checks: Record<string, [string, string, string[], string[]]> = {
+      union: ['What does the Union command do?', '和コマンドは何を行いますか？', ['Separates one solid into several entities', 'Joins multiple 3D entities into one solid', 'Hides selected entities', 'Changes the model view'], ['1つの立体を複数の要素に分離する', '複数の3D要素を1つの立体に結合する', '選択した要素を非表示にする', 'モデルの表示方向を変更する']],
+      subtract: ['Which entity should be selected first when using Subtract?', '差を使用するとき、最初に選択する要素はどれですか？', ['Tool Entity', 'Target Entity', 'Work Plane', 'User View'], ['ツール要素', 'ターゲット要素', '作業平面', 'ユーザビュー']],
+      intersect: ['What does the Intersect command create?', '重なり部分を残すコマンドは何を作成しますか？', ['A copy of both entities', 'A new entity from their overlapping area', 'A cutout in the first entity', 'One combined solid from both entities'], ['両方の要素のコピー', '重なった部分から作成した新しい要素', '最初の要素の切り欠き', '両方の要素を結合した1つの立体']],
+      separate: ['What does Separate All Components act on?', '全構成要素の分離は何を対象にしますか？', ['All components of the selected solid', 'Only one chosen hole', 'Only the Work Plane', 'Only the background'], ['選択した立体の全構成要素', '選んだ穴1つだけ', '作業平面だけ', '背景だけ']]
     };
-    const key=lessonId.replace('foundation-boolean-','');
-    const entry=checks[key];
-    if(entry) { const correct=(key==='union'||key==='subtract'||key==='intersect')?1:0; const labels=ja?entry[3]:entry[2]; return [{id:`${lessonId}-check`,prompt:ja?entry[1]:entry[0],choices:labels.map((label,index)=>({id:`${key}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===correct,feedback:index===correct?`${ja?'正解：':'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}`:(ja?'操作手順を確認してください。':'Review the operation steps.')}))}]; }
+    const key = lessonId.replace('foundation-boolean-', '');
+    const entry = checks[key];
+    if (entry) { const correct = (key === 'union' || key === 'subtract' || key === 'intersect') ? 1 : 0; const labels = ja ? entry[3] : entry[2]; return [{ id: `${lessonId}-check`, prompt: ja ? entry[1] : entry[0], choices: labels.map((label, index) => ({ id: `${key}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === correct, feedback: index === correct ? `${ja ? '正解：' : 'Correct Answer: '}${'ABCD'[correct]}. ${labels[correct]}` : (ja ? '操作手順を確認してください。' : 'Review the operation steps.') })) }]; }
   }
   if (lessonId === 'foundation-fairing-shell') {
     const ja = language === 'ja';
     const labels = ja ? ['フィレットの半径', '面取り長', '肉厚', '回転角度'] : ['Fillet radius', 'Chamfer length', 'Wall thickness', 'Rotation angle'];
-    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? 'シェルコマンドを使用するとき、どの値を指定する必要がありますか？' : 'What value must be specified when using the Shell command?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2 ? `${ja?'正解：':'Correct Answer: '}C. ${labels[2]}` : (ja?'項目入力の「共通の厚さ」で肉厚を指定します。':'Specify the wall thickness in the Item Entry.')}))}];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? 'シェルコマンドを使用するとき、どの値を指定する必要がありますか？' : 'What value must be specified when using the Shell command?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : (ja ? '項目入力の「共通の厚さ」で肉厚を指定します。' : 'Specify the wall thickness in the Item Entry.') })) }];
   }
   if (lessonId === 'foundation-fairing-fillet') {
     const ja = language === 'ja';
     const labels = ja ? ['肉厚', 'フィレットの半径', '面取り長', '回転角度'] : ['Wall thickness', 'Fillet radius', 'Chamfer length', 'Rotation angle'];
-    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? 'フィレットを作成するとき、どの値を指定する必要がありますか？' : 'What value must be specified when creating a fillet?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'項目入力でフィレットの半径を指定します。':'Specify the fillet radius in the Item Entry.')}))}];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? 'フィレットを作成するとき、どの値を指定する必要がありますか？' : 'What value must be specified when creating a fillet?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '項目入力でフィレットの半径を指定します。' : 'Specify the fillet radius in the Item Entry.') })) }];
   }
   if (lessonId === 'foundation-fairing-chamfer') {
     const ja = language === 'ja';
     const labels = ja ? ['丸みの半径', '面取り長', '肉厚', '回転角度'] : ['Fillet radius', 'Chamfer length', 'Wall thickness', 'Rotation angle'];
-    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '面取りするエッジを選択する前に、何を指定する必要がありますか？' : 'What must you specify before selecting the edge to be chamfered?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'エッジを選択する前に、項目入力で面取り長を指定します。':'Specify the chamfer length in the Item Entry before selecting the edge.')}))}];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '面取りするエッジを選択する前に、何を指定する必要がありますか？' : 'What must you specify before selecting the edge to be chamfered?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? 'エッジを選択する前に、項目入力で面取り長を指定します。' : 'Specify the chamfer length in the Item Entry before selecting the edge.') })) }];
   }
   if (lessonId === 'foundation-part-create') {
     const ja = language === 'ja';
     const labels = ja ? ['項目入力', 'ツリービュー', 'シェーディングツールバー', '作業平面'] : ['Item Entry', 'Tree View', 'Shading Toolbar', 'Work Plane'];
-    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '操作完了後、新しく作成した3Dパーツはどこで確認できますか？' : 'Where can you check the newly created 3D Part after completing the operation?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1 ? `${ja?'正解：':'Correct Answer: '}B. ${labels[1]}` : (ja?'新しいパーツ名はツリービューに表示されます。':'The new 3D Part Name appears in the Tree View.')}))}];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '操作完了後、新しく作成した3Dパーツはどこで確認できますか？' : 'Where can you check the newly created 3D Part after completing the operation?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '新しいパーツ名はツリービューに表示されます。' : 'The new 3D Part Name appears in the Tree View.') })) }];
   }
   if (lessonId === 'foundation-part-material') {
     const ja = language === 'ja';
     const labels = ['□', '×', 'φ', '-'];
-    return [{id: `${lessonId}-knowledge-check`, prompt: ja ? '丸形状の材料の直径には、どの記号を使用しますか？' : 'Which symbol should be used for the diameter of a round-shaped material?', choices: labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2 ? `${ja?'正解：':'Correct Answer: '}C. φ` : (ja?'φは丸形状の材料の直径を示します。':'φ indicates the diameter of round-shaped material.')}))}];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '丸形状の材料の直径には、どの記号を使用しますか？' : 'Which symbol should be used for the diameter of a round-shaped material?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. φ` : (ja ? 'φは丸形状の材料の直径を示します。' : 'φ indicates the diameter of round-shaped material.') })) }];
   }
   if (lessonId === 'foundation-part-change-name') {
-    const ja=language==='ja';
-    const labels=ja?['シェーディングを変更するため','3Dパーツと2Dパーツのリンクを維持するため','材料を変更するため','ワークプレーンを作成するため']:['To change the shading','To maintain the link between the 3D and 2D Parts','To change the material','To create a Work Plane'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'3Dパーツ名と2Dパーツ名を一致させる理由は何ですか？':'Why should the 3D Part Name and 2D Part Name match?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'名前を一致させることで3Dパーツと2Dパーツのリンクを維持します。':'Matching names maintains the link between the 3D and 2D Parts.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['シェーディングを変更するため', '3Dパーツと2Dパーツのリンクを維持するため', '材料を変更するため', 'ワークプレーンを作成するため'] : ['To change the shading', 'To maintain the link between the 3D and 2D Parts', 'To change the material', 'To create a Work Plane'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '3Dパーツ名と2Dパーツ名を一致させる理由は何ですか？' : 'Why should the 3D Part Name and 2D Part Name match?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '名前を一致させることで3Dパーツと2Dパーツのリンクを維持します。' : 'Matching names maintains the link between the 3D and 2D Parts.') })) }];
   }
   if (lessonId === 'foundation-component-delete') {
-    const ja=language==='ja';
-    const labels=ja?['構成要素をコピーする','構成要素を移動する','選択した構成要素を削除する','構成要素を回転する']:['Copies a component','Moves a component','Removes selected components','Rotates a component'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の削除コマンドは何を行いますか？':'What does the Delete Component command do?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'選択した構成要素を立体要素から削除します。':'Delete Component removes selected components from a solid entity.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['構成要素をコピーする', '構成要素を移動する', '選択した構成要素を削除する', '構成要素を回転する'] : ['Copies a component', 'Moves a component', 'Removes selected components', 'Rotates a component'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素の削除コマンドは何を行いますか？' : 'What does the Delete Component command do?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : (ja ? '選択した構成要素を立体要素から削除します。' : 'Delete Component removes selected components from a solid entity.') })) }];
   }
   if (lessonId === 'foundation-component-mirror-copy') {
-    const ja=language==='ja';
-    const labels=ja?['削除される','ミラー位置へ移動する','元の位置に残り、ミラーコピーが作成される','複数の構成要素に分離される']:['It is deleted','It is moved to the mirrored position','It remains while a mirrored copy is created','It is separated into multiple components'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素のミラーコピーでは、元の構成要素はどうなりますか？':'What happens to the original component when using Mirror Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===2,feedback:index===2?`${ja?'正解：':'Correct Answer: '}C. ${labels[2]}`:(ja?'元の構成要素を残して、ミラー複製を作成します。':'The original remains while a mirrored duplicate is created.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['削除される', 'ミラー位置へ移動する', '元の位置に残り、ミラーコピーが作成される', '複数の構成要素に分離される'] : ['It is deleted', 'It is moved to the mirrored position', 'It remains while a mirrored copy is created', 'It is separated into multiple components'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素のミラーコピーでは、元の構成要素はどうなりますか？' : 'What happens to the original component when using Mirror Copy Component?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}` : (ja ? '元の構成要素を残して、ミラー複製を作成します。' : 'The original remains while a mirrored duplicate is created.') })) }];
   }
   if (lessonId === 'foundation-component-rotate-copy') {
-    const ja=language==='ja';
-    const labels=ja?['回転コピーは元の構成要素を削除する','回転コピーは回転した複製を作成する','回転コピーでは軸を使用しない','回転コピーは部品全体にしか使用できない']:['Rotate Copy Component deletes the original','Rotate Copy Component creates a rotated duplicate','Rotate Copy Component does not use an axis','Rotate Copy Component only works on whole parts'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の回転と回転コピーの主な違いは何ですか？':'What is the main difference between Rotate Component and Rotate Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'回転コピーは元の構成要素を残して、回転した複製を作成します。':'Rotate Copy Component keeps the original and creates a rotated duplicate.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['回転コピーは元の構成要素を削除する', '回転コピーは回転した複製を作成する', '回転コピーでは軸を使用しない', '回転コピーは部品全体にしか使用できない'] : ['Rotate Copy Component deletes the original', 'Rotate Copy Component creates a rotated duplicate', 'Rotate Copy Component does not use an axis', 'Rotate Copy Component only works on whole parts'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素の回転と回転コピーの主な違いは何ですか？' : 'What is the main difference between Rotate Component and Rotate Copy Component?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '回転コピーは元の構成要素を残して、回転した複製を作成します。' : 'Rotate Copy Component keeps the original and creates a rotated duplicate.') })) }];
   }
   if (lessonId === 'foundation-component-repeat-copy') {
-    const ja=language==='ja';
-    const labels=ja?['構成要素を削除する','構成要素を連続して複製する','構成要素を回転する','構成要素を分離する']:['Deleting a component','Continuously duplicating a component','Rotating a component','Separating a component'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素の連続コピーは主に何に使用しますか？':'What is Repeat Copy Component mainly used for?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'構成要素を連続して複製するために使用します。':'Repeat Copy Component is intended for continuous duplication of a component.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['構成要素を削除する', '構成要素を連続して複製する', '構成要素を回転する', '構成要素を分離する'] : ['Deleting a component', 'Continuously duplicating a component', 'Rotating a component', 'Separating a component'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素の連続コピーは主に何に使用しますか？' : 'What is Repeat Copy Component mainly used for?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '構成要素を連続して複製するために使用します。' : 'Repeat Copy Component is intended for continuous duplication of a component.') })) }];
   }
   if (lessonId === 'foundation-component-rotate') {
-    const ja=language==='ja';
-    const labels=ja?['1点','2点','3つの面','1つの座標のみ']:['One point','Two points','Three faces','One coordinate only'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'回転軸を定義するために必要なものは何ですか？':'What is required to define the axis of rotation?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'2点を選択して回転軸を定義します。':'Select two points to define the axis of rotation.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['1点', '2点', '3つの面', '1つの座標のみ'] : ['One point', 'Two points', 'Three faces', 'One coordinate only'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '回転軸を定義するために必要なものは何ですか？' : 'What is required to define the axis of rotation?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '2点を選択して回転軸を定義します。' : 'Select two points to define the axis of rotation.') })) }];
   }
   if (lessonId === 'foundation-component-mirror') {
-    const ja=language==='ja';
-    const labels=ja?['3点または面を選択する','X軸方向の距離だけを入力する','シェーディングモードを変更する','ユーザービューを選択する']:['By selecting three points or a face','By entering only an X-axis distance','By changing the shading mode','By selecting a User View'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素をミラー移動するとき、ミラー平面をどのように定義できますか？':'How can you define the mirror plane when using Mirror Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'3点を選ぶか、面を左クリックして平面を定義します。':'Define the plane by selecting three points or left-clicking a face.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['3点または面を選択する', 'X軸方向の距離だけを入力する', 'シェーディングモードを変更する', 'ユーザービューを選択する'] : ['By selecting three points or a face', 'By entering only an X-axis distance', 'By changing the shading mode', 'By selecting a User View'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素をミラー移動するとき、ミラー平面をどのように定義できますか？' : 'How can you define the mirror plane when using Mirror Component?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '3点を選ぶか、面を左クリックして平面を定義します。' : 'Define the plane by selecting three points or left-clicking a face.') })) }];
   }
   if (lessonId === 'foundation-component-copy') {
-    const ja=language==='ja';
-    const labels=ja?['X・Y・Zの移動量とコピーの個数','回転角度のみ','モデルの色とシェーディング','作業平面の向き']:['X, Y, and Z distance and the number of copies','Rotation angle only','Model color and shading','Work Plane orientation'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素をコピーするとき、何を指定する必要がありますか？':'What information must be specified when using Copy Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'項目入力でX・Y・Zの移動量と個数を指定します。':'Specify X, Y, and Z distance and the number of copies in Item Entry.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['X・Y・Zの移動量とコピーの個数', '回転角度のみ', 'モデルの色とシェーディング', '作業平面の向き'] : ['X, Y, and Z distance and the number of copies', 'Rotation angle only', 'Model color and shading', 'Work Plane orientation'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素をコピーするとき、何を指定する必要がありますか？' : 'What information must be specified when using Copy Component?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '項目入力でX・Y・Zの移動量と個数を指定します。' : 'Specify X, Y, and Z distance and the number of copies in Item Entry.') })) }];
   }
   if (lessonId === 'foundation-component-move') {
-    const ja=language==='ja';
-    const labels=ja?['ユーザービュー','項目入力','シェーディングツールバー','作業平面']:['User View','Item Entry','Shading toolbar','Work Plane'];
-    return [{id:`${lessonId}-knowledge-check`,prompt:ja?'構成要素を移動するとき、移動量はどこで指定しますか？':'Where do you specify the movement distance when using Move Component?',choices:labels.map((label,index)=>({id:`${lessonId}-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'項目入力でX・Y・Zの移動量を指定します。':'Specify the X, Y, and Z movement distances in Item Entry.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['ユーザービュー', '項目入力', 'シェーディングツールバー', '作業平面'] : ['User View', 'Item Entry', 'Shading toolbar', 'Work Plane'];
+    return [{ id: `${lessonId}-knowledge-check`, prompt: ja ? '構成要素を移動するとき、移動量はどこで指定しますか？' : 'Where do you specify the movement distance when using Move Component?', choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '項目入力でX・Y・Zの移動量を指定します。' : 'Specify the X, Y, and Z movement distances in Item Entry.') })) }];
   }
   if (lessonId === 'foundation-hole-details') {
     const ja = language === 'ja';
     const labels = ja ? ['緑色', '赤色', '青色', '黄色'] : ['Green', 'Red', 'Blue', 'Yellow'];
-    return [{id:'hole-details-color',prompt:ja?'資料では、タップ穴を何色で示しますか？':'In this lesson, which color identifies tapped holes?',choices:labels.map((label,index)=>({id:`hole-color-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'完成例のタップ穴を確認してください。':'Check the tapped-hole examples.')}))}];
+    return [{ id: 'hole-details-color', prompt: ja ? '資料では、タップ穴を何色で示しますか？' : 'In this lesson, which color identifies tapped holes?', choices: labels.map((label, index) => ({ id: `hole-color-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '完成例のタップ穴を確認してください。' : 'Check the tapped-hole examples.') })) }];
   }
   if (lessonId === 'F16.5') {
     const ja = language === 'ja';
@@ -550,14 +629,14 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
     return [{ id: 'F16.4-axis-check', prompt: ja ? '回転投影で回転軸は何を指定しますか？' : 'What does the rotation axis define in Revolve?', choices: labels.map((label, index) => ({ id: `F16.4-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '輪郭がどの線の周りを回転するか確認しましょう。' : 'Think about the line around which the profile turns.') })) }];
   }
   if (lessonId === 'F16.3') {
-    const ja=language==='ja';
-    const labels=ja?['OK','キャンセル','高さを0にする','輪郭を削除する']:['OK','Cancel','Set the height to zero','Delete the profile'];
-    return [{id:'F16.3-plane-check',prompt:ja?'押し出し後の削除確認で、作業平面とスケッチを残すには何を選びますか？':'Which option keeps the Work Plane and its sketches at the deletion prompt after extrusion?',choices:labels.map((label,index)=>({id:`F16.3-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===1,feedback:index===1?`${ja?'正解：':'Correct Answer: '}B. ${labels[1]}`:(ja?'削除確認ダイアログの選択肢を確認してください。':'Check the options in the Work Plane deletion dialog.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['OK', 'キャンセル', '高さを0にする', '輪郭を削除する'] : ['OK', 'Cancel', 'Set the height to zero', 'Delete the profile'];
+    return [{ id: 'F16.3-plane-check', prompt: ja ? '押し出し後の削除確認で、作業平面とスケッチを残すには何を選びますか？' : 'Which option keeps the Work Plane and its sketches at the deletion prompt after extrusion?', choices: labels.map((label, index) => ({ id: `F16.3-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 1, feedback: index === 1 ? `${ja ? '正解：' : 'Correct Answer: '}B. ${labels[1]}` : (ja ? '削除確認ダイアログの選択肢を確認してください。' : 'Check the options in the Work Plane deletion dialog.') })) }];
   }
   if (lessonId === 'F16.2') {
-    const ja=language==='ja';
-    const labels=ja ? ['すべての端点が接続し、隙間や重複線がないこと','背景色が変更されていること','作業平面が削除されていること','輪郭が複数の平面に分かれていること'] : ['All endpoints connect, with no gaps or duplicate lines','The background color has changed','The Work Plane has been deleted','The outline is spread across several planes'];
-    return [{id:'F16.2-profile-check',prompt:ja?'長方形の輪郭を立体化する前に何を確認しますか？':'What should you check before using the rectangular profile to create a solid?',choices:labels.map((label,index)=>({id:`F16.2-${index}`,label:`${'ABCD'[index]}. ${label}`,isCorrect:index===0,feedback:index===0?`${ja?'正解：':'Correct Answer: '}A. ${labels[0]}`:(ja?'端点の接続と余分な線を確認しましょう。':'Check endpoint connections and unwanted lines.')}))}];
+    const ja = language === 'ja';
+    const labels = ja ? ['すべての端点が接続し、隙間や重複線がないこと', '背景色が変更されていること', '作業平面が削除されていること', '輪郭が複数の平面に分かれていること'] : ['All endpoints connect, with no gaps or duplicate lines', 'The background color has changed', 'The Work Plane has been deleted', 'The outline is spread across several planes'];
+    return [{ id: 'F16.2-profile-check', prompt: ja ? '長方形の輪郭を立体化する前に何を確認しますか？' : 'What should you check before using the rectangular profile to create a solid?', choices: labels.map((label, index) => ({ id: `F16.2-${index}`, label: `${'ABCD'[index]}. ${label}`, isCorrect: index === 0, feedback: index === 0 ? `${ja ? '正解：' : 'Correct Answer: '}A. ${labels[0]}` : (ja ? '端点の接続と余分な線を確認しましょう。' : 'Check endpoint connections and unwanted lines.') })) }];
   }
   if (lessonId === 'F16.1') {
     const ja = language === 'ja';
@@ -800,7 +879,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   }
   if (lessonId === 'F5.6') {
     const ja = language === 'ja';
-    const labels = ja ? ["ズーム","パーツのレイアウトを変更する","シェーディング","保存"] : ["Zoom","Change 3D Part Layout","Shading","Save"];
+    const labels = ja ? ["ズーム", "パーツのレイアウトを変更する", "シェーディング", "保存"] : ["Zoom", "Change 3D Part Layout", "Shading", "Save"];
     return [{
       id: 'F5.6-knowledge-check', prompt: ja ? "0, 0, 0 に配置した後で部品の原点を変更するには、何を使いますか？" : "You placed a shape at 0, 0, 0 and now want to change the part’s origin. What should you use?",
       choices: labels.map((label, index) => ({
@@ -811,7 +890,7 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   }
   if (lessonId === 'F5.4') {
     const ja = language === 'ja';
-    const labels = ja ? ["原点を画面中央へ移動する","形状の配置点を現在の原点に合わせる","必ず形状の中心を原点に合わせる","表示方向を変える"] : ["Moves the origin to the screen center","Places the shape’s placement point at the current origin","Always places the shape’s center at the origin","Changes the viewing direction"];
+    const labels = ja ? ["原点を画面中央へ移動する", "形状の配置点を現在の原点に合わせる", "必ず形状の中心を原点に合わせる", "表示方向を変える"] : ["Moves the origin to the screen center", "Places the shape’s placement point at the current origin", "Always places the shape’s center at the origin", "Changes the viewing direction"];
     return [{
       id: 'F5.4-knowledge-check', prompt: ja ? "例で配置点に 0, 0, 0 を入力すると、どうなりますか？" : "In the example, what does entering 0, 0, 0 for the placement point do?",
       choices: labels.map((label, index) => ({
@@ -1016,3 +1095,4 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
   }
   return finalKnowledgeCheck(language);
 }
+

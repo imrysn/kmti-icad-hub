@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "source": "User-supplied transcription of the Foundations Excel tracker; workbook not attached",
   "modules": [
     {
@@ -5054,13 +5054,394 @@
     {
       "id": "F27",
       "title": {
+        "en": "Loading of Parasolid",
+        "ja": "Loading of Parasolid"
+      },
+      "lessons": [
+        {
+          "id": "foundation-parasolid-import",
+          "displayId": "F27.1",
+          "moduleId": "F27",
+          "title": {
+            "en": "Import Parasolid",
+            "ja": "Import Parasolid"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:parasolid:import",
+          "routeAliases": [
+            "F27.1"
+          ],
+          "completionAliases": [
+            "F27.1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Import external Parasolid (.x_t, .x_b) 3D data into iCAD SX to create 3D Purchase Parts.",
+              "practice": "By the end of this lesson, you should be able to import a Parasolid file and release the purchase part names in the Tree View.",
+              "sections": [
+                {
+                  "title": "How to Import a Parasolid File",
+                  "type": "procedure",
+                  "text": "**Step 1 — Select Import**\nSelect Import from the Icon Menu.\n\n**Step 2 — Select the Parasolid File**\nIn the Parasolid Link dialog, browse to the target folder, specify the file extension if needed, and select the Parasolid file.\n\n**Step 3 — Confirm and Execute**\nPress OK, then select GO to execute the import.\n\n**Step 4 — Cancel the Name Change**\nWhen the Name Change dialog appears, select Cancel.\n\n**Step 5 — Release the Purchase Part Names**\nIn the Tree View, right-click the 3D Part Name and select Cancel to release it. Repeat for all imported purchase parts.\n\n**Step 6 — Check the Final Result**\nConfirm that the 3D model appears in the workspace and all purchase part names are released in the Tree View."
+                },
+                {
+                  "title": "Important Reminder",
+                  "type": "callout",
+                  "text": "Always cancel the Name Change dialog and release purchase part names in the Tree View so the purchase part maintains its standard catalog identity."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "外部パラソリッド（.x_t、.x_b）3DデータをiCAD SXにインポートして、3D購入部品を作成します。",
+              "practice": "パラソリッドファイルをインポートし、ツリービューで購入部品名を解放できるようになります。",
+              "sections": [
+                {
+                  "title": "パラソリッドファイルをインポートする手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — インポートを選択**\nアイコンメニューからインポートを選択します。\n\n**ステップ 2 — パラソリッドファイルを選択**\nパラソリッドリンクダイアログで対象フォルダを参照し、必要に応じてファイル拡張子を指定してファイルを選択します。\n\n**ステップ 3 — 確定と実行**\nOKを押し、続けてGOを選択してインポートを実行します。\n\n**ステップ 4 — 名前変更をキャンセル**\n名前変更ダイアログが表示されたら、キャンセルを選択します。\n\n**ステップ 5 — 購入部品名を解放**\nツリービューで3Dパーツ名を右クリックし、キャンセルを選択して解放します。すべての購入部品に対して繰り返します。\n\n**ステップ 6 — 完了結果の確認**\n3D空間にモデルが表示され、ツリービューで購入部品名が解放されていることを確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "type": "callout",
+                  "text": "購入部品が標準カタログの識別情報を維持できるよう、名前変更ダイアログでは必ずキャンセルを選択し、ツリービューで購入部品名を解放してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-parasolid-lighten-brep",
+          "displayId": "F27.2",
+          "moduleId": "F27",
+          "title": {
+            "en": "Lighten B-Rep Solid",
+            "ja": "B-Repソリッドの軽量化"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:parasolid:lighten-brep",
+          "routeAliases": [
+            "F27.2"
+          ],
+          "completionAliases": [
+            "F27.2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Lighten the data size of imported B-Rep solid purchase parts to optimize model performance.",
+              "practice": "By the end of this lesson, you should be able to lighten an imported purchase part and verify completion in the Message Pane.",
+              "sections": [
+                {
+                  "title": "How to Lighten a B-Rep Solid",
+                  "type": "procedure",
+                  "text": "**Step 1 — Select Lighten B-Rep Solid**\nSelect Lighten B-Rep Solid from the Icon Menu.\n\n**Step 2 — Select No Form Changes**\nIn the Level Settings dialog, select No form changes and press OK.\n\n**Step 3 — Select the Purchase Part**\nSelect the purchase part, then select GO to execute.\n\n**Step 4 — Check the Message Pane**\nConfirm that the Message Pane displays: MSG06901 Process completed successfully."
+                },
+                {
+                  "title": "Important Reminder",
+                  "type": "callout",
+                  "text": "Always select \"No form changes\" to preserve the part's original geometry, and verify message MSG06901 in the Message Pane."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "インポートしたB-Repソリッド購入部品のデータサイズを軽量化し、モデルの動作パフォーマンスを最適化します。",
+              "practice": "購入部品を軽量化し、メッセージペインで処理の完了を確認できるようになります。",
+              "sections": [
+                {
+                  "title": "B-Repソリッドを軽量化する手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — B-Repソリッドの軽量化を選択**\nアイコンメニューからB-Repソリッドの軽量化を選択します。\n\n**ステップ 2 — 形状変更なしを選択**\n簡略化・復元（Level Settings）ダイアログで「形状変更なし」を選択し、OKを押します。\n\n**ステップ 3 — 購入部品を選択**\n購入部品を選択し、GOを選択して実行します。\n\n**ステップ 4 — メッセージペインを確認**\nメッセージペインに「MSG06901 処理が正常に終了しました。」と表示されたことを確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "type": "callout",
+                  "text": "部品の元形状を保持するために必ず「形状変更なし」を選択し、メッセージペインでMSG06901の完了メッセージを確認してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-parasolid-save-purchase-part",
+          "displayId": "F27.3",
+          "moduleId": "F27",
+          "title": {
+            "en": "Save the Purchase Part",
+            "ja": "購入部品の保存"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:parasolid:save-purchase-part",
+          "routeAliases": [
+            "F27.3"
+          ],
+          "completionAliases": [
+            "F27.3"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Save the processed purchase part using its official purchase part code as the file name.",
+              "practice": "By the end of this lesson, you should be able to save the purchase part using the required purchase part code.",
+              "sections": [
+                {
+                  "title": "How to Save the Purchase Part",
+                  "type": "procedure",
+                  "text": "**Step 1 — Open Save As**\nGo to:\n\nFile → Save As\n\n**Step 2 — Enter the File Name**\nUse the purchase part code as the file name.\n\n**Step 3 — Save the Part**\nClick Save to complete saving the purchase part.\n\n**Step 4 — Check the Final Result**\nConfirm that the purchase part is saved using the purchase part code as its file name."
+                },
+                {
+                  "title": "Important Reminder",
+                  "type": "callout",
+                  "text": "Always use the exact purchase part code as the file name so the part is correctly recognized across assemblies."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "処理した購入部品を、正式な購入部品コードをファイル名として保存します。",
+              "practice": "正しい購入部品コードを使用して購入部品を保存できるようになります。",
+              "sections": [
+                {
+                  "title": "購入部品の保存手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — 名前を付けて保存を開く**\n次のように進みます：\n\nファイル(F) → 名前を付けて保存(A)\n\n**ステップ 2 — ファイル名を入力**\nファイル名には購入部品コードを使用します。\n\n**ステップ 3 — 部品を保存**\n「保存」をクリックして購入部品の保存を完了します。\n\n**ステップ 4 — 完了結果の確認**\n購入部品が購入部品コードをファイル名として保存されたことを確認します。"
+                },
+                {
+                  "title": "重要な注意点",
+                  "type": "callout",
+                  "text": "アセンブリ間で部品が正しく認識されるよう、必ずファイル名として正式な購入部品コードを使用してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-parasolid-set-purchase-part-info",
+          "displayId": "F27.4",
+          "moduleId": "F27",
+          "title": {
+            "en": "Set Purchase Part Information",
+            "ja": "購入部品情報の設定"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:parasolid:set-purchase-part-info",
+          "routeAliases": [
+            "F27.4"
+          ],
+          "completionAliases": [
+            "F27.4"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Configure purchase part metadata: Material, Layer, Color, Additional Info, and Part Comment.",
+              "practice": "By the end of this lesson, you should be able to set all required purchase part attributes and enter maker and comment information.",
+              "sections": [
+                {
+                  "title": "How to Set Purchase Part Information",
+                  "type": "procedure",
+                  "text": "**Step 1 — Set the Material**\nSet the Material from the material list (e.g., 012 市販品 for commercial purchase parts).\n\n**Step 2 — Set the Layer**\nSet the designated Layer for the purchase part (e.g., Layer 3 as indicated).\n\n**Step 3 — Set the Color**\nSet the Color to match the part's actual physical appearance.\n\n**Step 4 — Set the Additional Information**\nIn the Parts Information Setting table (Additional Info), enter the MAKER into the REMARK column."
+                },
+                {
+                  "title": "Add a Comment to the Purchase Part",
+                  "type": "procedure",
+                  "text": "Comments can also be added directly through part Properties.\n\n**Step 5 — Open Properties**\nIn the Tree View, right-click the Top 3D Part and select Properties.\n\n**Step 6 — Enter the Part Comment**\nEnter the Part Comment in the Comment field and press OK.\n\n**Step 7 — Check the Final Result**\nConfirm that the important information of the purchase part has been set correctly:\n\n- Material\n- Layer\n- Color\n- Additional Info\n- Part Comment\n- Maker in the Remark"
+                },
+                {
+                  "title": "Important Reminder",
+                  "type": "callout",
+                  "text": "The purchase part color depends on its actual physical color. Always input the MAKER of the purchase part in the REMARK, keeping it separate from the Part Comment."
+                }
+              ]
+            },
+            "ja": {
+              "explanation": "購入部品の属性情報（材質、レイヤ、色、付加情報、部品コメント）を設定します。",
+              "practice": "購入部品の必要な属性を設定し、メーカー情報およびコメントを入力できるようになります。",
+              "sections": [
+                {
+                  "title": "購入部品情報の設定手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — 材質を設定**\n材質リストから適切な材質を設定します（例: 市販品には「012 市販品」）。\n\n**ステップ 2 — レイヤを設定**\n指定されたレイヤを設定します（例: 指示通りレイヤ3）。\n\n**ステップ 3 — 色を設定**\n購入部品の色は実際の実物色に合わせて設定します。\n\n**ステップ 4 — 付加情報を設定**\n部品情報設定（付加情報）テーブルで、備考欄（REMARK）にメーカー（MAKER）を入力します。"
+                },
+                {
+                  "title": "購入部品にコメントを追加",
+                  "type": "procedure",
+                  "text": "部品にコメントを追加するもう一つの方法はプロパティからです。\n\n**ステップ 5 — プロパティを開く**\nツリービューでトップ3Dパーツを右クリックし、「プロパティ」を選択します。\n\n**ステップ 6 — 部品コメントを入力**\nコメント欄に特定のパーツのコメントを入力し、「OK」を押します。\n\n**ステップ 7 — 完了結果の確認**\n購入部品の重要情報が正しく設定されていることを確認します：\n\n- 材質\n- レイヤ\n- 色\n- 付加情報\n- 部品コメント\n- 備考欄のメーカー"
+                },
+                {
+                  "title": "重要な注意点",
+                  "type": "callout",
+                  "text": "購入部品の色は必ず実際の実物色に合わせてください。また、メーカー（MAKER）は部品コメントとは区別し、必ず備考欄（REMARK）に入力してください。"
+                }
+              ]
+            }
+          },
+          "contentReview": "draft",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F28",
+      "title": {
+        "en": "Mirrored Parts",
+        "ja": "ミラー部品"
+      },
+      "lessons": [
+        {
+          "id": "foundation-mirrored-parts-normal-and-mirror",
+          "displayId": "F28.1",
+          "moduleId": "F28",
+          "title": {
+            "en": "Normal Parts and Mirror Parts",
+            "ja": "通常部品とミラー部品"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:mirrored-parts:normal-and-mirror",
+          "routeAliases": [
+            "F28.1"
+          ],
+          "completionAliases": [
+            "F28.1"
+          ],
+          "content": {
+            "en": {
+              "explanation": "Parts are classified as either Normal Parts or Mirror Parts depending on whether creating a mirror copy produces any difference in the part. The part classification also determines how the drawing number should be assigned based on the KEMCO Standard.",
+              "practice": "Distinguish between a Normal Part and a Mirror Part and understand the drawing-number designation used for each type.",
+              "sections": [
+                {
+                  "title": "Normal Parts vs. Mirror Parts",
+                  "type": "concept",
+                  "text": "Parts are classified according to how they behave when a mirror copy is created.\n\n**Normal Part**\nA part that remains exactly the same as the original part when a mirror copy is created. No changes will be recognized between the original part and its mirror copy. Drawing number uses **N** (Example: **RTXXXXXXN**, **MTXXXXXXN01**).\n\n**Mirror Part**\nParts that are symmetrically the same, forming an opposite-hand pair. Drawing numbers use **A** and **B** (Examples: **MTXXXXXXA01**, **MTXXXXXXB01**, **RTXXXXXXA**, **RTXXXXXXB**)."
+                },
+                {
+                  "title": "Mirror Part A and Mirror Part B",
+                  "type": "concept",
+                  "text": "When creating a pair of mirror parts, designate the original part as Part A and its mirror copy as Part B.\n\n**Mirror Part A (Original Part)**\nMirror Part A is the original part. When creating a pair of mirror parts, the original part should be designated as Part A.\n\n**Mirror Part B (Mirror Copy)**\nMirror Part B is the mirror copy of Mirror Part A. A Mirror Part B cannot exist without Mirror Part A.\n\n*Special Rule: If there is no existing part to be mirrored, use A when naming the part.*"
+                },
+                {
+                  "title": "Drawing-Number Summary and Technical Notation",
+                  "type": "reference",
+                  "text": "Summary of drawing-number designations under the KEMCO Standard:\n\n- **Normal Part** → **N** (Example: RTXXXXXXN, MTXXXXXXN01)\n- **Original Mirror Part** → **A** (Example: MTXXXXXXA01, RTXXXXXXA)\n- **Mirror Copy** → **B** (Example: MTXXXXXXB01, RTXXXXXXB)\n\n*Note on Reference Drawings:* The notation **「勝手違」** (or 勝手違い) indicates a Mirror Part on technical reference drawings."
+                }
+              ],
+              "connection": "In the next lesson (F28.2), you will learn how to verify whether a part is Normal or Mirrored using the Mirror Copy tool in iCAD SX."
+            },
+            "ja": {
+              "explanation": "部品は、反転複写（ミラーコピー）を作成した際に形状や詳細に変化が生じるかどうかに応じて、「通常部品」または「ミラー部品」に分類されます。この分類によってKEMCO標準に基づく図面番号の付与方法が決まります。",
+              "practice": "通常部品とミラー部品の違いを区別し、それぞれの図面番号の指定ルールを理解できるようになります。",
+              "sections": [
+                {
+                  "title": "通常部品とミラー部品",
+                  "type": "concept",
+                  "text": "部品は反転複写を作成したときの性質によって分類されます。\n\n**通常部品**\n反転複写を作成しても元の部品とまったく同じ形状を保つ部品です。元の部品とミラーコピーの間に違いは認識されません。図面番号には **N** を使用します（例: **RTXXXXXXN**、**MTXXXXXXN01**）。\n\n**ミラー部品**\n対称形状をなす部品のペアです。穴の位置や切り欠きなどの特徴が反転によって異なるため、反対側の形状が必要となります。図面番号には **A** および **B** を使用します（例: **MTXXXXXXA01**、**MTXXXXXXB01**、**RTXXXXXXA**、**RTXXXXXXB**）。"
+                },
+                {
+                  "title": "ミラー部品 A と ミラー部品 B",
+                  "type": "concept",
+                  "text": "ミラー部品のペアを作成するときは、元部品を部品 A、反転複写した部品を部品 B として指定します。\n\n**ミラー部品 A（元部品）**\nミラー部品 A は最初に作成する元の部品です。ミラー部品のペアを作成するときは、元部品を必ず「部品 A」として指定します。\n\n**ミラー部品 B（ミラーコピー）**\nミラー部品 B はミラー部品 A を反転複写した部品です。ミラー部品 B は、ミラー部品 A が存在しなければ存在できません。\n\n*特記事項: 反転元となる既存の部品が存在しない場合は、部品命名時に A を使用します。*"
+                },
+                {
+                  "title": "図面番号のまとめと参照図面の表記",
+                  "type": "reference",
+                  "text": "KEMCO標準における図面番号の指定ルールのまとめ：\n\n- **通常部品** → **N**（例: RTXXXXXXN、MTXXXXXXN01）\n- **元のミラー部品** → **A**（例: MTXXXXXXA01、RTXXXXXXA）\n- **ミラーコピー** → **B**（例: MTXXXXXXB01、RTXXXXXXB）\n\n*参照図面の注記:* 参照図面の **「勝手違」**（勝手違い）は、ミラー部品（鏡像対称）を示しています。"
+                }
+              ],
+              "connection": "次のレッスン（F28.2）では、iCAD SX の反転複写ツールを使って部品が通常部品かミラー部品かを識別する方法を学びます。"
+            }
+          },
+          "contentReview": "instructor-review-required",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-mirrored-parts-identify",
+          "displayId": "F28.2",
+          "moduleId": "F28",
+          "title": {
+            "en": "Identify Normal or Mirror Parts",
+            "ja": "通常部品またはミラー部品の識別"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:mirrored-parts:identify",
+          "routeAliases": [
+            "F28.2"
+          ],
+          "completionAliases": [
+            "F28.2"
+          ],
+          "content": {
+            "en": {
+              "explanation": "",
+              "practice": "",
+              "sections": []
+            },
+            "ja": {
+              "explanation": "",
+              "practice": "",
+              "sections": []
+            }
+          },
+          "contentReview": "not-authored",
+          "recapMode": "shared"
+        },
+        {
+          "id": "foundation-mirrored-parts-3d-modeling",
+          "displayId": "F28.3",
+          "moduleId": "F28",
+          "title": {
+            "en": "3D Modeling of Mirror Parts",
+            "ja": "ミラー部品の3Dモデリング"
+          },
+          "type": "reading",
+          "renderer": null,
+          "video": null,
+          "completionId": "foundations:mirrored-parts:3d-modeling",
+          "routeAliases": [
+            "F28.3"
+          ],
+          "completionAliases": [
+            "F28.3"
+          ],
+          "content": {
+            "en": {
+              "explanation": "",
+              "practice": "",
+              "sections": []
+            },
+            "ja": {
+              "explanation": "",
+              "practice": "",
+              "sections": []
+            }
+          },
+          "contentReview": "not-authored",
+          "recapMode": "shared"
+        }
+      ]
+    },
+    {
+      "id": "F29",
+      "title": {
         "en": "Foundation Review",
         "ja": "基礎の復習"
       },
       "lessons": [
         {
           "id": "F17.1",
-          "moduleId": "F27",
+          "moduleId": "F29",
           "title": {
             "en": "Foundation Review",
             "ja": "基礎の復習"
@@ -5072,12 +5453,12 @@
             "F16.1",
             "F18.1",
             "F19.1",
-            "F28.1",
-            "F27.1"
+            "F29.1"
           ],
           "completionAliases": [
             "F10.1",
-            "F16.1"
+            "F16.1",
+            "F29.1"
           ],
           "content": {
             "en": {
@@ -5177,11 +5558,11 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F27.1"
+          "displayId": "F29.1"
         },
         {
           "id": "F17.2",
-          "moduleId": "F27",
+          "moduleId": "F29",
           "title": {
             "en": "Foundation Knowledge Check",
             "ja": "基礎の理解度チェック"
@@ -5193,12 +5574,12 @@
             "F16.2",
             "F18.2",
             "F19.2",
-            "F28.2",
-            "F27.2"
+            "F29.2"
           ],
           "completionAliases": [
             "F10.6",
-            "F16.2"
+            "F16.2",
+            "F29.2"
           ],
           "content": {
             "en": {
@@ -5224,7 +5605,7 @@
           },
           "contentReview": "instructor-review-required",
           "recapMode": "shared",
-          "displayId": "F27.2"
+          "displayId": "F29.2"
         }
       ]
     }

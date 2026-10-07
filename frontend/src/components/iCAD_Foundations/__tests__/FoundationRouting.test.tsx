@@ -4,73 +4,73 @@ import { LessonViewer } from '../../../views/mentor/components/LessonViewer';
 import { createFoundationLessons } from '../curriculum';
 import { foundationKnowledgeQuestions } from '../knowledgeCheck';
 
-const state=vi.hoisted(()=>({post:vi.fn().mockResolvedValue({}), stop:vi.fn(), speak:vi.fn()}));
+const state = vi.hoisted(() => ({ post: vi.fn().mockResolvedValue({}), stop: vi.fn(), speak: vi.fn() }));
 // jsdom does not implement element scrolling; the real browser does.
 Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });
 Object.defineProperty(window, 'scrollTo', { configurable: true, value: vi.fn() });
-HTMLDialogElement.prototype.showModal = vi.fn(function(this: HTMLDialogElement) { this.open = true; });
-HTMLDialogElement.prototype.close = vi.fn(function(this: HTMLDialogElement) { this.open = false; });
-vi.mock('../../../hooks/useLessonCore',()=>({useLessonCore:()=>({containerRef:{current:null},stop:state.stop,speak:state.speak,registerText:vi.fn(),isSpeaking:false,currentIndex:-1,currentCharIndex:0})}));
-vi.mock('../../../hooks/useTTSAutoplay',()=>({useTTSAutoplay:vi.fn()}));
-vi.mock('canvas-confetti',()=>({default:vi.fn()}));
-vi.mock('../../../services/api',()=>({default:{post:state.post,get:vi.fn()}}));
-vi.mock('../../../hooks/useAuth',()=>({useAuth:()=>({})}));
-vi.mock('../../../context/TTSContext',()=>({useTTSContext:()=>({stop:state.stop,speak:state.speak,isSpeaking:false,currentIndex:-1,setCurrentIndex:vi.fn(),activeParagraphText:''})}));
-vi.mock('../../../context/LanguageContext',()=>({useTranslation:()=>({language:'en',t:(s:string)=>s,translateContent:(s:string)=>s})}));
-vi.mock('../../../services/authService',()=>({authService:{getStorageKey:(s:string)=>s}}));
-vi.mock('../../../views/mentor/components/QuizModal',()=>({QuizModal:()=>null}));
-vi.mock('../../3D_Modeling/3D_BasicOperation',()=>({default:({subLessonId,onNextLesson}:{subLessonId:string,onNextLesson:()=>void})=><button onClick={onNextLesson}>shape {subLessonId}</button>}));
-vi.mock('../../PublicCourses/Foundations/DynamicFoundationsLesson',()=>({default:({lessonId,videoId,onNextLesson}:{lessonId:string,videoId:string,onNextLesson:()=>void})=><button onClick={onNextLesson}>{lessonId} {videoId}</button>}));
+HTMLDialogElement.prototype.showModal = vi.fn(function (this: HTMLDialogElement) { this.open = true; });
+HTMLDialogElement.prototype.close = vi.fn(function (this: HTMLDialogElement) { this.open = false; });
+vi.mock('../../../hooks/useLessonCore', () => ({ useLessonCore: () => ({ containerRef: { current: null }, stop: state.stop, speak: state.speak, registerText: vi.fn(), isSpeaking: false, currentIndex: -1, currentCharIndex: 0 }) }));
+vi.mock('../../../hooks/useTTSAutoplay', () => ({ useTTSAutoplay: vi.fn() }));
+vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
+vi.mock('../../../services/api', () => ({ default: { post: state.post, get: vi.fn() } }));
+vi.mock('../../../hooks/useAuth', () => ({ useAuth: () => ({}) }));
+vi.mock('../../../context/TTSContext', () => ({ useTTSContext: () => ({ stop: state.stop, speak: state.speak, isSpeaking: false, currentIndex: -1, setCurrentIndex: vi.fn(), activeParagraphText: '' }) }));
+vi.mock('../../../context/LanguageContext', () => ({ useTranslation: () => ({ language: 'en', t: (s: string) => s, translateContent: (s: string) => s }) }));
+vi.mock('../../../services/authService', () => ({ authService: { getStorageKey: (s: string) => s } }));
+vi.mock('../../../views/mentor/components/QuizModal', () => ({ QuizModal: () => null }));
+vi.mock('../../3D_Modeling/3D_BasicOperation', () => ({ default: ({ subLessonId, onNextLesson }: { subLessonId: string, onNextLesson: () => void }) => <button onClick={onNextLesson}>shape {subLessonId}</button> }));
+vi.mock('../../PublicCourses/Foundations/DynamicFoundationsLesson', () => ({ default: ({ lessonId, videoId, onNextLesson }: { lessonId: string, videoId: string, onNextLesson: () => void }) => <button onClick={onNextLesson}>{lessonId} {videoId}</button> }));
 
-function viewer(id:string, next=vi.fn()) {
+function viewer(id: string, next = vi.fn()) {
   return render(<LessonViewer is2DDrawingCourse={false} isFoundationsCourse courseId="foundations" activeLessonId={id}
     currentLessonIndex={0} allLessonIdsLength={54} goToNextLesson={next} goToPrevLesson={vi.fn()}
-    getActiveLessonTitle={()=>id} lessons={createFoundationLessons()} completedLessons={[]} onLessonComplete={vi.fn()} />);
+    getActiveLessonTitle={() => id} lessons={createFoundationLessons()} completedLessons={[]} onLessonComplete={vi.fn()} />);
 }
 
-describe('Canonical Foundations lesson routing',()=>{
-  afterEach(()=>{cleanup();vi.clearAllMocks();});
-  it('preserves Box and requires the shared knowledge check before saving',async()=>{
-    const next=vi.fn();viewer('F9.1',next);
+describe('Canonical Foundations lesson routing', () => {
+  afterEach(() => { cleanup(); vi.clearAllMocks(); });
+  it('preserves Box and requires the shared knowledge check before saving', async () => {
+    const next = vi.fn(); viewer('F9.1', next);
     await vi.dynamicImportSettled();
-    fireEvent.click(await screen.findByRole('button',{name:'shape basic-op-box'}, {timeout:10000}));
+    fireEvent.click(await screen.findByRole('button', { name: 'shape basic-op-box' }, { timeout: 10000 }));
     expect(state.post).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
-    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F9.1')[0].choices.find(c=>c.isCorrect)!.label));
-    fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
-    fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
-    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F9.1',score:100})));
+    fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
+    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en', 'F9.1')[0].choices.find(c => c.isCorrect)!.label));
+    fireEvent.click(screen.getByRole('button', { name: 'Check Answer' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete lesson' }));
+    await waitFor(() => expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz', expect.objectContaining({ lesson_id: 'F9.1', score: 100 })));
     expect(next).not.toHaveBeenCalled();
-    fireEvent.click(await screen.findByRole('button',{name:'Next lesson'}));
+    fireEvent.click(await screen.findByRole('button', { name: 'Next lesson' }));
     expect(next).toHaveBeenCalledOnce();
   });
-  it('passes original Move data to the dynamic player but persists canonical progress',async()=>{
+  it('passes original Move data to the dynamic player but persists canonical progress', async () => {
     viewer('F10.1');
     await vi.dynamicImportSettled();
-    fireEvent.click(await screen.findByRole('button',{name:'lesson-6-1 basicMove'}, {timeout:10000}));
+    fireEvent.click(await screen.findByRole('button', { name: 'lesson-6-1 basicMove' }, { timeout: 10000 }));
     expect(state.post).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button',{name:'Start knowledge check'}));
-    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en','F10.1')[0].choices.find(c=>c.isCorrect)!.label));
-    fireEvent.click(screen.getByRole('button',{name:'Check Answer'}));
-    fireEvent.click(screen.getByRole('button',{name:'Complete lesson'}));
-    await waitFor(()=>expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz',expect.objectContaining({lesson_id:'F10.1'})));
+    fireEvent.click(screen.getByRole('button', { name: 'Start knowledge check' }));
+    fireEvent.click(screen.getByLabelText(foundationKnowledgeQuestions('en', 'F10.1')[0].choices.find(c => c.isCorrect)!.label));
+    fireEvent.click(screen.getByRole('button', { name: 'Check Answer' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Complete lesson' }));
+    await waitFor(() => expect(state.post).toHaveBeenCalledWith('/auth/submit-quiz', expect.objectContaining({ lesson_id: 'F10.1' })));
   });
-  it('does not route an old advanced shape bookmark through the generic prefix router',async()=>{
+  it('does not route an old advanced shape bookmark through the generic prefix router', async () => {
     viewer('basic-op-cone');
     expect(await screen.findByRole('status')).toHaveTextContent('no longer part of Foundations');
-    expect(screen.queryByRole('button',{name:'shape basic-op-cone'})).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'shape basic-op-cone' })).not.toBeInTheDocument();
     expect(state.post).not.toHaveBeenCalled();
   });
 });
 
-it('renders the unlisted material reference and enables its knowledge check',async()=>{
- const next=vi.fn();viewer('foundation-material-unlisted',next);
- await vi.dynamicImportSettled();
- expect(await screen.findByRole('heading',{name:'Materials Not Included in the iCAD Material List'})).toBeInTheDocument();
- expect(screen.getByRole('button',{name:'Start knowledge check'})).toBeEnabled();
- expect(screen.getByRole('table')).toBeInTheDocument();
- expect(screen.getAllByRole('img')).toHaveLength(2);
- expect(screen.getAllByRole('row')).toHaveLength(7);
- expect(state.post).not.toHaveBeenCalled();
- cleanup();
+it('renders the unlisted material reference and enables its knowledge check', async () => {
+  const next = vi.fn(); viewer('foundation-material-unlisted', next);
+  await vi.dynamicImportSettled();
+  expect(await screen.findByRole('heading', { name: 'Materials Not Included in the iCAD Material List' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Start knowledge check' })).toBeEnabled();
+  expect(screen.getByRole('table')).toBeInTheDocument();
+  expect(screen.getAllByRole('img')).toHaveLength(2);
+  expect(screen.getAllByRole('row')).toHaveLength(7);
+  expect(state.post).not.toHaveBeenCalled();
+  cleanup();
 });

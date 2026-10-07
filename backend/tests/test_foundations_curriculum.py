@@ -21,8 +21,8 @@ def foundations(db, trainee_user):
 
 
 def test_shared_registry_structure_and_conservative_aliases():
-    assert [module["id"] for module in MODULES] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27"]
-    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 91
+    assert [module["id"] for module in MODULES] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27", "F28", "F29"]
+    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 98
     assert completed_lesson_ids(["lesson-3-1", "F3.3", "lesson-4-2", "lesson-13-1"]) == {"F4.6"}
     assert resolve_lesson_id("lesson-3-1") is None
     assert resolve_lesson_id("basic-op-cone") is None
@@ -38,11 +38,11 @@ def test_progress_merges_course_references_without_destroying_records(db, traine
     ]:
         db.add(QuizScore(user_id=trainee_user.id, course_id=course_id, lesson_id=lesson_id, score=score))
     db.commit()
-    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 91 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 96 * 100, 1)
     update_user_course_progress(db, trainee_user.id, str(foundations.id))
     assert db.query(QuizScore).count() == 5
-    assert course_service.get_user_progress(db, foundations.course_type, str(trainee_user.id)).progress_percentage == round(1 / 91 * 100, 1)
-    assert len(course_service.get_course_lessons(db, str(foundations.id))) == 27
+    assert course_service.get_user_progress(db, foundations.course_type, str(trainee_user.id)).progress_percentage == round(1 / 96 * 100, 1)
+    assert len(course_service.get_course_lessons(db, str(foundations.id))) == 29
 
 
 @pytest.mark.parametrize("lesson_id,canonical", [("F9.1", "foundations-v3:F9.1"), ("basic-op-box", "foundations-v3:F9.1"), ("F17.2", "F17.2")])
@@ -52,7 +52,7 @@ def test_completion_accepts_curriculum_ids_without_database_lesson_rows(client, 
     assert response.status_code == 200, response.text
     score = db.query(QuizScore).filter(QuizScore.user_id == trainee_user.id).one()
     assert score.lesson_id == canonical
-    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 89 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(1 / 96 * 100, 1)
 
 
 @pytest.mark.parametrize("lesson_id", ["F99.1", "F1.99", "lesson-13-1", "basic-op-cone", "mirror"])
@@ -78,8 +78,8 @@ def test_lesson_api_exposes_only_new_bilingual_tree(client, foundations, trainee
     response = client.get(f"/api/v1/courses/{foundations.id}/lessons", headers=headers)
     assert response.status_code == 200
     tree = response.json()
-    assert [item["id"] for item in tree] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27"]
-    assert sum(len(item["children"]) for item in tree) == 91
+    assert [item["id"] for item in tree] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27", "F28", "F29"]
+    assert sum(len(item["children"]) for item in tree) == 98
     assert tree[0]["children"][0]["title"] == "F1.1 iCAD SX とは？"
 
 
@@ -99,7 +99,7 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
     db.add(QuizScore(user_id=trainee_user.id, course_id=str(professional.id), lesson_id="P7.1", score=100))
     db.add(QuizScore(user_id=trainee_user.id, course_id=professional.course_type, lesson_id="P12.3", score=100))
     db.commit()
-    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 91 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 96 * 100, 1)
     response = client.get(f"/api/v1/auth/progress/{foundations.id}", headers={"Authorization": f"Bearer {trainee_token}"})
     assert response.status_code == 200
     assert {row["lesson_id"] for row in response.json()} == {"foundations-v3:F9.1", "foundations-v3:F15.1"}
@@ -108,19 +108,29 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
 
 def test_properties_placeholders_preserve_progress_and_review_identity():
     from backend.services.foundations_curriculum import COMPLETABLE_LESSONS, completion_storage_id
-    assert len(COMPLETABLE_LESSONS) == 91
+    assert len(COMPLETABLE_LESSONS) == 96
     assert resolve_lesson_id("F26.1") == "foundation-interference-check"
     assert resolve_lesson_id("F26.2") == "foundation-interference-display-list"
-    assert resolve_lesson_id("F27.1") == "F17.1"
-    assert resolve_lesson_id("F27.2") == "F17.2"
-    assert resolve_lesson_id("F28.1") == "F17.1"
-    assert resolve_lesson_id("F28.2") == "F17.2"
+    assert resolve_lesson_id("F27.1") == "foundation-parasolid-import"
+    assert resolve_lesson_id("F27.2") == "foundation-parasolid-lighten-brep"
+    assert resolve_lesson_id("F27.3") == "foundation-parasolid-save-purchase-part"
+    assert resolve_lesson_id("F27.4") == "foundation-parasolid-set-purchase-part-info"
+    assert resolve_lesson_id("F28.1") == "foundation-mirrored-parts-normal-and-mirror"
+    assert resolve_lesson_id("F28.2") == "foundation-mirrored-parts-identify"
+    assert resolve_lesson_id("F28.3") == "foundation-mirrored-parts-3d-modeling"
+    assert resolve_lesson_id("F29.1") == "F17.1"
+    assert resolve_lesson_id("F29.2") == "F17.2"
     assert completion_storage_id("F26.1") == "foundations:interference:check"
     assert completion_storage_id("F26.2") == "foundations:interference:display-list"
-    assert completion_storage_id("F27.1") == "F17.1"
-    assert completion_storage_id("F27.2") == "F17.2"
-    assert completion_storage_id("F28.1") == "F17.1"
-    assert completion_storage_id("F28.2") == "F17.2"
+    assert completion_storage_id("F27.1") == "foundations:parasolid:import"
+    assert completion_storage_id("F27.2") == "foundations:parasolid:lighten-brep"
+    assert completion_storage_id("F27.3") == "foundations:parasolid:save-purchase-part"
+    assert completion_storage_id("F27.4") == "foundations:parasolid:set-purchase-part-info"
+    assert completion_storage_id("F28.1") == "foundations:mirrored-parts:normal-and-mirror"
+    assert completion_storage_id("F28.2") == "foundations:mirrored-parts:identify"
+    assert completion_storage_id("F28.3") == "foundations:mirrored-parts:3d-modeling"
+    assert completion_storage_id("F29.1") == "F17.1"
+    assert completion_storage_id("F29.2") == "F17.2"
     assert resolve_lesson_id("F25.1") == "foundation-annotation-linear-dimension"
     assert completion_storage_id("F25.1") == "foundations:annotation:linear-dimension"
     assert resolve_lesson_id("F23.1") == "foundation-properties-change-color"
@@ -129,3 +139,4 @@ def test_properties_placeholders_preserve_progress_and_review_identity():
     assert len(placeholders) == 3
     assert completed_lesson_ids(l["completionId"] for l in placeholders) == {l["id"] for l in placeholders}
     assert all(l["contentReview"] != "not-authored" for l in placeholders)
+

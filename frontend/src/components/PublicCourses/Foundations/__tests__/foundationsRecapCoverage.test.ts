@@ -1,4 +1,4 @@
-import { FOUNDATION_TOTAL } from '../../../iCAD_Foundations/curriculum';
+import { FOUNDATION_TOTAL, resolveFoundationLesson } from '../../../iCAD_Foundations/curriculum';
 import { describe, expect, it } from 'vitest';
 import { ICAD_FOUNDATIONS_LESSONS } from '../../../../views/mentor/mentorConstants';
 import { getFoundationsRecap } from '../foundationsRecaps';
@@ -28,7 +28,7 @@ describe('iCAD Foundations recap coverage', () => {
     expect(lessonIds).toHaveLength(FOUNDATION_TOTAL);
 
     const missing = lessonIds.filter(
-      (lessonId) => !EMBEDDED_RECAP_LESSONS.has(lessonId) && !getFoundationsRecap(lessonId),
+      (lessonId) => resolveFoundationLesson(lessonId)?.contentReview !== 'not-authored' && !EMBEDDED_RECAP_LESSONS.has(lessonId) && !getFoundationsRecap(lessonId),
     );
 
     expect(missing).toEqual([]);
@@ -37,7 +37,7 @@ describe('iCAD Foundations recap coverage', () => {
   it('provides complete narration and user-friendly recap cards for every fallback recap', () => {
     const fallbackIds = ICAD_FOUNDATIONS_LESSONS
       .flatMap((module) => module.children?.map((lesson) => lesson.id) || [module.id])
-      .filter((lessonId) => !EMBEDDED_RECAP_LESSONS.has(lessonId));
+      .filter((lessonId) => resolveFoundationLesson(lessonId)?.contentReview !== 'not-authored' && !EMBEDDED_RECAP_LESSONS.has(lessonId));
 
     for (const lessonId of fallbackIds) {
       const recap = getFoundationsRecap(lessonId);

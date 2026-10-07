@@ -53,8 +53,10 @@ export const FOUNDATION_MODULES: FoundationModule[] = registry.modules.map(modul
     const source = professionalSources.find(lesson => lesson.id === reference.sourceProfessionalLessonId);
     if (!source) throw new Error(`Missing Professional source: ${reference.sourceProfessionalLessonId}`);
     const presentationId = 'sourceLessonId' in source && source.sourceLessonId || source.id;
-    return { ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify((reference as Partial<FoundationLesson>).content ?? source.content), (reference as Partial<FoundationLesson>).textReplacements)), presentationId,
-      presentationModuleId: presentationId.startsWith('F9.') ? 'F9' : source.moduleId } as FoundationLesson;
+    return {
+      ...source, ...reference, content: JSON.parse(foundationReferenceText(JSON.stringify((reference as Partial<FoundationLesson>).content ?? source.content), (reference as Partial<FoundationLesson>).textReplacements)), presentationId,
+      presentationModuleId: presentationId.startsWith('F9.') ? 'F9' : source.moduleId
+    } as FoundationLesson;
   }),
 }));
 export const FOUNDATION_LESSONS = FOUNDATION_MODULES.flatMap(module => module.lessons);
@@ -70,6 +72,8 @@ export function resolveFoundationLesson(id: string): FoundationLesson | undefine
 /** Version stored alongside the last-open lesson prevents ambiguous F9/F10 restores. */
 export function restoreFoundationLesson(id: string, version: string | null): FoundationLesson | undefined {
   const v = version ? Number(version) : null;
+  if (v !== null && v <= 8 && /^F28\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F28.1' ? 'F17.1' : 'F17.2');
+  if (v === 8 && /^F27\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F27.1' ? 'F17.1' : 'F17.2');
   if (v === 7 && /^F27\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F27.1' ? 'foundation-interference-check' : 'foundation-interference-display-list');
   if (v === 6 && /^F27\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F27.1' ? 'F17.1' : 'F17.2');
   if (v !== null && v <= 5 && /^F26\.[12]$/.test(id)) return resolveFoundationLesson(id === 'F26.1' ? 'F17.1' : 'F17.2');
@@ -100,19 +104,25 @@ export function foundationProgress(ids: readonly string[]) {
 
 export function foundationNeighbors(id: string) {
   const index = FOUNDATION_LESSON_IDS.indexOf(resolveFoundationLesson(id)?.id || '');
-  return { previous: index > 0 ? FOUNDATION_LESSON_IDS[index - 1] : undefined,
-    next: index >= 0 ? FOUNDATION_LESSON_IDS[index + 1] : undefined };
+  return {
+    previous: index > 0 ? FOUNDATION_LESSON_IDS[index - 1] : undefined,
+    next: index >= 0 ? FOUNDATION_LESSON_IDS[index + 1] : undefined
+  };
 }
 
 export function createFoundationLessons(language: FoundationLanguage = 'en'): Lesson[] {
-  return FOUNDATION_MODULES.map(module => ({ id: module.id, title: `${module.id} ${module.title[language]}`,
-    children: module.lessons.map(lesson => ({ id: lesson.id, title: `${lesson.displayId || lesson.id} ${lesson.title[language]}`,
-      content: foundationReadingText(lesson.content[language]) })) }));
+  return FOUNDATION_MODULES.map(module => ({
+    id: module.id, title: `${module.id} ${module.title[language]}`,
+    children: module.lessons.map(lesson => ({
+      id: lesson.id, title: `${lesson.displayId || lesson.id} ${lesson.title[language]}`,
+      content: foundationReadingText(lesson.content[language])
+    }))
+  }));
 }
 
 export function foundationReadingText(content: FoundationLessonContent): string[] {
   return [content.explanation, content.description2, content.practice,
-    ...(content.sections || []).flatMap(section => [section.title, section.text]), content.connection]
+  ...(content.sections || []).flatMap(section => [section.title, section.text]), content.connection]
     .filter((text): text is string => Boolean(text)).map(text => text.replace(/\*\*/g, ''));
 }
 
@@ -130,6 +140,6 @@ export function foundationRecap(id: string, language: FoundationLanguage = 'en')
   return {
     narration: `${language === 'ja' ? '学習内容を振り返りましょう。' : 'Great work. Remember: '}${explanation} ${review}`,
     items: [{ action: language === 'ja' ? '理解' : 'Understand', result: explanation },
-      { action: language === 'ja' ? '確認' : 'Check', result: review }],
+    { action: language === 'ja' ? '確認' : 'Check', result: review }],
   };
 }

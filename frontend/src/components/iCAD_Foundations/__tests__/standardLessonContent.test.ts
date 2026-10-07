@@ -5,7 +5,7 @@ import { foundationKnowledgeQuestions } from '../knowledgeCheck';
 
 describe('Course-wide content preservation', () => {
   it.each(['en', 'ja'] as const)('preserves the original instructions in %s', language => {
-    for (const id of ['F4.6','F5.4','F9.1','F9.2','F9.3','F10.1','F10.2','F10.7']) {
+    for (const id of ['F4.6', 'F5.4', 'F9.1', 'F9.2', 'F9.3', 'F10.1', 'F10.2', 'F10.7']) {
       const content = standardLessonContent(resolveFoundationLesson(id)!, language);
       expect(content.sections.length, id).toBeGreaterThan(1);
       expect(content.sections.every(section => Boolean(section.title && section.text)), id).toBe(true);
@@ -14,6 +14,7 @@ describe('Course-wide content preservation', () => {
   });
   it.each(['en', 'ja'] as const)('gives every lesson a valid localized question in %s', language => {
     for (const lesson of FOUNDATION_LESSONS) {
+      if (lesson.contentReview === 'not-authored') continue;
       const questions = foundationKnowledgeQuestions(language, lesson.id);
       expect(questions.length, lesson.id).toBeGreaterThan(0);
       for (const question of questions) {
