@@ -37,6 +37,56 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
       })),
     }];
   }
+  if (lessonId === 'foundation-mirrored-parts-identify') {
+    const ja = language === 'ja';
+    const choicesData = ja ? [
+      { text: 'ミラー部品 A', isCorrect: false, feedback: 'ミラー部品 A は対称形状で違いがある場合の元部品です。' },
+      { text: 'ミラー部品 B', isCorrect: false, feedback: 'ミラー部品 B は対称形状で違いがある場合のミラーコピーです。' },
+      { text: '通常部品', isCorrect: true, feedback: '正解：C. 通常部品 — 違いが認識されず完全に同一である場合は通常部品として分類します。' },
+      { text: '購入部品', isCorrect: false, feedback: '購入部品は外部メーカーから調達する部品であり、この判定ルールとは異なります。' },
+    ] : [
+      { text: 'Mirror Part A', isCorrect: false, feedback: 'Mirror Part A is the original part of an opposite-hand pair when differences exist.' },
+      { text: 'Mirror Part B', isCorrect: false, feedback: 'Mirror Part B is the mirror copy of an opposite-hand pair when differences exist.' },
+      { text: 'Normal Part', isCorrect: true, feedback: 'Correct Answer: C. Normal Part — When no differences exist and details are identical, classify as a Normal Part.' },
+      { text: 'Purchase Part', isCorrect: false, feedback: 'A purchase part is an externally procured component and does not apply to this classification rule.' },
+    ];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja ? '元の部品の上にミラーコピーを配置した後、違いが認識されず、部品の詳細がすべて完全に同一である場合、その部品はどのように分類すべきですか？'
+        : 'After placing a mirror copy over the original part, no differences can be recognized and all part details are exactly the same. How should the part be classified?',
+      choices: choicesData.map((item, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${item.text}`,
+        isCorrect: item.isCorrect,
+        feedback: item.feedback,
+      })),
+    }];
+  }
+  if (lessonId === 'foundation-mirrored-parts-3d-modeling') {
+    const ja = language === 'ja';
+    const choicesData = ja ? [
+      { text: 'ファイル名', isCorrect: false, feedback: '部品Aと部品Bは別々のファイル名で保存されます。' },
+      { text: '原点の位置', isCorrect: true, feedback: '正解：B. 原点の位置 — 部品Bの原点は部品Aと同じ位置でなければなりません。' },
+      { text: '部品の色', isCorrect: false, feedback: '部品の色は識別目的で変更されることがあり、一致が必須な技術基準ではありません。' },
+      { text: '材質名', isCorrect: false, feedback: '材質は同じ場合もありますが、モデリング時に最も重要な位置基準は原点の位置です。' },
+    ] : [
+      { text: 'File name', isCorrect: false, feedback: 'Part A and Part B are saved under separate file names.' },
+      { text: 'Origin location', isCorrect: true, feedback: 'Correct Answer: B. Origin location — The origin of Part B must be in the same location as Part A.' },
+      { text: 'Part color', isCorrect: false, feedback: 'Part color may be changed for visualization and is not the critical shared datum.' },
+      { text: 'Material name', isCorrect: false, feedback: 'While materials may match, the critical requirement for mirrored modeling is the shared origin location.' },
+    ];
+    return [{
+      id: `${lessonId}-knowledge-check`,
+      prompt: ja ? 'ミラー部品を作成した後、部品Aと部品Bの間で同じでなければならないものは何ですか？'
+        : 'What must be the same between Part A and Part B after creating the mirror part?',
+      choices: choicesData.map((item, index) => ({
+        id: `${lessonId}-${index}`,
+        label: `${'ABCD'[index]}. ${item.text}`,
+        isCorrect: item.isCorrect,
+        feedback: item.feedback,
+      })),
+    }];
+  }
   if (lessonId === 'foundation-parasolid-set-purchase-part-info') {
     const ja = language === 'ja';
     const labels = ja ? ['材質', 'レイヤ', '備考欄', 'ファイル名']

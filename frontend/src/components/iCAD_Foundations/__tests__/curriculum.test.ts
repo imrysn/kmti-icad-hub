@@ -156,7 +156,7 @@ describe('Excel Foundations curriculum', () => {
     const old = ['lesson-3-1', 'F3.3', 'lesson-4-2', 'lesson-13-1', 'lesson-6-3', 'origin-layout', 'bogus'];
     expect(migrateFoundationCompletion(old)).toEqual(['F4.6']);
     expect(old).toHaveLength(7);
-    expect(foundationProgress(old)).toEqual({ completed: ['F4.6'], total: 96, percentage: 1 / 96 * 100 });
+    expect(foundationProgress(old)).toEqual({ completed: ['F4.6'], total: 98, percentage: 1 / 98 * 100 });
     expect(foundationProgress(FOUNDATION_LESSONS.map(l => l.completionId || l.id)).percentage).toBe(100);
     expect(migrateFoundationCompletion(['lesson-1-1', 'lesson-10-1'])).toEqual(['F1.1', 'F8.3']);
     expect(migrateFoundationCompletion(['F3', 'module-1'])).toEqual([]);
@@ -243,6 +243,6 @@ it('preserves authored Properties without changing Review completion or progress
   expect(restoreFoundationLesson('F9.5', '4')?.id).toBe('F9.5');
   expect(restoreFoundationLesson('F17.1', '4')?.displayId).toBe('F29.1');
   const records = FOUNDATION_LESSONS.map(l => l.completionId || l.id);
-  expect(foundationProgress(records)).toMatchObject({ total: 96, percentage: 100 });
-  expect(foundationProgress(records).completed).toHaveLength(96);
+  expect(foundationProgress(records)).toMatchObject({ total: 98, percentage: 100 });
+  expect(foundationProgress(records).completed).toHaveLength(98);
 });

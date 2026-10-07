@@ -100,104 +100,12 @@ export default function NormalMirrorPartsContent({
             </section>
           ))}
         </div>
-        <div className="normal-mirror-dependency-callout normal-mirror-rule-callout">
-          <strong>{japanese ? '重要ルール:' : 'Critical Rule:'}</strong>{' '}
-          {japanese
-            ? 'ミラー部品Bの形状変更を行う場合は、必ずミラー部品A（基準部品）を変更してください。'
-            : 'Always modify Mirror Part A first when design changes are required. A Mirror Part B cannot exist without Mirror Part A.'}
-        </div>
         <div className="normal-mirror-rule-callout">
           <strong>{japanese ? '※特記事項:' : '*Special Rule:'}</strong>{' '}
           {japanese
             ? '反転元となる既存の部品が存在しない場合は、部品命名時に A を使用します。'
             : 'If there is no existing part to be mirrored, use A when naming the part.'}
         </div>
-      </div>
-    );
-  }
-
-  if (index === 2) {
-    const tableRows = japanese
-      ? [
-          {
-            type: '通常部品',
-            symbol: 'N',
-            examples: 'RTXXXXXXN, MTXXXXXXN01',
-            notes: '反転しても形状が同一で変化なし',
-          },
-          {
-            type: 'ミラー部品 A',
-            symbol: 'A',
-            examples: 'MTXXXXXXA01, RTXXXXXXA',
-            notes: 'ペアの元部品（または単独の初期部品）',
-          },
-          {
-            type: 'ミラー部品 B',
-            symbol: 'B',
-            examples: 'MTXXXXXXB01, RTXXXXXXB',
-            notes: 'ミラーコピー（部品 A なしでは存在不可）',
-          },
-        ]
-      : [
-          {
-            type: 'Normal Part',
-            symbol: 'N',
-            examples: 'RTXXXXXXN, MTXXXXXXN01',
-            notes: 'Identical when mirrored; no changes',
-          },
-          {
-            type: 'Mirror Part A',
-            symbol: 'A',
-            examples: 'MTXXXXXXA01, RTXXXXXXA',
-            notes: 'Original part of the pair (or standalone)',
-          },
-          {
-            type: 'Mirror Part B',
-            symbol: 'B',
-            examples: 'MTXXXXXXB01, RTXXXXXXB',
-            notes: 'Mirror copy; cannot exist without Part A',
-          },
-        ];
-
-    return (
-      <div className="normal-mirror-content">
-        <p>
-          {japanese
-            ? 'KEMCO標準における図面番号の指定ルールのまとめ：'
-            : 'Summary of drawing-number designations under the KEMCO Standard:'}
-        </p>
-        <div className="normal-mirror-table-container">
-          <table
-            className="normal-mirror-table"
-            aria-label={japanese ? '図面番号指定のまとめ' : 'Drawing Number Designation Summary'}
-          >
-            <thead>
-              <tr>
-                <th scope="col">{japanese ? '部品の分類' : 'Part Type'}</th>
-                <th scope="col">{japanese ? '記号' : 'Designation'}</th>
-                <th scope="col">{japanese ? '図面番号の例' : 'Drawing Number Examples'}</th>
-                <th scope="col">{japanese ? '関連ルール' : 'Relationship / Rule'}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows.map(row => (
-                <tr key={row.type}>
-                  <th scope="row">
-                    <strong>{row.type}</strong>
-                  </th>
-                  <td>
-                    <code>{row.symbol}</code>
-                  </td>
-                  <td>
-                    <code>{row.examples}</code>
-                  </td>
-                  <td>{row.notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
         <div className="normal-mirror-katte-chigai-card normal-mirror-kattechigai-box">
           <img
             src={katteChigaiImg}
@@ -206,8 +114,8 @@ export default function NormalMirrorPartsContent({
           <p>
             <strong>{japanese ? '参照図面の注記:' : 'Reference Drawing Note:'}</strong>{' '}
             {japanese
-              ? '参照図面に「勝手違」（または「勝手違い」）と記載されている場合、これはミラー部品（鏡像対称）を示しています。'
-              : 'The notation 「勝手違」 (or 勝手違い — Katte-chigai) indicates a Mirror Part / Mirror Image on technical reference drawings.'}
+              ? '参照図面の「勝手違」（または「勝手違い」）は、ミラーイメージ（鏡像対称）を示しています。'
+              : 'The notation 「勝手違」 (or 勝手違い — Katte-chigai) on reference drawings indicates a Mirror Image.'}
           </p>
         </div>
       </div>

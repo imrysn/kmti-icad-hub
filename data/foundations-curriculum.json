@@ -5317,8 +5317,8 @@
           ],
           "content": {
             "en": {
-              "explanation": "Parts are classified as either Normal Parts or Mirror Parts depending on whether creating a mirror copy produces any difference in the part. The part classification also determines how the drawing number should be assigned based on the KEMCO Standard.",
-              "practice": "Distinguish between a Normal Part and a Mirror Part and understand the drawing-number designation used for each type.",
+              "explanation": "Parts are classified as either Normal Parts or Mirror Parts based on whether creating a mirror copy produces any difference in the part, determining drawing-number assignment under the KEMCO Standard.",
+              "practice": "Distinguish between a Normal Part and a Mirror Part and understand the drawing-number designations used for each type.",
               "sections": [
                 {
                   "title": "Normal Parts vs. Mirror Parts",
@@ -5328,37 +5328,27 @@
                 {
                   "title": "Mirror Part A and Mirror Part B",
                   "type": "concept",
-                  "text": "When creating a pair of mirror parts, designate the original part as Part A and its mirror copy as Part B.\n\n**Mirror Part A (Original Part)**\nMirror Part A is the original part. When creating a pair of mirror parts, the original part should be designated as Part A.\n\n**Mirror Part B (Mirror Copy)**\nMirror Part B is the mirror copy of Mirror Part A. A Mirror Part B cannot exist without Mirror Part A.\n\n*Special Rule: If there is no existing part to be mirrored, use A when naming the part.*"
-                },
-                {
-                  "title": "Drawing-Number Summary and Technical Notation",
-                  "type": "reference",
-                  "text": "Summary of drawing-number designations under the KEMCO Standard:\n\n- **Normal Part** → **N** (Example: RTXXXXXXN, MTXXXXXXN01)\n- **Original Mirror Part** → **A** (Example: MTXXXXXXA01, RTXXXXXXA)\n- **Mirror Copy** → **B** (Example: MTXXXXXXB01, RTXXXXXXB)\n\n*Note on Reference Drawings:* The notation **「勝手違」** (or 勝手違い) indicates a Mirror Part on technical reference drawings."
+                  "text": "When creating a pair of mirror parts, designate the original part as Part A and its mirror copy as Part B.\n\n**Mirror Part A (Original Part)**\nMirror Part A is the original part. When creating a pair of mirror parts, the original part should always be designated as **Part A**.\n\n**Mirror Part B (Mirror Copy)**\nMirror Part B is the mirror copy of Mirror Part A. Mirror Parts B cannot exist without Mirror Parts A.\n\n*Special Rule:* If there is no existing part to be mirrored, use **A** when naming the part.\n\n*Note on Reference Drawings:* The notation **「勝手違」** indicates a **Mirror Image**."
                 }
               ],
               "connection": "In the next lesson (F28.2), you will learn how to verify whether a part is Normal or Mirrored using the Mirror Copy tool in iCAD SX."
             },
             "ja": {
-              "explanation": "部品は、反転複写（ミラーコピー）を作成した際に形状や詳細に変化が生じるかどうかに応じて、「通常部品」または「ミラー部品」に分類されます。この分類によってKEMCO標準に基づく図面番号の付与方法が決まります。",
-              "practice": "通常部品とミラー部品の違いを区別し、それぞれの図面番号の指定ルールを理解できるようになります。",
+              "explanation": "部品は、反転複写（ミラーコピー）を作成した際に形状の違いが生じるかどうかに応じて通常部品またはミラー部品に分類され、KEMCO標準に基づく図面番号の付与方法が決まります。",
+              "practice": "通常部品とミラー部品の違いを区別し、それぞれの図面番号の指定ルール（N、A、B）を理解できるようになります。",
               "sections": [
                 {
                   "title": "通常部品とミラー部品",
                   "type": "concept",
-                  "text": "部品は反転複写を作成したときの性質によって分類されます。\n\n**通常部品**\n反転複写を作成しても元の部品とまったく同じ形状を保つ部品です。元の部品とミラーコピーの間に違いは認識されません。図面番号には **N** を使用します（例: **RTXXXXXXN**、**MTXXXXXXN01**）。\n\n**ミラー部品**\n対称形状をなす部品のペアです。穴の位置や切り欠きなどの特徴が反転によって異なるため、反対側の形状が必要となります。図面番号には **A** および **B** を使用します（例: **MTXXXXXXA01**、**MTXXXXXXB01**、**RTXXXXXXA**、**RTXXXXXXB**）。"
+                  "text": "部品は反転複写を作成したときの性質によって分類されます。\n\n**通常部品**\n反転複写を作成しても元の部品とまったく同じ形状を保つ部品です。元の部品とミラーコピーの間に違いは認識されません。図面番号には **N** を使用します（例: **RTXXXXXXN**, **MTXXXXXXN01**）。\n\n**ミラー部品**\n対称形状をなす部品のペアです。図面番号には **A** と **B** を使用します（例: **MTXXXXXXA01**, **MTXXXXXXB01**, **RTXXXXXXA**, **RTXXXXXXB**）。"
                 },
                 {
                   "title": "ミラー部品 A と ミラー部品 B",
                   "type": "concept",
-                  "text": "ミラー部品のペアを作成するときは、元部品を部品 A、反転複写した部品を部品 B として指定します。\n\n**ミラー部品 A（元部品）**\nミラー部品 A は最初に作成する元の部品です。ミラー部品のペアを作成するときは、元部品を必ず「部品 A」として指定します。\n\n**ミラー部品 B（ミラーコピー）**\nミラー部品 B はミラー部品 A を反転複写した部品です。ミラー部品 B は、ミラー部品 A が存在しなければ存在できません。\n\n*特記事項: 反転元となる既存の部品が存在しない場合は、部品命名時に A を使用します。*"
-                },
-                {
-                  "title": "図面番号のまとめと参照図面の表記",
-                  "type": "reference",
-                  "text": "KEMCO標準における図面番号の指定ルールのまとめ：\n\n- **通常部品** → **N**（例: RTXXXXXXN、MTXXXXXXN01）\n- **元のミラー部品** → **A**（例: MTXXXXXXA01、RTXXXXXXA）\n- **ミラーコピー** → **B**（例: MTXXXXXXB01、RTXXXXXXB）\n\n*参照図面の注記:* 参照図面の **「勝手違」**（勝手違い）は、ミラー部品（鏡像対称）を示しています。"
+                  "text": "ミラー部品のペアを作成するときは、元部品を部品 A、反転複写した部品を部品 B として指定します。\n\n**ミラー部品 A（元部品）**\nミラー部品 A は最初にモデリングする元の部品です。ミラー部品のペアを作成するときは、元部品を必ず「部品 A」として指定します。\n\n**ミラー部品 B（ミラーコピー）**\nミラー部品 B はミラー部品 A を反転複写した部品です。ミラー部品 B は、ミラー部品 A が存在しなければ存在できません。\n\n*特記事項:* 反転元となる既存の部品が存在しない場合は、部品命名時に **A** を使用します。\n\n*参照図面の注記:* 参照図面の **「勝手違」** は、**ミラーイメージ（鏡像対称）** を示しています。"
                 }
               ],
-              "connection": "次のレッスン（F28.2）では、iCAD SX の反転複写ツールを使って部品が通常部品かミラー部品かを識別する方法を学びます。"
+              "connection": "次のレッスン（F28.2）では、iCAD SX の反転複写ツールを使って部品が通常部品かミラー部品かを判別する方法を学びます。"
             }
           },
           "contentReview": "instructor-review-required",
@@ -5370,7 +5360,7 @@
           "moduleId": "F28",
           "title": {
             "en": "Identify Normal or Mirror Parts",
-            "ja": "通常部品またはミラー部品の識別"
+            "ja": "通常部品とミラー部品の判別"
           },
           "type": "reading",
           "renderer": null,
@@ -5384,17 +5374,41 @@
           ],
           "content": {
             "en": {
-              "explanation": "",
-              "practice": "",
-              "sections": []
+              "explanation": "Use the Mirror Copy tool to verify whether a part is Normal or Mirrored by overlaying the mirror copy onto the original and inspecting key features.",
+              "practice": "Use Mirror Copy in iCAD SX to determine whether a part is a Normal Part or a Mirror Part.",
+              "sections": [
+                {
+                  "title": "4-Step Identification Procedure",
+                  "type": "procedure",
+                  "text": "**Step 1 — Select the Mirror Copy Tool**\nSelect Mirror Copy from the Icon Menu (Move/Copy/Delete toolbar).\n\n**Step 2 — Place the Mirror Copy Over the Original Part**\nCreate the mirror copy and place it directly over the original part for visual comparison.\n\n**Step 3 — Compare the Part Details**\nCheck whether there are any recognizable differences between the original part and the mirror copy.\n\nPay attention to:\n- **Hole location**\n- **Cutouts**\n- **Fairings**\n\n**Step 4 — Identify the Part Type**\nIf there are no changes and all part details are exactly the same, classify it as a **Normal Part**.\n\nIf there are recognizable changes (hole locations, cutouts, or fairings) and its function can no longer be the same as Mirror Part A, classify it as a **Mirror Part**."
+                },
+                {
+                  "title": "Identification Caution and Drawing Notes",
+                  "type": "reference",
+                  "text": "*Important Notice:*\nBe careful in identifying Normal and Mirror parts because incorrect classification may cause trouble when assigning drawing numbers.\n\n*Note on Reference Drawings:*\nWhen you see the notation **「勝手違」** on a reference drawing, this means **Mirror Image**."
+                }
+              ],
+              "connection": "In the next lesson (F28.3), you will learn the 3D modeling workflow for creating Mirror Parts in iCAD SX."
             },
             "ja": {
-              "explanation": "",
-              "practice": "",
-              "sections": []
+              "explanation": "反転複写（ミラーコピー）ツールを使用し、元の部品の上に重ねて主要な特徴を比較することで、通常部品かミラー部品かを判別します。",
+              "practice": "iCAD SX で反転複写を使用して、部品が通常部品かミラー部品かを判別できるようになります。",
+              "sections": [
+                {
+                  "title": "通常部品またはミラー部品の判別手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — アイコンメニューから反転複写を選択する**\nアイコンメニュー（移動・コピー・削除ツールバー）から「反転複写（ミラーコピー）」を選択します。\n\n**ステップ 2 — 元の部品の上にミラーコピーを重ねて配置する**\nミラーコピーを作成し、直接元の部品の上に重ねて配置して比較します。\n\n**ステップ 3 — 部品の詳細形状を比較する**\n元の部品とミラーコピーの間に認識可能な違いがあるか確認します。\n\n特に以下の点に注意します：\n- **穴の位置**\n- **切り欠き**\n- **フェアリング**\n\n**ステップ 4 — 部品の分類を判定する**\n変更がなく、部品の詳細がすべて完全に同一である場合は、**通常部品**として分類します。\n\n穴の位置、切り欠き、フェアリングなどの認識可能な違いがあり、部品としての機能がミラー部品Aの機能と同一になり得ない場合は、**ミラー部品**として分類します。"
+                },
+                {
+                  "title": "判別時の重要注意と図面注記",
+                  "type": "reference",
+                  "text": "*重要注意:*\n通常部品とミラー部品の識別を誤ると、図面番号の割り当てに問題が生じる可能性があるため注意してください。\n\n*参照図面の注記:*\n参照図面に **「勝手違」** と記載されている場合、これは **ミラーイメージ（鏡像対称）** を示しています。"
+                }
+              ],
+              "connection": "次のレッスン（F28.3）では、iCAD SX でミラー部品を作成する 3D モデリング手順を学びます。"
             }
           },
-          "contentReview": "not-authored",
+          "contentReview": "instructor-review-required",
           "recapMode": "shared"
         },
         {
@@ -5417,17 +5431,41 @@
           ],
           "content": {
             "en": {
-              "explanation": "",
-              "practice": "",
-              "sections": []
+              "explanation": "To create a mirror part, save Part A to another file as Part B and apply the Mirror command across a reflection plane defined by three points starting from the origin.",
+              "practice": "Create 3D Mirror Part B from Part A while preserving the required origin location.",
+              "sections": [
+                {
+                  "title": "6-Step Modeling Procedure",
+                  "type": "procedure",
+                  "text": "**Step 1 — Identify the Proper Location of the Origin**\nBefore creating the 3D model, identify the proper location of origin of the part.\n\n**Step 2 — Create and Save Part A**\nAfter completing the 3D modeling of the part, save it as **Part A**.\n\n**Step 3 — Save Part A as Part B**\nWhen creating the 3D model of the mirror part, save Part A to another file as **Part B**.\n\n**Step 4 — Select Mirror**\nUse Mirror to convert the 3D model of Part A to Part B. Select the Mirror command from the Icon Menu (Move/Copy/Delete toolbar).\n\n**Step 5 — Specify the Mirror Plane**\nPick 3 points consecutively from the part, starting from the origin (**P1 → P2 → P3**).\n\n**Step 6 — Check the Final Result**\nAfter executing the command, verify the outcome geometry as Part B."
+                },
+                {
+                  "title": "Important Reminder",
+                  "type": "reference",
+                  "text": "*Important Reminder:*\nThe origin of Part B must be in the same location as Part A."
+                }
+              ],
+              "connection": "You have completed Module F28. In the next module (F29), you will review all Foundation skills and complete the final knowledge check."
             },
             "ja": {
-              "explanation": "",
-              "practice": "",
-              "sections": []
+              "explanation": "ミラー部品を作成するには、部品Aを別のファイルに部品Bとして保存し、原点から始まる3つの点で定義された対称面を基準に「反転（ミラー）」コマンドを実行します。",
+              "practice": "原点の位置を維持しながら、部品Aからミラー部品Bの3Dモデルを作成できるようになります。",
+              "sections": [
+                {
+                  "title": "ミラー部品の3Dモデリング手順",
+                  "type": "procedure",
+                  "text": "**ステップ 1 — 部品の原点の適切な位置を特定する**\n3Dモデリングを作成する前に、部品の原点の適切な位置を特定します。\n\n**ステップ 2 — 部品Aを作成して保存する**\n部品の3Dモデリングを完了後、**部品A**として保存します。\n\n**ステップ 3 — 部品Aを部品Bとして別名保存する**\nミラー部品の3Dモデルを作成する際は、部品Aを別のファイルに**部品B**として保存します。\n\n**ステップ 4 — 反転（ミラー）を選択する**\n「反転（ミラー）」を使用して、部品Aの3Dモデルを部品Bに変換します。アイコンメニュー（移動・コピー・削除ツールバー）から反転コマンドを選択します。\n\n**ステップ 5 — 反転面（対称面）を指定する**\n原点から始めて、部品から3つの点を連続して選択します（**P1 → P2 → P3**）。\n\n**ステップ 6 — 最終結果を確認する**\nコマンド実行後、結果の形状が部品Bになっていることを確認します。"
+                },
+                {
+                  "title": "重要事項",
+                  "type": "reference",
+                  "text": "*重要事項:*\n部品Bの原点は部品Aと同じ位置でなければなりません。"
+                }
+              ],
+              "connection": "モジュール F28 が完了しました。次のモジュール（F29）では、基礎コース全体の復習と最終ナレッジチェックを行います。"
             }
           },
-          "contentReview": "not-authored",
+          "contentReview": "instructor-review-required",
           "recapMode": "shared"
         }
       ]

@@ -15,9 +15,9 @@ it.each(['en', 'ja'] as const)('renders Normal and Mirror Parts concept content 
   expect(lesson.title[language]).toBe(language === 'ja' ? '通常部品とミラー部品' : 'Normal Parts and Mirror Parts');
 
   const sections = lesson.content[language].sections!;
-  expect(sections).toHaveLength(3);
+  expect(sections).toHaveLength(2);
 
-  // Render all 3 sections
+  // Render both sections
   const { container } = render(
     <>
       {sections.map((s, index) => (
@@ -35,9 +35,10 @@ it.each(['en', 'ja'] as const)('renders Normal and Mirror Parts concept content 
   // Ensure no procedural grid is used (this is a concept lesson, not a step-by-step procedure)
   expect(container.querySelector('.foundations-uses__grid')).toBeNull();
 
-  // Section 0: Normal Part vs Mirror Part cards
+  // Section 0: Normal Part vs Mirror Part cards (2 cards)
+  // Section 1: Mirror Part A vs Part B cards (2 cards)
   const cards = container.querySelectorAll('.foundation-view-comparison__card');
-  expect(cards.length).toBeGreaterThanOrEqual(4); // 2 in section 0, 2 in section 1
+  expect(cards).toHaveLength(4);
 
   // Section 0 headings and codes
   expect(cards[0].textContent).toContain(language === 'ja' ? '通常部品' : 'Normal Part');
@@ -50,27 +51,22 @@ it.each(['en', 'ja'] as const)('renders Normal and Mirror Parts concept content 
   expect(cards[2].textContent).toContain(language === 'ja' ? 'ミラー部品 A' : 'Mirror Part A');
   expect(cards[3].textContent).toContain(language === 'ja' ? 'ミラー部品 B' : 'Mirror Part B');
 
-  // Dependency rule callout in Section 1
-  const callout = container.querySelector('.normal-mirror-dependency-callout');
-  expect(callout).not.toBeNull();
-  expect(callout?.textContent).toContain(
+  // Special rule callout in Section 1
+  const ruleCallout = container.querySelector('.normal-mirror-rule-callout');
+  expect(ruleCallout).not.toBeNull();
+  expect(ruleCallout?.textContent).toContain(
     language === 'ja'
-      ? 'ミラー部品Bの形状変更を行う場合は、必ずミラー部品A（基準部品）を変更してください。'
-      : 'Always modify Mirror Part A first when design changes are required'
+      ? '反転元となる既存の部品が存在しない場合は、部品命名時に A を使用します。'
+      : 'If there is no existing part to be mirrored, use A when naming the part.'
   );
 
-  // Section 2: Summary table & Kattechigai badge
-  const table = container.querySelector('.normal-mirror-table');
-  expect(table).not.toBeNull();
-  expect(table?.textContent).toContain('RTXXXXXXN');
-  expect(table?.textContent).toContain('MTXXXXXXN01');
-  expect(table?.textContent).toContain('MTXXXXXXA01');
-  expect(table?.textContent).toContain('MTXXXXXXB01');
-
-  // Kattechigai badge note
+  // Kattechigai badge note in Section 1
   const katteBox = container.querySelector('.normal-mirror-kattechigai-box');
   expect(katteBox).not.toBeNull();
   expect(katteBox?.textContent).toContain('勝手違');
+
+  // Verify redundant table was removed to streamline lesson
+  expect(container.querySelector('.normal-mirror-table')).toBeNull();
 
   // Knowledge check verification
   const questions = foundationKnowledgeQuestions(language, lesson.id);

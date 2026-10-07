@@ -2,6 +2,12 @@
   margin: 0.5rem 0 1.5rem;
 }
 
+.normal-mirror-content .foundations-use-card__body p {
+  white-space: pre-line;
+  text-align: left;
+  line-height: 1.5;
+}
+
 .normal-mirror-comparison__image-wrap {
   display: flex;
   justify-content: center;

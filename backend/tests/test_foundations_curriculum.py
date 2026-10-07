@@ -99,7 +99,7 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
     db.add(QuizScore(user_id=trainee_user.id, course_id=str(professional.id), lesson_id="P7.1", score=100))
     db.add(QuizScore(user_id=trainee_user.id, course_id=professional.course_type, lesson_id="P12.3", score=100))
     db.commit()
-    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 96 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 98 * 100, 1)
     response = client.get(f"/api/v1/auth/progress/{foundations.id}", headers={"Authorization": f"Bearer {trainee_token}"})
     assert response.status_code == 200
     assert {row["lesson_id"] for row in response.json()} == {"foundations-v3:F9.1", "foundations-v3:F15.1"}
@@ -108,7 +108,7 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
 
 def test_properties_placeholders_preserve_progress_and_review_identity():
     from backend.services.foundations_curriculum import COMPLETABLE_LESSONS, completion_storage_id
-    assert len(COMPLETABLE_LESSONS) == 96
+    assert len(COMPLETABLE_LESSONS) == 98
     assert resolve_lesson_id("F26.1") == "foundation-interference-check"
     assert resolve_lesson_id("F26.2") == "foundation-interference-display-list"
     assert resolve_lesson_id("F27.1") == "foundation-parasolid-import"

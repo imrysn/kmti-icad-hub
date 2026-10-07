@@ -33,6 +33,6 @@ it('restores old review routes without losing progress or newer Properties selec
     expect(foundationProgress(['F17.1', 'F17.2']).completed).toEqual(['F17.1', 'F17.2']);
     expect(resolveFoundationLesson('F25.1')?.id).toBe('foundation-annotation-linear-dimension');
     expect(resolveFoundationLesson('F26.1')?.id).toBe('foundation-interference-check');
-    expect(resolveFoundationLesson('F26.1')?.id).toBe('foundation-interference-check');
-    expect(resolveFoundationLesson('F28.1')?.id).toBe('F17.1');
+    expect(resolveFoundationLesson('F28.1')?.id).toBe('foundation-mirrored-parts-normal-and-mirror');
+    expect(resolveFoundationLesson('F29.1')?.id).toBe('F17.1');
 });
