@@ -1,0 +1,970 @@
+[
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "centered": [
+      "Start with the required part or assembly in the 3D environment.",
+      "Review the shape, position, dimensions, and overall design.",
+      "Generate drawing views from the 3D model.",
+      "Add the required dimensions, notes, symbols, and other details.",
+      "Check the completed drawing and save the final file."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F2.9",
+    "title": "Understanding the Toolbar",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F3.5",
+    "title": "Pan",
+    "centered": [
+      "Move Command = Model position changed."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F3.6",
+    "title": "Rotate the 3D View",
+    "centered": [
+      "View Rotation allows you to inspect the model from different angles. Rotate View: You are "
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "centered": [
+      "3D View Tools only change how the model is displayed. They do not change the model's actua",
+      "Top - View the model from above. ",
+      "Front - View the model from the front. ",
+      "Right - View the model from the right side. ",
+      "Left - View the model from the left side. ",
+      "Back - View the model from behind. ",
+      "Bottom - View the model from below.",
+      "Check the model from a specific side. ",
+      "See features that are difficult to view from the current angle. ",
+      "Position the view before creating or editing a feature."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F4.6",
+    "title": "USER VIEWS",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F4.12",
+    "title": "SHADING",
+    "centered": [
+      "CG Display – Hidden Lines Removed → Use for a clear line view showing only the edges you c",
+      "CG Display – No Edges → Use for a clean solid view.",
+      "CG Display – With Edges → Use when you need to see edges clearly.",
+      "Transparent Display → Use when inspecting geometry behind visible surfaces.",
+      "Wire Display → Use when you want to see every edge of the model's structure.",
+      "Shading only changes how the model looks on the screen. It does not change the actual shap"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F5.4",
+    "title": "Understanding Coordinates and the Origin",
+    "centered": [
+      "Zero Reference Point - A point where the coordinates of the X, Y, and Z-axis are (0, 0, 0)",
+      "View Orientation - It sets the baseline layout and orientation of views for an object or e",
+      "Case-by-Case Basis - The position of the origin depends on the shape and mechanical struct",
+      "X-Axis (Red) - Represents the horizontal direction.",
+      "Y-Axis (Blue) - Represents the vertical height axis.",
+      "Z-Axis (Yellow) - Represents the depth direction in 3D space.",
+      "Initial Placement - In order to set the origin in your workspace, the first placed object ",
+      "Key Entry Area - Enter 0, 0, 0 in the Key Entry Area when placing the shape to anchor it d",
+      "2D and 3D Consistency - The origin must be in the exact same relative position in both 3D ",
+      "Spatial Awareness - The coordinate triad indicator rotates as you rotate your viewpoint to"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F5.6",
+    "title": "Specifying Coordinates",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F6.2",
+    "title": "Basic Element Selection",
+    "centered": [
+      "When the command allows multiple targets, left-click each required object. Check all highl",
+      "If the wrong object is highlighted, do not right-click (GO). Press Esc to cancel the comma"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F6.4",
+    "title": "Selecting Parts and Solid Components",
+    "centered": [
+      "A Part is a model unit that can contain one or more pieces of solid geometry.",
+      "A Solid Component is individual solid geometry contained within a Part."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F6.7",
+    "title": "Search / Selection Type",
+    "centered": [
+      "Use Search / Selection Type when:",
+      "the wrong object is selected",
+      "the object is difficult to select",
+      "several objects overlap or are close together",
+      "In a practice model, choose the selection type for one solid inside a Part. Select it and "
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F7.3",
+    "title": "Understanding Parts",
+    "centered": [
+      "Parts keep the shapes of different components organized, making it easier to identify the "
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F7.6",
+    "title": "Introduction to Assemblies",
+    "centered": [
+      "An assembly is a design made of several Parts that fit together. A Part can contain other ",
+      "Assemblies keep a complete design organized. Each component stays a separate Part, so you ",
+      "In the Tree View, an assembly looks like this:",
+      "Drawing file: CR19061U01_RCGR4",
+      "Top Part: CR19061U01",
+      "Child parts: CR19299N01 (End plate), CR19403N01 (Liner), and standard parts such as bolts ",
+      "A + beside a Part means it contains child parts. Click + to expand it, and point to a Part"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F7.8",
+    "title": "Understanding 3D and 2D Drawings",
+    "centered": [
+      "A 3D model shows the shape of a part or assembly in three dimensions.\n\nIt helps you unders",
+      "the overall form of the design",
+      "how components are positioned",
+      "how the model looks from different directions",
+      "A 2D drawing presents the design using flat drawing views and engineering information.\n\nIt",
+      "Dimensions",
+      "Notes",
+      "Symbols",
+      "Part information",
+      "These details help communicate how the design should be understood or manufactured."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F8.1",
+    "title": "Creating a New Item",
+    "centered": [
+      "Create a new training drawing. Check its name in the drawing window or Tree View so you kn"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F8.3",
+    "title": "Saving Your Work",
+    "centered": [
+      "After saving, check that the active drawing is Training_Box_01 in your training folder. Ke"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F8.5",
+    "title": "Closing a Drawing",
+    "centered": [
+      "Discarding unsaved changes loses the changes made since the last save. If you are unsure w",
+      "Continue with the drawing you created in F8.1 Creating a New Item and saved in F8.2 Saving"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "centered": [
+      "Check: One Box should appear. Confirm the entered dimensions are 20 × 30 × 10 mm, then vie",
+      "Check the field labels, drawing units, and placement before pressing Enter.",
+      "When creating a 3D model, always start with Front View.",
+      "In the Icon Menu on the right, open Shape Placement (形状配置) and select Box (直方体).",
+      "After selecting Box, the orientation buttons appear in the Command Menu on the left. Selec",
+      "In Item Entry, enter:\nDepth (length): 20 mm\nWidth: 30 mm\nHeight: 10 mm",
+      "In Key Entry, type 0 0 0, with a space between each value, to position the Box at the curr",
+      "With Key Entry active, press Enter to create the Box. Check that one Box appears."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "centered": [
+      "Check: One cylinder should appear with Diameter = 10 mm and Height = 10 mm. View it from a",
+      "Diameter mode: Use 直径指定, not 半径指定 (radius mode), for the values in this exercise.",
+      "When creating a 3D model, always start with Front View.",
+      "In the Icon Menu on the right, open Shape Placement and select Cylinder.",
+      "After selecting Cylinder, find the orientation buttons in the Command Menu on the left. Se",
+      "In Item Entry, enter:\nDiameter (直径): 10 mm\nHeight (高さ): 10 mm",
+      "In Key Entry, type 0 0 0, with a space between each value, to position the Cylinder at the",
+      "With Key Entry active, press Enter. Check that one Cylinder appears."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "centered": [
+      "Check: One prism should appear with a six-sided end, using Diameter = 10 mm and Height = 1",
+      "Diameter: In the Command Menu, keep 直径指定 (size by diameter) selected. 面幅指定 sizes the prism",
+      "When creating a 3D model, always start with Front View.",
+      "In the Icon Menu on the right, open Shape Placement and select Polygonal Prism.",
+      "After selecting Polygonal Prism, find the orientation buttons in the Command Menu on the l",
+      "In Item Entry, enter:\nSides (頂点数): 6\nDiameter (直径): 10 mm\nHeight (高さ): 10 mm",
+      "In Key Entry, type 0 0 0, with a space between each value, to position the Polygonal Prism",
+      "With Key Entry active, press Enter. Check that one Polygonal Prism appears."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "centered": [
+      "Check: One cone should appear with a Base Diameter of 20 mm, a Top Diameter of 10 mm, and ",
+      "Base and top: Base Diameter sets the size of the bottom face and Top Diameter sets the siz",
+      "From the Icon Menu, open Shape Placement, then select Place Cone.",
+      "Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n Arrange So",
+      "In Item Entry, enter the:\n\nBase Diameter – size of the bottom face\nTop Face Diameter  – si",
+      "In the Key Entry Area, enter the coordinates where the cone will be placed.\n Example: 0, 0",
+      "Confirm the values in the Item Entry area. Then, click ENTER. \nThe cone will appear in the"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "centered": [
+      "Check: One half ring should appear with a Section Diameter of 10 mm, a Path Radius of 50 m",
+      "Turn Angle: sets how much of the ring is created. 180° creates half a ring; 360° creates a",
+      "From the Icon Menu, open Shape Placement, then select Place Torus.",
+      "Select Front View from the 3D View Toolsbar. \n\n From the Command Menu, select:\n Arrange So",
+      "In Item Entry, enter the:\n\nSection Diameter - thickness of the torus. \nPath Radius - contr",
+      "In the Key Entry Area, enter the coordinates where the torus will be placed. \n Example: 0,",
+      "Confirm the values in the Item Entry area. Then, click ENTER. \n The torus will appear in t"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "centered": [
+      "X, Y, Z Input → Use when an exact movement distance is required.\n\nPoint-to-Point → Use whe",
+      "From the Icon Menu, select Move.",
+      "Left-click the object you want to move, check the highlight, then right-click (GO) to conf",
+      "In the Item Entry, enter the movement distance for:",
+      "X-axis",
+      "Y-axis",
+      "Z-axis",
+      "Then press Enter to move the object.\n\nExample:\n X= 50mm, Y= 0mm, Z= 0mm",
+      "Use Move when you need to:",
+      "Reposition a part.",
+      "Adjust the location of an object.",
+      "Place components in the correct position."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "centered": [
+      "Select your practice object and copy it with X = 50, Y = 0, Z = 0 and count = 1.\n\nCheck: T",
+      "From the Icon Menu, select Copy.",
+      "Left-click the object you want to copy, check the highlight, then right-click (GO) to conf",
+      "In the Item Entry, enter the movement distance for:",
+      "X-axis",
+      "Y-axis",
+      "Z-axis",
+      "Enter the number of copies, then press Enter to complete.",
+      "Use Copy when you need to:",
+      "Create repeated parts.",
+      "Duplicate the same object.",
+      "Place several identical objects at a fixed distance."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "centered": [
+      "Select an object, define an axis along one of its edges, enter an angle of 90°, and press ",
+      "The direction of rotation follows the right-hand rule around the vector defined from your ",
+      "From the Icon Menu, select Rotate.",
+      "Left-click the object you want to rotate.",
+      "Select 2 points to define the axis where the object will rotate.",
+      "In the Item Entry, enter the desired rotation angle.\n\nExample: 90°\n\n Then press Enter to c",
+      "Use Rotate when you need to:",
+      "Change the orientation of a part.",
+      "Position a component correctly.",
+      "Turn an object to a specific angle."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "centered": [
+      "Select your object, define the axis using the two marked points, enter 90° and 3 copies, t",
+      "From the Icon Menu, select Rotate Copy.",
+      "Left-click the object you want to copy and rotate.",
+      "Select 2 points to define the axis of rotation.",
+      "In the Item Entry, enter the desired angle.\n\nExample: 90°\n\nThen press Enter to create the ",
+      "Use Rotate Copy when you need to:",
+      "Create repeated parts around an axis.",
+      "Make a duplicate at a different angle.",
+      "Keep the original object while creating another rotated version."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "centered": [
+      "Select your object, click the marked P1, P2, and P3 to define the mirror plane, and confir",
+      "Mirror moves the object across the plane. To keep the original while mirroring, use Mirror",
+      "From the Icon Menu, select Mirror.",
+      "Left-click the object you want to mirror.",
+      "Choose one method to define the mirror plane:",
+      "Select 3 points to define the plane or",
+      "Left-click the face where the entity will be mirrored.",
+      "Confirm the selection to create the mirrored result.",
+      "Use Mirror when you need to:",
+      "Create symmetrical parts.",
+      "Repeat features on the opposite side.",
+      "Save time instead of creating the same feature again."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "centered": [
+      "Select an object, click the marked P1, P2, and P3 to define the plane, and confirm the mir",
+      "From the Icon Menu, select Mirror Copy.",
+      "Left-click the object you want to copy and mirror.",
+      "Choose one method to define the mirror plane:",
+      "Select 3 points to define the plane, or",
+      "Left-click any flat face on the model.",
+      "Confirm the selection to create the mirrored copy.",
+      "Use Mirror Copy when you need to:",
+      "Create symmetrical parts.",
+      "Duplicate a feature on the opposite side.",
+      "Keep the original object while creating its mirrored version."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "centered": [
+      "Click on one of the duplicates created in the previous lessons to delete it.\n\nCheck: The c",
+      "From the Icon Menu, select Delete.",
+      "Left-click the object you want to remove. It is deleted immediately; no GO is needed.",
+      "Check what remains. If you deleted the wrong object, press Ctrl+Z to undo.",
+      "Use Delete when you need to:",
+      "Remove an incorrect object.",
+      "Remove an unwanted part or feature.",
+      "Clean up the model."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "centered": [
+      "A value greater than 1.0 scales the solid up. A value between 0 and 1.0 scales it down. Fo",
+      "Resize changes the size of the entire selected solid. Use Stretch when you need to change "
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "centered": [
+      "A Sketch is 2D geometry created directly in the 3D space.\n\nSketch geometry can be used to ",
+      "The Sketch menu includes tools such as:",
+      "Line",
+      "Circle",
+      "Arc",
+      "For this lesson, you will practice creating a closed outline using Draw Lines.",
+      "A sketch that will be used for Extrude or Revolve must form a closed outline.\n\nThere shoul",
+      "Keep an unchanged copy of the completed sketch for the next lessons:",
+      "F12.1 — Extrude",
+      "F12.2 — Revolve",
+      "This allows both exercises to begin from the same original sketch."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "centered": [
+      "Use an unchanged copy of the closed sketch created in F11.1.\n\nThe sketch must form a compl",
+      "If the hatch does not appear, check that the sketch forms a fully closed outline.\n\nFor pra"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "centered": [
+      "Use an unchanged copy of the closed sketch created in F11.1 Sketch.\n\nThe sketch must form ",
+      "Check these before confirming:",
+      "The correct closed sketch is selected.",
+      "The hatch appears.",
+      "The correct rotation axis is defined.",
+      "The required rotation angle is entered."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "centered": [
+      "Hidden does not mean deleted.\n\nA hidden element still exists in the model. You can display"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "centered": [
+      "Hiding an element does not delete it.\n\nThe element remains part of the model and can be di"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "centered": [
+      "From the Basic Icon Menu, select Stretch / Shape / Cut → Stretch by Specifying Face.\n\n`伸縮・",
+      "The stretch direction is based on the face you select. Select the correct face before ente"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F16.1",
+    "title": "Understanding the Work Plane",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F16.3",
+    "title": "Extrude",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F16.4",
+    "title": "Revolve",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F16.5",
+    "title": "Spiral Form",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-hole-details",
+    "title": "Creating Hole Details on Parts",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-union",
+    "title": "Union",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "title": "Subtract",
+    "centered": [
+      "The Tool must overlap the Target where material should be removed."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "title": "Intersect",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "title": "Separate Entity",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-move",
+    "title": "Move Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-copy",
+    "title": "Copy Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror",
+    "title": "Mirror Component",
+    "centered": [
+      "Mirror moves the original. Use Mirror Copy to keep it and create a duplicate."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate",
+    "title": "Rotate Component",
+    "centered": [
+      "Rotate moves the original. Use Rotate Copy to keep it and create a duplicate."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "title": "Repeat Copy Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "title": "Rotate Copy Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "title": "Mirror Copy Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-delete",
+    "title": "Delete Component",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "title": "Chamfer",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "title": "Fillet",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "title": "Shell",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-create",
+    "title": "Create 3D Part",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-material",
+    "title": "Material Description",
+    "centered": [
+      "Keep the symbols and dimension order shown in each example. □ identifies square material w"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-change-name",
+    "title": "Change 3D Part Name",
+    "centered": [
+      "3D Part Name = 2D Part Name → Link maintained\n3D Part Name ≠ 2D Part Name → Link cut\n\n2D P"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-set",
+    "title": "Set Material",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "title": "Materials Not Included in the iCAD Material List",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "title": "Change Color",
+    "centered": [
+      "Choose the target first, then the color."
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "title": "Change Layer",
+    "centered": [
+      "Specify the correct layer in Item Entry before selecting the solid entity.\n\nLayer designat"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "title": "Layer Designation of 3D Parts",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-information-tools",
+    "title": "Information Tools",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "title": "Linear Dimension",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "title": "Diameter Dimension",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "title": "Angular Dimension",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "title": "Notes with Leader Lines",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "title": "Character Strings",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "title": "Edit Drafting Entity Characters",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "title": "Change Drafting Entity Attributes",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "title": "Change Drafting Entity Position",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-check",
+    "title": "Check for Interferences",
+    "centered": [
+      "Instead of selecting specific entities, right-click in the 3D Space to check the entire dr"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "title": "Display Detected Interferences",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "title": "Import Parasolid",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "title": "Lighten B-Rep Solid",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "title": "Save the Purchase Part",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "title": "Normal Parts and Mirror Parts",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "title": "Identify Normal or Mirror Parts",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "title": "3D Modeling of Mirror Parts",
+    "centered": [],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F17.1",
+    "title": "Foundation Review",
+    "centered": [
+      "Know the main areas of the iCAD SX screen:",
+      "Title Bar",
+      "Menu Bar",
+      "Command Menu",
+      "Tree View",
+      "Workspace",
+      "Icon Menu",
+      "Item Entry",
+      "Key Entry",
+      "Tool Bar",
+      "Message Pane",
+      "Remember the basic mouse controls:\n\nZoom\nUse the scroll wheel to zoom in and out.\n\nPan\nHol",
+      "Use the 3D View tools to inspect the model from different directions.\n\nCommon views includ",
+      "Top",
+      "Front",
+      "Right Side",
+      "Left Side",
+      "Back",
+      "Bottom",
+      "User Views provide additional angled viewing directions.\n\nShading changes how the model ap",
+      "iCAD SX uses three coordinate axes:\n\nX → Red\nY → Blue\nZ → Yellow\n\nThe Origin is the point ",
+      "Choose the command first. Left-click the target, check its highlight, then right-click (GO",
+      "A basic iCAD drawing can be understood as:\n\nDrawing File → Parts → Model Geometry\n\nA Part ",
+      "Remember the basic file workflow:\n\nCreate New Item → Work → Save → Close\n\nUse Save As when",
+      "You learned how to create basic shapes such as:",
+      "Box",
+      "Cylinder",
+      "Polygonal Prism",
+      "A common modeling process is:\n\nSelect Tool → Enter Size → Specify Position → Confirm",
+      "Move → Changes an object's position\nCopy → Creates a duplicate\nDelete → Removes an object\n",
+      "After creating or editing a shape, check the result:",
+      "View the model from another direction with 3D View or User View.",
+      "Confirm the values you entered in Item Entry.",
+      "Use Undo (Ctrl+Z) if something is wrong.",
+      "In the practice sequence, the remaining Box is still 20 × 30 × 10 mm after Move, Copy, and"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  },
+  {
+    "id": "F17.2",
+    "title": "Foundation Knowledge Check",
+    "centered": [
+      "Choose one answer, then select Check Answer. Read the feedback. Retry an incorrect answer,"
+    ],
+    "cardNotCentered": 0,
+    "overflow": false
+  }
+]

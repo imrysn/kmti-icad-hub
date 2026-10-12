@@ -171,7 +171,7 @@ export default function FoundationReadingLesson({ lesson: canonicalLesson, onCom
     </div>
   </div></div>;
 
-  return <FoundationVisualContext.Provider value={Boolean(canonicalLesson.sourceProfessionalLessonId)}><div ref={containerRef} className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson${['F9', 'P7', 'P8', 'P9', 'P10'].includes(lesson.moduleId) ? ' foundations-modeling-lesson' : ''}`}>
+  return <FoundationVisualContext.Provider value={Boolean(canonicalLesson.sourceProfessionalLessonId)}><div ref={containerRef} data-foundation-lesson={canonicalLesson.id} className={`course-lesson-container foundations-standard-intro foundations-video-reading-lesson foundations-consistent-lesson${['F9', 'P7', 'P8', 'P9', 'P10'].includes(lesson.moduleId) ? ' foundations-modeling-lesson' : ''}`}>
     <>
       <div className="lesson-progress-container">
         <div className="lesson-progress-bar" style={{ width: `${scrollProgress}%` }} />

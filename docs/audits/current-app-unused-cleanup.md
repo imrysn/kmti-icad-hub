@@ -1,0 +1,142 @@
+# Current-app unused-file cleanup
+
+The user authorized removal of unused files within course asset folders while preserving current behavior of Foundations, Professional, Complete and the rest of the app.
+
+Scanned source and configuration, including untracked application code, for file/module references. Retained loaded legacy mentor lessons, tests, build tools, runtime data and ambiguous candidates. No glob-based source asset loading was found.
+
+## Results
+
+Deleted 128 files (28,716,470 bytes): five unreferenced source files and 123 assets.
+
+TypeScript and production build passed. All 649 production output filenames match the preceding build, including content-hashed bundles. Retained course-file hashes are unchanged. Curriculum tests: 82 passed, one failed on Professional section-title parity (extra “Why It Is Useful” section); curriculum content was not modified.
+
+## Deleted files
+
+- `frontend/src/assets/2d-images/2D_dimensioning(4)_b.4_change_position_1 (2).png`
+- `frontend/src/assets/2d-images/2D_dimensioning_b.1_edit_dimension_charac_1.png`
+- `frontend/src/assets/2d-images/2D_dimensioning_b.1_edit_dimension_charac_2.png`
+- `frontend/src/assets/2d-images/2D_dimensioning_b.2_polished_material_1.jpg`
+- `frontend/src/assets/2d-images/2D_line_properties_(3)_b_center_line_3.png`
+- `frontend/src/assets/2d-images/2D_line_properties_(3)_b_center_line_4.png`
+- `frontend/src/assets/2d-images/2D_machining_symbol_machining_surface_condiiton.jpg`
+- `frontend/src/assets/2d-images/2D_machining_symbol_note.jpg`
+- `frontend/src/assets/2d-images/2D_normal_and_mirror_parts(1)_1.jpg`
+- `frontend/src/assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_2.jpg`
+- `frontend/src/assets/3D_INTERACTIVE/1interface.mp4`
+- `frontend/src/assets/3D_Video_Tutorial/Extrude (Both Side).mp4`
+- `frontend/src/assets/3d-images/2D_dimensioning_b,1_edit_dimension_charac.png`
+- `frontend/src/assets/3d-images/acrylic_pointer,,.png`
+- `frontend/src/assets/3d-images/angular_dimension1.png`
+- `frontend/src/assets/3d-images/annotation1_place_note2.png`
+- `frontend/src/assets/3d-images/annotation2_3d_entities.png`
+- `frontend/src/assets/3d-images/annotation2_characters.png`
+- `frontend/src/assets/3d-images/annotation2_characters1.png`
+- `frontend/src/assets/3d-images/annotation2_dimension.png`
+- `frontend/src/assets/3d-images/annotation2_drafting_entities.png`
+- `frontend/src/assets/3d-images/annotation2_drafting_entity.png`
+- `frontend/src/assets/3d-images/annotation2_drafting_entity1.png`
+- `frontend/src/assets/3d-images/annotation2_hole_pitches.png`
+- `frontend/src/assets/3d-images/basic_operation(1)_item _entry_box.png`
+- `frontend/src/assets/3d-images/basic_operation(2)_arrange_torus.png`
+- `frontend/src/assets/3d-images/basic_operation(2)_item_entry_torus.png`
+- `frontend/src/assets/3d-images/basic_operation1_3d_view.png`
+- `frontend/src/assets/3d-images/basic_operation1_arrange_box.png`
+- `frontend/src/assets/3d-images/basic_operation1_arrange_cylinder.png`
+- `frontend/src/assets/3d-images/basic_operation1_arrange_polygon_prism.png`
+- `frontend/src/assets/3d-images/basic_operation1_command_menu.png`
+- `frontend/src/assets/3d-images/basic_operation1_cylinder.png`
+- `frontend/src/assets/3d-images/basic_operation1_item_entry.png`
+- `frontend/src/assets/3d-images/basic_operation1_item_entry_box.png`
+- `frontend/src/assets/3d-images/basic_operation2_arrange_cone.png`
+- `frontend/src/assets/3d-images/basic_operation2_arrange_torus.png`
+- `frontend/src/assets/3d-images/basic_operation2_item_entry_cone.png`
+- `frontend/src/assets/3d-images/basic_operation2_item_entry_torus.png`
+- `frontend/src/assets/3d-images/basic_operation2_move_3.png`
+- `frontend/src/assets/3d-images/basic_operation3_copy_3.png`
+- `frontend/src/assets/3d-images/basic_operation3_mirrored.png`
+- `frontend/src/assets/3d-images/basic_operation3_rotate_axis_rotation...png`
+- `frontend/src/assets/3d-images/basic_operation3_rotate_axis_rotation.png`
+- `frontend/src/assets/3d-images/basic_operation4_extrusion_bothside,,.png`
+- `frontend/src/assets/3d-images/basic_operation4_extrusion_oneside,,.png`
+- `frontend/src/assets/3d-images/basic_operation4_revolve_p1.png`
+- `frontend/src/assets/3d-images/grease_nipple_1.png`
+- `frontend/src/assets/3d-images/grease_nipple_2.png`
+- `frontend/src/assets/3d-images/isonite_manganese,,.png`
+- `frontend/src/assets/3d-images/item_entry_polygon.png`
+- `frontend/src/assets/3d-images/kemco_std_gas_discharge.png`
+- `frontend/src/assets/3d-images/kemco_std_grease_nipple.png`
+- `frontend/src/assets/3d-images/kemco_std_oilgroove.png`
+- `frontend/src/assets/3d-images/kemco_std_oilhole.png`
+- `frontend/src/assets/3d-images/kemco_std_tap-gage-hole.png`
+- `frontend/src/assets/3d-images/mirrored_part1_mirror_image.png`
+- `frontend/src/assets/3d-images/notes_leader_lines.png`
+- `frontend/src/assets/3d-images/oilgroove_design.png`
+- `frontend/src/assets/3d-images/operation_sample4_4_position_tool_entity,,.png`
+- `frontend/src/assets/3d-images/properties_material,,.png`
+- `frontend/src/assets/3d-images/standard3_location_of_sprocket_keyway,,.png`
+- `frontend/src/assets/3d-images/standard3_sprocket_3d,,,.png`
+- `frontend/src/assets/3d-images/standard3_sprocket_3d22.png`
+- `frontend/src/assets/3d-images/substract_operation_sample_1.png`
+- `frontend/src/assets/3d-images/tool_bars_2d_standard_screen.png`
+- `frontend/src/assets/3d-images/tool_bars_2d_view.png`
+- `frontend/src/assets/3d-images/tool_bars_3d_view.png`
+- `frontend/src/assets/3d-images/tool_bars_edit.png`
+- `frontend/src/assets/3d-images/tool_bars_entry_control.png`
+- `frontend/src/assets/3d-images/tool_bars_file.png`
+- `frontend/src/assets/3d-images/tool_bars_screen_memory.png`
+- `frontend/src/assets/3d-images/tool_bars_screen_operations.png`
+- `frontend/src/assets/3d-images/tool_bars_section_display.png`
+- `frontend/src/assets/3d-images/tool_bars_shading.png`
+- `frontend/src/assets/3d-images/tool_bars_switch_display.png`
+- `frontend/src/assets/3d-images/tool_bars_system_information.png`
+- `frontend/src/assets/3d-images/tool_bars_user_views.png`
+- `frontend/src/assets/KMTI iCAD Operation Manual - (New iCAD Version) 3D JPN.xlsx`
+- `frontend/src/assets/icad-foundations/information/angle-exact.png`
+- `frontend/src/assets/icad-foundations/information/coordinates-exact.png`
+- `frontend/src/assets/icad-foundations/information/distance-exact.png`
+- `frontend/src/assets/icad-foundations/information/length-exact.png`
+- `frontend/src/assets/icad-foundations/interference/high-speed-detection-interface.png`
+- `frontend/src/assets/icad-foundations/mirrored-parts/mirror-copy-toolbar.png`
+- `frontend/src/assets/icad-foundations/modeling/chamfer-tooltip-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/component-mirror-copy-points-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/component-mirror-points-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/component-rotate-copy-points-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/fillet-tooltip-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/hole-details-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/hole-details-tools-screen.png`
+- `frontend/src/assets/icad-foundations/modeling/intersect-command-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/intersect-command-transparent.png`
+- `frontend/src/assets/icad-foundations/modeling/material-description-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/material-set-icon.png`
+- `frontend/src/assets/icad-foundations/modeling/material-set-menu-ja.png`
+- `frontend/src/assets/icad-foundations/modeling/p8_move_instruction.png`
+- `frontend/src/assets/icad-foundations/modeling/part-create-callout-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/part-create-tooltip.png`
+- `frontend/src/assets/icad-foundations/modeling/part-rename-icon.png`
+- `frontend/src/assets/icad-foundations/modeling/part-rename-tooltip.png`
+- `frontend/src/assets/icad-foundations/modeling/part-rename-workflow-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/mirror-1.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/rotate-1.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/rotateCopy-1.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/sketch-menu.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/sketch-p1.png`
+- `frontend/src/assets/icad-foundations/modeling/professional/sketch-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/shell-tooltip-reference.png`
+- `frontend/src/assets/icad-foundations/modeling/subtract-target-sample.png`
+- `frontend/src/assets/icad-foundations/modeling/subtract-tools-sample.png`
+- `frontend/src/assets/icad-foundations/modeling/union-icon.png`
+- `frontend/src/assets/icad-foundations/modeling/work-plane-open-interface.png`
+- `frontend/src/assets/icad-foundations/modeling/work-plane-remove-menu.png`
+- `frontend/src/assets/icad-foundations/modeling/work-plane-solid-tools-reference.png`
+- `frontend/src/assets/icad-foundations/shape-steel/arrange-machine-part-menu.png`
+- `frontend/src/assets/icad-foundations/show-hide/hide-drafting.png`
+- `frontend/src/assets/icad-foundations/show-hide/hide-specified.png`
+- `frontend/src/assets/icad-foundations/show-hide/hide-unselected.png`
+- `frontend/src/assets/icad-foundations/show-hide/show-drafting.png`
+- `frontend/src/assets/icad-foundations/show-hide/show-specified.png`
+- `frontend/src/assets/icad-foundations/stretch/stretch-face.png`
+- `frontend/src/components/ICAD/Command/Icad_Guide/Japanese_Tutorial/Menu_Bar/MenuData.ts`
+- `frontend/src/components/PublicCourses/Foundations/BasicNavigation.tsx`
+- `frontend/src/components/PublicCourses/Foundations/SimplePrimitives.tsx`
+- `frontend/src/components/PublicCourses/Foundations/WorkspaceLayout.tsx`
+- `frontend/src/components/iCAD_Foundations/PartLayoutIcon.tsx`

@@ -12,7 +12,9 @@ export const useCourses = () => {
             setLoading(true);
             try {
                 const data = await getCourses();
-                setCourses(data.courses);
+                setCourses(data.courses.filter((course: Course) =>
+                    course.course_type !== '3D_Modeling' && course.course_type !== '2D_Drawing'
+                ));
             } catch (err) {
                 setError('Failed to fetch courses');
                 console.error(err);

@@ -85,22 +85,6 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
     const courseFoundations = courses.find(c => c.course_type === 'iCAD_Foundations');
     const courseProfessional = courses.find(c => c.course_type === PROFESSIONAL_COURSE_TYPE);
 
-    const course3D = courses.find(c => c.course_type === '3D_Modeling') || (isEmployeeSide ? {
-        id: '1',
-        title: '3D Modeling',
-        description: 'Develop advanced spatial visualization skills to model complex mechanical parts and multi-component assemblies. Includes parametric sketching, feature modeling (extrusion, sweep, loft), design-intent logic, and assembly constraints.',
-        course_type: '3D_Modeling',
-        order: 1
-    } : undefined);
-
-    const course2D = courses.find(c => c.course_type === '2D_Drawing') || (isEmployeeSide ? {
-        id: '2',
-        title: '2D Detailing',
-        description: 'Master the art of technical drafting. Convert raw 3D geometry into fabrication-ready drawings. Focuses on section views, isometric details, annotations, standard bill of materials (BOM), and mechanical tolerancing.',
-        course_type: '2D_Drawing',
-        order: 2
-    } : undefined);
-
     const practicalIds = new Set((effectiveAccess?.entitlements || []).filter((item) => item.resource_type === 'practical_set').map((item) => item.resource_id));
     const has3DPractical = isEmployeeSide || Array.from(practicalIds).some((id) => id === '*' || id.startsWith('3D:'));
     const has2DPractical = isEmployeeSide || Array.from(practicalIds).some((id) => id === '*' || id.startsWith('2D:'));
@@ -112,22 +96,12 @@ export const CourseSelector: React.FC<CourseSelectorProps> = ({
             description: `${FOUNDATION_MODULES.length} ${language === 'ja' ? 'モジュール' : 'modules'} · ${FOUNDATION_TOTAL} ${language === 'ja' ? 'レッスン' : 'lessons'}. ${t('course.desc_foundations') || courseFoundations.description}`
         }] : []),
         ...(courseProfessional ? [courseProfessional] : []),
-        ...(course3D ? [{
-            ...course3D,
-            title: t('course.title_3d') || course3D.title,
-            description: t('course.desc_3d') || course3D.description
-        }] : []),
         ...(!isEmployeeSide && has3DPractical ? [{
             id: 'practical-assessment',
             title: t('course.title_3d_prac') || '3D Practical Assessment',
             description: t('course.desc_3d_prac') || 'Sequential 10-set practical drafting tasks and modeling validation in iJCAD to verify structural annotation and modeling accuracy.',
             course_type: 'Practical',
             order: 1.5
-        }] : []),
-        ...(course2D ? [{
-            ...course2D,
-            title: t('course.title_2d') || course2D.title,
-            description: t('course.desc_2d') || course2D.description
         }] : []),
         ...(!isEmployeeSide && has2DPractical ? [{
             id: '2d-assessment',

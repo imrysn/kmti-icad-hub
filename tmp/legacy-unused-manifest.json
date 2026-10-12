@@ -1,0 +1,1432 @@
+[
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_AdditionalView.tsx",
+    "bytes": 13794,
+    "sha256": "c74ec3e61975ffc5713a2e7cb909528e2beecfc2278c769d7820b48d76fe7f09"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_Balloon.tsx",
+    "bytes": 9091,
+    "sha256": "fe380b61ace6ec531ab1cabdfa59e38a78a21964720ec2ac3260939d7b080dc2"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_BillOfMaterial.tsx",
+    "bytes": 18903,
+    "sha256": "12301609ba5b8b2c0b65d62d010e41f48ec9cec59e40adb526be178426712be6"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_CommandMenu.tsx",
+    "bytes": 11838,
+    "sha256": "4123c1049325c86fe0b3eff5f300e546d6be58fd65069cf2785b9095d39b51e9"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_Dimensioning.tsx",
+    "bytes": 22904,
+    "sha256": "4cd108d8f50c1048c7b98d7a22b7f4ac969572f849450853378aa67595ae3cfd"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_GeometricTolerance.tsx",
+    "bytes": 7264,
+    "sha256": "c58475b277db5a479874704e95e57f2e80ccaf8487d3cdf9c6e957bf5eb1d71e"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_HeatTreatment.tsx",
+    "bytes": 42882,
+    "sha256": "5371bd5cc358beb6527f9598bb36f38f825843068995fadc3653bea7cd31abb1"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_Keyway.tsx",
+    "bytes": 4093,
+    "sha256": "03c8b348b6246c602470ad77c462d22ed7e4322b8f634658fcc9f1ad7d72cb89"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_LineProperties.tsx",
+    "bytes": 17835,
+    "sha256": "ccec9f8b8a831869160437642c6a71cd7c730d5d6dba803058ae2f96e302ad4d"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_MachiningSymbol.tsx",
+    "bytes": 8696,
+    "sha256": "534cd0340014f9412d2e0c82ed48ec7523cf7d9d39ebb5e2c54d0da5764eb4b9"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_NormalMirrorParts.tsx",
+    "bytes": 10431,
+    "sha256": "72c323f7f232a05e05fdfe1da32f27b0dc475acd847ed5ab00c7aebe6e3465d7"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_OperalView.tsx",
+    "bytes": 13333,
+    "sha256": "496021c660d8c2d240509d702b092a2fef1f6d623ff75ff8fe85fb03237e4f09"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_OrthographicView.tsx",
+    "bytes": 13799,
+    "sha256": "410b13aab0e12bd4477ea4c2df4f9c75483d84dd665dbdb5828664bc9e25d87e"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_PartNote.tsx",
+    "bytes": 4821,
+    "sha256": "6badf4abee2d45043a678f3c9d6acdbe6138a6422202757cd42066f543e80e6e"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_RetainingRing.tsx",
+    "bytes": 6794,
+    "sha256": "6fb8f7f1368acc1d78bf63c94e3fd05f27270eb85a415e5947743ef6c95fb223"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_RevisionCode.tsx",
+    "bytes": 9712,
+    "sha256": "8b5e2a22a1dbb6f67ceb7b284134df9387a3354893da12df5c7684d88747e9cc"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_StandardLibrary.tsx",
+    "bytes": 10931,
+    "sha256": "9d6897b0d237508664bf79d3060393016c0b24a40d6d4e64ffc9be34bd75977f"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_StandardPart.tsx",
+    "bytes": 35389,
+    "sha256": "3943b6aa6d4f2ee4dadbda453fa34c6d6a682695d1c8de655d8a09dcafbd7278"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_SurfaceApplication.tsx",
+    "bytes": 9195,
+    "sha256": "6c7bcadfb69a15a9d1f9b5065d685b38499ef02228b308a8c4a527f875e86255"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_SurfaceCoating.tsx",
+    "bytes": 11155,
+    "sha256": "da5eb838439742e5d1c9d5ced4bf83bd20be7d4b6773611ea270180470768ffb"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_Titleblock.tsx",
+    "bytes": 3709,
+    "sha256": "0485284ff4bea69b21557e566d374ef961059647dd6e1ffa93e44af4933a7c07"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_WeightComputation.tsx",
+    "bytes": 7717,
+    "sha256": "a548e7871ea5ca5315ce01c6a11547a0a04174fa3d5b67d4410e9dcc9c299813"
+  },
+  {
+    "path": "frontend/src/components/2D_Drawing/2D_WeldingSymbol.tsx",
+    "bytes": 7361,
+    "sha256": "794656436db895d6f690de0f5d8660c91cade47ce21e4214f71c59c3bd6ba00a"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_2Dto3D.tsx",
+    "bytes": 32471,
+    "sha256": "7b14393e6e6b7d27da44b1923af5930877ca00a461ff7dcb2f99dbe35eb35a82"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Annotation.tsx",
+    "bytes": 34724,
+    "sha256": "f4079183b615a906ebe76584a75b7ae49bb8f7cc475d7503f7b8dfc769c43ef8"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Boolean.tsx",
+    "bytes": 30671,
+    "sha256": "7c5232c43e16e8dd6f971861efce5b5234415ff3f79888511923c65c8f064450"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Component.tsx",
+    "bytes": 41378,
+    "sha256": "032c48373839f8edbea523c5cdcdc7e5d6e3de0443c96b30580ede9611987ff8"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Fairing.tsx",
+    "bytes": 21570,
+    "sha256": "d1d39feb0a9d6073924d33b7154d3713d66151892a70e30371bc248e23b02c0a"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_HoleDetails.tsx",
+    "bytes": 7801,
+    "sha256": "b8d57b65c7e51882e650b6011c349d01aadfdcc26b115909f819d832dad729c2"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Interference.tsx",
+    "bytes": 7709,
+    "sha256": "726bc80a51d857c3942bff72730d7bfc61ec64c125792c650f78eaf04e427d33"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_MaterialSetting.tsx",
+    "bytes": 17655,
+    "sha256": "cce56e1b01ee7661e335dde81a7f5806552447d622df6a72358abbb52d6e4976"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_MirroredPart.tsx",
+    "bytes": 16201,
+    "sha256": "d6a09aa9dc9838941bdba26333dfeae2a970ea427269595ee3bc2bd5a6b7265a"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_OperationSample.tsx",
+    "bytes": 30579,
+    "sha256": "346d2154ef2df9a3a8508c7661a4dcd6a5a8184e6a2fcff52e3de7a9c82d055c"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Origin.tsx",
+    "bytes": 11810,
+    "sha256": "b1c7614e120b7996c191d1b993ef89da1e688c2cf1884620ee68fb3989422094"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Parasolid.tsx",
+    "bytes": 22343,
+    "sha256": "09541b0003b1198b368a7c65408762e8d63d496157159e3ad1c7d52d1c69e65d"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Part.tsx",
+    "bytes": 16543,
+    "sha256": "472334ac4eebae497af8228e04c9da3b52ed6537450317fa93e1dff746658bd5"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Properties.tsx",
+    "bytes": 28962,
+    "sha256": "acfa345a293acb6824401eab93be7bfe6f5494c2dfc7cbe4d4d1cd4d658c10d4"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_PurchaseParts.tsx",
+    "bytes": 4575,
+    "sha256": "d513b532b51460f04632ec5742334ab70c1c2427e6a7988e990aa303623966eb"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/3D_Standard.tsx",
+    "bytes": 65084,
+    "sha256": "727c943d1ccfadba02d714f57a879e4a766bca45c6ba003dd19324c91256ee06"
+  },
+  {
+    "path": "frontend/src/components/3D_Modeling/audit_divs.py",
+    "bytes": 805,
+    "sha256": "784006460a80da8d930838b983149275f93ebd4a41034855ce2bb24d113c7430"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(1)_a.png",
+    "bytes": 1030643,
+    "sha256": "b724b54c871fc2be25f209676d9882620794d5e47d463e828cc4288e5ff1e037"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(2)_b.png",
+    "bytes": 754869,
+    "sha256": "3aa2b0f7337c6a5b8f3c70f003e1c5b33bcbd4e42c526a9f6019182def03ccae"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(2)_c.png",
+    "bytes": 115520,
+    "sha256": "a2b27c0886494ab0da4840e91f988d008ed19389a40820f150e93f842e21db45"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(3)_d.png",
+    "bytes": 250108,
+    "sha256": "9c0f5b912817eb6dd6490eafc010db496179455ddd88cedd0c9e284d33925e05"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(3)_e.png",
+    "bytes": 211525,
+    "sha256": "f02d87e166b6920f5315ca4398e9fd207916d7c50d2ccd1892e0189e3b7c824f"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_additional_view(4)_f.png",
+    "bytes": 169787,
+    "sha256": "7e00c0fbcf865069bcbb79fb266ae2b5c68e6ca11a3e84d269f3f89b3d061ff5"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_application_surface((1)_application_surface_1.png",
+    "bytes": 228354,
+    "sha256": "63d7fc8186cbf6fd36f7f15c262efccbc622ecb218acbe6d51a5ffb92b46af62"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_application_surface((1)_application_surface_2.png",
+    "bytes": 198967,
+    "sha256": "0895fca7067ae431059d1bcb4429c03f27d2af1490da8faa3c25ee5931879d71"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_application_surface((2)_machining.png",
+    "bytes": 154625,
+    "sha256": "751ab6d7063fd7900e3d78f6ad4c970f6a319375e5bcbd012b35b8b39d5b9da1"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_application_surface((2)_machining_2.png",
+    "bytes": 121436,
+    "sha256": "90b9cca8fb1fce0a0054f90640164e83a053101546032101b6dc1ab4b4f6f560"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_balloon_assembly_drawing_2.png",
+    "bytes": 7062,
+    "sha256": "034f0e2127f5a89cf8d4f936adb257a9b12522660e83ba1cf2ca750b4eeaaefe"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_balloon_part_drawing.png",
+    "bytes": 842784,
+    "sha256": "b7e6b32883dd797594ad470f556c8a21a494b1d21098ab602df542de5ec10aa5"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_(4)_after_inserting_on_icad.png",
+    "bytes": 240375,
+    "sha256": "66c6a26fd2b9dd90501d5c162a8e15f6b5a8e9d38160aaf0be4513ce88df3530"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_(4)_edit_attribute.png",
+    "bytes": 798452,
+    "sha256": "81afa02e743c31acec1007e447612fdac6ea3950f8ff6c32b6064e7a28c71947"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_additional_information.png",
+    "bytes": 1081973,
+    "sha256": "f697d9a33c81bd5823fda33f428066cad572c80c32f94aa72fc26394c0b2ba1c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_assembly_drawing.jpg",
+    "bytes": 279908,
+    "sha256": "79d5d316528343c04592b73772c5736ec7498d7e3c4c3ca9ab720f46ac4c4b2a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_assembly_drawing_2.png",
+    "bytes": 169861,
+    "sha256": "3859b6c80aba793f94861b45eb0f5f9820c558f29b9789330369c4810b739621"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_part_drawing.png",
+    "bytes": 96462,
+    "sha256": "58190bdd05f229cb49cf72cf991691e7e42b391c107433a197744af273e84450"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_part_drawing_b.png",
+    "bytes": 371584,
+    "sha256": "46f597733e95cbde9938d9663db01c67345fe7477506991da4fe34878a285d33"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_part_drawing_c.png",
+    "bytes": 250939,
+    "sha256": "b85552185cca42d7e9f66327ce9b29c238cf0c8b6fddc50880302dc6b9065899"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_bill_of_material_part_drawing_d.png",
+    "bytes": 164910,
+    "sha256": "e003da1eb3660e399b0db71a8be71851ff86d864996ee9b79544e956450c7f20"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_command_menu_(1)_command_menu.png",
+    "bytes": 358936,
+    "sha256": "7bc2e4df6c23ad514a0f1ffc18909058efe265ac7936b6d281544ef2cab5d7f8"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_command_menu_(1)_command_menu_2.png",
+    "bytes": 443376,
+    "sha256": "ead8c4ca319c5ed56cf1e616599da44ddb3245a9ba6e79ca9b163181f9e9ecd7"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_command_menu_(1)_selectable_and_unselectable_line.png",
+    "bytes": 278903,
+    "sha256": "d64125d944c40579de6fb339f593967930ba400da20031a02cc68f5216df1615"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_command_menu_(2)_active_view.png",
+    "bytes": 538600,
+    "sha256": "c21f0d380efea7dacd7a85e810baf8d841f7847d34706700724c55531a83c537"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_command_menu_(3)_component_highlighled_1.png",
+    "bytes": 378949,
+    "sha256": "f3f7fc13f38cb8338a9c1abc34a32704eafce3aca2e3e6cd817778745e052afe"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(1)_1.png",
+    "bytes": 150377,
+    "sha256": "66a32e387133ff9f470ba5f98d33b7788d72aafa448207712e3e0ce43a336c5b"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(1)_a.png",
+    "bytes": 251412,
+    "sha256": "8259bd699cb94900c8ffce743d9a68261d6aa941b824b20982bfe5cdb8a10c19"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(1)_b.png",
+    "bytes": 238964,
+    "sha256": "25e93a1792b0ba80894bddc720b0498f8464ba48351f4900e0738074cd6e35ed"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(2)_c.2.png",
+    "bytes": 328691,
+    "sha256": "8de275a6756f86c96e34af19ee53b19ad794e17a77a81b6550ae925ce951dfae"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(2)_d.2.jpg",
+    "bytes": 19845,
+    "sha256": "73213a236af0b513616738c44927bec5266a677654d884befc9fff16b4c67f0a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(2)_d.2.png",
+    "bytes": 254736,
+    "sha256": "a0b01bb5a811f071346f32b62680e658955b2306dced7f4feed722e4823a1d6e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(3)_e.png",
+    "bytes": 147347,
+    "sha256": "95100f9114a144870d9f3bf21695ecda06b5cbefd178a7228b7acdac71b7f545"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_create_orthographic_view_(3)_e1.png",
+    "bytes": 489783,
+    "sha256": "bb9e302223b226c6a7df8138edd6813a0a41b6f96cbdcb0729b7c1236b7754f3"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(1)_a.1_standard_dimension.png",
+    "bytes": 550475,
+    "sha256": "9187775c74c09cc3f0717d17d8ae04d6ec40e2ef65aef5694ab0c30542fa393e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(1)_a.2_series_dimension.png",
+    "bytes": 456136,
+    "sha256": "5b0c9821302996e020859d727cc79e7ef25999a2b79b32e9c3c79c27fa111070"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(1)_diimensioning.png",
+    "bytes": 67221,
+    "sha256": "2b953e4ed5d8598fc57d16a8eef92295038883520a6b81fedc12dd40b69666ab"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(3)_part_note.png",
+    "bytes": 772232,
+    "sha256": "96e62b06e57ad018d1457b30b00b87e28b9c385d07809d7c85466af14fa4cb7b"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(5)_c_dimensions_for_breakviews_1.png",
+    "bytes": 799758,
+    "sha256": "d62f2dbd958141664cb315e01c517a056e078bbec2a00a8d766fb0050b6b57e6"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_b.1_edit_dimension_charac.png",
+    "bytes": 715745,
+    "sha256": "2dc18997aca4cdd4c2e8ae792517c18ce3fc3de5e9e54791e8d402f8fa844265"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_b.2_polished_material.png",
+    "bytes": 111654,
+    "sha256": "db6f625e2771b2045be99feb95198121feb8dd9d38696d7eec0baefdacf8479a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_chamfer_radius.png",
+    "bytes": 105213,
+    "sha256": "5ef9c8d00bc1980faf90b69170a21ed8097ad625883ee156aca12727ab7589e6"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_tolerance.png",
+    "bytes": 113031,
+    "sha256": "d514c51c4b65a5fb4518f073d2ba67739069f56ebb6db78da65c1285df77432d"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_geometric_tolerance(1).png",
+    "bytes": 563542,
+    "sha256": "08f1fa26d26a26850875477cab6a919a4c920bd89a4c1d6a390fa81894972393"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_geometric_tolerance(2)_4.png",
+    "bytes": 654909,
+    "sha256": "b0482a709d2bc598b3ef5b22a2bb4a9475ecfc11f1942264c1c230533b618d9d"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(1).png",
+    "bytes": 396373,
+    "sha256": "f7b56b04015a9f7d263925ca4dfa5d212f72270322f2da58d38188af91d87610"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(2)_6_changing_line_color.png",
+    "bytes": 441521,
+    "sha256": "2e8fcec312b474d0eabdb2d372b40d7af34a8b1143f4771ce3b1f080b8451309"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(2)_additional_lines_a_spline.png",
+    "bytes": 614572,
+    "sha256": "21d1801e9284437602e50cc682f3b1a64ef03c758780e11b0a8cbece59237fb7"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(2)_additional_lines_a_spline1.png",
+    "bytes": 594099,
+    "sha256": "b2f4a4b556886d669263c14032b8ef5e34d140c3ad33a5f0d82e7edf63fc216c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(2)_additional_lines_a_spline_spline.png",
+    "bytes": 68596,
+    "sha256": "dea23d61cec664373c5771a96c838cfb87642123364a2483878e30d1b8e09ac1"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(3)_additional_lines_a_spline.png.png",
+    "bytes": 596403,
+    "sha256": "f55485cf0f8efb9ad49e96dcdb5749d572c613d26b2c37c9c610a68f393a8b3b"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(3)_c_piping_center_line_1.png",
+    "bytes": 538269,
+    "sha256": "9ca919612171c073e0fd7ccd5329e53d1a511b28fb40a6d0637d40736739ccf6"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(4)_d_change_representation_parts_1.png",
+    "bytes": 663175,
+    "sha256": "f00f355cd7f78269072af771d875ac2ee966d9323065c59508818fa0310db166"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(4)_d_change_representation_parts_3.png",
+    "bytes": 475644,
+    "sha256": "189c354c20322f430196db4cc930940525cf550ea9fbd0c9945b9d69a918dcdb"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_material_weight_computation_cylinder.jpg",
+    "bytes": 27237,
+    "sha256": "27f570cdd6250c46650cf1c0035b17f7ce4a243b6bb46ccca62530f3088d4541"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_material_weight_computation_plate.jpg",
+    "bytes": 25766,
+    "sha256": "1ee25f51c1afcde4b7cf305eb0e362c31abb5d0d0d9203a3748d7700d13972cb"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_material_weight_computation_shape_steel.jpg",
+    "bytes": 50840,
+    "sha256": "fa3ce5a9fd56c7fec3b542062f84938be04932a2b0da51e5b84c08f6602d3de8"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_material_weight_computation_shape_steel_ex2.jpg",
+    "bytes": 37332,
+    "sha256": "bc169411556204b0209d9b8a30c5542c801d1f14c26b23bc89766aa717835460"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_material_weight_computation_square_rectangular_pipe.jpg",
+    "bytes": 39274,
+    "sha256": "d56b18e2dedd64c1d51d62274524f8630b2e82d781963d3fe5eb055a459b24b3"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_normal_and_mirror_parts(1)_2.jpg",
+    "bytes": 27449,
+    "sha256": "e2e0049f00ba18066119dbad8ae6d6eeebdaf7400399314e52ae4168616a766e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_normal_and_mirror_parts(1)_2.png",
+    "bytes": 1038815,
+    "sha256": "f9aec6ad51b54b5900f267bba7c4cb998849c4ee5b934204dfccfba9f2c9f5da"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_normal_and_mirror_parts(2)_a_1.png",
+    "bytes": 192625,
+    "sha256": "498d8582e2eb9ec24839579e294d0aa65d08bb4be0f2e0d531dc51da729aeabb"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_normal_and_mirror_parts(2)_a_2.png",
+    "bytes": 94902,
+    "sha256": "4539d6b9f217b802b5908279efab7c0a67509730960ce1be403beb12bd296019"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(1)_a.png",
+    "bytes": 294983,
+    "sha256": "90d8b4a6c2d7c6a0535fbd5c7cca515bd029854c6c75b0b37da0defa99271e53"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(1)_a1.png",
+    "bytes": 376563,
+    "sha256": "caffc264ad2acd74a1a4f5b1665c360726f9e700d7f33946eb00359830451d28"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(1)_b2.png",
+    "bytes": 720615,
+    "sha256": "9c993d6168ec793ab823a6bef00a3f279ccb0e2342ec6009835cbb2d885afee6"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(2)_b2_3.jpg",
+    "bytes": 42275,
+    "sha256": "a75e06e7b12ba9b979dbb8054565276885d5154350461b245fb5cb0dafd0c9ea"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(2)_b_1.png",
+    "bytes": 371190,
+    "sha256": "941bd5811fbb495450d702c89198ae9b188b834c7b896b54228ddcb48a047d0a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_operate_view(2)_b_2.jpg",
+    "bytes": 64959,
+    "sha256": "83a8564b196866d10d987c37c58a6a7db0be829358aaa0b0dfecd13371852fd3"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_part_note_1.png",
+    "bytes": 273025,
+    "sha256": "8ede00bc2ffeebfdf056ebc0fe896a07917063f012362c843855f1d4c56fcbc5"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_part_note_2.png",
+    "bytes": 165148,
+    "sha256": "0ef48f24d53c105b62307faf044a27a8b12055fb748c0b4c528b4793d9806f3c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_part_note_text.png",
+    "bytes": 632635,
+    "sha256": "916565b3c18345035c3f7d7bfb49db3f9aeca5eeef6771e9a08627d4f94e2acf"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_retaining_ring_(1).jpg",
+    "bytes": 685284,
+    "sha256": "8a9e326f82633ee820ae00ea98d01e38d15ce32c587ebdb619f136a804f839fc"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_retaining_ring_(2).jpg",
+    "bytes": 679395,
+    "sha256": "b056e35a834c2afcab21907887ca9a89dff6940fb3652bc54f200aa2219af04c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_revision_code_a1.png",
+    "bytes": 227854,
+    "sha256": "fe3afb006643318b73bf4ea3bda197a858bf9bc619661b6baaf9c57822582689"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_revision_code_a2.png",
+    "bytes": 40544,
+    "sha256": "f3289dc545f1a47b612496b5c4902ed56280da07fae06ae514330a0f42c042b6"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_revision_code_a3.png",
+    "bytes": 96198,
+    "sha256": "0f10fc452f84d0cf7125f04f60f2ce22097dfc25628bec3120482c7216660833"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_revision_code_b.png",
+    "bytes": 72131,
+    "sha256": "2c6b075a80ff3923da383ca6623607eaaae6eb8f334f88a76fa2597e510f86d9"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_detail(6)_relief_process_2.jpg",
+    "bytes": 5709,
+    "sha256": "90333d758fee62042a703d4e1271d34b5a41ff281a86f5ec3b60ec48d5249851"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_detail(6)_scale.jpg",
+    "bytes": 112017,
+    "sha256": "65222d50f7f766e1445a424a30d7cdb1122c60e0e176141a12bfeca5c8a6d0a2"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_library.png",
+    "bytes": 143765,
+    "sha256": "231ff9f92273961bf75bb94d1e26ed04fd6f0912105ec24a6d38a4082e00745f"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_library_revision_history_1.jpg",
+    "bytes": 65517,
+    "sha256": "45d02ba3d46d4e7eaf3487a2e24159e19836b6368656c43e37c939b8a2c5a961"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_library_revision_history_2.jpg",
+    "bytes": 66258,
+    "sha256": "0def6543c09fdd538f12c53c6b013ec008b1f887ee55660796a1c3e1d5ad532c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_library_revision_history_2.png",
+    "bytes": 81997,
+    "sha256": "543acb021741f959df8f02d63f3dc0d37aff39fcfa296a4df31bba6a07b9a058"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_standard_part_library_safety_color.png",
+    "bytes": 107043,
+    "sha256": "86bbc2df049c785b2c68601795f63fc3e3ac01ece9941567da4a082333260aba"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_surface_coating_copy_move.png",
+    "bytes": 94109,
+    "sha256": "ae7ac397abfa8b6f4db5cdb9fc57ad151110677fbfe623cda1e7c024c788f0b8"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_surface_coating_special_notes.png",
+    "bytes": 261204,
+    "sha256": "1abb9f8de56d14777b2ddc1fd5710866acd2a52f1c830a75eead90340d0b63e0"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(1)_pcd.png",
+    "bytes": 63894,
+    "sha256": "2204e49389c2760c10c061bfa03247aa4bfd608b1293c41879492425679da82f"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(1)_standard_parts.jpg",
+    "bytes": 174611,
+    "sha256": "94d7db377bd2e45003608be346ecd8920676eea38c4100147fc0f1ad28521d01"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(1)_tapered_thread.png",
+    "bytes": 77350,
+    "sha256": "2badb279ce621d5ab0452a4ac45b8aad8601c3af2ef60298218f4609592b3731"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(2)_oil_groove_1.png",
+    "bytes": 69351,
+    "sha256": "f165655d340c36229a1bac8e152508d816a0a79fd9d251dfc9aa27c5ac4b904e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(2)_oil_groove_2.png",
+    "bytes": 58625,
+    "sha256": "5d93ea0b57565a0f85118a4daa187c6a871fcf31abe7ac07b2ad2d70e408823d"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_1.png",
+    "bytes": 704443,
+    "sha256": "69ea7204ea4180f846f299bc4443dc7483a8675a98e4b36017ca3997d7d02adb"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_3.png",
+    "bytes": 58517,
+    "sha256": "fe3fbeb2c4aa8572093e208b6bf119058bea80148d100e90063001effd408824"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(4)_collar.png",
+    "bytes": 610808,
+    "sha256": "b5239087cf74974c91661781e58351d866898db609283930615b4f8a273789fb"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(4)_collar_1.png",
+    "bytes": 85171,
+    "sha256": "2ffcdd544f598f52276efa95c10331104a4d727bdb3218fc2c6bf85c0d15bf3f"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(4)_collar_2.png",
+    "bytes": 70103,
+    "sha256": "2fe2726f4d0b5df70e905cb22a51856f534c0984854bb11de33216ea0783134e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(6)_relief_process_1.png",
+    "bytes": 204814,
+    "sha256": "cec9ccfa25974c77bc4db9493b6274f034be4423e0c5e2e397417cd660152f9a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(7)_relief_process_3.png",
+    "bytes": 110052,
+    "sha256": "53b389b10861d96203fd38cf3cf54b81f04f5484176fdbf83a37ca8daedc48f7"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(7)_relief_process_4.jpg",
+    "bytes": 103547,
+    "sha256": "801c61738f53792326d8e8780c5b867f253b2bc751d3e689245aea9062dd397e"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_title_block_1.png",
+    "bytes": 709434,
+    "sha256": "fbb0eac776f66113c43596915ef6cefd123886aaff16332d11aebc89e74e0558"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_welding_symbol_notes.jpg",
+    "bytes": 72127,
+    "sha256": "5d6146ad60255252afc18821dba5c0deb27f2b02bec646717a70959cd54991d3"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_welding_symbol_standard_notes.jpg",
+    "bytes": 31620,
+    "sha256": "120bb9684e43581c7a7821b06e4da289393409840d1c015dae64d558fefbf9f4"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/D_geometric_tolerance(2)_datum_1.png",
+    "bytes": 621897,
+    "sha256": "44ac934d180b7e408fd729f80049ca692665d500f0928c553918962d2c4ed19d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d1_1.png",
+    "bytes": 94265,
+    "sha256": "febcaa7d90f2ba1649469ad2407be66097817e3bba31b79632e90c81c4d62863"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d2spiral.png",
+    "bytes": 498051,
+    "sha256": "285f46884eb3c4863e8b596b0e18a88c1770d5f08aa5150a6aa984ce44ddbce2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d2_extrude1.png",
+    "bytes": 187444,
+    "sha256": "4ac7e3a39869d390bcb7f724f9174c5acbda4126e1c6eb9a37767d955d523769"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_1_command_menu2.png",
+    "bytes": 152342,
+    "sha256": "52075542932c6c4c65d3580d3cbde8adc7ff5656c472be66cddc58fab9c01854"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_1_extrude.png",
+    "bytes": 227666,
+    "sha256": "df04fb8fdc47c1579fbbe6dfb4377f95c4cf4904fd446ce100e21423e02029a9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_1_pick_cross_section.png",
+    "bytes": 297611,
+    "sha256": "84ff2c97677a119c01b5e44af11ffe72184556c5396d2d42548d31812e6a2861"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_revolve.png",
+    "bytes": 115373,
+    "sha256": "c7234a2f172fa6f1999b05864e911341d8b2ca9a27518b6925f262d1f2d807c7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_revolve_spiral_form_sketch.png",
+    "bytes": 106553,
+    "sha256": "09bb3668d9b22a1803bf1208beeac8863cbc150d5f01b5615f2f41ec527e47fb"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_spiral_form.png",
+    "bytes": 132751,
+    "sha256": "daf92c6732024445d0a00940b452df429bb0e6d9a51a96af821cc28ea7c9f640"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_spiral_form_axis_rotation.png",
+    "bytes": 392829,
+    "sha256": "b22c00f4902974c584766068119c5712e84b015ff9a95f64a62e41fab4293527"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_spiral_form_axis_rotation1.png",
+    "bytes": 120518,
+    "sha256": "a1db4edec4d42aebfe9246c7922d80a0f37bef984f3f9151aa74e4464ae89344"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_2_spiral_form_item_entry.png",
+    "bytes": 156042,
+    "sha256": "1f0248d667377a5d6381933f8e17448c1530c8dd8aae7de1f9a5b3a7c9c5ce83"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_open_work_plane.png",
+    "bytes": 119208,
+    "sha256": "47311d88bedfd1e9632ebddfd63fe59b424d5d06bb0a0a58fe1d9c3dbb635745"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_open_work_plane1.png",
+    "bytes": 173295,
+    "sha256": "5f218e0faa9e9a9fdc980467d25547de633c6ba874246eba230fe267dc461379"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2d_3d_work_plane.png",
+    "bytes": 135143,
+    "sha256": "7a7071d4bc9281fb6970b9e2e2dde797ce55b0e0d73d566c24462eca26bc7c8f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part1_create_3d_part.png",
+    "bytes": 170864,
+    "sha256": "0220f4d9b71da86eb9120c850af0719eec001462f58f67577649a81c7f9d6f91"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part1_creating_3d_part_3.png",
+    "bytes": 580920,
+    "sha256": "dc5123b234230a454bf85442dd4bcbd8ab46611f9a555a9bdbb32b89849fa5df"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part1_creating_3d_part_4.png",
+    "bytes": 67532,
+    "sha256": "84950e4234ef6d26f8bac7c66626703414e97865b405573defc47c022ccc77b6"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part1_material_description.png",
+    "bytes": 289037,
+    "sha256": "8e188f0e5b54b5a5cf84d8ccc65d9f6e8e6b084cece690f528fd5f00ea470036"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part2_change_3d_part_name.png",
+    "bytes": 97740,
+    "sha256": "1c15ee4d0fabda2e8fe5f6377f672a08df040e596b5c97fb24f342d928fe6222"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part2_change_3d_part_name_1.png",
+    "bytes": 107220,
+    "sha256": "3026f974c74a5672d1f0463f7fb36006756a2627b81a3df6167e01d1f396ad2a"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part2_change_3d_part_name_3.png",
+    "bytes": 618630,
+    "sha256": "19d40c75b2d314cdc79a818422b3908c0748d80e6450eb6f1f52bfcd5071dd76"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part2_change_3d_part_name_4.png",
+    "bytes": 1218145,
+    "sha256": "b688bd5ded2e6cd69246a03e2fd2e8ad6c1a98e78e19dc078ef001953cddd49d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_purchase_parts.png",
+    "bytes": 310296,
+    "sha256": "790ba531b4d0f1f74533e95100554ab00709c06d017a9d95aaa561cabcd9123b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation11.png",
+    "bytes": 87883,
+    "sha256": "cd6f628fd933d5602facbbbd10b1abfcff3f84a864fb949df2afc668695d935d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_angular.png",
+    "bytes": 203234,
+    "sha256": "f91a3fcbb327b3293112bf81e754034ce5888d669bcc8c2291714cc8ffe298a2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_angular1.png",
+    "bytes": 43998,
+    "sha256": "57615f0d167af9fc5b27603f5adafe9e3b2944320ff2decb6a87ddd46e60f9d3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_circular.png",
+    "bytes": 209881,
+    "sha256": "dbcff69e932d33d7290832ee486455134fb6680680f9f1b04f5803ee3318a368"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_linear.png",
+    "bytes": 210568,
+    "sha256": "909734058186effc2cd3626b7b4ea5c9a78d39645c1870473c88be0e04671aec"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_linear1.png",
+    "bytes": 58885,
+    "sha256": "87186e4528a4804dbda620cea2b74c4b4ea2ead3036da9a4564f8a1ab12d5ced"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_note_string_entry.png",
+    "bytes": 139067,
+    "sha256": "5c71c685b0a714f715993341ce433ceaad1c5695213536b783a78ac69a69e96b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_note_string_entry1.png",
+    "bytes": 110805,
+    "sha256": "82693db31b12819d39e82b0654250664954cb46780906f795e0cbd0151cf55b2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_text_entry.png",
+    "bytes": 138675,
+    "sha256": "09b8064f51aac7e740acccd59b88d41867e0d56c855100a495db72435d012056"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_text_entry1.png",
+    "bytes": 90274,
+    "sha256": "2a2f1c65197483fabe0d9f87ce94630e3487e4595a655959e6fdebfe4b02ab02"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_top.png",
+    "bytes": 140275,
+    "sha256": "57600faf1825f4e8ba16b2cf9ce40e2224fb3cf9b8f3b49ca962b3679278bb9f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_edits_drafting.png",
+    "bytes": 42870,
+    "sha256": "e55aa669ee09c2f77c9df1a612d67cebd22f9891c9152c4b0855d30f8a97fbd9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/arrange_box_operation_sample1.png",
+    "bytes": 139917,
+    "sha256": "fdae43ab67c49b5a7b0d4aa4a90250f8141d7f2af8fafacd92fbef03850edbd7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/boolean1_boolean_operation.png",
+    "bytes": 91253,
+    "sha256": "b688547c554ffe2e138e7a2dd45685c1096595ac3ba630e0963ab8915d131be3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/chamfer_edge.png",
+    "bytes": 155391,
+    "sha256": "c69f1ba589f0f67f868031743d8e75b5e635b88d9665d6f0f14b288b118ab87b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/changes_position_drafting_entities.png",
+    "bytes": 124001,
+    "sha256": "cf59e33b1b225e70e07d519d149fa06babd21453d694de9cb2dca912aa61eb4e"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_copy.png",
+    "bytes": 128776,
+    "sha256": "1da45fa20898fd61d4b585a796443b0e0531bbd186180f0db9d5e486eff88c59"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_copy_2.png",
+    "bytes": 39706,
+    "sha256": "208194519bcd31f2ca5e8b44ac3b0bc56c5e42bb59ac5e50711221c6a4b3c871"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_copy_3.png",
+    "bytes": 31081,
+    "sha256": "df4d5f7fe977ed0da6ed778598375261ee432f6a7d5403f31a29c3d9d4c70b4f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_mirror.png",
+    "bytes": 134023,
+    "sha256": "5daeeb9646adac6fde3da5404dca89d3104d6f29351f43e0db530509763848f3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_mirror_3.png",
+    "bytes": 95731,
+    "sha256": "d21ee7e15efe97c1365d4f7af2c7d42a34c8993d7857ebd6cf4eb6acf376ea4a"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_move.png",
+    "bytes": 137634,
+    "sha256": "40861bbceb68da4bbc92e63b8413ddc58ad36da7de92f762778d1b76bcc140a3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_move_2.png",
+    "bytes": 40789,
+    "sha256": "afded0a27e7daa28ad64cd0e412aceed86d5741eeec83173ccbafecb5e400ba5"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_move_copy_delete.png",
+    "bytes": 115676,
+    "sha256": "240fc69a3a2e28c45a56d498ae7074667ad9960c725f4507b78ece0217119119"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_move_entry.png",
+    "bytes": 46484,
+    "sha256": "36a6de6a9e6764abf15aca1be81758285ea59dd12a8d854e51552ff339557993"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_rotate.png",
+    "bytes": 136758,
+    "sha256": "ec0aa842dbc07950a1ce1c263b5d7e80497c201fbf1d309e875a7a0b3f6ff91d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_rotate_3.png",
+    "bytes": 188123,
+    "sha256": "73442efa183668af5b4b69c582cf45a62c15f0ef308f7f9f9db6c3209ffb96d8"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component1_rotate_4.png",
+    "bytes": 21569,
+    "sha256": "aee4db055ea2dd237b8bd416316e08992ffa297ada46137eeef1aa8f3ba6a07e"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_delete.png",
+    "bytes": 138892,
+    "sha256": "10f20968d0ee69e8373a7a3f2d617cbabbf669e7466d9a1e4fbc51242adf37bd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_mirror_copy.png",
+    "bytes": 138845,
+    "sha256": "b450a33ef6802debae990b76cf95f0009832dddfa15c33ada3c004e7bcbac28f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_mirror_copy_2.png",
+    "bytes": 106670,
+    "sha256": "b02d8610b8d5a7f56b3259f61a8f2c1f3cd32057c2da37abbaa25a501e4a69d9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_repeat_copy.png",
+    "bytes": 138959,
+    "sha256": "ec35e5eb1cb5de9e919c325bf9109c6b5ca5415228bc6a9a36df1ef2af0e53ee"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_repeat_copy2.png",
+    "bytes": 61704,
+    "sha256": "a76e579045e8abbb19c42fcf16dcf395013631840846e21f54908cdb6452d00d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_rotate_copy.png",
+    "bytes": 138827,
+    "sha256": "1f783c214cb3f07d634e19f3093974482a1312b67a33ff08656afc1fcd81ffd2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_rotate_copy_3.png",
+    "bytes": 121116,
+    "sha256": "32df73a5259b73fc500fe891bf1d12dc6b8de63249efa1feb3e2a525a7e33373"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/component2_rotate_copy_4.png",
+    "bytes": 22975,
+    "sha256": "04c975906ddf2e01cd839423a4ac53c24cc513a4f6ce6c8975fa392bd8ca9e24"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/dialog_box_brep.png",
+    "bytes": 158808,
+    "sha256": "63c9f846488697ecfb4296fb52a77412f424083b00fa0ec70afba9d8b6db0de3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/dimaeter_dimension.jpg",
+    "bytes": 27763,
+    "sha256": "5b49e4f20d57646c3970d57a89e529b18da909b92fabac94d6f58f90f7ecbe77"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/enter_3d_part_name.png",
+    "bytes": 95671,
+    "sha256": "29d66f5da6708a28844dba90f998dece3ca206f7937849442b6a970cc36775de"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_chamfer11.png",
+    "bytes": 42056,
+    "sha256": "43caa1318da108b61880f1159c155d35b71e1b4cf2a3e04ea134f9cefa72586b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_chamfer_1.png",
+    "bytes": 123189,
+    "sha256": "9a539024d39d56c794a78009fa5e73501256941678cbc105d9d94aa14a631bbc"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_chamfer_2.png",
+    "bytes": 34291,
+    "sha256": "9ae5523c1fb0ada584c204b66891ca6bac198254017b92d5942e3663844ccb40"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_fillet_1.png",
+    "bytes": 112432,
+    "sha256": "2981e76406739f0e822f902426f6a40f4b3c63f0b17e1306f8833848556826f5"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_fillet_2.png",
+    "bytes": 22153,
+    "sha256": "6a0d9b25b0cc2add44d19048b58609a4aa2caf9d80f6bbd67487c3346316ce92"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_fillet_3.png",
+    "bytes": 28123,
+    "sha256": "de9ec0ba3b665a12878ea908f6865a9b1ce6d06970c2f696688be2a1aa837910"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_shell_1.png",
+    "bytes": 112193,
+    "sha256": "2fc0e1962ae7f41be66f577fc5b09551344f48fdf36ea93326ddb28935647336"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_shell_2.png",
+    "bytes": 52750,
+    "sha256": "5b900ed2674c7657e0b512d6a3075d3d58ad3a3fd035f5dfacfdadce0592885c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_shell_3.1.png",
+    "bytes": 37529,
+    "sha256": "85af9b842cb6ed011a21cd5b41ad3ee809e9cc89cb511de284d0d2e453cf61e8"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fairing_shell_3.png",
+    "bytes": 22689,
+    "sha256": "e73f6c4124af7994ef46ffc4423ee3ee23f01e38f02aa5f04d30832ce37a2f41"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/fillet_edge.png",
+    "bytes": 112435,
+    "sha256": "3eb5da6b0a4da35cf58cca731934c717b081e37618a2740b9daf9e5c3eb84404"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/hole_details_arrange_machine_part.png",
+    "bytes": 134930,
+    "sha256": "06ddf1af5021dedeff19b1dbae69c7e568eddda60e7c2386c78c7dd76ea886dc"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/hole_details_hole.png",
+    "bytes": 161850,
+    "sha256": "184cedc033dccc336f1a3938098f4b8090060761b7c63bc2badb2ada659ec2ff"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/hole_details_parts_placement.png",
+    "bytes": 135110,
+    "sha256": "746c44df004f7714ba046c0dde5aee773d02c2cddba4d19ff359ae3fbd9882f8"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/hole_details_tapped_holes.png",
+    "bytes": 93239,
+    "sha256": "a03db9e020847a9c105c4e64f03a53365c7e682486eac04f715e5d59c26e82a7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/information1.png",
+    "bytes": 18482,
+    "sha256": "34db1e4e262bb154887cc2d19339447f46f03493d12b7505cb830f2b7b677cec"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/information2.png",
+    "bytes": 19839,
+    "sha256": "8155965b256606752984aa1526f780f2d696f1870a7b28dbb111cbc0d73053ce"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/information3.png",
+    "bytes": 22649,
+    "sha256": "8848688b377a1bf45b0e8c72a377cb15dccc1b5e912360e368c850516a638a0b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/information4.png",
+    "bytes": 22885,
+    "sha256": "0937a011c92d9cb544ae97a6bd646f99ec85a568d9156bd2d6066b4b717bdac2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/information5.png",
+    "bytes": 20366,
+    "sha256": "3282162f671a468c9553a3feed552d0ea01088fb5c57aa60be9a1e92b2234dd9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/interf_check.png",
+    "bytes": 54186,
+    "sha256": "310cb18e4a7afee4e289a7253ec1f6d6bf7d7ed71773e12288e5e4123f047db1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/interf_command_menu.png",
+    "bytes": 176698,
+    "sha256": "b0fc20541fcfbd3b7043e3ee64d6b8f26c8312a05f999a32cc9d4be7db512e20"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/item_entry_changelayer.png",
+    "bytes": 109294,
+    "sha256": "697fcc22743912fc869a4a5407b76ad09abc348242a7c386b8575b0a78c5dc34"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/lighten_brep_solid.png",
+    "bytes": 202905,
+    "sha256": "df6ad40c2c21419fc0255b195f6f5649be5ec60562f07b68b249a15063a85334"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/list_all_detected_interf.png",
+    "bytes": 177453,
+    "sha256": "6415dd4c1b63ab299501770ab348a664c3e44f7acd2ade1fa7ca3b05b6f55059"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/materials_layer.png",
+    "bytes": 134458,
+    "sha256": "2869ce2d15876ccdf605dac4ee81bfd1c0a09f3e1908191f669074985306d0e4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting1_material_list.png",
+    "bytes": 285559,
+    "sha256": "000f18b51f50f3ebce7811a14b5ad8da2016dd7bd12c2c45e1bb29218cc30c33"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting1_material_setting.png",
+    "bytes": 69496,
+    "sha256": "fbd93dd876dca9f2177080cf457565f414cec4e774e8c7ed210075c79de12773"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting1_material_setting_4.png",
+    "bytes": 234927,
+    "sha256": "527a6a3b698a8039ba2b1c65eb1f2d6b5bf8e3dc52f32dd1306d73f3e5c5dfd3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting1_material_setting_5.png",
+    "bytes": 104663,
+    "sha256": "ccea121eb7b9fc5ed4baf6cf8596e01902fec08c4e22d511afc804f4ca8cbd1d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting1_set_material.png",
+    "bytes": 148244,
+    "sha256": "7e3171208041eba8b8ad99a1bbf7f305160f3373480cb8326ec25e534ac4f8cd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting2_material.png",
+    "bytes": 217365,
+    "sha256": "80cf282ab377dfb4d82df20577fd2283589734fce2ba9984e432e4d088ca8c2a"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/material_setting2_material_not_included.png",
+    "bytes": 208498,
+    "sha256": "3df64a42d3852c6e8e61110b095d037cf70b1b1aeae265278b616cb9d82bf25b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/message_pane_brep.png",
+    "bytes": 64107,
+    "sha256": "04cf8872c6a2bcecc256fd544447f53ec4610f12ab5f9b45a53291b51594dfd0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/mirrored_part1_mirror_copy_tool.jpg",
+    "bytes": 10984,
+    "sha256": "eed81df6ae3b0f14639230793c0d9f2f46accfb4e6c52ff02888792326967713"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample1.png",
+    "bytes": 43414,
+    "sha256": "ec7cf26e53e8b1018ad7ccac83ea853e021c63decbd5206d6f3f289113d0fd06"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample11.png",
+    "bytes": 40510,
+    "sha256": "3b759c5e2c6203f432bf23257ab501266d21dfb9831a5cb16fac156695d70923"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample3.png",
+    "bytes": 144048,
+    "sha256": "0f26cf55d9a894482e4bc9f026157ed2fa72e325912c0aa0c9106441b1f78dfa"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample3_segment.png",
+    "bytes": 35423,
+    "sha256": "f824c125c050fc0d43c4045e815c1941bacd0b93acbd8cd5f29f2b4868c22bb1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample3_segment_a.png",
+    "bytes": 38665,
+    "sha256": "eee3931ad9e45fab0eed94f92cdc5530cc514fc68c536f79226ffceb7b6136a9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample3_segment_b.png",
+    "bytes": 35245,
+    "sha256": "05abdcf306988493d41f552a10574ded75c3a92a12e7c13aaa691d6ed9729379"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample4_4.png",
+    "bytes": 196540,
+    "sha256": "8cd200ae13feac4c2d1905169be96de5b06e7689d75a34eb4142082c57fe4793"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample4_revolve.png",
+    "bytes": 275357,
+    "sha256": "63d98232fefd8f82a6d55ded32a90fdcfdf0c9a1008267de9d92184e45f11d58"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample4_work_plane.png",
+    "bytes": 115369,
+    "sha256": "b5cab011802dffb499ff367c15ed4f5b7869e1ac27ace81fb58dbf8f762eb288"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample5_4_subtract_tool.png",
+    "bytes": 148882,
+    "sha256": "ac066f8d28064b4766ac8d6bbc4e45bf18b34c340192ed45a44f237505a80a63"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample5_6.png",
+    "bytes": 72217,
+    "sha256": "6869255a1e934ccd92967f2730ff9c1e5da84043cfac2d14f3da5e8b980200f1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample_2.jpg",
+    "bytes": 231920,
+    "sha256": "a962a2cd4f3e094c9ab17b9fe32631f1843b3f48d7abb1e0f4cec7b67d071bf6"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/origin_change_3d_part_layout.png",
+    "bytes": 156712,
+    "sha256": "eb262ef4e721d5dd2e14fe676d3206fbcb47c4dcea8a63908fdadda12b7ddb93"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/origin_change_3d_part_layout_2345.png",
+    "bytes": 192105,
+    "sha256": "87fee28e7c85c13bc5eea2276fdc73937ea26e4f28b295f56ced6e9565934260"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/other_info_parasolid.png",
+    "bytes": 1665448,
+    "sha256": "f857a5941805bcdc370e629616670ce824f0ee077788a7d9fd6d3df4167f7d7e"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/parasolid4.3.png",
+    "bytes": 105901,
+    "sha256": "1b1ade6485fc905b40a33854fa0cb9bc68c49a7925e0ce18d81802edae7ae289"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/parasolid_import.png",
+    "bytes": 103964,
+    "sha256": "17295eb6473c3111543cede869e72e3778c8df6084b633883607e475e7a58ec9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/press_q.png",
+    "bytes": 54655,
+    "sha256": "85581b74ea210a1c764555d24d4706c6634515b0141b186da5c5492c14857449"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties2_information_angle.png",
+    "bytes": 78653,
+    "sha256": "4bffa1fd627c525c3218d38c897d35330e87124accd212622f602fa90c604ca7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties2_information_entity.png",
+    "bytes": 162276,
+    "sha256": "b03f9e80e9bd9065cb99d5a4de8ca0f132925a41bade644306a9e6020c5e7fdb"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties2_information_point.png",
+    "bytes": 64234,
+    "sha256": "ba1125650b766534e7527ea3780e2690eb95f9ea50e68e23ca895df4b6f12ecb"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties2_information_point_edge.png",
+    "bytes": 59705,
+    "sha256": "50fd14ee332026cfe837bbed0b710f6b0464145f9962176cbe7a1a2f05bf5400"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties2_information_point_edgeq.jpg",
+    "bytes": 19915,
+    "sha256": "9a24b34e2044f20b1f64d44e2067a779e6524197d19e040dcd0745186e085b70"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/sample_3d_modeling_parts.png",
+    "bytes": 154396,
+    "sha256": "83e27c61d6ed9dbe4f01e11e6e6cd5adad15ec9d4d808ba9b78c886d36aead58"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/select_and_arrange_machine_part.png",
+    "bytes": 717638,
+    "sha256": "b22f28cade86e102475176138dc657d1fb0b29c8d0df917b1c88456764468e7c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard1_scale_2d.png",
+    "bytes": 73576,
+    "sha256": "d779b9cd50f397fa555048c0e0b1d6ac5cb708b0254cda800f7a1e62ea4544fd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard1_scale_3d.png",
+    "bytes": 65348,
+    "sha256": "d1bc88e0392ce09cca81db2ea66955033bd09dd259ab3b68260c1b543f063dc1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard1_scale_pointer.png",
+    "bytes": 204020,
+    "sha256": "d9fe50fb654dceb435732f3fceba3f2e7db85db7c6dd487ab705a5a4839833c4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard1_scale_pointer_vgroove.png",
+    "bytes": 510754,
+    "sha256": "20cf0bc149e2b3146981bde516c323b8518d99c968fae868b2e02b2a0747ff8c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard2_gas_discharge.png",
+    "bytes": 512276,
+    "sha256": "489b60d6890b939a74fedb6c160f57ba15dd03c703623786204364e467df95d0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard2_oil_groove.png",
+    "bytes": 53836,
+    "sha256": "ce5effb08439126ac1aa7d8bcdbc48d4396f355160a9b7fe72c2b86befb0938a"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard2_sprocket.png",
+    "bytes": 147777,
+    "sha256": "658da2e10263c9c46ab8aca517d3774386521a58d04a5dc80064007e283e7ccd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard3_location_of_sprocket_keyway.png",
+    "bytes": 467038,
+    "sha256": "de43a48bfc31f413af94e742bb69f41941e12a800cd7494c1f6631b3f2f22b06"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard3_sprocket_3d.png",
+    "bytes": 572392,
+    "sha256": "0b727dc05f02ead66a9bf0ef2e39aed494f0a000a853eb9a18d41bbcb81f4aa3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard6_bolt_length.png",
+    "bytes": 278977,
+    "sha256": "d552b2d0b9af0b3ffb1774595dff35be046c12a9dbb41aef7f5cba4fe3db17e5"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard6_pillow_block_1.png",
+    "bytes": 233450,
+    "sha256": "54df4c07ffedf703b2e9aef6289939e26210a1ab20ef44d2890a697479566c95"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard6_pillow_block_3.png",
+    "bytes": 70230,
+    "sha256": "4ed4350a23e3b16a887c951336fce26b6b5c690696d965cd487e489bc62e6797"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard7_case1.png",
+    "bytes": 101985,
+    "sha256": "8d00367af74689468f0a9495b7e188fb27888eeb6f0985e6539dce27309859a0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard7_case2.png",
+    "bytes": 60579,
+    "sha256": "c3bd390940ebe40e6c1ab3eec4551c0024a89a7fa6b21e5cd94dde023b719bdd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard7_connections_case1.png",
+    "bytes": 78880,
+    "sha256": "b62f077c742a0cc4ff3f1fdb3cf38b5552f11e68de1d0690248724644dbb293d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard7_connections_case2.png",
+    "bytes": 55919,
+    "sha256": "ecbe9510921ed355eea48e54a7b1f03796496764c9ae944fc5250ba0e413a9cf"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard8_SGP_pipes_red.png",
+    "bytes": 90472,
+    "sha256": "12f6fb80d8549679c8b22bbdcce38248eb667ad2facce6745827b7fc9c6464aa"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard8_SGP_pipes_yellow.png",
+    "bytes": 36002,
+    "sha256": "8a9bb0625e56852536ec2301e2a0a013f83607dbf7cdde2e0dec36e5b1378548"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/subtract_operation_sample2.png",
+    "bytes": 105791,
+    "sha256": "5ce4e27291e5af73b13c43712234ede683a71c901a7f43e92fdc21cf75e21cb0"
+  }
+]

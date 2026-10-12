@@ -8,6 +8,7 @@
   --foundation-card-title-min-height: 64px;
   --foundation-icon-frame-height: 144px;
   --foundation-icon-size: 64px;
+  --foundation-command-icon-size: 76px;
   --foundation-detail-icon-size: 120px;
   --foundation-icon-frame-padding: 11px 4px;
   font-family: var(--font-main);
@@ -259,14 +260,17 @@
   place-items: center;
   height: 100%;
   min-height: 0;
+  width: 100%;
   max-width: 100%;
   padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: zoom-in;
 }
-/* Center instruction text consistently across lesson step layouts. */
+/* Compact step cards retain centered instructions. */
 .foundations-consistent-lesson .foundations-use-card__body p,
-.foundations-consistent-lesson .foundations-starting-step__body p,
-.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content,
-.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content p {
+.foundations-consistent-lesson .foundations-starting-step__body p {
   text-align: center;
   text-align-last: center;
 }
@@ -295,4 +299,14 @@
   /* No slide-in entrance: appear in place like the F2.1 tutorial. */
   animation: none;
   transform: none;
+}
+
+/* Reading sections, lists and notes follow their left-aligned headings. */
+.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content,
+.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content p,
+.foundations-consistent-lesson .step-bullet-list,
+.foundations-consistent-lesson .step-bullet-list li,
+.foundations-consistent-lesson .written-tutorial-panel__supplement p {
+  text-align: left;
+  text-align-last: left;
 }

@@ -1,0 +1,187 @@
+[
+  {
+    "path": "frontend/src/assets/2d-images/2D_keyway.jpg",
+    "bytes": 758831,
+    "sha256": "69fe95145ef5cfafab406906e59ee2aab7bf0c700a7b2b2afa687d240d6f0c16"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_machining_symbol.png",
+    "bytes": 801207,
+    "sha256": "e0ef9c838e643cb79fbe1f39404ef31cd6f2cc3b5abe6b33aa6767c14955312c"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_revision_code.png",
+    "bytes": 82883,
+    "sha256": "c6a477abf160779bb5407bcb20fc515334642fbf93a2b1592d85cc0b5befa577"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_welding_symbol.png",
+    "bytes": 342244,
+    "sha256": "002f9882049a55764fa39a98b1606382b8e472b61db9bbe80fa09e4c61f6ecbd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_part_name.png",
+    "bytes": 106398,
+    "sha256": "a91a50e20126d3f253693de471d799482649b5923e7edb980f9eda2ee761dcf5"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_properties.png",
+    "bytes": 367152,
+    "sha256": "231213964360632b21cd714529efe5c0cfb2d3ce7241970e81efa01dddd60cd9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/3d_purchase.png",
+    "bytes": 276753,
+    "sha256": "55675c3f085052a520146794b352ecffb6315a44613f5e7c19530c20205b32f0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/angular_dimension.png",
+    "bytes": 108272,
+    "sha256": "cc6e406b24360eeb72d1d5aba4a538456c1b5af18fc24978bc9639e9cc6dbaa0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation.png",
+    "bytes": 85236,
+    "sha256": "b03e1f3cd80d99d5c26a4f3040162a85340132288ed02afe050c735e807dd729"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_item_entry.png",
+    "bytes": 18165,
+    "sha256": "1cafe87aff7a84ed87548dedf6111e20c234631e9f853b9ee40ff695b21c37c7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/center_tool.png",
+    "bytes": 5042,
+    "sha256": "fa6cae134081a137d4b30f99ea0cc5ce5f4c8ad21a20ba5caab5d824cacffa00"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/chamfered.png",
+    "bytes": 15556,
+    "sha256": "cb692abcc63b5ac6031d3d8ade5867287a14e8e5e1e6ecd2e70168f17b41c832"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/changelayer.jpg",
+    "bytes": 52927,
+    "sha256": "5e331525e3c2fd279d46753cc5cf3c32cf926386e859da28583a5aa7bd35453c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/change_color.png",
+    "bytes": 117471,
+    "sha256": "5235cf82496d5dc58b5c7575f97eabce80f9ececa51f916e694b1e6624a77d94"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/change_color_entity.png",
+    "bytes": 57478,
+    "sha256": "66cd376aae48c2191b9bd56ece61410cffd35f702e93e6b6ecf0ef24ed092456"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/change_color_face.png",
+    "bytes": 59374,
+    "sha256": "f4b6da72489c9e4b3eaa52342268b5e405710d19e1c2801a7e061e3e84c2e1cb"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/change_layer.png",
+    "bytes": 78365,
+    "sha256": "4d6c6e99c21c367ac83a324e1f52167b95b40ae70ddb9132002b6e4ce0efdd02"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/change_properties_window.png",
+    "bytes": 309118,
+    "sha256": "07e33797cbfd3ad9507bb4beb2afd836a6589fa2c79c86db619d56bb4738a09b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/character_strings.png",
+    "bytes": 87743,
+    "sha256": "d15aafa363fe3cf52c6ae2e7ef27af0461668908bde285c7149482098f8fa13d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/copy_component.png",
+    "bytes": 113353,
+    "sha256": "aad72bbb2d6b2869ecc68ac359542c12ce28a2438be6acae2cc68a3fa2f0e512"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/diameter_dimension.png",
+    "bytes": 78834,
+    "sha256": "e92d44281b523dc471e1fc4c19ccf3fa46a21d02d5a90c7a79a9648a0d2ff70b"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/edit_dimension_characters_window.png",
+    "bytes": 180478,
+    "sha256": "5465e45f300bb131c13eb262255ec8963cba4247eff0eb04aa32fdf8e8f29271"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/filleted.png",
+    "bytes": 64680,
+    "sha256": "352495d11fe7077e065b3d82a62b5163991f9d81b65367917fdc0ac3e9efa035"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/icad_window_structure.png",
+    "bytes": 352302,
+    "sha256": "e5f0d5b495383c5846b6d4588811b8fca53d4e633de50f835ca2f7ceb3758287"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/interference.png",
+    "bytes": 162370,
+    "sha256": "617bfba87e5c36b6a95437c2318db244fc17d59d20a558c2063e54fe562616fe"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/interference_check.png",
+    "bytes": 630815,
+    "sha256": "b588cb9bad27c7116a06c1609b54485a34f4801f8d0d12cdcb08c6272e109a5c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/layer.jpg",
+    "bytes": 52927,
+    "sha256": "4896e0d07d8d1dcd55654dc3f50f99be9e4be801fd70a3adee664451757d71b9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/linear_dimension.png",
+    "bytes": 114491,
+    "sha256": "91491b72b03239ba9dc0b04e9bbd82e6c32327c426cdb56f9abb65ae0dc2d963"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/list_display_window.png",
+    "bytes": 105290,
+    "sha256": "6153a9d6ca78052f2eff4cccba58ddcc0d49e6b9a4d6f2ebf8c11d04e33d9451"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/loading_parasolid.png",
+    "bytes": 100633,
+    "sha256": "adc78fe6793c849d60528c26ec7a7a213019823765d24f6197848154f083ed39"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/mirrored_part1_normal_part.png",
+    "bytes": 29554,
+    "sha256": "4c6ddba596e53df19906d4a0560937d9a4ebdb85454b20eec662448de39b24b1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/name_change_dialog.png",
+    "bytes": 373817,
+    "sha256": "7b1c4d1a24b390a7cad6690ce28e268c94ea218377f2ff84d1ed426fe29181d9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/note_string_entry_window.png",
+    "bytes": 89590,
+    "sha256": "942a804ad39eab6f6bdb794951366b06fd151594d4f2bdff5fae08c9f9e691c2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/parasolid_link_dialog.png",
+    "bytes": 471280,
+    "sha256": "6b47744e457efb6fa58f5ce19552e7860a589f365be6f9085c97ecbce8f15ee9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/polygon.png",
+    "bytes": 188433,
+    "sha256": "5ccbe3a6b17710e20c4511c9b034eb816163008e36ad9d407e30aafa794b5784"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties_color.png",
+    "bytes": 165591,
+    "sha256": "4061dad21071ff182c60a7862c73680c92b13d4feafcf578a0cd5d93f8ea3382"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/text_entry_window.png",
+    "bytes": 72477,
+    "sha256": "f685b637749e9e0dcee53bb3b56c14e139c76a474f916fc90c4b380279b35289"
+  }
+]

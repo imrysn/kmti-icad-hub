@@ -16,7 +16,6 @@ import { QuizModal } from './QuizModal';
 // Foundations Lesson Imports
 const DynamicFoundationsLesson = lazy(() => import('../../../components/PublicCourses/Foundations/DynamicFoundationsLesson'));
 import { getDynamicFoundationsLessonProps } from '../../../components/PublicCourses/Foundations/dynamicLessonProps';
-const ZoomInOutInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/ZoomInOutInteractiveLesson'));
 const PanInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/PanInteractiveLesson'));
 const RotateViewInteractiveLesson = lazy(() => import('../../../components/InteractiveVideoLesson/RotateViewInteractiveLesson'));
 
@@ -24,48 +23,8 @@ const RotateViewInteractiveLesson = lazy(() => import('../../../components/Inter
 // 3D Lesson Imports (Lazy Loaded)
 const IcadInterfaceLesson = lazy(() => import('../../../components/3D_Modeling/3D_iCadInterface'));
 const ToolBarsLesson = lazy(() => import('../../../components/3D_Modeling/3D_ToolBars'));
-const OriginLesson = lazy(() => import('../../../components/3D_Modeling/3D_Origin'));
 const BasicOperationLesson = lazy(() => import('../../../components/3D_Modeling/3D_BasicOperation'));
-const TwoDTo3DLesson = lazy(() => import('../../../components/3D_Modeling/3D_2Dto3D'));
-const HoleDetailsLesson = lazy(() => import('../../../components/3D_Modeling/3D_HoleDetails'));
-const BooleanLesson = lazy(() => import('../../../components/3D_Modeling/3D_Boolean'));
-const ComponentLesson = lazy(() => import('../../../components/3D_Modeling/3D_Component'));
-const FairingLesson = lazy(() => import('../../../components/3D_Modeling/3D_Fairing'));
-const PartLesson = lazy(() => import('../../../components/3D_Modeling/3D_Part'));
-const MaterialSettingLesson = lazy(() => import('../../../components/3D_Modeling/3D_MaterialSetting'));
-const PropertiesLesson = lazy(() => import('../../../components/3D_Modeling/3D_Properties'));
-const AnnotationLesson = lazy(() => import('../../../components/3D_Modeling/3D_Annotation'));
-const InterferenceLesson = lazy(() => import('../../../components/3D_Modeling/3D_Interference'));
-const PurchasePartsLesson = lazy(() => import('../../../components/3D_Modeling/3D_PurchaseParts'));
-const ParasolidLesson = lazy(() => import('../../../components/3D_Modeling/3D_Parasolid'));
-const OperationSampleLesson = lazy(() => import('../../../components/3D_Modeling/3D_OperationSample'));
-const MirroredPartLesson = lazy(() => import('../../../components/3D_Modeling/3D_MirroredPart'));
-const StandardLesson = lazy(() => import('../../../components/3D_Modeling/3D_Standard'));
 
-// 2D Lesson Imports (Lazy Loaded)
-const OrthographicViewLesson = lazy(() => import('../../../components/2D_Drawing/2D_OrthographicView'));
-const CommandMenuLesson = lazy(() => import('../../../components/2D_Drawing/2D_CommandMenu'));
-const LinePropertiesLesson = lazy(() => import('../../../components/2D_Drawing/2D_LineProperties'));
-const DimensioningLesson = lazy(() => import('../../../components/2D_Drawing/2D_Dimensioning'));
-const StandardPartLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardPart'));
-const SurfaceApplicationLesson = lazy(() => import('../../../components/2D_Drawing/2D_SurfaceApplication'));
-const KeywayLesson = lazy(() => import('../../../components/2D_Drawing/2D_Keyway'));
-const RetainingRingLesson = lazy(() => import('../../../components/2D_Drawing/2D_RetainingRing'));
-const GeometricToleranceLesson = lazy(() => import('../../../components/2D_Drawing/2D_GeometricTolerance'));
-const PartNoteLesson = lazy(() => import('../../../components/2D_Drawing/2D_PartNote'));
-const MachiningSymbolLesson = lazy(() => import('../../../components/2D_Drawing/2D_MachiningSymbol'));
-const WeldingSymbolLesson = lazy(() => import('../../../components/2D_Drawing/2D_WeldingSymbol'));
-const HeatTreatmentLesson = lazy(() => import('../../../components/2D_Drawing/2D_HeatTreatment'));
-const SurfaceCoatingLesson = lazy(() => import('../../../components/2D_Drawing/2D_SurfaceCoating'));
-const WeightComputationLesson = lazy(() => import('../../../components/2D_Drawing/2D_WeightComputation'));
-const BillOfMaterialLesson = lazy(() => import('../../../components/2D_Drawing/2D_BillOfMaterial'));
-const BalloonLesson = lazy(() => import('../../../components/2D_Drawing/2D_Balloon'));
-const TitleBlockLesson = lazy(() => import('../../../components/2D_Drawing/2D_Titleblock'));
-const AdditionalViewLesson = lazy(() => import('../../../components/2D_Drawing/2D_AdditionalView'));
-const OperalViewLesson = lazy(() => import('../../../components/2D_Drawing/2D_OperalView'));
-const NormalMirrorPartsLesson = lazy(() => import('../../../components/2D_Drawing/2D_NormalMirrorParts'));
-const RevisionCodeLesson = lazy(() => import('../../../components/2D_Drawing/2D_RevisionCode'));
-const StandardLibraryLesson = lazy(() => import('../../../components/2D_Drawing/2D_StandardLibrary'));
 
 import { useTTSContext } from '../../../context/TTSContext';
 
@@ -414,58 +373,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                 </div>
               }>
                 {(() => {
-                  const registry: Record<string, () => React.ReactNode> = {
-                    'interface': () => <IcadInterfaceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'lesson-2-1': () => <IcadInterfaceLesson showFoundationsIntro onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'lesson-3-1': () => <ZoomInOutInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                    'lesson-3-2': () => <PanInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                    'lesson-3-3': () => <RotateViewInteractiveLesson onComplete={handleInteractiveLessonComplete} onNextLesson={goToNextLesson} onPrevLesson={handlePrevAction} nextLabel={nextLabel} isFirstLesson={currentLessonIndex <= 0} />,
-                    'toolbars': () => <ToolBarsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'hole-details': () => <HoleDetailsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'interference': () => <InterferenceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  };
-
-                  const prefixRegistry: Record<string, (id: string) => React.ReactNode> = {
-                    'origin': (id) => <OriginLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'fairing': () => <FairingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'basic-op': (id) => <BasicOperationLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-3d': (id) => <TwoDTo3DLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '3d-part': (id) => <PartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'material': (id) => <MaterialSettingLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'properties': (id) => <PropertiesLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'annotation': () => <AnnotationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'boolean': (id) => <BooleanLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'component': (id) => <ComponentLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'purchase-parts': (id) => <PurchasePartsLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'parasolid': (id) => <ParasolidLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'op-sample': (id) => <OperationSampleLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'mirrored': (id) => <MirroredPartLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    'standard': (id) => <StandardLesson subLessonId={id} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-orthographic': () => <OrthographicViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-command-menu': () => <CommandMenuLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-line-props': () => <LinePropertiesLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-dimensioning': () => <DimensioningLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-standard-part': () => <StandardPartLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-surface-app': () => <SurfaceApplicationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-retaining-ring': () => <RetainingRingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-geometric-tol': () => <GeometricToleranceLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-heat-treatment': () => <HeatTreatmentLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-bom': () => <BillOfMaterialLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-additional-view': () => <AdditionalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-operal-view': () => <OperalViewLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-normal-mirror': () => <NormalMirrorPartsLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-balloon': () => <BalloonLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-titleblock': () => <TitleBlockLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-keyway': () => <KeywayLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-part-note': () => <PartNoteLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-machining-symbol': () => <MachiningSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-welding-symbol': () => <WeldingSymbolLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-surface-coating': () => <SurfaceCoatingLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-weight-computation': () => <WeightComputationLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-revision-code': () => <RevisionCodeLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                    '2d-standard-library': () => <StandardLibraryLesson onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />,
-                  };
-
                   // Canonical routing is allowlisted before any legacy/prefix routing.
                   if (isFoundationsCourse || isProfessionalCourse) {
                     // Professional lessons render with their Foundations source layout; completion keeps the P id.
@@ -514,43 +421,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
                       onComplete={handleInteractiveLessonComplete} onNext={goToNextLesson} onPrevious={handlePrevAction} isLast={canonical.id === 'F17.2'}
                       tutorial={preservedTutorial && <FoundationCompletionContext.Provider value={null}><div className="foundations-zoom-tutorial">{preservedTutorial}</div></FoundationCompletionContext.Provider>} />;
 
-                  }
-
-                  // Preserve explicitly mapped interactive lessons, including the
-                  // existing Foundations Module 2 iCAD Interface experience.
-                  const exactMatch = activeLessonId ? registry[activeLessonId] : null;
-                  if (exactMatch) return exactMatch();
-
-                  // Check for dynamic foundation lesson
-                  if (isFoundationsCourse && activeLessonId && (
-                    activeLessonId.startsWith('lesson-') ||
-                    activeLessonId === 'origin-projections' ||
-                    activeLessonId === 'origin-layout'
-                  )) {
-                    let foundLesson: any = null;
-                    for (const mod of lessons) {
-                      if (mod.id === activeLessonId) foundLesson = mod;
-                      if (mod.children) {
-                        const child = mod.children.find(c => c.id === activeLessonId);
-                        if (child) foundLesson = child;
-                      }
-                    }
-                    if (foundLesson && foundLesson.content) {
-                      return <DynamicFoundationsLesson {...getDynamicFoundationsLessonProps(foundLesson)} onNextLesson={handleNextAction} onPrevLesson={handlePrevAction} nextLabel={nextLabel} />;
-                    }
-                  }
-
-                  // Try exact match in prefixRegistry first (for lessons with dashes in name but no sub-lesson suffix)
-                  if (activeLessonId && typeof prefixRegistry[activeLessonId] === 'function') {
-                    return prefixRegistry[activeLessonId](activeLessonId);
-                  }
-
-                  const prefix = activeLessonId?.includes('-')
-                    ? activeLessonId.substring(0, activeLessonId.lastIndexOf('-'))
-                    : activeLessonId;
-
-                  if (prefix && activeLessonId && typeof prefixRegistry[prefix] === 'function') {
-                    return prefixRegistry[prefix](activeLessonId);
                   }
 
                   // Check for dynamic DB content as primary fallback

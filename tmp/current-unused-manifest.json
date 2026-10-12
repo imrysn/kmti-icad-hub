@@ -1,0 +1,642 @@
+[
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning(4)_b.4_change_position_1 (2).png",
+    "bytes": 916185,
+    "sha256": "f2cab5804b4b219dd08281577426d1f49a1f327b02e1ee29e2cdc18ee5758bfa"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_b.1_edit_dimension_charac_1.png",
+    "bytes": 126054,
+    "sha256": "d5b1d1d71231a1938e0d9ac9812e6bf0b4eaa9a7776ef3658ee1b6507755e2ed"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_b.1_edit_dimension_charac_2.png",
+    "bytes": 126993,
+    "sha256": "3a216a002b3292efaacbe1a886bb2a22dff2d42eb3c07ee82088783603665f48"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_dimensioning_b.2_polished_material_1.jpg",
+    "bytes": 75205,
+    "sha256": "9ee748a92944c801691dd271b9e54792733db1cad315968deda1834cc09ff8fe"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(3)_b_center_line_3.png",
+    "bytes": 26675,
+    "sha256": "ebd2f5910b31607b719f20a7a9ff4b97e2bf998c6b2ff734aeccc63fa6a83778"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_line_properties_(3)_b_center_line_4.png",
+    "bytes": 138870,
+    "sha256": "26f8ee1d546ffbe2d2345da1648f0dc0165712f76844efab0c4fe1363bcd5d97"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_machining_symbol_machining_surface_condiiton.jpg",
+    "bytes": 162511,
+    "sha256": "665cec4732a3a281a78f97fd139bb340352029149cef76e47bafbd27b330360a"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_machining_symbol_note.jpg",
+    "bytes": 84698,
+    "sha256": "866cb42a6dcaad400250b281d48065667fe62d533fcc73aa435985913e50b898"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_normal_and_mirror_parts(1)_1.jpg",
+    "bytes": 92114,
+    "sha256": "81bddb2335452e654bc2609489bf9841b8327daa3c2060a309c73d75cbe69c61"
+  },
+  {
+    "path": "frontend/src/assets/2d-images/2D_tandard_part_detail(3)_shaft_key_plate_2.jpg",
+    "bytes": 8243,
+    "sha256": "e52e88349962d4d8e16dd8048cef7fe076b5f388ad8e7366ae9f18b0d70d506d"
+  },
+  {
+    "path": "frontend/src/assets/3D_INTERACTIVE/1interface.mp4",
+    "bytes": 1655226,
+    "sha256": "6583a47ac14ff238c34d9a488a49e117ea0ae4ee3c472564b63bca2f056d75e3"
+  },
+  {
+    "path": "frontend/src/assets/3D_Video_Tutorial/Extrude (Both Side).mp4",
+    "bytes": 355771,
+    "sha256": "d63e2f6d38cc6b31ebde2507fc3389e229abe9cd96769adb6ad8a7c44cafbb4f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/2D_dimensioning_b,1_edit_dimension_charac.png",
+    "bytes": 183376,
+    "sha256": "b558d6e0fd8cd2a784cb179b5935fb4e1039e738af3fbd2e2eaa5e869fb65d70"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/acrylic_pointer,,.png",
+    "bytes": 195921,
+    "sha256": "367c38cb96336ae32d2765ce130e9ca5fbe6bdcca6fe2cd34107d3701b628ce8"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/angular_dimension1.png",
+    "bytes": 95099,
+    "sha256": "381e194ca9a6a65207bf8b2a866a662646b6e55c2189dd585779224f653fbe9f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation1_place_note2.png",
+    "bytes": 138204,
+    "sha256": "652df47076d481d2d65b9a66a92e94d3dcd6ff4d0fc4b6412c98666c2da5d061"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_3d_entities.png",
+    "bytes": 244891,
+    "sha256": "acdb1e974ebbbd86f137476c2ea1aa7fdca56e71c013018925701fe0ddf8ef45"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_characters.png",
+    "bytes": 353521,
+    "sha256": "ee77b59fb75f4c60f38e605adb3c387bc2b454fc61dd49fe9aecc7c3ca5a49e9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_characters1.png",
+    "bytes": 385934,
+    "sha256": "9502738abb16fec86622c7b1b43000b25a64aa616cf8bc88a26f453de7effaf2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_dimension.png",
+    "bytes": 87215,
+    "sha256": "476820e277d21c603d124e28adb4f8b9bae519bfeaea6297c17b0859b9832e88"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_drafting_entities.png",
+    "bytes": 350215,
+    "sha256": "1ff9aea5512684051430ef9ac52ade929bf5b4d2b218944a33b0a40cbc614547"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_drafting_entity.png",
+    "bytes": 347742,
+    "sha256": "6de1c4f35d88a215d1923314d9a079cb5e16de4f16182de59ea31553408a3ab4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_drafting_entity1.png",
+    "bytes": 394730,
+    "sha256": "a09ee9af79176bab4d557e39044e6a4bf7c6d506b0eb0677c2b2ba996815b479"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/annotation2_hole_pitches.png",
+    "bytes": 131184,
+    "sha256": "df0ac18dddad7c60ba0f8210f77762318362f81859e1ca9d017e96d9d7ec97d8"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation(1)_item _entry_box.png",
+    "bytes": 36251,
+    "sha256": "3856d635236467947cd9bf831decddbce29ed1dcc6098cf02128f5aa3e8e8e0e"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation(2)_arrange_torus.png",
+    "bytes": 68283,
+    "sha256": "07993499da6351f8cfcaf3d1669b63892ef3a10377ce0146e8a5720af9f35484"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation(2)_item_entry_torus.png",
+    "bytes": 38273,
+    "sha256": "68306ac734d39109799b49822f0f3cb188b4de29216229f7a2ec34745830d1cd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_3d_view.png",
+    "bytes": 99224,
+    "sha256": "38e861934a0d58cd1b19bd75f874cd842b4f010fc38f510dffd6873439b5aa95"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_arrange_box.png",
+    "bytes": 190809,
+    "sha256": "db7cd6e15163f88aaa4b9f0549369b2e6603f5aa7807d723a61feeccd1910949"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_arrange_cylinder.png",
+    "bytes": 189763,
+    "sha256": "95fadf949b06bf058da76813258f0b43499f4379422dd05b503442102c4a1d19"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_arrange_polygon_prism.png",
+    "bytes": 207767,
+    "sha256": "b5fd9919d41bcb8b5d9441039d21c392463fee58484d00957021b5e812f68032"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_command_menu.png",
+    "bytes": 156180,
+    "sha256": "83f5c1643de606de1cdcd97bb65800ac87888adb6dc78584553ac0dec20c4754"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_cylinder.png",
+    "bytes": 96404,
+    "sha256": "8273f4d75ceef2ebae302e081e868fcec0cac456e3880863c524db5e98def23f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_item_entry.png",
+    "bytes": 18466,
+    "sha256": "c6fe14785d4348520e20ba4b45a653654dfeb2d098af7e73b305455374f6916d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation1_item_entry_box.png",
+    "bytes": 29922,
+    "sha256": "697de9a01421f39083a49acb72be3beca9dc84be0a20c79060701367df7772e5"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_arrange_cone.png",
+    "bytes": 186979,
+    "sha256": "d44384ad081c56d4e9e72512396da6dfc1f5df2845b3c95bc249120f24cb1f73"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_arrange_torus.png",
+    "bytes": 188305,
+    "sha256": "c6f8a8c25860aee2fac59500861d95e6e94e940de9e0c5dcaedfd25cf1e952e4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_item_entry_cone.png",
+    "bytes": 26862,
+    "sha256": "8008e0c368f0929ddca54906e0e9500a9618369b7dbdc9a0fd2f2992c842758c"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_item_entry_torus.png",
+    "bytes": 38273,
+    "sha256": "68306ac734d39109799b49822f0f3cb188b4de29216229f7a2ec34745830d1cd"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation2_move_3.png",
+    "bytes": 126690,
+    "sha256": "113cb2ebe35c8f660d18c6e3044c3e056d3cc8455d709d6aad2cfa2814f9771f"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation3_copy_3.png",
+    "bytes": 41857,
+    "sha256": "c8c6c4cb0b607feec1627a1f6ae7472514f76267738c0e46ed6efd39bcd5a6a1"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation3_mirrored.png",
+    "bytes": 147868,
+    "sha256": "da93b7fe53ca2d42f5344c007a367b542673e4cc06ea17481d5c458b0322b2e2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation3_rotate_axis_rotation...png",
+    "bytes": 145604,
+    "sha256": "5ec92e1efa57c86567ed0c99c2f27bb93a0d58e6be47b4fdee72f708d14f6dd7"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation3_rotate_axis_rotation.png",
+    "bytes": 109470,
+    "sha256": "05ca39b31b11ea8b9ecff0e1d43dc78b03a7e71b0b3b3562b56401f5c1b6ea22"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation4_extrusion_bothside,,.png",
+    "bytes": 74583,
+    "sha256": "5b75169cabe98b39df2ab96ae359f829a3ee871e6fa80c28e604aaf11041045a"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation4_extrusion_oneside,,.png",
+    "bytes": 73798,
+    "sha256": "f723d874ba46e0cee16b14be231866c9939517a456018f34258ef4bde80b8094"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/basic_operation4_revolve_p1.png",
+    "bytes": 304362,
+    "sha256": "9103673c2cd8debac7f36e20128da05ef006a10cd6f5b66f9774a8b7583096d0"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/grease_nipple_1.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/grease_nipple_2.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/isonite_manganese,,.png",
+    "bytes": 148446,
+    "sha256": "ad07aba50dd4d7c52fcaa7f21e615b8abba8de48fea0dc86af8290ff255fc4c2"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/item_entry_polygon.png",
+    "bytes": 42449,
+    "sha256": "6da6e589e88eecb9671faacfa6b0b1310320be591d6f7b9f6e77093aeb3d50d9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/kemco_std_gas_discharge.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/kemco_std_grease_nipple.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/kemco_std_oilgroove.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/kemco_std_oilhole.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/kemco_std_tap-gage-hole.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/mirrored_part1_mirror_image.png",
+    "bytes": 56544,
+    "sha256": "5391c090567970d1ce61b0540a4f8bbfcfece070ca9d3b76b2ba822b0f48cc64"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/notes_leader_lines.png",
+    "bytes": 59050,
+    "sha256": "74d59744de7f112d79b7ee1f06184df827d2d06dce028775ec5404e3f4257fbc"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/oilgroove_design.png",
+    "bytes": 112,
+    "sha256": "59846021f60dc68694f8da1cc3fe575660157bf90aba21a9d93a8f49baed0164"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/operation_sample4_4_position_tool_entity,,.png",
+    "bytes": 37767,
+    "sha256": "d4a77476f1418637aba64114e4b60dfc74a5fbe0bc1b462ef4442592cc7de2d4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/properties_material,,.png",
+    "bytes": 118587,
+    "sha256": "bcff97106899c19616d8b4ca50e8109bda220c50e0f3fabc319f2478a29166c4"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard3_location_of_sprocket_keyway,,.png",
+    "bytes": 212350,
+    "sha256": "786f1a015b495c07b7338f96b0aacfcad870497dc3edfcbfd9b34897cc20ea89"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard3_sprocket_3d,,,.png",
+    "bytes": 266284,
+    "sha256": "4a09ecbcb3423cc870f852d63df88763fa5e4ac5ca851e4788e67748c0cf0417"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/standard3_sprocket_3d22.png",
+    "bytes": 288878,
+    "sha256": "75c826ee312b7ff87fab39c62ea0919fbed9a990cfa71c55632a5c4a68225337"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/substract_operation_sample_1.png",
+    "bytes": 55974,
+    "sha256": "cd14c7f31ff2ef8569058e6d9b2047ae2a4ab5b4d4b6a1815fb959cea514595d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_2d_standard_screen.png",
+    "bytes": 92562,
+    "sha256": "a390581ad509dd8122dd85875ad3edac87ee90256aa68e5e15769b81dde21591"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_2d_view.png",
+    "bytes": 53052,
+    "sha256": "e1658475103406e6f2da3bb20fe6ad21e90e10d5d76033f3dadf7ceaba51e453"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_3d_view.png",
+    "bytes": 99541,
+    "sha256": "42c34318ad095817ff8e0e9196557a9136f281e98cef5e9b92d3f01b0a9b72b3"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_edit.png",
+    "bytes": 17412,
+    "sha256": "b9608b0440131e68bd859640758155ad3c33252816562b81ba1ad96706c0883d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_entry_control.png",
+    "bytes": 53135,
+    "sha256": "2c1447effa4fac40f3c6fd2a3f3eafa36f772b69ff20568b80ac8aaa6d65f513"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_file.png",
+    "bytes": 42526,
+    "sha256": "3b28facae064866827a9719df12b0e68621ff4922f9802432db9a1589ba083d9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_screen_memory.png",
+    "bytes": 56860,
+    "sha256": "52607ed8f1ea31652667e80516e488fa9a75fcf96bf64c8958748462bef57559"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_screen_operations.png",
+    "bytes": 58813,
+    "sha256": "18bc9de7df0e9d995234c6ce86b0300e63d683ae0c9b628132db9f910dc0a890"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_section_display.png",
+    "bytes": 29068,
+    "sha256": "4d079271f3e88366e11ed3b32e7668d638cb153a43bc6413b0078bfed9350fa9"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_shading.png",
+    "bytes": 60853,
+    "sha256": "158197a44267f67e9c93b108060abb12784ba56b7bf820b963ffc2d9765aca2d"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_switch_display.png",
+    "bytes": 37254,
+    "sha256": "b5408fe0394186a9c6a46ab8ddbaa5b111856fc3fc85e465bc8d550bf12d2913"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_system_information.png",
+    "bytes": 38452,
+    "sha256": "c0e43afa0b8ba3e899e21e295d952c5ebd4b77ce8288392c53536a86ad8f5e19"
+  },
+  {
+    "path": "frontend/src/assets/3d-images/tool_bars_user_views.png",
+    "bytes": 52626,
+    "sha256": "7089946331dec884e59ef7b8d66e714969f30b45c3bfb3dfa1918375e7636636"
+  },
+  {
+    "path": "frontend/src/assets/KMTI iCAD Operation Manual - (New iCAD Version) 3D JPN.xlsx",
+    "bytes": 14172108,
+    "sha256": "d724cd89eadd4e37f3273db90975e4ea94a8fb44e6ca350ed4d1736f2e98f67a"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/information/angle-exact.png",
+    "bytes": 1203,
+    "sha256": "7fb63f737f2bab435966fbb91c5528afc0a0d873fca7a62422443d2d3203b47a"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/information/coordinates-exact.png",
+    "bytes": 889,
+    "sha256": "57520fbbe7e065ffc4b95213f360c3c17350e1a17701a09dc3ff840d58b52020"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/information/distance-exact.png",
+    "bytes": 1032,
+    "sha256": "2e355b74b8181623a7dab98cd76ffb1e292545fab53fc39a6063116d1ebf72f5"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/information/length-exact.png",
+    "bytes": 938,
+    "sha256": "868b0dc568865ff30685526070f76554ead7d733d472fea27b8e9dca7f02dd46"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/interference/high-speed-detection-interface.png",
+    "bytes": 367463,
+    "sha256": "955aa277390c7ca6654a851b812229fd42f5648a8879bb62608747b16b713f27"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/mirrored-parts/mirror-copy-toolbar.png",
+    "bytes": 16289,
+    "sha256": "2afd5b1e50dfa19fddee20ea7b433bd91b4eb2d5f4c27b667b9d2e0ed4464ec4"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/chamfer-tooltip-reference.png",
+    "bytes": 8899,
+    "sha256": "e591f2164fac5617f57b20006b90c72de2d570744fb3b0967690a0886e9a55b4"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/component-mirror-copy-points-reference.png",
+    "bytes": 43765,
+    "sha256": "1ea779ff2dba015f24f35819aeba49f11cde9ab9f5903f8043db19832e4b6745"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/component-mirror-points-reference.png",
+    "bytes": 31389,
+    "sha256": "61bec346a078410400e44d1dc79960fc273db0bd234b54926682b78ef3c7c723"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/component-rotate-copy-points-reference.png",
+    "bytes": 29626,
+    "sha256": "70d15d26d3d27cd062431c77da2ea4711b28f9483b8121487c392c4b89d9beb6"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/fillet-tooltip-reference.png",
+    "bytes": 8965,
+    "sha256": "5b914cbb8361dea53ab040170cd7c38d18b203c8313785747c2334ab73dee2d1"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/hole-details-reference.png",
+    "bytes": 133747,
+    "sha256": "7ccba3f16c4fc3300879e64be17ca4ad7c62182290e8f296879b61cbdadd5400"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/hole-details-tools-screen.png",
+    "bytes": 121957,
+    "sha256": "b11ebf93959fd843d37579b461ab69d4dd710e5e3b6ff734d13677455a4d6a80"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/intersect-command-reference.png",
+    "bytes": 1403,
+    "sha256": "a5bd63b31913454e370c59cdbebc9d08f03dfa9bff783bcaed312d333653c1ed"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/intersect-command-transparent.png",
+    "bytes": 356496,
+    "sha256": "c757824e5d614bf83bcad74c9b23365d3515c6290f088d35ee7d6a667fa11b08"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/material-description-reference.png",
+    "bytes": 80588,
+    "sha256": "98ead6a167036bd539ee3ef382ed3f7418ec96ebaf93cd506eb0a4ce5af3a041"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/material-set-icon.png",
+    "bytes": 1369,
+    "sha256": "0305518f4435b34c58e6422901e07470877e01e4cfe9e0fa6f496d43c5d5f275"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/material-set-menu-ja.png",
+    "bytes": 7028,
+    "sha256": "9b1884d53fc5727fd9964eb91c691c4e2fa33c5b79e793b9345c4c8c9f2676d7"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/p8_move_instruction.png",
+    "bytes": 202828,
+    "sha256": "684288fec4de746d4e05c0f34dc5e49b412d140aaeccb38d7173e3a50210cb09"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/part-create-callout-reference.png",
+    "bytes": 274014,
+    "sha256": "39a32bbbaaad3b0766316be97caa7513cb37b971a1cf33e46436acd63c67f86b"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/part-create-tooltip.png",
+    "bytes": 8609,
+    "sha256": "bdac1d3dd1c3f3e633d7855afe1343376404919f4f861ed3a3a0f277aa6fac6a"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/part-rename-icon.png",
+    "bytes": 1906,
+    "sha256": "37b2b6c496dc42ac4da23a5435398bb536fe6cd5182a56ef1779bb751a70eca4"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/part-rename-tooltip.png",
+    "bytes": 13935,
+    "sha256": "e487b8aa3b5cff84ef66b086b248c35827cc02ea3198802f22b4e5d177013ecf"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/part-rename-workflow-reference.png",
+    "bytes": 145982,
+    "sha256": "e51e0ffe4a0bb46d1f38c7be970acf8c7fff295f4ed98be45e34a65c59b9c97e"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/mirror-1.png",
+    "bytes": 399039,
+    "sha256": "dfe67f3f2494f5976bff15e065ac86c5e3499309a2e0ec773b6c15d4483c9fda"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/rotate-1.png",
+    "bytes": 370098,
+    "sha256": "738b7b0f4d38019636afefb1c470d41e4d6d054f5236aaac9aec898721dc2936"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/rotateCopy-1.png",
+    "bytes": 340309,
+    "sha256": "f5506ab027b15de10b60856123c246d0318704e4d856d756402e3224d5fe2c43"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/sketch-menu.png",
+    "bytes": 5968,
+    "sha256": "eb8ba58abbf97237117c130f8fda4b07224b72b16583a436f6a3cfe831e18d2f"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/sketch-p1.png",
+    "bytes": 4722,
+    "sha256": "83b7bf9122e3ddfed891f712d3620f7df2aae4bd1157661818b16baf273fb9d3"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/professional/sketch-reference.png",
+    "bytes": 29984,
+    "sha256": "81b2b4def22cc95ed31abba2b0c7fce5ee792112788285d15aed219450dcde6e"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/shell-tooltip-reference.png",
+    "bytes": 16320,
+    "sha256": "2a28cd5b93b780244328efb13da09f6d0f9599235b2b1682b0470970f615c92b"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/subtract-target-sample.png",
+    "bytes": 8332,
+    "sha256": "f4edbbd4d71486bc0865ba7fae61f87c602584e4b7fea138cc51ffc17aa71f14"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/subtract-tools-sample.png",
+    "bytes": 8228,
+    "sha256": "fd9cc175ac4beebb1230374748bc6895092b412827409cfb8ab3add40cd29e00"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/union-icon.png",
+    "bytes": 1385,
+    "sha256": "f2595373b5654982b7d623f3209e646c53117bcb6731ad02b437e6fbf770950f"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-open-interface.png",
+    "bytes": 111676,
+    "sha256": "6ad0e128b57eab80d73149dcab95a70f4d1c1ca9e2e27a641aecdeb447fb837f"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-remove-menu.png",
+    "bytes": 52640,
+    "sha256": "fae8667fabf89ef23aba485b607ed619ce469fd34ddd062bb4a51b3dbedbad82"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-solid-tools-reference.png",
+    "bytes": 36291,
+    "sha256": "f7c04013a9fdfbbbc71047d9811725f92e2f817ec289038d2a4c732ecba3751c"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/shape-steel/arrange-machine-part-menu.png",
+    "bytes": 7483,
+    "sha256": "e6d3bcec346e689a261757967fc2374131fec63a08cb0de09c02a83a61d4e286"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/show-hide/hide-drafting.png",
+    "bytes": 1483,
+    "sha256": "d5030dbefede6368390d624af13a2533d37733319eab0f5869854d4bdc6611de"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/show-hide/hide-specified.png",
+    "bytes": 1350,
+    "sha256": "e41526fe8b470236c02bb0aac4ca4fdadb131ea3d0512760aeed9ecb1d6e70a8"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/show-hide/hide-unselected.png",
+    "bytes": 1536,
+    "sha256": "8af85be280eacb976c4edb7a42e760a791d60e4edc122ba3f2bd8e20bbdca954"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/show-hide/show-drafting.png",
+    "bytes": 1835,
+    "sha256": "437c1088b563d8a5bf513b2b8dad11b011a3c5fffab8b82a7494fc4b715a9745"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/show-hide/show-specified.png",
+    "bytes": 1450,
+    "sha256": "a5d9b4aa03468b23da4afb66739c99049573b741a2e78d4d2a6b40fc4d46f18b"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/stretch/stretch-face.png",
+    "bytes": 8255,
+    "sha256": "1229daf5357ec87458a3a2df99a5a35ad95933eae5e1ee0c92027d8c13cc9e96"
+  },
+  {
+    "path": "frontend/src/components/ICAD/Command/Icad_Guide/Japanese_Tutorial/Menu_Bar/MenuData.ts",
+    "bytes": 8850,
+    "sha256": "f7c8bc3086266144b84c3a57723db2514a79d4996ef41be8fe65267e020e4545"
+  },
+  {
+    "path": "frontend/src/components/PublicCourses/Foundations/BasicNavigation.tsx",
+    "bytes": 4616,
+    "sha256": "668f7830d1422cbb86a9af975d1c7ef643277993b5f41d26f5beb791b2cf4066"
+  },
+  {
+    "path": "frontend/src/components/PublicCourses/Foundations/SimplePrimitives.tsx",
+    "bytes": 4914,
+    "sha256": "e39195f1cda305c08b621e09071d38352269278c859386e5275a88578063828d"
+  },
+  {
+    "path": "frontend/src/components/PublicCourses/Foundations/WorkspaceLayout.tsx",
+    "bytes": 4503,
+    "sha256": "6d559e2afb6486cd63735dea2666b6525ab9eb378e3a1fdc61322033f7eeb0a1"
+  },
+  {
+    "path": "frontend/src/components/iCAD_Foundations/PartLayoutIcon.tsx",
+    "bytes": 826,
+    "sha256": "591d4d0352a1df9c96dd3f4bf6d4a1312690be088fa25d887624e54fb796fe4a"
+  }
+]

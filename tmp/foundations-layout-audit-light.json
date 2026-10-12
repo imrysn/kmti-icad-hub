@@ -1,0 +1,3423 @@
+[
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 132,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F2.9",
+    "displayId": "F2.2",
+    "title": "Understanding the Toolbar",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F3.5",
+    "displayId": "F3.2",
+    "title": "Pan",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F3.6",
+    "displayId": "F3.3",
+    "title": "Rotate the 3D View",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F4.6",
+    "displayId": "F4.2",
+    "title": "USER VIEWS",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F4.12",
+    "displayId": "F4.3",
+    "title": "SHADING",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F5.4",
+    "displayId": "F5.2",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F6.2",
+    "displayId": "F6.1",
+    "title": "Basic Element Selection",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F5.6",
+    "displayId": "F5.3",
+    "title": "Specifying Coordinates",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      },
+      {
+        "width": 129,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F6.4",
+    "displayId": "F6.2",
+    "title": "Selecting Parts and Solid Components",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F6.7",
+    "displayId": "F6.3",
+    "title": "Search / Selection Type",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F7.1",
+    "displayId": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F7.3",
+    "displayId": "F7.2",
+    "title": "Understanding Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F7.6",
+    "displayId": "F7.3",
+    "title": "Introduction to Assemblies",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F7.8",
+    "displayId": "F7.4",
+    "title": "Understanding 3D and 2D Drawings",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F8.1",
+    "displayId": "F8.1",
+    "title": "Creating a New Item",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 300,
+        "height": 144
+      },
+      {
+        "width": 300,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F8.3",
+    "displayId": "F8.2",
+    "title": "Saving Your Work",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 300,
+        "height": 144
+      },
+      {
+        "width": 300,
+        "height": 144
+      },
+      {
+        "width": 300,
+        "height": 144
+      },
+      {
+        "width": 300,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F8.5",
+    "displayId": "F8.3",
+    "title": "Closing a Drawing",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Move"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Rotate"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Rotate Copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Mirror"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Mirror Copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Delete"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Resize"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 252,
+        "height": 144
+      },
+      {
+        "width": 252,
+        "height": 144
+      },
+      {
+        "width": 252,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 261,
+        "height": 144
+      },
+      {
+        "width": 261,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 261,
+        "height": 144
+      },
+      {
+        "width": 261,
+        "height": 144
+      },
+      {
+        "width": 261,
+        "height": 144
+      },
+      {
+        "width": 261,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 108,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F16.1",
+    "displayId": "F16.1",
+    "title": "Understanding the Work Plane",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F16.2",
+    "displayId": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F16.3",
+    "displayId": "F16.3",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "sectionExtrude"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 248
+      },
+      {
+        "width": 273,
+        "height": 248
+      },
+      {
+        "width": 273,
+        "height": 248
+      }
+    ]
+  },
+  {
+    "id": "F16.4",
+    "displayId": "F16.4",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "sectionRevolve"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 248
+      },
+      {
+        "width": 273,
+        "height": 248
+      },
+      {
+        "width": 273,
+        "height": 248
+      }
+    ]
+  },
+  {
+    "id": "F16.5",
+    "displayId": "F16.5",
+    "title": "Spiral Form",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "spiral"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-hole-details",
+    "displayId": "F17.1",
+    "title": "Creating Hole Details on Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "referenceMachinePart"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-boolean-union",
+    "displayId": "F18.1",
+    "title": "Union",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "displayId": "F18.2",
+    "title": "Subtract",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 338,
+        "height": 144
+      },
+      {
+        "width": 338,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "displayId": "F18.4",
+    "title": "Separate Entity",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "separateSelected"
+      },
+      {
+        "width": 76,
+        "height": 76,
+        "command": "separateAll"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 273,
+        "height": 260
+      },
+      {
+        "width": 273,
+        "height": 260
+      },
+      {
+        "width": 273,
+        "height": 260
+      },
+      {
+        "width": 273,
+        "height": 260
+      },
+      {
+        "width": 273,
+        "height": 260
+      },
+      {
+        "width": 273,
+        "height": 260
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-move",
+    "displayId": "F19.1",
+    "title": "Move Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-move"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "displayId": "F18.3",
+    "title": "Intersect",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "intersect"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-copy",
+    "displayId": "F19.2",
+    "title": "Copy Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-mirror",
+    "displayId": "F19.3",
+    "title": "Mirror Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-mirror"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-rotate",
+    "displayId": "F19.4",
+    "title": "Rotate Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-rotate"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 161,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "displayId": "F19.5",
+    "title": "Repeat Copy Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-repeat-copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "displayId": "F19.6",
+    "title": "Rotate Copy Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-rotate-copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 161,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "displayId": "F19.7",
+    "title": "Mirror Copy Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-mirror-copy"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-component-delete",
+    "displayId": "F19.8",
+    "title": "Delete Component",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "component-delete"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "displayId": "F20.1",
+    "title": "Chamfer",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "chamfer"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "displayId": "F20.2",
+    "title": "Fillet",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "fillet"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-part-create",
+    "displayId": "F21.1",
+    "title": "Create 3D Part",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "part-create"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "displayId": "F20.3",
+    "title": "Shell",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "shell"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-part-material",
+    "displayId": "F21.2",
+    "title": "Material Description",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "foundation-part-change-name",
+    "displayId": "F21.3",
+    "title": "Change 3D Part Name",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "part-rename"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-material-set",
+    "displayId": "F22.1",
+    "title": "Set Material",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "material-set"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "displayId": "F22.3",
+    "title": "Materials Not Included in the iCAD Material List",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "displayId": "F23.1",
+    "title": "Change Color",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "change-color"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "displayId": "F23.2",
+    "title": "Change Layer",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "change-layer"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "displayId": "F23.3",
+    "title": "Layer Designation of 3D Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "foundation-information-tools",
+    "displayId": "F24.1",
+    "title": "Information Tools",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "displayId": "F25.1",
+    "title": "Linear Dimension",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "linear-dimension"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "displayId": "F25.2",
+    "title": "Diameter Dimension",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "diameter-dimension"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "displayId": "F25.3",
+    "title": "Angular Dimension",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "angular-dimension"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "displayId": "F25.4",
+    "title": "Notes with Leader Lines",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "notes-leader-lines"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 418,
+        "height": 144
+      },
+      {
+        "width": 418,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      },
+      {
+        "width": 273,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "displayId": "F25.5",
+    "title": "Character Strings",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "character-strings"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "displayId": "F25.6",
+    "title": "Edit Drafting Entity Characters",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "edit-drafting-entity-characters"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "displayId": "F25.7",
+    "title": "Change Drafting Entity Attributes",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "change-drafting-entity-attributes"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "displayId": "F25.8",
+    "title": "Change Drafting Entity Position",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "change-drafting-entity-position"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 307,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-interference-check",
+    "displayId": "F26.1",
+    "title": "Check for Interferences",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "displayId": "F26.2",
+    "title": "Display Detected Interferences",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "displayId": "F27.1",
+    "title": "Import Parasolid",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      },
+      {
+        "width": 158,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "displayId": "F27.2",
+    "title": "Lighten B-Rep Solid",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      },
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "displayId": "F27.3",
+    "title": "Save the Purchase Part",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 266,
+        "height": 144
+      },
+      {
+        "width": 266,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "displayId": "F28.1",
+    "title": "Normal Parts and Mirror Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "displayId": "F28.2",
+    "title": "Identify Normal or Mirror Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Mirror Copy Tool"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 201,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "displayId": "F28.3",
+    "title": "3D Modeling of Mirror Parts",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "16.8px"
+    ],
+    "body": [
+      "16px/center"
+    ],
+    "commands": [
+      {
+        "width": 76,
+        "height": 76,
+        "command": "Select Mirror"
+      }
+    ],
+    "clipped": [],
+    "frames": [
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      },
+      {
+        "width": 262,
+        "height": 144
+      }
+    ]
+  },
+  {
+    "id": "F17.1",
+    "displayId": "F29.1",
+    "title": "Foundation Review",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  },
+  {
+    "id": "F17.2",
+    "displayId": "F29.2",
+    "title": "Foundation Knowledge Check",
+    "lang": "en",
+    "width": 1440,
+    "overflow": false,
+    "broken": [],
+    "headings": [],
+    "body": [],
+    "commands": [],
+    "clipped": [],
+    "frames": []
+  }
+]

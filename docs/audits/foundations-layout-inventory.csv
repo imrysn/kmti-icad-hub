@@ -1,0 +1,98 @@
+﻿Lesson,Title,Dark EN/JA desktop/mobile views,Light EN desktop views,Instruction text,Card headings,Command icon sizes,Image frame heights,Overflow/clipping/broken images
+F1.1,What is iCAD SX?,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F1.2,What iCAD SX is Used For,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F1.3,Basic Workflow: 3D → 2D,4,1,No step-card paragraphs,No card headings,Other artwork / no command icon,Other layout,None detected
+F1.4,Starting iCAD SX,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F1.5,Closing iCAD SX,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F1.6,Introduction to iCAD SX Help,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F2.1,iCAD SX Screen Layout,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F2.2,Understanding the Toolbar,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F3.1,Basic Mouse Operations,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F3.2,Pan,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F3.3,Rotate the 3D View,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F4.1,3D VIEWS,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F4.2,USER VIEWS,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F4.3,SHADING,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F5.1,Keyboard Basics,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F5.2,Understanding Coordinates and the Origin,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,144,None detected
+F5.3,Specifying Coordinates,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F6.1,Basic Element Selection,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F6.2,Selecting Parts and Solid Components,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F6.3,Search / Selection Type,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,144,None detected
+F7.1,Understanding iCAD Drawing Structure,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F7.2,Understanding Parts,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,144,None detected
+F7.3,Introduction to Assemblies,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F7.4,Understanding 3D and 2D Drawings,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F8.1,Creating a New Item,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F8.2,Saving Your Work,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F8.3,Closing a Drawing,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F9.1,Box,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F9.2,Cylinder,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F9.3,Polygon,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F9.4,Cone,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F9.5,Torus,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F10.1,Move,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.2,Copy,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.3,Rotate,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.4,Rotate Copy,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.5,Mirror,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.6,Mirror Copy,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.7,Delete,4,1,16px/center,16.8px,76 x 76,144,None detected
+F10.8,Resize,4,1,16px/center,16.8px,76 x 76,144,None detected
+F11.1,Sketch,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F12.1,Extrude,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F12.2,Revolve,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F13.1,Understanding Show/Hide,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F13.2,Show / Hide Specified Elements,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F13.3,Show / Hide Drafting Elements,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F13.4,Hide Unselected Elements,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F14.1,Stretch,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F15.1,Creating Shape Steels,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F16.1,Understanding the Work Plane,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F16.2,Sketching on a Work Plane,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F16.3,Extrude,4,1,16px/center,16.8px,76 x 76,248,None detected
+F16.4,Revolve,4,1,16px/center,16.8px,76 x 76,248,None detected
+F16.5,Spiral Form,4,1,16px/center,16.8px,76 x 76,144,None detected
+F17.1,Creating Hole Details on Parts,4,1,16px/center,16.8px,76 x 76,144,None detected
+F18.1,Union,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F18.2,Subtract,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F18.3,Intersect,4,1,16px/center,16.8px,76 x 76,144,None detected
+F18.4,Separate Entity,4,1,16px/center,16.8px,76 x 76,260,None detected
+F19.1,Move Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.2,Copy Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.3,Mirror Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.4,Rotate Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.5,Repeat Copy Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.6,Rotate Copy Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.7,Mirror Copy Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F19.8,Delete Component,4,1,16px/center,16.8px,76 x 76,144,None detected
+F20.1,Chamfer,4,1,16px/center,16.8px,76 x 76,144,None detected
+F20.2,Fillet,4,1,16px/center,16.8px,76 x 76,144,None detected
+F20.3,Shell,4,1,16px/center,16.8px,76 x 76,144,None detected
+F21.1,Create 3D Part,4,1,16px/center,16.8px,76 x 76,144,None detected
+F21.2,Material Description,4,1,No step-card paragraphs,No card headings,Other artwork / no command icon,Other layout,None detected
+F21.3,Change 3D Part Name,4,1,16px/center,16.8px,76 x 76,144,None detected
+F22.1,Set Material,4,1,16px/center,16.8px,76 x 76,144,None detected
+F22.3,Materials Not Included in the iCAD Material List,4,1,No step-card paragraphs,No card headings,Other artwork / no command icon,Other layout,None detected
+F23.1,Change Color,4,1,16px/center,16.8px,76 x 76,144,None detected
+F23.2,Change Layer,4,1,16px/center,16.8px,76 x 76,144,None detected
+F23.3,Layer Designation of 3D Parts,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F24.1,Information Tools,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F25.1,Linear Dimension,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.2,Diameter Dimension,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.3,Angular Dimension,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.4,Notes with Leader Lines,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.5,Character Strings,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.6,Edit Drafting Entity Characters,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.7,Change Drafting Entity Attributes,4,1,16px/center,16.8px,76 x 76,144,None detected
+F25.8,Change Drafting Entity Position,4,1,16px/center,16.8px,76 x 76,144,None detected
+F26.1,Check for Interferences,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F26.2,Display Detected Interferences,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F27.1,Import Parasolid,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F27.2,Lighten B-Rep Solid,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F27.3,Save the Purchase Part,4,1,16px/center,16.8px,Other artwork / no command icon,144,None detected
+F28.1,Normal Parts and Mirror Parts,4,1,No step-card paragraphs,16.8px,Other artwork / no command icon,Other layout,None detected
+F28.2,Identify Normal or Mirror Parts,4,1,16px/center,16.8px,76 x 76,144,None detected
+F28.3,3D Modeling of Mirror Parts,4,1,16px/center,16.8px,76 x 76,144,None detected
+F29.1,Foundation Review,4,1,No step-card paragraphs,No card headings,Other artwork / no command icon,Other layout,None detected
+F29.2,Foundation Knowledge Check,4,1,No step-card paragraphs,No card headings,Other artwork / no command icon,Other layout,None detected

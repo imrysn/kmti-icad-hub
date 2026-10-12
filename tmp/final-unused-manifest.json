@@ -1,0 +1,62 @@
+[
+  {
+    "path": "frontend/src/components/InteractiveVideoLesson/ZoomInOutInteractiveLesson.tsx",
+    "bytes": 987,
+    "sha256": "7743bea50da2d612ec9e4ad40ae24e6e4e604f3d588f96ff9cd5f221e4e243d2"
+  },
+  {
+    "path": "frontend/src/assets/3D_Video_Tutorial/Extrude (One Side).mp4",
+    "bytes": 412762,
+    "sha256": "d12a9f69db00043e18552edb1b7d3ceb5c24e76c5379299c8d08eab6f6242cc6"
+  },
+  {
+    "path": "frontend/src/assets/3D_Video_Tutorial/sketch.mp4",
+    "bytes": 403313,
+    "sha256": "c10136523818b70be920e39d258bf02f52112ea31f153c11631ac8839ba61767"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/Capture.PNG",
+    "bytes": 1440,
+    "sha256": "efe38c4dc78bbda920ca62d214fcbcf0f847a9a295a9230e74ab371f72d5d757"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/polygon.PNG",
+    "bytes": 158269,
+    "sha256": "37743e713b49dec7fe9da113328f6c88fe72d017c263d691a7c780ed7fc95608"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-extrude-dialog.png",
+    "bytes": 177393,
+    "sha256": "af26104ebf5ecdef68749915f3efc19490d002b90e9d4426fb3bcde911405e99"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-extrude-height.png",
+    "bytes": 169398,
+    "sha256": "e822ec0c951d3604374b54741b0c572d3c64fb0e96e84ee091ed89229a301d5e"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-extrude-profile.png",
+    "bytes": 164799,
+    "sha256": "9b0eb46e4a94032336d43183a7094a3cb1d708e8f8e9eb13e22591ef8ba9628f"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/modeling/work-plane-extrude-result.png",
+    "bytes": 161283,
+    "sha256": "d223410fbccbafdfd74aaf2e4db6cd181977c6087544a0d73836c0f2abf32671"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/stretch/stretch-entry.png",
+    "bytes": 1025,
+    "sha256": "ffc6fbff221c310e1d121d20a0ab7857bfb6bbdee3cfecd0768acc4a29fb440b"
+  },
+  {
+    "path": "frontend/src/assets/icad-foundations/stretch/stretch-palette.png",
+    "bytes": 18123,
+    "sha256": "6d86a8b3f6e8e4dc89ce81dad607962364820f35a6cc43d5f167f72190d16228"
+  },
+  {
+    "path": "frontend/src/assets/logo/kmti.png",
+    "bytes": 150260,
+    "sha256": "241146abef2daf80ca8ac30a9ab597115ddd74ca08be8a1dc0d146bed70c534a"
+  }
+]
