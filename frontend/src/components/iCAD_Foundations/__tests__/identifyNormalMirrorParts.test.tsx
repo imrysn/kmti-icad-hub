@@ -43,8 +43,9 @@ it.each(['en', 'ja'] as const)('renders Identify Normal or Mirror Parts procedur
   expect(stepCards[0].textContent).toContain('1');
   expect(stepCards[0].textContent).toContain(language === 'ja' ? '反転複写を選択する' : 'Select Mirror Copy Tool');
   expect(stepCards[0].textContent).toContain(language === 'ja' ? 'アイコンメニュー' : 'Icon Menu');
-  // Reused verified mirrorCopy SVG icon command
+  // Vector Mirror Copy command, consistent with the other lessons
   expect(stepCards[0].querySelector('svg')).not.toBeNull();
+  expect(stepCards[0].querySelector('.foundations-use-card__icon-frame img')).toBeNull();
 
   // Step 2: Place Mirror Copy Over Original Part
   expect(stepCards[1].textContent).toContain('2');
@@ -56,18 +57,18 @@ it.each(['en', 'ja'] as const)('renders Identify Normal or Mirror Parts procedur
   // Step 3: Compare Part Details (Hole location, Cutouts, Fairings)
   expect(stepCards[2].textContent).toContain('3');
   expect(stepCards[2].textContent).toContain(language === 'ja' ? '詳細形状を比較する' : 'Compare Part Details');
-  expect(stepCards[2].textContent).toContain(language === 'ja' ? '穴の位置' : 'Hole location');
-  expect(stepCards[2].textContent).toContain(language === 'ja' ? '切り欠き' : 'Cutouts');
-  expect(stepCards[2].textContent).toContain(language === 'ja' ? 'フェアリング' : 'Fairings');
+  expect(stepCards[2].textContent).toContain(language === 'ja' ? '穴の位置' : 'hole locations');
+  expect(stepCards[2].textContent).toContain(language === 'ja' ? '切り欠き' : 'cutouts');
+  expect(stepCards[2].textContent).toContain(language === 'ja' ? 'フェアリング' : 'fairings');
 
   // Step 4: Identify Part Type
   expect(stepCards[3].textContent).toContain('4');
   expect(stepCards[3].textContent).toContain(language === 'ja' ? '部品の分類を判定する' : 'Identify Part Type');
   expect(stepCards[3].textContent).toContain(language === 'ja' ? '通常部品' : 'Normal Part');
   expect(stepCards[3].textContent).toContain(language === 'ja' ? 'ミラー部品' : 'Mirror Part');
-  // Preserves condition concerning function of Mirror Part A
+  // Preserves condition concerning same function as Part A
   expect(stepCards[3].textContent).toContain(
-    language === 'ja' ? 'ミラー部品Aの機能と同一になり得ない' : 'function of Mirror Part A'
+    language === 'ja' ? '部品Aと同じ機能を果たせません' : 'same function as Part A'
   );
 
   // 2. Ensure Section 1 does not reteach F28.1 with redundant comparison cards

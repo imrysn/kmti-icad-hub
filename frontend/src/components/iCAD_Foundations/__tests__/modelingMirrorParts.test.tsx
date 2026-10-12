@@ -51,7 +51,7 @@ it.each(['en', 'ja'] as const)('renders 3D Modeling of Mirror Parts procedure, 6
   expect(stepCards[1].textContent).toContain('2');
   expect(stepCards[1].textContent).toContain(language === 'ja' ? '部品Aを作成して保存する' : 'Create and Save Part A');
   expect(stepCards[1].textContent).toContain(language === 'ja' ? '部品A' : 'Part A');
-  expect(stepCards[1].querySelector('svg')).not.toBeNull();
+  expect(stepCards[1].querySelector('.foundations-use-card__icon-frame')).toBeNull();
 
   // Step 3: Save Part A as Part B
   expect(stepCards[2].textContent).toContain('3');
@@ -59,7 +59,7 @@ it.each(['en', 'ja'] as const)('renders 3D Modeling of Mirror Parts procedure, 6
     language === 'ja' ? '部品Aを部品Bとして別名保存する' : 'Save Part A as Part B'
   );
   expect(stepCards[2].textContent).toContain(language === 'ja' ? '部品B' : 'Part B');
-  expect(stepCards[2].querySelector('svg')).not.toBeNull();
+  expect(stepCards[2].querySelector('.foundations-use-card__icon-frame')).toBeNull();
 
   // Step 4: Select Mirror (uses verified FoundationOperationCommandIcon command="mirror")
   expect(stepCards[3].textContent).toContain('4');

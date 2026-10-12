@@ -22,7 +22,7 @@ def foundations(db, trainee_user):
 
 def test_shared_registry_structure_and_conservative_aliases():
     assert [module["id"] for module in MODULES] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27", "F28", "F29"]
-    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 98
+    assert len(LESSONS) == len({lesson["id"] for lesson in LESSONS}) == 97
     assert completed_lesson_ids(["lesson-3-1", "F3.3", "lesson-4-2", "lesson-13-1"]) == {"F4.6"}
     assert resolve_lesson_id("lesson-3-1") is None
     assert resolve_lesson_id("basic-op-cone") is None
@@ -79,7 +79,7 @@ def test_lesson_api_exposes_only_new_bilingual_tree(client, foundations, trainee
     assert response.status_code == 200
     tree = response.json()
     assert [item["id"] for item in tree] == [f"F{i}" for i in range(1, 26)] + ["F26", "F27", "F28", "F29"]
-    assert sum(len(item["children"]) for item in tree) == 98
+    assert sum(len(item["children"]) for item in tree) == 97
     assert tree[0]["children"][0]["title"] == "F1.1 iCAD SX とは？"
 
 
@@ -99,7 +99,7 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
     db.add(QuizScore(user_id=trainee_user.id, course_id=str(professional.id), lesson_id="P7.1", score=100))
     db.add(QuizScore(user_id=trainee_user.id, course_id=professional.course_type, lesson_id="P12.3", score=100))
     db.commit()
-    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 98 * 100, 1)
+    assert progress_percentage(db, trainee_user.id, foundations) == round(2 / 97 * 100, 1)
     response = client.get(f"/api/v1/auth/progress/{foundations.id}", headers={"Authorization": f"Bearer {trainee_token}"})
     assert response.status_code == 200
     assert {row["lesson_id"] for row in response.json()} == {"foundations-v3:F9.1", "foundations-v3:F15.1"}
@@ -108,13 +108,12 @@ def test_professional_progress_is_reused_without_modifying_source(db, trainee_us
 
 def test_properties_placeholders_preserve_progress_and_review_identity():
     from backend.services.foundations_curriculum import COMPLETABLE_LESSONS, completion_storage_id
-    assert len(COMPLETABLE_LESSONS) == 98
+    assert len(COMPLETABLE_LESSONS) == 97
     assert resolve_lesson_id("F26.1") == "foundation-interference-check"
     assert resolve_lesson_id("F26.2") == "foundation-interference-display-list"
     assert resolve_lesson_id("F27.1") == "foundation-parasolid-import"
     assert resolve_lesson_id("F27.2") == "foundation-parasolid-lighten-brep"
     assert resolve_lesson_id("F27.3") == "foundation-parasolid-save-purchase-part"
-    assert resolve_lesson_id("F27.4") == "foundation-parasolid-set-purchase-part-info"
     assert resolve_lesson_id("F28.1") == "foundation-mirrored-parts-normal-and-mirror"
     assert resolve_lesson_id("F28.2") == "foundation-mirrored-parts-identify"
     assert resolve_lesson_id("F28.3") == "foundation-mirrored-parts-3d-modeling"
@@ -125,7 +124,6 @@ def test_properties_placeholders_preserve_progress_and_review_identity():
     assert completion_storage_id("F27.1") == "foundations:parasolid:import"
     assert completion_storage_id("F27.2") == "foundations:parasolid:lighten-brep"
     assert completion_storage_id("F27.3") == "foundations:parasolid:save-purchase-part"
-    assert completion_storage_id("F27.4") == "foundations:parasolid:set-purchase-part-info"
     assert completion_storage_id("F28.1") == "foundations:mirrored-parts:normal-and-mirror"
     assert completion_storage_id("F28.2") == "foundations:mirrored-parts:identify"
     assert completion_storage_id("F28.3") == "foundations:mirrored-parts:3d-modeling"
@@ -139,4 +137,5 @@ def test_properties_placeholders_preserve_progress_and_review_identity():
     assert len(placeholders) == 3
     assert completed_lesson_ids(l["completionId"] for l in placeholders) == {l["id"] for l in placeholders}
     assert all(l["contentReview"] != "not-authored" for l in placeholders)
+
 

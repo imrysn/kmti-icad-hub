@@ -52,12 +52,7 @@ it.each(['en', 'ja'] as const)('renders exactly 4 procedure steps and the knowle
   expect(items[3]).toHaveTextContent(language === 'ja' ? 'メッセージペイン' : 'Message Pane');
   expect(items[3]).toHaveTextContent(language === 'ja' ? '正常に終了' : 'completed successfully');
 
-  // Section 1: Important Reminder
-  const reminder = lesson.content[language].sections![1];
-  expect(reminder.title).toBe(language === 'ja' ? '重要な注意点' : 'Important Reminder');
-  expect(reminder.text).toContain(language === 'ja' ? '形状変更なし' : 'No form changes');
-  expect(reminder.text).toContain(language === 'ja' ? 'メッセージペイン' : 'Message Pane');
-  expect(reminder.text).toContain('MSG06901');
+  expect(lesson.content[language].sections?.some(section => /Important Reminder|重要な注意点/.test(section.title))).toBe(false);
 
   // Knowledge Check
   const questions = foundationKnowledgeQuestions(language, 'F27.2');
@@ -85,7 +80,7 @@ it('opens the actual icon menu screenshot on click in Step 1', () => {
 
   fireEvent.click(screen.getByRole('button'));
   const dialogImg = document.querySelector('dialog img');
-  expect(dialogImg?.getAttribute('src')).toContain('lighten_brep_solid.png');
+  expect(dialogImg?.getAttribute('src')).toContain('command.png');
 });
 
 it('renders the accurate LightenBrepSolidIcon standalone SVG with accessible label and minus badge', () => {
@@ -104,12 +99,12 @@ it('opens the dialog and message pane captures for steps 2 and 4', () => {
   // Step 2 opens Level Settings dialog box
   const { unmount: unmount2 } = render(<LightenBrepArtwork step={1} japanese={false} />);
   fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('dialog_box_brep.png');
+  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('level.png');
   unmount2();
 
   // Step 4 opens Message Pane screenshot
   const { unmount: unmount4 } = render(<LightenBrepArtwork step={3} japanese={false} />);
   fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('message_pane_brep.png');
+  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('result.png');
   unmount4();
 });

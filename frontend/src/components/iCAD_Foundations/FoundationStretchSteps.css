@@ -1,4 +1,5 @@
 .foundation-stretch-steps .foundations-uses__grid { grid-template-columns: repeat(3,minmax(0,1fr)); max-width: 850px; margin-inline: auto; }
+.foundation-stretch-steps--2 .foundations-uses__grid { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 570px; }
 .foundation-stretch-steps .foundations-use-card:nth-child(n) { grid-column: auto; }
 .foundation-stretch-steps .stretch-vector { display: block; width: 160px; max-width: 100%; height: 120px; }
 .foundation-stretch-steps .stretch-vector--entry { width: 210px; height: 40px; }

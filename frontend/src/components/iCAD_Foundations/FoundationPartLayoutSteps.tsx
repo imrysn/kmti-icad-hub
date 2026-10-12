@@ -1,3 +1,5 @@
+import { useId } from 'react';
+import CadThumbnailFilter from './CadThumbnailFilter';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
 import './FoundationUsesCards.css';
 import './FoundationPartLayoutSteps.css';
@@ -8,6 +10,7 @@ import placedShape from '../../assets/icad-foundations/origin-placement/shape-pl
 import shownOrigin from '../../assets/icad-foundations/origin-placement/shape-origin-shown.png';
 
 export default function FoundationPartLayoutSteps({text, placement=false}:{text:string; placement?:boolean}) {
+  const filterId=useId();
   const [intro,...steps]=text.split('\n\n');
   return <div className={`foundations-uses foundation-part-layout-steps${placement ? ' foundation-part-layout-steps--placement' : ''}`}>
     <p>{renderFormattedText(intro)}</p>
@@ -21,7 +24,7 @@ export default function FoundationPartLayoutSteps({text, placement=false}:{text:
             index === 0 ? <FoundationModelingInputIcon index={0} box professional />
             : index === 1 ? <FoundationModelingInputIcon index={2} box professional />
             : index === 3 ? <PartLayoutMenuIcon />
-            : <img className="foundation-placement-step-image" src={index === 2 ? placedShape : shownOrigin} alt={index === 2 ? 'Placed shape' : 'Shape with its origin displayed'} />
+            : <svg style={{width: '100%', height: 120}} className="foundation-placement-step-image" viewBox="0 0 160 120" role="img" aria-label={index === 2 ? 'Placed shape' : 'Shape with its origin displayed'}><defs><CadThumbnailFilter id={`${filterId}-${index}`}/></defs><image href={index === 2 ? placedShape : shownOrigin} width="160" height="120" filter={`url(#${filterId}-${index})`}/></svg>
           ) : index === 0 ? <PartLayoutMenuIcon /> : <CurrentOriginIcon markOrigin={index === 2} markXAxis={index === 3} markYAxis={index === 4} newOrigin={index === 5} />}</div>
           <div className="foundations-use-card__body"><p>{renderFormattedText(body.join('\n'))}</p></div>
         </li>;

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render } from '@testing-library/react';
 import { afterEach, expect, it } from 'vitest';
 import NormalMirrorPartsContent from '../NormalMirrorPartsContent';
 import { foundationNeighbors, resolveFoundationLesson } from '../curriculum';
@@ -62,8 +62,8 @@ it.each(['en', 'ja'] as const)('renders Normal and Mirror Parts concept content 
 
   // Kattechigai badge note in Section 1
   const katteBox = container.querySelector('.normal-mirror-kattechigai-box');
-  expect(katteBox).not.toBeNull();
-  expect(katteBox?.textContent).toContain('勝手違');
+  expect(katteBox).toBeNull();
+
 
   // Verify redundant table was removed to streamline lesson
   expect(container.querySelector('.normal-mirror-table')).toBeNull();
@@ -87,7 +87,7 @@ it.each(['en', 'ja'] as const)('renders Normal and Mirror Parts concept content 
 
   // Navigation neighbors
   expect(foundationNeighbors(lesson.id)).toEqual({
-    previous: 'foundation-parasolid-set-purchase-part-info',
+    previous: 'foundation-parasolid-save-purchase-part',
     next: 'foundation-mirrored-parts-identify',
   });
 });

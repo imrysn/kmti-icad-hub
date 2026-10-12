@@ -19,7 +19,7 @@ describe('Excel Foundations curriculum', () => {
     expect(createFoundationLessons().find(module => module.id === 'F26')!.children!.map(lesson => lesson.title))
       .toEqual(['F26.1 Check for Interferences', 'F26.2 Display Detected Interferences']);
     expect(createFoundationLessons().find(module => module.id === 'F27')!.children!.map(lesson => lesson.title))
-      .toEqual(['F27.1 Import Parasolid', 'F27.2 Lighten B-Rep Solid', 'F27.3 Save the Purchase Part', 'F27.4 Set Purchase Part Information']);
+      .toEqual(['F27.1 Import Parasolid', 'F27.2 Lighten B-Rep Solid', 'F27.3 Save the Purchase Part']);
     expect(createFoundationLessons().find(module => module.id === 'F28')!.children!.map(lesson => lesson.title))
       .toEqual(['F28.1 Normal Parts and Mirror Parts', 'F28.2 Identify Normal or Mirror Parts', 'F28.3 3D Modeling of Mirror Parts']);
     expect(createFoundationLessons().find(module => module.id === 'F29')!.children!.map(lesson => lesson.title))
@@ -91,11 +91,11 @@ describe('Excel Foundations curriculum', () => {
     expect(restoreFoundationLesson('F9.5', '3')?.id).toBe('F9.5');
     expect(restoreFoundationLesson('F10.1', '3')?.id).toBe('F10.1');
   });
-  it('defines twenty-nine ordered modules and 98 unique lessons', () => {
+  it('defines twenty-nine ordered modules and 97 unique lessons', () => {
     expect(FOUNDATION_MODULES.map(module => module.id)).toEqual([...Array.from({ length: 25 }, (_, i) => 'F' + (i + 1)), 'F26', 'F27', 'F28', 'F29']);
-    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6, 2, 3, 3, 3, 3, 4, 3, 5, 8, 1, 2, 4, 1, 1, 5, 1, 4, 8, 3, 3, 2, 3, 1, 8, 2, 4, 3, 2]);
-    expect(FOUNDATION_LESSONS).toHaveLength(98);
-    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(98);
+    expect(FOUNDATION_MODULES.map(module => module.lessons.length)).toEqual([6, 2, 3, 3, 3, 3, 4, 3, 5, 8, 1, 2, 4, 1, 1, 5, 1, 4, 8, 3, 3, 2, 3, 1, 8, 2, 3, 3, 2]);
+    expect(FOUNDATION_LESSONS).toHaveLength(97);
+    expect(new Set(FOUNDATION_LESSON_IDS).size).toBe(97);
     expect(ICAD_FOUNDATIONS_LESSONS).toEqual(createFoundationLessons());
   });
   it('supports Foundations editorial overrides while reusing Professional tools and assessments', () => {
@@ -156,7 +156,7 @@ describe('Excel Foundations curriculum', () => {
     const old = ['lesson-3-1', 'F3.3', 'lesson-4-2', 'lesson-13-1', 'lesson-6-3', 'origin-layout', 'bogus'];
     expect(migrateFoundationCompletion(old)).toEqual(['F4.6']);
     expect(old).toHaveLength(7);
-    expect(foundationProgress(old)).toEqual({ completed: ['F4.6'], total: 98, percentage: 1 / 98 * 100 });
+    expect(foundationProgress(old)).toEqual({ completed: ['F4.6'], total: 97, percentage: 1 / 97 * 100 });
     expect(foundationProgress(FOUNDATION_LESSONS.map(l => l.completionId || l.id)).percentage).toBe(100);
     expect(migrateFoundationCompletion(['lesson-1-1', 'lesson-10-1'])).toEqual(['F1.1', 'F8.3']);
     expect(migrateFoundationCompletion(['F3', 'module-1'])).toEqual([]);
@@ -202,7 +202,7 @@ it('authors Material Setting lessons and preserves review identities', () => {
   expect(FOUNDATION_MODULES.find(m => m.id === 'F22')!.lessons.map(l => l.id)).toEqual(ids);
   const annotationIds = ['foundation-annotation-linear-dimension', 'foundation-annotation-diameter-dimension', 'foundation-annotation-angular-dimension', 'foundation-annotation-notes-leader-lines', 'foundation-annotation-character-strings', 'foundation-annotation-edit-characters', 'foundation-annotation-change-attributes', 'foundation-annotation-change-position'];
   const interferenceIds = ['foundation-interference-check', 'foundation-interference-display-list'];
-  const parasolidIds = ['foundation-parasolid-import', 'foundation-parasolid-lighten-brep', 'foundation-parasolid-save-purchase-part', 'foundation-parasolid-set-purchase-part-info'];
+  const parasolidIds = ['foundation-parasolid-import', 'foundation-parasolid-lighten-brep', 'foundation-parasolid-save-purchase-part'];
   const mirroredIds = ['foundation-mirrored-parts-normal-and-mirror', 'foundation-mirrored-parts-identify', 'foundation-mirrored-parts-3d-modeling'];
   const sequence = ['foundation-part-change-name', ...ids, 'foundation-properties-change-color', 'foundation-properties-change-layer', 'foundation-properties-part-layer-designation', 'foundation-information-tools', ...annotationIds, ...interferenceIds, ...parasolidIds, ...mirroredIds, 'F17.1', 'F17.2'];
   sequence.slice(0, -1).forEach((id, i) => {
@@ -219,13 +219,13 @@ it('authors Material Setting lessons and preserves review identities', () => {
     }
   });
   expect(migrateFoundationCompletion(['F17.1', 'F17.2'])).toEqual(['F17.1', 'F17.2']);
-  expect(new Set(FOUNDATION_LESSONS.map(l => l.displayId || l.id)).size).toBe(98);
+  expect(new Set(FOUNDATION_LESSONS.map(l => l.displayId || l.id)).size).toBe(97);
 });
 
 
 it('preserves authored Properties without changing Review completion or progress', () => {
   const interferenceIds = ['foundation-interference-check', 'foundation-interference-display-list'];
-  const parasolidIds = ['foundation-parasolid-import', 'foundation-parasolid-lighten-brep', 'foundation-parasolid-save-purchase-part', 'foundation-parasolid-set-purchase-part-info'];
+  const parasolidIds = ['foundation-parasolid-import', 'foundation-parasolid-lighten-brep', 'foundation-parasolid-save-purchase-part'];
   const mirroredIds = ['foundation-mirrored-parts-normal-and-mirror', 'foundation-mirrored-parts-identify', 'foundation-mirrored-parts-3d-modeling'];
   const ids = ['foundation-material-unlisted', 'foundation-properties-change-color', 'foundation-properties-change-layer', 'foundation-properties-part-layer-designation', 'foundation-information-tools', 'foundation-annotation-linear-dimension', 'foundation-annotation-diameter-dimension', 'foundation-annotation-angular-dimension', 'foundation-annotation-notes-leader-lines', 'foundation-annotation-character-strings', 'foundation-annotation-edit-characters', 'foundation-annotation-change-attributes', 'foundation-annotation-change-position', ...interferenceIds, ...parasolidIds, ...mirroredIds, 'F17.1', 'F17.2'];
   ids.slice(0, -1).forEach((id, i) => {
@@ -243,6 +243,6 @@ it('preserves authored Properties without changing Review completion or progress
   expect(restoreFoundationLesson('F9.5', '4')?.id).toBe('F9.5');
   expect(restoreFoundationLesson('F17.1', '4')?.displayId).toBe('F29.1');
   const records = FOUNDATION_LESSONS.map(l => l.completionId || l.id);
-  expect(foundationProgress(records)).toMatchObject({ total: 98, percentage: 100 });
-  expect(foundationProgress(records).completed).toHaveLength(98);
+  expect(foundationProgress(records)).toMatchObject({ total: 97, percentage: 100 });
+  expect(foundationProgress(records).completed).toHaveLength(97);
 });

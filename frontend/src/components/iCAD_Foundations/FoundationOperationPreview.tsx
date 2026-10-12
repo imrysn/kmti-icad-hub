@@ -1,3 +1,4 @@
+import CadThumbnailFilter from './CadThumbnailFilter';
 import { useFoundationVisuals } from './FoundationVisualContext';
 import foundationMirrorCommand from '../../assets/icad-foundations/modeling/mirror-copy-command.png';
 import foundationMirrorSelection from '../../assets/icad-foundations/modeling/mirror-copy-selection.png';
@@ -85,14 +86,14 @@ export default function FoundationOperationPreview({ topic, index, title, japane
   </g>);
   const artwork = index === 0 ? <FoundationOperationCommandIcon command={topic} title={title} /> : topic === 'copy' && index === 2 ? <svg className="foundation-operation-thumbnail" viewBox="0 0 180 104" role="img" aria-label={title}>
     {['移動量X', '移動量Y', '移動量Z', '個数'].map((label, n) => <g key={label} transform={`translate(0 ${n * 26})`}>
-      <rect x="1" y="1" width="178" height="24" fill="#eee" stroke="#999" />
-      <text x="5" y="18" fontFamily="Meiryo,sans-serif" fontSize="13" fill="#111">{label}</text>
+      
+      <text x="5" y="18" fontFamily="Meiryo,sans-serif" fontSize="13" fill="currentColor">{label}</text>
       <rect x="85" y="3" width="90" height="20" fill="white" stroke="#aaa" />
       <text x="92" y="18" fontSize="13" fill="#111">{[0, 0, 50, 3][n]}</text>
     </g>)}
   </svg> : <svg className="foundation-operation-thumbnail" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={title}>
-    <defs><clipPath id={clipId}><rect width={width} height={height} /></clipPath></defs>
-    <g clipPath={`url(#${clipId})`}><image href={thumbnailScreen} x={-x} y={-y} width="1920" height="1080" /></g>
+    <defs><CadThumbnailFilter id={`${clipId}-viewport`}/><clipPath id={clipId}><rect width={width} height={height} /></clipPath></defs>
+    <g clipPath={`url(#${clipId})`}><image filter={topic!=='rotate'?`url(#${clipId}-viewport)`:undefined} href={thumbnailScreen} x={-x} y={-y} width="1920" height="1080" /></g>
     {!foundationVisuals && showAxisPoints && axisPoints.map(([px, py], n) => <g key={n} transform={`translate(${px - x} ${py - y}) scale(1.4)`}>
       <circle r="18" fill="#ff1616" stroke="#fff" strokeWidth="5" />
       <SelectionPointer x={0} y={0} />

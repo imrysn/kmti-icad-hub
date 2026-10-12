@@ -10,7 +10,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-it.each(['en', 'ja'] as const)('renders exactly 4 procedure steps and the knowledge check in %s', language => {
+it.each(['en', 'ja'] as const)('renders exactly 2 procedure steps and the knowledge check in %s', language => {
   const lesson = resolveFoundationLesson('F27.3')!;
   expect(lesson).toBeDefined();
   expect(lesson.id).toBe('foundation-parasolid-save-purchase-part');
@@ -22,7 +22,7 @@ it.each(['en', 'ja'] as const)('renders exactly 4 procedure steps and the knowle
       text={lesson.content[language].sections![0].text}
       method={1}
       japanese={language === 'ja'}
-      customIcons={[0, 1, 2, 3].map(step => (
+      customIcons={[0, 1].map(step => (
         <SavePurchasePartArtwork key={step} step={step} japanese={language === 'ja'} />
       ))}
     />
@@ -30,33 +30,20 @@ it.each(['en', 'ja'] as const)('renders exactly 4 procedure steps and the knowle
 
   // Exactly 4 cards rendered in the grid
   const items = screen.getAllByRole('listitem');
-  expect(items).toHaveLength(4);
+  expect(items).toHaveLength(2);
 
   // Check 4-column container class
-  expect(container.querySelector('.foundation-stretch-steps--4')).toBeInTheDocument();
+  expect(container.querySelector('.foundation-stretch-steps--2')).toBeInTheDocument();
 
   // Step 1: Open Save As (File -> Save As)
   expect(items[0]).toHaveTextContent(language === 'ja' ? '名前を付けて保存を開く' : 'Open Save As');
-  expect(items[0]).toHaveTextContent(language === 'ja' ? 'ファイル(F) → 名前を付けて保存(A)' : 'File → Save As');
+  expect(items[0]).toHaveTextContent(language === 'ja' ? 'ファイル → 名前を付けて保存' : 'File → Save As');
 
-  // Step 2: Enter the File Name (FILE NAME = PURCHASE PART CODE)
-  expect(items[1]).toHaveTextContent(language === 'ja' ? 'ファイル名を入力' : 'Enter the File Name');
+  // Step 2: Name and Save the Part (FILE NAME = PURCHASE PART CODE)
+  expect(items[1]).toHaveTextContent(language === 'ja' ? 'ファイル名を指定して保存' : 'Name and Save the Part');
   expect(items[1]).toHaveTextContent(language === 'ja' ? '購入部品コード' : 'purchase part code');
-  expect(items[1]).toHaveTextContent(language === 'ja' ? 'ファイル名 ＝ 購入部品コード' : 'FILE NAME = PURCHASE PART CODE');
 
-  // Step 3: Save the Part (Complete Save As Process)
-  expect(items[2]).toHaveTextContent(language === 'ja' ? '部品を保存' : 'Save the Part');
-  expect(items[2]).toHaveTextContent(language === 'ja' ? '名前を付けて保存を完了' : 'Complete Save As Process');
-
-  // Step 4: Check the Final Result
-  expect(items[3]).toHaveTextContent(language === 'ja' ? '完了結果の確認' : 'Check the Final Result');
-  expect(items[3]).toHaveTextContent(language === 'ja' ? '購入部品' : 'purchase part');
-  expect(items[3]).toHaveTextContent(language === 'ja' ? '購入部品コード' : 'purchase part code');
-
-  // Section 1: Important Reminder
-  const reminder = lesson.content[language].sections![1];
-  expect(reminder.title).toBe(language === 'ja' ? '重要な注意点' : 'Important Reminder');
-  expect(reminder.text).toContain(language === 'ja' ? '購入部品コード' : 'purchase part code');
+  expect(lesson.content[language].sections?.some(section => /Important Reminder|重要な注意点/.test(section.title))).toBe(false);
 
   // Knowledge Check Question
   const questions = foundationKnowledgeQuestions(language, lesson.id);
@@ -75,10 +62,10 @@ it.each(['en', 'ja'] as const)('renders exactly 4 procedure steps and the knowle
   expect(q.choices[3].isCorrect).toBe(false);
 });
 
-it('verifies navigation sequence F27.2 -> F27.3 -> F27.4', () => {
+it('verifies navigation sequence F27.2 -> F27.3 -> F28.1', () => {
   const neighbors = foundationNeighbors('foundation-parasolid-save-purchase-part');
   expect(neighbors.previous).toBe('foundation-parasolid-lighten-brep');
-  expect(neighbors.next).toBe('foundation-parasolid-set-purchase-part-info');
+  expect(neighbors.next).toBe('foundation-mirrored-parts-normal-and-mirror');
 });
 
 it('opens the actual File -> Save As menu screenshot on click in Step 1', () => {
@@ -90,22 +77,18 @@ it('opens the actual File -> Save As menu screenshot on click in Step 1', () => 
 
   fireEvent.click(screen.getByRole('button'));
   const dialogImg = document.querySelector('dialog img');
-  expect(dialogImg?.getAttribute('src')).toContain('file-save-as-menu.png');
+  expect(dialogImg?.getAttribute('src')).toContain('save.png');
 });
 
-it('opens the actual Save As dialog screenshot on click in Steps 2 and 3', () => {
+it('opens the actual Save As dialog screenshot on click in Step 2', () => {
   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: vi.fn() });
   Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: vi.fn() });
 
   // Step 2 opens Save As dialog
   const { unmount: unmount2 } = render(<SavePurchasePartArtwork step={1} japanese={false} />);
   fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('save-as-dialog.png');
+  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('save-dialog.png');
   unmount2();
 
-  // Step 3 opens Save As dialog
-  const { unmount: unmount3 } = render(<SavePurchasePartArtwork step={2} japanese={false} />);
-  fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('save-as-dialog.png');
-  unmount3();
+
 });

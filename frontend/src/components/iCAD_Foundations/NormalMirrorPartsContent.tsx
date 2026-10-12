@@ -1,8 +1,6 @@
-import React from 'react';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
-import normalPartImg from '../../assets/3d-images/mirrored_part1_normal_part.png';
+import normalPartImg from '../../assets/3d-images/mirrored_part1_normal_partv.png';
 import mirrorPartImg from '../../assets/3d-images/mirrored_part1_mirror_part.png';
-import katteChigaiImg from '../../assets/3d-images/mirrored_part1_mirror_image.png';
 import './FoundationViewComparison.css';
 import './NormalMirrorPartsContent.css';
 
@@ -15,7 +13,6 @@ interface NormalMirrorPartsContentProps {
 
 export default function NormalMirrorPartsContent({
   text,
-  title,
   index,
   japanese = false,
 }: NormalMirrorPartsContentProps) {
@@ -26,8 +23,8 @@ export default function NormalMirrorPartsContent({
         image: normalPartImg,
         imageAlt: japanese ? '通常部品の例 (RTXXXXXXN01)' : 'Normal Part Example (RTXXXXXXN01)',
         description: japanese
-          ? '反転複写（ミラーコピー）を作成しても元の部品とまったく同じ形状を保つ部品です。\n\n元の部品とミラーコピーの間に違いは認識されません。\n\n**図面番号の記号:** **N**\n**例:** `RTXXXXXXN` / `MTXXXXXXN01`'
-          : 'A part that remains exactly the same as the original part when a mirror copy is created.\n\nNo changes will be recognized between the original part and its mirror copy.\n\n**Drawing Number:** **N**\n**Example:** `RTXXXXXXN` / `MTXXXXXXN01`',
+          ? '反転複写（ミラーコピー）を作成しても元の部品とまったく同じ形状を保つ部品です。\n\n**図面番号の記号:** **N**\n**例:** `RTXXXXXXN` / `MTXXXXXXN01`'
+          : 'A part that remains exactly the same as the original part when a mirror copy is created.\n\n**Drawing Number:** **N**\n**Example:** `RTXXXXXXN` / `MTXXXXXXN01`',
       },
       {
         heading: japanese ? 'ミラー部品（Mirror Part）' : 'Mirror Part',
@@ -41,13 +38,8 @@ export default function NormalMirrorPartsContent({
 
     return (
       <div className="foundation-view-comparison normal-mirror-content">
-        <p>
-          {japanese
-            ? '部品は、反転複写（ミラーコピー）を作成したときの性質によって分類されます。'
-            : 'Parts are classified according to how they behave when a mirror copy is created.'}
-        </p>
         <div className="foundation-view-comparison__cards">
-          {cards.map((card, i) => (
+          {cards.map((card) => (
             <section className="foundation-view-comparison__card" key={card.heading}>
               <div className="foundation-view-comparison__front">
                 <h5>{card.heading}</h5>
@@ -72,24 +64,19 @@ export default function NormalMirrorPartsContent({
       {
         heading: japanese ? 'ミラー部品 A（元部品）' : 'Mirror Part A (Original Part)',
         description: japanese
-          ? '**役割:** 元の部品（Base Part）\n**図面番号の記号:** **A**\n\nミラー部品のペアを作成するときは、最初にモデリングした元の部品を必ず **部品 A** として指定します。'
-          : '**Role:** Original Part\n**Designation:** **A**\n\nWhen creating a pair of mirror parts, the original part should always be designated as **Part A**.',
+          ? '元の部品には **A** を使用します。'
+          : 'The original part is designated **A**.',
       },
       {
         heading: japanese ? 'ミラー部品 B（ミラーコピー）' : 'Mirror Part B (Mirror Copy)',
         description: japanese
-          ? '**役割:** 反転複写部品（Mirror Copy）\n**図面番号の記号:** **B**\n\n**ミラー部品 B は、ミラー部品 A が存在しなければ存在できません。**'
-          : '**Role:** Mirror Copy of Part A\n**Designation:** **B**\n\n**A Mirror Part B cannot exist without Mirror Part A.**',
+          ? '部品Aの反転複写には **B** を使用します。部品Bは部品Aがなければ存在できません。'
+          : 'The mirror copy of Part A is designated **B**. Part B cannot exist without Part A.',
       },
     ];
 
     return (
       <div className="foundation-view-comparison normal-mirror-content">
-        <p>
-          {japanese
-            ? 'ミラー部品のペアを作成するときは、元部品を部品 A、反転複写した部品を部品 B として指定します。'
-            : 'When creating a pair of mirror parts, designate the original part as Part A and its mirror copy as Part B.'}
-        </p>
         <div className="foundation-view-comparison__cards">
           {cards.map(card => (
             <section className="foundation-view-comparison__card" key={card.heading}>
@@ -105,18 +92,6 @@ export default function NormalMirrorPartsContent({
           {japanese
             ? '反転元となる既存の部品が存在しない場合は、部品命名時に A を使用します。'
             : 'If there is no existing part to be mirrored, use A when naming the part.'}
-        </div>
-        <div className="normal-mirror-katte-chigai-card normal-mirror-kattechigai-box">
-          <img
-            src={katteChigaiImg}
-            alt={japanese ? '勝手違' : 'Katte-chigai note on drawing'}
-          />
-          <p>
-            <strong>{japanese ? '参照図面の注記:' : 'Reference Drawing Note:'}</strong>{' '}
-            {japanese
-              ? '参照図面の「勝手違」（または「勝手違い」）は、ミラーイメージ（鏡像対称）を示しています。'
-              : 'The notation 「勝手違」 (or 勝手違い — Katte-chigai) on reference drawings indicates a Mirror Image.'}
-          </p>
         </div>
       </div>
     );

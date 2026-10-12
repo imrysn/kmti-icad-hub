@@ -1,3 +1,5 @@
+import { useId } from 'react';
+import CadThumbnailFilter from './CadThumbnailFilter';
 import FoundationCreationCommandIcon from './FoundationCreationCommandIcon';
 import command from '../../assets/icad-foundations/modeling/hole-details-command-screen.png';
 import tools from '../../assets/3d-images/hole_details_list_tools.png';
@@ -17,7 +19,8 @@ function CommandArtwork({title}:{title:string}) {
 }
 
 export default function FoundationHoleDetails({text,index,japanese=false}:{text:string;index:number;japanese?:boolean}) {
-  const preview=(src:string,title:string)=><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork:<img src={src} alt={title} style={{display:'block',width:'100%',height:'100%',objectFit:'contain'}}/>,artworkOnly:true,screen:src,region:{bounds:[0,0,1920,1080],landing:[0,0,1920,1080]}}}/>;
+  const filterId=useId();
+  const preview=(src:string,title:string)=><InterfaceIconPreview index={0} toolbar={false} title={title} japanese={japanese} custom={{artwork:src===placement||src===cut?<svg style={{width: '100%', height: '100%'}} viewBox="0 0 200 150" role="img" aria-label={title}><defs><CadThumbnailFilter id={`${filterId}-${src===placement?'before':'after'}`}/></defs><image href={src} width="200" height="150" filter={`url(#${filterId}-${src===placement?'before':'after'})`}/></svg>:<img src={src} alt={title} style={{display:'block',width:'100%',height:'100%',objectFit:'contain'}}/>,artworkOnly:true,screen:src,region:{bounds:[0,0,1920,1080],landing:[0,0,1920,1080]}}}/>;
   const commandTitle=japanese?'Arrange Machine Part':'Arrange Machine Part';
   if(index===0) return <div className="foundation-hole-steps foundation-stretch-steps foundation-stretch-steps--4">
     <FoundationUsesCards text={text} customIcons={[

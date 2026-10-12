@@ -1,0 +1,3 @@
+const {chromium}=require('C:/Users/Cat/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const b=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});const p=await b.newPage({viewport:{width:1440,height:1100}});for(const id of ['F5.6','foundation-hole-details','F10.4','F10.5','F10.6','F10.7']){await p.goto('http://127.0.0.1:5180/course-visual-audit.html?id='+id+'&lang=en');await p.evaluate(()=>document.documentElement.dataset.theme='dark');await p.waitForTimeout(1400);await p.screenshot({path:'tmp/bg-'+id+'.png'});}process.exit(0)})().catch(e=>{console.error(e);process.exit(1)});
+

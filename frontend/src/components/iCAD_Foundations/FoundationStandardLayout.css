@@ -262,10 +262,13 @@
   max-width: 100%;
   padding: 0;
 }
-/* Keep instructional paragraphs easy to scan while headings and artwork stay centered. */
-.foundations-consistent-lesson .foundations-use-card__body p {
-  text-align: start;
-  text-align-last: auto;
+/* Center instruction text consistently across lesson step layouts. */
+.foundations-consistent-lesson .foundations-use-card__body p,
+.foundations-consistent-lesson .foundations-starting-step__body p,
+.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content,
+.foundations-consistent-lesson .written-tutorial-panel__step .step-text-content p {
+  text-align: center;
+  text-align-last: center;
 }
 
 /* Embedded tutorials (F3.2, F3.3, F4.1, F4.2, F9.2-F9.7) show only their intro/player,

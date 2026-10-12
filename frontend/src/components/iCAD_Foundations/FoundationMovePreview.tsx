@@ -1,3 +1,5 @@
+import { useId } from 'react';
+import CadThumbnailFilter from './CadThumbnailFilter';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import FoundationOperationCommandIcon from './FoundationOperationCommandIcon';
 import moveScreen from '../../assets/icad-foundations/modeling/professional/move.png';
@@ -13,6 +15,7 @@ const crops: [number, number, number, number][] = [
   [1748, 398, 133, 183], regions[1], regions[2], regions[3],
 ];
 export default function FoundationMovePreview({index, japanese=false}: {index:number; japanese?:boolean}) {
+  const filterId=useId();
   const screen=index===3?pointsScreen:moveScreen;
   const title=(japanese?['平行移動','対象を選択','移動量 X・Y・Z','基準点で移動']:['Select Move','Select the entity','Movement X, Y, Z','Move using a reference point'])[index];
   const region=regions[index];
@@ -24,7 +27,7 @@ export default function FoundationMovePreview({index, japanese=false}: {index:nu
       <text x="92" y="18" fontSize="13" fill="#111">{[10,60,10][n]}</text>
     </g>)}
   </svg> : <svg viewBox={crops[index].join(' ')} role="img" aria-label={title}>
-    <image href={screen} width="1920" height="1080"/>
+    <defs><CadThumbnailFilter id={filterId}/></defs><image filter={`url(#${filterId})`} href={screen} width="1920" height="1080"/>
     {index===0 && <rect x={region[0]+1} y={region[1]+1} width={region[2]-2} height={region[3]-2} fill="none" stroke="#0087ef" strokeWidth="2"/>}
   </svg>;
   return <div className={`foundation-file-menu-icon foundation-move-preview foundation-move-preview--${index}`}>

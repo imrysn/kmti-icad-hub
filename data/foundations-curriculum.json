@@ -5084,12 +5084,7 @@
                 {
                   "title": "How to Import a Parasolid File",
                   "type": "procedure",
-                  "text": "**Step 1 — Select Import**\nSelect Import from the Icon Menu.\n\n**Step 2 — Select the Parasolid File**\nIn the Parasolid Link dialog, browse to the target folder, specify the file extension if needed, and select the Parasolid file.\n\n**Step 3 — Confirm and Execute**\nPress OK, then select GO to execute the import.\n\n**Step 4 — Cancel the Name Change**\nWhen the Name Change dialog appears, select Cancel.\n\n**Step 5 — Release the Purchase Part Names**\nIn the Tree View, right-click the 3D Part Name and select Cancel to release it. Repeat for all imported purchase parts.\n\n**Step 6 — Check the Final Result**\nConfirm that the 3D model appears in the workspace and all purchase part names are released in the Tree View."
-                },
-                {
-                  "title": "Important Reminder",
-                  "type": "callout",
-                  "text": "Always cancel the Name Change dialog and release purchase part names in the Tree View so the purchase part maintains its standard catalog identity."
+                  "text": "**Step 1 — Select Import**\nSelect Import from the Icon Menu.\n\n**Step 2 — Select the Parasolid File**\nIn the Parasolid Link dialog, browse to the target folder, specify the file extension if needed, and select the Parasolid file.\n\n**Step 3 — Confirm and Execute**\nPress OK, then select GO to execute the import.\n\n**Step 4 — Cancel the Name Change**\nWhen the Name Change dialog appears, select Cancel.\n\n**Step 5 — Release the Purchase Part Names**\nIn the Tree View, right-click the 3D Part Name and select Cancel to release it. Repeat for all imported purchase parts."
                 }
               ]
             },
@@ -5100,12 +5095,7 @@
                 {
                   "title": "パラソリッドファイルをインポートする手順",
                   "type": "procedure",
-                  "text": "**ステップ 1 — インポートを選択**\nアイコンメニューからインポートを選択します。\n\n**ステップ 2 — パラソリッドファイルを選択**\nパラソリッドリンクダイアログで対象フォルダを参照し、必要に応じてファイル拡張子を指定してファイルを選択します。\n\n**ステップ 3 — 確定と実行**\nOKを押し、続けてGOを選択してインポートを実行します。\n\n**ステップ 4 — 名前変更をキャンセル**\n名前変更ダイアログが表示されたら、キャンセルを選択します。\n\n**ステップ 5 — 購入部品名を解放**\nツリービューで3Dパーツ名を右クリックし、キャンセルを選択して解放します。すべての購入部品に対して繰り返します。\n\n**ステップ 6 — 完了結果の確認**\n3D空間にモデルが表示され、ツリービューで購入部品名が解放されていることを確認します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "type": "callout",
-                  "text": "購入部品が標準カタログの識別情報を維持できるよう、名前変更ダイアログでは必ずキャンセルを選択し、ツリービューで購入部品名を解放してください。"
+                  "text": "**ステップ 1 — インポートを選択**\nアイコンメニューからインポートを選択します。\n\n**ステップ 2 — パラソリッドファイルを選択**\nパラソリッドリンクダイアログで対象フォルダを参照し、必要に応じてファイル拡張子を指定してファイルを選択します。\n\n**ステップ 3 — 確定と実行**\nOKを押し、続けてGOを選択してインポートを実行します。\n\n**ステップ 4 — 名前変更をキャンセル**\n名前変更ダイアログが表示されたら、キャンセルを選択します。\n\n**ステップ 5 — 購入部品名を解放**\nツリービューで3Dパーツ名を右クリックし、キャンセルを選択して解放します。すべての購入部品に対して繰り返します。"
                 }
               ]
             }
@@ -5140,11 +5130,6 @@
                   "title": "How to Lighten a B-Rep Solid",
                   "type": "procedure",
                   "text": "**Step 1 — Select Lighten B-Rep Solid**\nSelect Lighten B-Rep Solid from the Icon Menu.\n\n**Step 2 — Select No Form Changes**\nIn the Level Settings dialog, select No form changes and press OK.\n\n**Step 3 — Select the Purchase Part**\nSelect the purchase part, then select GO to execute.\n\n**Step 4 — Check the Message Pane**\nConfirm that the Message Pane displays: MSG06901 Process completed successfully."
-                },
-                {
-                  "title": "Important Reminder",
-                  "type": "callout",
-                  "text": "Always select \"No form changes\" to preserve the part's original geometry, and verify message MSG06901 in the Message Pane."
                 }
               ]
             },
@@ -5156,11 +5141,6 @@
                   "title": "B-Repソリッドを軽量化する手順",
                   "type": "procedure",
                   "text": "**ステップ 1 — B-Repソリッドの軽量化を選択**\nアイコンメニューからB-Repソリッドの軽量化を選択します。\n\n**ステップ 2 — 形状変更なしを選択**\n簡略化・復元（Level Settings）ダイアログで「形状変更なし」を選択し、OKを押します。\n\n**ステップ 3 — 購入部品を選択**\n購入部品を選択し、GOを選択して実行します。\n\n**ステップ 4 — メッセージペインを確認**\nメッセージペインに「MSG06901 処理が正常に終了しました。」と表示されたことを確認します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "type": "callout",
-                  "text": "部品の元形状を保持するために必ず「形状変更なし」を選択し、メッセージペインでMSG06901の完了メッセージを確認してください。"
                 }
               ]
             }
@@ -5194,12 +5174,7 @@
                 {
                   "title": "How to Save the Purchase Part",
                   "type": "procedure",
-                  "text": "**Step 1 — Open Save As**\nGo to:\n\nFile → Save As\n\n**Step 2 — Enter the File Name**\nUse the purchase part code as the file name.\n\n**Step 3 — Save the Part**\nClick Save to complete saving the purchase part.\n\n**Step 4 — Check the Final Result**\nConfirm that the purchase part is saved using the purchase part code as its file name."
-                },
-                {
-                  "title": "Important Reminder",
-                  "type": "callout",
-                  "text": "Always use the exact purchase part code as the file name so the part is correctly recognized across assemblies."
+                  "text": "**Step 1 — Open Save As**\nSelect File → Save As.\n\n**Step 2 — Name and Save the Part**\nUse the purchase part code as the file name and save the part."
                 }
               ]
             },
@@ -5210,77 +5185,7 @@
                 {
                   "title": "購入部品の保存手順",
                   "type": "procedure",
-                  "text": "**ステップ 1 — 名前を付けて保存を開く**\n次のように進みます：\n\nファイル(F) → 名前を付けて保存(A)\n\n**ステップ 2 — ファイル名を入力**\nファイル名には購入部品コードを使用します。\n\n**ステップ 3 — 部品を保存**\n「保存」をクリックして購入部品の保存を完了します。\n\n**ステップ 4 — 完了結果の確認**\n購入部品が購入部品コードをファイル名として保存されたことを確認します。"
-                },
-                {
-                  "title": "重要な注意点",
-                  "type": "callout",
-                  "text": "アセンブリ間で部品が正しく認識されるよう、必ずファイル名として正式な購入部品コードを使用してください。"
-                }
-              ]
-            }
-          },
-          "contentReview": "draft",
-          "recapMode": "shared"
-        },
-        {
-          "id": "foundation-parasolid-set-purchase-part-info",
-          "displayId": "F27.4",
-          "moduleId": "F27",
-          "title": {
-            "en": "Set Purchase Part Information",
-            "ja": "購入部品情報の設定"
-          },
-          "type": "reading",
-          "renderer": null,
-          "video": null,
-          "completionId": "foundations:parasolid:set-purchase-part-info",
-          "routeAliases": [
-            "F27.4"
-          ],
-          "completionAliases": [
-            "F27.4"
-          ],
-          "content": {
-            "en": {
-              "explanation": "Configure purchase part metadata: Material, Layer, Color, Additional Info, and Part Comment.",
-              "practice": "By the end of this lesson, you should be able to set all required purchase part attributes and enter maker and comment information.",
-              "sections": [
-                {
-                  "title": "How to Set Purchase Part Information",
-                  "type": "procedure",
-                  "text": "**Step 1 — Set the Material**\nSet the Material from the material list (e.g., 012 市販品 for commercial purchase parts).\n\n**Step 2 — Set the Layer**\nSet the designated Layer for the purchase part (e.g., Layer 3 as indicated).\n\n**Step 3 — Set the Color**\nSet the Color to match the part's actual physical appearance.\n\n**Step 4 — Set the Additional Information**\nIn the Parts Information Setting table (Additional Info), enter the MAKER into the REMARK column."
-                },
-                {
-                  "title": "Add a Comment to the Purchase Part",
-                  "type": "procedure",
-                  "text": "Comments can also be added directly through part Properties.\n\n**Step 5 — Open Properties**\nIn the Tree View, right-click the Top 3D Part and select Properties.\n\n**Step 6 — Enter the Part Comment**\nEnter the Part Comment in the Comment field and press OK.\n\n**Step 7 — Check the Final Result**\nConfirm that the important information of the purchase part has been set correctly:\n\n- Material\n- Layer\n- Color\n- Additional Info\n- Part Comment\n- Maker in the Remark"
-                },
-                {
-                  "title": "Important Reminder",
-                  "type": "callout",
-                  "text": "The purchase part color depends on its actual physical color. Always input the MAKER of the purchase part in the REMARK, keeping it separate from the Part Comment."
-                }
-              ]
-            },
-            "ja": {
-              "explanation": "購入部品の属性情報（材質、レイヤ、色、付加情報、部品コメント）を設定します。",
-              "practice": "購入部品の必要な属性を設定し、メーカー情報およびコメントを入力できるようになります。",
-              "sections": [
-                {
-                  "title": "購入部品情報の設定手順",
-                  "type": "procedure",
-                  "text": "**ステップ 1 — 材質を設定**\n材質リストから適切な材質を設定します（例: 市販品には「012 市販品」）。\n\n**ステップ 2 — レイヤを設定**\n指定されたレイヤを設定します（例: 指示通りレイヤ3）。\n\n**ステップ 3 — 色を設定**\n購入部品の色は実際の実物色に合わせて設定します。\n\n**ステップ 4 — 付加情報を設定**\n部品情報設定（付加情報）テーブルで、備考欄（REMARK）にメーカー（MAKER）を入力します。"
-                },
-                {
-                  "title": "購入部品にコメントを追加",
-                  "type": "procedure",
-                  "text": "部品にコメントを追加するもう一つの方法はプロパティからです。\n\n**ステップ 5 — プロパティを開く**\nツリービューでトップ3Dパーツを右クリックし、「プロパティ」を選択します。\n\n**ステップ 6 — 部品コメントを入力**\nコメント欄に特定のパーツのコメントを入力し、「OK」を押します。\n\n**ステップ 7 — 完了結果の確認**\n購入部品の重要情報が正しく設定されていることを確認します：\n\n- 材質\n- レイヤ\n- 色\n- 付加情報\n- 部品コメント\n- 備考欄のメーカー"
-                },
-                {
-                  "title": "重要な注意点",
-                  "type": "callout",
-                  "text": "購入部品の色は必ず実際の実物色に合わせてください。また、メーカー（MAKER）は部品コメントとは区別し、必ず備考欄（REMARK）に入力してください。"
+                  "text": "**ステップ 1 — 名前を付けて保存を開く**\nファイル → 名前を付けて保存を選択します。\n\n**ステップ 2 — ファイル名を指定して保存**\n購入部品コードをファイル名にして保存します。"
                 }
               ]
             }
@@ -5323,15 +5228,14 @@
                 {
                   "title": "Normal Parts vs. Mirror Parts",
                   "type": "concept",
-                  "text": "Parts are classified according to how they behave when a mirror copy is created.\n\n**Normal Part**\nA part that remains exactly the same as the original part when a mirror copy is created. No changes will be recognized between the original part and its mirror copy. Drawing number uses **N** (Example: **RTXXXXXXN**, **MTXXXXXXN01**).\n\n**Mirror Part**\nParts that are symmetrically the same, forming an opposite-hand pair. Drawing numbers use **A** and **B** (Examples: **MTXXXXXXA01**, **MTXXXXXXB01**, **RTXXXXXXA**, **RTXXXXXXB**)."
+                  "text": "A part that remains exactly the same as the original part when a mirror copy is created.\n\n**Drawing Number:** **N**\n**Example:** `RTXXXXXXN` / `MTXXXXXXN01`\n\nParts that are symmetrically the same, forming an opposite-hand pair where features (such as hole locations) differ.\n\n**Drawing Numbers:** **A** and **B**\n**Examples:** `MTXXXXXXA01` / `MTXXXXXXB01`\n(`RTXXXXXXA` / `RTXXXXXXB`)"
                 },
                 {
                   "title": "Mirror Part A and Mirror Part B",
                   "type": "concept",
-                  "text": "When creating a pair of mirror parts, designate the original part as Part A and its mirror copy as Part B.\n\n**Mirror Part A (Original Part)**\nMirror Part A is the original part. When creating a pair of mirror parts, the original part should always be designated as **Part A**.\n\n**Mirror Part B (Mirror Copy)**\nMirror Part B is the mirror copy of Mirror Part A. Mirror Parts B cannot exist without Mirror Parts A.\n\n*Special Rule:* If there is no existing part to be mirrored, use **A** when naming the part.\n\n*Note on Reference Drawings:* The notation **「勝手違」** indicates a **Mirror Image**."
+                  "text": "The original part is designated **A**.\n\nThe mirror copy of Part A is designated **B**. Part B cannot exist without Part A.\n\nIf there is no existing part to be mirrored, use **A** when naming the part."
                 }
-              ],
-              "connection": "In the next lesson (F28.2), you will learn how to verify whether a part is Normal or Mirrored using the Mirror Copy tool in iCAD SX."
+              ]
             },
             "ja": {
               "explanation": "部品は、反転複写（ミラーコピー）を作成した際に形状の違いが生じるかどうかに応じて通常部品またはミラー部品に分類され、KEMCO標準に基づく図面番号の付与方法が決まります。",
@@ -5340,15 +5244,14 @@
                 {
                   "title": "通常部品とミラー部品",
                   "type": "concept",
-                  "text": "部品は反転複写を作成したときの性質によって分類されます。\n\n**通常部品**\n反転複写を作成しても元の部品とまったく同じ形状を保つ部品です。元の部品とミラーコピーの間に違いは認識されません。図面番号には **N** を使用します（例: **RTXXXXXXN**, **MTXXXXXXN01**）。\n\n**ミラー部品**\n対称形状をなす部品のペアです。図面番号には **A** と **B** を使用します（例: **MTXXXXXXA01**, **MTXXXXXXB01**, **RTXXXXXXA**, **RTXXXXXXB**）。"
+                  "text": "反転複写（ミラーコピー）を作成しても元の部品とまったく同じ形状を保つ部品です。\n\n**図面番号の記号:** **N**\n**例:** `RTXXXXXXN` / `MTXXXXXXN01`\n\n対称形状をなす部品のペアです。穴の位置や切り欠きなどの特徴が反転によって異なります。\n\n**図面番号の記号:** **A** および **B**\n**例:** `MTXXXXXXA01` / `MTXXXXXXB01`\n(`RTXXXXXXA` / `RTXXXXXXB`)"
                 },
                 {
                   "title": "ミラー部品 A と ミラー部品 B",
                   "type": "concept",
-                  "text": "ミラー部品のペアを作成するときは、元部品を部品 A、反転複写した部品を部品 B として指定します。\n\n**ミラー部品 A（元部品）**\nミラー部品 A は最初にモデリングする元の部品です。ミラー部品のペアを作成するときは、元部品を必ず「部品 A」として指定します。\n\n**ミラー部品 B（ミラーコピー）**\nミラー部品 B はミラー部品 A を反転複写した部品です。ミラー部品 B は、ミラー部品 A が存在しなければ存在できません。\n\n*特記事項:* 反転元となる既存の部品が存在しない場合は、部品命名時に **A** を使用します。\n\n*参照図面の注記:* 参照図面の **「勝手違」** は、**ミラーイメージ（鏡像対称）** を示しています。"
+                  "text": "元の部品には **A** を使用します。\n\n部品Aの反転複写には **B** を使用します。部品Bは部品Aがなければ存在できません。\n\n反転元の既存部品がない場合は、部品名に **A** を使用します。"
                 }
-              ],
-              "connection": "次のレッスン（F28.2）では、iCAD SX の反転複写ツールを使って部品が通常部品かミラー部品かを判別する方法を学びます。"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -5380,15 +5283,14 @@
                 {
                   "title": "4-Step Identification Procedure",
                   "type": "procedure",
-                  "text": "**Step 1 — Select the Mirror Copy Tool**\nSelect Mirror Copy from the Icon Menu (Move/Copy/Delete toolbar).\n\n**Step 2 — Place the Mirror Copy Over the Original Part**\nCreate the mirror copy and place it directly over the original part for visual comparison.\n\n**Step 3 — Compare the Part Details**\nCheck whether there are any recognizable differences between the original part and the mirror copy.\n\nPay attention to:\n- **Hole location**\n- **Cutouts**\n- **Fairings**\n\n**Step 4 — Identify the Part Type**\nIf there are no changes and all part details are exactly the same, classify it as a **Normal Part**.\n\nIf there are recognizable changes (hole locations, cutouts, or fairings) and its function can no longer be the same as Mirror Part A, classify it as a **Mirror Part**."
+                  "text": "**Step 1 — Select Mirror Copy Tool**\nSelect **Mirror Copy** from the Icon Menu.\n\n**Step 2 — Place Over Original Part**\nCreate the mirror copy and place it directly over the original part for visual comparison.\n\n**Step 3 — Compare Part Details**\nCompare the **hole locations, cutouts, and fairings**.\n\n**Step 4 — Identify Part Type**\n**Normal Part:** All details match.\n\n**Mirror Part:** Details differ and the part cannot perform the same function as Part A."
                 },
                 {
                   "title": "Identification Caution and Drawing Notes",
                   "type": "reference",
                   "text": "*Important Notice:*\nBe careful in identifying Normal and Mirror parts because incorrect classification may cause trouble when assigning drawing numbers.\n\n*Note on Reference Drawings:*\nWhen you see the notation **「勝手違」** on a reference drawing, this means **Mirror Image**."
                 }
-              ],
-              "connection": "In the next lesson (F28.3), you will learn the 3D modeling workflow for creating Mirror Parts in iCAD SX."
+              ]
             },
             "ja": {
               "explanation": "反転複写（ミラーコピー）ツールを使用し、元の部品の上に重ねて主要な特徴を比較することで、通常部品かミラー部品かを判別します。",
@@ -5397,15 +5299,14 @@
                 {
                   "title": "通常部品またはミラー部品の判別手順",
                   "type": "procedure",
-                  "text": "**ステップ 1 — アイコンメニューから反転複写を選択する**\nアイコンメニュー（移動・コピー・削除ツールバー）から「反転複写（ミラーコピー）」を選択します。\n\n**ステップ 2 — 元の部品の上にミラーコピーを重ねて配置する**\nミラーコピーを作成し、直接元の部品の上に重ねて配置して比較します。\n\n**ステップ 3 — 部品の詳細形状を比較する**\n元の部品とミラーコピーの間に認識可能な違いがあるか確認します。\n\n特に以下の点に注意します：\n- **穴の位置**\n- **切り欠き**\n- **フェアリング**\n\n**ステップ 4 — 部品の分類を判定する**\n変更がなく、部品の詳細がすべて完全に同一である場合は、**通常部品**として分類します。\n\n穴の位置、切り欠き、フェアリングなどの認識可能な違いがあり、部品としての機能がミラー部品Aの機能と同一になり得ない場合は、**ミラー部品**として分類します。"
+                  "text": "**ステップ 1 — 反転複写を選択する**\nアイコンメニューから「反転複写」を選択します。\n\n**ステップ 2 — 元の部品の上に重ねる**\nミラーコピーを作成し、直接元の部品の上に重ねて配置して比較します。\n\n**ステップ 3 — 詳細形状を比較する**\n**穴の位置、切り欠き、フェアリング**を比較します。\n\n**ステップ 4 — 部品の分類を判定する**\n**通常部品:** 詳細がすべて一致します。\n\n**ミラー部品:** 詳細が異なり、部品Aと同じ機能を果たせません。"
                 },
                 {
                   "title": "判別時の重要注意と図面注記",
                   "type": "reference",
                   "text": "*重要注意:*\n通常部品とミラー部品の識別を誤ると、図面番号の割り当てに問題が生じる可能性があるため注意してください。\n\n*参照図面の注記:*\n参照図面に **「勝手違」** と記載されている場合、これは **ミラーイメージ（鏡像対称）** を示しています。"
                 }
-              ],
-              "connection": "次のレッスン（F28.3）では、iCAD SX でミラー部品を作成する 3D モデリング手順を学びます。"
+              ]
             }
           },
           "contentReview": "instructor-review-required",
@@ -5431,38 +5332,36 @@
           ],
           "content": {
             "en": {
-              "explanation": "To create a mirror part, save Part A to another file as Part B and apply the Mirror command across a reflection plane defined by three points starting from the origin.",
+              "explanation": "Create Mirror Part B from Part A using the Mirror command.",
               "practice": "Create 3D Mirror Part B from Part A while preserving the required origin location.",
               "sections": [
                 {
                   "title": "6-Step Modeling Procedure",
                   "type": "procedure",
-                  "text": "**Step 1 — Identify the Proper Location of the Origin**\nBefore creating the 3D model, identify the proper location of origin of the part.\n\n**Step 2 — Create and Save Part A**\nAfter completing the 3D modeling of the part, save it as **Part A**.\n\n**Step 3 — Save Part A as Part B**\nWhen creating the 3D model of the mirror part, save Part A to another file as **Part B**.\n\n**Step 4 — Select Mirror**\nUse Mirror to convert the 3D model of Part A to Part B. Select the Mirror command from the Icon Menu (Move/Copy/Delete toolbar).\n\n**Step 5 — Specify the Mirror Plane**\nPick 3 points consecutively from the part, starting from the origin (**P1 → P2 → P3**).\n\n**Step 6 — Check the Final Result**\nAfter executing the command, verify the outcome geometry as Part B."
+                  "text": "**Step 1 — Identify the Proper Location of the Origin**\nBefore creating the 3D model, identify the proper location of the origin.\n\n**Step 2 — Create and Save Part A**\nComplete the 3D model and save it as **Part A**.\n\n**Step 3 — Save Part A as Part B**\nSave Part A to a separate file as **Part B**.\n\n**Step 4 — Select Mirror**\nIn the Part B file, select **Mirror** from the Icon Menu.\n\n**Step 5 — Specify the Mirror Plane**\nPick three points in order **P1 → P2 → P3**, starting from the origin.\n\n**Step 6 — Check the Final Result**\nAfter executing the command, verify the outcome geometry as Part B."
                 },
                 {
                   "title": "Important Reminder",
                   "type": "reference",
                   "text": "*Important Reminder:*\nThe origin of Part B must be in the same location as Part A."
                 }
-              ],
-              "connection": "You have completed Module F28. In the next module (F29), you will review all Foundation skills and complete the final knowledge check."
+              ]
             },
             "ja": {
-              "explanation": "ミラー部品を作成するには、部品Aを別のファイルに部品Bとして保存し、原点から始まる3つの点で定義された対称面を基準に「反転（ミラー）」コマンドを実行します。",
+              "explanation": "反転コマンドで部品Aからミラー部品Bを作成します。",
               "practice": "原点の位置を維持しながら、部品Aからミラー部品Bの3Dモデルを作成できるようになります。",
               "sections": [
                 {
                   "title": "ミラー部品の3Dモデリング手順",
                   "type": "procedure",
-                  "text": "**ステップ 1 — 部品の原点の適切な位置を特定する**\n3Dモデリングを作成する前に、部品の原点の適切な位置を特定します。\n\n**ステップ 2 — 部品Aを作成して保存する**\n部品の3Dモデリングを完了後、**部品A**として保存します。\n\n**ステップ 3 — 部品Aを部品Bとして別名保存する**\nミラー部品の3Dモデルを作成する際は、部品Aを別のファイルに**部品B**として保存します。\n\n**ステップ 4 — 反転（ミラー）を選択する**\n「反転（ミラー）」を使用して、部品Aの3Dモデルを部品Bに変換します。アイコンメニュー（移動・コピー・削除ツールバー）から反転コマンドを選択します。\n\n**ステップ 5 — 反転面（対称面）を指定する**\n原点から始めて、部品から3つの点を連続して選択します（**P1 → P2 → P3**）。\n\n**ステップ 6 — 最終結果を確認する**\nコマンド実行後、結果の形状が部品Bになっていることを確認します。"
+                  "text": "**ステップ 1 — 部品の原点の適切な位置を特定する**\n3Dモデリングを作成する前に、部品の原点の適切な位置を特定します。\n\n**ステップ 2 — 部品Aを作成して保存する**\n3Dモデルを完成させ、**部品A**として保存します。\n\n**ステップ 3 — 部品Aを部品Bとして別名保存する**\n部品Aを別のファイルに**部品B**として保存します。\n\n**ステップ 4 — 反転（ミラー）を選択する**\n部品Bのファイルで、アイコンメニューから**反転（ミラー）**を選択します。\n\n**ステップ 5 — 反転面（対称面）を指定する**\n原点から始めて、**P1 → P2 → P3**の順に3点を選択します。\n\n**ステップ 6 — 最終結果を確認する**\nコマンド実行後、結果の形状が部品Bになっていることを確認します。"
                 },
                 {
                   "title": "重要事項",
                   "type": "reference",
                   "text": "*重要事項:*\n部品Bの原点は部品Aと同じ位置でなければなりません。"
                 }
-              ],
-              "connection": "モジュール F28 が完了しました。次のモジュール（F29）では、基礎コース全体の復習と最終ナレッジチェックを行います。"
+              ]
             }
           },
           "contentReview": "instructor-review-required",

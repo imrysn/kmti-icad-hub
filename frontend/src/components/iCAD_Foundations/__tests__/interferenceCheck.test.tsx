@@ -46,5 +46,3 @@ it('uses the clean command menu capture without the supplied red boxes for Step 
   expect(document.querySelector('.foundation-interface-icon-dialog__screen')?.getAttribute('src')).toContain('interference/command-interface.png');
   expect(document.querySelector('dialog')).not.toHaveTextContent('Unselected');
 });
-expect(document.querySelector('dialog')).not.toHaveTextContent('Unselected');
-});

@@ -87,18 +87,6 @@ export function sourceKnowledgeQuestions(language: FoundationLanguage, lessonId 
       })),
     }];
   }
-  if (lessonId === 'foundation-parasolid-set-purchase-part-info') {
-    const ja = language === 'ja';
-    const labels = ja ? ['材質', 'レイヤ', '備考欄', 'ファイル名']
-      : ['Material', 'Layer', 'Remark', 'File Name'];
-    return [{ id: `${lessonId}-knowledge-check`,
-      prompt: ja ? '購入部品のメーカーはどこに入力すべきですか？'
-        : 'Where should the maker of the purchase part be entered?',
-      choices: labels.map((label, index) => ({ id: `${lessonId}-${index}`, label: `${'ABCD'[index]}. ${label}`,
-        isCorrect: index === 2, feedback: index === 2 ? `${ja ? '正解：' : 'Correct Answer: '}C. ${labels[2]}`
-          : ja ? '購入部品のメーカーは備考欄（REMARK）に入力します。' : 'The maker of the purchase part should be entered in the Remark.' }))
-    }];
-  }
   if (lessonId === 'foundation-parasolid-save-purchase-part') {
     const ja = language === 'ja';
     const labels = ja ? ['材料名', '購入部品コード', '3Dパーツ色', 'レイヤ番号']

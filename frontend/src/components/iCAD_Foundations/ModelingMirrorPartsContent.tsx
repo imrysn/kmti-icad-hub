@@ -1,4 +1,3 @@
-import React from 'react';
 import FoundationOperationCommandIcon from './FoundationOperationCommandIcon';
 import InterfaceIconPreview from './InterfaceIconPreview';
 import { renderFormattedText } from './WrittenTutorial_EN/WrittenTutorialPanel';
@@ -18,92 +17,8 @@ interface ModelingMirrorPartsContentProps {
   japanese?: boolean;
 }
 
-/** SVG illustration for Step 2: Completed 3D Model of Part A with save indicator. */
-function PartACreationArtwork({ title, japanese }: { title: string; japanese: boolean }) {
-  return (
-    <svg className="stretch-vector" viewBox="0 0 160 120" role="img" aria-label={title}>
-      {/* Base Part A: Isometric Bracket with Pin on right & Hole on left */}
-      <g stroke="#334155" strokeWidth="1.2" strokeLinejoin="round">
-        {/* Top Face */}
-        <polygon points="30,48 55,36 125,36 140,48 125,60 55,60" fill="#fde047" stroke="#ca8a04" />
-        {/* Front Face */}
-        <polygon points="30,48 55,60 125,60 140,48 140,62 125,74 55,74 30,62" fill="#eab308" stroke="#a16207" />
-        {/* Center cutout */}
-        <path d="M80,48 L80,56 Q90,56 90,48 Z" fill="#ca8a04" stroke="#854d0e" />
-        {/* Left Through-Hole */}
-        <ellipse cx="48" cy="48" rx="6" ry="3.5" fill="#a16207" stroke="#713f12" />
-        {/* Right Cylindrical Pin */}
-        <rect x="126" y="56" width="10" height="24" rx="2" fill="#eab308" stroke="#a16207" />
-        <ellipse cx="131" cy="80" rx="5" ry="2" fill="#ca8a04" />
-      </g>
-
-      {/* Part A Badge */}
-      <g>
-        <rect x="18" y="14" width="56" height="20" rx="4" fill="#1e293b" />
-        <text x="46" y="28" textAnchor="middle" fill="#38bdf8" fontSize="10" fontWeight="bold" fontFamily="monospace">
-          Part A
-        </text>
-      </g>
-
-      {/* Save Diskette Icon */}
-      <g transform="translate(112, 10)">
-        <circle cx="16" cy="14" r="13" fill="#22c55e" stroke="#16a34a" strokeWidth="1.5" />
-        {/* Floppy disk shape */}
-        <rect x="9" y="8" width="14" height="12" rx="1.5" fill="#ffffff" />
-        <rect x="11" y="9" width="10" height="4" fill="#86efac" />
-        <rect x="12" y="14" width="8" height="6" rx="1" fill="#cbd5e1" />
-      </g>
-    </svg>
-  );
-}
-
-/** SVG illustration for Step 3: Part A file saved as new Part B file. */
-function PartADuplicationArtwork({ title, japanese }: { title: string; japanese: boolean }) {
-  return (
-    <svg className="stretch-vector" viewBox="0 0 160 120" role="img" aria-label={title}>
-      {/* File Card A */}
-      <g transform="translate(12, 22)">
-        <rect x="0" y="0" width="52" height="68" rx="4" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.4" />
-        <path d="M38 0 L52 14 L38 14 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1.4" />
-        <rect x="8" y="24" width="36" height="4" rx="2" fill="#cbd5e1" />
-        <rect x="8" y="32" width="28" height="4" rx="2" fill="#cbd5e1" />
-        <rect x="6" y="44" width="40" height="16" rx="3" fill="#3b82f6" />
-        <text x="26" y="56" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="bold" fontFamily="monospace">
-          Part A
-        </text>
-      </g>
-
-      {/* Save As Transition Arrow */}
-      <g stroke="#2563eb" strokeWidth="2" fill="none">
-        <path d="M70,56 L88,56" />
-        <polygon points="90,56 83,52 83,60" fill="#2563eb" />
-      </g>
-      <text x="80" y="46" textAnchor="middle" fill="#2563eb" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif">
-        {japanese ? '別名保存' : 'Save As'}
-      </text>
-
-      {/* File Card B */}
-      <g transform="translate(96, 22)">
-        <rect x="0" y="0" width="52" height="68" rx="4" fill="#ffffff" stroke="#f59e0b" strokeWidth="1.6" />
-        <path d="M38 0 L52 14 L38 14 Z" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.6" />
-        <rect x="8" y="24" width="36" height="4" rx="2" fill="#fde68a" />
-        <rect x="8" y="32" width="28" height="4" rx="2" fill="#fde68a" />
-        <rect x="6" y="44" width="40" height="16" rx="3" fill="#f59e0b" />
-        <text x="26" y="56" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="bold" fontFamily="monospace">
-          Part B
-        </text>
-      </g>
-
-      <text x="80" y="106" textAnchor="middle" fill="#64748b" fontSize="8" fontWeight="bold" fontFamily="sans-serif">
-        {japanese ? 'Part A → Part B' : 'Part A → Part B'}
-      </text>
-    </svg>
-  );
-}
-
 export default function ModelingMirrorPartsContent({
   text,
-  title,
   index,
   japanese = false,
 }: ModelingMirrorPartsContentProps) {
@@ -125,41 +40,42 @@ export default function ModelingMirrorPartsContent({
           title={step1Title}
           japanese={japanese}
           custom={{
-            artworkOnly: true,
             artwork: (
               <img
                 src={originLocationImg}
                 alt={step1Title}
-                style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
+                className="normal-mirror-step-image"
               />
             ),
             screen: originLocationImg,
+            screenSize: [776, 430],
+            screenFit: 'comfortable',
             region: {
-              bounds: [0, 0, 776, 430],
-              landing: [0, 0, 776, 430],
+              bounds: [0, 0, 1920, 1080],
+              landing: [0, 0, 1920, 1080],
             },
           }}
         />
       ),
       body: japanese
-        ? '3Dモデリングを作成する前に、部品の原点の適切な位置を特定します。\n\n最初に原点を正しく設定することで、部品Aと部品Bの位置関係が正しく保持されます。'
-        : 'Before creating the 3D model, identify the proper location of the origin.\n\nEstablishing the origin first ensures both Part A and Part B remain aligned.',
+        ? '3Dモデリングを作成する前に、部品の原点の適切な位置を特定します。'
+        : 'Before creating the 3D model, identify the proper location of the origin.',
     },
     {
       number: 2,
       title: step2Title,
-      icon: <PartACreationArtwork title={step2Title} japanese={japanese} />,
+      icon: null,
       body: japanese
-        ? '部品の3Dモデリングを完了します。\n\nモデルが完成したら、部品Aとして保存します。'
-        : 'Complete the 3D modeling of the part.\n\nAfter completing the model, save it as Part A.',
+        ? '3Dモデルを完成させ、**部品A**として保存します。'
+        : 'Complete the 3D model and save it as **Part A**.',
     },
     {
       number: 3,
       title: step3Title,
-      icon: <PartADuplicationArtwork title={step3Title} japanese={japanese} />,
+      icon: null,
       body: japanese
-        ? 'ミラー部品の3Dモデルを作成する際は、部品Aを別のファイルに部品Bとして保存します。\n\nこの新しいファイルを使用してミラー形状を作成します。'
-        : 'When creating the 3D model of the mirror part, save Part A to another file as Part B.\n\nThis new file will be used to create the mirrored version.',
+        ? '部品Aを別のファイルに**部品B**として保存します。'
+        : 'Save Part A to a separate file as **Part B**.',
     },
     {
       number: 4,
@@ -173,23 +89,23 @@ export default function ModelingMirrorPartsContent({
           custom={{
             artwork: (
               <div style={{ display: 'grid', placeItems: 'center', width: '100%', height: '100%' }}>
-                <svg width="48" height="48" viewBox="0 0 32 32" aria-hidden="true">
-                  <FoundationOperationCommandIcon command="mirror" title={step4Title} />
-                </svg>
+                <FoundationOperationCommandIcon command="mirror" title={step4Title} />
               </div>
             ),
             screen: japanese ? mirrorCropJa : mirrorCropEn,
+            screenSize: japanese ? [352, 356] : [562, 324],
+            screenFit: 'comfortable',
             region: {
-              bounds: japanese ? [174, 114, 82, 58] : [272, 188, 128, 108],
-              landing: japanese ? [174, 114, 82, 58] : [272, 188, 128, 108],
+              bounds: japanese ? [949, 346, 447, 176] : [929, 627, 438, 360],
+              landing: japanese ? [949, 346, 447, 176] : [929, 627, 438, 360],
             },
             highlightColor: '#d71920',
           }}
         />
       ),
       body: japanese
-        ? '「反転（ミラー）」を使用して、部品Aの3Dモデルを部品Bに変換します。\n\nアイコンメニュー（移動・コピー・削除ツールバー）から反転コマンドを選択します。'
-        : 'Use Mirror to convert the 3D model of Part A to Part B.\n\nSelect the Mirror command from the Icon Menu (Move/Copy/Delete toolbar).',
+        ? '部品Bのファイルで、アイコンメニューから**反転（ミラー）**を選択します。'
+        : 'In the Part B file, select **Mirror** from the Icon Menu.',
     },
     {
       number: 5,
@@ -201,25 +117,26 @@ export default function ModelingMirrorPartsContent({
           title={step5Title}
           japanese={japanese}
           custom={{
-            artworkOnly: true,
             artwork: (
               <img
                 src={pick3PointsImg}
                 alt={step5Title}
-                style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
+                className="normal-mirror-step-image"
               />
             ),
             screen: pick3PointsImg,
+            screenSize: [499, 406],
+            screenFit: 'comfortable',
             region: {
-              bounds: [0, 0, 499, 406],
-              landing: [0, 0, 499, 406],
+              bounds: [0, 0, 1920, 1080],
+              landing: [0, 0, 1920, 1080],
             },
           }}
         />
       ),
       body: japanese
-        ? '原点から始めて、部品から3つの点を連続して選択します。\n\n指定された点順（P1 → P2 → P3）に従って、モデルが反転する面を定義します。'
-        : 'Pick 3 points consecutively from the part, starting from the origin.\n\nFollow the required point order: P1 → P2 → P3 to define how the model will be mirrored.',
+        ? '原点から始めて、**P1 → P2 → P3**の順に3点を選択します。'
+        : 'Pick three points in order **P1 → P2 → P3**, starting from the origin.',
     },
     {
       number: 6,
@@ -231,18 +148,19 @@ export default function ModelingMirrorPartsContent({
           title={step6Title}
           japanese={japanese}
           custom={{
-            artworkOnly: true,
             artwork: (
               <img
                 src={outcomePartBImg}
                 alt={step6Title}
-                style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
+                className="normal-mirror-step-image"
               />
             ),
             screen: outcomePartBImg,
+            screenSize: [777, 379],
+            screenFit: 'comfortable',
             region: {
-              bounds: [0, 0, 777, 379],
-              landing: [0, 0, 777, 379],
+              bounds: [0, 0, 1920, 1080],
+              landing: [0, 0, 1920, 1080],
             },
           }}
         />
@@ -264,7 +182,7 @@ export default function ModelingMirrorPartsContent({
                 {step.number}
               </span>
               <h5 className="foundations-use-card__title">{step.title}</h5>
-              <div className="foundations-use-card__icon-frame">{step.icon}</div>
+              {step.icon && <div className="foundations-use-card__icon-frame">{step.icon}</div>}
               <div className="foundations-use-card__body">
                 <p>{renderFormattedText(step.body)}</p>
               </div>

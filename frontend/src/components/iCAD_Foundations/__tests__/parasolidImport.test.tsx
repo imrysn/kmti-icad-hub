@@ -10,7 +10,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-it.each(['en', 'ja'] as const)('renders exactly 6 procedure steps and the knowledge check in %s', language => {
+it.each(['en', 'ja'] as const)('renders exactly 5 procedure steps and the knowledge check in %s', language => {
   const lesson = resolveFoundationLesson('F27.1')!;
   expect(lesson).toBeDefined();
   expect(lesson.id).toBe('foundation-parasolid-import');
@@ -21,7 +21,7 @@ it.each(['en', 'ja'] as const)('renders exactly 6 procedure steps and the knowle
       text={lesson.content[language].sections![0].text}
       method={1}
       japanese={language === 'ja'}
-      customIcons={[0, 1, 2, 3, 4, 5].map(step => (
+      customIcons={[0, 1, 2, 3, 4].map(step => (
         <ParasolidImportArtwork key={step} step={step} japanese={language === 'ja'} />
       ))}
     />
@@ -29,11 +29,11 @@ it.each(['en', 'ja'] as const)('renders exactly 6 procedure steps and the knowle
 
   // Exactly 6 cards rendered in the grid
   const items = screen.getAllByRole('listitem');
-  expect(items).toHaveLength(6);
-  expect(screen.getAllByRole('button')).toHaveLength(6);
+  expect(items).toHaveLength(5);
+  expect(screen.getAllByRole('button')).toHaveLength(5);
 
   // Check 3+3 container class
-  expect(container.querySelector('.foundation-stretch-steps--6')).toBeInTheDocument();
+  expect(container.querySelector('.foundation-stretch-steps--5')).toBeInTheDocument();
 
   // Step 1: Select Import
   expect(items[0]).toHaveTextContent(language === 'ja' ? 'インポート' : 'Select Import');
@@ -54,15 +54,7 @@ it.each(['en', 'ja'] as const)('renders exactly 6 procedure steps and the knowle
   expect(items[4]).toHaveTextContent(language === 'ja' ? 'キャンセル' : 'Cancel');
   expect(items[4]).toHaveTextContent(language === 'ja' ? '解放' : 'release');
 
-  // Step 6: Result check (workspace and Tree View)
-  expect(items[5]).toHaveTextContent(language === 'ja' ? '3D空間' : 'workspace');
-  expect(items[5]).toHaveTextContent(language === 'ja' ? 'ツリービュー' : 'Tree View');
-
-  // Section 1: Important Reminder
-  const reminder = lesson.content[language].sections![1];
-  expect(reminder.title).toBe(language === 'ja' ? '重要な注意点' : 'Important Reminder');
-  expect(reminder.text).toContain(language === 'ja' ? 'キャンセル' : 'cancel');
-  expect(reminder.text).toContain(language === 'ja' ? '解放' : 'release');
+  expect(lesson.content[language].sections?.some(section => /Important Reminder|重要な注意点/.test(section.title))).toBe(false);
 
   // Knowledge Check
   const questions = foundationKnowledgeQuestions(language, 'F27.1');
@@ -90,7 +82,7 @@ it('opens the actual icon menu screenshot on click in Step 1', () => {
 
   fireEvent.click(screen.getByRole('button'));
   const dialogImg = document.querySelector('dialog img');
-  expect(dialogImg?.getAttribute('src')).toContain('parasolid_import.png');
+  expect(dialogImg?.getAttribute('src')).toContain('command.png');
 });
 
 it('renders the accurate ParasolidImportIcon standalone SVG', () => {
@@ -107,12 +99,12 @@ it('opens the dialog captures for steps 2, 3, 4, 5, and 6', () => {
   // Step 2 opens Parasolid Link dialog
   const { unmount: unmount2 } = render(<ParasolidImportArtwork step={1} japanese={false} />);
   fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('parasolid_link_dialog.png');
+  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('import-file.png');
   unmount2();
 
   // Step 4 opens Name Change dialog
   const { unmount: unmount4 } = render(<ParasolidImportArtwork step={3} japanese={false} />);
   fireEvent.click(screen.getByRole('button'));
-  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('name_change_dialog.png');
+  expect(document.querySelector('dialog img')?.getAttribute('src')).toContain('name-change.png');
   unmount4();
 });
