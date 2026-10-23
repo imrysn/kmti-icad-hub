@@ -1,0 +1,4913 @@
+[
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 11,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 11,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 11,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.1",
+    "title": "What is iCAD SX?",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 11,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.2",
+    "title": "What iCAD SX is Used For",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.3",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.4",
+    "title": "Starting iCAD SX",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.5",
+    "title": "Closing iCAD SX",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F1.6",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.9",
+    "title": "Understanding the Toolbar",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 31,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.9",
+    "title": "Understanding the Toolbar",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 31,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.9",
+    "title": "Understanding the Toolbar",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 31,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F2.9",
+    "title": "Understanding the Toolbar",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 31,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.5",
+    "title": "Pan",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.5",
+    "title": "Pan",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.5",
+    "title": "Pan",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.5",
+    "title": "Pan",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.6",
+    "title": "Rotate the 3D View",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.6",
+    "title": "Rotate the 3D View",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.6",
+    "title": "Rotate the 3D View",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F3.6",
+    "title": "Rotate the 3D View",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.1",
+    "title": "3D VIEWS",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.6",
+    "title": "USER VIEWS",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.6",
+    "title": "USER VIEWS",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.6",
+    "title": "USER VIEWS",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.6",
+    "title": "USER VIEWS",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.12",
+    "title": "SHADING",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.12",
+    "title": "SHADING",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.12",
+    "title": "SHADING",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F4.12",
+    "title": "SHADING",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.1",
+    "title": "Keyboard Basics",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.4",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.4",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.4",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.4",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.6",
+    "title": "Specifying Coordinates",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.6",
+    "title": "Specifying Coordinates",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.6",
+    "title": "Specifying Coordinates",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.2",
+    "title": "Basic Element Selection",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F5.6",
+    "title": "Specifying Coordinates",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.2",
+    "title": "Basic Element Selection",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.2",
+    "title": "Basic Element Selection",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.2",
+    "title": "Basic Element Selection",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.4",
+    "title": "Selecting Parts and Solid Components",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.4",
+    "title": "Selecting Parts and Solid Components",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.4",
+    "title": "Selecting Parts and Solid Components",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.4",
+    "title": "Selecting Parts and Solid Components",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.7",
+    "title": "Search / Selection Type",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.7",
+    "title": "Search / Selection Type",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.7",
+    "title": "Search / Selection Type",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F6.7",
+    "title": "Search / Selection Type",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.1",
+    "title": "Understanding iCAD Drawing Structure",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.3",
+    "title": "Understanding Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.3",
+    "title": "Understanding Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.3",
+    "title": "Understanding Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.3",
+    "title": "Understanding Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.6",
+    "title": "Introduction to Assemblies",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.6",
+    "title": "Introduction to Assemblies",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.6",
+    "title": "Introduction to Assemblies",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.6",
+    "title": "Introduction to Assemblies",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.8",
+    "title": "Understanding 3D and 2D Drawings",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.8",
+    "title": "Understanding 3D and 2D Drawings",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.8",
+    "title": "Understanding 3D and 2D Drawings",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F7.8",
+    "title": "Understanding 3D and 2D Drawings",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.1",
+    "title": "Creating a New Item",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.1",
+    "title": "Creating a New Item",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.1",
+    "title": "Creating a New Item",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.1",
+    "title": "Creating a New Item",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.3",
+    "title": "Saving Your Work",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.3",
+    "title": "Saving Your Work",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.3",
+    "title": "Saving Your Work",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.5",
+    "title": "Closing a Drawing",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.5",
+    "title": "Closing a Drawing",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.3",
+    "title": "Saving Your Work",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.5",
+    "title": "Closing a Drawing",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F8.5",
+    "title": "Closing a Drawing",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.1",
+    "title": "Box",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.2",
+    "title": "Cylinder",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.3",
+    "title": "Polygon",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.4",
+    "title": "Cone",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F9.5",
+    "title": "Torus",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.1",
+    "title": "Move",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.2",
+    "title": "Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.3",
+    "title": "Rotate",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.4",
+    "title": "Rotate Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.5",
+    "title": "Mirror",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.6",
+    "title": "Mirror Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.7",
+    "title": "Delete",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F10.8",
+    "title": "Resize",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F11.1",
+    "title": "Sketch",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.1",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F12.2",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.1",
+    "title": "Understanding Show/Hide",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F13.4",
+    "title": "Hide Unselected Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F14.1",
+    "title": "Stretch",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [
+      {
+        "text": "不等辺不等厚山形鋼",
+        "cls": "foundations-use-card__title"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "id": "F15.1",
+    "title": "Creating Shape Steels",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.1",
+    "title": "Understanding the Work Plane",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.1",
+    "title": "Understanding the Work Plane",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.1",
+    "title": "Understanding the Work Plane",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.1",
+    "title": "Understanding the Work Plane",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.2",
+    "title": "Sketching on a Work Plane",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.3",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.3",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.3",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.3",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.4",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.4",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.4",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.5",
+    "title": "Spiral Form",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.4",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.5",
+    "title": "Spiral Form",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.5",
+    "title": "Spiral Form",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F16.5",
+    "title": "Spiral Form",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-hole-details",
+    "title": "Creating Hole Details on Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-hole-details",
+    "title": "Creating Hole Details on Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-hole-details",
+    "title": "Creating Hole Details on Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-union",
+    "title": "Union",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-hole-details",
+    "title": "Creating Hole Details on Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-union",
+    "title": "Union",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-union",
+    "title": "Union",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-union",
+    "title": "Union",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "title": "Subtract",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "title": "Subtract",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "title": "Subtract",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "title": "Intersect",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-subtract",
+    "title": "Subtract",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "title": "Intersect",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "title": "Intersect",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-intersect",
+    "title": "Intersect",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "title": "Separate Entity",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "title": "Separate Entity",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "title": "Separate Entity",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-boolean-separate",
+    "title": "Separate Entity",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-move",
+    "title": "Move Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-move",
+    "title": "Move Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-move",
+    "title": "Move Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-copy",
+    "title": "Copy Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-move",
+    "title": "Move Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-copy",
+    "title": "Copy Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-copy",
+    "title": "Copy Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-copy",
+    "title": "Copy Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror",
+    "title": "Mirror Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror",
+    "title": "Mirror Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror",
+    "title": "Mirror Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror",
+    "title": "Mirror Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate",
+    "title": "Rotate Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate",
+    "title": "Rotate Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate",
+    "title": "Rotate Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "title": "Repeat Copy Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate",
+    "title": "Rotate Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "title": "Repeat Copy Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "title": "Repeat Copy Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-repeat-copy",
+    "title": "Repeat Copy Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "title": "Rotate Copy Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "title": "Rotate Copy Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "title": "Rotate Copy Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-rotate-copy",
+    "title": "Rotate Copy Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "title": "Mirror Copy Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "title": "Mirror Copy Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "title": "Mirror Copy Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-mirror-copy",
+    "title": "Mirror Copy Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-delete",
+    "title": "Delete Component",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-delete",
+    "title": "Delete Component",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-delete",
+    "title": "Delete Component",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-component-delete",
+    "title": "Delete Component",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "title": "Chamfer",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "title": "Chamfer",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "title": "Chamfer",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-chamfer",
+    "title": "Chamfer",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "title": "Fillet",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "title": "Fillet",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "title": "Fillet",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-fillet",
+    "title": "Fillet",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "title": "Shell",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "title": "Shell",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "title": "Shell",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-fairing-shell",
+    "title": "Shell",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-create",
+    "title": "Create 3D Part",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-create",
+    "title": "Create 3D Part",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-create",
+    "title": "Create 3D Part",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-create",
+    "title": "Create 3D Part",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-material",
+    "title": "Material Description",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 6,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-material",
+    "title": "Material Description",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 6,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-material",
+    "title": "Material Description",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 6,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-material",
+    "title": "Material Description",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 6,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-change-name",
+    "title": "Change 3D Part Name",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-change-name",
+    "title": "Change 3D Part Name",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-change-name",
+    "title": "Change 3D Part Name",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-set",
+    "title": "Set Material",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-part-change-name",
+    "title": "Change 3D Part Name",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-set",
+    "title": "Set Material",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-set",
+    "title": "Set Material",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-set",
+    "title": "Set Material",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "title": "Materials Not Included in the iCAD Material List",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "title": "Materials Not Included in the iCAD Material List",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "title": "Materials Not Included in the iCAD Material List",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-material-unlisted",
+    "title": "Materials Not Included in the iCAD Material List",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "title": "Change Color",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "title": "Change Color",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "title": "Change Color",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-color",
+    "title": "Change Color",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "title": "Change Layer",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "title": "Change Layer",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "title": "Change Layer",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-change-layer",
+    "title": "Change Layer",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "title": "Layer Designation of 3D Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 21,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "title": "Layer Designation of 3D Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 21,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "title": "Layer Designation of 3D Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 21,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-information-tools",
+    "title": "Information Tools",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-information-tools",
+    "title": "Information Tools",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-properties-part-layer-designation",
+    "title": "Layer Designation of 3D Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 21,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-information-tools",
+    "title": "Information Tools",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-information-tools",
+    "title": "Information Tools",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "title": "Linear Dimension",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "title": "Linear Dimension",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "title": "Linear Dimension",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-linear-dimension",
+    "title": "Linear Dimension",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "title": "Diameter Dimension",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "title": "Diameter Dimension",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "title": "Diameter Dimension",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-diameter-dimension",
+    "title": "Diameter Dimension",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "title": "Angular Dimension",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "title": "Angular Dimension",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "title": "Angular Dimension",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-angular-dimension",
+    "title": "Angular Dimension",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "title": "Notes with Leader Lines",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "title": "Notes with Leader Lines",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "title": "Notes with Leader Lines",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-notes-leader-lines",
+    "title": "Notes with Leader Lines",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "title": "Character Strings",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "title": "Character Strings",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "title": "Character Strings",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-character-strings",
+    "title": "Character Strings",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "title": "Edit Drafting Entity Characters",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "title": "Edit Drafting Entity Characters",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "title": "Edit Drafting Entity Characters",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [
+      {
+        "text": "製図要素文字編集アイコンを選択",
+        "cls": "foundations-use-card__title"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-edit-characters",
+    "title": "Edit Drafting Entity Characters",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "title": "Change Drafting Entity Attributes",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "title": "Change Drafting Entity Attributes",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "title": "Change Drafting Entity Attributes",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-attributes",
+    "title": "Change Drafting Entity Attributes",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "title": "Change Drafting Entity Position",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "title": "Change Drafting Entity Position",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "title": "Change Drafting Entity Position",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-annotation-change-position",
+    "title": "Change Drafting Entity Position",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-check",
+    "title": "Check for Interferences",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-check",
+    "title": "Check for Interferences",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-check",
+    "title": "Check for Interferences",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "title": "Display Detected Interferences",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-check",
+    "title": "Check for Interferences",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "title": "Display Detected Interferences",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "title": "Display Detected Interferences",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-interference-display-list",
+    "title": "Display Detected Interferences",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "title": "Import Parasolid",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "title": "Import Parasolid",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "title": "Import Parasolid",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-import",
+    "title": "Import Parasolid",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "title": "Lighten B-Rep Solid",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "title": "Lighten B-Rep Solid",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "title": "Lighten B-Rep Solid",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "title": "Save the Purchase Part",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-lighten-brep",
+    "title": "Lighten B-Rep Solid",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 12,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "title": "Save the Purchase Part",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "title": "Save the Purchase Part",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-parasolid-save-purchase-part",
+    "title": "Save the Purchase Part",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 8,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "title": "Normal Parts and Mirror Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "title": "Normal Parts and Mirror Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "title": "Normal Parts and Mirror Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-normal-and-mirror",
+    "title": "Normal Parts and Mirror Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "title": "Identify Normal or Mirror Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "title": "Identify Normal or Mirror Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "title": "Identify Normal or Mirror Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "title": "3D Modeling of Mirror Parts",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-identify",
+    "title": "Identify Normal or Mirror Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "title": "3D Modeling of Mirror Parts",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "title": "3D Modeling of Mirror Parts",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "foundation-mirrored-parts-3d-modeling",
+    "title": "3D Modeling of Mirror Parts",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 18,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.1",
+    "title": "Foundation Review",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 49,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.1",
+    "title": "Foundation Review",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 49,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.1",
+    "title": "Foundation Review",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 49,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.2",
+    "title": "Foundation Knowledge Check",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 5,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.2",
+    "title": "Foundation Knowledge Check",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 5,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.1",
+    "title": "Foundation Review",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 49,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.2",
+    "title": "Foundation Knowledge Check",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 5,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "F17.2",
+    "title": "Foundation Knowledge Check",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 5,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.1",
+    "title": "What iCAD SX is Used For",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.1",
+    "title": "What iCAD SX is Used For",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.1",
+    "title": "What iCAD SX is Used For",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.1",
+    "title": "What iCAD SX is Used For",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.2",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.2",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.2",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.2",
+    "title": "Basic Workflow: 3D → 2D",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.3",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.3",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.3",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P1.3",
+    "title": "Introduction to iCAD SX Help",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.1",
+    "title": "iCAD SX Screen Layout",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.2",
+    "title": "Understanding the Toolbar",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 35,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.2",
+    "title": "Understanding the Toolbar",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 35,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.2",
+    "title": "Understanding the Toolbar",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 35,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P2.2",
+    "title": "Understanding the Toolbar",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 35,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.1",
+    "title": "Basic Mouse Operations",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.2",
+    "title": "Pan",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.2",
+    "title": "Pan",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.2",
+    "title": "Pan",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.3",
+    "title": "Rotate the 3D View",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.2",
+    "title": "Pan",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.3",
+    "title": "Rotate the 3D View",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.3",
+    "title": "Rotate the 3D View",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P3.3",
+    "title": "Rotate the 3D View",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.1",
+    "title": "3D VIEWS",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.1",
+    "title": "3D VIEWS",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.1",
+    "title": "3D VIEWS",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.1",
+    "title": "3D VIEWS",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.2",
+    "title": "USER VIEWS",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.2",
+    "title": "USER VIEWS",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.2",
+    "title": "USER VIEWS",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.2",
+    "title": "USER VIEWS",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.3",
+    "title": "SHADING",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.3",
+    "title": "SHADING",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.3",
+    "title": "SHADING",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P4.3",
+    "title": "SHADING",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 30,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.1",
+    "title": "Keyboard Basics",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.1",
+    "title": "Keyboard Basics",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.1",
+    "title": "Keyboard Basics",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.1",
+    "title": "Keyboard Basics",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 20,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.2",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.2",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.2",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.3",
+    "title": "Specifying Coordinates",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.2",
+    "title": "Understanding Coordinates and the Origin",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 13,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.3",
+    "title": "Specifying Coordinates",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.3",
+    "title": "Specifying Coordinates",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P5.3",
+    "title": "Specifying Coordinates",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 32,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.1",
+    "title": "Creating a New Item",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.1",
+    "title": "Creating a New Item",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.1",
+    "title": "Creating a New Item",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.1",
+    "title": "Creating a New Item",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 10,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.2",
+    "title": "Saving Your Work",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.2",
+    "title": "Saving Your Work",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.2",
+    "title": "Saving Your Work",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.3",
+    "title": "Closing a Drawing",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.2",
+    "title": "Saving Your Work",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 23,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.3",
+    "title": "Closing a Drawing",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.3",
+    "title": "Closing a Drawing",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P6.3",
+    "title": "Closing a Drawing",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.1",
+    "title": "Box",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.1",
+    "title": "Box",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.1",
+    "title": "Box",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.1",
+    "title": "Box",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.2",
+    "title": "Cylinder",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.2",
+    "title": "Cylinder",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.2",
+    "title": "Cylinder",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.3",
+    "title": "Polygon",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.2",
+    "title": "Cylinder",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.3",
+    "title": "Polygon",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.3",
+    "title": "Polygon",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.3",
+    "title": "Polygon",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.4",
+    "title": "Cone",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.4",
+    "title": "Cone",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.4",
+    "title": "Cone",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.4",
+    "title": "Cone",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.5",
+    "title": "Torus",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.5",
+    "title": "Torus",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.5",
+    "title": "Torus",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P7.5",
+    "title": "Torus",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.1",
+    "title": "Move",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.1",
+    "title": "Move",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.1",
+    "title": "Move",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.1",
+    "title": "Move",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.2",
+    "title": "Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.2",
+    "title": "Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.2",
+    "title": "Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.2",
+    "title": "Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.3",
+    "title": "Rotate",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.3",
+    "title": "Rotate",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.3",
+    "title": "Rotate",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.3",
+    "title": "Rotate",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.4",
+    "title": "Rotate Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.4",
+    "title": "Rotate Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.4",
+    "title": "Rotate Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.4",
+    "title": "Rotate Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.5",
+    "title": "Mirror",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.5",
+    "title": "Mirror",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.5",
+    "title": "Mirror",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.5",
+    "title": "Mirror",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.6",
+    "title": "Mirror Copy",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.6",
+    "title": "Mirror Copy",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.6",
+    "title": "Mirror Copy",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.6",
+    "title": "Mirror Copy",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.7",
+    "title": "Delete",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.7",
+    "title": "Delete",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.7",
+    "title": "Delete",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.7",
+    "title": "Delete",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 19,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.8",
+    "title": "Resize",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.8",
+    "title": "Resize",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.8",
+    "title": "Resize",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P8.8",
+    "title": "Resize",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 15,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P9.1",
+    "title": "Sketch",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P9.1",
+    "title": "Sketch",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P9.1",
+    "title": "Sketch",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P9.1",
+    "title": "Sketch",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 25,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.1",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.1",
+    "title": "Extrude",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.1",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.1",
+    "title": "Extrude",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 33,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.2",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.2",
+    "title": "Revolve",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.2",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P10.2",
+    "title": "Revolve",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.1",
+    "title": "Understanding Show/Hide",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 22,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.1",
+    "title": "Understanding Show/Hide",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 22,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.1",
+    "title": "Understanding Show/Hide",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 22,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.1",
+    "title": "Understanding Show/Hide",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 22,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.2",
+    "title": "Show / Hide Specified Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 17,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.3",
+    "title": "Show / Hide Drafting Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 16,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.4",
+    "title": "Hide Unselected Elements",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.4",
+    "title": "Hide Unselected Elements",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.4",
+    "title": "Hide Unselected Elements",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P11.4",
+    "title": "Hide Unselected Elements",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 14,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P12.1",
+    "title": "Stretch",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P12.1",
+    "title": "Stretch",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P12.1",
+    "title": "Stretch",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P12.1",
+    "title": "Stretch",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P13.1",
+    "title": "Creating Shape Steels",
+    "lang": "en",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P13.1",
+    "title": "Creating Shape Steels",
+    "lang": "en",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P13.1",
+    "title": "Creating Shape Steels",
+    "lang": "ja",
+    "width": 390,
+    "paragraphs": 27,
+    "clipped": [],
+    "overflow": false
+  },
+  {
+    "id": "P13.1",
+    "title": "Creating Shape Steels",
+    "lang": "ja",
+    "width": 1175,
+    "paragraphs": 27,
+    "clipped": [
+      {
+        "text": "不等辺不等厚山形鋼",
+        "cls": "foundations-use-card__title"
+      }
+    ],
+    "overflow": false
+  }
+]
